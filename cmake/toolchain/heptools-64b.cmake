@@ -162,7 +162,7 @@ endif()
 LCG_external_package(xrootd            3.1.0p2                                  )
 
 #---Additional External packages------(Generators)-----------------
-LCG_external_package(pythia8 170)
+LCG_external_package(pythia8           170             MCGenerators/pythia8     )
 
 
 # Prepare the search paths according to the versions above
