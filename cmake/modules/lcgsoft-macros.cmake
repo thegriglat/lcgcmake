@@ -19,7 +19,8 @@ macro(LCGPackage_Add name)
   else()
 
     set(${name}_home ${LOCAL_INSTALL_PREFIX}/${${name}_directory_name}/${${name}_native_version}/${LCG_system} PARENT_SCOPE)
-    ExternalProject_Add( 
+    set(${name}_home ${LOCAL_INSTALL_PREFIX}/${${name}_directory_name}/${${name}_native_version}/${LCG_system})
+    ExternalProject_Add(
       ${name}
       INSTALL_DIR ${${name}_home}
       ${ARG_UNPARSED_ARGUMENTS}
