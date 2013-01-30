@@ -3,12 +3,23 @@
 LCGPackage_Add(
   pythia8
   URL http://home.thep.lu.se/~torbjorn/pythia8/pythia8${pythia8_native_version}.tgz
-  CONFIGURE_COMMAND ./configure --prefix <INSTALL_DIR> --lcgplatform=${LCG_TARGET} --enable-shared --with-hepmc=${HepMC-home}
+  CONFIGURE_COMMAND ./configure --prefix <INSTALL_DIR> --lcgplatform=${LCG_TARGET} --enable-shared --with-hepmc=${HepMC_home}
   BUILD_IN_SOURCE 1
   INSTALL_COMMAND cmake -E copy_directory <SOURCE_DIR>/include  <INSTALL_DIR>/include
           COMMAND cmake -E copy_directory <SOURCE_DIR>/lib  <INSTALL_DIR>/lib
           COMMAND cmake -E copy_directory <SOURCE_DIR>/xmldoc  <INSTALL_DIR>/xmldoc
   DEPENDS HepMC
+)
+
+#---ThePEG------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  thepeg
+  URL http://www.hepforge.org/archive/thepeg/ThePEG-${thepeg_native_version}.tar.bz2
+  CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix=<INSTALL_DIR> --with-gsl=${GSL_home}
+  BUILD_IN_SOURCE 1
+  INSTALL_COMMAND make install
+  DEPENDS GSL
+
 )
 
 

@@ -13,12 +13,12 @@ macro(LCGPackage_Add name)
   CMAKE_PARSE_ARGUMENTS(ARG "" "" "DEPENDS" ${ARGN})
   if(EXISTS ${CMAKE_INSTALL_PREFIX}/${${name}_directory_name}/${${name}_native_version}/${LCG_system})
 
-    set(${name}_home ${CMAKE_INSTALL_PREFIX}/${${name}_directory_name}/${${name}_native_version}/${LCG_system})
+    set(${name}_home ${CMAKE_INSTALL_PREFIX}/${${name}_directory_name}/${${name}_native_version}/${LCG_system} PARENT_SCOPE)
     add_custom_target(${name} ALL COMMENT "${name} package already existing in ${${name}_home}")
     
   else()
 
-    set(${name}_home ${LOCAL_INSTALL_PREFIX}/${${name}_directory_name}/${${name}_native_version}/${LCG_system})
+    set(${name}_home ${LOCAL_INSTALL_PREFIX}/${${name}_directory_name}/${${name}_native_version}/${LCG_system} PARENT_SCOPE)
     ExternalProject_Add( 
       ${name}
       INSTALL_DIR ${${name}_home}
@@ -31,7 +31,7 @@ macro(LCGPackage_Add name)
 
     install(DIRECTORY ${${name}_home}/ DESTINATION ${${name}_directory_name}/${${name}_native_version}/${LCG_system})
     foreach(ph configure-out configure-err build-out build-err install-out install-err)
-      install(FILES ${CMAKE_BINARY_DIR}/${name}-prefix/src/${name}-stamp/${name}-${ph}.log
+      install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${name}-prefix/src/${name}-stamp/${name}-${ph}.log
             DESTINATION ${${name}_directory_name}/${${name}_native_version}/logs
             RENAME ${name}-${LCG_system}-${ph}.log)
     endforeach()

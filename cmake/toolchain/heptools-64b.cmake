@@ -163,6 +163,7 @@ LCG_external_package(xrootd            3.1.0p2                                  
 
 #---Additional External packages------(Generators)-----------------
 LCG_external_package(pythia8           170             MCGenerators/pythia8     )
+LCG_external_package(thepeg            1.8.1           MCGenerators/thepeg      )
 
 
 # Prepare the search paths according to the versions above
