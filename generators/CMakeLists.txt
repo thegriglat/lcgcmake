@@ -17,9 +17,14 @@ LCGPackage_Add(
   URL http://www.hepforge.org/archive/thepeg/ThePEG-${thepeg_native_version}.tar.bz2
   CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix=<INSTALL_DIR> --with-gsl=${GSL_home}
   BUILD_IN_SOURCE 1
-  INSTALL_COMMAND make install
   DEPENDS GSL
-
 )
 
-
+#---Herwig++------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  herwig++
+  URL http://www.hepforge.org/archive/herwig/Herwig++-${herwig++_native_version}.tar.bz2
+  CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix=<INSTALL_DIR> --with-gsl=${GSL_home} --with-thepeg=${thepeg_home} --with-boost=${Boost_home}
+  BUILD_IN_SOURCE 1
+  DEPENDS thepeg Boost
+)

@@ -1,3 +1,26 @@
+#---Boost--------------------------------------------------------------------------------------------
+# TODO add the dependency to Python
+
+set(Boost_jam_options -j12 variant=release --layout=versioned)
+set(Boost_compile_options "")
+if(APPLE)
+  set(Boost_toolset darwin)
+else()
+  set(Boost_toolset gcc)
+endif()
+string(REPLACE "." "_" Boost_file_version ${Boost_config_version})
+file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/user-config.jam "")
+
+LCGPackage_Add(
+  Boost
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/boost_${Boost_file_version}.tar.gz
+  CONFIGURE_COMMAND <SOURCE_DIR>/bootstrap.sh
+  BUILD_COMMAND <SOURCE_DIR>/b2 -j 4 ${Boost_jam_opts} ${Boost_compile_options}
+                --toolset=${Boost_toolset} --user-config=${CMAKE_CURRENT_BINARY_DIR}/user-config.jam
+  INSTALL_COMMAND <SOURCE_DIR>/b2 -j 4 --prefix=<INSTALL_DIR> install
+  BUILD_IN_SOURCE 1
+)
+
 #---GSL----------------------------------------------------------------------------------------------
 if(LCG_TARGET MATCHES "x86_64|slc")
   set(GSL_config_options -with-pic)
