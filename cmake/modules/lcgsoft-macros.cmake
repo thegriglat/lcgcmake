@@ -13,12 +13,11 @@ macro(LCGPackage_Add name)
   CMAKE_PARSE_ARGUMENTS(ARG "" "" "DEPENDS" ${ARGN})
   if(EXISTS ${CMAKE_INSTALL_PREFIX}/${${name}_directory_name}/${${name}_native_version}/${LCG_system})
 
-    set(${name}_home ${CMAKE_INSTALL_PREFIX}/${${name}_directory_name}/${${name}_native_version}/${LCG_system} PARENT_SCOPE)
+    set(${name}_home ${CMAKE_INSTALL_PREFIX}/${${name}_directory_name}/${${name}_native_version}/${LCG_system})
     add_custom_target(${name} ALL COMMENT "${name} package already existing in ${${name}_home}")
     
   else()
 
-    set(${name}_home ${LOCAL_INSTALL_PREFIX}/${${name}_directory_name}/${${name}_native_version}/${LCG_system} PARENT_SCOPE)
     set(${name}_home ${LOCAL_INSTALL_PREFIX}/${${name}_directory_name}/${${name}_native_version}/${LCG_system})
     ExternalProject_Add(
       ${name}
@@ -37,6 +36,8 @@ macro(LCGPackage_Add name)
             RENAME ${name}-${LCG_system}-${ph}.log)
     endforeach()
   endif()
+    
+  set(${name}_home ${${name}_home} PARENT_SCOPE)
 
 endmacro()
 
