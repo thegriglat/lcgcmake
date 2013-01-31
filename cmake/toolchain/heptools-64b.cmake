@@ -162,7 +162,7 @@ endif()
 LCG_external_package(xrootd            3.1.0p2                                  )
 
 #---Additional External packages------(Generators)-----------------
-LCG_external_package(pythia8           170             MCGenerators/pythia8     )
+LCG_external_package(pythia8           "165;170"       MCGenerators/pythia8     )
 LCG_external_package(thepeg            1.8.1           MCGenerators/thepeg      )
 LCG_external_package(herwig++          2.6.1b          MCGenerators/herwig++    )
 
