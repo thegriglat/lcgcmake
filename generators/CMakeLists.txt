@@ -1,4 +1,3 @@
-
 #---pythia8------------------------------------------------------------------------------------------
 LCGPackage_Add(
   pythia8
@@ -21,12 +20,24 @@ LCGPackage_Add(
 )
 
 #---Herwig++------------------------------------------------------------------------------------------
-if(NOT APPLE)
+if(NOT APPLE)    #  (installation fails on MacOSX)
   LCGPackage_Add(
     herwig++
     URL http://www.hepforge.org/archive/herwig/Herwig++-${herwig++_native_version}.tar.bz2
     CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix=<INSTALL_DIR> --with-gsl=${GSL_home} --with-thepeg=${thepeg_home} --with-boost=${Boost_home}
     BUILD_IN_SOURCE 1
     DEPENDS thepeg Boost
+  )
+endif()
+
+#---tauola++------------------------------------------------------------------------------------------
+if(EXISTS ${lhapdf_home})  # (not yet build instructions for lhapdf)
+  LCGPackage_Add(
+    tauola++
+    URL http://annapurna.ifj.edu.pl/~tprzedzinski/resources/TAUOLA.${tauola++_native_version}/TAUOLA.${tauola++_native_version}-LHC.tar.gz
+    CONFIGURE_COMMAND echo "Configuring tauola++"
+              COMMAND ./configure --prefix=<INSTALL_DIR> --with-hepmc=${HepMC_home} --with-lhapdf=${lhapdf_home}
+    BUILD_IN_SOURCE 1
+    DEPENDS HepMC lhapdf
   )
 endif()

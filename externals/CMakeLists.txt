@@ -2,7 +2,7 @@
 # TODO add the dependency to Python
 
 set(Boost_jam_options -j12 variant=release --layout=versioned)
-set(Boost_compile_options "")
+set(Boost_compile_options -j4)
 if(APPLE)
   set(Boost_toolset darwin)
 else()
