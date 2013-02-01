@@ -74,7 +74,10 @@ macro(LCGPackage_Add name)
       endif()
 
       #---Installation from local installation area to CMAKE_INSTALL_PREFIX---------------------------
-      install(DIRECTORY ${${name}_home}/ DESTINATION ${${name}_directory_name}/${version}/${LCG_system})
+      install(DIRECTORY ${${name}_home}/ 
+              DESTINATION ${${name}_directory_name}/${version}/${LCG_system})
+      install(DIRECTORY ${LOCAL_INSTALL_PREFIX}/${${name}_directory_name}/${version}/share/
+              DESTINATION ${${name}_directory_name}/${version}/share)
       foreach(ph configure-out configure-err build-out build-err install-out install-err)
         install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${targetname}/src/${targetname}-stamp/${targetname}-${ph}.log
               DESTINATION ${${name}_directory_name}/${version}/logs
