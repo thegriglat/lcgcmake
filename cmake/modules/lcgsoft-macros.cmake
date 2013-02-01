@@ -24,7 +24,8 @@ macro(LCGPackage_Add name)
 
       set(${name}_home ${CMAKE_INSTALL_PREFIX}/${${name}_directory_name}/${version}/${LCG_system})
       add_custom_target(${targetname} ALL COMMENT "${targetname} package already existing in ${${name}_home}")
-    
+      add_custom_target(clean-${targetname} COMMENT "${targetname}: nothing to be clean!")
+
     else()
 
       set(${name}_home ${LOCAL_INSTALL_PREFIX}/${${name}_directory_name}/${version}/${LCG_system})
@@ -38,6 +39,9 @@ macro(LCGPackage_Add name)
         INSTALL_DIR ${${name}_home}
         ${ARGUMENTS}
         LOG_CONFIGURE 1 LOG_BUILD 1 LOG_INSTALL 1 )
+
+      add_custom_target(clean-${targetname} COMMAND ${CMAKE_COMMAND} -E remove_directory ${CMAKE_CURRENT_BINARY_DIR}/${targetname}
+                                            COMMAND ${CMAKE_COMMAND} -E remove_directory ${${name}_home})
 
       if(ARG_DEPENDS)
          add_dependencies(${targetname} ${ARG_DEPENDS})
