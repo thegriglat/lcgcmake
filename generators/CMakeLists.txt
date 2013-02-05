@@ -1,16 +1,24 @@
+#---lhapdf------------------------------------------------------------------------------------------
+#todo: add installation of PDF sets
+#todo: add installation of examples
+LCGPackage_Add(  
+  lhapdf
+  URL http://www.hepforge.org/archive/lhapdf/lhapdf-${lhapdf_native_version}.tar.gz
+  CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix=<INSTALL_DIR> --datadir=<INSTALL_DIR>/../share --enable-low-memory  --disable-pyext --disable-doxygen --disable-octave
+  BUILD_IN_SOURCE 1
+)
+
 #---pythia8------------------------------------------------------------------------------------------
 LCGPackage_Add(
   pythia8
   URL http://home.thep.lu.se/~torbjorn/pythia8/pythia8<NATIVE_VERSION>.tgz
   CONFIGURE_COMMAND ./configure --prefix <INSTALL_DIR> --lcgplatform=${LCG_TARGET} --enable-shared --with-hepmc=${HepMC_home}
   BUILD_IN_SOURCE 1
-  INSTALL_COMMAND cmake -E copy_directory <SOURCE_DIR>/include  <INSTALL_DIR>/include
-          COMMAND cmake -E copy_directory <SOURCE_DIR>/lib  <INSTALL_DIR>/lib
-          COMMAND cmake -E copy_directory <SOURCE_DIR>/xmldoc  <INSTALL_DIR>/xmldoc
   DEPENDS HepMC
 )
 
 #---ThePEG------------------------------------------------------------------------------------------
+#todo: add lhapdf dependency
 LCGPackage_Add(
   thepeg
   URL http://www.hepforge.org/archive/thepeg/ThePEG-${thepeg_native_version}.tar.bz2
@@ -19,7 +27,7 @@ LCGPackage_Add(
   DEPENDS GSL
 )
 
-#---Herwig++------------------------------------------------------------------------------------------
+---Herwig++------------------------------------------------------------------------------------------
 if(NOT APPLE)    #  (installation fails on MacOSX)
   LCGPackage_Add(
     herwig++
@@ -41,3 +49,15 @@ if(EXISTS ${lhapdf_home})  # (not yet build instructions for lhapdf)
     DEPENDS HepMC lhapdf
   )
 endif()
+
+#---pythia6-------------------------------------------------------------------------------------------
+#todo: solve the problem that distfile is not a tar file
+#LCGPackage_Add(
+#  pythia6
+#  URL http://www.hepforge.org/archive/pythia6/pythia-6.4.27.f.gz
+#  UPDATE_COMMAND /afs/cern.ch/user/m/mkirsano/scratch0/GENSER/GENSER5/lcgcmake/generators/prepare_pythia6
+#  CONFIGURE_COMMAND ./configure --prefix=${INSTALL_DIR} --datadir=${INSTALL_DIR}/../share
+#  BUILD_IN_SOURCE 1
+#  DEPENDS
+#)
+
