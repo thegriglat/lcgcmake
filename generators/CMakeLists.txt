@@ -27,7 +27,7 @@ LCGPackage_Add(
   DEPENDS GSL
 )
 
----Herwig++------------------------------------------------------------------------------------------
+#---Herwig++------------------------------------------------------------------------------------------
 if(NOT APPLE)    #  (installation fails on MacOSX)
   LCGPackage_Add(
     herwig++
@@ -60,4 +60,3 @@ endif()
 #  BUILD_IN_SOURCE 1
 #  DEPENDS
 #)
-
