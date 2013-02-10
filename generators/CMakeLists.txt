@@ -1,3 +1,5 @@
+#todo for all: install README, lcg_configure, doc/URL
+#
 #---lhapdf------------------------------------------------------------------------------------------
 #todo: add installation of PDF sets
 #todo: add installation of examples
@@ -20,16 +22,16 @@ LCGPackage_Add(
 )
 
 #---ThePEG------------------------------------------------------------------------------------------
-#todo: add lhapdf dependency
 LCGPackage_Add(
   thepeg
   URL http://www.hepforge.org/archive/thepeg/ThePEG-${thepeg_native_version}.tar.bz2
-  CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix=<INSTALL_DIR> --with-gsl=${GSL_home}
+  CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix=<INSTALL_DIR> --with-hepmc=${HepMC_home} --with-LHAPDF=${lhapdf_home}/lib --with-gsl=${GSL_home} --without-javagui
   BUILD_IN_SOURCE 1
-  DEPENDS GSL
+  DEPENDS HepMC lhapdf GSL
 )
 
 #---Herwig++------------------------------------------------------------------------------------------
+#todo: every version of herwig++ depends on the corresponding particular version of ThePEG
 #Version 2.6.2 compiles on Mac:
 #if(NOT APPLE)    #  (installation fails on MacOSX)
   LCGPackage_Add(
@@ -67,6 +69,7 @@ LCGPackage_Add(
 #---agile------------------------------------------------------------------------------------------
 #todo: nonstandard include path for boost, needs BVM=echo ${BOOST_VERSION} | cut -d . -f 1-2 | tr . _
 #todo: specify swig using a version variable
+#todo: swig dependency?
 LCGPackage_Add(
   agile
   URL http://www.hepforge.org/archive/agile/AGILe-${agile_native_version}.tar.bz2
