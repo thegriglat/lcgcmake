@@ -165,10 +165,11 @@ LCG_external_package(xrootd            3.1.0p2                                  
 LCG_external_package(lhapdf            5.8.8           MCGenerators/lhapdf      )
 #LCG_external_package(pythia8           "165;170"       MCGenerators/pythia8     )
 LCG_external_package(pythia8           170             MCGenerators/pythia8     )
-LCG_external_package(thepeg            1.8.1           MCGenerators/thepeg      )
-LCG_external_package(herwig++          2.6.1b          MCGenerators/herwig++    )
+LCG_external_package(thepeg            1.8.2           MCGenerators/thepeg      )
+LCG_external_package(herwig++          2.6.2           MCGenerators/herwig++    )
 LCG_external_package(tauola++          1.1.1a          MCGenerators/tauola++    )
 LCG_external_package(pythia6           427             MCGenerators/pythia6     )
+LCG_external_package(agile             1.4.0           MCGenerators/agile       )
 
 
 # Prepare the search paths according to the versions above
