@@ -28,8 +28,8 @@ LCGPackage_Add(
   URL http://www.hepforge.org/archive/thepeg/ThePEG-${thepeg_native_version}.tar.bz2
   CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix=<INSTALL_DIR> --with-hepmc=${HepMC_home} --with-LHAPDF=${lhapdf_home}/lib --with-gsl=${GSL_home} --without-javagui
   BUILD_IN_SOURCE 1
-  DEPENDS HepMC lhapdf GSL
-)
+  DEPENDS HepMC GSL lhapdf
+#)
 
 #---Herwig++------------------------------------------------------------------------------------------
 #todo: every version of herwig++ depends on the corresponding PARTICULAR VERSION of ThePEG
@@ -40,7 +40,7 @@ LCGPackage_Add(
     URL http://www.hepforge.org/archive/herwig/Herwig++-${herwig++_native_version}.tar.bz2
     CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix=<INSTALL_DIR> --with-gsl=${GSL_home} --with-thepeg=${thepeg_home} --with-boost=${Boost_home}
     BUILD_IN_SOURCE 1
-    DEPENDS thepeg Boost
+    DEPENDS GSL Boost thepeg
   )
 #endif()
 
@@ -81,14 +81,25 @@ LCGPackage_Add(
   DEPENDS
 )
 
+#---photos++------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  photos++
+  URL http://annapurna.ifj.edu.pl/~tprzedzinski/resources/PHOTOS.${photos++_native_version}/PHOTOS.${photos++_native_version}-LHC.tar.gz
+  CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix=<INSTALL_DIR> --with-hepmc=${HepMC_home}
+  BUILD_IN_SOURCE 1
+#  DEPENDS HepMC
+#for tests:
+  DEPENDS 
+)
+
 #---evtgen------------------------------------------------------------------------------------------
+set(EVTGEN_TAG R01-01-00)
 LCGPackage_Add(
   evtgen
-  URL http://www.hepforge.org/archive/agile/AGILe-${agile_native_version}.tar.bz2
-  CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix=<INSTALL_DIR> --datadir=<INSTALL_DIR>/../share --with-hepmc=${HepMC_home} --with-boost-incpath=${Boost_home}/include/boost-1_48 
-PYTH$
+  SVN_REPOSITORY http://svnweb.cern.ch/guest/evtgen/tags/${EVTGEN_TAG}
+  CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix=<INSTALL_DIR> --hepmcdir=${HepMC_home} --pythiadir=${pythia8_home} --photosdir=${photos_home} --tauoladir=${tauola_home}
   BUILD_IN_SOURCE 1   
-#  DEPENDS HepMC Boost Python swig
+#  DEPENDS HepMC pythia8 photos++ tauola++
 #for tests:
-  DEPENDS
+  DEPENDS pythia8 photos++ tauola++
 )
