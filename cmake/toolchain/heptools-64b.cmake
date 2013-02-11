@@ -170,6 +170,8 @@ LCG_external_package(herwig++          2.6.2           MCGenerators/herwig++    
 LCG_external_package(tauola++          1.1.1a          MCGenerators/tauola++    )
 LCG_external_package(pythia6           427             MCGenerators/pythia6     )
 LCG_external_package(agile             1.4.0           MCGenerators/agile       )
+LCG_external_package(photos++          3.52            MCGenerators/photos++    )
+LCG_external_package(evtgen            1.1.1           MCGenerators/evtgen      )
 
 
 # Prepare the search paths according to the versions above
