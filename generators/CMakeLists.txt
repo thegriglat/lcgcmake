@@ -3,6 +3,7 @@
 #---lhapdf------------------------------------------------------------------------------------------
 #todo: add installation of PDF sets
 #todo: add installation of examples
+set(HOMEPAGE_lhapdf http://projects.hepforge.org/lhapdf/)
 LCGPackage_Add(  
   lhapdf
   URL http://www.hepforge.org/archive/lhapdf/lhapdf-${lhapdf_native_version}.tar.gz
@@ -31,7 +32,7 @@ LCGPackage_Add(
 )
 
 #---Herwig++------------------------------------------------------------------------------------------
-#todo: every version of herwig++ depends on the corresponding particular version of ThePEG
+#todo: every version of herwig++ depends on the corresponding PARTICULAR VERSION of ThePEG
 #Version 2.6.2 compiles on Mac:
 #if(NOT APPLE)    #  (installation fails on MacOSX)
   LCGPackage_Add(
@@ -68,13 +69,25 @@ LCGPackage_Add(
 
 #---agile------------------------------------------------------------------------------------------
 #todo: nonstandard include path for boost, needs BVM=echo ${BOOST_VERSION} | cut -d . -f 1-2 | tr . _
-#todo: specify swig using a version variable
 #todo: swig dependency?
+set(SWIG_VERSION 1.3.40)
 LCGPackage_Add(
   agile
   URL http://www.hepforge.org/archive/agile/AGILe-${agile_native_version}.tar.bz2
-  CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix=<INSTALL_DIR> --datadir=<INSTALL_DIR>/../share --with-hepmc=${HepMC_home} --with-boost-incpath=${Boost_home}/include/boost-1_48 PYTHON=${Python_home}/bin/python SWIG=/afs/cern.ch/sw/lcg/external/swig/1.3.40/${LCG_TARGET}-opt/bin/swig
+  CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix=<INSTALL_DIR> --datadir=<INSTALL_DIR>/../share --with-hepmc=${HepMC_home} --with-boost-incpath=${Boost_home}/include/boost-1_48 PYTHON=${Python_home}/bin/python SWIG=/afs/cern.ch/sw/lcg/external/swig/${SWIG_VERSION}/${LCG_TARGET}-opt/bin/swig
   BUILD_IN_SOURCE 1
+#  DEPENDS HepMC Boost Python swig
+#for tests:
+  DEPENDS
+)
+
+#---evtgen------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  evtgen
+  URL http://www.hepforge.org/archive/agile/AGILe-${agile_native_version}.tar.bz2
+  CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix=<INSTALL_DIR> --datadir=<INSTALL_DIR>/../share --with-hepmc=${HepMC_home} --with-boost-incpath=${Boost_home}/include/boost-1_48 
+PYTH$
+  BUILD_IN_SOURCE 1   
 #  DEPENDS HepMC Boost Python swig
 #for tests:
   DEPENDS
