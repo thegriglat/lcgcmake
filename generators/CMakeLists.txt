@@ -29,7 +29,7 @@ LCGPackage_Add(
   CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix=<INSTALL_DIR> --with-hepmc=${HepMC_home} --with-LHAPDF=${lhapdf_home}/lib --with-gsl=${GSL_home} --without-javagui
   BUILD_IN_SOURCE 1
   DEPENDS HepMC GSL lhapdf
-#)
+)
 
 #---Herwig++------------------------------------------------------------------------------------------
 #todo: every version of herwig++ depends on the corresponding PARTICULAR VERSION of ThePEG
@@ -57,15 +57,18 @@ LCGPackage_Add(
 )
 
 #---pythia6-------------------------------------------------------------------------------------------
-#todo: solve the problem that distfile is not a tar file
-#LCGPackage_Add(
-#  pythia6
-#  URL http://www.hepforge.org/archive/pythia6/pythia-6.4.27.f.gz
+math(EXPR major "${pythia6_native_version} / 100")
+math(EXPR minor "${pythia6_native_version} % 100")
+message("URL=http://www.hepforge.org/archive/pythia6/pythia-6.${major}.${minor}.f.gz")
+LCGPackage_Add(
+   pythia6
+   DOWNLOAD_COMMAND ${CMAKE_COMMAND} -Durl=http://www.hepforge.org/archive/pythia6/pythia-6.${major}.${minor}.f.gz
+                                     -Dsource_dir=<SOURCE_DIR>
+                                     -P ${CMAKE_SOURCE_DIR}/cmake/scripts/DownloadURL.cmake
 #  UPDATE_COMMAND /afs/cern.ch/user/m/mkirsano/scratch0/GENSER/GENSER5/lcgcmake/generators/prepare_pythia6
-#  CONFIGURE_COMMAND ./configure --prefix=${INSTALL_DIR} --datadir=${INSTALL_DIR}/../share
-#  BUILD_IN_SOURCE 1
-#  DEPENDS
-#)
+   CONFIGURE_COMMAND ./configure --prefix=${INSTALL_DIR} --datadir=${INSTALL_DIR}/../share
+   BUILD_IN_SOURCE 1
+)
 
 #---agile------------------------------------------------------------------------------------------
 #todo: nonstandard include path for boost, needs BVM=echo ${BOOST_VERSION} | cut -d . -f 1-2 | tr . _
