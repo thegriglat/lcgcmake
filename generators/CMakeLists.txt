@@ -17,9 +17,7 @@ LCGPackage_Add(
   URL http://home.thep.lu.se/~torbjorn/pythia8/pythia8<NATIVE_VERSION>.tgz
   CONFIGURE_COMMAND ./configure --prefix <INSTALL_DIR> --lcgplatform=${LCG_TARGET}-opt --enable-shared --with-hepmc=${HepMC_home}
   BUILD_IN_SOURCE 1
-#  DEPENDS HepMC
-# for tests:
-  DEPENDS
+  DEPENDS HepMC
 )
 
 #---ThePEG------------------------------------------------------------------------------------------
@@ -33,8 +31,8 @@ LCGPackage_Add(
 
 #---Herwig++------------------------------------------------------------------------------------------
 #todo: every version of herwig++ depends on the corresponding PARTICULAR VERSION of ThePEG
-#Version 2.6.2 compiles on Mac:
-#if(NOT APPLE)    #  (installation fails on MacOSX)
+#Version 2.6.2 compiles on Mac, however the installation does not run :-(
+if(NOT APPLE)    #  (installation fails on MacOSX)
   LCGPackage_Add(
     herwig++
     URL http://www.hepforge.org/archive/herwig/Herwig++-${herwig++_native_version}.tar.bz2
@@ -42,7 +40,7 @@ LCGPackage_Add(
     BUILD_IN_SOURCE 1
     DEPENDS GSL Boost thepeg
   )
-#endif()
+endif()
 
 #---tauola++------------------------------------------------------------------------------------------
 LCGPackage_Add(
@@ -51,37 +49,37 @@ LCGPackage_Add(
   CONFIGURE_COMMAND echo "Configuring tauola++"
             COMMAND ./configure --prefix=<INSTALL_DIR> --with-hepmc=${HepMC_home} --with-lhapdf=${lhapdf_home}
   BUILD_IN_SOURCE 1
-#  DEPENDS HepMC lhapdf
-#for tests:
-  DEPENDS lhapdf
+  DEPENDS HepMC lhapdf
 )
 
 #---pythia6-------------------------------------------------------------------------------------------
 math(EXPR major "${pythia6_native_version} / 100")
 math(EXPR minor "${pythia6_native_version} % 100")
-message("URL=http://www.hepforge.org/archive/pythia6/pythia-6.${major}.${minor}.f.gz")
 LCGPackage_Add(
    pythia6
    DOWNLOAD_COMMAND ${CMAKE_COMMAND} -Durl=http://www.hepforge.org/archive/pythia6/pythia-6.${major}.${minor}.f.gz
                                      -Dsource_dir=<SOURCE_DIR>
                                      -P ${CMAKE_SOURCE_DIR}/cmake/scripts/DownloadURL.cmake
 #  UPDATE_COMMAND /afs/cern.ch/user/m/mkirsano/scratch0/GENSER/GENSER5/lcgcmake/generators/prepare_pythia6
-   CONFIGURE_COMMAND ./configure --prefix=${INSTALL_DIR} --datadir=${INSTALL_DIR}/../share
+#  CONFIGURE_COMMAND ./configure --prefix=${INSTALL_DIR} --datadir=${INSTALL_DIR}/../share
+   CONFIGURE_COMMAND echo nothing
+   BUILD_COMMAND echo nothing
+   INSTALL_COMMAND echo nothing
    BUILD_IN_SOURCE 1
 )
 
 #---agile------------------------------------------------------------------------------------------
-#todo: nonstandard include path for boost, needs BVM=echo ${BOOST_VERSION} | cut -d . -f 1-2 | tr . _
-#todo: swig dependency?
-set(SWIG_VERSION 1.3.40)
+string(REPLACE "." "_" Boost_underscore_twodigit ${Boost_config_version_twodigit})
 LCGPackage_Add(
   agile
   URL http://www.hepforge.org/archive/agile/AGILe-${agile_native_version}.tar.bz2
-  CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix=<INSTALL_DIR> --datadir=<INSTALL_DIR>/../share --with-hepmc=${HepMC_home} --with-boost-incpath=${Boost_home}/include/boost-1_48 PYTHON=${Python_home}/bin/python SWIG=/afs/cern.ch/sw/lcg/external/swig/${SWIG_VERSION}/${LCG_TARGET}-opt/bin/swig
+  CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix=<INSTALL_DIR> 
+     --with-hepmc=${HepMC_home} 
+     --with-boost-incpath=${Boost_home}/include
+     PYTHON=${Python_home}/bin/python 
+     SWIG=${swig_home}/bin/swig
   BUILD_IN_SOURCE 1
-#  DEPENDS HepMC Boost Python swig
-#for tests:
-  DEPENDS
+  DEPENDS HepMC Boost Python swig
 )
 
 #---photos++------------------------------------------------------------------------------------------
@@ -90,19 +88,17 @@ LCGPackage_Add(
   URL http://annapurna.ifj.edu.pl/~tprzedzinski/resources/PHOTOS.${photos++_native_version}/PHOTOS.${photos++_native_version}-LHC.tar.gz
   CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix=<INSTALL_DIR> --with-hepmc=${HepMC_home}
   BUILD_IN_SOURCE 1
-#  DEPENDS HepMC
-#for tests:
-  DEPENDS 
+  DEPENDS HepMC
 )
 
 #---evtgen------------------------------------------------------------------------------------------
 set(EVTGEN_TAG R01-01-00)
+if(NOT APPLE)    #  (build fails on Mac " unknown option: -soname")
 LCGPackage_Add(
   evtgen
   SVN_REPOSITORY http://svnweb.cern.ch/guest/evtgen/tags/${EVTGEN_TAG}
   CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix=<INSTALL_DIR> --hepmcdir=${HepMC_home} --pythiadir=${pythia8_home} --photosdir=${photos_home} --tauoladir=${tauola_home}
   BUILD_IN_SOURCE 1   
-#  DEPENDS HepMC pythia8 photos++ tauola++
-#for tests:
-  DEPENDS pythia8 photos++ tauola++
+  DEPENDS HepMC pythia8 photos++ tauola++
 )
+endif()

@@ -123,7 +123,7 @@ LCG_external_package(pyparsing         1.5.6                                    
 LCG_external_package(pyqt              4.9.3                                    )
 LCG_external_package(pytest            2.2.4                                    )
 if(NOT LCG_SYSTEM MATCHES "-mac106-")
-LCG_external_package(Python            2.6.5p2                                  )
+LCG_external_package(Python            2.6.5                                    )
 else()
 LCG_external_package(Python            2.6.5                                    )
 endif()
@@ -143,6 +143,7 @@ LCG_external_package(sqlite            3070900                                  
 LCG_external_package(stomppy           3.1.3                                    )
 LCG_external_package(storm             0.19                                     )
 LCG_external_package(sympy             0.7.1                                    )
+LCG_external_package(swig              1.3.40                                   )
 LCG_external_package(TBB               41_20121003               tbb            )
 LCG_external_package(tcmalloc          1.7p3                                    )
 if(NOT LCG_SYSTEM MATCHES "-slc6-") # uuid is not distributed with SLC6
@@ -171,7 +172,7 @@ LCG_external_package(tauola++          1.1.1a          MCGenerators/tauola++    
 LCG_external_package(pythia6           427             MCGenerators/pythia6     )
 LCG_external_package(agile             1.4.0           MCGenerators/agile       )
 LCG_external_package(photos++          3.52            MCGenerators/photos++    )
-LCG_external_package(evtgen            1.1.1           MCGenerators/evtgen      )
+LCG_external_package(evtgen            1.1.0           MCGenerators/evtgen      )
 
 
 # Prepare the search paths according to the versions above

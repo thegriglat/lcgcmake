@@ -21,6 +21,13 @@ LCGPackage_Add(
   BUILD_IN_SOURCE 1
 )
 
+#---Python--------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  Python
+  URL http://python.org/ftp/python/${Python_native_version}/Python-${Python_native_version}.tgz
+  CONFIGURE_COMMAND <SOURCE_DIR>/configure --enable-shared --prefix=<INSTALL_DIR> --enable-unicode=ucs4
+)
+
 #---GSL----------------------------------------------------------------------------------------------
 if(LCG_TARGET MATCHES "x86_64|slc")
   set(GSL_config_options -with-pic)
@@ -59,5 +66,12 @@ LCGPackage_Add(
   HepPDT
   URL http://lcgapp.cern.ch/project/simu/HepPDT/download/HepPDT-${HepPDT_native_version}.tar.gz
   CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix <INSTALL_DIR>  CXX=${CMAKE_CXX_COMPILER}
+)
+
+#---Swig--------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  swig
+  URL http://prdownloads.sourceforge.net/swig/swig-${swig_native_version}.tar.gz
+  CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix=<INSTALL_DIR>
 )
 
