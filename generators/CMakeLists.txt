@@ -60,11 +60,8 @@ LCGPackage_Add(
    DOWNLOAD_COMMAND ${CMAKE_COMMAND} -Durl=http://www.hepforge.org/archive/pythia6/pythia-6.${major}.${minor}.f.gz
                                      -Dsource_dir=<SOURCE_DIR>
                                      -P ${CMAKE_SOURCE_DIR}/cmake/scripts/DownloadURL.cmake
-#  UPDATE_COMMAND /afs/cern.ch/user/m/mkirsano/scratch0/GENSER/GENSER5/lcgcmake/generators/prepare_pythia6
-#  CONFIGURE_COMMAND ./configure --prefix=${INSTALL_DIR} --datadir=${INSTALL_DIR}/../share
-   CONFIGURE_COMMAND echo nothing
-   BUILD_COMMAND echo nothing
-   INSTALL_COMMAND echo nothing
+   UPDATE_COMMAND ../../../../../lcgcmake/generators/pythia6/prepare_pythia6 ${major}.${minor}
+   CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --datadir=<INSTALL_DIR>/../share
    BUILD_IN_SOURCE 1
 )
 
