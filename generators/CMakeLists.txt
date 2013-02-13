@@ -73,9 +73,19 @@ string(REPLACE "." "_" Boost_underscore_twodigit ${Boost_config_version_twodigit
 LCGPackage_Add(
   agile
   URL http://www.hepforge.org/archive/agile/AGILe-${agile_native_version}.tar.bz2
+#  Comments about configuring:
+#  1. boost configuring if taken from CERN AFS external is different
+#  2. datadir was needed historically, now probably not
+#  3. python dependency like this requires adding ${Python_home}/lib to LD_LIBRARY_PATH
+#  CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix=<INSTALL_DIR>
+#     --datadir=<INSTALL_DIR>/../share
+#     --with-hepmc=${HepMC_home}
+#     --with-boost-incpath=${Boost_home}/include/boost-1_48
+#     PYTHON=${Python_home}/bin/python
+#     SWIG=${swig_home}/bin/swig
   CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix=<INSTALL_DIR> 
      --with-hepmc=${HepMC_home} 
-     --with-boost-incpath=${Boost_home}/include
+     --with-boost=${Boost_home}
      PYTHON=${Python_home}/bin/python 
      SWIG=${swig_home}/bin/swig
   BUILD_IN_SOURCE 1
