@@ -61,7 +61,7 @@ LCGPackage_Add(
                                      -Dsource_dir=<SOURCE_DIR>
                                      -P ${CMAKE_SOURCE_DIR}/cmake/scripts/DownloadURL.cmake
    UPDATE_COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/pythia6/files  <SOURCE_DIR>
-   CONFIGURE_COMMAND ${CMAKE_COMMAND} -P ${CMAKE_SOURCE_DIR}/generators/pythia6/files/preparePythia6.cmake
+          COMMAND ${CMAKE_COMMAND} -E chdir <SOURCE_DIR> ${CMAKE_COMMAND} -P preparePythia6.cmake
    CMAKE_ARGS -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
 
 #   configure_file(${SOURCE_DIR}/fhhiggscorr.f ${SOURCE_DIR}dummy/ COPYONLY)
