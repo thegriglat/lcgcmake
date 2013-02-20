@@ -1,32 +1,38 @@
-#---Boost--------------------------------------------------------------------------------------------
-# TODO add the dependency to Python
-
-set(Boost_jam_options -j12 variant=release --layout=versioned)
-set(Boost_compile_options -j4)
-if(APPLE)
-  set(Boost_toolset darwin)
-else()
-  set(Boost_toolset gcc)
-endif()
-string(REPLACE "." "_" Boost_file_version ${Boost_config_version})
-file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/user-config.jam "")
-
-LCGPackage_Add(
-  Boost
-  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/boost_${Boost_file_version}.tar.gz
-  CONFIGURE_COMMAND <SOURCE_DIR>/bootstrap.sh
-  BUILD_COMMAND <SOURCE_DIR>/b2 -j 4 ${Boost_jam_opts} ${Boost_compile_options}
-                --toolset=${Boost_toolset} --user-config=${CMAKE_CURRENT_BINARY_DIR}/user-config.jam
-  INSTALL_COMMAND <SOURCE_DIR>/b2 -j 4 --prefix=<INSTALL_DIR> install
-  BUILD_IN_SOURCE 1
-)
-
 #---Python--------------------------------------------------------------------------------------------
 LCGPackage_Add(
   Python
   URL http://python.org/ftp/python/${Python_native_version}/Python-${Python_native_version}.tgz
   CONFIGURE_COMMAND <SOURCE_DIR>/configure --enable-shared --prefix=<INSTALL_DIR> --enable-unicode=ucs4
 )
+
+#---Boost--------------------------------------------------------------------------------------------
+set(Boost_jam_options -j12 variant=release --layout=versioned)
+set(Boost_compile_options)
+if(APPLE)
+  set(Boost_toolset darwin)
+else()
+  set(Boost_toolset gcc)
+endif()
+
+string(REPLACE "." "_" Boost_file_version ${Boost_config_version})
+
+file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/user-config.jam "using python : ${Python_config_version_twodigit} : ${Python_home} ;\n")
+if(LCG_TARGET MATCHES i686)
+  file(APPEND ${CMAKE_CURRENT_BINARY_DIR}/user-config.jam "using gcc : : :  <linkflags>-m32 <compileflags>-m32 ;")
+endif()
+
+LCGPackage_Add(
+  Boost
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/boost_${Boost_file_version}.tar.gz
+  CONFIGURE_COMMAND <SOURCE_DIR>/bootstrap.sh
+  BUILD_COMMAND <SOURCE_DIR>/b2 ${Boost_jam_options} ${Boost_compile_options}
+                --toolset=${Boost_toolset} --user-config=${CMAKE_CURRENT_BINARY_DIR}/user-config.jam
+  INSTALL_COMMAND <SOURCE_DIR>/b2 ${Boost_jam_options} ${Boost_compile_options} --toolset=${Boost_toolset}
+                --prefix=<INSTALL_DIR> install --user-config=${CMAKE_CURRENT_BINARY_DIR}/user-config.jam
+  BUILD_IN_SOURCE 1
+  DEPENDS Python
+)
+
 
 #---GSL----------------------------------------------------------------------------------------------
 if(LCG_TARGET MATCHES "x86_64|slc")

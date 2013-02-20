@@ -36,7 +36,8 @@ if(NOT APPLE)    #  (installation fails on MacOSX)
   LCGPackage_Add(
     herwig++
     URL http://www.hepforge.org/archive/herwig/Herwig++-${herwig++_native_version}.tar.bz2
-    CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix=<INSTALL_DIR> --with-gsl=${GSL_home} --with-thepeg=${thepeg_home} --with-boost=${Boost_home}
+    CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix=<INSTALL_DIR> --with-gsl=${GSL_home} --with-thepeg=${thepeg_home} 
+                      --with-boost-incpath=${Boost_home}/include/boost-${Boost_underscore_twodigit}
     BUILD_IN_SOURCE 1
     DEPENDS GSL Boost thepeg
   )
@@ -69,7 +70,7 @@ LCGPackage_Add(
 #   CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --datadir=<INSTALL_DIR>/../share
 )
 
-#---agile------------------------------------------------------------------------------------------
+#---agile------------------------------------------------------------------------------------------  
 string(REPLACE "." "_" Boost_underscore_twodigit ${Boost_config_version_twodigit})
 LCGPackage_Add(
   agile
@@ -86,9 +87,11 @@ LCGPackage_Add(
 #     SWIG=${swig_home}/bin/swig
   CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix=<INSTALL_DIR> 
      --with-hepmc=${HepMC_home} 
-     --with-boost=${Boost_home}
-     PYTHON=${Python_home}/bin/python 
+     --with-boost-incpath=${Boost_home}/include/boost-${Boost_underscore_twodigit}
+     PYTHON=${Python_home}/bin/python LD_LIBRARY_PATH=${Python_home}/lib
      SWIG=${swig_home}/bin/swig
+  BUILD_COMMAND make all  LD_LIBRARY_PATH=${Python_home}/lib
+  INSTALL_COMMAND make install LD_LIBRARY_PATH=${Python_home}/lib
   BUILD_IN_SOURCE 1
   DEPENDS HepMC Boost Python swig
 )
