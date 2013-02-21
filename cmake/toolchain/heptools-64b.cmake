@@ -169,7 +169,7 @@ LCG_external_package(pythia8           170             MCGenerators/pythia8     
 LCG_external_package(thepeg            1.8.2           MCGenerators/thepeg      )
 LCG_external_package(herwig++          2.6.2           MCGenerators/herwig++    )
 LCG_external_package(tauola++          1.1.1a          MCGenerators/tauola++    )
-LCG_external_package(pythia6           427             MCGenerators/pythia6     )
+LCG_external_package(pythia6           "426;427;426.2;427.2" MCGenerators/pythia6     )
 LCG_external_package(agile             1.4.0           MCGenerators/agile       )
 LCG_external_package(photos++          3.52            MCGenerators/photos++    )
 LCG_external_package(evtgen            1.1.0           MCGenerators/evtgen      )

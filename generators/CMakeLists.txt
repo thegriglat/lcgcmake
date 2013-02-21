@@ -54,20 +54,24 @@ LCGPackage_Add(
 )
 
 #---pythia6-------------------------------------------------------------------------------------------
-math(EXPR major "${pythia6_native_version} / 100")
-math(EXPR minor "${pythia6_native_version} % 100")
+#  Note: The definition of these variables can be programmed
+set(pythia6_url_426    http://www.hepforge.org/archive/pythia6/pythia-6.4.26.f.gz)
+set(pythia6_url_426.2  http://www.hepforge.org/archive/pythia6/pythia-6.4.26.f.gz)
+set(pythia6_url_427    http://www.hepforge.org/archive/pythia6/pythia-6.4.27.f.gz)
+set(pythia6_url_427.2  http://www.hepforge.org/archive/pythia6/pythia-6.4.27.f.gz)
+set(pythia6_size_426   4000)  
+set(pythia6_size_426.2 10000)  
+set(pythia6_size_427   4000)  
+set(pythia6_size_427.2 10000)  
+
 LCGPackage_Add(
    pythia6
-   DOWNLOAD_COMMAND ${CMAKE_COMMAND} -Durl=http://www.hepforge.org/archive/pythia6/pythia-6.${major}.${minor}.f.gz
+   DOWNLOAD_COMMAND ${CMAKE_COMMAND} -Durl=<pythia6_url_<NATIVE_VERSION>>
                                      -Dsource_dir=<SOURCE_DIR>
                                      -P ${CMAKE_SOURCE_DIR}/cmake/scripts/DownloadURL.cmake
    UPDATE_COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/pythia6/files  <SOURCE_DIR>
           COMMAND ${CMAKE_COMMAND} -E chdir <SOURCE_DIR> ${CMAKE_COMMAND} -P preparePythia6.cmake
-   CMAKE_ARGS -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
-
-#   configure_file(${SOURCE_DIR}/fhhiggscorr.f ${SOURCE_DIR}dummy/ COPYONLY)
-#   UPDATE_COMMAND ../../../../../lcgcmake/generators/pythia6/prepare_pythia6 ${major}.${minor}
-#   CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --datadir=<INSTALL_DIR>/../share
+   CMAKE_ARGS -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR> -DHEPEVT_SIZE=<pythia6_size_<NATIVE_VERSION>>
 )
 
 #---agile------------------------------------------------------------------------------------------  

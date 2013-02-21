@@ -13,6 +13,14 @@ if(CMAKE_SYSTEM_NAME MATCHES Darwin)
   set(CMAKE_SHARED_LIBRARY_CREATE_Fortran_FLAGS "${CMAKE_SHARED_LIBRARY_CREATE_Fortran_FLAGS} -flat_namespace -single_module -undefined dynamic_lookup")
 endif()
 
+#---Set HEPEVT_SIZE----------------------------------------------------------
+if(NOT HEPEVT_SIZE)
+  set(HEPEVT_SIZE 4000)
+endif()
+configure_file(${PROJECT_SOURCE_DIR}/include/hepevt.inc.in ${PROJECT_SOURCE_DIR}/include/hepevt.inc @ONLY)
+
+include_directories(include)
+
 #---Select sources for the various libraries---------------------------------
 file(GLOB pythia_sources ${PROJECT_SOURCE_DIR}/src/*.f)
 file(GLOB pythia_dummy_sources ${PROJECT_SOURCE_DIR}/dummy/*.f)

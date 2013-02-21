@@ -43,6 +43,15 @@ macro(LCGPackage_Add name)
 
       #---Replace patterns for multiversion cases-----------------------------------------------------
       string(REPLACE <NATIVE_VERSION> ${version} ARGUMENTS "${ARG_UNPARSED_ARGUMENTS}")
+      string(REGEX MATCHALL "<[^ <>(){}]+>" vars ${ARGUMENTS})
+      foreach(var ${vars})
+        string(REPLACE "<" "" v ${var})
+        string(REPLACE ">" "" v ${v})
+        if(DEFINED ${v})
+           string(REPLACE ${var} ${${v}} ARGUMENTS "${ARGUMENTS}")
+        endif()
+      endforeach()
+
       
       #---Add the external project -------------------------------------------------------------------
 

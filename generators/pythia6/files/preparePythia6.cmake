@@ -17,7 +17,17 @@ list(REMOVE_ITEM src_files ${pythiafile})
 file(COPY ${src_files} DESTINATION src)
 file(REMOVE ${src_files})
 
-file(RENAME  dummy/upveto.f dummy/upveto.F)
-file(RENAME  src/pyhepc.f src/pyhepc.F)
-file(RENAME  src/pylist.f src/pylist.F)
-file(RENAME  src/pyveto.f src/pyveto.F)
+#---helper function-----------------------------------------------------------
+function(replace_hepevt_by_include infile outfile)
+  file(READ ${infile} file_text)
+  string(REGEX REPLACE "PARAMETER[ ]*[(][ ]*NMXHEP[ ]*=.* SAVE[ ]*/HEPEVT/"   "INCLUDE 'hepevt.inc'" file_text ${file_text})
+  file(WRITE ${outfile} ${file_text})
+endfunction()
+
+#---Call the function for a set of files--------------------------------------
+foreach(file dummy/upveto.f src/pyhepc.f src/pylist.f src/pyveto.f)
+  file(RENAME ${file} ${file}.ori)
+  replace_hepevt_by_include(${file}.ori ${file})
+endforeach()
+
+
