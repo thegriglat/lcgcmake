@@ -111,6 +111,7 @@ if(NOT APPLE)    #  (build fails on Mac " unknown option: -soname")
 LCGPackage_Add(
   evtgen
   SVN_REPOSITORY http://svnweb.cern.ch/guest/evtgen/tags/${EVTGEN_TAG}
+  UPDATE_COMMAND echo update not needed
   CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix=<INSTALL_DIR> --hepmcdir=${HepMC_home} --pythiadir=${pythia8_home} --photosdir=${photos_home} --tauoladir=${tauola_home}
   BUILD_IN_SOURCE 1   
   DEPENDS HepMC pythia8 photos++ tauola++

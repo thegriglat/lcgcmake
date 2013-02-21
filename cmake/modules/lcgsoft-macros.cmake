@@ -18,6 +18,7 @@ macro(LCGPackage_Add name)
   if(nvers GREATER 1)
     add_custom_target(${name} ALL COMMENT "Multi-version package ${name} global target")
     add_custom_target(clean-${name} COMMENT "Clean a multi-version package ${name}")
+    add_custom_target(install-${name} COMMENT "Install a multi-version package ${name}")
   endif()
   
   #---Loop over all versions of the package----------------------------------------------------------
@@ -75,20 +76,26 @@ macro(LCGPackage_Add name)
 
       #---Installation from local installation area to CMAKE_INSTALL_PREFIX---------------------------
       install(DIRECTORY ${${name}_home}/ 
-              DESTINATION ${${name}_directory_name}/${version}/${LCG_system})
+              DESTINATION ${${name}_directory_name}/${version}/${LCG_system}
+              USE_SOURCE_PERMISSIONS COMPONENT ${targetname})
       install(DIRECTORY ${LOCAL_INSTALL_PREFIX}/${${name}_directory_name}/${version}/share/
-              DESTINATION ${${name}_directory_name}/${version}/share)
+              DESTINATION ${${name}_directory_name}/${version}/share
+              USE_SOURCE_PERMISSIONS COMPONENT ${targetname})
       foreach(ph configure-out configure-err build-out build-err install-out install-err)
         install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${targetname}/src/${targetname}-stamp/${targetname}-${ph}.log
               DESTINATION ${${name}_directory_name}/${version}/logs
-              RENAME ${name}-${LCG_system}-${ph}.log)
+              RENAME ${name}-${LCG_system}-${ph}.log
+              COMPONENT ${targetname})
       endforeach()
+      #---Adding install targets----------------------------------------------------------------------
 
+      add_custom_target(install-${targetname} COMMAND ${CMAKE_COMMAND} -DCOMPONENT=${targetname} -P ${CMAKE_BINARY_DIR}/cmake_install.cmake)
     endif()
     
     if(nvers GREATER 1)
       add_dependencies(${name} ${targetname})
       add_dependencies(clean-${name} clean-${targetname})
+      add_dependencies(install-${name} install-${targetname})
     endif()
 
   endforeach()
