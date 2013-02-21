@@ -3,8 +3,7 @@
 #---lhapdf------------------------------------------------------------------------------------------
 #todo: add installation of PDF sets
 #todo: add installation of examples
-set(HOMEPAGE_lhapdf http://projects.hepforge.org/lhapdf/)
-LCGPackage_Add(  
+LCGPackage_Add(
   lhapdf
   URL http://www.hepforge.org/archive/lhapdf/lhapdf-${lhapdf_native_version}.tar.gz
   CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix=<INSTALL_DIR> --datadir=<INSTALL_DIR>/../share --enable-low-memory  --disable-pyext --disable-doxygen --disable-octave
@@ -65,13 +64,13 @@ set(pythia6_size_427   4000)
 set(pythia6_size_427.2 10000)  
 
 LCGPackage_Add(
-   pythia6
-   DOWNLOAD_COMMAND ${CMAKE_COMMAND} -Durl=<pythia6_url_<NATIVE_VERSION>>
-                                     -Dsource_dir=<SOURCE_DIR>
-                                     -P ${CMAKE_SOURCE_DIR}/cmake/scripts/DownloadURL.cmake
-   UPDATE_COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/pythia6/files  <SOURCE_DIR>
-          COMMAND ${CMAKE_COMMAND} -E chdir <SOURCE_DIR> ${CMAKE_COMMAND} -P preparePythia6.cmake
-   CMAKE_ARGS -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR> -DHEPEVT_SIZE=<pythia6_size_<NATIVE_VERSION>>
+  pythia6
+  DOWNLOAD_COMMAND ${CMAKE_COMMAND} -Durl=<pythia6_url_<NATIVE_VERSION>>
+                                    -Dsource_dir=<SOURCE_DIR>
+                                    -P ${CMAKE_SOURCE_DIR}/cmake/scripts/DownloadURL.cmake
+  UPDATE_COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/pythia6/files  <SOURCE_DIR>
+         COMMAND ${CMAKE_COMMAND} -E chdir <SOURCE_DIR> ${CMAKE_COMMAND} -P preparePythia6.cmake
+  CMAKE_ARGS -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR> -DHEPEVT_SIZE=<pythia6_size_<NATIVE_VERSION>>
 )
 
 #---agile------------------------------------------------------------------------------------------  
