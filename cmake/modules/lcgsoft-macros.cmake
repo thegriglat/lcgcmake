@@ -30,8 +30,14 @@ macro(LCGPackage_Add name)
       set(targetname ${name})
     endif()
 
-    #---Check if the package is already existing in the installation area
-    if(EXISTS ${CMAKE_INSTALL_PREFIX}/${${name}_directory_name}/${version}/${LCG_system})
+    #---Check if the package is already existing in the installation area(s)
+    if(EXISTS ${LCG_INSTALL_PREFIX}/${${name}_directory_name}/${version}/${LCG_system})
+
+      set(${name}_home ${LCG_INSTALL_PREFIX}/${${name}_directory_name}/${version}/${LCG_system})
+      add_custom_target(${targetname} ALL COMMENT "${targetname} package already existing in LCG install area ${${name}_home}")
+      add_custom_target(clean-${targetname} COMMENT "${targetname}: nothing to be clean!")
+
+    elseif(EXISTS ${CMAKE_INSTALL_PREFIX}/${${name}_directory_name}/${version}/${LCG_system})
 
       set(${name}_home ${CMAKE_INSTALL_PREFIX}/${${name}_directory_name}/${version}/${LCG_system})
       add_custom_target(${targetname} ALL COMMENT "${targetname} package already existing in ${${name}_home}")

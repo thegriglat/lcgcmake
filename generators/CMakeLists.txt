@@ -111,10 +111,10 @@ LCGPackage_Add(
      --with-hepmc=${HepMC_home} 
      --with-boost-incpath=${Boost_home}/include/boost-${Boost_underscore_twodigit}
      --with-lcgtag=${LCG_platform}
-     PYTHON=${Python_home}/bin/python LD_LIBRARY_PATH=${Python_home}/lib
+     PYTHON=${Python_home}/bin/python LD_LIBRARY_PATH=${Python_home}/lib:$ENV{LD_LIBRARY_PATH}
      SWIG=${swig_home}/bin/swig
-  BUILD_COMMAND make all  LD_LIBRARY_PATH=${Python_home}/lib
-  INSTALL_COMMAND make install LD_LIBRARY_PATH=${Python_home}/lib
+  BUILD_COMMAND make all  LD_LIBRARY_PATH=${Python_home}/lib:$ENV{LD_LIBRARY_PATH}
+  INSTALL_COMMAND make install LD_LIBRARY_PATH=${Python_home}/lib:$ENV{LD_LIBRARY_PATH}
   BUILD_IN_SOURCE 1
   DEPENDS HepMC Boost Python swig
 )
@@ -153,10 +153,10 @@ LCGPackage_Add(
      --with-lcgtag=${LCG_platform}
      --disable-pdfmanual
      --enable-unvalidated
-     PYTHON=${Python_home}/bin/python LD_LIBRARY_PATH=${Python_home}/lib
+     PYTHON=${Python_home}/bin/python LD_LIBRARY_PATH=${Python_home}/lib:$ENV{LD_LIBRARY_PATH}
      SWIG=${swig_home}/bin/swig
-  BUILD_COMMAND make all  LD_LIBRARY_PATH=${Python_home}/lib
-  INSTALL_COMMAND make install LD_LIBRARY_PATH=${Python_home}/lib
+  BUILD_COMMAND make all  LD_LIBRARY_PATH=${Python_home}/lib:$ENV{LD_LIBRARY_PATH}
+  INSTALL_COMMAND make install LD_LIBRARY_PATH=${Python_home}/lib:$ENV{LD_LIBRARY_PATH}
   BUILD_IN_SOURCE 1
   DEPENDS HepMC Boost fastjet GSL Python swig
 )
