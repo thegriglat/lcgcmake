@@ -120,3 +120,24 @@ LCGPackage_Add(
   DEPENDS HepMC pythia8 photos++ tauola++
 )
 endif()
+
+#---Rivet------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  rivet
+  URL http://www.hepforge.org/archive/rivet/Rivet-${rivet_native_version}.tar.bz2
+  CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix=<INSTALL_DIR> 
+     --with-hepmc=${HepMC_home} 
+     --with-boost-incpath=${Boost_home}/include/boost-${Boost_underscore_twodigit}
+     --with-fastjet=${fastjet_home}
+     --with-gsl=${GSL_home}
+     --with-lcgtag=${LCG_platform}
+     --disable-pdfmanual
+     --enable-unvalidated
+     PYTHON=${Python_home}/bin/python LD_LIBRARY_PATH=${Python_home}/lib
+     SWIG=${swig_home}/bin/swig
+  BUILD_COMMAND make all  LD_LIBRARY_PATH=${Python_home}/lib
+  INSTALL_COMMAND make install LD_LIBRARY_PATH=${Python_home}/lib
+  BUILD_IN_SOURCE 1
+  DEPENDS HepMC Boost fastjet GSL Python swig
+)
+
