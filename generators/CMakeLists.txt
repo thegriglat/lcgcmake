@@ -1,5 +1,14 @@
 #todo for all: install README, lcg_configure, doc/URL
-#
+
+# cook Boost include subpath string (used by several packages)
+string(REPLACE "." "_" Boost_underscore_twodigit ${Boost_config_version_twodigit})
+
+#todo: the path
+#  ${Boost_home}/include/boost-${Boost_underscore_twodigit}
+# is non-standard and used by several generators,
+# provide the path as predefined variable from steering machinery,
+# for example ${Boost_home_include} ?
+
 #---lhapdf------------------------------------------------------------------------------------------
 #todo: add installation of PDF sets
 #todo: add installation of examples
@@ -14,7 +23,7 @@ LCGPackage_Add(
 LCGPackage_Add(
   pythia8
   URL http://home.thep.lu.se/~torbjorn/pythia8/pythia8<NATIVE_VERSION>.tgz
-  CONFIGURE_COMMAND ./configure --prefix <INSTALL_DIR> --lcgplatform=${LCG_TARGET}-opt --enable-shared --with-hepmc=${HepMC_home}
+  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --with-hepmc=${HepMC_home} --enable-shared
   BUILD_IN_SOURCE 1
   DEPENDS HepMC
 )
@@ -74,7 +83,6 @@ LCGPackage_Add(
 )
 
 #---agile------------------------------------------------------------------------------------------  
-string(REPLACE "." "_" Boost_underscore_twodigit ${Boost_config_version_twodigit})
 LCGPackage_Add(
   agile
   URL http://www.hepforge.org/archive/agile/AGILe-${agile_native_version}.tar.bz2
@@ -91,6 +99,7 @@ LCGPackage_Add(
   CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix=<INSTALL_DIR> 
      --with-hepmc=${HepMC_home} 
      --with-boost-incpath=${Boost_home}/include/boost-${Boost_underscore_twodigit}
+     --with-lcgtag=${LCG_platform}
      PYTHON=${Python_home}/bin/python LD_LIBRARY_PATH=${Python_home}/lib
      SWIG=${swig_home}/bin/swig
   BUILD_COMMAND make all  LD_LIBRARY_PATH=${Python_home}/lib
