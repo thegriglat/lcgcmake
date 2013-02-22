@@ -30,4 +30,10 @@ foreach(file dummy/upveto.f src/pyhepc.f src/pylist.f src/pyveto.f)
   replace_hepevt_by_include(${file}.ori ${file})
 endforeach()
 
+if(${MYVERSION} MATCHES .*[.]2)
+  set(HEPEVT_SIZE 10000)
+else()
+  set(HEPEVT_SIZE 4000)
+endif()
 
+configure_file(include/hepevt.inc.in include/hepevt.inc @ONLY)

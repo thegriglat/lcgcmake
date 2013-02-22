@@ -4,7 +4,7 @@ project(pythia6 Fortran)
 #----------------------------------------------------------------------------
 
 #----------------------------------------------------------------------------
-#---This CMakeList. txt file asumes that the Pythia6 file has been splitted
+#---This CMakeList.txt file asumes that the Pythia6 file has been splitted
 #   add prepared moving the files around
 #----------------------------------------------------------------------------
 
@@ -12,12 +12,6 @@ project(pythia6 Fortran)
 if(CMAKE_SYSTEM_NAME MATCHES Darwin)
   set(CMAKE_SHARED_LIBRARY_CREATE_Fortran_FLAGS "${CMAKE_SHARED_LIBRARY_CREATE_Fortran_FLAGS} -flat_namespace -single_module -undefined dynamic_lookup")
 endif()
-
-#---Set HEPEVT_SIZE----------------------------------------------------------
-if(NOT HEPEVT_SIZE)
-  set(HEPEVT_SIZE 4000)
-endif()
-configure_file(${PROJECT_SOURCE_DIR}/include/hepevt.inc.in ${PROJECT_SOURCE_DIR}/include/hepevt.inc @ONLY)
 
 include_directories(include)
 
