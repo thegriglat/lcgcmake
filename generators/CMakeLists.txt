@@ -10,12 +10,20 @@ string(REPLACE "." "_" Boost_underscore_twodigit ${Boost_config_version_twodigit
 # for example ${Boost_home_include} ?
 
 #---lhapdf------------------------------------------------------------------------------------------
-#todo: add installation of PDF sets
 #todo: add installation of examples
+
+if(EXISTS /afs/cern.ch)
+ set(lhapdf_sets /afs/cern.ch/sw/lcg/external/MCGenerators/lhapdf/${lhapdf_native_version}/share/PDFsets)
+else()
+ set(lhapdf_sets /Users/mato/Development/externals/PDFsets)   # For testing purposes
+endif()
+
 LCGPackage_Add(
   lhapdf
   URL http://www.hepforge.org/archive/lhapdf/lhapdf-${lhapdf_native_version}.tar.gz
   CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix=<INSTALL_DIR> --datadir=<INSTALL_DIR>/../share --enable-low-memory  --disable-pyext --disable-doxygen --disable-octave
+  INSTALL_COMMAND make install
+          COMMAND ${CMAKE_COMMAND} -E create_symlink ${lhapdf_sets} <INSTALL_DIR>/../share/lhapdf/PDFsets
   BUILD_IN_SOURCE 1
 )
 
@@ -25,7 +33,14 @@ LCGPackage_Add(
   URL http://home.thep.lu.se/~torbjorn/pythia8/pythia8<NATIVE_VERSION>.tgz
   CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --with-hepmc=${HepMC_home} --enable-shared
   BUILD_IN_SOURCE 1
-  DEPENDS HepMC
+  CONFIGURE_EXAMPLES_COMMAND <SOURCE_DIR>/examples/configure
+                             --with-pythia8=<INSTALL_DIR>
+                             --with-lhapdf=${lhapdf_home}
+  BUILD_EXAMPLES_COMMAND  make -C <SOURCE_DIR>/examples main01 main03
+  INSTALL_EXAMPLES_COMMAND ${CMAKE_COMMAND} -E make_directory <INSTALL_DIR>/bin
+                   COMMAND ${CMAKE_COMMAND} -E chdir <SOURCE_DIR>/examples cp bin/main01.exe bin/main03.exe main03.cmnd <INSTALL_DIR>/bin
+  TEST_COMMAND ${CMAKE_COMMAND} -E chdir  <INSTALL_DIR>/bin ./main01.exe
+  DEPENDS HepMC lhapdf
 )
 
 #---ThePEG------------------------------------------------------------------------------------------

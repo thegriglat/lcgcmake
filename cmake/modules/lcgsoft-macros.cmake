@@ -11,7 +11,7 @@ set(LOCAL_INSTALL_PREFIX ${CMAKE_BINARY_DIR}/LocalInstallArea)
 #----------------------------------------------------------------------------------------------------
 macro(LCGPackage_Add name)
 
-  CMAKE_PARSE_ARGUMENTS(ARG "" "" "DEPENDS" ${ARGN})   # This special handling is needed until CMake 2.8.11 is released
+  CMAKE_PARSE_ARGUMENTS(ARG "" "" "DEPENDS;CONFIGURE_EXAMPLES_COMMAND;BUILD_EXAMPLES_COMMAND;INSTALL_EXAMPLES_COMMAND;TEST_COMMAND" ${ARGN})   # This special handling is needed until CMake 2.8.11 is released
   
   #---Check if this is a muli-version package or not-------------------------------------------------
   list(LENGTH ${name}_native_version nvers)
@@ -51,15 +51,13 @@ macro(LCGPackage_Add name)
            string(REPLACE ${var} ${${v}} ARGUMENTS "${ARGUMENTS}")
         endif()
       endforeach()
-
-      
       #---Add the external project -------------------------------------------------------------------
-
       ExternalProject_Add(
         ${targetname}
         PREFIX ${targetname}
         INSTALL_DIR ${${name}_home}
-        ${ARGUMENTS}
+        ${ARGUMENTS} 
+        TEST_COMMAND ${ARG_TEST_COMMAND}
         LOG_CONFIGURE 1 LOG_BUILD 1 LOG_INSTALL 1 )
 
       #---Adding extra step to copy the sources in /share/sources-------------------------------------
@@ -67,7 +65,33 @@ macro(LCGPackage_Add name)
         COMMAND  ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR> ${LOCAL_INSTALL_PREFIX}/${${name}_directory_name}/${version}/share/sources
         DEPENDERS build
         DEPENDEES update)
-        
+
+      #---Add extra steps eventually------------------------------------------------------------------
+      set(current_dependee install)
+      if(ARG_TEST_COMMAND)
+        set(testdepender DEPENDERS test)
+      endif()
+      if(ARG_CONFIGURE_EXAMPLES_COMMAND)
+        ExternalProject_Add_Step(${targetname} configure_examples COMMENT "Configure examples for ${targetname}"
+          COMMAND  ${ARG_CONFIGURE_EXAMPLES_COMMAND}
+          ${testdepender}
+          DEPENDEES ${current_dependee})
+        set(current_dependee configure_examples)
+      endif()
+      if(ARG_BUILD_EXAMPLES_COMMAND)
+        ExternalProject_Add_Step(${targetname} build_examples COMMENT "Build examples for ${targetname}"
+          COMMAND  ${ARG_BUILD_EXAMPLES_COMMAND}
+          ${testdepender}
+          DEPENDEES ${current_dependee})
+        set(current_dependee build_examples)
+      endif()
+      if(ARG_INSTALL_EXAMPLES_COMMAND)
+        ExternalProject_Add_Step(${targetname} install_examples COMMENT "Install examples for ${targetname}"
+          COMMAND  ${ARG_INSTALL_EXAMPLES_COMMAND}
+          ${testdepender}
+          DEPENDEES ${current_dependee})
+        set(current_dependee install_examples)
+      endif()
 
       #---Adding clean targets--------------------------------------------------------------------------
       add_custom_target(clean-${targetname} COMMAND ${CMAKE_COMMAND} -E remove_directory ${CMAKE_CURRENT_BINARY_DIR}/${targetname}
