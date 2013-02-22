@@ -88,3 +88,27 @@ LCGPackage_Add(
   CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix=<INSTALL_DIR> --enable-shared --enable-allplugins
 )
 
+#---AIDA--------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  AIDA
+  URL URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/aida-${AIDA_native_version}-src.tar.gz
+  CONFIGURE_COMMAND echo No configure step for AIDA
+  BUILD_COMMAND echo No build step for AIDA
+  INSTALL_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR> <INSTALL_DIR>
+)
+
+#---QMtest--------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  QMtest
+  URL URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/qmtest-${QMtest_config_version}.tar.gz
+  UPDATE_COMMAND ${CMAKE_COMMAND} -E chdir <SOURCE_DIR>/qm/test/classes echo need to change some files
+  CONFIGURE_COMMAND echo No configure step for AIDA
+  BUILD_COMMAND ${Python_home}/bin/python setup.py build
+  INSTALL_COMMAND ${Python_home}/bin/python setup.py install --prefix=<INSTALL_DIR>
+  BUILD_IN_SOURCE 1
+  DEPENDS Python
+)
+
+
+
+
