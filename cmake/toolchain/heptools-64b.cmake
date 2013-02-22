@@ -174,6 +174,7 @@ LCG_external_package(agile             1.4.0           MCGenerators/agile       
 LCG_external_package(photos++          3.52            MCGenerators/photos++    )
 LCG_external_package(evtgen            1.1.0           MCGenerators/evtgen      )
 LCG_external_package(rivet             1.8.2           MCGenerators/rivet       )
+LCG_external_package(sherpa            1.4.3           MCGenerators/sherpa      )
 
 
 # Prepare the search paths according to the versions above

@@ -150,3 +150,17 @@ LCGPackage_Add(
   DEPENDS HepMC Boost fastjet GSL Python swig
 )
 
+#---Sherpa------------------------------------------------------------------------------------------
+#todo: HEPEVT size subversion 4000 / 10000
+LCGPackage_Add(
+  sherpa
+  URL http://www.hepforge.org/archive/sherpa/SHERPA-MC-${sherpa_native_version}.tar.gz
+  CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix=<INSTALL_DIR>
+     --enable-shared --enable-static --enable-binreloc --enable-analysis
+     --enable-pythia --enable-hepevtsize=4000
+     --enable-lhapdf=${lhapdf_home}
+     --enable-hepmc2=${HepMC_home}
+     --enable-rivet=${rivet_home}
+  BUILD_IN_SOURCE 1
+  DEPENDS lhapdf HepMC rivet Boost GSL
+)
