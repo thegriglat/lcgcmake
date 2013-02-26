@@ -177,6 +177,7 @@ LCG_external_package(rivet             1.8.2          MCGenerators/rivet        
 LCG_external_package(sherpa            1.4.3          MCGenerators/sherpa       )
 LCG_external_package(hepmcanalysis     3.4.13         MCGenerators/hepmcanalysis)
 LCG_external_package(mctester          1.25.0         MCGenerators/mctester     )
+LCG_external_package(hijing            1.383bs.2      MCGenerators/hijing       )
 
 
 # Prepare the search paths according to the versions above
