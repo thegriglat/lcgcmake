@@ -1,8 +1,11 @@
 #---Python--------------------------------------------------------------------------------------------
+if(LCG_TARGET MATCHES "slc")
+  set(Python_config_options "LDFLAGS=-Wl,-rpath,'$$ORIGIN/../lib'")
+endif()
 LCGPackage_Add(
   Python
   URL http://python.org/ftp/python/${Python_native_version}/Python-${Python_native_version}.tgz
-  CONFIGURE_COMMAND <SOURCE_DIR>/configure --enable-shared --prefix=<INSTALL_DIR> --enable-unicode=ucs4
+  CONFIGURE_COMMAND <SOURCE_DIR>/configure --enable-shared --prefix=<INSTALL_DIR> --enable-unicode=ucs4 ${Python_config_options}
 )
 
 #---Boost--------------------------------------------------------------------------------------------

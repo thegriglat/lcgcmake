@@ -67,7 +67,7 @@ macro(LCGPackage_Add name)
         LOG_CONFIGURE 1 LOG_BUILD 1 LOG_INSTALL 1 )
 
       #---Adding extra step to copy the sources in /share/sources-------------------------------------
-      ExternalProject_Add_Step(${targetname} install_sources COMMENT "Installing sources for ${targetname}"
+      ExternalProject_Add_Step(${targetname} install_sources COMMENT "Installing sources for '${targetname}'"
         COMMAND  ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR> ${LOCAL_INSTALL_PREFIX}/${${name}_directory_name}/${version}/share/sources
         DEPENDERS build
         DEPENDEES update)
@@ -78,21 +78,21 @@ macro(LCGPackage_Add name)
         set(testdepender DEPENDERS test)
       endif()
       if(ARG_CONFIGURE_EXAMPLES_COMMAND)
-        ExternalProject_Add_Step(${targetname} configure_examples COMMENT "Configure examples for ${targetname}"
+        ExternalProject_Add_Step(${targetname} configure_examples COMMENT "Configure examples for '${targetname}'"
           COMMAND  ${ARG_CONFIGURE_EXAMPLES_COMMAND}
           ${testdepender}
           DEPENDEES ${current_dependee})
         set(current_dependee configure_examples)
       endif()
       if(ARG_BUILD_EXAMPLES_COMMAND)
-        ExternalProject_Add_Step(${targetname} build_examples COMMENT "Build examples for ${targetname}"
+        ExternalProject_Add_Step(${targetname} build_examples COMMENT "Build examples for '${targetname}'"
           COMMAND  ${ARG_BUILD_EXAMPLES_COMMAND}
           ${testdepender}
           DEPENDEES ${current_dependee})
         set(current_dependee build_examples)
       endif()
       if(ARG_INSTALL_EXAMPLES_COMMAND)
-        ExternalProject_Add_Step(${targetname} install_examples COMMENT "Install examples for ${targetname}"
+        ExternalProject_Add_Step(${targetname} install_examples COMMENT "Install examples for '${targetname}'"
           COMMAND  ${ARG_INSTALL_EXAMPLES_COMMAND}
           ${testdepender}
           DEPENDEES ${current_dependee})
