@@ -201,6 +201,7 @@ LCGPackage_Add(
   mctester
 #  URL http://hibiscus.if.uj.edu.pl/~przedzinski/MC-TESTER.${mctester_native_version}.tar.gz
   URL http://mc-tester.web.cern.ch/MC-TESTER/MC-TESTER-${mctester_native_version}.tar.gz
+  UPDATE_COMMAND ${CMAKE_COMMAND} -E touch <SOURCE_DIR>/make.inc
   CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix=<INSTALL_DIR> --datadir=<INSTALL_DIR>/../share --with-HepMC=${HepMC_home} --with-root=${ROOTSYS}
   BUILD_IN_SOURCE 1
   DEPENDS HepMC
