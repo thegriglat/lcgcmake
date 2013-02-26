@@ -205,3 +205,12 @@ LCGPackage_Add(
   BUILD_IN_SOURCE 1
   DEPENDS HepMC
 )
+
+#---HIJING----------------------------------------------------------------------------------------
+LCGPackage_Add(
+  hijing
+  URL http://service-spi.web.cern.ch/service-spi/external/MCGenerators/distribution/hijing/hijing-${hijing_native_version}-src.tgz
+  CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix=<INSTALL_DIR>
+  BUILD_IN_SOURCE 1
+  DEPENDS
+)
