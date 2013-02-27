@@ -144,7 +144,7 @@ LCG_external_package(stomppy           3.1.3                                    
 LCG_external_package(storm             0.19                                     )
 LCG_external_package(sympy             0.7.1                                    )
 LCG_external_package(swig              1.3.40                                   )
-LCG_external_package(TBB               41_20121003               tbb            )
+LCG_external_package(TBB               41_20130116               tbb            )
 LCG_external_package(tcmalloc          1.7p3                                    )
 if(NOT LCG_SYSTEM MATCHES "-slc6-") # uuid is not distributed with SLC6
 LCG_external_package(uuid              1.42                                     )
@@ -154,7 +154,7 @@ LCG_external_package(vomsapi_noglobus  1.9.17-1                                 
 LCG_external_package(vomsapic          1.9.17-1                                 )
 LCG_external_package(vomsapicpp        1.9.17-1                                 )
 LCG_external_package(vomsclients       1.9.17-1                                 )
-LCG_external_package(XercesC           3.1.1p1                                  )
+LCG_external_package(XercesC           3.1.1                                    )
 if(NOT ${LCG_COMP}${LCG_COMPVERS} STREQUAL "gcc46")
 LCG_external_package(xqilla            2.2.4                                    )
 else()

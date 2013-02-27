@@ -112,6 +112,19 @@ LCGPackage_Add(
   DEPENDS Python
 )
 
+#---XercesC-------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  XercesC
+  URL http://mirror.switch.ch/mirror/apache/dist//xerces/c/3/sources/xerces-c-${XercesC_config_version}.tar.gz
+  CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix=<INSTALL_DIR>
+)
 
-
+#---TBB-----------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  TBB
+  URL http://threadingbuildingblocks.org/sites/default/files/software_releases/source/tbb${TBB_native_version}oss_src.tgz
+  CONFIGURE_COMMAND echo nothing is needed for configuration 
+  INSTALL_COMMAND ${CMAKE_COMMAND} -Dinstall_dir=<INSTALL_DIR> -Dsource_dir=<SOURCE_DIR> -P ${CMAKE_SOURCE_DIR}/cmake/scripts/InstallTBB.cmake 
+  BUILD_IN_SOURCE 1
+)
 
