@@ -1,5 +1,7 @@
 #todo for all: install README, lcg_configure, doc/URL
 
+#todo: share/sources in lcgcmake-build/LocalInstallArea is not deleted on make clean-package target
+
 # cook Boost include subpath string (used by several packages)
 string(REPLACE "." "_" Boost_underscore_twodigit ${Boost_config_version_twodigit})
 
@@ -218,4 +220,14 @@ LCGPackage_Add(
   CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix=<INSTALL_DIR>
   BUILD_IN_SOURCE 1
   INSTALL_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/lib <INSTALL_DIR>/lib
+)
+
+#---Starlight---------------------------------------------------------------------------------------
+string(SUBSTRING ${starlight_native_version} 1 -1 STARLIGHT_REV)
+LCGPackage_Add(
+  starlight
+  SVN_REPOSITORY http://starlight.hepforge.org/svn/trunk
+  SVN_REVISION -r ${STARLIGHT_REV}
+  PATCH_COMMAND patch < ${CMAKE_CURRENT_SOURCE_DIR}/starlight/patches/patch-${starlight_native_version}
+  CMAKE_ARGS -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
 )

@@ -1,0 +1,81 @@
+--- CMakeLists.txt.orig	2011-01-24 13:54:30.000000000 +0100
++++ CMakeLists.txt	2011-02-22 15:45:03.000000000 +0100
+@@ -65,7 +65,7 @@
+ 
+ # define build types
+ # set a default build type for single-configuration CMake generators, if no build type is set.
+-set(CMAKE_BUILD_TYPE Debug)
++set(CMAKE_BUILD_TYPE Release)
+ if(NOT CMAKE_CONFIGURATION_TYPES AND NOT CMAKE_BUILD_TYPE)
+   message(STATUS "No build type was specified. Setting build type to 'Release'.")
+   set(CMAKE_BUILD_TYPE Release)
+@@ -74,7 +74,7 @@
+ set(CMAKE_CXX_FLAGS "-Wall -Wextra -Werror")
+ # flags for specific build types
+ set(CMAKE_CXX_FLAGS_DEBUG "-g")
+-set(CMAKE_CXX_FLAGS_RELEASE "-O3")
++set(CMAKE_CXX_FLAGS_RELEASE "")
+ set(CMAKE_CXX_LDFLAGS_DEBUG "-g")
+ # report global build settings
+ message(STATUS "Using CXX compiler '${CMAKE_CXX_COMPILER}'")
+@@ -208,19 +208,52 @@
+ 
+ 
+ # add Starlight library to the build system
+-set(THIS_LIB "Starlib")
+-add_library(${THIS_LIB} STATIC ${SOURCES})
+-#make_shared_library("${THIS_LIB}" "${SOURCES}"
+-#	"${PYTHIA8_LIBRARY}"
+-#	"${LHAPDF_LIBRARIES}"
+-#)
++add_library(Starlib STATIC ${SOURCES})
++install(TARGETS Starlib DESTINATION "lib")
++install(TARGETS Starlib DESTINATION "lib/archive")
++
++add_library(Starlib_dy SHARED ${SOURCES})
++SET_TARGET_PROPERTIES(Starlib_dy PROPERTIES OUTPUT_NAME Starlib)
++install(TARGETS Starlib_dy DESTINATION "lib")
++
++set(INCLUDES
++  include/beambeamsystem.h
++  include/beam.h
++  include/bessel.h
++  include/eventchannel.h
++  include/eventfilewriter.h
++  include/filewriter.h
++  include/gammaacrosssection.h
++  include/gammaaluminosity.h
++  include/gammaavm.h
++  include/gammagammaleptonpair.h
++  include/gammagammasingle.h
++  include/inputParameters.h
++  include/inputParser.h
++  include/lorentzvector.h
++  include/nBodyPhaseSpaceGen.h
++  include/nucleus.h
++  include/PythiaStarlight.h
++  include/randomgenerator.h
++  include/readinluminosity.h
++  include/reportingUtils.h
++  include/starlightconstants.h
++  include/starlight.h
++  include/starlightlimits.h
++  include/starlightparticlecodes.h
++  include/starlightparticle.h
++  include/starlightStandalone.h
++  include/twophotonluminosity.h
++  include/upcevent.h
++  include/vector3.h
++)
+ 
++install(FILES ${INCLUDES} DESTINATION "include")
+ 
+ # add starlight executable to the build system
+ add_executable(starlight src/main.cpp)
+ target_link_libraries(starlight Starlib ${PYTHIA8_LIBRARY} ${LHAPDF_LIBRARIES})
+-#make_executable(starlight src/main.cpp ${THIS_LIB})
+-
++install(TARGETS starlight DESTINATION "bin")
+ 
+ message(STATUS "Cmake did not find any errors. run 'make' to build the project.")
+ message(STATUS "On multi-core machines 'make -j#', where # is the number of parallel jobs, can speedup compilation considerably.")
