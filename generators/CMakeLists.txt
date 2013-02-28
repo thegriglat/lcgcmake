@@ -247,3 +247,12 @@ LCGPackage_Add(
   BUILD_IN_SOURCE 1
 )
 
+#---CRMC (FORMER EPOS)-----------------------------------------------------------------------------
+LCGPackage_Add(
+  crmc
+  SVN_REPOSITORY https://devel-ik.fzk.de/svn/mc/crmc/tags/${crmc_native_version}
+  CONFIGURE_COMMAND echo no configure step
+  BUILD_COMMAND ${CMAKE_COMMAND} -E chdir <SOURCE_DIR> make -f Makefile CRMCROOT=<INSTALL_DIR> HEP_ROOT=${HepMC_home}
+  INSTALL_COMMAND ${CMAKE_COMMAND} -E chdir <SOURCE_DIR> make -f Makefile install CRMCROOT=<INSTALL_DIR> HEP_ROOT=${HepMC_home}
+  DEPENDS HepMC
+)

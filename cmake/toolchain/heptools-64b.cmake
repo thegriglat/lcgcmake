@@ -180,6 +180,7 @@ LCG_external_package(mctester          1.25.0         MCGenerators/mctester     
 LCG_external_package(hijing            1.383bs.2      MCGenerators/hijing       )
 LCG_external_package(starlight         r43            MCGenerators/starlight    )
 LCG_external_package(herwig        "6.520;6.520.2"    MCGenerators/herwig       )
+LCG_external_package(crmc              v3400          MCGenerators/crmc         )
 
 
 # Prepare the search paths according to the versions above
