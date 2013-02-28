@@ -236,10 +236,10 @@ LCGPackage_Add(
 #---HERWIG----------------------------------------------------------------------------------------
 LCGPackage_Add(
   herwig
-  URL http://service-spi.web.cern.ch/service-spi/external/MCGenerators/distribution/herwig/herwig-${herwig_native_version}-src.tgz
-  UPDATE_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/${herwig_native_version} <SOURCE_DIR>
-         COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/${herwig_native_version} <SOURCE_DIR>
-         COMMAND ${CMAKE_COMMAND} -E remove_directory <SOURCE_DIR>/${herwig_native_version}
+  URL http://service-spi.web.cern.ch/service-spi/external/MCGenerators/distribution/herwig/herwig-<NATIVE_VERSION>-src.tgz
+  UPDATE_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/<NATIVE_VERSION> <SOURCE_DIR>
+         COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/<NATIVE_VERSION> <SOURCE_DIR>
+         COMMAND ${CMAKE_COMMAND} -E remove_directory <SOURCE_DIR>/<NATIVE_VERSION>
   CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix=<INSTALL_DIR>
   BUILD_IN_SOURCE 1
 )
