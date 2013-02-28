@@ -46,9 +46,11 @@ LCGPackage_Add(
 )
 
 #---ThePEG------------------------------------------------------------------------------------------
+#todo: will autoreconf work if the patches are applied?
 LCGPackage_Add(
   thepeg
   URL http://www.hepforge.org/archive/thepeg/ThePEG-${thepeg_native_version}.tar.bz2
+#  UPDATE_COMMAND ${CMAKE_COMMAND} -E chdir <SOURCE_DIR> autoreconf --install --force
   CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix=<INSTALL_DIR> --with-hepmc=${HepMC_home} --with-LHAPDF=${lhapdf_home}/lib --with-gsl=${GSL_home} --without-javagui
   BUILD_IN_SOURCE 1
   DEPENDS HepMC GSL lhapdf
@@ -210,7 +212,6 @@ LCGPackage_Add(
 )
 
 #---HIJING----------------------------------------------------------------------------------------
-#todo: how to delete <SOURCE_DIR>/${hijing_native_version}?
 LCGPackage_Add(
   hijing
   URL http://service-spi.web.cern.ch/service-spi/external/MCGenerators/distribution/hijing/hijing-${hijing_native_version}-src.tgz
@@ -231,3 +232,15 @@ LCGPackage_Add(
   PATCH_COMMAND patch < ${CMAKE_CURRENT_SOURCE_DIR}/starlight/patches/patch-${starlight_native_version}
   CMAKE_ARGS -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
 )
+
+#---HERWIG----------------------------------------------------------------------------------------
+LCGPackage_Add(
+  herwig
+  URL http://service-spi.web.cern.ch/service-spi/external/MCGenerators/distribution/herwig/herwig-${herwig_native_version}-src.tgz
+  UPDATE_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/${herwig_native_version} <SOURCE_DIR>
+         COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/${herwig_native_version} <SOURCE_DIR>
+         COMMAND ${CMAKE_COMMAND} -E remove_directory <SOURCE_DIR>/${herwig_native_version}
+  CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix=<INSTALL_DIR>
+  BUILD_IN_SOURCE 1
+)
+
