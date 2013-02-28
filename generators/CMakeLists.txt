@@ -30,6 +30,7 @@ LCGPackage_Add(
 )
 
 #---pythia8------------------------------------------------------------------------------------------
+#todo: add more precompiled examples, config, tests
 LCGPackage_Add(
   pythia8
   URL http://home.thep.lu.se/~torbjorn/pythia8/pythia8<NATIVE_VERSION>.tgz
