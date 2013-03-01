@@ -31,12 +31,18 @@ LCGPackage_Add(
 
 #---pythia8------------------------------------------------------------------------------------------
 #todo: add more precompiled examples, config, tests
+set(HOMEPAGE http://home.thep.lu.se/~torbjorn/Pythia.html)
 LCGPackage_Add(
   pythia8
   URL http://home.thep.lu.se/~torbjorn/pythia8/pythia8<NATIVE_VERSION>.tgz
   UPDATE_COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/pythia8  <SOURCE_DIR>/examples
-  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --with-hepmc=${HepMC_home} --enable-shared
+         COMMAND ${CMAKE_COMMAND} -E make_directory <SOURCE_DIR>/doc
+         COMMAND ${CMAKE_COMMAND} -E echo ${HOMEPAGE} > <SOURCE_DIR>/doc/URL
+  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --datadir=<INSTALL_DIR>/../share --with-hepmc=${HepMC_home} --enable-shared
   BUILD_IN_SOURCE 1
+  INSTALL_COMMAND ${CMAKE_COMMAND} -E chdir <SOURCE_DIR> make install
+          COMMAND ${CMAKE_COMMAND} -E remove <INSTALL_DIR>/xmldoc
+          COMMAND ${CMAKE_COMMAND} -E chdir <INSTALL_DIR> create_symlink ../share/xmldoc xmldoc
   CONFIGURE_EXAMPLES_COMMAND <SOURCE_DIR>/examples/configure
                              --with-pythia8=<INSTALL_DIR>
                              --with-lhapdf=${lhapdf_home}
