@@ -15,7 +15,7 @@ include(${CMAKE_CURRENT_LIST_DIR}/heptools-common.cmake)
 LCG_AA_project(COOL  COOL_2_8_15)
 LCG_AA_project(CORAL CORAL_2_3_24)
 LCG_AA_project(RELAX RELAX_1_3_0i)
-LCG_AA_project(ROOT  5.34.03)
+LCG_AA_project(ROOT  5.34.05)
 
 # Compilers
 LCG_compiler(gcc42 gcc 4.2.1)
@@ -46,6 +46,7 @@ LCG_external_package(cernlib           2006a                                    
 LCG_external_package(cgsigsoap         1.3.3-1                                  )
 LCG_external_package(CLHEP             1.9.4.7                   clhep          )
 LCG_external_package(cmake             2.8.6                                    )
+LCG_external_package(cmaketools        1.0                                      )
 LCG_external_package(cmt               v1r20p20081118                           )
 LCG_external_package(coin3d            3.1.3p2                                  )
 LCG_external_package(coverage          3.5.2                                    )
