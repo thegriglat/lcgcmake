@@ -5,5 +5,7 @@ include(lcgsoft-macros)
 
 add_subdirectory(externals)
 add_subdirectory(generators)
+add_subdirectory(projects)
+
 
 
