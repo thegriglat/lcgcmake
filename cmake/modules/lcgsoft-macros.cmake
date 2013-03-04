@@ -49,6 +49,7 @@ macro(LCGPackage_Add name)
 
       #---Replace patterns for multiversion cases-----------------------------------------------------
       string(REPLACE <NATIVE_VERSION> ${version} ARGUMENTS "${ARG_UNPARSED_ARGUMENTS}")
+      string(REPLACE <VOID> "" ARGUMENTS "${ARGUMENTS}")
       string(REGEX MATCHALL "<[^ <>(){}]+>" vars ${ARGUMENTS})
       foreach(var ${vars})
         string(REPLACE "<" "" v ${var})
@@ -62,7 +63,7 @@ macro(LCGPackage_Add name)
         ${targetname}
         PREFIX ${targetname}
         INSTALL_DIR ${${name}_home}
-        ${ARGUMENTS} 
+        "${ARGUMENTS}" 
         TEST_COMMAND ${ARG_TEST_COMMAND}
         LOG_CONFIGURE 1 LOG_BUILD 1 LOG_INSTALL 1 )
 
@@ -70,7 +71,7 @@ macro(LCGPackage_Add name)
       ExternalProject_Add_Step(${targetname} install_sources COMMENT "Installing sources for '${targetname}'"
         COMMAND  ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR> ${LOCAL_INSTALL_PREFIX}/${${name}_directory_name}/${version}/share/sources
         DEPENDERS build
-        DEPENDEES update)
+        DEPENDEES update patch)
 
       #---Add extra steps eventually------------------------------------------------------------------
       set(current_dependee install)

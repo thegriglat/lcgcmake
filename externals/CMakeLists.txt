@@ -94,18 +94,18 @@ LCGPackage_Add(
 #---AIDA--------------------------------------------------------------------------------------------
 LCGPackage_Add(
   AIDA
-  URL URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/aida-${AIDA_native_version}-src.tar.gz
-  CONFIGURE_COMMAND echo No configure step for AIDA
-  BUILD_COMMAND echo No build step for AIDA
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/aida-${AIDA_native_version}-src.tar.gz
+  CONFIGURE_COMMAND <VOID>
+  BUILD_COMMAND <VOID>
   INSTALL_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR> <INSTALL_DIR>
 )
 
 #---QMtest--------------------------------------------------------------------------------------------
 LCGPackage_Add(
   QMtest
-  URL URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/qmtest-${QMtest_config_version}.tar.gz
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/qmtest-${QMtest_config_version}.tar.gz
   UPDATE_COMMAND ${CMAKE_COMMAND} -E chdir <SOURCE_DIR>/qm/test/classes echo need to change some files
-  CONFIGURE_COMMAND echo No configure step for AIDA
+  CONFIGURE_COMMAND <VOID>
   BUILD_COMMAND ${Python_home}/bin/python setup.py build
   INSTALL_COMMAND ${Python_home}/bin/python setup.py install --prefix=<INSTALL_DIR>
   BUILD_IN_SOURCE 1
@@ -123,8 +123,19 @@ LCGPackage_Add(
 LCGPackage_Add(
   TBB
   URL http://threadingbuildingblocks.org/sites/default/files/software_releases/source/tbb${TBB_native_version}oss_src.tgz
-  CONFIGURE_COMMAND echo nothing is needed for configuration 
+  CONFIGURE_COMMAND <VOID>
   INSTALL_COMMAND ${CMAKE_COMMAND} -Dinstall_dir=<INSTALL_DIR> -Dsource_dir=<SOURCE_DIR> -P ${CMAKE_SOURCE_DIR}/cmake/scripts/InstallTBB.cmake 
   BUILD_IN_SOURCE 1
 )
+
+#---GCCXML--------------------------------------------------------------------------------------------
+if(APPLE)
+  set(GCCXML_config_options -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++) # problems compiling with clang
+endif()
+LCGPackage_Add(
+  GCCXML
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/gccxml-${GCCXML_native_version}.tar.gz
+  CMAKE_ARGS -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR> ${GCCXML_config_options}
+)
+
 
