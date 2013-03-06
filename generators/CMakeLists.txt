@@ -11,6 +11,8 @@ string(REPLACE "." "_" Boost_underscore_twodigit ${Boost_config_version_twodigit
 # provide the path as predefined variable from steering machinery,
 # for example ${Boost_home_include} ?
 
+set(CMAKE_VERBOSE_MAKEFILE ON)
+
 #---lhapdf------------------------------------------------------------------------------------------
 #todo: add installation of examples
 
@@ -35,9 +37,11 @@ set(HOMEPAGE http://home.thep.lu.se/~torbjorn/Pythia.html)
 LCGPackage_Add(
   pythia8
   URL http://home.thep.lu.se/~torbjorn/pythia8/pythia8<NATIVE_VERSION>.tgz
-  UPDATE_COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/pythia8  <SOURCE_DIR>/examples
+  UPDATE_COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/pythia8/examples  <SOURCE_DIR>/examples
+         COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/pythia8/files  <SOURCE_DIR>
          COMMAND ${CMAKE_COMMAND} -E make_directory <SOURCE_DIR>/doc
          COMMAND ${CMAKE_COMMAND} -E echo ${HOMEPAGE} > <SOURCE_DIR>/doc/URL
+# --enable-shared --prefix=${INSTALL_DIR} --datadir=${SHARE_DIR} --with-hepmcversion=${HEPMC_VERSION} --lcgplatform=${LCG_PLATFORM}")
   CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --datadir=<INSTALL_DIR>/../share --with-hepmc=${HepMC_home} --enable-shared
   BUILD_IN_SOURCE 1
   INSTALL_COMMAND ${CMAKE_COMMAND} -E chdir <SOURCE_DIR> make install

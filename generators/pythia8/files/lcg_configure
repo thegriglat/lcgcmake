@@ -1,0 +1,11 @@
+#!/bin/sh
+
+#export USRCXXFLAGS=-O2 -fPIC -Wall
+#export USRLDFLAGSSHARED=
+
+#INSTALL_DIR=MYINSTALLDIR
+#SHARE_DIR=MYSHAREDIR
+#HEPMC_VERSION=MYHEPMCVERSION
+#LCG_PLATFORM=MYLCGPLATFORM
+
+./configure --enable-shared --prefix=${INSTALL_DIR} --datadir=${SHARE_DIR} --with-hepmcversion=${HEPMC_VERSION} --lcgplatform=${LCG_PLATFORM}
