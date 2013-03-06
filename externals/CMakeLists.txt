@@ -36,7 +36,6 @@ LCGPackage_Add(
   DEPENDS Python
 )
 
-
 #---GSL----------------------------------------------------------------------------------------------
 if(LCG_TARGET MATCHES "x86_64|slc")
   set(GSL_config_options -with-pic)
@@ -56,7 +55,8 @@ endif()
 LCGPackage_Add(
   CLHEP
   URL http://proj-clhep.web.cern.ch/proj-clhep/DISTRIBUTION/tarFiles/clhep-${CLHEP_native_version}.tgz
-  CONFIGURE_COMMAND <SOURCE_DIR>/CLHEP/configure --prefix <INSTALL_DIR> ${CLHEP_config_options} CC=${CMAKE_C_COMPILER}
+  PATCH_COMMAND patch -p0 -i ${CMAKE_CURRENT_SOURCE_DIR}/CLHEP-${CLHEP_native_version}.patch
+  CONFIGURE_COMMAND <SOURCE_DIR>/CLHEP/configure --prefix <INSTALL_DIR> ${CLHEP_config_options}
 )
 
 #---HepMC--------------------------------------------------------------------------------------------

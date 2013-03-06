@@ -1,0 +1,156 @@
+diff -r -u ../../../../LocalInstallArea/clhep/1.9.4.7/share/sources/CLHEP/Cast/configure CLHEP/Cast/configure
+--- ../../../../LocalInstallArea/clhep/1.9.4.7/share/sources/CLHEP/Cast/configure	2013-03-05 18:04:35.000000000 +0100
++++ CLHEP/Cast/configure	2013-03-05 18:31:21.000000000 +0100
+@@ -3112,7 +3112,7 @@
+ 
+ # worry about compiler flags
+ case "$CXX" in
+-g++)
++*g++*)
+    case "$target" in
+    *-*-linux*)
+       AM_CXXFLAGS="-O -ansi -pedantic -Wall -D_GNU_SOURCE"
+diff -r -u ../../../../LocalInstallArea/clhep/1.9.4.7/share/sources/CLHEP/Evaluator/configure CLHEP/Evaluator/configure
+--- ../../../../LocalInstallArea/clhep/1.9.4.7/share/sources/CLHEP/Evaluator/configure	2013-03-05 18:04:35.000000000 +0100
++++ CLHEP/Evaluator/configure	2013-03-05 18:31:31.000000000 +0100
+@@ -3116,7 +3116,7 @@
+ 
+ # worry about compiler flags
+ case "$CXX" in
+-g++)
++*g++*)
+    case "$target" in
+    *-*-linux*)
+       AM_CXXFLAGS="-O -ansi -pedantic -Wall -D_GNU_SOURCE"
+diff -r -u ../../../../LocalInstallArea/clhep/1.9.4.7/share/sources/CLHEP/Exceptions/configure CLHEP/Exceptions/configure
+--- ../../../../LocalInstallArea/clhep/1.9.4.7/share/sources/CLHEP/Exceptions/configure	2013-03-05 18:04:35.000000000 +0100
++++ CLHEP/Exceptions/configure	2013-03-05 18:31:32.000000000 +0100
+@@ -3133,7 +3133,7 @@
+ 
+ # worry about compiler flags
+ case "$CXX" in
+-g++)
++*g++*)
+    case "$target" in
+    *-*-linux*)
+       AM_CXXFLAGS="-O -ansi -pedantic -Wall -D_GNU_SOURCE"
+diff -r -u ../../../../LocalInstallArea/clhep/1.9.4.7/share/sources/CLHEP/GenericFunctions/configure CLHEP/GenericFunctions/configure
+--- ../../../../LocalInstallArea/clhep/1.9.4.7/share/sources/CLHEP/GenericFunctions/configure	2013-03-05 18:04:35.000000000 +0100
++++ CLHEP/GenericFunctions/configure	2013-03-05 18:31:33.000000000 +0100
+@@ -3118,7 +3118,7 @@
+ 
+ # worry about compiler flags
+ case "$CXX" in
+-g++)
++*g++*)
+    case "$target" in
+    *-*-linux*)
+       AM_CXXFLAGS="-O -ansi -pedantic -Wall -D_GNU_SOURCE"
+diff -r -u ../../../../LocalInstallArea/clhep/1.9.4.7/share/sources/CLHEP/Geometry/configure CLHEP/Geometry/configure
+--- ../../../../LocalInstallArea/clhep/1.9.4.7/share/sources/CLHEP/Geometry/configure	2013-03-05 18:04:36.000000000 +0100
++++ CLHEP/Geometry/configure	2013-03-05 18:31:34.000000000 +0100
+@@ -3118,7 +3118,7 @@
+ 
+ # worry about compiler flags
+ case "$CXX" in
+-g++)
++*g++*)
+    case "$target" in
+    *-*-linux*)
+       AM_CXXFLAGS="-O -ansi -pedantic -Wall -D_GNU_SOURCE"
+diff -r -u ../../../../LocalInstallArea/clhep/1.9.4.7/share/sources/CLHEP/Matrix/configure CLHEP/Matrix/configure
+--- ../../../../LocalInstallArea/clhep/1.9.4.7/share/sources/CLHEP/Matrix/configure	2013-03-05 18:04:36.000000000 +0100
++++ CLHEP/Matrix/configure	2013-03-05 18:31:35.000000000 +0100
+@@ -3118,7 +3118,7 @@
+ 
+ # worry about compiler flags
+ case "$CXX" in
+-g++)
++*g++*)
+    case "$target" in
+    *-*-linux*)
+       AM_CXXFLAGS="-O -ansi -pedantic -Wall -D_GNU_SOURCE"
+diff -r -u ../../../../LocalInstallArea/clhep/1.9.4.7/share/sources/CLHEP/Random/configure CLHEP/Random/configure
+--- ../../../../LocalInstallArea/clhep/1.9.4.7/share/sources/CLHEP/Random/configure	2013-03-05 18:04:36.000000000 +0100
++++ CLHEP/Random/configure	2013-03-05 18:31:36.000000000 +0100
+@@ -3127,7 +3127,7 @@
+ 
+ # worry about compiler flags
+ case "$CXX" in
+-g++)
++*g++*)
+    case "$target" in
+    *-*-linux*)
+       AM_CXXFLAGS="-O -ansi -pedantic -Wall -D_GNU_SOURCE"
+diff -r -u ../../../../LocalInstallArea/clhep/1.9.4.7/share/sources/CLHEP/RandomObjects/configure CLHEP/RandomObjects/configure
+--- ../../../../LocalInstallArea/clhep/1.9.4.7/share/sources/CLHEP/RandomObjects/configure	2013-03-05 18:04:36.000000000 +0100
++++ CLHEP/RandomObjects/configure	2013-03-05 18:31:37.000000000 +0100
+@@ -3116,7 +3116,7 @@
+ 
+ # worry about compiler flags
+ case "$CXX" in
+-g++)
++*g++*)
+    case "$target" in
+    *-*-linux*)
+       AM_CXXFLAGS="-O -ansi -pedantic -Wall -D_GNU_SOURCE"
+diff -r -u ../../../../LocalInstallArea/clhep/1.9.4.7/share/sources/CLHEP/RefCount/configure CLHEP/RefCount/configure
+--- ../../../../LocalInstallArea/clhep/1.9.4.7/share/sources/CLHEP/RefCount/configure	2013-03-05 18:04:36.000000000 +0100
++++ CLHEP/RefCount/configure	2013-03-05 18:31:38.000000000 +0100
+@@ -3109,7 +3109,7 @@
+ 
+ # worry about compiler flags
+ case "$CXX" in
+-g++)
++*g++*)
+    case "$target" in
+    *-*-linux*)
+       AM_CXXFLAGS="-O -ansi -pedantic -Wall -D_GNU_SOURCE"
+diff -r -u ../../../../LocalInstallArea/clhep/1.9.4.7/share/sources/CLHEP/Units/configure CLHEP/Units/configure
+--- ../../../../LocalInstallArea/clhep/1.9.4.7/share/sources/CLHEP/Units/configure	2013-03-05 18:04:36.000000000 +0100
++++ CLHEP/Units/configure	2013-03-05 18:31:39.000000000 +0100
+@@ -3115,7 +3115,7 @@
+ 
+ # worry about compiler flags
+ case "$CXX" in
+-g++)
++*g++*)
+    case "$target" in
+    *-*-linux*)
+       AM_CXXFLAGS="-O -ansi -pedantic -Wall -D_GNU_SOURCE"
+diff -r -u ../../../../LocalInstallArea/clhep/1.9.4.7/share/sources/CLHEP/Vector/configure CLHEP/Vector/configure
+--- ../../../../LocalInstallArea/clhep/1.9.4.7/share/sources/CLHEP/Vector/configure	2013-03-05 18:04:36.000000000 +0100
++++ CLHEP/Vector/configure	2013-03-05 18:31:40.000000000 +0100
+@@ -3129,7 +3129,7 @@
+ 
+ # worry about compiler flags
+ case "$CXX" in
+-g++)
++*g++*)
+    case "$target" in
+    *-*-linux*)
+       AM_CXXFLAGS="-O -ansi -pedantic -Wall -D_GNU_SOURCE"
+diff -r -u ../../../../LocalInstallArea/clhep/1.9.4.7/share/sources/CLHEP/config/configure CLHEP/config/configure
+--- ../../../../LocalInstallArea/clhep/1.9.4.7/share/sources/CLHEP/config/configure	2013-03-05 18:04:35.000000000 +0100
++++ CLHEP/config/configure	2013-03-05 18:31:30.000000000 +0100
+@@ -3109,7 +3109,7 @@
+ 
+ # worry about compiler flags
+ case "$CXX" in
+-g++)
++*g++*)
+    case "$target" in
+    *-*-linux*)
+       AM_CXXFLAGS="-O -ansi -pedantic -Wall -D_GNU_SOURCE"
+diff -r -u ../../../../LocalInstallArea/clhep/1.9.4.7/share/sources/CLHEP/configure CLHEP/configure
+--- ../../../../LocalInstallArea/clhep/1.9.4.7/share/sources/CLHEP/configure	2013-03-05 18:04:35.000000000 +0100
++++ CLHEP/configure	2013-03-05 18:31:28.000000000 +0100
+@@ -3095,7 +3095,7 @@
+ 
+ # worry about compiler flags
+ case "$CXX" in
+-g++)
++*g++*)
+    case "$target" in
+    *-*-linux*)
+       AM_CXXFLAGS="-O -ansi -pedantic -Wall -D_GNU_SOURCE"

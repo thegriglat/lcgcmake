@@ -76,6 +76,13 @@ endfunction()
 # Get system compiler.
 function(lcg_find_host_compiler)
   if(NOT LCG_HOST_COMP OR NOT LCG_HOST_COMPVERS)
+    #---First check the CC and CXX environment variables 
+    if(DEFINED ENV{CC})
+      set(LCG_HOST_C_COMPILER $ENV{CC} CACHE STRING "Name of the host default compiler." FORCE)
+    endif()
+    if(DEFINED ENV{CXX})
+      set(LCG_HOST_CXX_COMPILER $ENV{CXX} CACHE STRING "Name of the host default compiler." FORCE)
+    endif()
     find_program(LCG_HOST_C_COMPILER   NAMES gcc cc cl clang icc bcc xlc
                  DOC "Host C compiler")
     find_program(LCG_HOST_CXX_COMPILER NAMES c++ g++ cl clang++ icpc CC aCC bcc xlC
@@ -339,16 +346,27 @@ endmacro()
 
 # Define the variables for external projects
 # Usage:
-#   LCG_external_package(<Package> <version> [<directory name>])
+#   LCG_external_package(<Package> <version> [<directory name>] [<key=value> ...])
 # Examples:
 #   LCG_external_package(Boost 1.44.0)
 #   LCG_external_package(CLHEP 1.9.4.7 clhep)
+#   LCG_external_package(pythia6 
 macro(LCG_external_package name version)
-  set(${name}_config_version ${version})
-  set(${name}_native_version ${version})
-  if(${ARGC} GREATER 2)
-    set(${name}_directory_name ${ARGV2})
-  else()
+  if(DEFINED ${name}_config_version)
+    list(APPEND ${name}_config_version ${version})
+    list(APPEND ${name}_native_version ${version})
+  else ()
+    set(${name}_config_version ${version})
+    set(${name}_native_version ${version})
+  endif()
+  foreach(arg ${ARGN})
+    if(arg MATCHES "(.+)=(.+)")
+      set(${name}_${version}_${CMAKE_MATCH_1} ${CMAKE_MATCH_2})
+    else()
+      set(${name}_directory_name ${arg})
+    endif()
+  endforeach()
+  if(NOT DEFINED ${name}_directory_name)
     set(${name}_directory_name ${name})
   endif()
   list(APPEND LCG_externals ${name})

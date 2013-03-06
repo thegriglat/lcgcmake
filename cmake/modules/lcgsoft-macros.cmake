@@ -125,7 +125,7 @@ macro(LCGPackage_Add name)
         install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${targetname}/src/${targetname}-stamp/${targetname}-${ph}.log
               DESTINATION ${${name}_directory_name}/${version}/logs
               RENAME ${name}-${LCG_system}-${ph}.log
-              COMPONENT ${targetname})
+              COMPONENT ${targetname} OPTIONAL)
       endforeach()
       #---Adding install targets----------------------------------------------------------------------
 

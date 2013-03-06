@@ -41,4 +41,9 @@ LCGPackage_Add(
 #---GaudiDeps------------------------------------------------------------------------------------------
 add_custom_target(GAUDI-externals
                  COMMENT "Target to build all externals packages needed by Gaudi"
-                 DEPENDS AIDA Boost GSL ROOT QMtest CLHEP RELAX GCCXML TBB XercesC)
+                 DEPENDS AIDA Boost Python GSL ROOT QMtest CLHEP HepMC HepPDT RELAX GCCXML TBB XercesC)
+add_custom_target(install-GAUDI-externals
+                 COMMENT "Target to install all externals packages needed by Gaudi"
+                 DEPENDS install-AIDA install-Boost install-Python install-GSL install-ROOT
+                         install-QMtest install-CLHEP install-HepMC install-HepPDT install-RELAX
+                         install-GCCXML install-TBB install-XercesC)

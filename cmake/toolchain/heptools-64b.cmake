@@ -18,13 +18,13 @@ LCG_AA_project(RELAX RELAX_1_3_0i)
 LCG_AA_project(ROOT  5.34.05)
 
 # Compilers
-LCG_compiler(gcc42 gcc 4.2.1)
-LCG_compiler(gcc43 gcc 4.3.6)
-LCG_compiler(gcc46 gcc 4.6.2)
-LCG_compiler(gcc47 gcc 4.7.2)
-LCG_compiler(clang30 clang 3.0)
-LCG_compiler(clang31 clang 3.1)
-LCG_compiler(gccmax gcc 4.7.2)
+#LCG_compiler(gcc42 gcc 4.2.1)
+#LCG_compiler(gcc43 gcc 4.3.6)
+#LCG_compiler(gcc46 gcc 4.6.2)
+#LCG_compiler(gcc47 gcc 4.7.2)
+#LCG_compiler(clang30 clang 3.0)
+#LCG_compiler(clang31 clang 3.1)
+#LCG_compiler(gccmax gcc 4.7.2)
 
 # Externals
 LCG_external_package(4suite            1.0.2p1                                  )
@@ -165,12 +165,13 @@ LCG_external_package(xrootd            3.1.0p2                                  
 
 #---Additional External packages------(Generators)-----------------
 LCG_external_package(lhapdf            5.8.8          MCGenerators/lhapdf       )
-#LCG_external_package(pythia8          "165;175"      MCGenerators/pythia8      )
+LCG_external_package(pythia8           165            MCGenerators/pythia8      )
 LCG_external_package(pythia8           175            MCGenerators/pythia8      )
 LCG_external_package(thepeg            1.8.2          MCGenerators/thepeg       )
 LCG_external_package(herwig++          2.6.2          MCGenerators/herwig++     )
 LCG_external_package(tauola++          1.1.1a         MCGenerators/tauola++     )
-LCG_external_package(pythia6           "427;427.2"    MCGenerators/pythia6      )
+LCG_external_package(pythia6           427    author=6.4.27 MCGenerators/pythia6      )
+LCG_external_package(pythia6           427.2  author=6.4.27 MCGenerators/pythia6      )
 LCG_external_package(agile             1.4.0          MCGenerators/agile        )
 LCG_external_package(photos++          3.52           MCGenerators/photos++     )
 LCG_external_package(evtgen            1.1.0          MCGenerators/evtgen       )
@@ -180,7 +181,8 @@ LCG_external_package(hepmcanalysis     3.4.13         MCGenerators/hepmcanalysis
 LCG_external_package(mctester          1.25.0         MCGenerators/mctester     )
 LCG_external_package(hijing            1.383bs.2      MCGenerators/hijing       )
 LCG_external_package(starlight         r43            MCGenerators/starlight    )
-LCG_external_package(herwig        "6.520;6.520.2"    MCGenerators/herwig       )
+LCG_external_package(herwig            6.520          MCGenerators/herwig       )
+LCG_external_package(herwig            6.520.2        MCGenerators/herwig       )
 LCG_external_package(crmc              v3400          MCGenerators/crmc         )
 
 

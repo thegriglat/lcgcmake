@@ -1,15 +1,9 @@
-#todo for all: install README, lcg_configure, doc/URL
+#todo for all: install README, lcg_configure
 
-#todo: share/sources in lcgcmake-build/LocalInstallArea is not deleted on make clean-package target
 
 # cook Boost include subpath string (used by several packages)
 string(REPLACE "." "_" Boost_underscore_twodigit ${Boost_config_version_twodigit})
 
-#todo: the path
-#  ${Boost_home}/include/boost-${Boost_underscore_twodigit}
-# is non-standard and used by several generators,
-# provide the path as predefined variable from steering machinery,
-# for example ${Boost_home_include} ?
 
 set(CMAKE_VERBOSE_MAKEFILE ON)
 
@@ -96,15 +90,9 @@ LCGPackage_Add(
 )
 
 #---pythia6-------------------------------------------------------------------------------------------
-#  Note: The definition of these variables can be programmed
-set(pythia6_url_426    http://www.hepforge.org/archive/pythia6/pythia-6.4.26.f.gz)
-set(pythia6_url_426.2  http://www.hepforge.org/archive/pythia6/pythia-6.4.26.f.gz)
-set(pythia6_url_427    http://www.hepforge.org/archive/pythia6/pythia-6.4.27.f.gz)
-set(pythia6_url_427.2  http://www.hepforge.org/archive/pythia6/pythia-6.4.27.f.gz)
-
 LCGPackage_Add(
   pythia6
-  DOWNLOAD_COMMAND ${CMAKE_COMMAND} -Durl=<pythia6_url_<NATIVE_VERSION>>
+  DOWNLOAD_COMMAND ${CMAKE_COMMAND} -Durl=http://www.hepforge.org/archive/pythia6/pythia-<pythia6_<NATIVE_VERSION>_author>.f.gz
                                     -Dsource_dir=<SOURCE_DIR>
                                     -P ${CMAKE_SOURCE_DIR}/cmake/scripts/DownloadURL.cmake
   UPDATE_COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/pythia6/files  <SOURCE_DIR>
@@ -230,8 +218,7 @@ LCGPackage_Add(
 LCGPackage_Add(
   hijing
   URL http://service-spi.web.cern.ch/service-spi/external/MCGenerators/distribution/hijing/hijing-${hijing_native_version}-src.tgz
-  UPDATE_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/${hijing_native_version} <SOURCE_DIR>
-         COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/${hijing_native_version} <SOURCE_DIR>   
+  UPDATE_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/${hijing_native_version} <SOURCE_DIR>   
          COMMAND ${CMAKE_COMMAND} -E remove_directory <SOURCE_DIR>/${hijing_native_version}
   CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix=<INSTALL_DIR>
   BUILD_IN_SOURCE 1
@@ -253,7 +240,6 @@ LCGPackage_Add(
   herwig
   URL http://service-spi.web.cern.ch/service-spi/external/MCGenerators/distribution/herwig/herwig-<NATIVE_VERSION>-src.tgz
   UPDATE_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/<NATIVE_VERSION> <SOURCE_DIR>
-         COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/<NATIVE_VERSION> <SOURCE_DIR>
          COMMAND ${CMAKE_COMMAND} -E remove_directory <SOURCE_DIR>/<NATIVE_VERSION>
   CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix=<INSTALL_DIR>
   BUILD_IN_SOURCE 1

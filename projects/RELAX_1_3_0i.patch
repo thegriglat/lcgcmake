@@ -159,7 +159,7 @@ Index: Dictionaries/CMakeLists.txt
 +
 +add_subdirectory(CLHEPRflx)
 +add_subdirectory(HepMCRflx)
-+add_subdirectory(HepPDTRflx)
++#add_subdirectory(HepPDTRflx)
 +add_subdirectory(MathAddRflx)
 +add_subdirectory(MathRflx)
 +add_subdirectory(ReflexRflx)
