@@ -1,0 +1,2 @@
+sed -i.orig s"/MYHEPMCVERSION/${REALHEPMCVERSION}/" lcg_configure
+rm -f lcg_configure.orig
