@@ -33,13 +33,17 @@ LCGPackage_Add(
   URL http://home.thep.lu.se/~torbjorn/pythia8/pythia8<NATIVE_VERSION>.tgz
   UPDATE_COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/pythia8/examples  <SOURCE_DIR>/examples
          COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/pythia8/files  <SOURCE_DIR>
-         COMMAND REALHEPMCVERSION=${HepMC_native_version} usesed
+         COMMAND REALHEPMCVERSION=${HepMC_native_version} REALGENVERSION=<NATIVE_VERSION> usesed
          COMMAND ${CMAKE_COMMAND} -E remove <SOURCE_DIR>/usesed
+         COMMAND ${CMAKE_COMMAND} -E remove <INSTALL_DIR>/../share/sources/usesed
          COMMAND ${CMAKE_COMMAND} -E make_directory <SOURCE_DIR>/doc
          COMMAND ${CMAKE_COMMAND} -E echo ${HOMEPAGE} > <SOURCE_DIR>/doc/URL
          COMMAND INSTALL_DIR=<INSTALL_DIR> SHARE_DIR=<INSTALL_DIR>/../share HEPMC_VERSION=${HepMC_native_version} LCG_PLATFORM=${LCG_platform} ./lcg_configure
   CONFIGURE_COMMAND echo no configure step
+#            COMMAND INSTALL_DIR=<INSTALL_DIR> SHARE_DIR=<INSTALL_DIR>/../share HEPMC_VERSION=${HepMC_native_version} LCG_PLATFORM=${LCG_platform} ./lcg_configure
   BUILD_IN_SOURCE 1
+#  BUILD_COMMAND INSTALL_DIR=<INSTALL_DIR> SHARE_DIR=<INSTALL_DIR>/../share HEPMC_VERSION=${HepMC_native_version} LCG_PLATFORM=${LCG_platform} ./lcg_configure
+#        COMMAND make
   INSTALL_COMMAND ${CMAKE_COMMAND} -E chdir <SOURCE_DIR> make install
           COMMAND ${CMAKE_COMMAND} -E remove <INSTALL_DIR>/xmldoc
           COMMAND ${CMAKE_COMMAND} -E chdir <INSTALL_DIR> ${CMAKE_COMMAND} -E create_symlink ../share/xmldoc xmldoc
