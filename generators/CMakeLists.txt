@@ -1,5 +1,6 @@
 #todo for all: install README, lcg_configure
 
+#todo: insufficient output from the build step. set(CMAKE_VERBOSE_MAKEFILE ON) helps only partly
 
 # cook Boost include subpath string (used by several packages)
 string(REPLACE "." "_" Boost_underscore_twodigit ${Boost_config_version_twodigit})
