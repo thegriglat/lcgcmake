@@ -350,9 +350,10 @@ endmacro()
 # Examples:
 #   LCG_external_package(Boost 1.44.0)
 #   LCG_external_package(CLHEP 1.9.4.7 clhep)
-#   LCG_external_package(pythia6 
+#   LCG_external_package(pythia6 270 key=value)
 macro(LCG_external_package name version)
-  if(DEFINED ${name}_config_version)
+  list(FIND LCG_externals ${name} index)
+  if(NOT index EQUAL -1)
     list(APPEND ${name}_config_version ${version})
     list(APPEND ${name}_native_version ${version})
   else ()
@@ -467,3 +468,7 @@ macro(LCG_prepare_paths)
   endif()
 
 endmacro()
+
+#--Clear globals. It seems that toolchain file is processed several times---------
+set(LCG_externals)
+set(LCG_projects)
