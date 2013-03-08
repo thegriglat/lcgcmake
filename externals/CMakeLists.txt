@@ -9,25 +9,25 @@ LCGPackage_Add(
 )
 
 #---Boost--------------------------------------------------------------------------------------------
-set(Boost_jam_options -j12 variant=release --layout=versioned)
-set(Boost_compile_options)
+file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/user-config.jam "# \n")  # Start with an empty config file
 if(APPLE)
   set(Boost_toolset darwin)
 else()
   set(Boost_toolset gcc)
 endif()
-
-string(REPLACE "." "_" Boost_file_version ${Boost_config_version})
-
-file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/user-config.jam "using python : ${Python_config_version_twodigit} : ${Python_home} ;\n")
+set(Boost_jam_options -j12 variant=release --layout=versioned)
+set(Boost_compile_options)
 if(LCG_TARGET MATCHES i686)
   file(APPEND ${CMAKE_CURRENT_BINARY_DIR}/user-config.jam "using gcc : : :  <linkflags>-m32 <compileflags>-m32 ;")
+elseif(LCG_TARGET MATCHES "gcc([0-9]+)")
+  file(APPEND ${CMAKE_CURRENT_BINARY_DIR}/user-config.jam "using gcc : ${CMAKE_MATCH_1} : ${CMAKE_CXX_COMPILER} ;\n")
 endif()
+string(REPLACE "." "_" Boost_file_version ${Boost_config_version})
 
 LCGPackage_Add(
   Boost
   URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/boost_${Boost_file_version}.tar.gz
-  CONFIGURE_COMMAND <SOURCE_DIR>/bootstrap.sh
+  CONFIGURE_COMMAND <SOURCE_DIR>/bootstrap.sh --with-python-root=${Python_home} 
   BUILD_COMMAND <SOURCE_DIR>/b2 ${Boost_jam_options} ${Boost_compile_options}
                 --toolset=${Boost_toolset} --user-config=${CMAKE_CURRENT_BINARY_DIR}/user-config.jam
   INSTALL_COMMAND <SOURCE_DIR>/b2 ${Boost_jam_options} ${Boost_compile_options} --toolset=${Boost_toolset}

@@ -14,7 +14,7 @@ LCGPackage_Add(
 LCGPackage_Add(
   cmaketools
   SVN_REPOSITORY  http://svnweb.cern.ch/guest/cmaketools/trunk
-  PATCH_COMMAND patch -p0 -i  ${CMAKE_CURRENT_SOURCE_DIR}/cmaketools.patch
+  PATCH_COMMAND patch -p0 -t -N -i  ${CMAKE_CURRENT_SOURCE_DIR}/cmaketools.patch
   UPDATE_COMMAND <VOID>
   CONFIGURE_COMMAND <VOID>
   BUILD_COMMAND <VOID>

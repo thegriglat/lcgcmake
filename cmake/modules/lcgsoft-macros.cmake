@@ -129,7 +129,9 @@ macro(LCGPackage_Add name)
       endforeach()
       #---Adding install targets----------------------------------------------------------------------
 
-      add_custom_target(install-${targetname} COMMAND ${CMAKE_COMMAND} -DCOMPONENT=${targetname} -P ${CMAKE_BINARY_DIR}/cmake_install.cmake)
+      add_custom_target(install-${targetname} COMMAND ${CMAKE_COMMAND} -Dcomponent=${targetname} 
+                                                      -P ${CMAKE_SOURCE_DIR}/cmake/scripts/lcg_install.cmake
+                                              COMMENT "Installing package ${targetname} at ${CMAKE_INSTALL_PREFIX}")
     endif()
     
     if(nvers GREATER 1)
