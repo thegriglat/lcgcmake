@@ -1,0 +1,109 @@
+#!/bin/sh
+#
+# A simple configuration script for LHAPDF author's examples
+# AR
+
+if [ x$BASH_VERSION = x ]; then
+  echo warning: you are not using bash shell on which this script is tested
+fi
+
+LHAPDFVERSION=5.8.3
+MYLCGPLATFORM=i686-slc5-gcc43-opt
+#
+usage () {
+    echo "Usage: ./configure [options] , where options are:"
+    echo "  --help                    : prints this help and exit"
+    echo
+    echo "Set paths to external libraries"
+    echo "  --with-lhapdf=/path       : path to LHAPDF installation directory "
+    echo "  --with-pdfsets=/path      : path to LHAPDF PDFSets directory"
+    echo 
+    echo "Alternative setting of above paths (only can be used if LHAPDF has installed on CERN AFS LCG external)"
+    echo "  --with-lhapdfversion=v    : LHAPDF version"
+    echo "  --lcgplatform=name        : LCG platform name [${MYLCGPLATFORM}]"
+    echo 
+}
+
+if [ $# == 0 -o "$1" == "--help" ] ; then
+  usage
+  exit
+fi
+
+for arg in $* ; do
+  if [ x`echo x${arg} | grep "="` != x ] ; then
+    option=${arg/=*/}
+    value=${arg/*=/}
+    if [ "x${option}" = "x--lcgplatform" ] ; then
+      MYLCGPLATFORM=${value}
+    elif [ "x${option}" = "x--with-lhapdfversion" ] ; then
+      LHAPDFVERSION=${value}
+    elif [ "x${option}" = "x--with-lhapdf" ] ; then
+      LHAPDFLOCATION=${value}
+    elif [ "x${option}" = "x--with-pdfsets" ] ; then
+      PDFSETSLOCATION=${value}
+    else
+      echo "${arg}: wrong option. Ignored." >&2
+    fi
+  fi
+done
+
+   
+# Environment variable LD_LIBRARY_PATH should be defined before run
+# The default values here correspond to CERN AFS lcg external
+#
+
+CERNEXT=/afs/cern.ch/sw/lcg/external
+enable_CERNEXT=no
+if [ -d ${CERNEXT} ] ; then { enable_CERNEXT=yes ; echo "==> enable_CERNEXT = ${enable_CERNEXT}" ; } fi
+
+#
+  if [ "x${LHAPDFVERSION}" != "x" -a "x${LHAPDFLOCATION}" == "x" -a "${enable_CERNEXT}" == "yes" ] ; then
+     LHAPDFLOCATION=${CERNEXT}/MCGenerators/lhapdf/${LHAPDFVERSION}/${MYLCGPLATFORM}
+     if [ "x${PDFSETSLOCATION}" == "x" ] ; then PDFSETSLOCATION=${CERNEXT}/MCGenerators/lhapdf/${LHAPDFVERSION}/share/lhapdf/PDFsets ; fi
+  fi
+  if [ ! -f ${LHAPDFLOCATION}/lib/libLHAPDF.so ] ; then
+     echo "Error: Can't find LHAPDF libraries in ${LHAPDFLOCATION}/lib. Check LHAPDF location. Exiting!"; exit 1
+  fi
+  if [ ! -d "${PDFSETSLOCATION}" ] ; then
+     echo "Error: Can't find PDFsets in ${PDFSETSLOCATION}. Check PDFsets location. Exiting!"; exit 1
+  fi
+  echo "==> LHAPDFDIR=${LHAPDFLOCATION}"
+  echo "==> PDFSETSDIR=${PDFSETSLOCATION}"
+
+#
+if [ "x${FC}"  == "x" ] ; then FC=gfortran ; fi
+if [ "x${CXX}" == "x" ] ; then CXX=g++ ; fi
+
+echo -n "==> Preparing of config.mk ... "
+
+rm -f config.mk
+
+cat <<EOF > config.mk
+SHELL = /bin/sh
+LHAPDFDIR=${LHAPDFLOCATION}
+PDFSETSDIR=${PDFSETSLOCATION}
+FC=${FC}
+CXX=${CXX}
+EOF
+echo "ok"
+#
+echo -n "==> Preparing of  paths.sh ... "
+
+rm -f paths.sh
+
+( 
+  echo "#!/bin/sh"
+  echo 'if test "x${LD_LIBRARY_PATH}" = "x" ; then '
+  echo "  export LD_LIBRARY_PATH=${LHAPDFLOCATION}/lib"
+  echo 'else'
+  echo "  export LD_LIBRARY_PATH=\${LD_LIBRARY_PATH}:${LHAPDFLOCATION}/lib"
+  echo 'fi'
+  echo 
+  echo "export LHAPATH=${PDFSETSLOCATION}"
+) > paths.sh
+echo "ok"
+echo "**************************************************"
+echo "* Type \`make' to build all examples              *"
+echo "* type \`source paths.sh' before running examples *"
+echo "**************************************************"
+exit

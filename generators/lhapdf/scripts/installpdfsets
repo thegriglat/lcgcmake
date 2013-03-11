@@ -1,0 +1,1 @@
+${PDFSETS_BIN}/lhapdf-getdata --all --force --repo=http://www.hepforge.org/archive/lhapdf/pdfsets/current --dest=${PDFSETS_DIR}

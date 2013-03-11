@@ -11,18 +11,22 @@ set(CMAKE_VERBOSE_MAKEFILE ON)
 #---lhapdf------------------------------------------------------------------------------------------
 #todo: add installation of examples
 
-if(EXISTS /afs/cern.ch)
- set(lhapdf_sets /afs/cern.ch/sw/lcg/external/MCGenerators/lhapdf/${lhapdf_native_version}/share/PDFsets)
-else()
- set(lhapdf_sets /Users/mato/Development/externals/PDFsets)   # For testing purposes
-endif()
+#if(EXISTS /afs/cern.ch)
+# set(lhapdf_sets /afs/cern.ch/sw/lcg/external/MCGenerators/lhapdf/${lhapdf_native_version}/share/PDFsets)
+#else()
+# set(lhapdf_sets /Users/mato/Development/externals/PDFsets)   # For testing purposes
+#endif()
 
 LCGPackage_Add(
   lhapdf
   URL http://www.hepforge.org/archive/lhapdf/lhapdf-${lhapdf_native_version}.tar.gz
   CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix=<INSTALL_DIR> --datadir=<INSTALL_DIR>/../share --enable-low-memory  --disable-pyext --disable-doxygen --disable-octave
   INSTALL_COMMAND make install
-          COMMAND ${CMAKE_COMMAND} -E create_symlink ${lhapdf_sets} <INSTALL_DIR>/../share/lhapdf/PDFsets
+#          COMMAND ${CMAKE_COMMAND} -E create_symlink ${lhapdf_sets} <INSTALL_DIR>/../share/lhapdf/PDFsets
+          COMMAND ${CMAKE_COMMAND} -E chdir <INSTALL_DIR>/../share ${CMAKE_COMMAND} -E create_symlink lhapdf/PDFsets PDFsets
+          COMMAND ${CMAKE_COMMAND} -E chdir <INSTALL_DIR>/../share ${CMAKE_COMMAND} -E create_symlink lhapdf/PDFsets.index PDFsets.index
+          COMMAND ${CMAKE_COMMAND} -E chdir <INSTALL_DIR> ${CMAKE_COMMAND} -E create_symlink ../logs/lhapdf-${LCG_platform}-build-out.log make.log
+          COMMAND ${CMAKE_COMMAND} -E chdir <INSTALL_DIR> ${CMAKE_COMMAND} -E create_symlink ../logs/lhapdf-${LCG_platform}-configure-out.log configure.log
   BUILD_IN_SOURCE 1
 )
 
