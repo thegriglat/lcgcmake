@@ -105,7 +105,7 @@ LCGPackage_Add(
                                     -Dsource_dir=<SOURCE_DIR>
                                     -P ${CMAKE_SOURCE_DIR}/cmake/scripts/DownloadURL.cmake
   UPDATE_COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/pythia6/files  <SOURCE_DIR>
-         COMMAND ${CMAKE_COMMAND} -E chdir <SOURCE_DIR> ${CMAKE_COMMAND} -DMYVERSION=<NATIVE_VERSION> -P preparePythia6.cmake
+         COMMAND ${CMAKE_COMMAND} -E chdir <SOURCE_DIR> ${CMAKE_COMMAND} -DHEPEVT_SIZE=<pythia6_<NATIVE_VERSION>_hepevt> -P preparePythia6.cmake
   CMAKE_ARGS -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
 )
 

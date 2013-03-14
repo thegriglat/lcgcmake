@@ -26,14 +26,9 @@ endfunction()
 
 #---Call the function for a set of files--------------------------------------
 foreach(file dummy/upveto.f src/pyhepc.f src/pylist.f src/pyveto.f)
-  file(RENAME ${file} ${file}.ori)
-  replace_hepevt_by_include(${file}.ori ${file})
+  file(RENAME ${file} ${file}.orig)
+  replace_hepevt_by_include(${file}.orig ${file})
 endforeach()
 
-if(${MYVERSION} MATCHES .*[.]2)
-  set(HEPEVT_SIZE 10000)
-else()
-  set(HEPEVT_SIZE 4000)
-endif()
-
+# use HEPEVT_SIZE parameter:
 configure_file(include/hepevt.inc.in include/hepevt.inc @ONLY)
