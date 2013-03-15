@@ -193,22 +193,16 @@ LCGPackage_Add(
 )
 
 #---HepMCAnalysis------------------------------------------------------------------------------------
-#todo: add dependency on ROOT
-if(${hepmcanalysis_native_version} MATCHES 3[.]4[.]13)
-  set(hepmcanalysis_author_version 00-03-04-13)
-endif()
-if(${hepmcanalysis_native_version} MATCHES 3[.]4[.]14)
-  set(hepmcanalysis_author_version 00-03-04-14)
-endif()
 LCGPackage_Add(
   hepmcanalysis
-  URL http://hepmcanalysistool.desy.de/releases/HepMCAnalysis-${hepmcanalysis_author_version}.tar.gz
-  UPDATE_COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/hepmcanalysis/files  <SOURCE_DIR>
-  CONFIGURE_COMMAND echo "no configure step"
-  BUILD_COMMAND ${CMAKE_COMMAND} -E chdir <SOURCE_DIR> ./confmake ${HepMC_native_version} ${fastjet_native_version} ${CLHEP_native_version}
+  URL http://hepmcanalysistool.desy.de/releases/HepMCAnalysis-<hepmcanalysis_<NATIVE_VERSION>_author>.tgz
+  UPDATE_COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/hepmcanalysis/files <SOURCE_DIR>
+  CONFIGURE_COMMAND echo "No configure step"
+  BUILD_COMMAND ./build.sh --sysname=${LCG_platform} --hepmc-version=${HepMC_native_version} --fastjet-version=${fastjet_native_version} --clhep-version=${CLHEP_native_version} --root-version=${ROOT_native_version}
   INSTALL_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/lib <INSTALL_DIR>/lib
           COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/include <INSTALL_DIR>/include
-  DEPENDS HepMC fastjet CLHEP
+  BUILD_IN_SOURCE 1
+  DEPENDS HepMC fastjet CLHEP ROOT
 )
 
 #---MC-TESTER----------------------------------------------------------------------------------------

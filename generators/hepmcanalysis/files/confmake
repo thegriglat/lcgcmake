@@ -1,3 +1,0 @@
-./configure --hepmc-version=$1 --fastjet-version=$2 --clhep-version=$3
-source setupEnvVariables.sh
-make slib
