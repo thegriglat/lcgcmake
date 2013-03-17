@@ -2,6 +2,8 @@
 
 #todo: insufficient output from the build step. set(CMAKE_VERBOSE_MAKEFILE ON) helps only partly
 
+#todo: put log file under the platform directory, no platform name is needed in the log file names
+
 # cook Boost include subpath string (used by several packages)
 string(REPLACE "." "_" Boost_underscore_twodigit ${Boost_config_version_twodigit})
 
@@ -9,7 +11,7 @@ string(REPLACE "." "_" Boost_underscore_twodigit ${Boost_config_version_twodigit
 set(CMAKE_VERBOSE_MAKEFILE ON)
 
 #---lhapdf------------------------------------------------------------------------------------------
-#todo: add installation of examples
+#todo: install precompiled examples and paths.sh
 
 #if(EXISTS /afs/cern.ch)
 # set(lhapdf_sets /afs/cern.ch/sw/lcg/external/MCGenerators/lhapdf/${lhapdf_native_version}/share/PDFsets)
@@ -20,13 +22,20 @@ set(CMAKE_VERBOSE_MAKEFILE ON)
 LCGPackage_Add(
   lhapdf
   URL http://www.hepforge.org/archive/lhapdf/lhapdf-${lhapdf_native_version}.tar.gz
+  UPDATE_COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/lhapdf/files  <SOURCE_DIR>
   CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix=<INSTALL_DIR> --datadir=<INSTALL_DIR>/../share --enable-low-memory  --disable-pyext --disable-doxygen --disable-octave
   INSTALL_COMMAND make install
+#          this below is for some tests
 #          COMMAND ${CMAKE_COMMAND} -E create_symlink ${lhapdf_sets} <INSTALL_DIR>/../share/lhapdf/PDFsets
+          COMMAND ${CMAKE_COMMAND} -E chdir <INSTALL_DIR>/../share/lhapdf ${CMAKE_COMMAND} -E make_directory PDFsets
           COMMAND ${CMAKE_COMMAND} -E chdir <INSTALL_DIR>/../share ${CMAKE_COMMAND} -E create_symlink lhapdf/PDFsets PDFsets
           COMMAND ${CMAKE_COMMAND} -E chdir <INSTALL_DIR>/../share ${CMAKE_COMMAND} -E create_symlink lhapdf/PDFsets.index PDFsets.index
-          COMMAND ${CMAKE_COMMAND} -E chdir <INSTALL_DIR> ${CMAKE_COMMAND} -E create_symlink ../logs/lhapdf-${LCG_platform}-build-out.log make.log
-          COMMAND ${CMAKE_COMMAND} -E chdir <INSTALL_DIR> ${CMAKE_COMMAND} -E create_symlink ../logs/lhapdf-${LCG_platform}-configure-out.log configure.log
+#          this below does not work: file is not yet there
+#          COMMAND ${CMAKE_COMMAND} -E copy <INSTALL_DIR>/../logs/lhapdf-${LCG_platform}-build-out.log <INSTALL_DIR> 
+          COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/lhapdf/examples  <INSTALL_DIR>/../share/examples
+          COMMAND ${CMAKE_COMMAND} -E copy <SOURCE_DIR>/examples/lhapdf-cctest1 <INSTALL_DIR>/bin
+          COMMAND ${CMAKE_COMMAND} -E copy <SOURCE_DIR>/examples/lhapdf-example1 <INSTALL_DIR>/bin
+          COMMAND ${CMAKE_COMMAND} -E echo mymessage
   BUILD_IN_SOURCE 1
 )
 
