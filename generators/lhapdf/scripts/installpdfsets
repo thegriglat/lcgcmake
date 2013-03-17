@@ -1,1 +1,6 @@
-${PDFSETS_BIN}/lhapdf-getdata --all --force --repo=http://www.hepforge.org/archive/lhapdf/pdfsets/current --dest=${PDFSETS_DIR}
+echo
+echo getting PDF sets from the default repository and installing it in $2
+echo this takes O(1 hour) of time and requires several GB of disk space
+echo the command is $1/lhapdf-getdata --all --force --dest=$2
+echo
+$1/lhapdf-getdata --all --force --dest=$2
