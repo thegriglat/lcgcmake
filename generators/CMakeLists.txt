@@ -4,6 +4,8 @@
 
 #todo: put log file under the platform directory, no platform name is needed in the log file names
 
+#todo: tarballs
+
 # cook Boost include subpath string (used by several packages)
 string(REPLACE "." "_" Boost_underscore_twodigit ${Boost_config_version_twodigit})
 
@@ -11,7 +13,8 @@ string(REPLACE "." "_" Boost_underscore_twodigit ${Boost_config_version_twodigit
 set(CMAKE_VERBOSE_MAKEFILE ON)
 
 #---lhapdf------------------------------------------------------------------------------------------
-#todo: install precompiled examples and paths.sh
+#todo: install ALL precompiled examples and paths.sh
+#todo: making tarballs is specific for lhapdf
 
 #if(EXISTS /afs/cern.ch)
 # set(lhapdf_sets /afs/cern.ch/sw/lcg/external/MCGenerators/lhapdf/${lhapdf_native_version}/share/PDFsets)
@@ -35,7 +38,10 @@ LCGPackage_Add(
           COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/lhapdf/examples  <INSTALL_DIR>/../share/examples
           COMMAND ${CMAKE_COMMAND} -E copy <SOURCE_DIR>/examples/lhapdf-cctest1 <INSTALL_DIR>/bin
           COMMAND ${CMAKE_COMMAND} -E copy <SOURCE_DIR>/examples/lhapdf-example1 <INSTALL_DIR>/bin
-          COMMAND ${CMAKE_COMMAND} -E echo mymessage
+#          real PDF sets getting and installation, takes a long time: 
+          COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/lhapdf/scripts/instlpdfsets <INSTALL_DIR>/bin <INSTALL_DIR>/../share/lhapdf/PDFsets 
+#          test PDF sets getting and installation:
+#          COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/lhapdf/scripts/instlpdfsets_test <INSTALL_DIR>/bin <INSTALL_DIR>/../share/lhapdf/PDFsets
   BUILD_IN_SOURCE 1
 )
 

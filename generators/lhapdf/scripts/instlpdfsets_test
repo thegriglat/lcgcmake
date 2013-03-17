@@ -1,0 +1,6 @@
+echo
+echo TEST RUN of getting PDF sets from the default repository and installing it in $2
+echo "getting only one set cteq6l (3 files)"
+echo "the command is $1/lhapdf-getdata --force --dest=$2 cteq6l"
+echo
+$1/lhapdf-getdata --force --dest=$2 cteq6l
