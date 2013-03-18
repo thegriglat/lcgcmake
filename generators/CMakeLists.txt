@@ -55,7 +55,7 @@ LCGPackage_Add(
   URL http://home.thep.lu.se/~torbjorn/pythia8/pythia8<NATIVE_VERSION>.tgz
   UPDATE_COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/pythia8/examples  <SOURCE_DIR>/examples
          COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/pythia8/files  <SOURCE_DIR>
-         COMMAND REALHEPMCVERSION=${HepMC_native_version} REALGENVERSION=<NATIVE_VERSION> usesed
+         COMMAND REALHEPMCVERSION=${HepMC_native_version} REALGENVERSION=<NATIVE_VERSION> ./usesed
          COMMAND ${CMAKE_COMMAND} -E remove <SOURCE_DIR>/usesed
          COMMAND ${CMAKE_COMMAND} -E remove <INSTALL_DIR>/../share/sources/usesed
          COMMAND ${CMAKE_COMMAND} -E make_directory <SOURCE_DIR>/doc
