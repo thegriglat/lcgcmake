@@ -33,6 +33,8 @@ LCGPackage_Add(
           COMMAND ${CMAKE_COMMAND} -E chdir <INSTALL_DIR>/../share/lhapdf ${CMAKE_COMMAND} -E make_directory PDFsets
           COMMAND ${CMAKE_COMMAND} -E chdir <INSTALL_DIR>/../share ${CMAKE_COMMAND} -E create_symlink lhapdf/PDFsets PDFsets
           COMMAND ${CMAKE_COMMAND} -E chdir <INSTALL_DIR>/../share ${CMAKE_COMMAND} -E create_symlink lhapdf/PDFsets.index PDFsets.index
+          COMMAND ${CMAKE_COMMAND} -E chdir <INSTALL_DIR>/lib ${CMAKE_COMMAND} -E make_directory archive
+          COMMAND ${CMAKE_COMMAND} -E chdir <INSTALL_DIR>/lib/archive ${CMAKE_COMMAND} -E create_symlink ../libLHAPDF.a libLHAPDF.a
 #          this below does not work: file is not yet there
 #          COMMAND ${CMAKE_COMMAND} -E copy <INSTALL_DIR>/../logs/lhapdf-${LCG_platform}-build-out.log <INSTALL_DIR> 
           COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/lhapdf/examples  <INSTALL_DIR>/../share/examples
