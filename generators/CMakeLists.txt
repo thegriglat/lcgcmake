@@ -8,6 +8,7 @@
 
 # cook Boost include subpath string (used by several packages)
 string(REPLACE "." "_" Boost_underscore_twodigit ${Boost_config_version_twodigit})
+set(Boost_home_include ${Boost_home}/include/boost-${Boost_underscore_twodigit})
 
 
 set(CMAKE_VERBOSE_MAKEFILE ON)
@@ -95,7 +96,7 @@ if(NOT APPLE)    #  (installation fails on MacOSX)
     herwig++
     URL http://www.hepforge.org/archive/herwig/Herwig++-${herwig++_native_version}.tar.bz2
     CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --with-gsl=${GSL_home} --with-thepeg=${thepeg_home} 
-                      --with-boost-incpath=${Boost_home}/include/boost-${Boost_underscore_twodigit}
+                      --with-boost-incpath=${Boost_home_include}
     BUILD_IN_SOURCE 1
     DEPENDS GSL Boost thepeg
   )
@@ -138,7 +139,7 @@ LCGPackage_Add(
 #     SWIG=${swig_home}/bin/swig
   CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> 
      --with-hepmc=${HepMC_home} 
-     --with-boost-incpath=${Boost_home}/include/boost-${Boost_underscore_twodigit}
+     --with-boost-incpath=${Boost_home_include}
      --with-lcgtag=${LCG_platform}
      PYTHON=${Python_home}/bin/python LD_LIBRARY_PATH=${Python_home}/lib:$ENV{LD_LIBRARY_PATH}
      SWIG=${swig_home}/bin/swig
@@ -176,7 +177,7 @@ LCGPackage_Add(
   URL http://www.hepforge.org/archive/rivet/Rivet-${rivet_native_version}.tar.bz2
   CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> 
      --with-hepmc=${HepMC_home} 
-     --with-boost-incpath=${Boost_home}/include/boost-${Boost_underscore_twodigit}
+     --with-boost-incpath=${Boost_home_include}
      --with-fastjet=${fastjet_home}
      --with-gsl=${GSL_home}
      --with-lcgtag=${LCG_platform}
