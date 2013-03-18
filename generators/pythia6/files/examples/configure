@@ -1,0 +1,204 @@
+#!/bin/sh
+#
+# Configuration script for a cmake build system, to be run before making examples
+#
+# Author: M. Kirsanov
+
+#
+# User-changeable part -------------------------------
+#
+
+#LCG platform. Can be needed if external libraries are specified
+if [ x$MYLCGPLATFORM = x ]; then
+  export MYLCGPLATFORM=x86_64-slc5-gcc43-opt
+fi
+
+#Compilation mode. Is not changed if specified outside
+if [ x$COMPMODE = x ]; then
+  export COMPMODE=OPT
+fi
+#if [ x$COMPMODE = x ]; then
+#  export COMPMODE=DBG
+#fi
+
+# check arguments
+
+for arg in $* ; do
+  if [ "x$arg" = "x--enable-debug" ] ; then
+    COMPMODE=DBG
+  elif [ "x$arg" = "x--enable-optimize" ] ; then
+    COMPMODE=OPT
+  elif [ "x$arg" = "x--help" ] ; then
+    echo "Usage: ./configure [options] , where options are:"
+    echo "--help            : prints this help"
+    echo "--enable-optimize : turns on compiler optimizations (default)"
+    echo "--enable-debug    : turns on debugging flags"
+    echo "--enable-shared   : use shared library (not yet implem.) (default no)"
+    echo "--lcgplatform=lcgplatformname : platform, default is x86_64-slc5-gcc43-opt"
+    echo "--with-pythia6=p6path    : path to pythia6 installation dir to find libs, includes and pars (default is ..)"
+    echo "--with-hepmc=path     : path to HepMC library to build examples that use it"
+    echo "--with-hepmcversion=v : HepMC version (simplified alternative when using CERN AFS LCG external, e.g. =2.06.07)"
+    echo "--with-lhapdf=lhapdfpath : path to LHAPDF libraries dir (LHAPDF must be version 5.3 or higher)"
+    echo "--with-lhapdfversion=v   : LHAPDF version (simplified alternative when using CERN AFS MCGenerators, e.g. =5.7.0)"
+    echo "--with-lhapdflibname=n   : lhapdf library name line (default is -lLHAPDF)"
+    echo "--with-lhapdfsets=path   : path to LHAPDF data (default is lhapdfpath/../PDFsets, CERN AFS default is lhapdfpath/../../../share/PDFsets)"
+    exit
+  elif [ x`echo x${arg} | grep "="` != x ] ; then
+    option=`echo ${arg} | awk -F = '{print $1}'`
+    value=`echo ${arg} | awk -F = '{print $2}'`
+    if [ "x${option}" = "x--lcgplatform" ] ; then
+      MYLCGPLATFORM=${value}
+    elif [ "x${option}" = "x--with-pythia6" ] ; then
+      PYTHIA6LOCATION=${value}
+    elif [ "x${option}" = "x--with-hepmcversion" ] ; then
+      HEPMCVERSION=${value}
+    elif [ "x${option}" = "x--with-hepmc" ] ; then
+      HEPMCLOCATION=${value}
+    elif [ "x${option}" = "x--with-lhapdfversion" ] ; then
+      LHAPDFVERSION=${value}
+    elif [ "x${option}" = "x--with-lhapdf" ] ; then
+      LHAPDFLOCATION=${value}
+    elif [ "x${option}" = "x--with-lhapdflibname" ] ; then
+      LHAPDFLIBNAME=${value}
+    elif [ "x${option}" = "x--with-lhapdfsets" ] ; then
+      LHAPDFSETSLOCATION=${value}
+    else
+      echo "${arg}: wrong option. Ignored." >&2
+    fi
+  fi
+done
+
+MYCMAKE=`which  cmake`
+if [ "x$MYCMAKE" = "x" ] ; then
+  echo
+  echo "Error: cmake is not defined. Please define cmake"
+  echo
+  exit
+fi
+
+echo compilation mode is $COMPMODE
+
+# Environment variables for building HepMC interface library. Note that
+# the HepMC interface library is used by the examples main31, main32.
+# Attention: if you have already run these examples and you change HepMC
+# version you should reset your LD_LIBRARY_PATH
+# The default values here correspond to CERN AFS lcg external
+#
+if [ "x${HEPMCVERSION}" != "x" ] ; then
+  if [ "x${HEPMCLOCATION}" = "x" ] ; then
+    export HEPMCLOCATION=/afs/cern.ch/sw/lcg/external/HepMC/${HEPMCVERSION}/${MYLCGPLATFORM}
+  fi
+fi
+#   If you want to assign these variables by hand:
+#
+#export HEPMCVERSION=2.04.00
+#export HEPMCLOCATION=/afs/cern.ch/sw/lcg/external/HepMC/${HEPMCVERSION}/${MYLCGPLATFORM}
+
+if [ "x${HEPMCVERSION}" = "x" ] ; then
+  if [ "x${HEPMCLOCATION}" != "x" ] ; then
+#                                            try to find out which HepMC version
+    test1=`echo $HEPMCLOCATION | grep \/1.`
+    test2=`echo $HEPMCLOCATION | grep \/2.`
+    echo $test1
+    echo $test2
+    if [ "x${test1}" != "x" ] ; then
+      echo "Warning: HepMC 1 cannot be used anymore; Please use HepMC 2"
+      echo "         The interface will not be built"
+      export HEPMCLOCATION=
+    fi
+    if [ "x${test2}" != "x" ] ; then
+      export HEPMCVERSION=2.`echo $HEPMCLOCATION | awk -F \/2. '{print $2}' | awk -F \/ '{print $1}'`
+    fi
+  fi
+fi
+if [ "x${HEPMCVERSION}" != "x" ] ; then
+  export HEPMCMAINVERSION=`echo ${HEPMCVERSION} | awk -F . '{print$1}'`
+  if [ ${HEPMCMAINVERSION} = 1 ] ; then
+    echo "Warning: HepMC 1 cannot be used anymore; Please use HepMC 2"
+    echo "         The interface will not be built"
+    export HEPMCLOCATION=
+  fi
+fi
+if [ "x${HEPMCLOCATION}" != "x" ] ; then
+  if [ "x${HEPMCVERSION}" = "x" ] ; then
+    echo "Warning: hepmc specified, but cannot find out which HepMC version"
+    echo "Warning: if you specify HepMC 1 the compilation of interface will fail"
+  fi
+fi
+
+# LHAPDF location
+# The default values here correspond to CERN AFS (but you may want to change
+# the version and/or platform).
+
+if [ x${LHAPDFLOCATION} != x ]; then
+  if [ x${LHAPDFSETSLOCATION} = x ]; then
+    export LHAPDFSETSLOCATION=${LHAPDFLOCATION}/../PDFsets
+    if [ ! -d ${LHAPDFSETSLOCATION} ]; then
+      export LHAPDFSETSLOCATION=${LHAPDFLOCATION}/../../share/lhapdf/PDFsets
+    fi
+    if [ ! -d ${LHAPDFSETSLOCATION} ]; then
+      export LHAPDFSETSLOCATION=${LHAPDFLOCATION}/../share/lhapdf/PDFsets
+    fi
+  fi
+fi
+if [ x${LHAPDFVERSION} = x ]; then
+  export LHAPDFVERSION=5.8.8
+else
+  if [ x${LHAPDFLOCATION} = x ]; then
+    export LHAPDFLOCATION=/afs/cern.ch/sw/lcg/external/MCGenerators/lhapdf/${LHAPDFVERSION}/${MYLCGPLATFORM}/lib
+    if [ x${LHAPDFSETSLOCATION} = x ]; then
+      export LHAPDFSETSLOCATION=/afs/cern.ch/sw/lcg/external/MCGenerators/lhapdf/${LHAPDFVERSION}/share/PDFsets
+    fi
+  fi
+fi
+if [ x${LHAPDFLOCATION} = x ]; then
+  export LHAPDFLOCATION=/afs/cern.ch/sw/lcg/external/MCGenerators/lhapdf/${LHAPDFVERSION}/${MYLCGPLATFORM}/lib
+fi
+if [ x${LHAPDFLIBNAME} = x ]; then
+  export LHAPDFLIBNAME="-lLHAPDF"
+fi
+if [ x${LHAPDFSETSLOCATION} = x ]; then
+  export LHAPDFSETSLOCATION=/afs/cern.ch/sw/lcg/external/MCGenerators/lhapdf/${LHAPDFVERSION}/share/PDFsets
+fi
+
+#
+# Checks
+#
+if [ $?HEPMCLOCATION ]; then
+  if [ x${HEPMCLOCATION} != x ]; then
+    if [ ! -d ${HEPMCLOCATION}/include ]; then
+      echo ERROR in HEPMCLOCATION: directory ${HEPMCLOCATION}/include does not exist
+    fi
+    if [ ! -d ${HEPMCLOCATION}/lib ]; then
+      echo ERROR in HEPMCLOCATION: directory ${HEPMCLOCATION}/lib does not exist
+    fi
+  fi
+fi
+if [ $?LHAPDFLOCATION ]; then
+  if [ x${LHAPDFLOCATION} != x ]; then
+    if [ ! -d ${LHAPDFLOCATION} ]; then
+      echo ERROR in LHAPDFLOCATION: directory ${LHAPDFLOCATION} does not exist
+    fi
+    if [ ! -d ${LHAPDFSETSLOCATION} ]; then
+      echo ERROR in LHAPDFSETSLOCATION: directory ${LHAPDFSETSLOCATION} does not exist
+    fi
+  fi
+fi
+
+export CMAKESTRING=
+
+if [ "x${PYTHIA6LOCATION}" != "x" ] ; then
+  export CMAKESTRING="-DMYPYTHIA6PATH=${PYTHIA6LOCATION}"
+fi
+if [ "x${HEPMCLOCATION}" != "x" ] ; then
+  export CMAKESTRING="${CMAKESTRING} -DMYHEPMCPATH=${HEPMCLOCATION}"
+fi
+if [ "x${LHAPDFLOCATION}" != "x" ] ; then
+  export CMAKESTRING="${CMAKESTRING} -DMYLHAPDFPATH=${LHAPDFLOCATION}"
+fi
+
+echo cmake argument string is: ${CMAKESTRING}
+
+rm -f ./CMakeCache.txt
+
+cmake ${CMAKESTRING} .

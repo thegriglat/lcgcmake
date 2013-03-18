@@ -1,0 +1,37 @@
+#!/bin/sh
+#
+# Configuration script, to be run before compilation
+#
+export PREFIX=.
+
+# check arguments
+for arg in $* ; do
+  if [ "x$arg" = "x--help" ] ; then
+    echo "Usage: ./configure [options] , where options are:"
+    echo "--help            : prints this help"
+    echo "--prefix=path     : path to install, default is ."
+    exit
+  elif [ x`echo x${arg} | grep "="` != x ] ; then
+    option=`echo ${arg} | awk -F = '{print $1}'`
+    value=`echo ${arg} | awk -F = '{print $2}'`
+    if [ "x${option}" = "x--prefix" ] ; then
+      PREFIX=${value}
+    else
+      echo "${arg}: wrong option. Ignored." >&2
+    fi
+  fi
+done
+
+MYCMAKE=`which  cmake`
+if [ "x$MYCMAKE" = "x" ] ; then
+  echo
+  echo "Error: cmake is not defined. Please define cmake"
+  echo
+  exit
+fi
+
+echo the package will be installed in $PREFIX
+
+rm -f ./CMakeCache.txt
+
+cmake -DCMAKE_INSTALL_PREFIX=${PREFIX} .
