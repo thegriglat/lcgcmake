@@ -65,7 +65,7 @@ LCGPackage_Add(
           COMMAND ${CMAKE_COMMAND} -E chdir <INSTALL_DIR> ${CMAKE_COMMAND} -E create_symlink ../share/xmldoc xmldoc
   CONFIGURE_EXAMPLES_COMMAND <SOURCE_DIR>/examples/configure
                              --with-pythia8=<INSTALL_DIR>
-                             --with-lhapdf=${lhapdf_home}
+                             --with-lhapdf=${lhapdf_home}/lib
   BUILD_EXAMPLES_COMMAND  make -C <SOURCE_DIR>/examples main01 main03
   INSTALL_EXAMPLES_COMMAND ${CMAKE_COMMAND} -E make_directory <INSTALL_DIR>/bin
                    COMMAND ${CMAKE_COMMAND} -E chdir <SOURCE_DIR>/examples cp bin/main01.exe bin/main03.exe main03.cmnd test <INSTALL_DIR>/bin
