@@ -149,12 +149,11 @@ LCGPackage_Add(
 )
 
 #---evtgen------------------------------------------------------------------------------------------
-set(EVTGEN_TAG R01-01-00)
 if(NOT APPLE)    #  (build fails on Mac " unknown option: -soname")
 LCGPackage_Add(
   evtgen
-  SVN_REPOSITORY http://svnweb.cern.ch/guest/evtgen/tags/${EVTGEN_TAG}
-  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --hepmcdir=${HepMC_home} --pythiadir=${pythia8_home} --photosdir=${photos_home} --tauoladir=${tauola_home}
+  SVN_REPOSITORY http://svnweb.cern.ch/guest/evtgen/tags/<evtgen_<NATIVE_VERSION>_tag>
+  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --hepmcdir=${HepMC_home} --pythiadir=${pythia8_home} --photosdir=${photos++_home} --tauoladir=${tauola++_home}
   BUILD_IN_SOURCE 1   
   DEPENDS HepMC pythia8 photos++ tauola++
 )
@@ -181,18 +180,17 @@ LCGPackage_Add(
 )
 
 #---Sherpa------------------------------------------------------------------------------------------
-#todo: HEPEVT size subversion 4000 / 10000
 LCGPackage_Add(
   sherpa
-  URL http://www.hepforge.org/archive/sherpa/SHERPA-MC-${sherpa_native_version}.tar.gz
+  URL http://www.hepforge.org/archive/sherpa/SHERPA-MC-<sherpa_<NATIVE_VERSION>_author>.tar.gz
   CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR>
      --enable-shared --enable-static --enable-binreloc --enable-analysis
-     --enable-pythia --enable-hepevtsize=4000
+     --enable-pythia --enable-hepevtsize=<sherpa_<NATIVE_VERSION>_hepevt>
      --enable-lhapdf=${lhapdf_home}
      --enable-hepmc2=${HepMC_home}
      --enable-rivet=${rivet_home}
   BUILD_IN_SOURCE 1
-  DEPENDS lhapdf HepMC rivet Boost GSL
+  DEPENDS lhapdf HepMC rivet
 )
 
 #---HepMCAnalysis------------------------------------------------------------------------------------
@@ -209,14 +207,13 @@ LCGPackage_Add(
 )
 
 #---MC-TESTER----------------------------------------------------------------------------------------
-#todo: add dependency on ROOT
 LCGPackage_Add(
   mctester
   URL http://cern.ch/MC-TESTER/MC-TESTER-${mctester_native_version}.tar.gz
   UPDATE_COMMAND ${CMAKE_COMMAND} -E touch make.inc
-  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --datadir=<INSTALL_DIR>/../share --with-HepMC=${HepMC_home} --with-root=${ROOTSYS}
+  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --with-HepMC=${HepMC_home} --with-root=${ROOT_home}
   BUILD_IN_SOURCE 1
-  DEPENDS HepMC
+  DEPENDS HepMC ROOT
 )
 
 #---HIJING----------------------------------------------------------------------------------------
