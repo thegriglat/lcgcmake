@@ -270,13 +270,3 @@ LCGPackage_Add(
   INSTALL_COMMAND ${CMAKE_COMMAND} -E chdir <SOURCE_DIR> make -f Makefile install CRMCROOT=<INSTALL_DIR> HEP_ROOT=${HepMC_home}
   DEPENDS HepMC
 )
-
-
-# test
-LCGPackage_Add(
-  test
-  URL http://service-spi.web.cern.ch/service-spi/external/MCGenerators/distribution/herwig/herwig-6.520-src.tgz
-  CONFIGURE_COMMAND g++ -v
-  BUILD_COMMAND g++ -v
-  INSTALL_COMMAND g++ -v
-)

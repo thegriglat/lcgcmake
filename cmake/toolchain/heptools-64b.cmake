@@ -185,7 +185,5 @@ LCG_external_package(herwig            6.520          MCGenerators/herwig       
 LCG_external_package(herwig            6.520.2        MCGenerators/herwig       )
 LCG_external_package(crmc              v3400          MCGenerators/crmc         )
 
-LCG_external_package(test              1          MCGenerators/test         )
-
 # Prepare the search paths according to the versions above
 LCG_prepare_paths()
