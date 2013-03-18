@@ -26,7 +26,7 @@ LCGPackage_Add(
   lhapdf
   URL http://www.hepforge.org/archive/lhapdf/lhapdf-${lhapdf_native_version}.tar.gz
   UPDATE_COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/lhapdf/files  <SOURCE_DIR>
-  CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix=<INSTALL_DIR> --datadir=<INSTALL_DIR>/../share --enable-low-memory  --disable-pyext --disable-doxygen --disable-octave
+  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --datadir=<INSTALL_DIR>/../share --enable-low-memory  --disable-pyext --disable-doxygen --disable-octave
   INSTALL_COMMAND make install
 #          this below is for some tests
 #          COMMAND ${CMAKE_COMMAND} -E create_symlink ${lhapdf_sets} <INSTALL_DIR>/../share/lhapdf/PDFsets
@@ -82,7 +82,7 @@ LCGPackage_Add(
   thepeg
   URL http://www.hepforge.org/archive/thepeg/ThePEG-${thepeg_native_version}.tar.bz2
 #  UPDATE_COMMAND ${CMAKE_COMMAND} -E chdir <SOURCE_DIR> autoreconf --install --force
-  CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix=<INSTALL_DIR> --with-hepmc=${HepMC_home} --with-LHAPDF=${lhapdf_home}/lib --with-gsl=${GSL_home} --without-javagui
+  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --with-hepmc=${HepMC_home} --with-LHAPDF=${lhapdf_home}/lib --with-gsl=${GSL_home} --without-javagui
   BUILD_IN_SOURCE 1
   DEPENDS HepMC GSL lhapdf
 )
@@ -94,7 +94,7 @@ if(NOT APPLE)    #  (installation fails on MacOSX)
   LCGPackage_Add(
     herwig++
     URL http://www.hepforge.org/archive/herwig/Herwig++-${herwig++_native_version}.tar.bz2
-    CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix=<INSTALL_DIR> --with-gsl=${GSL_home} --with-thepeg=${thepeg_home} 
+    CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --with-gsl=${GSL_home} --with-thepeg=${thepeg_home} 
                       --with-boost-incpath=${Boost_home}/include/boost-${Boost_underscore_twodigit}
     BUILD_IN_SOURCE 1
     DEPENDS GSL Boost thepeg
@@ -136,7 +136,7 @@ LCGPackage_Add(
 #     --with-boost-incpath=${Boost_home}/include/boost-1_48
 #     PYTHON=${Python_home}/bin/python
 #     SWIG=${swig_home}/bin/swig
-  CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix=<INSTALL_DIR> 
+  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> 
      --with-hepmc=${HepMC_home} 
      --with-boost-incpath=${Boost_home}/include/boost-${Boost_underscore_twodigit}
      --with-lcgtag=${LCG_platform}
@@ -152,7 +152,7 @@ LCGPackage_Add(
 LCGPackage_Add(
   photos++
   URL http://annapurna.ifj.edu.pl/~tprzedzinski/resources/PHOTOS.${photos++_native_version}/PHOTOS.${photos++_native_version}-LHC.tar.gz
-  CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix=<INSTALL_DIR> --with-hepmc=${HepMC_home}
+  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --with-hepmc=${HepMC_home}
   BUILD_IN_SOURCE 1
   DEPENDS HepMC
 )
@@ -164,7 +164,7 @@ LCGPackage_Add(
   evtgen
   SVN_REPOSITORY http://svnweb.cern.ch/guest/evtgen/tags/${EVTGEN_TAG}
   UPDATE_COMMAND echo update not needed
-  CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix=<INSTALL_DIR> --hepmcdir=${HepMC_home} --pythiadir=${pythia8_home} --photosdir=${photos_home} --tauoladir=${tauola_home}
+  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --hepmcdir=${HepMC_home} --pythiadir=${pythia8_home} --photosdir=${photos_home} --tauoladir=${tauola_home}
   BUILD_IN_SOURCE 1   
   DEPENDS HepMC pythia8 photos++ tauola++
 )
@@ -174,7 +174,7 @@ endif()
 LCGPackage_Add(
   rivet
   URL http://www.hepforge.org/archive/rivet/Rivet-${rivet_native_version}.tar.bz2
-  CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix=<INSTALL_DIR> 
+  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> 
      --with-hepmc=${HepMC_home} 
      --with-boost-incpath=${Boost_home}/include/boost-${Boost_underscore_twodigit}
      --with-fastjet=${fastjet_home}
@@ -195,7 +195,7 @@ LCGPackage_Add(
 LCGPackage_Add(
   sherpa
   URL http://www.hepforge.org/archive/sherpa/SHERPA-MC-${sherpa_native_version}.tar.gz
-  CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix=<INSTALL_DIR>
+  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR>
      --enable-shared --enable-static --enable-binreloc --enable-analysis
      --enable-pythia --enable-hepevtsize=4000
      --enable-lhapdf=${lhapdf_home}
@@ -224,8 +224,8 @@ LCGPackage_Add(
   mctester
 #  URL http://hibiscus.if.uj.edu.pl/~przedzinski/MC-TESTER.${mctester_native_version}.tar.gz
   URL http://mc-tester.web.cern.ch/MC-TESTER/MC-TESTER-${mctester_native_version}.tar.gz
-  UPDATE_COMMAND ${CMAKE_COMMAND} -E touch <SOURCE_DIR>/make.inc
-  CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix=<INSTALL_DIR> --datadir=<INSTALL_DIR>/../share --with-HepMC=${HepMC_home} --with-root=${ROOTSYS}
+  UPDATE_COMMAND ${CMAKE_COMMAND} -E touch ./make.inc
+  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --datadir=<INSTALL_DIR>/../share --with-HepMC=${HepMC_home} --with-root=${ROOTSYS}
   BUILD_IN_SOURCE 1
   DEPENDS HepMC
 )
@@ -236,7 +236,7 @@ LCGPackage_Add(
   URL http://service-spi.web.cern.ch/service-spi/external/MCGenerators/distribution/hijing/hijing-${hijing_native_version}-src.tgz
   UPDATE_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/${hijing_native_version} <SOURCE_DIR>   
          COMMAND ${CMAKE_COMMAND} -E remove_directory <SOURCE_DIR>/${hijing_native_version}
-  CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix=<INSTALL_DIR>
+  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR>
   BUILD_IN_SOURCE 1
   INSTALL_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/lib <INSTALL_DIR>/lib
 )
@@ -257,7 +257,7 @@ LCGPackage_Add(
   URL http://service-spi.web.cern.ch/service-spi/external/MCGenerators/distribution/herwig/herwig-<NATIVE_VERSION>-src.tgz
   UPDATE_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/<NATIVE_VERSION> <SOURCE_DIR>
          COMMAND ${CMAKE_COMMAND} -E remove_directory <SOURCE_DIR>/<NATIVE_VERSION>
-  CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix=<INSTALL_DIR>
+  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR>
   BUILD_IN_SOURCE 1
 )
 
@@ -266,7 +266,8 @@ LCGPackage_Add(
   crmc
   SVN_REPOSITORY https://devel-ik.fzk.de/svn/mc/crmc/tags/${crmc_native_version}
   CONFIGURE_COMMAND echo no configure step
-  BUILD_COMMAND ${CMAKE_COMMAND} -E chdir <SOURCE_DIR> make -f Makefile CRMCROOT=<INSTALL_DIR> HEP_ROOT=${HepMC_home}
-  INSTALL_COMMAND ${CMAKE_COMMAND} -E chdir <SOURCE_DIR> make -f Makefile install CRMCROOT=<INSTALL_DIR> HEP_ROOT=${HepMC_home}
+  BUILD_COMMAND make -f Makefile CRMCROOT=<INSTALL_DIR> HEP_ROOT=${HepMC_home}
+  INSTALL_COMMAND make -f Makefile install CRMCROOT=<INSTALL_DIR> HEP_ROOT=${HepMC_home}
+  BUILD_IN_SOURCE 1
   DEPENDS HepMC
 )
