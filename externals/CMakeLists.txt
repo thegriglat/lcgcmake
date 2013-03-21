@@ -115,14 +115,14 @@ LCGPackage_Add(
 #---XercesC-------------------------------------------------------------------------------------------
 LCGPackage_Add(
   XercesC
-  URL http://mirror.switch.ch/mirror/apache/dist//xerces/c/3/sources/xerces-c-${XercesC_config_version}.tar.gz
+  URL http://mirror.switch.ch/mirror/apache/dist//xerces/c/3/sources/xerces-c-<XercesC_<NATIVE_VERSION>_author>.tar.gz
   CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix=<INSTALL_DIR>
 )
 
-#---TBB-----------------------------------------------------------------------------------------------
+#---tbb-----------------------------------------------------------------------------------------------
 LCGPackage_Add(
-  TBB
-  URL http://threadingbuildingblocks.org/sites/default/files/software_releases/source/tbb${TBB_native_version}oss_src.tgz
+  tbb
+  URL http://threadingbuildingblocks.org/sites/default/files/software_releases/source/tbb${tbb_native_version}oss_src.tgz
   CONFIGURE_COMMAND <VOID>
   INSTALL_COMMAND ${CMAKE_COMMAND} -Dinstall_dir=<INSTALL_DIR> -Dsource_dir=<SOURCE_DIR> -P ${CMAKE_SOURCE_DIR}/cmake/scripts/InstallTBB.cmake 
   BUILD_IN_SOURCE 1
@@ -137,5 +137,22 @@ LCGPackage_Add(
   URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/gccxml-${GCCXML_native_version}.tar.gz
   CMAKE_ARGS -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR> ${GCCXML_config_options}
 )
+
+#---uuid--------------------------------------------------------------------------------------------
+if(APPLE)
+  set(uuid_config_options  --enable-bsd-shlibs --build=x86_64-apple-darwin10.8.0)
+else()
+  set(uuid_config_options  --enable-elf-shlibs )
+endif()
+
+LCGPackage_Add(
+  uuid
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/e2fsprogs-${uuid_native_version}.tar.gz
+  CONFIGURE_COMMAND ./configure --prefix <INSTALL_DIR> ${uuid_config_options}
+  BUILD_COMMAND make -C lib/uuid
+  INSTALL_COMMAND make -C lib/uuid install
+  BUILD_IN_SOURCE 1
+)
+
 
 

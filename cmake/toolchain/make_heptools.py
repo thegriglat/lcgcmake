@@ -106,7 +106,10 @@ LCG_prepare_paths()"""
         # prepare the dictionary for the results
         versions = {}
         # We extract the statements from the requirements file of the LCG_Configuration package
-        req = open(os.path.join(self.lcgcmt_root, "LCG_Configuration", "cmt", "requirements"))
+        if os.path.isfile(self.lcgcmt_root) :
+            req = open(self.lcgcmt_root)
+        else :
+            req = open(os.path.join(self.lcgcmt_root, "LCG_Configuration", "cmt", "requirements"))
         for toks in imap(tokens, statements(req)):
             if toks.pop(0) == "macro": # get only the macros ...
                 name, value, exceptions = macro(toks)

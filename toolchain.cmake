@@ -1,5 +1,5 @@
 # Special wrapper to load the declared version of the heptools toolchain.
-set(heptools_version 64b)
+set(heptools_version 65rc1)
 
 # Remove the reference to this file from the cache.
 unset(CMAKE_TOOLCHAIN_FILE CACHE)

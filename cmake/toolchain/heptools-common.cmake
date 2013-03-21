@@ -88,7 +88,7 @@ function(lcg_find_host_compiler)
     find_program(LCG_HOST_CXX_COMPILER NAMES c++ g++ cl clang++ icpc CC aCC bcc xlC
                  DOC "Host C++ compiler")
     mark_as_advanced(LCG_HOST_C_COMPILER LCG_HOST_CXX_COMPILER)
-    if(LCG_HOST_C_COMPILER MATCHES /cl)
+    if(LCG_HOST_C_COMPILER MATCHES /cl$)
       set(compiler vc)
       execute_process(COMMAND ${LCG_HOST_C_COMPILER} ERROR_VARIABLE versioninfo OUTPUT_VARIABLE out)
       string(REGEX REPLACE ".*Version ([0-9]+)[.].*" "\\1" cvers "${versioninfo}")

@@ -123,7 +123,7 @@ macro(LCGPackage_Add name)
               USE_SOURCE_PERMISSIONS COMPONENT ${targetname})
       foreach(ph configure-out configure-err build-out build-err install-out install-err)
         install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${targetname}/src/${targetname}-stamp/${targetname}-${ph}.log
-              DESTINATION ${${name}_directory_name}/${version}/logs
+              DESTINATION ${${name}_directory_name}/${version}/${LCG_system}
               RENAME ${name}-${LCG_system}-${ph}.log
               COMPONENT ${targetname} OPTIONAL)
       endforeach()
