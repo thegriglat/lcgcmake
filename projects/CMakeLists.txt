@@ -37,13 +37,29 @@ LCGPackage_Add(
   BUILD_COMMAND make ROOTSYS=${ROOT_home}
   DEPENDS cmaketools ROOT GCCXML CLHEP HepMC HepPDT
 )
+
+#---LCGCMT--------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  LCGCMT
+  DOWNLOAD_COMMAND <VOID>
+  CONFIGURE_COMMAND <VOID>
+  BUILD_COMMAND <VOID>
+  INSTALL_COMMAND mkdir -p <INSTALL_DIR>)
+
   
 #---GaudiDeps------------------------------------------------------------------------------------------
+set(GAUDI-dependencies AIDA Boost Python GSL ROOT QMtest CLHEP HepMC HepPDT RELAX GCCXML tbb XercesC uuid LCGCMT)
+foreach(dep ${GAUDI-dependencies})
+  if(TARGET install-${dep})
+    list(APPEND GAUDI-installs install-${dep})
+  endif()
+endforeach()
+
 add_custom_target(GAUDI-externals
                  COMMENT "Target to build all externals packages needed by Gaudi"
-                 DEPENDS AIDA Boost Python GSL ROOT QMtest CLHEP HepMC HepPDT RELAX GCCXML TBB XercesC uuid)
+                 DEPENDS ${GAUDI-dependencies})
+
 add_custom_target(install-GAUDI-externals
                  COMMENT "Target to install all externals packages needed by Gaudi"
-                 DEPENDS install-AIDA install-Boost install-Python install-GSL install-ROOT
-                         install-QMtest install-CLHEP install-HepMC install-HepPDT install-RELAX
-                         install-GCCXML install-TBB install-XercesC install-uuid)
+                 DEPENDS ${GAUDI-installs} )
+

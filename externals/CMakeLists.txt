@@ -17,8 +17,9 @@ else()
 endif()
 set(Boost_jam_options -j12 variant=release --layout=versioned)
 set(Boost_compile_options)
+file(APPEND   ${CMAKE_CURRENT_BINARY_DIR}/user-config.jam "using python : ${Python_config_version_twodigit} : ${Python_home} ;\n")
 if(LCG_TARGET MATCHES i686)
-  file(APPEND ${CMAKE_CURRENT_BINARY_DIR}/user-config.jam "using gcc : : :  <linkflags>-m32 <compileflags>-m32 ;")
+  file(APPEND ${CMAKE_CURRENT_BINARY_DIR}/user-config.jam "using gcc : : :  <linkflags>-m32 <compileflags>-m32 ;\n")
 elseif(LCG_TARGET MATCHES "gcc([0-9]+)")
   file(APPEND ${CMAKE_CURRENT_BINARY_DIR}/user-config.jam "using gcc : ${CMAKE_MATCH_1} : ${CMAKE_CXX_COMPILER} ;\n")
 endif()
@@ -135,6 +136,7 @@ endif()
 LCGPackage_Add(
   GCCXML
   URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/gccxml-${GCCXML_native_version}.tar.gz
+  PATCH_COMMAND PATCH_COMMAND patch -p0 -i ${CMAKE_CURRENT_SOURCE_DIR}/GCCXML-${GCCXML_native_version}.patch
   CMAKE_ARGS -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR> ${GCCXML_config_options}
 )
 
