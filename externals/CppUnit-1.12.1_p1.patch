@@ -1,0 +1,26 @@
+diff -ru cppunit-1.12.1/include/cppunit/extensions/ExceptionTestCaseDecorator.h cppunit-1.12.1.new/include/cppunit/extensions/ExceptionTestCaseDecorator.h
+--- cppunit-1.12.1/include/cppunit/extensions/ExceptionTestCaseDecorator.h	2003-03-15 09:55:28.000000000 +0100
++++ cppunit-1.12.1.new/include/cppunit/extensions/ExceptionTestCaseDecorator.h	2008-10-13 14:53:53.000000000 +0200
+@@ -92,7 +92,7 @@
+    *
+    * Should be overriden to check the exception.
+    */
+-  virtual void checkException( ExpectedExceptionType &e )
++  virtual void checkException( ExpectedExceptionType & /*e*/ )
+   {
+   }
+ };
+diff -ru cppunit-1.12.1/include/cppunit/extensions/TestFixtureFactory.h cppunit-1.12.1.new/include/cppunit/extensions/TestFixtureFactory.h
+--- cppunit-1.12.1/include/cppunit/extensions/TestFixtureFactory.h	2007-01-12 05:54:34.000000000 +0100
++++ cppunit-1.12.1.new/include/cppunit/extensions/TestFixtureFactory.h	2008-10-13 14:48:07.000000000 +0200
+@@ -30,6 +30,10 @@
+ template<class TestFixtureType>
+ class ConcretTestFixtureFactory : public CPPUNIT_NS::TestFixtureFactory
+ {
++ public:
++  //! Standard destructor (necessary for gcc 41)
++  virtual ~ConcretTestFixtureFactory() {}
++
+   /*! \brief Returns a new TestFixture instance.
+    * \return A new fixture instance. The fixture instance is returned by
+    *         the TestFixtureFactory passed on construction. The actual type 

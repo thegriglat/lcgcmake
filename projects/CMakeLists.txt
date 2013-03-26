@@ -48,7 +48,7 @@ LCGPackage_Add(
 
   
 #---GaudiDeps------------------------------------------------------------------------------------------
-set(GAUDI-dependencies AIDA Boost Python GSL ROOT QMtest CLHEP HepMC HepPDT RELAX GCCXML tbb XercesC uuid LCGCMT)
+set(GAUDI-dependencies AIDA Boost Python GSL ROOT QMtest CLHEP HepMC HepPDT RELAX GCCXML tbb XercesC uuid LCGCMT CppUnit)
 foreach(dep ${GAUDI-dependencies})
   if(TARGET install-${dep})
     list(APPEND GAUDI-installs install-${dep})

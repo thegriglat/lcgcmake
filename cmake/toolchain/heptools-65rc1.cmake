@@ -40,7 +40,7 @@ LCG_external_package(cmaketools        1.0                                      
 LCG_external_package(cmt               v1r20p20081118                           )
 LCG_external_package(coin3d            3.1.3p2                                  )
 LCG_external_package(coverage          3.5.2                                    )
-LCG_external_package(CppUnit           1.12.1_p1                                )
+LCG_external_package(CppUnit           1.12.1_p1                 author=1.12.1  )
 LCG_external_package(cx_oracle         5.1.1                                    )
 LCG_external_package(david             1_36a                                    )
 LCG_external_package(dawn              3_88a                                    )

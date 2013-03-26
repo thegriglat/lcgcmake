@@ -156,5 +156,11 @@ LCGPackage_Add(
   BUILD_IN_SOURCE 1
 )
 
-
-
+#---CppUnit--------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  CppUnit
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/cppunit-<CppUnit_<NATIVE_VERSION>_author>.tar.gz
+  PATCH_COMMAND patch -p1 -i ${CMAKE_CURRENT_SOURCE_DIR}/CppUnit-${CppUnit_native_version}.patch
+  CONFIGURE_COMMAND ./configure --prefix <INSTALL_DIR>
+  BUILD_IN_SOURCE 1
+)
