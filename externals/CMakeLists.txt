@@ -21,7 +21,7 @@ file(APPEND   ${CMAKE_CURRENT_BINARY_DIR}/user-config.jam "using python : ${Pyth
 if(LCG_TARGET MATCHES i686)
   file(APPEND ${CMAKE_CURRENT_BINARY_DIR}/user-config.jam "using gcc : : :  <linkflags>-m32 <compileflags>-m32 ;\n")
 elseif(LCG_TARGET MATCHES "gcc([0-9]+)")
-  file(APPEND ${CMAKE_CURRENT_BINARY_DIR}/user-config.jam "using gcc : ${CMAKE_MATCH_1} : ${CMAKE_CXX_COMPILER} ;\n")
+  file(APPEND ${CMAKE_CURRENT_BINARY_DIR}/user-config.jam "using gcc : : ${CMAKE_CXX_COMPILER} ;\n")
 endif()
 string(REPLACE "." "_" Boost_file_version ${Boost_config_version})
 
@@ -162,5 +162,16 @@ LCGPackage_Add(
   URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/cppunit-<CppUnit_<NATIVE_VERSION>_author>.tar.gz
   PATCH_COMMAND patch -p1 -i ${CMAKE_CURRENT_SOURCE_DIR}/CppUnit-${CppUnit_native_version}.patch
   CONFIGURE_COMMAND ./configure --prefix <INSTALL_DIR>
+  BUILD_IN_SOURCE 1
+)
+
+#---tcmalloc--------------------------------------------------------------------------------------------
+if(LCG_TARGET MATCHES "x86_64")
+  set(tcmalloc_config_options "--enable-frame-pointers")
+endif()
+LCGPackage_Add(
+  tcmalloc
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/google-perftools-${tcmalloc_native_version}.tar.gz
+  CONFIGURE_COMMAND ./configure --prefix <INSTALL_DIR> ${tcmalloc_config_options}
   BUILD_IN_SOURCE 1
 )
