@@ -24,3 +24,12 @@ diff -ru cppunit-1.12.1/include/cppunit/extensions/TestFixtureFactory.h cppunit-
    /*! \brief Returns a new TestFixture instance.
     * \return A new fixture instance. The fixture instance is returned by
     *         the TestFixtureFactory passed on construction. The actual type 
+--- ../../../../LocalInstallArea/CppUnit/1.12.1_p1/share/sources/configure	2013-03-26 18:54:53.000000000 +0100
++++ cppunit-1.12.1.new/configure	2013-03-26 19:08:03.000000000 +0100
+@@ -23318,5 +23318,5 @@
+ echo "$as_me: error: input file $ac_prefix_conf_IN does not exist,     skip generating $ac_prefix_conf_OUT" >&2;}
+    { (exit 1); exit 1; }; }
+   fi
+-  rm -f conftest.*
++  rm -rf conftest.*
+ fi

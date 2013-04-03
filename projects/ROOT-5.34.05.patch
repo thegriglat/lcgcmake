@@ -1,0 +1,110 @@
+Index: cmake/modules/FindGSL.cmake
+===================================================================
+--- cmake/modules/FindGSL.cmake	(revision 48875)
++++ cmake/modules/FindGSL.cmake	(working copy)
+@@ -25,14 +25,14 @@
+   # look for headers
+   find_path( GSL_INCLUDE_DIR
+     NAMES gsl/gsl_cdf.h gsl/gsl_randist.h
+-	PATHS $ENV{GSL_DIR}/include
++    PATHS $ENV{GSL_DIR}/include ${GSL_DIR}/include
+     )
+   if( GSL_INCLUDE_DIR )
+     # look for gsl library
+     find_library( GSL_LIBRARY
+       NAMES gsl
+-	  PATHS $ENV{GSL_DIR}/lib
+-    )
++      PATHS $ENV{GSL_DIR}/lib ${GSL_DIR}/lib
++      )
+     if( GSL_LIBRARY )
+       set( GSL_INCLUDE_DIRS ${GSL_INCLUDE_DIR} )
+       get_filename_component( GSL_LIBRARY_DIRS ${GSL_LIBRARY} PATH )
+@@ -41,15 +41,15 @@
+  
+     # look for gsl cblas library
+     find_library( GSL_CBLAS_LIBRARY
+-        NAMES gslcblas
+-		PATHS $ENV{GSL_DIR}/lib
++      NAMES gslcblas
++      PATHS $ENV{GSL_DIR}/lib ${GSL_DIR}/lib
+       )
+     if( GSL_CBLAS_LIBRARY )
+       set( GSL_CBLAS_FOUND ON )
+     endif( GSL_CBLAS_LIBRARY )
+  
+     set( GSL_LIBRARIES ${GSL_LIBRARY} ${GSL_CBLAS_LIBRARY} )
+-	set( GSL_CFLAGS "-DGSL_DLL")
++    set( GSL_CFLAGS "-DGSL_DLL")
+   endif( GSL_INCLUDE_DIR )
+  
+   mark_as_advanced(
+@@ -60,10 +60,10 @@
+ else( WIN32 AND NOT CYGWIN AND NOT MSYS )
+   if( UNIX OR MSYS )
+     find_program( GSL_CONFIG_EXECUTABLE gsl-config
++      $ENV{GSL_DIR}/bin
++      ${GSL_DIR}/bin
+       /usr/bin/
+       /usr/local/bin
+-      $ENV{GSL_DIR}/bin
+-      ${GSL_DIR}/bin
+     )
+  
+     if( GSL_CONFIG_EXECUTABLE )
+Index: graf3d/x3d/CMakeLists.txt
+===================================================================
+--- graf3d/x3d/CMakeLists.txt	(revision 48875)
++++ graf3d/x3d/CMakeLists.txt	(working copy)
+@@ -6,6 +6,7 @@
+ 
+ ROOT_USE_PACKAGE(graf3d/g3d)
+ ROOT_USE_PACKAGE(gui/gui)
++include_directories(${X11_INCLUDE_DIR})
+ 
+ ROOT_GENERATE_DICTIONARY(G__X3D TViewerX3D.h TX3DFrame.h LINKDEF LinkDef.h)
+ ROOT_GENERATE_ROOTMAP(${libname} LINKDEF LinkDef.h DEPENDENCIES Graf3d Gui)
+Index: rootx/CMakeLists.txt
+===================================================================
+--- rootx/CMakeLists.txt	(revision 48875)
++++ rootx/CMakeLists.txt	(working copy)
+@@ -4,6 +4,7 @@
+ ############################################################################
+ 
+ ROOT_USE_PACKAGE(core)
++include_directories(${X11_INCLUDE_DIR})
+ 
+ ROOT_EXECUTABLE(root *.cxx  ${CMAKE_SOURCE_DIR}/core/clib/src/strlcpy.c 
+                 LIBRARIES ${X11_LIBRARIES} ${X11_Xpm_LIB} ${X11_Xft_LIB} ${X11_Xext_LIB})
+Index: test/CMakeLists.txt
+===================================================================
+--- test/CMakeLists.txt	(revision 48875)
++++ test/CMakeLists.txt	(working copy)
+@@ -11,9 +11,13 @@
+ include(${ROOT_USE_FILE})
+ 
+ include_directories(${ROOT_INCLUDE_DIRS})
+-include_directories(${ROOT_INCLUDE_DIRS}/../tutorials)
++if(DEFINED ROOT_SOURCE_DIR)  # Testing using the binary tree
++  include_directories(${ROOT_SOURCE_DIR}/tutorials)
++  include_directories(${ROOT_SOURCE_DIR}/tmva/inc)
++else()
++  include_directories(${ROOT_INCLUDE_DIRS}/../tutorials)
++endif()
+ 
+-
+ #---environment-------------------------------------------------------------------------------
+ ROOT_ADD_TEST(show-environment COMMAND ${CMAKE_COMMAND} -E environment)
+ 
+Index: graf2d/x11/CMakeLists.txt
+===================================================================
+--- graf2d/x11/CMakeLists.txt	(revision 48875)
++++ graf2d/x11/CMakeLists.txt	(working copy)
+@@ -5,6 +5,7 @@
+ set(libname GX11)
+ 
+ ROOT_USE_PACKAGE(core)
++include_directories(${X11_INCLUDE_DIR})
+ 
+ ROOT_GENERATE_DICTIONARY(G__${libname} T*.h LINKDEF LinkDef.h)
+ ROOT_GENERATE_ROOTMAP(${libname} LINKDEF LinkDef.h)

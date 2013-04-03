@@ -1,34 +1,40 @@
 #---Python--------------------------------------------------------------------------------------------
 if(LCG_TARGET MATCHES "slc")
-  set(Python_config_options "LDFLAGS=-Wl,-rpath,'$$ORIGIN/../lib'")
+  set(Python_config_options " --enable-shared LDFLAGS=-Wl,-rpath,'$$ORIGIN/../lib'")
+elseif(LCG_TARGET MATCHES "mac")
+  string(REGEX REPLACE "([0-9]+)([0-9])" \\1.\\2 macvers ${LCG_HOST_OSVERS})
+  set(Python_config_options --enable-shared MACOSX_DEPLOYMENT_TARGET=${macvers} LDFLAGS=-L/opt/local/lib)
+else()
+  set(Python_config_options " --enable-shared")
 endif()
 LCGPackage_Add(
   Python
   URL http://python.org/ftp/python/${Python_native_version}/Python-${Python_native_version}.tgz
-  CONFIGURE_COMMAND <SOURCE_DIR>/configure --enable-shared --prefix=<INSTALL_DIR> --enable-unicode=ucs4 ${Python_config_options}
+  CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix=<INSTALL_DIR> --enable-unicode=ucs4 ${Python_config_options}
 )
 
 #---Boost--------------------------------------------------------------------------------------------
 file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/user-config.jam "# \n")  # Start with an empty config file
 if(APPLE)
   set(Boost_toolset darwin)
+  set(Boost_bootstrap_options --with-python-root=${Python_home})
 else()
   set(Boost_toolset gcc)
+  file(APPEND   ${CMAKE_CURRENT_BINARY_DIR}/user-config.jam "using python : ${Python_config_version_twodigit} : ${Python_home} ;\n")
 endif()
 set(Boost_jam_options -j12 variant=release --layout=versioned)
 set(Boost_compile_options)
-file(APPEND   ${CMAKE_CURRENT_BINARY_DIR}/user-config.jam "using python : ${Python_config_version_twodigit} : ${Python_home} ;\n")
 if(LCG_TARGET MATCHES i686)
-  file(APPEND ${CMAKE_CURRENT_BINARY_DIR}/user-config.jam "using gcc : : :  <linkflags>-m32 <compileflags>-m32 ;\n")
+  file(APPEND ${CMAKE_CURRENT_BINARY_DIR}/user-config.jam "using ${Boost_toolset} : : :  <linkflags>-m32 <compileflags>-m32 ;\n")
 elseif(LCG_TARGET MATCHES "gcc([0-9]+)")
-  file(APPEND ${CMAKE_CURRENT_BINARY_DIR}/user-config.jam "using gcc : : ${CMAKE_CXX_COMPILER} ;\n")
+  file(APPEND ${CMAKE_CURRENT_BINARY_DIR}/user-config.jam "using ${Boost_toolset} : : ${CMAKE_CXX_COMPILER} ;\n")
 endif()
 string(REPLACE "." "_" Boost_file_version ${Boost_config_version})
 
 LCGPackage_Add(
   Boost
   URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/boost_${Boost_file_version}.tar.gz
-  CONFIGURE_COMMAND <SOURCE_DIR>/bootstrap.sh --with-python-root=${Python_home} 
+  CONFIGURE_COMMAND <SOURCE_DIR>/bootstrap.sh ${Boost_bootstrap_options}
   BUILD_COMMAND <SOURCE_DIR>/b2 ${Boost_jam_options} ${Boost_compile_options}
                 --toolset=${Boost_toolset} --user-config=${CMAKE_CURRENT_BINARY_DIR}/user-config.jam
   INSTALL_COMMAND <SOURCE_DIR>/b2 ${Boost_jam_options} ${Boost_compile_options} --toolset=${Boost_toolset}
@@ -125,6 +131,7 @@ LCGPackage_Add(
   tbb
   URL http://threadingbuildingblocks.org/sites/default/files/software_releases/source/tbb${tbb_native_version}oss_src.tgz
   CONFIGURE_COMMAND <VOID>
+  BUILD_COMMAND make CPLUS=${CMAKE_CXX_COMPILER} CONLY=${CMAKE_C_COMPILER}
   INSTALL_COMMAND ${CMAKE_COMMAND} -Dinstall_dir=<INSTALL_DIR> -Dsource_dir=<SOURCE_DIR> -P ${CMAKE_SOURCE_DIR}/cmake/scripts/InstallTBB.cmake 
   BUILD_IN_SOURCE 1
 )
@@ -151,8 +158,9 @@ LCGPackage_Add(
   uuid
   URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/e2fsprogs-${uuid_native_version}.tar.gz
   CONFIGURE_COMMAND ./configure --prefix <INSTALL_DIR> ${uuid_config_options}
-  BUILD_COMMAND make -C lib/uuid
-  INSTALL_COMMAND make -C lib/uuid install
+  BUILD_COMMAND make -j1 -C lib/uuid
+  INSTALL_COMMAND mkdir -p <INSTALL_DIR>/lib
+          COMMAND make -j1 -C lib/uuid install
   BUILD_IN_SOURCE 1
 )
 
@@ -162,16 +170,21 @@ LCGPackage_Add(
   URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/cppunit-<CppUnit_<NATIVE_VERSION>_author>.tar.gz
   PATCH_COMMAND patch -p1 -i ${CMAKE_CURRENT_SOURCE_DIR}/CppUnit-${CppUnit_native_version}.patch
   CONFIGURE_COMMAND ./configure --prefix <INSTALL_DIR>
+            COMMAND echo to ignore the status code
   BUILD_IN_SOURCE 1
 )
 
 #---tcmalloc--------------------------------------------------------------------------------------------
-if(LCG_TARGET MATCHES "x86_64")
-  set(tcmalloc_config_options "--enable-frame-pointers")
+if(NOT APPLE) # There are problems building on MacOSX
+  if(LCG_TARGET MATCHES "x86_64")
+    set(tcmalloc_config_options "--enable-frame-pointers")
+  endif()
+  LCGPackage_Add(
+    tcmalloc
+    URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/google-perftools-${tcmalloc_native_version}.tar.gz
+    CONFIGURE_COMMAND ./configure --prefix <INSTALL_DIR> ${tcmalloc_config_options}
+    BUILD_IN_SOURCE 1
+  )
+else()
+  add_custom_target(tcmalloc ALL COMMENT "Dummy tcmalloc target")
 endif()
-LCGPackage_Add(
-  tcmalloc
-  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/google-perftools-${tcmalloc_native_version}.tar.gz
-  CONFIGURE_COMMAND ./configure --prefix <INSTALL_DIR> ${tcmalloc_config_options}
-  BUILD_IN_SOURCE 1
-)

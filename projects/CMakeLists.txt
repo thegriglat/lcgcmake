@@ -1,15 +1,35 @@
 #---ROOT--------------------------------------------------------------------------------------------
-LCGPackage_Add(
-  ROOT
-  URL ftp://root.cern.ch/root/root_v${ROOT_native_version}.source.tar.gz
-  CMAKE_ARGS -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} 
-             -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR> 
-             -Dpython=ON -DPYTHON_EXECUTABLE=${Python_home}/bin/python
-                         -DPYTHON_INCLUDE_DIR=${Python_home}/include/python${Python_config_version_twodigit}
-                         -DPYTHON_LIBRARY=${Python_home}/lib/libpython${Python_config_version_twodigit}${CMAKE_SHARED_LIBRARY_SUFFIX}
-  DEPENDS Python
-)
-
+if(LCG_TARGET MATCHES "mac.*-gcc(47|48)")
+  LCGPackage_Add(
+    ROOT
+    URL ftp://root.cern.ch/root/root_v${ROOT_native_version}.source.tar.gz
+    CONFIGURE_COMMAND ./configure --with-cc=${CMAKE_C_COMPILER}
+                                  --with-cxx=${CMAKE_CXX_COMPILER}
+                                  --with-ld=${CMAKE_CXX_COMPILER}
+                                  --with-python-incdir=${Python_home}/include/python${Python_config_version_twodigit}
+                                  --with-python-libdir=${Python_home}/lib
+                                  --enable-cintex
+                                  --disable-gviz   # compilation errors (see https://sft.its.cern.ch/jira/browse/ROOT-176)
+    INSTALL_COMMAND  make dist
+            COMMAND  $ENV{SHELL} -c "rm <SOURCE_DIR>/../root_v${ROOT_native_version}.source.tar.gz"
+            COMMAND  ${CMAKE_COMMAND} -E make_directory <INSTALL_DIR>
+            COMMAND  $ENV{SHELL} -c "tar -C <INSTALL_DIR> --strip=1 -xf <SOURCE_DIR>/../root_v${ROOT_native_version}*.tar.gz"
+    BUILD_IN_SOURCE 1
+    DEPENDS Python
+  )
+else()
+  LCGPackage_Add(
+    ROOT
+    URL ftp://root.cern.ch/root/root_v${ROOT_native_version}.source.tar.gz
+    PATCH_COMMAND patch -p0 -i ${CMAKE_CURRENT_SOURCE_DIR}/ROOT-${ROOT_native_version}.patch
+    CMAKE_ARGS -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+               -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
+               -Dpython=ON -DPYTHON_EXECUTABLE=${Python_home}/bin/python
+                           -DPYTHON_INCLUDE_DIR=${Python_home}/include/python${Python_config_version_twodigit}
+                           -DPYTHON_LIBRARY=${Python_home}/lib/libpython${Python_config_version_twodigit}${CMAKE_SHARED_LIBRARY_SUFFIX}
+    DEPENDS Python
+  )
+endif()
 #---cmaketool----------------------------------------------------------------------------------------
 LCGPackage_Add(
   cmaketools
