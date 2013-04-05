@@ -76,7 +76,7 @@ macro(LCGPackage_Add name)
         DEPENDEES update patch)
 
       #---Adding extra step to build the binary tarball-----------------------------------------------
-      ExternalProject_Add_Step(${targetname} package COMMENT "Creating binary tarball"
+      ExternalProject_Add_Step(${targetname} package COMMENT "Creating binary tarball for '${targetname}'"
         COMMAND ${CMAKE_COMMAND} -E chdir ${${name}_home}/../../.. 
                 ${CMAKE_COMMAND} -E tar cfz ${LOCAL_INSTALL_PREFIX}/${name}-${version}-${LCG_system}.tgz ${name}/${version}/${LCG_system}
         DEPENDEES install)
