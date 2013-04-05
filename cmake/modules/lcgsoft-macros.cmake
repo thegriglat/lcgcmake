@@ -69,11 +69,17 @@ macro(LCGPackage_Add name)
         LOG_CONFIGURE 1 LOG_BUILD 1 LOG_INSTALL 1 )
 
       #---Adding extra step to copy the sources in /share/sources-------------------------------------
-      ExternalProject_Add_Step(${targetname} install_sources COMMENT "Installing sources for '${targetname}' and create tarfile"
+      ExternalProject_Add_Step(${targetname} install_sources COMMENT "Installing sources for '${targetname}' and create source tarball"
         COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR> ${LOCAL_INSTALL_PREFIX}/${${name}_directory_name}/${version}/share/sources
-        COMMAND ${CMAKE_COMMAND} -E chdir <SOURCE_DIR>/../.. tar -czf ${name}-${version}-src.tgz ${name}
+        COMMAND ${CMAKE_COMMAND} -E chdir <SOURCE_DIR>/../.. ${CMAKE_COMMAND} -E tar cfz ${name}-${version}-src.tgz ${name}
         DEPENDERS build
         DEPENDEES update patch)
+
+      #---Adding extra step to build the binary tarball-----------------------------------------------
+      ExternalProject_Add_Step(${targetname} package COMMENT "Creating binary tarball"
+        COMMAND ${CMAKE_COMMAND} -E chdir ${${name}_home}/../../.. 
+                ${CMAKE_COMMAND} -E tar cfz ${LOCAL_INSTALL_PREFIX}/${name}-${version}-${LCG_system}.tgz ${name}/${version}/${LCG_system}
+        DEPENDEES install)
 
       #---Add extra steps eventually------------------------------------------------------------------
       set(current_dependee install)
@@ -127,6 +133,7 @@ macro(LCGPackage_Add name)
               USE_SOURCE_PERMISSIONS COMPONENT ${targetname})
       #---Tar files
       install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${targetname}/src/${name}-${version}-src.tgz
+                    ${LOCAL_INSTALL_PREFIX}/${name}-${version}-${LCG_system}.tgz
               DESTINATION ${${name}_directory_name}/../distribution/${name}
               COMPONENT ${targetname} OPTIONAL)
       #---Log files
