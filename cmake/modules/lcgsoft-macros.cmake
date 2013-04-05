@@ -63,13 +63,15 @@ macro(LCGPackage_Add name)
         ${targetname}
         PREFIX ${targetname}
         INSTALL_DIR ${${name}_home}
+        SOURCE_DIR ${targetname}/src/${name}/${version}
         "${ARGUMENTS}" 
         TEST_COMMAND ${ARG_TEST_COMMAND}
         LOG_CONFIGURE 1 LOG_BUILD 1 LOG_INSTALL 1 )
 
       #---Adding extra step to copy the sources in /share/sources-------------------------------------
-      ExternalProject_Add_Step(${targetname} install_sources COMMENT "Installing sources for '${targetname}'"
-        COMMAND  ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR> ${LOCAL_INSTALL_PREFIX}/${${name}_directory_name}/${version}/share/sources
+      ExternalProject_Add_Step(${targetname} install_sources COMMENT "Installing sources for '${targetname}' and create tarfile"
+        COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR> ${LOCAL_INSTALL_PREFIX}/${${name}_directory_name}/${version}/share/sources
+        COMMAND ${CMAKE_COMMAND} -E chdir <SOURCE_DIR>/../.. tar -czf ${name}-${version}-src.tgz ${name}
         DEPENDERS build
         DEPENDEES update patch)
 
@@ -115,12 +117,19 @@ macro(LCGPackage_Add name)
       endif()
 
       #---Installation from local installation area to CMAKE_INSTALL_PREFIX---------------------------
+      #---Binaries
       install(DIRECTORY ${${name}_home}/ 
               DESTINATION ${${name}_directory_name}/${version}/${LCG_system}
               USE_SOURCE_PERMISSIONS COMPONENT ${targetname})
+      #---Share directory
       install(DIRECTORY ${LOCAL_INSTALL_PREFIX}/${${name}_directory_name}/${version}/share/
               DESTINATION ${${name}_directory_name}/${version}/share
               USE_SOURCE_PERMISSIONS COMPONENT ${targetname})
+      #---Tar files
+      install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${targetname}/src/${name}-${version}-src.tgz
+              DESTINATION ${${name}_directory_name}/../distribution/${name}
+              COMPONENT ${targetname} OPTIONAL)
+      #---Log files
       foreach(ph configure-out configure-err build-out build-err install-out install-err)
         install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${targetname}/src/${targetname}-stamp/${targetname}-${ph}.log
               DESTINATION ${${name}_directory_name}/${version}/${LCG_system}

@@ -130,11 +130,17 @@ LCGPackage_Add(
 )
 
 #---tbb-----------------------------------------------------------------------------------------------
+if(CMAKE_CXX_COMPILER_ID MATCHES Clang)
+  set(tbb_build_options)       # Use default compiler
+else()
+  set(tbb_build_options CPLUS=${CMAKE_CXX_COMPILER} CONLY=${CMAKE_C_COMPILER})
+endif()
+
 LCGPackage_Add(
   tbb
   URL http://threadingbuildingblocks.org/sites/default/files/software_releases/source/tbb${tbb_native_version}oss_src.tgz
   CONFIGURE_COMMAND <VOID>
-  BUILD_COMMAND make CPLUS=${CMAKE_CXX_COMPILER} CONLY=${CMAKE_C_COMPILER}
+  BUILD_COMMAND make ${tbb_build_options}
   INSTALL_COMMAND ${CMAKE_COMMAND} -Dinstall_dir=<INSTALL_DIR> -Dsource_dir=<SOURCE_DIR> -P ${CMAKE_SOURCE_DIR}/cmake/scripts/InstallTBB.cmake 
   BUILD_IN_SOURCE 1
 )
