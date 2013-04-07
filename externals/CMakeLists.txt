@@ -197,3 +197,21 @@ if(NOT APPLE) # There are problems building on MacOSX
 else()
   add_custom_target(tcmalloc ALL COMMENT "Dummy tcmalloc target")
 endif()
+
+#---graphviz--------------------------------------------------------------------------------------------
+set(graphviz_config_opts -with-pic -enable-swig=no --with-qt=no)
+if(LCG_TARGET MATCHES "i686")
+  list(APPEND graphviz_config_opts --build=i686-unknown-linux-gnu)
+endif()
+if(LCG_TARGET MATCHES mac108)
+  set(graphviz_build_opts CFLAGS=-I/usr/X11/include)
+endif()
+LCGPackage_Add(
+  graphviz
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/graphviz-${graphviz_native_version}.tar.gz
+  CONFIGURE_COMMAND ./configure --prefix <INSTALL_DIR> ${graphviz_config_opts}
+  BUILD_COMMAND make ${graphviz_build_opts}
+  BUILD_IN_SOURCE 1
+)
+
+

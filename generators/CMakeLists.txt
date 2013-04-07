@@ -173,6 +173,8 @@ LCGPackage_Add(
      --enable-unvalidated
      PYTHON=${Python_home}/bin/python LD_LIBRARY_PATH=${Python_home}/lib:$ENV{LD_LIBRARY_PATH}
      SWIG=${swig_home}/bin/swig
+     CC=${CMAKE_C_COMPILER}
+     CXX=${CMAKE_CXX_COMPILER}
   BUILD_COMMAND make all LD_LIBRARY_PATH=${Python_home}/lib:$ENV{LD_LIBRARY_PATH}
   INSTALL_COMMAND make install LD_LIBRARY_PATH=${Python_home}/lib:$ENV{LD_LIBRARY_PATH}
   BUILD_IN_SOURCE 1
@@ -211,7 +213,7 @@ LCGPackage_Add(
   mctester
   URL http://cern.ch/MC-TESTER/MC-TESTER-${mctester_native_version}.tar.gz
   UPDATE_COMMAND ${CMAKE_COMMAND} -E touch make.inc
-  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --with-HepMC=${HepMC_home} --with-root=${ROOT_home}
+  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --with-HepMC=${HepMC_home} --with-root=${ROOT_home}/bin
   BUILD_IN_SOURCE 1
   DEPENDS HepMC ROOT
 )
@@ -223,6 +225,7 @@ LCGPackage_Add(
   UPDATE_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/${hijing_native_version} <SOURCE_DIR>   
          COMMAND ${CMAKE_COMMAND} -E remove_directory <SOURCE_DIR>/${hijing_native_version}
   CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR>
+  BUILD_COMMAND make FC=${CMAKE_Fortran_COMPILER} CC=${CMAKE_C_COMPILER}
   INSTALL_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/lib <INSTALL_DIR>/lib
   BUILD_IN_SOURCE 1
 )

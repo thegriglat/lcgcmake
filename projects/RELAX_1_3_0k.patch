@@ -24,9 +24,10 @@ Index: Dictionaries/MathRflx/CMakeLists.txt
 ===================================================================
 --- Dictionaries/MathRflx/CMakeLists.txt	(revision 0)
 +++ Dictionaries/MathRflx/CMakeLists.txt	(revision 0)
-@@ -0,0 +1,5 @@
-+
-+add_definitions(-Wno-array-bounds)
+@@ -0,0 +1,6 @@
++if(GCC_VERSION VERSION_GREATER 4.3)
++  add_definitions(-Wno-array-bounds)
++endif()
 +relax_dictionary(Math dict/MathDict.h dict/selection.xml LINK_LIBRARIES ${ROOT_GenVector_LIBRARY})
 +
 +
@@ -173,9 +174,10 @@ Index: Dictionaries/MathAddRflx/CMakeLists.txt
 ===================================================================
 --- Dictionaries/MathAddRflx/CMakeLists.txt	(revision 0)
 +++ Dictionaries/MathAddRflx/CMakeLists.txt	(revision 0)
-@@ -0,0 +1,5 @@
-+
-+add_definitions(-Wno-array-bounds)
+@@ -0,0 +1,6 @@
++if(GCC_VERSION VERSION_GREATER 4.3)
++  add_definitions(-Wno-array-bounds)
++endif()
 +relax_dictionary(MathAdd dict/MathAddDict.h dict/selection.xml LINK_LIBRARIES ${ROOT_GenVector_LIBRARY} )
 +
 +
@@ -194,7 +196,12 @@ Index: CMakeLists.txt
 ===================================================================
 --- CMakeLists.txt	(revision 0)
 +++ CMakeLists.txt	(revision 0)
-@@ -0,0 +1,3 @@
+@@ -0,0 +1,8 @@
 +cmake_minimum_required(VERSION 2.8 FATAL_ERROR)
 +project(RELAX)
++if(CMAKE_COMPILER_IS_GNUCC)
++  execute_process(COMMAND ${CMAKE_C_COMPILER} -dumpversion OUTPUT_VARIABLE GCC_VERSION)
++  message("GCC_VERSION=${GCC_VERSION}")
++endif()
++ 
 +add_subdirectory(Dictionaries)

@@ -27,7 +27,8 @@ else()
                -Dpython=ON -DPYTHON_EXECUTABLE=${Python_home}/bin/python
                            -DPYTHON_INCLUDE_DIR=${Python_home}/include/python${Python_config_version_twodigit}
                            -DPYTHON_LIBRARY=${Python_home}/lib/libpython${Python_config_version_twodigit}${CMAKE_SHARED_LIBRARY_SUFFIX}
-    DEPENDS Python
+               -DGRAPHVIZ_DIR=${graphviz_home}
+    DEPENDS Python graphviz
   )
 endif()
 #---cmaketool----------------------------------------------------------------------------------------
