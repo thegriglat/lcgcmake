@@ -45,7 +45,7 @@ macro(LCGPackage_Add name)
 
     else()
 
-      set(${name}_home ${LOCAL_INSTALL_PREFIX}/${${name}_directory_name}/${version}/${LCG_system})
+      set(${name}_home ${LOCAL_INSTALL_PREFIX}/${name}/${version}/${LCG_system})
 
       #---Replace patterns for multiversion cases-----------------------------------------------------
       string(REPLACE <NATIVE_VERSION> ${version} ARGUMENTS "${ARG_UNPARSED_ARGUMENTS}")

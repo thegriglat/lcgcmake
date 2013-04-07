@@ -97,7 +97,7 @@ LCGPackage_Add(
 #---FastJet-----------------------------------------------------------------------------------------
 LCGPackage_Add(
   fastjet
-  URL http://fastjet.fr/repo/fastjet-${fastjet_native_version}.tar.gz
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/fastjet-${fastjet_native_version}.tar.gz
   CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix=<INSTALL_DIR> --enable-shared --enable-allplugins
 )
 
