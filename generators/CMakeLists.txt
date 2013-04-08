@@ -214,6 +214,7 @@ LCGPackage_Add(
   URL http://cern.ch/MC-TESTER/MC-TESTER-${mctester_native_version}.tar.gz
   UPDATE_COMMAND ${CMAKE_COMMAND} -E touch make.inc
   CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --with-HepMC=${HepMC_home} --with-root=${ROOT_home}/bin
+  BUILD_COMMAND make LD_LIBRARY_PATH=${ROOT_home}/lib
   BUILD_IN_SOURCE 1
   DEPENDS HepMC ROOT
 )
@@ -236,6 +237,7 @@ LCGPackage_Add(
   starlight
   SVN_REPOSITORY http://starlight.hepforge.org/svn/trunk
   SVN_REVISION -r ${STARLIGHT_REV}
+  UPDATE_COMMAND <VOID>
   PATCH_COMMAND patch -p0 < ${CMAKE_CURRENT_SOURCE_DIR}/starlight/patches/patch-${starlight_native_version}
   CMAKE_ARGS -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
 )
