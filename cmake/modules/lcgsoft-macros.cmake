@@ -45,7 +45,7 @@ macro(LCGPackage_Add name)
 
     else()
 
-      set(${name}_home ${LOCAL_INSTALL_PREFIX}/${name}/${version}/${LCG_system})
+      set(${name}_home ${LOCAL_INSTALL_PREFIX}/${${name}_directory_name}/${version}/${LCG_system})
 
       #---Replace patterns for multiversion cases-----------------------------------------------------
       string(REPLACE <NATIVE_VERSION> ${version} ARGUMENTS "${ARG_UNPARSED_ARGUMENTS}")
@@ -76,9 +76,10 @@ macro(LCGPackage_Add name)
         DEPENDEES update patch)
 
       #---Adding extra step to build the binary tarball-----------------------------------------------
+      get_filename_component(n_name ${${name}_directory_name} NAME)
       ExternalProject_Add_Step(${targetname} package COMMENT "Creating binary tarball for '${targetname}'"
         COMMAND ${CMAKE_COMMAND} -E chdir ${${name}_home}/../../.. 
-                ${CMAKE_COMMAND} -E tar cfz ${LOCAL_INSTALL_PREFIX}/${name}-${version}-${LCG_system}.tgz ${name}/${version}/${LCG_system}
+                ${CMAKE_COMMAND} -E tar cfz ${LOCAL_INSTALL_PREFIX}/${name}-${version}-${LCG_system}.tgz ${n_name}/${version}/${LCG_system}
         DEPENDEES install)
 
       #---Add extra steps eventually------------------------------------------------------------------
