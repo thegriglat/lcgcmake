@@ -1,4 +1,5 @@
 Index: net/bonjour/CMakeLists.txt
+===================================================================
 --- ../../../../../LocalInstallArea/ROOT/5.34.05/share/sources/net/bonjour/CMakeLists.txt	2013-04-10 15:52:45.000000000 +0200
 +++ net/bonjour/CMakeLists.txt	2013-04-10 16:00:51.000000000 +0200
 @@ -9,7 +9,7 @@
@@ -170,3 +171,4 @@ Index: graf2d/x11/CMakeLists.txt
  
  ROOT_GENERATE_DICTIONARY(G__${libname} T*.h LINKDEF LinkDef.h)
  ROOT_GENERATE_ROOTMAP(${libname} LINKDEF LinkDef.h)
+

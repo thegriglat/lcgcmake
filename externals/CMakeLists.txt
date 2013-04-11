@@ -1,5 +1,5 @@
 #---Python--------------------------------------------------------------------------------------------
-if(LCG_TARGET MATCHES "slc")
+if(LCG_TARGET MATCHES "slc" OR LCG_TARGET MATCHES "ubuntu")
   set(Python_config_options --enable-shared "LDFLAGS=-Wl,-rpath,'$$ORIGIN/../lib'")
 elseif(LCG_TARGET MATCHES "mac")
   string(REGEX REPLACE "([0-9]+)([0-9])" \\1.\\2 macvers ${LCG_HOST_OSVERS})
@@ -20,12 +20,11 @@ LCGPackage_Add(
 file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/user-config.jam "# \n")  # Start with an empty config file
 if(APPLE)
   set(Boost_toolset darwin)
-  set(Boost_bootstrap_options --with-python-root=${Python_home})
 else()
   set(Boost_toolset gcc)
-  file(APPEND   ${CMAKE_CURRENT_BINARY_DIR}/user-config.jam "using python : ${Python_config_version_twodigit} : ${Python_home} ;\n")
 endif()
-set(Boost_jam_options -j12 variant=release --layout=versioned)
+set(Boost_bootstrap_options --with-python-root=${Python_home})
+set(Boost_jam_options -j4 variant=release --layout=versioned)
 set(Boost_compile_options)
 if(LCG_TARGET MATCHES i686)
   file(APPEND ${CMAKE_CURRENT_BINARY_DIR}/user-config.jam "using ${Boost_toolset} : : :  <linkflags>-m32 <compileflags>-m32 ;\n")
@@ -191,6 +190,7 @@ if(NOT APPLE) # There are problems building on MacOSX
   LCGPackage_Add(
     tcmalloc
     URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/google-perftools-${tcmalloc_native_version}.tar.gz
+    PATCH_COMMAND patch -p1 -i ${CMAKE_CURRENT_SOURCE_DIR}/tcmalloc-${tcmalloc_native_version}.patch
     CONFIGURE_COMMAND ./configure --prefix <INSTALL_DIR> ${tcmalloc_config_options}
     BUILD_IN_SOURCE 1
   )

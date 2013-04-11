@@ -33,3 +33,54 @@ diff -ru cppunit-1.12.1/include/cppunit/extensions/TestFixtureFactory.h cppunit-
 -  rm -f conftest.*
 +  rm -rf conftest.*
  fi
+--- cppunit-1.12.1/src/DllPlugInTester/Makefile.in	2008-02-20 06:59:55.000000000 +0100
++++ cppunit-1.12.1.new/src/DllPlugInTester/Makefile.in	2013-04-11 12:02:42.581898017 +0200
+@@ -236,9 +236,8 @@
+ 	CommandLineParser.cpp
+ 
+ DllPlugInTester_LDADD = \
+-  $(top_builddir)/src/cppunit/libcppunit.la
++  $(top_builddir)/src/cppunit/libcppunit.la $(LIBADD_DL)
+ 
+-DllPlugInTester_LDFLAGS = $(LIBADD_DL)
+ DllPlugInTesterTest_SOURCES = DllPlugInTesterTest.cpp \
+ 	CommandLineParser.cpp \
+ 	CommandLineParser.h \
+@@ -246,9 +245,8 @@
+ 	CommandLineParserTest.h
+ 
+ DllPlugInTesterTest_LDADD = \
+-  $(top_builddir)/src/cppunit/libcppunit.la
++  $(top_builddir)/src/cppunit/libcppunit.la $(LIBADD_DL)
+ 
+-DllPlugInTesterTest_LDFLAGS = $(LIBADD_DL)
+ all: all-am
+ 
+ .SUFFIXES:
+@@ -317,10 +315,10 @@
+ 	  echo " rm -f $$p $$f"; \
+ 	  rm -f $$p $$f ; \
+ 	done
+-DllPlugInTester$(EXEEXT): $(DllPlugInTester_OBJECTS) $(DllPlugInTester_DEPENDENCIES) 
++DllPlugInTester$(EXEEXT): $(DllPlugInTester_OBJECTS) $(DllPlugInTester_DEPENDENCIES)
+ 	@rm -f DllPlugInTester$(EXEEXT)
+ 	$(DllPlugInTester_LINK) $(DllPlugInTester_OBJECTS) $(DllPlugInTester_LDADD) $(LIBS)
+-DllPlugInTesterTest$(EXEEXT): $(DllPlugInTesterTest_OBJECTS) $(DllPlugInTesterTest_DEPENDENCIES) 
++DllPlugInTesterTest$(EXEEXT): $(DllPlugInTesterTest_OBJECTS) $(DllPlugInTesterTest_DEPENDENCIES)
+ 	@rm -f DllPlugInTesterTest$(EXEEXT)
+ 	$(DllPlugInTesterTest_LINK) $(DllPlugInTesterTest_OBJECTS) $(DllPlugInTesterTest_LDADD) $(LIBS)
+ 
+--- cppunit-1.12.1/examples/simple/Makefile.in	2008-02-20 06:59:53.000000000 +0100
++++ cppunit-1.12.1.new/examples/simple/Makefile.in	2013-04-11 11:12:30.371108640 +0200
+@@ -217,9 +217,9 @@
+ INCLUDES = -I$(top_builddir)/include -I$(top_srcdir)/include
+ simple_SOURCES = ExampleTestCase.cpp Main.cpp  ExampleTestCase.h
+ simple_LDADD = \
+-  $(top_builddir)/src/cppunit/libcppunit.la 
++  $(top_builddir)/src/cppunit/libcppunit.la $(LIBADD_DL)
+ 
+-simple_LDFLAGS = $(LIBADD_DL)
++simple_LDFLAGS =
+ all: all-am
+ 
+ .SUFFIXES:
