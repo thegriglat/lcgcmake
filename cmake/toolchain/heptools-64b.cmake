@@ -163,7 +163,7 @@ LCG_external_package(xqilla            2.2.4p1                                  
 endif()
 LCG_external_package(xrootd            3.1.0p2                                  )
 
-set(MCGENPATH  MCGenerators_lcgcmt${heptools_version}
+set(MCGENPATH  MCGenerators_lcgcmt${heptools_version})
 
 #---Additional External packages------(Generators)-----------------
 LCG_external_package(lhapdf            5.8.8          ${MCGENPATH}/lhapdf       )
