@@ -148,7 +148,7 @@ LCGPackage_Add(
 )
 
 #---cx_oracle------------------------------------------------------------------------------------------------------
-if(NOT APPLE)
+if(FALSE)
   LCGPackage_Add(
     cx_oracle
     URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/cx_Oracle-${cx_oracle_native_version}.tar.gz
