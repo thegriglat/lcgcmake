@@ -33,12 +33,13 @@ LCGPackage_Add(
   PATCH_COMMAND patch -p0 -i ${CMAKE_CURRENT_SOURCE_DIR}/scipy-${scipy_native_version}.patch
   CONFIGURE_COMMAND <VOID>
   BUILD_COMMAND ${Exec_cmd} PYTHONPATH=${pyanalysis_home}/lib/python${Python_config_version_twodigit}/site-packages
+                            BLAS=${blas_home}/lib/libBLAS.a
                 ${Python_cmd} setup.py build
   INSTALL_COMMAND ${Exec_cmd} PYTHONPATH=${pyanalysis_home}/lib/python${Python_config_version_twodigit}/site-packages
                   ${Python_cmd} setup.py install --prefix <INSTALL_DIR>
   BUILD_IN_SOURCE 1
   DEST_NAME pyanalysis
-  DEPENDS Python numpy
+  DEPENDS Python numpy blas
 )
 
 #---matplotlib----------------------------------------------------------------------------------------------------
@@ -152,7 +153,6 @@ if(FALSE)
   LCGPackage_Add(
     cx_oracle
     URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/cx_Oracle-${cx_oracle_native_version}.tar.gz
-    #PATCH_COMMAND patch -p0 -i ${CMAKE_CURRENT_SOURCE_DIR}/cx_oracle-${cx_oracle_native_version}.patch
     CONFIGURE_COMMAND <VOID>
     BUILD_COMMAND ${Python_cmd} setup.py build
     INSTALL_COMMAND ${Python_cmd} setup.py install --prefix <INSTALL_DIR>

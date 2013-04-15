@@ -222,4 +222,16 @@ LCGPackage_Add(
              -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
 )
 
+#---blas------------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  blas
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/blas-${blas_native_version}.tgz
+  CONFIGURE_COMMAND <VOID>
+  BUILD_COMMAND make FORTRAN=${CMAKE_Fortran_COMPILER}  "OPTS=-O3 -fPIC"  BLASLIB=libBLAS.a
+  INSTALL_COMMAND mkdir -p ${blas_home}/lib
+          COMMAND cp <SOURCE_DIR>/libBLAS.a ${blas_home}/lib/.
+  BUILD_IN_SOURCE 1
+
+)
+
 
