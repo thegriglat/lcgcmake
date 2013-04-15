@@ -9,6 +9,7 @@ if(LCG_TARGET MATCHES "mac.*-gcc(47|48)")
                                   --with-python-incdir=${Python_home}/include/python${Python_config_version_twodigit}
                                   --with-python-libdir=${Python_home}/lib
                                   --enable-cintex
+                                  --enable-minuit2
                                   --disable-gviz   # compilation errors (see https://sft.its.cern.ch/jira/browse/ROOT-176)
     INSTALL_COMMAND  make dist
             COMMAND  $ENV{SHELL} -c "rm <SOURCE_DIR>/../root_v${ROOT_native_version}.source.tar.gz"
@@ -27,6 +28,7 @@ else()
                -Dpython=ON -DPYTHON_EXECUTABLE=${Python_home}/bin/python
                            -DPYTHON_INCLUDE_DIR=${Python_home}/include/python${Python_config_version_twodigit}
                            -DPYTHON_LIBRARY=${Python_home}/lib/libpython${Python_config_version_twodigit}${CMAKE_SHARED_LIBRARY_SUFFIX}
+               -Dminuit2=ON
                -DGRAPHVIZ_DIR=${graphviz_home}
     DEPENDS Python graphviz
   )

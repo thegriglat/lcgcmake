@@ -152,7 +152,6 @@ endif()
 LCGPackage_Add(
   GCCXML
   URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/gccxml-${GCCXML_native_version}.tar.gz
-  PATCH_COMMAND PATCH_COMMAND patch -p0 -i ${CMAKE_CURRENT_SOURCE_DIR}/GCCXML-${GCCXML_native_version}.patch
   CMAKE_ARGS -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR> ${GCCXML_config_options}
 )
 
@@ -213,6 +212,14 @@ LCGPackage_Add(
   CONFIGURE_COMMAND ./configure --prefix <INSTALL_DIR> ${graphviz_config_opts}
   BUILD_COMMAND make ${graphviz_build_opts}
   BUILD_IN_SOURCE 1
+)
+
+#---mysql------------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  mysql
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/mysql-${mysql_native_version}.tar.gz
+  CMAKE_ARGS -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+             -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
 )
 
 

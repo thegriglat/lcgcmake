@@ -1,0 +1,36 @@
+--- ../../../../../../LocalInstallArea/scipy/0.10.0/share/sources/scipy/lib/blas/fblaswrap_veclib_c.c.src	2013-04-11 17:04:41.000000000 +0200
++++ scipy/lib/blas/fblaswrap_veclib_c.c.src	2013-04-11 18:01:52.000000000 +0200
+@@ -1,5 +1,5 @@
+ #include <complex.h>
+-#include <vecLib/vecLib.h>
++#include <Accelerate/Accelerate.h>
+ 
+ //#define WRAP_F77(a) wcblas_##a##_
+ #define WRAP_F77(a) w##a##_
+--- ../../../../../../LocalInstallArea/scipy/0.10.0/share/sources/scipy/linalg/src/fblaswrap_veclib_c.c	2013-04-11 17:04:41.000000000 +0200
++++ scipy/linalg/src/fblaswrap_veclib_c.c	2013-04-11 18:02:53.000000000 +0200
+@@ -1,5 +1,5 @@
+ #include <complex.h>
+-#include <vecLib/vecLib.h>
++#include <Accelerate/Accelerate.h>
+ 
+ //#define WRAP_F77(a) wcblas_##a##_
+ #define WRAP_F77(a) w##a##_
+--- ../../../../../../LocalInstallArea/scipy/0.10.0/share/sources/scipy/sparse/linalg/eigen/arpack/ARPACK/FWRAPPERS/veclib_cabi_c.c	2013-04-11 17:04:42.000000000 +0200
++++ scipy/sparse/linalg/eigen/arpack/ARPACK/FWRAPPERS/veclib_cabi_c.c	2013-04-11 18:02:26.000000000 +0200
+@@ -1,5 +1,5 @@
+ #include <complex.h>
+-#include <vecLib/vecLib.h>
++#include <Accelerate/Accelerate.h>
+ 
+ #define WRAP_F77(a) a##_
+ void WRAP_F77(veclib_cdotc)(const int *N, const complex float *X, const int *incX,
+--- ../../../../../../LocalInstallArea/scipy/0.10.0/share/sources/scipy/sparse/linalg/isolve/iterative/FWRAPPERS/veclib_cabi_c.c	2013-04-11 17:04:42.000000000 +0200
++++ scipy/sparse/linalg/isolve/iterative/FWRAPPERS/veclib_cabi_c.c	2013-04-11 18:02:45.000000000 +0200
+@@ -1,5 +1,5 @@
+ #include <complex.h>
+-#include <vecLib/vecLib.h>
++#include <Accelerate/Accelerate.h>
+ 
+ #define WRAP_F77(a) a##_
+ void WRAP_F77(veclib_cdotc)(const int *N, const complex float *X, const int *incX,

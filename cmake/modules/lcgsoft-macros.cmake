@@ -11,7 +11,7 @@ set(LOCAL_INSTALL_PREFIX ${CMAKE_BINARY_DIR}/LocalInstallArea)
 #----------------------------------------------------------------------------------------------------
 macro(LCGPackage_Add name)
 
-  CMAKE_PARSE_ARGUMENTS(ARG "" "" "DEPENDS;CONFIGURE_EXAMPLES_COMMAND;BUILD_EXAMPLES_COMMAND;INSTALL_EXAMPLES_COMMAND;TEST_COMMAND" ${ARGN})   # This special handling is needed until CMake 2.8.11 is released
+  CMAKE_PARSE_ARGUMENTS(ARG "" "" "DEPENDS;CONFIGURE_EXAMPLES_COMMAND;BUILD_EXAMPLES_COMMAND;INSTALL_EXAMPLES_COMMAND;TEST_COMMAND;DEST_NAME" ${ARGN})   # This special handling is needed until CMake 2.8.11 is released
   
   #---Check if this is a muli-version package or not-------------------------------------------------
   list(LENGTH ${name}_native_version nvers)
@@ -44,9 +44,6 @@ macro(LCGPackage_Add name)
       add_custom_target(clean-${targetname} COMMENT "${targetname}: nothing to be clean!")
 
     else()
-
-      set(${name}_home ${LOCAL_INSTALL_PREFIX}/${${name}_directory_name}/${version}/${LCG_system})
-
       #---Replace patterns for multiversion cases-----------------------------------------------------
       string(REPLACE <NATIVE_VERSION> ${version} ARGUMENTS "${ARG_UNPARSED_ARGUMENTS}")
       string(REPLACE <VOID> "" ARGUMENTS "${ARGUMENTS}")
@@ -58,29 +55,49 @@ macro(LCGPackage_Add name)
            string(REPLACE ${var} ${${v}} ARGUMENTS "${ARGUMENTS}")
         endif()
       endforeach()
+      #---Set home and install name-------------------------------------------------------------------
+      set(${name}_home ${LOCAL_INSTALL_PREFIX}/${${name}_directory_name}/${version}/${LCG_system})
+      if(ARG_DEST_NAME)
+        set(dest_name ${ARG_DEST_NAME})
+        set(dest_version ${${ARG_DEST_NAME}_native_version})
+        set(curr_name ${name})
+      else()
+        set(dest_name ${name})
+        set(dest_version ${version})
+        set(curr_name)
+      endif()
+      
+      #---Check if a patch file exists and apply it by default---------------------------------------
+      if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/${name}-${version}.patch AND NOT ARGUMENTS MATCHES PATCH_COMMAND)
+        list(APPEND ARGUMENTS PATCH_COMMAND patch -p0 -i ${CMAKE_CURRENT_SOURCE_DIR}/${name}-${${name}_native_version}.patch)
+      endif()
+
       #---Add the external project -------------------------------------------------------------------
       ExternalProject_Add(
         ${targetname}
         PREFIX ${targetname}
-        INSTALL_DIR ${${name}_home}
+        INSTALL_DIR ${${dest_name}_home}
         SOURCE_DIR ${targetname}/src/${name}/${version}
-        "${ARGUMENTS}" 
+        "${ARGUMENTS}"
         TEST_COMMAND ${ARG_TEST_COMMAND}
         LOG_CONFIGURE 1 LOG_BUILD 1 LOG_INSTALL 1 )
 
       #---Adding extra step to copy the sources in /share/sources-------------------------------------
       ExternalProject_Add_Step(${targetname} install_sources COMMENT "Installing sources for '${targetname}' and create source tarball"
-        COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR> ${LOCAL_INSTALL_PREFIX}/${${name}_directory_name}/${version}/share/sources
-        COMMAND ${CMAKE_COMMAND} -E chdir <SOURCE_DIR>/../.. ${CMAKE_COMMAND} -E tar cfz ${name}-${version}-src.tgz ${name}
+        COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR> ${LOCAL_INSTALL_PREFIX}/${${dest_name}_directory_name}/${dest_version}/share/sources/${curr_name}
+        COMMAND ${CMAKE_COMMAND} -E make_directory ${LOCAL_INSTALL_PREFIX}/${${name}_directory_name}/../distribution/${name}
+        COMMAND ${CMAKE_COMMAND} -E chdir <SOURCE_DIR>/../.. ${CMAKE_COMMAND} -E tar cfz ${LOCAL_INSTALL_PREFIX}/${${name}_directory_name}/../distribution/${name}/${name}-${version}-src.tgz ${name}
         DEPENDERS build
         DEPENDEES update patch)
 
       #---Adding extra step to build the binary tarball-----------------------------------------------
-      get_filename_component(n_name ${${name}_directory_name} NAME)
-      ExternalProject_Add_Step(${targetname} package COMMENT "Creating binary tarball for '${targetname}'"
-        COMMAND ${CMAKE_COMMAND} -E chdir ${${name}_home}/../../.. 
-                ${CMAKE_COMMAND} -E tar cfz ${LOCAL_INSTALL_PREFIX}/${name}-${version}-${LCG_system}.tgz ${n_name}/${version}/${LCG_system}
-        DEPENDEES install)
+      if(NOT ARG_DEST_NAME)  # Only if is not installed grouped with other packages
+        get_filename_component(n_name ${${name}_directory_name} NAME)
+        ExternalProject_Add_Step(${targetname} package COMMENT "Creating binary tarball for '${targetname}'"
+          COMMAND ${CMAKE_COMMAND} -E chdir ${${dest_name}_home}/../../..
+                  ${CMAKE_COMMAND} -E tar cfz ${LOCAL_INSTALL_PREFIX}/${${name}_directory_name}/../distribution/${name}/${name}-${version}-${LCG_system}.tgz ${n_name}/${version}/${LCG_system}
+          DEPENDEES install)
+      endif()
 
       #---Add extra steps eventually------------------------------------------------------------------
       set(current_dependee install)
@@ -133,8 +150,8 @@ macro(LCGPackage_Add name)
               DESTINATION ${${name}_directory_name}/${version}/share
               USE_SOURCE_PERMISSIONS COMPONENT ${targetname})
       #---Tar files
-      install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${targetname}/src/${name}-${version}-src.tgz
-                    ${LOCAL_INSTALL_PREFIX}/${name}-${version}-${LCG_system}.tgz
+      install(FILES ${LOCAL_INSTALL_PREFIX}/${${name}_directory_name}/../distribution/${name}/${name}-${version}-src.tgz
+                    ${LOCAL_INSTALL_PREFIX}/${${name}_directory_name}/../distribution/${name}/${name}-${version}-${LCG_system}.tgz
               DESTINATION ${${name}_directory_name}/../distribution/${name}
               COMPONENT ${targetname} OPTIONAL)
       #---Log files

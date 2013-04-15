@@ -84,7 +84,7 @@ LCG_external_package(minuit            5.27.02                                  
 LCG_external_package(mock              0.8.0                                    )
 LCG_external_package(multiprocessing   2.6.2.1                                  )
 LCG_external_package(myproxy           4.2-VDT-1.10.1                           )
-LCG_external_package(mysql             5.5.14                                   )
+LCG_external_package(mysql             5.5.27                                   )
 LCG_external_package(mysql_python      1.2.3                                    )
 LCG_external_package(neurobayes        3.7.0                                    )
 LCG_external_package(neurobayes_expert 3.7.0                                    )
