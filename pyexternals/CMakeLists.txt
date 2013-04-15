@@ -33,13 +33,13 @@ LCGPackage_Add(
   PATCH_COMMAND patch -p0 -i ${CMAKE_CURRENT_SOURCE_DIR}/scipy-${scipy_native_version}.patch
   CONFIGURE_COMMAND <VOID>
   BUILD_COMMAND ${Exec_cmd} PYTHONPATH=${pyanalysis_home}/lib/python${Python_config_version_twodigit}/site-packages
-                            BLAS=${blas_home}/lib/libBLAS.a
+                            BLAS=${blas_home}/lib/libBLAS.a LAPACK=${lapack_home}/liub/libLAPACK.a
                 ${Python_cmd} setup.py build
   INSTALL_COMMAND ${Exec_cmd} PYTHONPATH=${pyanalysis_home}/lib/python${Python_config_version_twodigit}/site-packages
                   ${Python_cmd} setup.py install --prefix <INSTALL_DIR>
   BUILD_IN_SOURCE 1
   DEST_NAME pyanalysis
-  DEPENDS Python numpy blas
+  DEPENDS Python numpy blas lapack
 )
 
 #---matplotlib----------------------------------------------------------------------------------------------------
@@ -83,22 +83,6 @@ LCGPackage_Add(
   BUILD_COMMAND <VOID>
   INSTALL_COMMAND <VOID>
 )
-
-#LXML 2.2.7 NEW!
-#SQLALCHEMY 0.6.3
-#GENSHI 0.6.3
-#4SUITE 1.0.2P1
-#CX_ORACLE 5.0.1
-#IPYTHON 0.8.4
-#JSON 2.1.1
-#MOCK 0.6.0
-#MULTIPROCESSING 2.6.1
-#MYSQL_PYTHON 1.2.2
-#PROCESSING 0.51
-#PY 1.2.1
-#PYXML 0.84P1
-#SETUPTOOLS 06C11
-#STORM 0.16.0
 
 #---lxml---------------------------------------------------------------------------------------------------------
 LCGPackage_Add(
