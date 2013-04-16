@@ -253,4 +253,18 @@ LCGPackage_Add(
   BUILD_IN_SOURCE 1
 )
 
+#---Qt---------------------------------------------------------------------------------------------------
+#set_append LCG_qt_extra_config_opts " -qt-xcb "
+# target-slc&target-i686 "-no-phonon-backend -no-multimedia -platform linux-g++ -arch i386"
+# target-darwin&target-x86_64 "-no-framework -D MSG=MSGqtmac -arch x86_64"
+# target-darwin&target-i386 "-no-framework -D MSG=MSGqtmac -arch i386"
+
+LCGPackage_Add(
+  Qt
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/qt-everywhere-opensource-src-${Qt_native_version}.tar.gz
+  CONFIGURE_COMMAND ./configure ${Qt_extra_config_opts} -no-separate-debug-info -release --prefix=<INSTALL_DIR> 
+                    -nomake examples -nomake demos --opensource --confirm-license
+  BUILD_IN_SOURCE 1
+)
+
 

@@ -11,7 +11,8 @@ set(LOCAL_INSTALL_PREFIX ${CMAKE_BINARY_DIR}/LocalInstallArea)
 #----------------------------------------------------------------------------------------------------
 macro(LCGPackage_Add name)
 
-  CMAKE_PARSE_ARGUMENTS(ARG "" "" "DEPENDS;CONFIGURE_EXAMPLES_COMMAND;BUILD_EXAMPLES_COMMAND;INSTALL_EXAMPLES_COMMAND;TEST_COMMAND;DEST_NAME" ${ARGN})   # This special handling is needed until CMake 2.8.11 is released
+  CMAKE_PARSE_ARGUMENTS(ARG "" "DEST_NAME;BUNDLE_PACKAGE"
+                            "DEPENDS;CONFIGURE_EXAMPLES_COMMAND;BUILD_EXAMPLES_COMMAND;INSTALL_EXAMPLES_COMMAND;TEST_COMMAND" ${ARGN})
   
   #---Check if this is a muli-version package or not-------------------------------------------------
   list(LENGTH ${name}_native_version nvers)
@@ -31,7 +32,7 @@ macro(LCGPackage_Add name)
     endif()
 
     #---Check if the package is already existing in the installation area(s)
-    if(EXISTS ${LCG_INSTALL_PREFIX}/${${name}_directory_name}/${version}/${LCG_system})
+    if(NOT ARG_BUNDLE_PACKAGE AND EXISTS ${LCG_INSTALL_PREFIX}/${${name}_directory_name}/${version}/${LCG_system})
 
       set(${name}_home ${LCG_INSTALL_PREFIX}/${${name}_directory_name}/${version}/${LCG_system})
       add_custom_target(${targetname} ALL COMMENT "${targetname} package already existing in LCG install area ${${name}_home}")
