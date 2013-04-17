@@ -35,6 +35,15 @@ macro(LCGPackage_Add name)
       add_custom_target(${targetname} ALL COMMENT "${targetname} package already existing in LCG install area ${${name}_home}")
       add_custom_target(clean-${targetname} COMMENT "${targetname}: nothing to be clean!")
 
+    elseif(NOT ARG_BUNDLE_PACKAGE AND EXISTS ${LCG_INSTALL_PREFIX}/../app/releases/${${name}_directory_name}/${version}/${LCG_system})
+      get_filename_component(_path ${LCG_INSTALL_PREFIX} PATH)
+      set(${name}_home ${_path}/app/releases/${${name}_directory_name}/${version}/${LCG_system})
+      if(${name} STREQUAL ROOT)  # ROOT in LCG installations is special
+        set(ROOT_home ${ROOT_home}/root) 
+      endif()
+      add_custom_target(${targetname} ALL COMMENT "${targetname} package already existing in LCG install area ${${name}_home}")
+      add_custom_target(clean-${targetname} COMMENT "${targetname}: nothing to be clean!")
+
     else()
       #---Replace patterns for multiversion cases-----------------------------------------------------
       string(REPLACE <NATIVE_VERSION> ${version} ARGUMENTS "${ARG_UNPARSED_ARGUMENTS}")
