@@ -153,6 +153,7 @@ if(NOT APPLE)    #  (build fails on Mac " unknown option: -soname")
 LCGPackage_Add(
   evtgen
   SVN_REPOSITORY http://svnweb.cern.ch/guest/evtgen/tags/<evtgen_<NATIVE_VERSION>_tag>
+  UPDATE_COMMAND <VOID>
   CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --hepmcdir=${HepMC_home} --pythiadir=${pythia8_home} --photosdir=${photos++_home} --tauoladir=${tauola++_home}
   BUILD_IN_SOURCE 1   
   DEPENDS HepMC pythia8 photos++ tauola++
@@ -175,7 +176,7 @@ LCGPackage_Add(
      SWIG=${swig_home}/bin/swig
      CC=${CMAKE_C_COMPILER}
      CXX=${CMAKE_CXX_COMPILER}
-  BUILD_COMMAND make all LD_LIBRARY_PATH=${Python_home}/lib:$ENV{LD_LIBRARY_PATH}
+  BUILD_COMMAND make all V=1 LD_LIBRARY_PATH=${Python_home}/lib:$ENV{LD_LIBRARY_PATH}
   INSTALL_COMMAND make install LD_LIBRARY_PATH=${Python_home}/lib:$ENV{LD_LIBRARY_PATH}
   BUILD_IN_SOURCE 1
   DEPENDS HepMC Boost fastjet GSL Python swig
@@ -214,7 +215,7 @@ LCGPackage_Add(
   URL http://cern.ch/MC-TESTER/MC-TESTER-${mctester_native_version}.tar.gz
   UPDATE_COMMAND ${CMAKE_COMMAND} -E touch make.inc
   CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --with-HepMC=${HepMC_home} --with-root=${ROOT_home}/bin
-  BUILD_COMMAND make LD_LIBRARY_PATH=${ROOT_home}/lib
+  BUILD_COMMAND make LD_LIBRARY_PATH=${ROOT_home}/lib:$ENV{LD_LIBRARY_PATH}
   BUILD_IN_SOURCE 1
   DEPENDS HepMC ROOT
 )
