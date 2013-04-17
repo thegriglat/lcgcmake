@@ -1,8 +1,6 @@
 include(ExternalProject)
 include(CMakeParseArguments)
 
-set(LOCAL_INSTALL_PREFIX ${CMAKE_BINARY_DIR}/LocalInstallArea)
-
 #----------------------------------------------------------------------------------------------------
 #---LCGPackage_Add macro  ---------------------------------------------------------------------------
 #
@@ -19,7 +17,6 @@ macro(LCGPackage_Add name)
   if(nvers GREATER 1)
     add_custom_target(${name} ALL COMMENT "Multi-version package ${name} global target")
     add_custom_target(clean-${name} COMMENT "Clean a multi-version package ${name}")
-    add_custom_target(install-${name} COMMENT "Install a multi-version package ${name}")
   endif()
   
   #---Loop over all versions of the package----------------------------------------------------------
@@ -38,12 +35,6 @@ macro(LCGPackage_Add name)
       add_custom_target(${targetname} ALL COMMENT "${targetname} package already existing in LCG install area ${${name}_home}")
       add_custom_target(clean-${targetname} COMMENT "${targetname}: nothing to be clean!")
 
-    elseif(EXISTS ${CMAKE_INSTALL_PREFIX}/${${name}_directory_name}/${version}/${LCG_system})
-
-      set(${name}_home ${CMAKE_INSTALL_PREFIX}/${${name}_directory_name}/${version}/${LCG_system})
-      add_custom_target(${targetname} ALL COMMENT "${targetname} package already existing in ${${name}_home}")
-      add_custom_target(clean-${targetname} COMMENT "${targetname}: nothing to be clean!")
-
     else()
       #---Replace patterns for multiversion cases-----------------------------------------------------
       string(REPLACE <NATIVE_VERSION> ${version} ARGUMENTS "${ARG_UNPARSED_ARGUMENTS}")
@@ -56,8 +47,9 @@ macro(LCGPackage_Add name)
            string(REPLACE ${var} ${${v}} ARGUMENTS "${ARGUMENTS}")
         endif()
       endforeach()
+
       #---Set home and install name-------------------------------------------------------------------
-      set(${name}_home ${LOCAL_INSTALL_PREFIX}/${${name}_directory_name}/${version}/${LCG_system})
+      set(${name}_home ${CMAKE_INSTALL_PREFIX}/${${name}_directory_name}/${version}/${LCG_system})
       if(ARG_DEST_NAME)
         set(dest_name ${ARG_DEST_NAME})
         set(dest_version ${${ARG_DEST_NAME}_native_version})
@@ -73,11 +65,15 @@ macro(LCGPackage_Add name)
         list(APPEND ARGUMENTS PATCH_COMMAND patch -p0 -i ${CMAKE_CURRENT_SOURCE_DIR}/${name}-${${name}_native_version}.patch)
       endif()
 
+      #---We cannot use the argument INSTALL_DIR becuase cmake itself will create the directory 
+      #   unconditionaly mefore make is executed. So, we replace <INSTALL_DIR> before paasing the
+      #   arguments to ExternalProeject_Add().
+      string(REPLACE <INSTALL_DIR> ${${dest_name}_home} ARGUMENTS "${ARGUMENTS}")
+
       #---Add the external project -------------------------------------------------------------------
       ExternalProject_Add(
         ${targetname}
         PREFIX ${targetname}
-        INSTALL_DIR ${${dest_name}_home}
         SOURCE_DIR ${targetname}/src/${name}/${version}
         "${ARGUMENTS}"
         TEST_COMMAND ${ARG_TEST_COMMAND}
@@ -85,20 +81,27 @@ macro(LCGPackage_Add name)
 
       #---Adding extra step to copy the sources in /share/sources-------------------------------------
       ExternalProject_Add_Step(${targetname} install_sources COMMENT "Installing sources for '${targetname}' and create source tarball"
-        COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR> ${LOCAL_INSTALL_PREFIX}/${${dest_name}_directory_name}/${dest_version}/share/sources/${curr_name}
-        COMMAND ${CMAKE_COMMAND} -E make_directory ${LOCAL_INSTALL_PREFIX}/${${name}_directory_name}/../distribution/${name}
-        COMMAND ${CMAKE_COMMAND} -E chdir <SOURCE_DIR>/../.. ${CMAKE_COMMAND} -E tar cfz ${LOCAL_INSTALL_PREFIX}/${${name}_directory_name}/../distribution/${name}/${name}-${version}-src.tgz ${name}
-        DEPENDERS build
+        COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR> ${CMAKE_INSTALL_PREFIX}/${${dest_name}_directory_name}/${dest_version}/share/sources/${curr_name}
+        COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_INSTALL_PREFIX}/${${dest_name}_directory_name}/../distribution/${name}
+        COMMAND ${CMAKE_COMMAND} -E chdir <SOURCE_DIR>/../.. ${CMAKE_COMMAND} -E tar cfz ${CMAKE_INSTALL_PREFIX}/${${dest_name}_directory_name}/../distribution/${name}/${name}-${version}-src.tgz ${name}
+        DEPENDERS configure
         DEPENDEES update patch)
 
       #---Adding extra step to build the binary tarball-----------------------------------------------
       if(NOT ARG_DEST_NAME)  # Only if is not installed grouped with other packages
         get_filename_component(n_name ${${name}_directory_name} NAME)
         ExternalProject_Add_Step(${targetname} package COMMENT "Creating binary tarball for '${targetname}'"
-          COMMAND ${CMAKE_COMMAND} -E chdir ${${dest_name}_home}/../../..
-                  ${CMAKE_COMMAND} -E tar cfz ${LOCAL_INSTALL_PREFIX}/${${name}_directory_name}/../distribution/${name}/${name}-${version}-${LCG_system}.tgz ${n_name}/${version}/${LCG_system}
+                  COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_INSTALL_PREFIX}/${${name}_directory_name}/../distribution/${name}
+                  COMMAND ${CMAKE_COMMAND} -E chdir ${${dest_name}_home}/../../..
+                  ${CMAKE_COMMAND} -E tar cfz ${CMAKE_INSTALL_PREFIX}/${${name}_directory_name}/../distribution/${name}/${name}-${version}-${LCG_system}.tgz ${n_name}/${version}/${LCG_system}
           DEPENDEES install)
       endif()
+
+      #---Adding extra step to copy the log files----------------------------------------------------
+      ExternalProject_Add_Step(${targetname} install_logs COMMENT "Installing log files for '${targetname}'"
+          COMMAND ${CMAKE_COMMAND} -DINSTALL_DIR=${${dest_name}_home}/logs -DLOGS_DIR=${CMAKE_CURRENT_BINARY_DIR}/${targetname}/src/${targetname}-stamp  
+                                   -P ${CMAKE_SOURCE_DIR}/cmake/scripts/InstallLogFiles.cmake
+          DEPENDEES install)
 
       #---Add extra steps eventually------------------------------------------------------------------
       set(current_dependee install)
@@ -141,38 +144,11 @@ macro(LCGPackage_Add name)
          add_dependencies(${targetname} ${ARG_DEPENDS})
       endif()
 
-      #---Installation from local installation area to CMAKE_INSTALL_PREFIX---------------------------
-      #---Binaries
-      install(DIRECTORY ${${name}_home}/ 
-              DESTINATION ${${name}_directory_name}/${version}/${LCG_system}
-              USE_SOURCE_PERMISSIONS COMPONENT ${targetname})
-      #---Share directory
-      install(DIRECTORY ${LOCAL_INSTALL_PREFIX}/${${name}_directory_name}/${version}/share/
-              DESTINATION ${${name}_directory_name}/${version}/share
-              USE_SOURCE_PERMISSIONS COMPONENT ${targetname})
-      #---Tar files
-      install(FILES ${LOCAL_INSTALL_PREFIX}/${${name}_directory_name}/../distribution/${name}/${name}-${version}-src.tgz
-                    ${LOCAL_INSTALL_PREFIX}/${${name}_directory_name}/../distribution/${name}/${name}-${version}-${LCG_system}.tgz
-              DESTINATION ${${name}_directory_name}/../distribution/${name}
-              COMPONENT ${targetname} OPTIONAL)
-      #---Log files
-      foreach(ph configure-out configure-err build-out build-err install-out install-err)
-        install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${targetname}/src/${targetname}-stamp/${targetname}-${ph}.log
-              DESTINATION ${${name}_directory_name}/${version}/${LCG_system}
-              RENAME ${name}-${LCG_system}-${ph}.log
-              COMPONENT ${targetname} OPTIONAL)
-      endforeach()
-      #---Adding install targets----------------------------------------------------------------------
-
-      add_custom_target(install-${targetname} COMMAND ${CMAKE_COMMAND} -Dcomponent=${targetname} 
-                                                      -P ${CMAKE_SOURCE_DIR}/cmake/scripts/lcg_install.cmake
-                                              COMMENT "Installing package ${targetname} at ${CMAKE_INSTALL_PREFIX}")
     endif()
     
     if(nvers GREATER 1)
       add_dependencies(${name} ${targetname})
       add_dependencies(clean-${name} clean-${targetname})
-      add_dependencies(install-${name} install-${targetname})
     endif()
 
   endforeach()
