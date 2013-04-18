@@ -43,7 +43,7 @@ LCGPackage_Add(
           COMMAND ${CMAKE_COMMAND} -E copy <SOURCE_DIR>/examples/lhapdf-cctest1 <INSTALL_DIR>/bin
           COMMAND ${CMAKE_COMMAND} -E copy <SOURCE_DIR>/examples/lhapdf-example1 <INSTALL_DIR>/bin
 #          real PDF sets getting and installation, takes a long time: 
-          COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/lhapdf/scripts/instlpdfsets <INSTALL_DIR>/bin <INSTALL_DIR>/../share/lhapdf/PDFsets 
+#          COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/lhapdf/scripts/instlpdfsets <INSTALL_DIR>/bin <INSTALL_DIR>/../share/lhapdf/PDFsets 
 #          test PDF sets getting and installation:
 #          COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/lhapdf/scripts/instlpdfsets_test <INSTALL_DIR>/bin <INSTALL_DIR>/../share/lhapdf/PDFsets
   BUILD_IN_SOURCE 1
@@ -97,7 +97,7 @@ if(NOT APPLE)    #  (installation fails on MacOSX)
     herwig++
     URL http://www.hepforge.org/archive/herwig/Herwig++-${herwig++_native_version}.tar.bz2
     CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --with-gsl=${GSL_home} --with-thepeg=${thepeg_home} 
-                      --with-boost-incpath=${Boost_home_include}
+                      --with-boost=${Boost_home}
     BUILD_IN_SOURCE 1
     DEPENDS GSL Boost thepeg
   )
