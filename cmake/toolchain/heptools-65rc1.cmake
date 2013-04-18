@@ -138,7 +138,7 @@ LCG_external_package(xqilla            2.2.4                                    
 LCG_external_package(xrootd            3.2.7                                    )
 
 #---Additional External packages------(Generators)-----------------
-LCG_external_package(lhapdf            5.8.8          MCGenerators/lhapdf       )
+LCG_external_package(lhapdf            5.8.9          MCGenerators/lhapdf       )
 #LCG_external_package(pythia8           165            MCGenerators/pythia8      )
 LCG_external_package(pythia8           175            MCGenerators/pythia8      )
 LCG_external_package(thepeg            1.8.2          MCGenerators/thepeg       )

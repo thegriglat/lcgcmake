@@ -124,9 +124,9 @@ LCG_external_package(pyparsing         1.5.6                                    
 LCG_external_package(pyqt              4.9.3                                    )
 LCG_external_package(pytest            2.2.4                                    )
 if(NOT LCG_SYSTEM MATCHES "-mac106-")
-LCG_external_package(Python            2.7.3                                    )
+LCG_external_package(Python            2.6.5p1                                    )
 else()
-LCG_external_package(Python            2.7.3                                    )
+LCG_external_package(Python            2.6.5                                    )
 endif()
 LCG_external_package(pytools           1.7p1                                    )
 LCG_external_package(pyxml             0.8.4p1                                  )
@@ -163,10 +163,10 @@ LCG_external_package(xqilla            2.2.4p1                                  
 endif()
 LCG_external_package(xrootd            3.1.0p2                                  )
 
-set(MCGENPATH  MCGenerators_lcgcmt${heptools_version})
+set(MCGENPATH  MCGenerators_test)
 
 #---Additional External packages------(Generators)-----------------
-LCG_external_package(lhapdf            5.8.8          ${MCGENPATH}/lhapdf       )
+LCG_external_package(lhapdf            5.8.9          ${MCGENPATH}/lhapdf       )
 LCG_external_package(pythia8           165            ${MCGENPATH}/pythia8      )
 LCG_external_package(pythia8           175            ${MCGENPATH}/pythia8      )
 LCG_external_package(thepeg            1.8.2          ${MCGENPATH}/thepeg       )
