@@ -178,6 +178,8 @@ LCGPackage_Add(
      CXX=${CMAKE_CXX_COMPILER}
   BUILD_COMMAND make all V=1 LD_LIBRARY_PATH=${Python_home}/lib:$ENV{LD_LIBRARY_PATH}
   INSTALL_COMMAND make install LD_LIBRARY_PATH=${Python_home}/lib:$ENV{LD_LIBRARY_PATH}
+          COMMAND ${CMAKE_COMMAND} -E copy <SOURCE_DIR>/rivetenv.csh <INSTALL_DIR>/
+          COMMAND ${CMAKE_COMMAND} -E copy <SOURCE_DIR>/rivetenv.sh <INSTALL_DIR>/
   BUILD_IN_SOURCE 1
   DEPENDS HepMC Boost fastjet GSL Python swig
 )
