@@ -29,9 +29,9 @@ CONFIG=slc5-gcc47
 export SOURCE=${WORKDIR}/${MODE}/lcgcmake-${VERSION}
 export BINARY=${WORKDIR}/${MODE}/${CONFIG}
 
-if [ ! -d "${SOURCE}" ]; then
-  svn co svn+ssh://svn.cern.ch/reps/lcgsoft/trunk/lcgcmake ${SOURCE}
-fi
+#if [ ! -d "${SOURCE}" ]; then
+#  svn co svn+ssh://svn.cern.ch/reps/lcgsoft/trunk/lcgcmake ${SOURCE}
+#fi
 
 #---Run the CTest script-------------------------------------------
 echo "Starting CTest script for configutation ${CONFIG} at `date`" 

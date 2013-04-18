@@ -23,8 +23,6 @@ else()
 endif()
 
 #---------------------------------------------------------------------------
-set(CTEST_CMAKE_GENERATOR "Unix Makefiles")
-set(CTEST_BUILD_COMMAND "make -i -j${ncpu}")
 
 list(APPEND CMAKE_CONFIGURATION_TYPES Release Debug RelWithDebInfo MinSizeRel TestRelease Maintainer)
 if("$ENV{BUILDTYPE}" STREQUAL "" OR "$ENV{BUILDTYPE}" STREQUAL "RelWithDebInfo")
