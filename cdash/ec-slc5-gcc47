@@ -18,45 +18,25 @@ if [ x$MODE = x ]; then
   export MODE=experimental
 fi
 if [ x$WORKDIR = x ]; then 
-  WORKDIR=/ec/build 
+  WORKDIR=/ec/lcg-builds
 fi
 if [ x$VERSION = x ]; then 
-  export VERSION=g4tags-dev
-fi
-====>>
-
-
-#---Enable FPE -----------------------------------------------------
-export CXXFLAGS=-DG4FPE_DEBUG
-
-if [ x$BUILDTYPE = xstaticlibs ]
-then
-  export G4_XOPTS="-DBUILD_STATIC_LIBS=ON;-DBUILD_SHARED_LIBS=OFF"
-else
-  export G4_XOPTS="-DGEANT4_USE_G3TOG4=ON;\
--DGEANT4_USE_OPENGL_X11=ON;\
--DGEANT4_USE_QT=ON;\
--DGEANT4_USE_RAYTRACER_X11=ON;\
--DGEANT4_USE_SYSTEM_CLHEP=ON;\
--DCLHEP_ROOT_DIR=${CLHEP_ROOT_DIR};\
--DGEANT4_USE_XM=ON"
+  export VERSION=trunk
 fi
 
 CONFIG=slc5-gcc47
-export SOURCE=${WORKDIR}/${MODE}/${VERSION}
-if [ x$BUILDTYPE = x ]; then
-  export BINARY=${WORKDIR}/${MODE}/${CONFIG}
-else
-  export BINARY=${WORKDIR}/${MODE}/${CONFIG}-${BUILDTYPE}
-fi
+
+export SOURCE=${WORKDIR}/${MODE}/lcgcmake-${VERSION}
+export BINARY=${WORKDIR}/${MODE}/${CONFIG}
 
 if [ ! -d "${SOURCE}" ]; then
-  ${THIS}/g4tagsvn.py update -c ${VERSION} -d ${SOURCE} -q
+  svn co svn+ssh://svn.cern.ch/reps/lcgsoft/trunk/lcgcmake ${SOURCE}
 fi
 
 #---Run the CTest script-------------------------------------------
 echo "Starting CTest script for configutation ${CONFIG} at `date`" 
-ctest -V -S ${THIS}/g4${MODE}.cmake 
+
+ctest -V -S ${THIS}/lcgcmake-build.cmake
 
 
 
