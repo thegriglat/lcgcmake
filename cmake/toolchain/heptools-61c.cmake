@@ -131,12 +131,11 @@ LCG_external_package(zlib              1.2.3p1                                  
 set(MCGENPATH  MCGenerators_lcgcmt${heptools_version})
 
 #---Additional External packages------(Generators)-----------------
-#LCG_external_package(lhapdf            5.8.8          ${MCGENPATH}/lhapdf       )
-LCG_external_package(lhapdf            5.8.10          ${MCGENPATH}/lhapdf      author=5.8.9 )
+LCG_external_package(lhapdf            5.8.9          ${MCGENPATH}/lhapdf       )
 LCG_external_package(pythia8           165            ${MCGENPATH}/pythia8      )
 LCG_external_package(pythia8           175            ${MCGENPATH}/pythia8      )
 LCG_external_package(thepeg            1.8.2          ${MCGENPATH}/thepeg       )
-LCG_external_package(herwig++          2.6.2          ${MCGENPATH}/herwig++     )
+LCG_external_package(herwig++          2.6.3          ${MCGENPATH}/herwig++     )
 LCG_external_package(tauola++          1.1.1a         ${MCGENPATH}/tauola++     )
 LCG_external_package(pythia6           427            ${MCGENPATH}/pythia6        author=6.4.27 hepevt=4000   )
 LCG_external_package(pythia6           427.2          ${MCGENPATH}/pythia6        author=6.4.27 hepevt=10000  )
