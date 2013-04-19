@@ -96,6 +96,7 @@ if(NOT APPLE)    #  (installation fails on MacOSX)
   LCGPackage_Add(
     herwig++
     URL http://www.hepforge.org/archive/herwig/Herwig++-${herwig++_native_version}.tar.bz2
+    PATCH_COMMAND patch -p0 -i ${CMAKE_CURRENT_SOURCE_DIR}/herwig++-${herwig++_native_version}.patch
     CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --with-gsl=${GSL_home} --with-thepeg=${thepeg_home} 
                       --with-boost=${Boost_home}
     BUILD_IN_SOURCE 1
