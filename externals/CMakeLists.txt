@@ -268,3 +268,12 @@ LCGPackage_Add(
 )
 
 
+#---sqlite-----------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  sqlite
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/sqlite-autoconf-${sqlite_native_version}.tar.gz
+  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR>
+  BUILD_COMMAND  make -j 
+  BUILD_IN_SOURCE 1
+  DEPENDS Python
+)
