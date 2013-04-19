@@ -85,6 +85,7 @@ LCGPackage_Add(
   URL http://www.hepforge.org/archive/thepeg/ThePEG-${thepeg_native_version}.tar.bz2
 #  UPDATE_COMMAND ${CMAKE_COMMAND} -E chdir <SOURCE_DIR> autoreconf --install --force
   CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --with-hepmc=${HepMC_home} --with-LHAPDF=${lhapdf_home}/lib --with-gsl=${GSL_home} --without-javagui
+  BUILD_COMMAND make all V=1 
   BUILD_IN_SOURCE 1
   DEPENDS HepMC GSL lhapdf
 )
@@ -99,6 +100,7 @@ if(NOT APPLE)    #  (installation fails on MacOSX)
     PATCH_COMMAND patch -p0 -i ${CMAKE_CURRENT_SOURCE_DIR}/herwig++-${herwig++_native_version}.patch
     CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --with-gsl=${GSL_home} --with-thepeg=${thepeg_home} 
                       --with-boost=${Boost_home}
+    BUILD_COMMAND make all V=1
     BUILD_IN_SOURCE 1
     DEPENDS GSL Boost thepeg
   )
