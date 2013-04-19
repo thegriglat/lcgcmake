@@ -25,17 +25,14 @@ endif()
 #---------------------------------------------------------------------------
 
 list(APPEND CMAKE_CONFIGURATION_TYPES Release Debug RelWithDebInfo MinSizeRel TestRelease Maintainer)
-if("$ENV{BUILDTYPE}" STREQUAL "" OR "$ENV{BUILDTYPE}" STREQUAL "RelWithDebInfo")
-  set(CTEST_BUILD_CONFIGURATION "RelWithDebInfo")
-  set(CTEST_BUILD_NAME ${tag})
-elseif("${CMAKE_CONFIGURATION_TYPES}" MATCHES "$ENV{BUILDTYPE}")
-  set(CTEST_BUILD_CONFIGURATION "$ENV{BUILDTYPE}")
-  set(CTEST_BUILD_NAME ${tag}-$ENV{BUILDTYPE})
-else()
-  set(CTEST_BUILD_CONFIGURATION "RelWithDebInfo")
-  set(CTEST_BUILD_NAME ${tag}-$ENV{BUILDTYPE})
-endif()
-set(CTEST_CONFIGURATION_TYPE "${CTEST_BUILD_CONFIGURATION}")
+set(TypeRelease opt)
+set(TypeDebug   dbg)
+set(TypeRelWithDebInfo optd)
+set(TypeMinSizeRel optm)
+
+set(CTEST_BUILD_NAME ${tag}-${Type$ENV{BUILDTYPE}})
+set(CTEST_BUILD_CONFIGURATION $ENV{BUILDTYPE})
+set(CTEST_CONFIGURATION_TYPE ${CTEST_BUILD_CONFIGURATION})
 
 #---CDash settings----------------------------------------------------------
 set(CTEST_PROJECT_NAME "LCGSoft")

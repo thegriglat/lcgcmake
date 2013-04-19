@@ -8,8 +8,7 @@ export LC_ALL=en_US.UTF-8
 export PATH=/afs/cern.ch/sw/lcg/external/CMake/2.8.9/Linux-i386/bin:${PATH}
 
 #---Compiler------------------------------------------------------
-export PATH=/afs/cern.ch/sw/lcg/contrib/gcc/4.8.0/x86_64-slc6/bin:${PATH}
-export LD_LIBRARY_PATH=afs/cern.ch/sw/lcg/contrib/gcc/4.8.0/x86_64-slc6/lib64:${LD_LIBRARY_PATH}
+source /afs/cern.ch/sw/lcg/contrib/gcc/4.8.0/x86_64-slc6/bin/setup.csh
 
 #-----------------------------------------------------------------
 THIS=$(dirname $0)
@@ -20,8 +19,11 @@ fi
 if [ x$WORKDIR = x ]; then 
   WORKDIR=/ec/lcg-builds
 fi
-if [ x$VERSION = x ]; then 
+if [ x$VERSION = x ]; then
   export VERSION=trunk
+fi
+if [ x$TARGET = x ]; then
+  export TARGET=all
 fi
 
 CONFIG=slc6-gcc48
