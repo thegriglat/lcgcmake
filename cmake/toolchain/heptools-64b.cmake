@@ -167,7 +167,6 @@ set(MCGENPATH  MCGenerators_test)
 
 #---Additional External packages------(Generators)-----------------
 LCG_external_package(lhapdf            5.8.9          ${MCGENPATH}/lhapdf       )
-LCG_external_package(pythia8           165            ${MCGENPATH}/pythia8      )
 LCG_external_package(pythia8           175            ${MCGENPATH}/pythia8      )
 LCG_external_package(thepeg            1.8.2          ${MCGENPATH}/thepeg       )
 LCG_external_package(herwig++          2.6.3          ${MCGENPATH}/herwig++     )
