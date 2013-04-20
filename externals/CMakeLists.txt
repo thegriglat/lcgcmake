@@ -314,6 +314,28 @@ LCGPackage_Add(
   BUILD_IN_SOURCE 1
 )
 
+#---neurobayes-------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  neurobayes
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/neurobayes-${neurobayes_native_version}.tar.gz
+  CONFIGURE_COMMAND <VOID>
+  BUILD_COMMAND <VOID>
+  INSTALL_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR> <INSTALL_DIR>
+  BUILD_IN_SOURCE 1
+  BINARY_PACKAGE 1
+)
+
+#---neurobayes_expert------------------------------------------------------------------------------------
+LCGPackage_Add(
+  neurobayes_expert
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/neurobayes_expert-${neurobayes_expert_native_version}.tar.gz
+  CONFIGURE_COMMAND <VOID>
+  BUILD_COMMAND <VOID>
+  INSTALL_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR> <INSTALL_DIR>
+  BUILD_IN_SOURCE 1
+  BINARY_PACKAGE 1
+)
+
 #---oracle-----------------------------------------------------------------------------------------------
 LCGPackage_Add(
   oracle
@@ -325,13 +347,3 @@ LCGPackage_Add(
   BINARY_PACKAGE 1
 )
 
-#---readline---------------------------------------------------------------------------------------------
-#LCGPackage_Add(
-#  readline
-#  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/readline-${readline_native_version}.tar.gz
-#  CONFIGURE_COMMAND <VOID>
-#  BUILD_COMMAND ${Python_home}/bin/python setup.py build
-#  INSTALL_COMMAND ${Python_home}/bin/python setup.py install --prefix=<INSTALL_DIR>
-#  BUILD_IN_SOURCE 1
-#  DEPENDS Python setuptools
-#)
