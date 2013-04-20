@@ -276,6 +276,15 @@ LCGPackage_Add(
   BUILD_IN_SOURCE 1
 )
 
+#---doxygen----------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  doxygen
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/doxygen-${doxygen_native_version}.src.tar.gz
+  CONFIGURE_COMMAND ./configure --prefix <INSTALL_DIR>
+  BUILD_IN_SOURCE 1
+  DEPENDS graphviz
+)
+
 #---soqt-------------------------------------------------------------------------------------------------
 LCGPackage_Add(
    soqt
@@ -347,3 +356,28 @@ LCGPackage_Add(
   BINARY_PACKAGE 1
 )
 
+#---igprof----------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  igprof
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/igprof-${igprof_native_version}.tar.gz
+  CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR> 
+             -DUNWIND_INCLUDE_DIR:PATH=${libunwind_home}/include
+             -DUNWIND_LIBRARY:FILEPATH=${libunwind_home}/lib/libunwind.so
+  DEPENDS libunwind
+)
+
+#---xqilla----------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  xqilla
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/XQilla-${xqilla_native_version}.tar.gz
+  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --with-xerces=${XercesC_home} --disable-rpath
+  BUILD_IN_SOURCE 1
+  DEPENDS XercesC
+)
+
+#---xrootd----------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  xrootd
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/xrootd-${xrootd_native_version}.tar.gz
+  CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR> -DENABLE_PERL=FALSE -DENABLE_FUSE=FALSE -DENABLE_CRYPTO=TRUE -DENABLE_KRB5=TRUE -DENABLE_READLINE=TRUE
+)
