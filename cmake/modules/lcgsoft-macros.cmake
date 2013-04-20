@@ -6,10 +6,19 @@ include(CMakeParseArguments)
 #
 #   This is a wrapper of the ExternalProject_Add function customized for LCG packages
 #
+#     o supports the fallback to a central release area to avoid building already existing projects
+#     o automatically adds the log files to the install area  
+#     o automatically adds the sources to the install area
+#     o automatically creates a binary tarball
+#     o supports bundle (python) packages collecting many targets into one dir
+#        - denoted with the switch "BUNDLE_PACKAGE"
+#     o supports pure binary package installations
+#        - denoted with the switch "BINARY_PACKAGE"
+#
 #----------------------------------------------------------------------------------------------------
 macro(LCGPackage_Add name)
 
-  CMAKE_PARSE_ARGUMENTS(ARG "" "DEST_NAME;BUNDLE_PACKAGE"
+  CMAKE_PARSE_ARGUMENTS(ARG "" "DEST_NAME;BUNDLE_PACKAGE;BINARY_PACKAGE"
                             "DEPENDS;CONFIGURE_EXAMPLES_COMMAND;BUILD_EXAMPLES_COMMAND;INSTALL_EXAMPLES_COMMAND;TEST_COMMAND" ${ARGN})
   
   #---Check if this is a muli-version package or not-------------------------------------------------
@@ -89,12 +98,14 @@ macro(LCGPackage_Add name)
         LOG_CONFIGURE 1 LOG_BUILD 1 LOG_INSTALL 1 )
 
       #---Adding extra step to copy the sources in /share/sources-------------------------------------
-      ExternalProject_Add_Step(${targetname} install_sources COMMENT "Installing sources for '${targetname}' and create source tarball"
-        COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR> ${CMAKE_INSTALL_PREFIX}/${${dest_name}_directory_name}/${dest_version}/share/sources/${curr_name}
-        COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_INSTALL_PREFIX}/${${dest_name}_directory_name}/../distribution/${name}
-        COMMAND ${CMAKE_COMMAND} -E chdir <SOURCE_DIR>/../.. ${CMAKE_COMMAND} -E tar cfz ${CMAKE_INSTALL_PREFIX}/${${dest_name}_directory_name}/../distribution/${name}/${name}-${version}-src.tgz ${name}
-        DEPENDERS configure
-        DEPENDEES update patch)
+      if(NOT ARG_BINARY_PACKAGE) 
+        ExternalProject_Add_Step(${targetname} install_sources COMMENT "Installing sources for '${targetname}' and create source tarball"
+          COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR> ${CMAKE_INSTALL_PREFIX}/${${dest_name}_directory_name}/${dest_version}/share/sources/${curr_name}
+          COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_INSTALL_PREFIX}/${${dest_name}_directory_name}/../distribution/${name}
+          COMMAND ${CMAKE_COMMAND} -E chdir <SOURCE_DIR>/../.. ${CMAKE_COMMAND} -E tar cfz ${CMAKE_INSTALL_PREFIX}/${${dest_name}_directory_name}/../distribution/${name}/${name}-${version}-src.tgz ${name}
+          DEPENDERS configure
+          DEPENDEES update patch)
+      endif()
 
       #---Adding extra step to build the binary tarball-----------------------------------------------
       if(NOT ARG_DEST_NAME)  # Only if is not installed grouped with other packages

@@ -263,17 +263,75 @@ LCGPackage_Add(
   Qt
   URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/qt-everywhere-opensource-src-${Qt_native_version}.tar.gz
   CONFIGURE_COMMAND ./configure ${Qt_extra_config_opts} -no-separate-debug-info -release --prefix=<INSTALL_DIR> 
-                    -nomake examples -nomake demos --opensource --confirm-license
+                    -nomake examples -nomake demos --opensource --confirm-license -fast
   BUILD_IN_SOURCE 1
 )
 
+#---coin3d-----------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  coin3d
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/Coin-${coin3d_native_version}.tar.gz
+  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --enable-debug=no --enable-symbols=no
+  BUILD_COMMAND  make 
+  BUILD_IN_SOURCE 1
+)
+
+#---soqt-------------------------------------------------------------------------------------------------
+LCGPackage_Add(
+   soqt
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/SoQt-${soqt_native_version}.tar.gz
+  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --enable-debug=no --enable-symbols=no --with-coin=${coin3d_home} --with-qt=${Qt_home}
+  BUILD_COMMAND  make CONFIG_QTLIBS='-lQt3Support -lQtCore' QTDIR=${Qt_home} COINDIR=${coin3d_home} 
+  BUILD_IN_SOURCE 1
+  DEPENDS coin3d Qt
+)
 
 #---sqlite-----------------------------------------------------------------------------------------------
 LCGPackage_Add(
   sqlite
   URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/sqlite-autoconf-${sqlite_native_version}.tar.gz
   CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR>
-  BUILD_COMMAND  make -j 
+  BUILD_COMMAND  make 
   BUILD_IN_SOURCE 1
-  DEPENDS Python
+#  DEPENDS Python
 )
+
+#---libtool----------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  libtool
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/libtool-${libtool_native_version}.tar.gz
+  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR>
+  BUILD_IN_SOURCE 1
+)
+
+#---libunwind--------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  libunwind
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/libunwind-${libunwind_native_version}.tar.gz
+  UPDATE_COMMAND autoreconf -i
+  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR>
+  BUILD_COMMAND  make CFLAGS=-fPIC
+  BUILD_IN_SOURCE 1
+)
+
+#---oracle-----------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  oracle
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/oracle-${oracle_native_version}.tar.gz
+  CONFIGURE_COMMAND <VOID>
+  BUILD_COMMAND <VOID>
+  INSTALL_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR> <INSTALL_DIR>
+  BUILD_IN_SOURCE 1
+  BINARY_PACKAGE 1
+)
+
+#---readline---------------------------------------------------------------------------------------------
+#LCGPackage_Add(
+#  readline
+#  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/readline-${readline_native_version}.tar.gz
+#  CONFIGURE_COMMAND <VOID>
+#  BUILD_COMMAND ${Python_home}/bin/python setup.py build
+#  INSTALL_COMMAND ${Python_home}/bin/python setup.py install --prefix=<INSTALL_DIR>
+#  BUILD_IN_SOURCE 1
+#  DEPENDS Python setuptools
+#)
