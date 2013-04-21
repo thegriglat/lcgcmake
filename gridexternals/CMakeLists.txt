@@ -89,7 +89,7 @@ LCGPackage_Add(
 #---gridftp_ifce-----------------------------------------------------------------------------------------
 LCGPackage_Add(
   gridftp_ifce
-  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/gridftp-ifce-${gridftp-ifce_native_version}-${LCG_ARCH}-${LCG_OS}${LCG_OSVERS}.tar.gz
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/gridftp-ifce-${gridftp_ifce_native_version}-${LCG_ARCH}-${LCG_OS}${LCG_OSVERS}.tar.gz
   CONFIGURE_COMMAND <VOID>
   BUILD_COMMAND <VOID>
   INSTALL_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR> <INSTALL_DIR>
