@@ -1,10 +1,8 @@
---- configure.orig	2013-04-19 10:39:53.779758024 +0200
-+++ configure	2013-04-19 11:15:31.955497108 +0200
-@@ -19346,13 +19346,23 @@
-    fi
+--- configure.orig	2013-04-21 20:37:35.526424576 +0200
++++ configure	2013-04-21 20:42:15.997426034 +0200
+@@ -19347,15 +19347,23 @@
  fi
  
-+
  if test -e "$boostpath/include/boost/array.hpp"; then
 -        { $as_echo "$as_me:${as_lineno-$LINENO}: result: found in $boostpath" >&5
 -$as_echo "found in $boostpath" >&6; }
@@ -29,17 +27,10 @@
 +   { (exit 1); exit 1; }; }
  fi
  
- BOOSTINCLUDE="-I$boostpath/include"
-@@ -19361,8 +19371,6 @@
+-BOOSTINCLUDE="-I$boostpath/include"
  
  
  
--
--
- AM_CPPFLAGS="-I\$(top_builddir)/include $THEPEGINCLUDE \$(GSLINCLUDE) \$(BOOSTINCLUDE)"
- 
- { $as_echo "$as_me:${as_lineno-$LINENO}: checking for debugging mode" >&5
-
 --- Makefile.am.orig    2013-04-19 12:33:37.485512397 +0200
 +++ Makefile.am 2013-04-19 12:33:59.220515261 +0200
 @@ -6,7 +6,8 @@
