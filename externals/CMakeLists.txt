@@ -293,6 +293,17 @@ LCGPackage_Add(
   BUILD_IN_SOURCE 1
 )
 
+#---Frontier_Client--------------------------------------------------------------------------------------
+LCGPackage_Add(
+  Frontier_Client
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/frontier_client__${Frontier_Client_native_version}__src.tar.gz
+  CONFIGURE_COMMAND <VOID>
+  BUILD_COMMAND make dist EXPAT_DIR=${Expat_home} 
+  INSTALL_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/dist <INSTALL_DIR>
+  BUILD_IN_SOURCE 1
+  DEPENDS Expat
+)
+
 #---soqt-------------------------------------------------------------------------------------------------
 LCGPackage_Add(
   soqt
