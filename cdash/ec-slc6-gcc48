@@ -34,7 +34,7 @@ export BINARY=${WORKDIR}/${MODE}/${CONFIG}
 #---Run the CTest script-------------------------------------------
 echo "Starting CTest script for configutation ${CONFIG} at `date`" 
 
-ctest -VV -S ${THIS}/lcgcmake-build.cmake
+ctest -V -S ${THIS}/lcgcmake-build.cmake
 
 
 
