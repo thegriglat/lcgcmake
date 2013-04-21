@@ -285,9 +285,17 @@ LCGPackage_Add(
   DEPENDS graphviz
 )
 
+#---Expat------------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  Expat
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/expat-${Expat_native_version}.tar.gz
+  CONFIGURE_COMMAND ./configure --prefix <INSTALL_DIR>
+  BUILD_IN_SOURCE 1
+)
+
 #---soqt-------------------------------------------------------------------------------------------------
 LCGPackage_Add(
-   soqt
+  soqt
   URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/SoQt-${soqt_native_version}.tar.gz
   CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --enable-debug=no --enable-symbols=no --with-coin=${coin3d_home} --with-qt=${Qt_home}
   BUILD_COMMAND  make CONFIG_QTLIBS='-lQt3Support -lQtCore' QTDIR=${Qt_home} COINDIR=${coin3d_home} 
@@ -356,6 +364,15 @@ LCGPackage_Add(
   BINARY_PACKAGE 1
 )
 
+#---fftw------------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  fftw
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/fftw-${fftw_native_version}.tar.gz
+  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR>  --enable-shared
+  BUILD_COMMAND make CFLAGS=-fPIC
+  BUILD_IN_SOURCE 1
+)
+
 #---igprof----------------------------------------------------------------------------------------------
 LCGPackage_Add(
   igprof
@@ -370,7 +387,9 @@ LCGPackage_Add(
 LCGPackage_Add(
   xqilla
   URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/XQilla-${xqilla_native_version}.tar.gz
-  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --with-xerces=${XercesC_home} --disable-rpath
+  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> 
+                                --with-xerces=${XercesC_home} 
+                                --disable-rpath
   BUILD_IN_SOURCE 1
   DEPENDS XercesC
 )
