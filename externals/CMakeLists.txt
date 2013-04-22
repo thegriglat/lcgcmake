@@ -337,7 +337,7 @@ LCGPackage_Add(
   libunwind
   URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/libunwind-${libunwind_native_version}.tar.gz
   CONFIGURE_COMMAND autoreconf -i
-            COMAMND ./configure --prefix=<INSTALL_DIR>
+            COMMAND ./configure --prefix=<INSTALL_DIR>
   BUILD_COMMAND  make CFLAGS=-fPIC
   BUILD_IN_SOURCE 1
 )
