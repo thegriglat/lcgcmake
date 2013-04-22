@@ -31,6 +31,18 @@ LCGPackage_Add(
   BINARY_PACKAGE 1
 )
 
+#---dpm---------------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  dpm
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/dpm-${dpm_native_version}-${LCG_ARCH}-${LCG_OS}${LCG_OSVERS}.tar.gz
+  CONFIGURE_COMMAND <VOID>
+  BUILD_COMMAND <VOID>
+  INSTALL_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR> <INSTALL_DIR>
+  BUILD_IN_SOURCE 1
+  BINARY_PACKAGE 1
+)
+
+
 #---epel-------------------------------------------------------------------------------------------------
 LCGPackage_Add(
   epel
@@ -167,6 +179,17 @@ LCGPackage_Add(
 LCGPackage_Add(
   lfc
   URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/lfc-${lfc_native_version}-${LCG_ARCH}-${LCG_OS}${LCG_OSVERS}.tar.gz
+  CONFIGURE_COMMAND <VOID>
+  BUILD_COMMAND <VOID>
+  INSTALL_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR> <INSTALL_DIR>
+  BUILD_IN_SOURCE 1
+  BINARY_PACKAGE 1
+)
+
+#---srm_ifce---------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  srm_ifce
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/srm_ifce-${srm_ifce_native_version}-${LCG_ARCH}-${LCG_OS}${LCG_OSVERS}.tar.gz
   CONFIGURE_COMMAND <VOID>
   BUILD_COMMAND <VOID>
   INSTALL_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR> <INSTALL_DIR>

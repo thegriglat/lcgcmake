@@ -252,6 +252,19 @@ LCGPackage_Add(
   DEPENDS Python
 )
 
+#---py2neo---------------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  py2neo
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/py2neo-${py2neo_native_version}.tar.gz
+  CONFIGURE_COMMAND <VOID>
+  BUILD_COMMAND ${Python_cmd} setup.py build
+  INSTALL_COMMAND ${Exec_cmd} PYTHONPATH=${pytools_home}/lib/python${Python_config_version_twodigit}/site-packages
+                              ${Python_cmd} setup.py install --prefix <INSTALL_DIR>
+  BUILD_IN_SOURCE 1
+  DEST_NAME pytools
+  DEPENDS Python
+)
+
 #---pyxml------------------------------------------------------------------------------------------------------
 LCGPackage_Add(
   pyxml
@@ -348,9 +361,9 @@ LCGPackage_Add(
 
 #---Add the dependencies now----------------------------------------------------------------------------------------
 add_dependencies(pytools lxml sqlalchemy genshi 4suite ${cx_oracle_pkg} ipython json mock multiprocessing 
-                 setuptools mysql_python processing py pyxml storm pytest pylint nose coverage stomppy)
+                 setuptools mysql_python processing py py2neo pyxml storm pytest pylint nose coverage stomppy)
 
-#pytools: py, pytest, pyxml, setuptools, json, sqlalchemy, storm, processing, pylint, nose, 4suite, cx_oracle, genshi, ipython, lxml, mock, multiprocessing, mysqldb, stomp.py, coverage
+#pytools: py, py2neo, pytest, pyxml, setuptools, json, sqlalchemy, storm, processing, pylint, nose, 4suite, cx_oracle, genshi, ipython, lxml, mock, multiprocessing, mysqldb, stomp.py, coverage
 
 
 #=================================================================================================================

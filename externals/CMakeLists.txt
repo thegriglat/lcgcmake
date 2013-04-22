@@ -267,6 +267,14 @@ LCGPackage_Add(
   BUILD_IN_SOURCE 1
 )
 
+#---qwt--------------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  qwt
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/qwt-${qwt_native_version}.tar.bz2
+  CONFIGURE_COMMAND ${Qt_home}/bin/qmake QWT_INSTALL_PREFIX=<INSTALL_DIR>
+  BUILD_IN_SOURCE 1
+  DEPENDS Qt
+)
 #---coin3d-----------------------------------------------------------------------------------------------
 LCGPackage_Add(
   coin3d
@@ -407,6 +415,25 @@ LCGPackage_Add(
              -DUNWIND_LIBRARY:FILEPATH=${libunwind_home}/lib/libunwind.so
   DEPENDS libunwind
 )
+
+#---valgrind--------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  valgrind
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/valgrind-${valgrind_native_version}.tar.bz2
+  CONFIGURE_COMMAND chmod +x ./configure 
+            COMMAND ./configure --prefix=<INSTALL_DIR> 
+  BUILD_IN_SOURCE 1
+)
+
+# Depends on KDE; bad idea to have it as part of the externals
+#---kcachegrind------------------------------------------------------------------------------------------
+#LCGPackage_Add(
+#  kcachegrind
+#  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/kcachegrind-${kcachegrind_native_version}.tar.gz
+#  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR>
+#  BUILD_IN_SOURCE 1
+#)
+
 
 #---xqilla----------------------------------------------------------------------------------------------
 LCGPackage_Add(

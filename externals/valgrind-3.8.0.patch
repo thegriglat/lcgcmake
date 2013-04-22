@@ -1,0 +1,52 @@
+--- coregrind/m_aspacemgr/aspacemgr-linux.c.org	2009-11-20 09:43:05.000000000 +0100
++++ coregrind/m_aspacemgr/aspacemgr-linux.c	2009-11-20 09:49:52.000000000 +0100
+@@ -265,13 +265,13 @@
+ /* ------ start of STATE for the address-space manager ------ */
+ 
+ /* Max number of segments we can track. */
+-#define VG_N_SEGMENTS 5000
++#define VG_N_SEGMENTS 25000
+ 
+ /* Max number of segment file names we can track. */
+-#define VG_N_SEGNAMES 1000
++#define VG_N_SEGNAMES 5000
+ 
+ /* Max length of a segment file name. */
+-#define VG_MAX_SEGNAMELEN 1000
++#define VG_MAX_SEGNAMELEN 4000
+ 
+ 
+ typedef
+--- callgrind/dump.c	2011-01-25 10:23:56.000000000 +0100
++++ callgrind/dump.c.bak	2011-01-25 10:23:47.000000000 +0100
+@@ -55,7 +55,7 @@
+  *  print_fn_pos, fprint_apos, fprint_fcost, fprint_jcc,
+  *  fprint_fcc_ln, dump_run_info, dump_state_info
+  */
+-static Char outbuf[FILENAME_LEN + FN_NAME_LEN + OBJ_NAME_LEN + COSTS_LEN];
++static Char outbuf[FILENAME_LEN + 256*FN_NAME_LEN + OBJ_NAME_LEN + COSTS_LEN];
+ 
+ Int CLG_(get_dump_counter)(void)
+ {
+--- callgrind/global.h.org	2009-11-20 09:55:13.000000000 +0100
++++ callgrind/global.h	2009-11-20 09:55:48.000000000 +0100
+@@ -116,7 +116,7 @@
+ 
+ /* Size of various buffers used for storing strings */
+ #define FILENAME_LEN                    VKI_PATH_MAX
+-#define FN_NAME_LEN                    4096 /* for C++ code :-) */
++#define FN_NAME_LEN                    32768 /* for C++ code :-) */
+ #define OBJ_NAME_LEN                    256
+ #define COSTS_LEN                       512 /* at least 17x 64bit values */
+ #define BUF_LEN                         512
+--- coregrind/pub_core_aspacemgr.h.bak	2012-07-09 11:57:58.000000000 +0200
++++ coregrind/pub_core_aspacemgr.h	2012-07-09 11:58:07.000000000 +0200
+@@ -337,7 +337,7 @@
+ # define VG_STACK_ACTIVE_SZB (4096 * 256) // 1Mb
+ #else
+ # define VG_STACK_GUARD_SZB  8192   // 2 pages
+-# define VG_STACK_ACTIVE_SZB (4096 * 256) // 1Mb
++# define VG_STACK_ACTIVE_SZB (4096 * 256 * 2) // 1Mb
+ #endif
+ 
+ typedef
