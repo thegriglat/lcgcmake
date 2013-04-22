@@ -10,6 +10,7 @@ include(CMakeParseArguments)
 #     o automatically adds the log files to the install area  
 #     o automatically adds the sources to the install area
 #     o automatically creates a binary tarball
+#     o automatically strips rpath from .so files 
 #     o supports bundle (python) packages collecting many targets into one dir
 #        - denoted with the switch "BUNDLE_PACKAGE"
 #     o supports pure binary package installations
@@ -84,7 +85,7 @@ macro(LCGPackage_Add name)
       endif()
 
       #---We cannot use the argument INSTALL_DIR becuase cmake itself will create the directory 
-      #   unconditionaly mefore make is executed. So, we replace <INSTALL_DIR> before paasing the
+      #   unconditionaly before make is executed. So, we replace <INSTALL_DIR> before passing the
       #   arguments to ExternalProeject_Add().
       string(REPLACE <INSTALL_DIR> ${${dest_name}_home} ARGUMENTS "${ARGUMENTS}")
 
@@ -106,6 +107,13 @@ macro(LCGPackage_Add name)
           DEPENDERS configure
           DEPENDEES update patch)
       endif()
+
+      #---Remove the rpath from all shared objects----------------------------------------------------
+      ExternalProject_Add_Step(${targetname} strip_rpath COMMENT "Removing rpath from '${targetname}'"
+        COMMAND ${CMAKE_COMMAND} -DINSTALL_DIR=${${dest_name}_home} -DLOGS_DIR=${CMAKE_CURRENT_BINARY_DIR}/${targetname}/src/${targetname}-stamp
+                                 -P ${CMAKE_SOURCE_DIR}/cmake/scripts/RemoveRPath.cmake
+        DEPENDERS install
+        DEPENDEES build)
 
       #---Adding extra step to build the binary tarball-----------------------------------------------
       if(NOT ARG_DEST_NAME)  # Only if is not installed grouped with other packages
