@@ -304,6 +304,20 @@ LCGPackage_Add(
   DEPENDS Expat
 )
 
+#---lcov-------------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  lcov
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/lcov-${lcov_native_version}.tar.gz
+  CONFIGURE_COMMAND <VOID>
+  BUILD_COMMAND  <VOID>
+  INSTALL_COMMAND make install PREFIX=<INSTALL_DIR>
+          COMMAND mv <INSTALL_DIR>/usr/bin <INSTALL_DIR>
+          COMMAND mv <INSTALL_DIR>/usr/share/man <INSTALL_DIR> 
+          COMMAND rmdir <INSTALL_DIR>/usr/share
+          COMMAND rmdir <INSTALL_DIR>/usr/
+  BUILD_IN_SOURCE 1
+)
+
 #---soqt-------------------------------------------------------------------------------------------------
 LCGPackage_Add(
   soqt

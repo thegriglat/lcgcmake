@@ -344,6 +344,8 @@ LCGPackage_Add(
 )
 
 
+
+
 #---Add the dependencies now----------------------------------------------------------------------------------------
 add_dependencies(pytools lxml sqlalchemy genshi 4suite ${cx_oracle_pkg} ipython json mock multiprocessing 
                  setuptools mysql_python processing py pyxml storm pytest pylint nose coverage stomppy)
@@ -432,9 +434,52 @@ LCGPackage_Add(
   DEPENDS Python Qt sip
 )
 
-
 #---Add the dependencies now------------------------------------------------------------------------------------
 add_dependencies(pygraphics pydot pyparsing sip pyqt)
+
+#---libsvm------------------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  libsvm
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/libsvm-${libsvm_native_version}.tar.gz
+  CONFIGURE_COMMAND <VOID>
+  BUILD_COMMAND make
+        COMMAND make PYTHON_INCLUDEDIR=${Python_home}/include/python${Python_config_version_twodigit} 
+                     -C python all LDFLAGS=\ -shared  
+  INSTALL_COMMAND mkdir -p <INSTALL_DIR>/bin
+          COMMAND cp svm-train svm-predict svm-scale <INSTALL_DIR>/bin
+          COMMAND mkdir -p <INSTALL_DIR>/include
+          COMMAND cp svm.h <INSTALL_DIR>/include
+          COMMAND mkdir -p <INSTALL_DIR>/src
+          COMMAND cp svm.cpp <INSTALL_DIR>/src
+          COMMAND mkdir -p <INSTALL_DIR>/python
+          COMMAND cp python/svmc.so python/svm.py python/svm_test.py python/README <INSTALL_DIR>/python
+          COMMAND cp -r README tools <INSTALL_DIR>
+  BUILD_IN_SOURCE 1
+  DEPENDS Python 
+)
+
+#---minuit------------------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  minuit
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/Minuit2-${minuit_native_version}.tar.gz
+  CONFIGURE_COMMAND ./configure --prefix <INSTALL_DIR>
+  BUILD_IN_SOURCE 1
+  DEPENDS Python pyanalysis
+)
+
+#---pygsi-------------------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  pygsi
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/pygsi-${pygsi_native_version}.tar.gz
+  CONFIGURE_COMMAND <VOID>
+  BUILD_COMMAND   ${Exec_cmd} PYTHONPATH=${pytools_home}/lib/python${Python_config_version_twodigit}/site-packages
+                  ${Python_cmd} setup.py build
+  INSTALL_COMMAND mkdir -p <INSTALL_DIR>/lib/python${Python_config_version_twodigit}/site-packages/
+          COMMAND ${Exec_cmd} PYTHONPATH=${pytools_home}/lib/python${Python_config_version_twodigit}/site-packages:<INSTALL_DIR>/lib/python${Python_config_version_twodigit}/site-packages ${Python_cmd} setup.py install --prefix <INSTALL_DIR>
+  BUILD_IN_SOURCE 1
+  DEPENDS Python pytools
+)
+
 
 
 
