@@ -1,0 +1,19 @@
+--- src/fonts/freetype.cpp	2013-04-24 00:37:12.000000000 +0200
++++ freetype.cpp	2013-04-24 00:37:51.000000000 +0200
+@@ -44,6 +44,7 @@
+ #include "glue/freetype.h"
+ #include "glue/GLUWrapper.h"
+ 
++#include "base/dict.h" 
+ /* ************************************************************************* */
+ 
+ #ifdef __cplusplus
+@@ -139,7 +140,7 @@ static int flwft_calctessellatorsteps(fl
+ #include <Inventor/C/base/string.h>
+ #include <Inventor/C/base/list.h>
+ 
+-#include "base/dict.h"
++  //#include "base/dict.h"
+ #include "base/dynarray.h"
+ #include "base/namemap.h"
+ #include "fonts/common.h"
