@@ -113,6 +113,7 @@ if(NOT ${LCG_OS}${LCG_OS_VERS} STREQUAL slc6) # uuid is not distributed with SLC
 LCG_external_package(uuid              1.42                                     )
 endif()
 LCG_external_package(valgrind          3.8.0                                    )
+LCG_external_package(vdt               0.3.2                                    )
 LCG_external_package(XercesC           3.1.1p1        author=3.1.1              )
 LCG_external_package(xqilla            2.2.4p1                                  )
 LCG_external_package(xrootd            3.2.7                                    )

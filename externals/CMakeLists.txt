@@ -425,6 +425,14 @@ LCGPackage_Add(
   BUILD_IN_SOURCE 1
 )
 
+#---vdt-------------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  vdt
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/vdt-${vdt_native_version}.tar.gz
+  CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
+  BUILD_IN_SOURCE 1
+)
+
 # Depends on KDE; bad idea to have it as part of the externals
 #---kcachegrind------------------------------------------------------------------------------------------
 #LCGPackage_Add(
