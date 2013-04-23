@@ -280,7 +280,7 @@ LCGPackage_Add(
   coin3d
   URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/Coin-${coin3d_native_version}.tar.gz
   CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --enable-debug=no --enable-symbols=no
-  BUILD_COMMAND  make 
+  BUILD_COMMAND  make
   BUILD_IN_SOURCE 1
 )
 
@@ -444,12 +444,14 @@ LCGPackage_Add(
 
 
 #---xqilla----------------------------------------------------------------------------------------------
+set(xqilla_CXXFLAGS "${CMAKE_CXX_FLAGS} -fpermissive")
 LCGPackage_Add(
   xqilla
   URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/XQilla-${xqilla_native_version}.tar.gz
   CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> 
                                 --with-xerces=${XercesC_home} 
                                 --disable-rpath
+  BUILD_COMMAND make CXXFLAGS=${xqilla_CXXFLAGS}
   BUILD_IN_SOURCE 1
   DEPENDS XercesC
 )
