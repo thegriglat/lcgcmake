@@ -27,8 +27,10 @@ endif()
 list(APPEND CMAKE_CONFIGURATION_TYPES Release Debug RelWithDebInfo MinSizeRel TestRelease Maintainer)
 set(TypeRelease opt)
 set(TypeDebug   dbg)
-set(TypeRelWithDebInfo optd)
-set(TypeMinSizeRel optm)
+set(TypeRelWithDebInfo o2d)
+set(TypeMinSizeRel min)
+set(TypeCoverage cov)
+
 
 set(CTEST_BUILD_NAME ${tag}-${Type$ENV{BUILDTYPE}})
 set(CTEST_BUILD_CONFIGURATION $ENV{BUILDTYPE})
