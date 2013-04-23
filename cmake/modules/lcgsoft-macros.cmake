@@ -108,13 +108,6 @@ macro(LCGPackage_Add name)
           DEPENDEES update patch)
       endif()
 
-      #---Remove the rpath from all shared objects----------------------------------------------------
-      ExternalProject_Add_Step(${targetname} strip_rpath COMMENT "Removing rpath from '${targetname}'"
-        COMMAND ${CMAKE_COMMAND} -DINSTALL_DIR=${${dest_name}_home} -DLOGS_DIR=${CMAKE_CURRENT_BINARY_DIR}/${targetname}/src/${targetname}-stamp
-                                 -P ${CMAKE_SOURCE_DIR}/cmake/scripts/RemoveRPath.cmake
-        DEPENDERS install
-        DEPENDEES build)
-
       #---Adding extra step to build the binary tarball-----------------------------------------------
       if(NOT ARG_DEST_NAME)  # Only if is not installed grouped with other packages
         get_filename_component(n_name ${${name}_directory_name} NAME)
@@ -122,7 +115,7 @@ macro(LCGPackage_Add name)
                   COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_INSTALL_PREFIX}/${${name}_directory_name}/../distribution/${name}
                   COMMAND ${CMAKE_COMMAND} -E chdir ${${dest_name}_home}/../../..
                   ${CMAKE_COMMAND} -E tar cfz ${CMAKE_INSTALL_PREFIX}/${${name}_directory_name}/../distribution/${name}/${name}-${version}-${LCG_system}.tgz ${n_name}/${version}/${LCG_system}
-          DEPENDEES install)
+          DEPENDEES strip_rpath)
       endif()
 
       #---Adding extra step to copy the log files----------------------------------------------------
@@ -130,6 +123,13 @@ macro(LCGPackage_Add name)
           COMMAND ${CMAKE_COMMAND} -DINSTALL_DIR=${${dest_name}_home}/logs -DLOGS_DIR=${CMAKE_CURRENT_BINARY_DIR}/${targetname}/src/${targetname}-stamp  
                                    -P ${CMAKE_SOURCE_DIR}/cmake/scripts/InstallLogFiles.cmake
           DEPENDEES install)
+
+      #---Remove the rpath from all shared objects----------------------------------------------------
+      ExternalProject_Add_Step(${targetname} strip_rpath COMMENT "Removing rpath from '${targetname}'"
+        COMMAND ${CMAKE_COMMAND} -DINSTALL_DIR=${${dest_name}_home}
+                                 -P ${CMAKE_SOURCE_DIR}/cmake/scripts/RemoveRPath.cmake
+        DEPENDEES install)
+
 
       #---Add extra steps eventually------------------------------------------------------------------
       set(current_dependee install)
