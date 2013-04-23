@@ -1,6 +1,6 @@
---- CMakeLists.txt.orig	2011-01-24 13:54:30.000000000 +0100
-+++ CMakeLists.txt	2011-02-22 15:45:03.000000000 +0100
-@@ -65,7 +65,7 @@
+--- CMakeLists.txt.orig	2013-04-23 19:55:47.000000000 +0200
++++ CMakeLists.txt	2013-04-23 19:55:30.000000000 +0200
+@@ -65,16 +65,16 @@
  
  # define build types
  # set a default build type for single-configuration CMake generators, if no build type is set.
@@ -9,8 +9,10 @@
  if(NOT CMAKE_CONFIGURATION_TYPES AND NOT CMAKE_BUILD_TYPE)
    message(STATUS "No build type was specified. Setting build type to 'Release'.")
    set(CMAKE_BUILD_TYPE Release)
-@@ -74,7 +74,7 @@
- set(CMAKE_CXX_FLAGS "-Wall -Wextra -Werror")
+ endif()
+ # common compiler flags
+-set(CMAKE_CXX_FLAGS "-Wall -Wextra -Werror")
++set(CMAKE_CXX_FLAGS "-Wall -Wextra -Werror -Wno-error=unused-but-set-variable")
  # flags for specific build types
  set(CMAKE_CXX_FLAGS_DEBUG "-g")
 -set(CMAKE_CXX_FLAGS_RELEASE "-O3")
