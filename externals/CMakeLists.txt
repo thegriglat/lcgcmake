@@ -319,8 +319,8 @@ LCGPackage_Add(
   CONFIGURE_COMMAND <VOID>
   BUILD_COMMAND  <VOID>
   INSTALL_COMMAND make install PREFIX=<INSTALL_DIR>
-          COMMAND mv <INSTALL_DIR>/usr/bin <INSTALL_DIR>
-          COMMAND mv <INSTALL_DIR>/usr/share/man <INSTALL_DIR> 
+          COMMAND mv -f <INSTALL_DIR>/usr/bin <INSTALL_DIR>
+          COMMAND mv -f <INSTALL_DIR>/usr/share/man <INSTALL_DIR> 
           COMMAND rmdir <INSTALL_DIR>/usr/share
           COMMAND rmdir <INSTALL_DIR>/usr/
   BUILD_IN_SOURCE 1
