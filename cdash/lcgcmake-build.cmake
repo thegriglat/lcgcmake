@@ -9,7 +9,9 @@ set(CTEST_CMAKE_GENERATOR "Unix Makefiles")
 set(CTEST_BUILD_COMMAND "make -k -j${ncpu} $ENV{TARGET}")
 
 #---CTest commands----------------------------------------------------------
-ctest_empty_binary_directory(${CTEST_BINARY_DIRECTORY})
+#ctest_empty_binary_directory(${CTEST_BINARY_DIRECTORY})
+file(REMOVE_RECURSE ${CTEST_BINARY_DIRECTORY})
+file(REMOVE_RECURSE ${CTEST_BINARY_DIRECTORY}-install)
 
 ctest_start(Experimental)
 ctest_update()
