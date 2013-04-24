@@ -20,7 +20,7 @@
   # Install paths
   ######################################################################
   
-! QWT_INSTALL_PREFIX = $$[QWT_INSTALL_PREFIX]
+! #QWT_INSTALL_PREFIX = $$[QWT_INSTALL_PREFIX]
 ! isEmpty(QWT_INSTALL_PREFIX) {
   
 !   unix {
