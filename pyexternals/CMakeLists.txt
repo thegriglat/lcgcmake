@@ -203,7 +203,8 @@ LCGPackage_Add(
   setuptools
   URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/setuptools-${setuptools_native_version}.tar.gz
   CONFIGURE_COMMAND <VOID>
-  BUILD_COMMAND ${Python_cmd} setup.py build
+  BUILD_COMMAND mkdir -p <INSTALL_DIR>/lib/python${Python_config_version_twodigit}/site-packages/
+        COMMAND ${Python_cmd} setup.py build
   INSTALL_COMMAND ${Exec_cmd} PYTHONPATH=${pytools_home}/lib/python${Python_config_version_twodigit}/site-packages
                   ${Python_cmd} setup.py install --prefix <INSTALL_DIR>
   BUILD_IN_SOURCE 1
