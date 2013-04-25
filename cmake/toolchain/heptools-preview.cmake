@@ -66,8 +66,6 @@ LCG_external_package(mock              0.8.0                                    
 LCG_external_package(multiprocessing   2.6.2.1                                  )
 LCG_external_package(mysql             5.5.27                                   )
 LCG_external_package(mysql_python      1.2.3                                    )
-LCG_external_package(neurobayes        3.7.0                                    )
-LCG_external_package(neurobayes_expert 3.7.0                                    )
 LCG_external_package(nose              1.1.2                                    )
 LCG_external_package(numpy             1.6.1                                    )
 LCG_external_package(oracle            11.2.0.3.0                               )
@@ -131,6 +129,8 @@ if(NOT ${LCG_OS} STREQUAL mac)
   LCG_external_package(srm_ifce        1.15.2-1               Grid/srm-ifce     )
   LCG_external_package(voms            2.0.9-1                Grid/voms         )
   LCG_external_package(WMS             3.4.0                  Grid/WMS          )
+  LCG_external_package(neurobayes        3.7.0                                    )
+  LCG_external_package(neurobayes_expert 3.7.0                                    )
 endif()
 
 
