@@ -44,6 +44,19 @@ LCGPackage_Add(
   DEPENDS Python numpy blas lapack
 )
 
+#---sympy---------------------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  sympy
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/sympy-${sympy_native_version}.tar.gz
+  CONFIGURE_COMMAND <VOID>
+  BUILD_COMMAND ${Python_cmd} setup.py build
+  INSTALL_COMMAND ${Python_cmd} setup.py install --prefix <INSTALL_DIR>
+  BUILD_IN_SOURCE 1
+  DEST_NAME pyanalysis
+  DEPENDS Python
+)
+
+
 #---matplotlib----------------------------------------------------------------------------------------------------
 LCGPackage_Add(
   matplotlib
@@ -71,8 +84,7 @@ LCGPackage_Add(
 )
 
 #---Add the dependencies now----------------------------------------------------------------------------------------
-add_dependencies(pyanalysis matplotlib numpy scipy pyminuit)
-
+LCGPackage_add_dependencies( pyanalysis matplotlib numpy scipy sympy pyminuit) 
 
 #=================================================================================================================
 #---pytools----------------------------------------------------------------------------------------------------
@@ -361,7 +373,7 @@ LCGPackage_Add(
 
 
 #---Add the dependencies now----------------------------------------------------------------------------------------
-add_dependencies(pytools lxml sqlalchemy genshi 4suite ${cx_oracle_pkg} ipython json mock multiprocessing 
+LCGPackage_add_dependencies(pytools lxml sqlalchemy genshi 4suite ${cx_oracle_pkg} ipython json mock multiprocessing 
                  setuptools mysql_python processing py py2neo pyxml storm pytest pylint nose coverage stomppy)
 
 #pytools: py, py2neo, pytest, pyxml, setuptools, json, sqlalchemy, storm, processing, pylint, nose, 4suite, cx_oracle, genshi, ipython, lxml, mock, multiprocessing, mysqldb, stomp.py, coverage
@@ -449,7 +461,7 @@ LCGPackage_Add(
 )
 
 #---Add the dependencies now------------------------------------------------------------------------------------
-add_dependencies(pygraphics pydot pyparsing sip pyqt)
+LCGPackage_add_dependencies(pygraphics pydot pyparsing sip pyqt)
 
 #---libsvm------------------------------------------------------------------------------------------------------
 LCGPackage_Add(

@@ -14,3 +14,5 @@ add_subdirectory(projects)
 add_subdirectory(generators)
 add_subdirectory(gridexternals)
 add_subdirectory(pyexternals)
+
+LCG_create_dependency_files()
