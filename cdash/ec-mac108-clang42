@@ -6,6 +6,7 @@ export LC_ALL=en_US.UTF-8
 #---Compiler------------------------------------------------------
 export CC=clang
 export CXX=clang++
+export FC=gfortran
 
 #-----------------------------------------------------------------
 THIS=$(dirname $0)
