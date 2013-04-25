@@ -8,4 +8,4 @@
 #HEPMC_VERSION=MYHEPMCVERSION
 #LCG_PLATFORM=MYLCGPLATFORM
 
-./configure --enable-shared --prefix=${INSTALL_DIR} --datadir=${SHARE_DIR} --with-hepmcversion=${HEPMC_VERSION} --lcgplatform=${LCG_PLATFORM}
+./configure --enable-shared --prefix=${INSTALL_DIR} --datadir=${SHARE_DIR} --with-hepmc=${HEPMC_INSTALL_DIR} --lcgplatform=${LCG_PLATFORM}
