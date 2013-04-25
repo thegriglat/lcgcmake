@@ -111,7 +111,7 @@ LCG_external_package(xqilla            2.2.4p1                                  
 LCG_external_package(xrootd            3.2.7                                    )
 
 #---EMI-2 grid externals and other binary packages---------------------
-if(NOT ${LCG_OS} STREQUAL macos)
+if(NOT ${LCG_OS} STREQUAL mac)
   LCG_external_package(cream           1.14.0-4               Grid/cream        )
   LCG_external_package(dcap            2.47.7-1               Grid/dcap         )
   LCG_external_package(dm-util         1.15.0-0               Grid/dm-util      )
