@@ -62,7 +62,7 @@ LCGPackage_Add(
          COMMAND ${CMAKE_COMMAND} -E remove <INSTALL_DIR>/../share/sources/usesed
          COMMAND ${CMAKE_COMMAND} -E make_directory <SOURCE_DIR>/doc
          COMMAND ${CMAKE_COMMAND} -E echo ${HOMEPAGE} > <SOURCE_DIR>/doc/URL
-  CONFIGURE_COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/pythia8/scripts/run_lcg_configure <INSTALL_DIR> <INSTALL_DIR>/../share ${HepMC_native_version} ${LCG_platform}
+  CONFIGURE_COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/pythia8/scripts/run_lcg_configure <INSTALL_DIR> <INSTALL_DIR>/../share ${HepMC_home} ${LCG_platform}
   BUILD_IN_SOURCE 1
   INSTALL_COMMAND ${CMAKE_COMMAND} -E chdir <SOURCE_DIR> make install
           COMMAND ${CMAKE_COMMAND} -E remove <INSTALL_DIR>/xmldoc
