@@ -144,13 +144,12 @@ LCGPackage_Add(
   cx_oracle
   URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/cx_Oracle-${cx_oracle_native_version}.tar.gz
   CONFIGURE_COMMAND <VOID>
-  BUILD_COMMAND ${Python_cmd} setup.py build
-  INSTALL_COMMAND ORACLE_HOME="$(oracle_home)" ${Python_cmd} setup.py install --prefix <INSTALL_DIR>
+  BUILD_COMMAND  ${Exec_cmd} ORACLE_HOME=${oracle_home} ${Python_cmd} setup.py build
+  INSTALL_COMMAND ${Exec_cmd} ORACLE_HOME=${oracle_home} ${Python_cmd} setup.py install --prefix <INSTALL_DIR>
   BUILD_IN_SOURCE 1
   DEST_NAME pytools
   DEPENDS Python oracle
 )
-#set(cx_oracle_pkg cx_oracle)
 
 #---ipython------------------------------------------------------------------------------------------------------
 LCGPackage_Add(
@@ -367,7 +366,7 @@ LCGPackage_Add(
   BUILD_COMMAND <VOID>
   INSTALL_COMMAND <VOID>
   BUNDLE_PACKAGE 1
-  DEPENDS lxml sqlalchemy genshi 4suite ${cx_oracle_pkg} ipython json mock multiprocessing setuptools mysql_python processing py py2neo pyxml storm pytest pylint nose coverage stomppy
+  DEPENDS lxml sqlalchemy genshi 4suite cx_oracle ipython json mock multiprocessing setuptools mysql_python processing py py2neo pyxml storm pytest pylint nose coverage stomppy
 )
 
 #=================================================================================================================
