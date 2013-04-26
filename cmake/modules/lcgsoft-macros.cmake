@@ -100,6 +100,28 @@ macro(LCGPackage_Add name)
         TEST_COMMAND ${ARG_TEST_COMMAND}
         LOG_CONFIGURE 1 LOG_BUILD 1 LOG_INSTALL 1 )
 
+      #---Handle dependencies-----(should not be needed after CMake 2.8.11)-----------------------------
+      set(${targetname}_dependencies "")
+      if(ARG_DEPENDS)
+         foreach(dep ${ARG_DEPENDS})
+           if(NOT TARGET ${dep})
+             message(SEND_ERROR "Package ${name} declared a dependency to non existing package ${dep}")
+           endif()
+            list(APPEND ${targetname}_dependencies ${dep})
+         endforeach()
+         add_dependencies(${targetname} ${ARG_DEPENDS})
+      endif()
+
+      #--- prepare a name containing the full dependencies
+      #--- and a hash as a unique id for the build product
+      set(${name}_expanded_dependencies)
+      LCG_append_depends(${name} ${name}_expanded_dependencies)
+      list(SORT ${name}_expanded_dependencies)
+      foreach(p ${${name}_expanded_dependencies})
+        list(APPEND ${name}_full_version ${p}=${${p}_native_version})
+      endforeach()
+      string(SHA1 targethash "${${name}_expanded_dependencies}" )
+
       #---Adding extra step to copy the sources in /share/sources-------------------------------------
       if(NOT ARG_BINARY_PACKAGE) 
         ExternalProject_Add_Step(${targetname} install_sources COMMENT "Installing sources for '${targetname}' and create source tarball"
@@ -116,7 +138,7 @@ macro(LCGPackage_Add name)
         ExternalProject_Add_Step(${targetname} package COMMENT "Creating binary tarball for '${targetname}'"
                   COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_INSTALL_PREFIX}/${${name}_directory_name}/../distribution/${name}
                   COMMAND ${CMAKE_COMMAND} -E chdir ${${dest_name}_home}/../../..
-                  ${CMAKE_COMMAND} -E tar cfz ${CMAKE_INSTALL_PREFIX}/${${name}_directory_name}/../distribution/${name}/${name}-${version}-${LCG_system}.tgz ${n_name}/${version}/${LCG_system}
+                  ${CMAKE_COMMAND} -E tar cfz ${CMAKE_INSTALL_PREFIX}/${${name}_directory_name}/../distribution/${name}/${name}-${version}-${LCG_system}-${targethash}.tgz ${n_name}/${version}/${LCG_system}
           DEPENDEES strip_rpath)
       endif()
       #---Adding extra step to copy the log files----------------------------------------------------
@@ -162,18 +184,6 @@ macro(LCGPackage_Add name)
       #---Adding clean targets--------------------------------------------------------------------------
       add_custom_target(clean-${targetname} COMMAND ${CMAKE_COMMAND} -E remove_directory ${CMAKE_CURRENT_BINARY_DIR}/${targetname}
                                             COMMAND ${CMAKE_COMMAND} -E remove_directory ${${name}_home})
-
-      #---Handle dependencies-----(should not be needed after CMake 2.8.11)-----------------------------
-      set(${targetname}_dependencies "")
-      if(ARG_DEPENDS)
-         foreach(dep ${ARG_DEPENDS})
-           if(NOT TARGET ${dep})
-             message(SEND_ERROR "Package ${name} declared a dependency to non existing package ${dep}")
-           endif()
-            list(APPEND ${targetname}_dependencies ${dep})
-         endforeach()
-         add_dependencies(${targetname} ${ARG_DEPENDS})
-      endif()
     endif()
     
     if(nvers GREATER 1)
@@ -192,16 +202,6 @@ macro(LCGPackage_Add name)
   set(${targetname}_dependencies ${${targetname}_dependencies} PARENT_SCOPE)
 
 endmacro()
-
-#----------------------------------------------------------------------------------------------------
-# LCGPackage_add_dependencies macro
-#----------------------------------------------------------------------------------------------------
-macro(LCGPackage_add_dependencies name )
-  SET(${name}_dependencies ${${name}_dependencies} ${ARGN})
-  add_dependencies(${name} ${ARGN})
-  set(${name}_dependencies ${${name}_dependencies} PARENT_SCOPE)
-endmacro()
-
 
 #----------------------------------------------------------------------------------------------------
 # LCGPackage_create_dependency_file function 
@@ -231,26 +231,13 @@ function(LCG_create_dependency_files)
     endforeach()
     set(json_string "${json_string} ]}")
     file(APPEND ${jsonfile} ${json_string},\n)
-    set(${targetname}_expanded_dependencies)
-    set(${targetname}_full_version)
-    LCG_append_depends(${targetname} ${targetname}_expanded_dependencies)
-    list(SORT ${targetname}_expanded_dependencies)
-    foreach(p ${${targetname}_expanded_dependencies})
-      list(APPEND ${targetname}_full_version ${p}=${${p}_native_version})
-    endforeach()
-    list(SORT ${targetname}_expanded_dependencies)
-    list(REMOVE_DUPLICATES ${targetname}_expanded_dependencies)
-    #message("Full dependencies for '${targetname}' are: ${${targetname}_full_version}")
-    string(MD5 targethash "${${targetname}_expanded_dependencies}" )
-    #message("Hash for '${targetname}' is ${targethash}")
-    set(${targetname}_hash targethash PARENT_SCOPE) 
- endforeach()
+  endforeach()
   file(APPEND ${dotfile} "}\n")
   file(APPEND ${jsonfile} "}\n")
   message("Wrote package dependency information to ${dotfile} and ${jsonfile}.")
-
 endfunction()
 
+# Helper function to expand dependencies from further dependencies
 function(LCG_append_depends name var)
   list(APPEND ${var} ${name})
   foreach(p ${${name}_dependencies})

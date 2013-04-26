@@ -6,14 +6,6 @@ set(Exec_cmd ${CMAKE_SOURCE_DIR}/cmake/scripts/exec-with-env)
 #---pyanalysis----------------------------------------------------------------------------------------------------
 # This is only a placeholder where all the sub-packages will be installed
 #=================================================================================================================
-LCGPackage_Add(
-  pyanalysis
-  DOWNLOAD_COMMAND <VOID>
-  CONFIGURE_COMMAND <VOID>
-  BUILD_COMMAND <VOID>
-  INSTALL_COMMAND <VOID>
-  BUNDLE_PACKAGE 1
-)
 
 #---numpy---------------------------------------------------------------------------------------------------------
 LCGPackage_Add(
@@ -84,20 +76,20 @@ LCGPackage_Add(
 )
 
 #---Add the dependencies now----------------------------------------------------------------------------------------
-LCGPackage_add_dependencies( pyanalysis matplotlib numpy scipy sympy pyminuit) 
-
-#=================================================================================================================
-#---pytools----------------------------------------------------------------------------------------------------
-# This is only a placeholder where all the sub-packages will be installed
-#=================================================================================================================
 LCGPackage_Add(
-  pytools
+  pyanalysis
   DOWNLOAD_COMMAND <VOID>
   CONFIGURE_COMMAND <VOID>
   BUILD_COMMAND <VOID>
   INSTALL_COMMAND <VOID>
   BUNDLE_PACKAGE 1
+  DEPENDS matplotlib numpy scipy sympy pyminuit
 )
+
+#=================================================================================================================
+#---pytools----------------------------------------------------------------------------------------------------
+# This is only a placeholder where all the sub-packages will be installed
+#=================================================================================================================
 
 #---lxml---------------------------------------------------------------------------------------------------------
 LCGPackage_Add(
@@ -148,19 +140,17 @@ LCGPackage_Add(
 )
 
 #---cx_oracle------------------------------------------------------------------------------------------------------
-if(FALSE)
-  LCGPackage_Add(
-    cx_oracle
-    URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/cx_Oracle-${cx_oracle_native_version}.tar.gz
-    CONFIGURE_COMMAND <VOID>
-    BUILD_COMMAND ${Python_cmd} setup.py build
-    INSTALL_COMMAND ${Python_cmd} setup.py install --prefix <INSTALL_DIR>
-    BUILD_IN_SOURCE 1
-    DEST_NAME pytools
-    DEPENDS Python
-  )
-  set(cx_oracle_pkg cx_oracle)
-endif()
+LCGPackage_Add(
+  cx_oracle
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/cx_Oracle-${cx_oracle_native_version}.tar.gz
+  CONFIGURE_COMMAND <VOID>
+  BUILD_COMMAND ${Python_cmd} setup.py build
+  INSTALL_COMMAND ORACLE_HOME="$(oracle_home)" ${Python_cmd} setup.py install --prefix <INSTALL_DIR>
+  BUILD_IN_SOURCE 1
+  DEST_NAME pytools
+  DEPENDS Python oracle
+)
+#set(cx_oracle_pkg cx_oracle)
 
 #---ipython------------------------------------------------------------------------------------------------------
 LCGPackage_Add(
@@ -370,27 +360,21 @@ LCGPackage_Add(
 )
 
 
-
-
-#---Add the dependencies now----------------------------------------------------------------------------------------
-LCGPackage_add_dependencies(pytools lxml sqlalchemy genshi 4suite ${cx_oracle_pkg} ipython json mock multiprocessing 
-                 setuptools mysql_python processing py py2neo pyxml storm pytest pylint nose coverage stomppy)
-
-#pytools: py, py2neo, pytest, pyxml, setuptools, json, sqlalchemy, storm, processing, pylint, nose, 4suite, cx_oracle, genshi, ipython, lxml, mock, multiprocessing, mysqldb, stomp.py, coverage
-
-
-#=================================================================================================================
-#---pygraphics----------------------------------------------------------------------------------------------------
-# This is only a placeholder where all the sub-packages will be installed
-#=================================================================================================================
 LCGPackage_Add(
-  pygraphics
+  pytools
   DOWNLOAD_COMMAND <VOID>
   CONFIGURE_COMMAND <VOID>
   BUILD_COMMAND <VOID>
   INSTALL_COMMAND <VOID>
   BUNDLE_PACKAGE 1
+  DEPENDS lxml sqlalchemy genshi 4suite ${cx_oracle_pkg} ipython json mock multiprocessing setuptools mysql_python processing py py2neo pyxml storm pytest pylint nose coverage stomppy
 )
+
+#=================================================================================================================
+#---pygraphics----------------------------------------------------------------------------------------------------
+# This is a bundle where all the sub-packages will be installed
+# First we define all sub-packages and in the end the master-package
+#=================================================================================================================
 
 #---pydot------------------------------------------------------------------------------------------------------
 LCGPackage_Add(
@@ -460,8 +444,15 @@ LCGPackage_Add(
   DEPENDS Python Qt sip
 )
 
-#---Add the dependencies now------------------------------------------------------------------------------------
-LCGPackage_add_dependencies(pygraphics pydot pyparsing sip pyqt)
+LCGPackage_Add(
+  pygraphics
+  DOWNLOAD_COMMAND <VOID>
+  CONFIGURE_COMMAND <VOID>
+  BUILD_COMMAND <VOID>
+  INSTALL_COMMAND <VOID>
+  BUNDLE_PACKAGE 1
+  DEPENDS pydot pyparsing sip pyqt
+)
 
 #---libsvm------------------------------------------------------------------------------------------------------
 LCGPackage_Add(
