@@ -67,6 +67,7 @@ LCGPackage_Add(
   INSTALL_COMMAND ${CMAKE_COMMAND} -E chdir <SOURCE_DIR> make install
           COMMAND ${CMAKE_COMMAND} -E remove <INSTALL_DIR>/xmldoc
           COMMAND ${CMAKE_COMMAND} -E chdir <INSTALL_DIR> ${CMAKE_COMMAND} -E create_symlink ../share/xmldoc xmldoc
+          COMMAND ${CMAKE_COMMAND} -E chdir <INSTALL_DIR>/../share ${CMAKE_COMMAND} -E create_symlink sources/lcg_readme README
   CONFIGURE_EXAMPLES_COMMAND <SOURCE_DIR>/examples/configure
                              --with-pythia8=<INSTALL_DIR>
                              --with-lhapdf=${lhapdf_home}/lib
