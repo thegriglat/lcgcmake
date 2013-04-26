@@ -43,7 +43,7 @@ macro(LCGPackage_Add name)
     #---Check if the package is already existing in the installation area(s)
     if(NOT ARG_BUNDLE_PACKAGE AND EXISTS ${LCG_INSTALL_PREFIX}/${${name}_directory_name}/${version}/${LCG_system})
 
-      set(${name}_home ${LCG_INSTALL_PREFIX}/${${name}_directory_name}/${version}/${LCG_system})
+      LCGPackage_set_home(${name})
       add_custom_target(${targetname} ALL COMMENT "${targetname} package already existing in LCG install area ${${name}_home}")
       add_custom_target(clean-${targetname} COMMENT "${targetname}: nothing to be clean!")
 
@@ -246,3 +246,8 @@ function(LCG_append_depends name var)
   list(REMOVE_DUPLICATES ${var})
   set(${var} ${${var}} PARENT_SCOPE)
 endfunction()
+
+# Helper macro to define the home of a package
+macro( LCGPackage_set_home name)
+   set(${name}_home ${CMAKE_INSTALL_PREFIX}/${${name}_directory_name}/${version}/${LCG_system})
+endmacro()

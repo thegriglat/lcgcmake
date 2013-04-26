@@ -6,7 +6,7 @@ set(Exec_cmd ${CMAKE_SOURCE_DIR}/cmake/scripts/exec-with-env)
 #---pyanalysis----------------------------------------------------------------------------------------------------
 # This is only a placeholder where all the sub-packages will be installed
 #=================================================================================================================
-set(pyanalysis_home ${CMAKE_INSTALL_PREFIX}/${pyanalysis_directory_name}/${pyanalysis_native_version}/${LCG_system})
+LCGPackage_set_home(pyanalysis)
 
 #---numpy---------------------------------------------------------------------------------------------------------
 LCGPackage_Add(
@@ -91,7 +91,7 @@ LCGPackage_Add(
 #---pytools----------------------------------------------------------------------------------------------------
 # This is only a placeholder where all the sub-packages will be installed
 #=================================================================================================================
-set(pytools_home ${CMAKE_INSTALL_PREFIX}/${pytools_directory_name}/${pytools_native_version}/${LCG_system})
+LCGPackage_set_home(pytools)
 
 #---lxml---------------------------------------------------------------------------------------------------------
 LCGPackage_Add(
@@ -376,7 +376,7 @@ LCGPackage_Add(
 # This is a bundle where all the sub-packages will be installed
 # First we define all sub-packages and in the end the master-package
 #=================================================================================================================
-set(pygraphics_home ${CMAKE_INSTALL_PREFIX}/${pygraphics_directory_name}/${pygraphics_native_version}/${LCG_system})
+LCGPackage_set_home(pygraphics)
 
 #---pydot------------------------------------------------------------------------------------------------------
 LCGPackage_Add(
