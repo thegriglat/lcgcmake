@@ -1,0 +1,24 @@
+--- setup.py.org	2009-11-04 18:39:20.000000000 +0100
++++ setup.py	2009-11-05 08:51:23.000000000 +0100
+@@ -146,7 +146,8 @@
+     libs = ["oci"]
+ else:
+     possibleIncludeDirs = ["rdbms/demo", "rdbms/public", "network/public",
+-            "sdk/include"]
++            "sdk/include","include"]
++    
+     if sys.platform == "darwin":
+         possibleIncludeDirs.append("plsql/public")
+     includeDirs = []
+@@ -162,9 +163,9 @@
+         raise DistutilsSetupError("cannot locate Oracle include files")
+     libPath = os.path.join(oracleHome, "lib")
+     if struct.calcsize("P") == 4:
+-        alternatePath = os.path.join(oracleHome, "lib32")
++        alternatePath = os.path.join(oracleHome, "lib")
+     else:
+-        alternatePath = os.path.join(oracleHome, "lib64")
++        alternatePath = os.path.join(oracleHome, "lib")
+     if os.path.exists(alternatePath):
+         libPath = alternatePath
+     libDirs = [libPath, oracleHome]
