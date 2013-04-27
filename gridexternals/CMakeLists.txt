@@ -1,3 +1,14 @@
+#---CASTOR-----------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  CASTOR
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/CASTOR-${CASTOR_native_version}-${LCG_ARCH}-${LCG_OS}${LCG_OSVERS}.tar.gz
+  CONFIGURE_COMMAND <VOID>
+  BUILD_COMMAND <VOID>
+  INSTALL_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR> <INSTALL_DIR>
+  BUILD_IN_SOURCE 1
+  BINARY_PACKAGE 1
+)
+
 #---cream------------------------------------------------------------------------------------------------
 LCGPackage_Add(
   cream
