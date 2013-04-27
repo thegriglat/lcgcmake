@@ -249,5 +249,5 @@ endfunction()
 
 # Helper macro to define the home of a package
 macro( LCGPackage_set_home name)
-   set(${name}_home ${CMAKE_INSTALL_PREFIX}/${${name}_directory_name}/${version}/${LCG_system})
+   set(${name}_home ${CMAKE_INSTALL_PREFIX}/${${name}_directory_name}/${${name}_native_version}/${LCG_system})
 endmacro()
