@@ -289,7 +289,7 @@ LCGPackage_Add(
 LCGPackage_Add(
   doxygen
   URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/doxygen-${doxygen_native_version}.src.tar.gz
-  CONFIGURE_COMMAND ./configure --prefix <INSTALL_DIR>
+  CONFIGURE_COMMAND ./configure --dot ${graphviz_home}/bin/dot --prefix <INSTALL_DIR>
   BUILD_IN_SOURCE 1
   DEPENDS graphviz
 )
