@@ -76,8 +76,9 @@ endif()
 LCGPackage_Add(
   HepMC
   URL http://lcgapp.cern.ch/project/simu/HepMC/download/HepMC-${HepMC_native_version}.tar.gz
-  CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix <INSTALL_DIR> --with-momentum=MEV 
-                                           --with-length=MM ${HepMC_config_options}  CXX=${CMAKE_CXX_COMPILER}
+  CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
+             -Dmomentum:STRING=MEV
+             -Dlength:STRING=MM
 )
 
 #---HepPDT-------------------------------------------------------------------------------------------
