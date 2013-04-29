@@ -206,7 +206,7 @@ LCGPackage_Add(
   setuptools
   URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/setuptools-${setuptools_native_version}.tar.gz
   CONFIGURE_COMMAND <VOID>
-  BUILD_COMMAND mkdir -p <INSTALL_DIR>/lib/python${Python_config_version_twodigit}/site-packages/
+  BUILD_COMMAND ${CMAKE_COMMAND} -E  make_directory <INSTALL_DIR>/lib/python${Python_config_version_twodigit}/site-packages/
         COMMAND ${Python_cmd} setup.py build
   INSTALL_COMMAND ${Exec_cmd} PYTHONPATH=${pytools_home}/lib/python${Python_config_version_twodigit}/site-packages
                   ${Python_cmd} setup.py install --prefix <INSTALL_DIR>
@@ -464,13 +464,13 @@ LCGPackage_Add(
   BUILD_COMMAND make
         COMMAND make PYTHON_INCLUDEDIR=${Python_home}/include/python${Python_config_version_twodigit} 
                      -C python all LDFLAGS=\ -shared  
-  INSTALL_COMMAND mkdir -p <INSTALL_DIR>/bin
+  INSTALL_COMMAND ${CMAKE_COMMAND} -E make_directory <INSTALL_DIR>/bin
           COMMAND cp svm-train svm-predict svm-scale <INSTALL_DIR>/bin
-          COMMAND mkdir -p <INSTALL_DIR>/include
-          COMMAND cp svm.h <INSTALL_DIR>/include
-          COMMAND mkdir -p <INSTALL_DIR>/src
-          COMMAND cp svm.cpp <INSTALL_DIR>/src
-          COMMAND mkdir -p <INSTALL_DIR>/python
+          COMMAND ${CMAKE_COMMAND} -E make_directory <INSTALL_DIR>/include
+          COMMAND ${CMAKE_COMMAND} -E copy svm.h <INSTALL_DIR>/include
+          COMMAND ${CMAKE_COMMAND} -E make_directory <INSTALL_DIR>/src
+          COMMAND ${CMAKE_COMMAND} -E copy svm.cpp <INSTALL_DIR>/src
+          COMMAND ${CMAKE_COMMAND} -E make_directory <INSTALL_DIR>/python
           COMMAND cp python/svmc.so python/svm.py python/svm_test.py python/README <INSTALL_DIR>/python
           COMMAND cp -r README tools <INSTALL_DIR>
   BUILD_IN_SOURCE 1
