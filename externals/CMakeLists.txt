@@ -229,8 +229,8 @@ LCGPackage_Add(
   URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/blas-${blas_native_version}.tgz
   CONFIGURE_COMMAND <VOID>
   BUILD_COMMAND make FORTRAN=${CMAKE_Fortran_COMPILER}  "OPTS=-O3 -fPIC"  BLASLIB=libBLAS.a
-  INSTALL_COMMAND mkdir -p <INSTALL_DIR>/lib
-          COMMAND cp <SOURCE_DIR>/libBLAS.a <INSTALL_DIR>/lib/.
+  INSTALL_COMMAND ${CMAKE_COMMAND} -E make_directory <INSTALL_DIR>/lib
+          COMMAND ${CMAKE_COMMAND} -E copy <SOURCE_DIR>/libBLAS.a <INSTALL_DIR>/lib/.
   BUILD_IN_SOURCE 1
 
 )
@@ -249,9 +249,10 @@ LCGPackage_Add(
                      SHELL=/bin/sh
                      TMGLIB=tmglib.a EIGSRCLIB=eigsrc.a LINSRCLIB=linsrc.a
                      lapacklib
-  INSTALL_COMMAND mkdir -p <INSTALL_DIR>/lib
-          COMMAND cp <SOURCE_DIR>/libLAPACK.a <INSTALL_DIR>/lib/.
+  INSTALL_COMMAND ${CMAKE_COMMAND} -E make_directory <INSTALL_DIR>/lib
+          COMMAND ${CMAKE_COMMAND} -E copy <SOURCE_DIR>/libLAPACK.a <INSTALL_DIR>/lib/.
   BUILD_IN_SOURCE 1
+  DEPENDS blas
 )
 
 #---Qt---------------------------------------------------------------------------------------------------
