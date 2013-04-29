@@ -43,7 +43,7 @@ macro(LCGPackage_Add name)
     #---Check if the package is already existing in the installation area(s)
     if(NOT ARG_BUNDLE_PACKAGE AND EXISTS ${LCG_INSTALL_PREFIX}/${${name}_directory_name}/${version}/${LCG_system})
 
-      LCGPackage_set_home(${name})
+      set(${name}_home ${LCG_INSTALL_PREFIX}/${${name}_directory_name}/${version}/${LCG_system})
       add_custom_target(${targetname} ALL COMMENT "${targetname} package already existing in LCG install area ${${name}_home}")
       add_custom_target(clean-${targetname} COMMENT "${targetname}: nothing to be clean!")
 
