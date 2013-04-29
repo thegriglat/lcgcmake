@@ -168,7 +168,7 @@ LCGPackage_Add(
   URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/e2fsprogs-${uuid_native_version}.tar.gz
   CONFIGURE_COMMAND ./configure --prefix <INSTALL_DIR> ${uuid_config_options}
   BUILD_COMMAND make -j1 -C lib/uuid
-  INSTALL_COMMAND mkdir -p <INSTALL_DIR>/lib
+  INSTALL_COMMAND ${CMAKE_COMMAND} -E make_directory <INSTALL_DIR>/lib
           COMMAND make -j1 -C lib/uuid install
   BUILD_IN_SOURCE 1
 )
@@ -321,10 +321,10 @@ LCGPackage_Add(
   CONFIGURE_COMMAND <VOID>
   BUILD_COMMAND  <VOID>
   INSTALL_COMMAND make install PREFIX=<INSTALL_DIR>
-          COMMAND mv -f <INSTALL_DIR>/usr/bin <INSTALL_DIR>
-          COMMAND mv -f <INSTALL_DIR>/usr/share/man <INSTALL_DIR> 
-          COMMAND rmdir <INSTALL_DIR>/usr/share
-          COMMAND rmdir <INSTALL_DIR>/usr/
+          COMMAND ${CMAKE_COMMAND} -E rename <INSTALL_DIR>/usr/bin <INSTALL_DIR>/bin
+          COMMAND ${CMAKE_COMMAND} -E rename <INSTALL_DIR>/usr/share/man <INSTALL_DIR>/man 
+          COMMAND ${CMAKE_COMMAND} -E remove_directory <INSTALL_DIR>/usr/share
+          COMMAND ${CMAKE_COMMAND} -E remove_directory <INSTALL_DIR>/usr/
   BUILD_IN_SOURCE 1
 )
 
