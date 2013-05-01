@@ -180,6 +180,7 @@ LCGPackage_Add(
   BUILD_IN_SOURCE 1
   DEPENDS Python setuptools
 )
+set(cython_pythonpath ${cython_home}/lib/python${Python_config_version_twodigit}/site-packages)
 
 #---yaml-cpp----------------------------------------------------------------------------------------
 LCGPackage_Add(
@@ -198,8 +199,8 @@ LCGPackage_Add(
       --with-boost=${Boost_home}
       PYTHON=${Python_home}/bin/python LD_LIBRARY_PATH=${Python_home}/lib:$ENV{LD_LIBRARY_PATH}
       PYTHONPATH=${cython_home}/lib/python2.7/site-packages:$ENV{PYTHONPATH}
-  BUILD_COMMAND make all V=1 LD_LIBRARY_PATH=${Python_home}/lib:$ENV{LD_LIBRARY_PATH}
-  INSTALL_COMMAND make install LD_LIBRARY_PATH=${Python_home}/lib:$ENV{LD_LIBRARY_PATH}
+  BUILD_COMMAND make all V=1 LD_LIBRARY_PATH=${Python_home}/lib:$ENV{LD_LIBRARY_PATH} PYTHONPATH=:${cython_pythonpath}:$ENV{PYTHONPATH}
+  INSTALL_COMMAND make install LD_LIBRARY_PATH=${Python_home}/lib:$ENV{LD_LIBRARY_PATH} PYTHONPATH=:${cython_pythonpath}:$ENV{PYTHONPATH}
   BUILD_IN_SOURCE 1
   DEPENDS Python Boost cython
 )
