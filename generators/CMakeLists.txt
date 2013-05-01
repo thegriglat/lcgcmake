@@ -170,6 +170,66 @@ LCGPackage_Add(
 )
 endif()
 
+#---Cython------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  cython
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/Cython-${cython_native_version}.tar.gz
+  CONFIGURE_COMMAND <VOID>
+  BUILD_COMMAND ${Python_home}/bin/python setup.py build
+  INSTALL_COMMAND ${Python_home}/bin/python setup.py install --prefix <INSTALL_DIR>
+  BUILD_IN_SOURCE 1
+  DEPENDS Python setuptools
+)
+
+#---yaml-cpp----------------------------------------------------------------------------------------
+LCGPackage_Add(
+  yaml_cpp
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/yaml-cpp-${yaml_cpp_native_version}.tar.gz
+  CMAKE_ARGS -DBOOST_ROOT=${Boost_home} -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR> -DBUILD_SHARED_LIBS=ON
+  BUILD_IN_SOURCE 1
+)
+
+
+#---Yoda-------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  yoda
+  URL http://www.hepforge.org/archive/yoda/YODA-${yoda_native_version}.tar.gz
+  CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix=<INSTALL_DIR>
+      --with-boost=${Boost_home}
+      PYTHON=${Python_home}/bin/python LD_LIBRARY_PATH=${Python_home}/lib:$ENV{LD_LIBRARY_PATH}
+      PYTHONPATH=${cython_home}/lib/python2.7/site-packages:$ENV{PYTHONPATH}
+  BUILD_COMMAND make all V=1 LD_LIBRARY_PATH=${Python_home}/lib:$ENV{LD_LIBRARY_PATH}
+  INSTALL_COMMAND make install LD_LIBRARY_PATH=${Python_home}/lib:$ENV{LD_LIBRARY_PATH}
+  BUILD_IN_SOURCE 1
+  DEPENDS Python Boost cython
+)
+
+#---Rivet2-----------------------------------------------------------------------------------------
+LCGPackage_Add(
+  rivet2
+  URL http://www.hepforge.org/archive/rivet/Rivet-${rivet2_native_version}.tar.bz2
+  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR>
+     --with-hepmc=${HepMC_home} 
+     --with-boost=${Boost_home_include}
+     --with-fastjet=${fastjet_home}
+     --with-yoda=${yoda_home}
+     --with-yaml-cpp=${yaml_cpp_home}
+     --with-gsl=${GSL_home}
+     --with-lcgtag=${LCG_platform}
+     --disable-pdfmanual
+     --enable-unvalidated
+     PYTHON=${Python_home}/bin/python LD_LIBRARY_PATH=${Python_home}/lib:$ENV{LD_LIBRARY_PATH}
+     SWIG=${swig_home}/bin/swig
+     CC=${CMAKE_C_COMPILER}
+     CXX=${CMAKE_CXX_COMPILER}
+  BUILD_COMMAND make all V=1 LD_LIBRARY_PATH=${Python_home}/lib:${yaml_cpp_home}/lib:$ENV{LD_LIBRARY_PATH}
+  INSTALL_COMMAND make install LD_LIBRARY_PATH=${Python_home}/lib:${yaml_cpp_home}/lib:$ENV{LD_LIBRARY_PATH}
+          COMMAND ${CMAKE_COMMAND} -E copy <SOURCE_DIR>/rivetenv.csh <INSTALL_DIR>/
+          COMMAND ${CMAKE_COMMAND} -E copy <SOURCE_DIR>/rivetenv.sh <INSTALL_DIR>/
+  BUILD_IN_SOURCE 1
+  DEPENDS HepMC Boost fastjet GSL Python swig yoda yaml_cpp
+)
+
 #---Rivet------------------------------------------------------------------------------------------
 LCGPackage_Add(
   rivet

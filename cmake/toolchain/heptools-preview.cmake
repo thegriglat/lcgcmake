@@ -149,6 +149,7 @@ LCG_external_package(agile             1.4.0          MCGenerators/agile        
 LCG_external_package(photos++          3.52           MCGenerators/photos++     )
 LCG_external_package(evtgen            1.1.0          MCGenerators/evtgen         tag=R01-01-00)
 LCG_external_package(rivet             1.8.2          MCGenerators/rivet        )
+LCG_external_package(rivet2            2.0.0b1        MCGenerators/rivet2       )
 LCG_external_package(sherpa            1.4.3          MCGenerators/sherpa         author=1.4.3 hepevt=4000  )
 LCG_external_package(sherpa            1.4.3.2        MCGenerators/sherpa         author=1.4.3 hepevt=10000 )
 LCG_external_package(hepmcanalysis     3.4.14         MCGenerators/hepmcanalysis  author=00-03-04-14        )
@@ -158,6 +159,9 @@ LCG_external_package(starlight         r43            MCGenerators/starlight    
 LCG_external_package(herwig            6.520          MCGenerators/herwig       )
 LCG_external_package(herwig            6.520.2        MCGenerators/herwig       )
 LCG_external_package(crmc              v3400          MCGenerators/crmc         )
+LCG_external_package(cython            0.19           MCGenerators/cython       )
+LCG_external_package(yaml_cpp          0.3.0          MCGenerators/yaml_cpp     )
+LCG_external_package(yoda              1.0.0          MCGenerators/yoda         )
 
 # Prepare the search paths according to the versions above
 LCG_prepare_paths()

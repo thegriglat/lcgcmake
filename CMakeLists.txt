@@ -11,8 +11,8 @@ include(lcgsoft-macros)
 
 add_subdirectory(externals)
 add_subdirectory(projects)
+add_subdirectory(pyexternals)
 add_subdirectory(generators)
 add_subdirectory(gridexternals)
-add_subdirectory(pyexternals)
 
 LCG_create_dependency_files()
