@@ -34,27 +34,59 @@ macro(LCGPackage_Add name)
   #---Loop over all versions of the package----------------------------------------------------------
   foreach( version ${${name}_native_version} )
 
+    #---Handle multi-version packages----------------------------------------------------------------
     if(nvers GREATER 1)
       set(targetname ${name}-${version})
     else()
       set(targetname ${name})
     endif()
+    
+    #---Handle dependencies--------------------------------------------------------------------------
+    set(${targetname}_dependencies "")
+    if(ARG_DEPENDS)
+      foreach(dep ${ARG_DEPENDS})
+        if(NOT TARGET ${dep})
+          message(SEND_ERROR "Package ${name} declared a dependency to non existing package ${dep}")
+        endif()
+        list(APPEND ${targetname}_dependencies ${dep})
+      endforeach()
+    endif()
+    #---Get the expanded list of dependencies with their versions-------------------------------------
+    LCG_get_full_version(${name} ${version} ${name}_full_version)
+
+    #---Install path----------------------------------------------------------------------------------
+    set(install_path ${${name}_directory_name}/${version}/${LCG_system})
+
+    #---Check if the version file is already existing in the installation area(s)---------------------
+    set(${targetname}_version_checked 0)
+    set(${targetname}_version_file ${LCG_INSTALL_PREFIX}/${install_path}/version.txt)
+    if(EXISTS ${${targetname}_version_file})
+      file(READ ${${targetname}_version_file} full_version)
+      if(full_version STREQUAL ${${name}_full_version})
+        set(${targetname}_version_checked 1)
+      endif()
+    endif()
 
     #---Check if the package is already existing in the installation area(s)
-    if(NOT ARG_BUNDLE_PACKAGE AND EXISTS ${LCG_INSTALL_PREFIX}/${${name}_directory_name}/${version}/${LCG_system})
+    if((NOT ARG_BUNDLE_PACKAGE AND ${${targetname}_version_checked}) OR
+       (NOT ARG_BUNDLE_PACKAGE AND EXISTS ${LCG_INSTALL_PREFIX}/${install_path} AND NOT EXISTS ${LCG_INSTALL_PREFIX}/${install_path}/version.txt))
+      set(${name}_home ${CMAKE_INSTALL_PREFIX}/${install_path})
+      add_custom_target(${targetname} ALL COMMAND ${CMAKE_COMMAND} -E make_directory  ${CMAKE_INSTALL_PREFIX}/${${name}_directory_name}/${version}
+                                          COMMAND ${CMAKE_COMMAND} -E create_symlink ${LCG_INSTALL_PREFIX}/${install_path} ${CMAKE_INSTALL_PREFIX}/${install_path}
+                                          COMMENT "${targetname} package already existing in ${LCG_INSTALL_PREFIX}/${install_path}. Making a soft-link.")
+      add_custom_target(clean-${targetname} COMMAND ${CMAKE_COMMAND} -E remove ${CMAKE_INSTALL_PREFIX}/${install_path}
+                                            COMMENT "Deleting soft-link for package ${targetname}")
 
-      set(${name}_home ${LCG_INSTALL_PREFIX}/${${name}_directory_name}/${version}/${LCG_system})
-      add_custom_target(${targetname} ALL COMMENT "${targetname} package already existing in LCG install area ${${name}_home}")
-      add_custom_target(clean-${targetname} COMMENT "${targetname}: nothing to be clean!")
-
-    elseif(NOT ARG_BUNDLE_PACKAGE AND EXISTS ${LCG_INSTALL_PREFIX}/../app/releases/${${name}_directory_name}/${version}/${LCG_system})
+    elseif(NOT ARG_BUNDLE_PACKAGE AND EXISTS ${LCG_INSTALL_PREFIX}/../app/releases/${install_path})
       get_filename_component(_path ${LCG_INSTALL_PREFIX} PATH)
-      set(${name}_home ${_path}/app/releases/${${name}_directory_name}/${version}/${LCG_system})
+      set(_path ${_path}/app/releases/${install_path})
       if(${name} STREQUAL ROOT)  # ROOT in LCG installations is special
-        set(ROOT_home ${ROOT_home}/root) 
+        set(_path ${_path}/root)
       endif()
-      add_custom_target(${targetname} ALL COMMENT "${targetname} package already existing in LCG install area ${${name}_home}")
-      add_custom_target(clean-${targetname} COMMENT "${targetname}: nothing to be clean!")
+      add_custom_target(${targetname} ALL COMMAND ${CMAKE_COMMAND} -E create_symlink ${_path} ${CMAKE_INSTALL_PREFIX}/${install_path}
+                                          COMMENT "${targetname} package already existing in ${_path}. Making a soft-link.")
+      add_custom_target(clean-${targetname} COMMAND ${CMAKE_COMMAND} -E remove ${CMAKE_INSTALL_PREFIX}/${install_path}
+                                            COMMENT "${targetname} deleting soft-link")
 
     else()
       #---Replace patterns for multiversion cases-----------------------------------------------------
@@ -81,6 +113,11 @@ macro(LCGPackage_Add name)
         set(curr_name)
       endif()
       
+      #---Remove previous sym-links------------------------------------------------------------------
+      if(IS_SYMLINK ${${name}_home})
+        file(REMOVE {${name}_home})
+      endif()
+      
       #---Check if a patch file exists and apply it by default---------------------------------------
       if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/${name}-${version}.patch AND NOT ARGUMENTS MATCHES PATCH_COMMAND)
         list(APPEND ARGUMENTS PATCH_COMMAND patch -p0 -i ${CMAKE_CURRENT_SOURCE_DIR}/${name}-${${name}_native_version}.patch)
@@ -99,28 +136,10 @@ macro(LCGPackage_Add name)
         "${ARGUMENTS}"
         TEST_COMMAND ${ARG_TEST_COMMAND}
         LOG_CONFIGURE 1 LOG_BUILD 1 LOG_INSTALL 1 )
-
-      #---Handle dependencies-----(should not be needed after CMake 2.8.11)-----------------------------
-      set(${targetname}_dependencies "")
+        
       if(ARG_DEPENDS)
-         foreach(dep ${ARG_DEPENDS})
-           if(NOT TARGET ${dep})
-             message(SEND_ERROR "Package ${name} declared a dependency to non existing package ${dep}")
-           endif()
-            list(APPEND ${targetname}_dependencies ${dep})
-         endforeach()
-         add_dependencies(${targetname} ${ARG_DEPENDS})
+        add_dependencies(${targetname} ${ARG_DEPENDS})
       endif()
-
-      #--- prepare a name containing the full dependencies
-      #--- and a hash as a unique id for the build product
-      set(${name}_expanded_dependencies)
-      LCG_append_depends(${name} ${name}_expanded_dependencies)
-      list(SORT ${name}_expanded_dependencies)
-      foreach(p ${${name}_expanded_dependencies})
-        list(APPEND ${name}_full_version ${p}=${${p}_native_version})
-      endforeach()
-      string(SHA1 targethash "${${name}_expanded_dependencies}" )
 
       #---Adding extra step to copy the sources in /share/sources-------------------------------------
       if(NOT ARG_BINARY_PACKAGE) 
@@ -135,15 +154,17 @@ macro(LCGPackage_Add name)
       #---Adding extra step to build the binary tarball-----------------------------------------------
       if(NOT ARG_DEST_NAME)  # Only if is not installed grouped with other packages
         get_filename_component(n_name ${${name}_directory_name} NAME)
-        ExternalProject_Add_Step(${targetname} package COMMENT "Creating binary tarball for '${targetname}'"
+        string(SHA1 targethash "${${name}_full_version}" )
+        ExternalProject_Add_Step(${targetname} package COMMENT "Creating binary tarball and version.txt file for '${targetname}'"
                   COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_INSTALL_PREFIX}/${${name}_directory_name}/../distribution/${name}
                   COMMAND ${CMAKE_COMMAND} -E chdir ${${dest_name}_home}/../../..
                   ${CMAKE_COMMAND} -E tar cfz ${CMAKE_INSTALL_PREFIX}/${${name}_directory_name}/../distribution/${name}/${name}-${version}-${LCG_system}-${targethash}.tgz ${n_name}/${version}/${LCG_system}
+                  COMMAND ${CMAKE_COMMAND} -DINSTALL_DIR=${${dest_name}_home} -DFULL_VERSION=${${name}_full_version} -P ${CMAKE_SOURCE_DIR}/cmake/scripts/InstallVersionFile.cmake
           DEPENDEES strip_rpath)
       endif()
-      #---Adding extra step to copy the log files----------------------------------------------------
-      ExternalProject_Add_Step(${targetname} install_logs COMMENT "Installing log files for '${targetname}'"
-          COMMAND ${CMAKE_COMMAND} -DINSTALL_DIR=${${dest_name}_home}/logs -DLOGS_DIR=${CMAKE_CURRENT_BINARY_DIR}/${targetname}/src/${targetname}-stamp  
+      #---Adding extra step to copy the log files and version file--------------------------------------
+      ExternalProject_Add_Step(${targetname} install_logs COMMENT "Installing log and version files for '${targetname}'"
+          COMMAND ${CMAKE_COMMAND} -DINSTALL_DIR=${${dest_name}_home}/logs -DLOGS_DIR=${CMAKE_CURRENT_BINARY_DIR}/${targetname}/src/${targetname}-stamp
                                    -P ${CMAKE_SOURCE_DIR}/cmake/scripts/InstallLogFiles.cmake
           DEPENDEES install)
 
@@ -237,7 +258,9 @@ function(LCG_create_dependency_files)
   message("Wrote package dependency information to ${dotfile} and ${jsonfile}.")
 endfunction()
 
+#----------------------------------------------------------------------------------------------------
 # Helper function to expand dependencies from further dependencies
+#----------------------------------------------------------------------------------------------------
 function(LCG_append_depends name var)
   list(APPEND ${var} ${name})
   foreach(p ${${name}_dependencies})
@@ -247,7 +270,28 @@ function(LCG_append_depends name var)
   set(${var} ${${var}} PARENT_SCOPE)
 endfunction()
 
+#----------------------------------------------------------------------------------------------------
+# Helper function to get the full version (inclusing the version of all expanded dependencies)
+#----------------------------------------------------------------------------------------------------
+function(LCG_get_full_version name version var)
+  set(_expanded_dependencies)
+  set(_full_version)
+  LCG_append_depends(${name} _expanded_dependencies)
+  list(SORT _expanded_dependencies)
+  foreach(p ${_expanded_dependencies})
+    if(p STREQUAL ${name})
+      list(APPEND _full_version ${p}=${version})
+    else()
+      list(APPEND _full_version ${p}=${${p}_native_version})
+    endif()
+  endforeach()
+  string(REPLACE ";" "/" _full_version "${_full_version}")
+  set(${var} ${_full_version} PARENT_SCOPE)
+endfunction()
+
+#---------------------------------------------------------------------------------------------------
 # Helper macro to define the home of a package
+#---------------------------------------------------------------------------------------------------
 macro( LCGPackage_set_home name)
    set(${name}_home ${CMAKE_INSTALL_PREFIX}/${${name}_directory_name}/${${name}_native_version}/${LCG_system})
 endmacro()
