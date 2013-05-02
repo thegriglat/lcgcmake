@@ -103,7 +103,7 @@ if(NOT APPLE)    #  (installation fails on MacOSX)
     CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --with-gsl=${GSL_home} --with-thepeg=${thepeg_home} 
                       --with-boost=${Boost_home} LD_LIBRARY_PATH=${thepeg_home}/lib:${GSL_home}/lib:${Boost_home}/lib:$ENV{LD_LIBRARY_PATH}
     BUILD_COMMAND make all V=1 LD_LIBRARY_PATH=${thepeg_home}/lib:${GSL_home}/lib:${Boost_home}/lib:$ENV{LD_LIBRARY_PATH}
-    INSTALL_COMMAND make install  LD_LIBRARY_PATH=${thepeg_home}/lib:${GSL_home}/lib:${Boost_home}/lib:$ENV{LD_LIBRARY_PATH}
+    INSTALL_COMMAND make install  LD_LIBRARY_PATH=${thepeg_home}/lib:${GSL_home}/lib:${Boost_home}/lib:${HepMC_home}/lib:$ENV{LD_LIBRARY_PATH}
     BUILD_IN_SOURCE 1
     DEPENDS GSL Boost thepeg
   )
