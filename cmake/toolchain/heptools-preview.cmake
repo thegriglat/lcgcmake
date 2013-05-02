@@ -139,6 +139,7 @@ endif()
 
 #---Additional External packages------(Generators)-----------------
 LCG_external_package(lhapdf            5.8.9          MCGenerators/lhapdf       )
+LCG_external_package(lhapdfsets        5.8.9          MCGenerators/lhapdfsets   )
 LCG_external_package(pythia8           175            MCGenerators/pythia8      )
 LCG_external_package(thepeg            1.8.2          MCGenerators/thepeg       )
 LCG_external_package(herwig++          2.6.3          MCGenerators/herwig++     )

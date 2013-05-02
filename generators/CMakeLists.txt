@@ -14,6 +14,26 @@ set(Boost_home_include ${Boost_home}/include/boost-${Boost_underscore_twodigit})
 
 set(CMAKE_VERBOSE_MAKEFILE ON)
 
+#---lhapdfsets--------------------------------------------------------------------------------------
+
+LCGPackage_Add(
+  lhapdfsets
+  URL http://www.hepforge.org/archive/lhapdf/lhapdf-${lhapdfsets_native_version}.tar.gz
+#  PATCH_COMMAND patch -p0 -i ${CMAKE_CURRENT_SOURCE_DIR}/pythia8-${pythia8_native_version}.patch
+  UPDATE_COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/lhapdfsets/files  <SOURCE_DIR>
+  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --datadir=<INSTALL_DIR>/../share --enable-low-memory  --disable-pyext --disable-doxygen --disable-octave
+  INSTALL_COMMAND make install
+          COMMAND ${CMAKE_COMMAND} -E chdir <INSTALL_DIR>/../share/lhapdf ${CMAKE_COMMAND} -E make_directory PDFsets
+          COMMAND ${CMAKE_COMMAND} -E chdir <INSTALL_DIR>/../share ${CMAKE_COMMAND} -E create_symlink lhapdf/PDFsets PDFsets
+          COMMAND ${CMAKE_COMMAND} -E chdir <INSTALL_DIR>/../share ${CMAKE_COMMAND} -E create_symlink lhapdf/PDFsets.index PDFsets.index
+#          real PDF sets getting and installation, takes a long time: 
+#          COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/lhapdfsets/scripts/instlpdfsets <INSTALL_DIR>/bin <INSTALL_DIR>/../share/lhapdf/PDFsets 
+#          test PDF sets getting and installation:
+          COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/lhapdf/scripts/instlpdfsets_test <INSTALL_DIR>/bin <INSTALL_DIR>/../share/lhapdf/PDFsets
+  BUILD_IN_SOURCE 1
+)
+
+
 #---lhapdf------------------------------------------------------------------------------------------
 #todo: install ALL precompiled examples and paths.sh
 #todo: making tarballs is specific for lhapdf
@@ -48,6 +68,7 @@ LCGPackage_Add(
 #          test PDF sets getting and installation:
 #          COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/lhapdf/scripts/instlpdfsets_test <INSTALL_DIR>/bin <INSTALL_DIR>/../share/lhapdf/PDFsets
   BUILD_IN_SOURCE 1
+  DEPENDS lhapdfsets
 )
 
 #---pythia8------------------------------------------------------------------------------------------
