@@ -27,7 +27,7 @@ set(CMAKE_VERBOSE_MAKEFILE ON)
 LCGPackage_Add(
   lhapdf
   URL http://www.hepforge.org/archive/lhapdf/lhapdf-${lhapdf_native_version}.tar.gz
-  PATCH_COMMAND patch -p0 -i ${CMAKE_CURRENT_SOURCE_DIR}/pythia8-${pythia8_native_version}.patch
+#  PATCH_COMMAND patch -p0 -i ${CMAKE_CURRENT_SOURCE_DIR}/pythia8-${pythia8_native_version}.patch
   UPDATE_COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/lhapdf/files  <SOURCE_DIR>
   CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --datadir=<INSTALL_DIR>/../share --enable-low-memory  --disable-pyext --disable-doxygen --disable-octave
   INSTALL_COMMAND make install
