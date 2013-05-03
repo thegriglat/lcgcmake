@@ -27,11 +27,17 @@ else()
 endif()
 set(Boost_jam_options -j4 variant=release --layout=versioned)
 set(Boost_compile_options)
-if(LCG_TARGET MATCHES i686)
+if(LCG_TARGET MATCHES i686 AND LCG_CPP11)
+  file(APPEND ${CMAKE_CURRENT_BINARY_DIR}/user-config.jam "using ${Boost_toolset} : : :  <linkflags>-m32 <compileflags>-m32 -std=gnu++0x;\n")
+elseif(LCG_TARGET MATCHES i686)
   file(APPEND ${CMAKE_CURRENT_BINARY_DIR}/user-config.jam "using ${Boost_toolset} : : :  <linkflags>-m32 <compileflags>-m32 ;\n")
+elseif(LCG_TARGET MATCHES "gcc([0-9]+)" AND LCG_CPP11)
+  file(APPEND ${CMAKE_CURRENT_BINARY_DIR}/user-config.jam "using ${Boost_toolset} : : ${CMAKE_CXX_COMPILER} <compileflags>-std=gnu++0x;\n")
 elseif(LCG_TARGET MATCHES "gcc([0-9]+)")
   file(APPEND ${CMAKE_CURRENT_BINARY_DIR}/user-config.jam "using ${Boost_toolset} : : ${CMAKE_CXX_COMPILER} ;\n")
 endif()
+
+
 string(REPLACE "." "_" Boost_file_version ${Boost_config_version})
 
 LCGPackage_Add(
