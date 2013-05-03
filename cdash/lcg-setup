@@ -5,7 +5,7 @@ export LC_ALL=en_US.UTF-8
 
 #---Set Kerberos --------------------------------------------------
 if [ `uname` == "Linux" ]; then
-  kinit stesting@CERN.CH -5 -V -k -t /ec/conf/ec.keytab
+  kinit sftnight@CERN.CH -5 -V -k -t /ec/conf/sftnight.keytab
 else
   echo "This is a Mac. No kinit done"
 fi
