@@ -21,7 +21,7 @@ LCGPackage_Add(
   URL http://www.hepforge.org/archive/lhapdf/lhapdf-${lhapdfsets_native_version}.tar.gz
   CONFIGURE_COMMAND <VOID> 
   BUILD_COMMAND <VOID>
-  INSTALL_COMMAND <SOURCE_DIR>/bin/lhapdf-getdata --force <INSTALL_DIR>/PDFsets cteq6l
+  INSTALL_COMMAND <SOURCE_DIR>/bin/lhapdf-getdata --force --dest=<INSTALL_DIR>/../share/PDFsets cteq6l
   BUILD_IN_SOURCE 1
 )
 
