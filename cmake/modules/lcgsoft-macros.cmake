@@ -120,7 +120,7 @@ macro(LCGPackage_Add name)
       
       #---Check if a patch file exists and apply it by default---------------------------------------
       if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/${name}-${version}.patch AND NOT ARGUMENTS MATCHES PATCH_COMMAND)
-        list(APPEND ARGUMENTS PATCH_COMMAND patch -p0 -i ${CMAKE_CURRENT_SOURCE_DIR}/${name}-${${name}_native_version}.patch)
+        list(APPEND ARGUMENTS PATCH_COMMAND patch -p0 -i ${CMAKE_CURRENT_SOURCE_DIR}/${name}-${version}.patch)
       endif()
 
       #---We cannot use the argument INSTALL_DIR becuase cmake itself will create the directory 

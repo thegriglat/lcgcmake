@@ -61,12 +61,17 @@ LCGPackage_Add(
 if(LCG_TARGET MATCHES "slc")
   set(CLHEP_config_options  LDFLAGS=-Wl,--hash-style=sysv)
 endif()
-
 LCGPackage_Add(
   CLHEP
-  URL http://proj-clhep.web.cern.ch/proj-clhep/DISTRIBUTION/tarFiles/clhep-${CLHEP_native_version}.tgz
-  PATCH_COMMAND patch -p0 -i ${CMAKE_CURRENT_SOURCE_DIR}/CLHEP-${CLHEP_native_version}.patch
+  URL http://proj-clhep.web.cern.ch/proj-clhep/DISTRIBUTION/tarFiles/clhep-<NATIVE_VERSION>.tgz
   CONFIGURE_COMMAND <SOURCE_DIR>/CLHEP/configure --prefix <INSTALL_DIR> ${CLHEP_config_options}
+)
+
+#---CLHEP2--------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  CLHEP2
+  URL http://proj-clhep.web.cern.ch/proj-clhep/DISTRIBUTION/tarFiles/clhep-<NATIVE_VERSION>.tgz
+  CONFIGURE_COMMAND ${CMAKE_COMMAND} -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR> -DCMAKE_BUILD_TYPE=Release <SOURCE_DIR>/CLHEP
 )
 
 #---HepMC--------------------------------------------------------------------------------------------
