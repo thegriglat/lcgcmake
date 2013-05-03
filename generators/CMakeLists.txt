@@ -19,14 +19,9 @@ set(CMAKE_VERBOSE_MAKEFILE ON)
 LCGPackage_Add(
   lhapdfsets
   URL http://www.hepforge.org/archive/lhapdf/lhapdf-${lhapdfsets_native_version}.tar.gz
-#  PATCH_COMMAND patch -p0 -i ${CMAKE_CURRENT_SOURCE_DIR}/pythia8-${pythia8_native_version}.patch
-  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --datadir=<INSTALL_DIR>/../share --enable-low-memory  --disable-pyext --disable-doxygen --disable-octave
-  INSTALL_COMMAND make install
-          COMMAND ${CMAKE_COMMAND} -E make_directory PDFsets
-#          real PDF sets getting and installation, takes a long time: 
-#          COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/lhapdfsets/scripts/instlpdfsets <INSTALL_DIR>/bin <INSTALL_DIR>/../share/lhapdf/PDFsets 
-#          test PDF sets getting and installation:
-          COMMAND <INSTALL_DIR>/bin/lhapdf-getdata --force <INSTALL_DIR>/PDFsets cteq6l
+  CONFIGURE_COMMAND <VOID> 
+  BUILD_COMMAND <VOID>
+  INSTALL_COMMAND <SOURCE_DIR>/bin/lhapdf-getdata --force <INSTALL_DIR>/PDFsets cteq6l
   BUILD_IN_SOURCE 1
 )
 
