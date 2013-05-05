@@ -149,6 +149,9 @@ LCG_external_package(pythia6           427            MCGenerators/pythia6      
 LCG_external_package(pythia6           427.2          MCGenerators/pythia6        author=6.4.27 hepevt=10000  )
 LCG_external_package(agile             1.4.0          MCGenerators/agile        )
 LCG_external_package(photos++          3.52           MCGenerators/photos++     )
+LCG_external_package(photos            215.5           MCGenerators/photos     )
+LCG_external_package(photos            215.4           MCGenerators/photos     ) 
+LCG_external_package(photos            215.3           MCGenerators/photos     ) 
 LCG_external_package(evtgen            1.1.0          MCGenerators/evtgen         tag=R01-01-00)
 LCG_external_package(rivet             1.8.2          MCGenerators/rivet        )
 LCG_external_package(rivet2            2.0.0b1        MCGenerators/rivet2       )
@@ -164,6 +167,9 @@ LCG_external_package(crmc              v3400          MCGenerators/crmc         
 LCG_external_package(cython            0.19           MCGenerators/cython       )
 LCG_external_package(yaml_cpp          0.3.0          MCGenerators/yaml_cpp     )
 LCG_external_package(yoda              1.0.0          MCGenerators/yoda         )
+LCG_external_package(hydjet              1.8          MCGenerators/hydjet         )  
+LCG_external_package(tauola              28.121          MCGenerators/tauola         )
+
 
 # Prepare the search paths according to the versions above
 LCG_prepare_paths()
