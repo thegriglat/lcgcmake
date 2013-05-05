@@ -14,6 +14,28 @@ set(Boost_home_include ${Boost_home}/include/boost-${Boost_underscore_twodigit})
 
 set(CMAKE_VERBOSE_MAKEFILE ON)
 
+
+#---hydjet--------------------------------------------------------------------------------------
+
+LCGPackage_Add(
+  hydjet
+#  URL  http://lokhtin.web.cern.ch/lokhtin/hydro/hydjet1_8.f
+  DOWNLOAD_COMMAND ${CMAKE_COMMAND} -Durl=http://lokhtin.web.cern.ch/lokhtin/hydro/hydjet1_8.f
+                                    -Dsource_dir=<SOURCE_DIR>/src
+                                    -P  ${CMAKE_SOURCE_DIR}/cmake/scripts/DownloadURL.cmake
+
+  DOWNLOAD_COMMAND ${CMAKE_COMMAND} -Durl=http://lokhtin.web.cern.ch/lokhtin/hydro/jetset_73.f
+                                    -Dsource_dir=<SOURCE_DIR>/jetset
+                                    -P ${CMAKE_SOURCE_DIR}/cmake/scripts/DownloadURL.cmake
+
+  UPDATE_COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/hydjet/files  <SOURCE_DIR>
+         COMMAND ${CMAKE_COMMAND} -E chdir <SOURCE_DIR> ${CMAKE_COMMAND} -P prepareHydjet.cmake
+
+  CMAKE_ARGS -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
+  BUILD_IN_SOURCE 1
+)
+
+
 #---lhapdfsets--------------------------------------------------------------------------------------
 
 LCGPackage_Add(
@@ -61,7 +83,7 @@ LCGPackage_Add(
 #          test PDF sets getting and installation:
 #          COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/lhapdf/scripts/instlpdfsets_test <INSTALL_DIR>/bin <INSTALL_DIR>/../share/lhapdf/PDFsets
   BUILD_IN_SOURCE 1
-  DEPENDS lhapdfsets
+#  DEPENDS lhapdfsets
 )
 
 #---pythia8------------------------------------------------------------------------------------------
@@ -167,6 +189,23 @@ LCGPackage_Add(
   BUILD_IN_SOURCE 1
   DEPENDS HepMC
 )
+
+#---photos------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  photos
+  URL http://sftweb.cern.ch/generators/files/generator/tarballs/photos-<NATIVE_VERSION>-src.tgz
+  UPDATE_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/<NATIVE_VERSION> <SOURCE_DIR>
+         COMMAND ${CMAKE_COMMAND} -E remove_directory <SOURCE_DIR>/<NATIVE_VERSION>
+  CONFIGURE_COMMAND ./configure --lcgplatform=${LCG_platform}  --userfflags=-fno-automatic --enable-shared
+  BUILD_IN_SOURCE 1
+  INSTALL_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/lib  <INSTALL_DIR>/lib
+  	  COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/include  <INSTALL_DIR>/include
+
+#  DEPENDS HepMC
+) 
+         
+
+
 
 #---evtgen------------------------------------------------------------------------------------------
 if(NOT APPLE)    #  (build fails on Mac " unknown option: -soname")
@@ -351,3 +390,18 @@ LCGPackage_Add(
   BUILD_IN_SOURCE 1
   DEPENDS HepMC
 )
+
+#---tauola------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  tauola
+    URL http://sftweb.cern.ch/generators/files/generator/tarballs/tauola-28.121-src.tgz
+  UPDATE_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/<NATIVE_VERSION> <SOURCE_DIR>
+         COMMAND ${CMAKE_COMMAND} -E remove_directory <SOURCE_DIR>/<NATIVE_VERSION>
+CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --datadir=<INSTALL_DIR>/data --with-pythia6=${pythia6_home} --with-photos=${photos_home} --with-hepevt=4000
+
+  BUILD_IN_SOURCE 1
+  DEPENDS photos pythia6
+)
+  
+  
+
