@@ -50,7 +50,7 @@ LCGPackage_Add(
   URL http://www.hepforge.org/archive/lhapdf/lhapdf-${lhapdfsets_native_version}.tar.gz
   CONFIGURE_COMMAND <VOID> 
   BUILD_COMMAND <VOID>
-  INSTALL_COMMAND mycommand
+  INSTALL_COMMAND ${mycommand}
 )
 
 
