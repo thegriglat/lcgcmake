@@ -53,44 +53,35 @@ else()
 add_custom_target(lhapdfsets COMMENT "LHAPDF data sets already installed.")
 endif()
 
-
-
 #---lhapdf------------------------------------------------------------------------------------------
 #todo: install ALL precompiled examples and paths.sh
 #todo: making tarballs is specific for lhapdf
 
-#if(EXISTS /afs/cern.ch)
-# set(lhapdf_sets /afs/cern.ch/sw/lcg/external/MCGenerators/lhapdf/${lhapdf_native_version}/share/PDFsets)
-#else()
-# set(lhapdf_sets /Users/mato/Development/externals/PDFsets)   # For testing purposes
-#endif()
-
 LCGPackage_Add(
   lhapdf
   URL http://www.hepforge.org/archive/lhapdf/lhapdf-${lhapdf_native_version}.tar.gz
-#  PATCH_COMMAND patch -p0 -i ${CMAKE_CURRENT_SOURCE_DIR}/pythia8-${pythia8_native_version}.patch
   UPDATE_COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/lhapdf/files  <SOURCE_DIR>
-  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --datadir=<INSTALL_DIR>/../share --enable-low-memory  --disable-pyext --disable-doxygen --disable-octave
+  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR>  --enable-low-memory  --disable-pyext --disable-doxygen --disable-octave
   INSTALL_COMMAND make install
-#          this below is for some tests
-#          COMMAND ${CMAKE_COMMAND} -E create_symlink ${lhapdf_sets} <INSTALL_DIR>/../share/lhapdf/PDFsets
-          COMMAND ${CMAKE_COMMAND} -E chdir <INSTALL_DIR>/../share/lhapdf ${CMAKE_COMMAND} -E make_directory PDFsets
-          COMMAND ${CMAKE_COMMAND} -E chdir <INSTALL_DIR>/../share ${CMAKE_COMMAND} -E create_symlink lhapdf/PDFsets PDFsets
-          COMMAND ${CMAKE_COMMAND} -E chdir <INSTALL_DIR>/../share ${CMAKE_COMMAND} -E create_symlink lhapdf/PDFsets.index PDFsets.index
+          COMMAND ${CMAKE_COMMAND} -E create_symlink ${lhapdfsets_home}/../share/PDFsets <INSTALL_DIR>/share/lhapdf/PDFsets
+
+#          COMMAND ${CMAKE_COMMAND} -E chdir <INSTALL_DIR>/../share/lhapdf ${CMAKE_COMMAND} -E make_directory PDFsets
+#          COMMAND ${CMAKE_COMMAND} -E chdir <INSTALL_DIR>/../share ${CMAKE_COMMAND} -E create_symlink lhapdf/PDFsets PDFsets
+#          COMMAND ${CMAKE_COMMAND} -E chdir <INSTALL_DIR>/../share ${CMAKE_COMMAND} -E create_symlink lhapdf/PDFsets.index PDFsets.index
+
           COMMAND ${CMAKE_COMMAND} -E chdir <INSTALL_DIR>/lib ${CMAKE_COMMAND} -E make_directory archive
           COMMAND ${CMAKE_COMMAND} -E chdir <INSTALL_DIR>/lib/archive ${CMAKE_COMMAND} -E create_symlink ../libLHAPDF.a libLHAPDF.a
+
 #          this below does not work: file is not yet there
 #          COMMAND ${CMAKE_COMMAND} -E copy <INSTALL_DIR>/../logs/lhapdf-${LCG_platform}-build-out.log <INSTALL_DIR> 
           COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/lhapdf/examples  <INSTALL_DIR>/../share/examples
           COMMAND ${CMAKE_COMMAND} -E copy <SOURCE_DIR>/examples/lhapdf-cctest1 <INSTALL_DIR>/bin
           COMMAND ${CMAKE_COMMAND} -E copy <SOURCE_DIR>/examples/lhapdf-example1 <INSTALL_DIR>/bin
-#          real PDF sets getting and installation, takes a long time: 
-#          COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/lhapdf/scripts/instlpdfsets <INSTALL_DIR>/bin <INSTALL_DIR>/../share/lhapdf/PDFsets 
-#          test PDF sets getting and installation:
-#          COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/lhapdf/scripts/instlpdfsets_test <INSTALL_DIR>/bin <INSTALL_DIR>/../share/lhapdf/PDFsets
+
   BUILD_IN_SOURCE 1
-#  DEPENDS lhapdfsets
+  DEPENDS lhapdfsets
 )
+
 
 #---pythia8------------------------------------------------------------------------------------------
 #todo: add more precompiled examples, config, tests
