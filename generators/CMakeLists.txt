@@ -374,6 +374,8 @@ LCGPackage_Add(
   UPDATE_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/<NATIVE_VERSION> <SOURCE_DIR>
          COMMAND ${CMAKE_COMMAND} -E remove_directory <SOURCE_DIR>/<NATIVE_VERSION>
   CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR>
+  INSTALL_COMMAND make install 
+          COMMAND ${CMAKE_COMMAND} -E chdir <INSTALL_DIR>/include ${CMAKE_COMMAND} -E create_symlink HERWIG65.INC herwig65.inc
   BUILD_IN_SOURCE 1
 )
 
@@ -392,14 +394,28 @@ LCGPackage_Add(
 #---tauola------------------------------------------------------------------------------------------
 LCGPackage_Add(
   tauola
-    URL http://sftweb.cern.ch/generators/files/generator/tarballs/tauola-28.121-src.tgz
+    URL http://sftweb.cern.ch/generators/files/generator/tarballs/tauola-${tauola_native_version}-src.tgz
   UPDATE_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/<NATIVE_VERSION> <SOURCE_DIR>
          COMMAND ${CMAKE_COMMAND} -E remove_directory <SOURCE_DIR>/<NATIVE_VERSION>
-CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --datadir=<INSTALL_DIR>/data --with-pythia6=${pythia6_home} --with-photos=${photos_home} --with-hepevt=4000
+  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --datadir=<INSTALL_DIR>/data --with-pythia6=${pythia6_home} --with-photos=${photos_home} --with-hepevt=4000
 
   BUILD_IN_SOURCE 1
   DEPENDS photos pythia6
 )
   
   
+
+  
+#---jimmy------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  jimmy
+    URL http://sftweb.cern.ch/generators/files/generator/tarballs/jimmy-${jimmy_native_version}-src.tgz
+    UPDATE_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/<NATIVE_VERSION> <SOURCE_DIR>
+           COMMAND ${CMAKE_COMMAND} -E remove_directory <SOURCE_DIR>/<NATIVE_VERSION>
+    CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --with-herwig=${herwig_home}
+    INSTALL_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/lib <INSTALL_DIR>/lib
+            COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/include <INSTALL_DIR>/include
+    BUILD_IN_SOURCE 1
+  DEPENDS herwig
+)
 
