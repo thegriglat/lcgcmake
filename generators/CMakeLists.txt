@@ -38,20 +38,21 @@ LCGPackage_Add(
 
 #---lhapdfsets--------------------------------------------------------------------------------------
 
-if(NOT EXISTS <INSTALL_DIR>/../share/PDFsets)
-set(mycommand  ${CMAKE_COMMAND} -E make_directory <INSTALL_DIR>
-          COMMAND <SOURCE_DIR>/bin/lhapdf-getdata --force --dest=<INSTALL_DIR>/../share/PDFsets cteq6l)
-else()
-set(mycommand <VOID>)
-endif()
+LCGPackage_set_home(lhapdfsets)
 
+if(NOT EXISTS ${lhapdfsets_home}/../share/PDFsets)
 LCGPackage_Add(
   lhapdfsets
   URL http://www.hepforge.org/archive/lhapdf/lhapdf-${lhapdfsets_native_version}.tar.gz
   CONFIGURE_COMMAND <VOID> 
   BUILD_COMMAND <VOID>
-  INSTALL_COMMAND ${mycommand}
+  INSTALL_COMMAND ${CMAKE_COMMAND} -E make_directory <INSTALL_DIR>
+          COMMAND <SOURCE_DIR>/bin/lhapdf-getdata --force --dest=<INSTALL_DIR>/../share/PDFsets cteq6l
 )
+else()
+add_custom_target(lhapdfsets COMMENT "LHAPDF data sets already installed.")
+endif()
+
 
 
 #---lhapdf------------------------------------------------------------------------------------------
