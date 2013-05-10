@@ -389,6 +389,7 @@ LCGPackage_Add(
   CONFIGURE_COMMAND echo "No configure step"
   BUILD_COMMAND make -f Makefile CRMCROOT=<INSTALL_DIR> HEP_ROOT=${HepMC_home}
   INSTALL_COMMAND make -f Makefile install CRMCROOT=<INSTALL_DIR> HEP_ROOT=${HepMC_home}
+	   COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/tabs  <INSTALL_DIR>/tabs
   BUILD_IN_SOURCE 1
   DEPENDS HepMC
 )
