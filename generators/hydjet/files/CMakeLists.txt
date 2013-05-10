@@ -28,9 +28,10 @@ set_target_properties(hydjet_static PROPERTIES OUTPUT_NAME hydjet)
 
 add_library(jetset73hydjet SHARED ${jetset_sources})
 add_library(jetset73hydjet_static STATIC ${jetset_sources})
-set_target_properties(jetset73hydjet_static PROPERTIES OUTPUT_NAME jetset)
+set_target_properties(jetset73hydjet_static PROPERTIES OUTPUT_NAME jetset73hydjet)
 
 #---Install build products---------------------------------------------------
 install(TARGETS hydjet jetset73hydjet  DESTINATION lib)
 install(TARGETS hydjet_static  jetset73hydjet_static  DESTINATION lib)
+install(TARGETS hydjet_static  jetset73hydjet_static  DESTINATION lib/archive)
 #install(DIRECTORY include/ DESTINATION include FILES_MATCHING PATTERN *.inc PATTERN *.f PATTERN .svn EXCLUDE)
