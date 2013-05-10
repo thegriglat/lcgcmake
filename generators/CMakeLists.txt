@@ -418,6 +418,7 @@ LCGPackage_Add(
     CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --with-herwig=${herwig_home}
     INSTALL_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/lib <INSTALL_DIR>/lib
             COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/include <INSTALL_DIR>/include
+	    COMMAND ${CMAKE_COMMAND} -E chdir <INSTALL_DIR>/lib ${CMAKE_COMMAND} -E create_symlink archive/libjimmy.a libjimmy.a
     BUILD_IN_SOURCE 1
   DEPENDS herwig
 )
