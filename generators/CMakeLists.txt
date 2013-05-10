@@ -11,6 +11,8 @@
 string(REPLACE "." "_" Boost_underscore_twodigit ${Boost_config_version_twodigit})
 set(Boost_home_include ${Boost_home}/include/boost-${Boost_underscore_twodigit})
 
+# cook hydjet version
+string(REPLACE "." "_" hydjet_native_version ${hydjet_native_version})
 
 set(CMAKE_VERBOSE_MAKEFILE ON)
 
@@ -20,7 +22,7 @@ set(CMAKE_VERBOSE_MAKEFILE ON)
 LCGPackage_Add(
   hydjet
 #  URL  http://lokhtin.web.cern.ch/lokhtin/hydro/hydjet1_8.f
-  DOWNLOAD_COMMAND ${CMAKE_COMMAND} -Durl=http://lokhtin.web.cern.ch/lokhtin/hydro/hydjet1_8.f
+  DOWNLOAD_COMMAND ${CMAKE_COMMAND} -Durl=http://lokhtin.web.cern.ch/lokhtin/hydro/hydjet${hydjet_native_version}.f
                                     -Dsource_dir=<SOURCE_DIR>/src
                                     -P  ${CMAKE_SOURCE_DIR}/cmake/scripts/DownloadURL.cmake
 
