@@ -419,3 +419,20 @@ LCGPackage_Add(
   DEPENDS herwig
 )
 
+#---hydjet++---------------------------------------------------------------------------------------
+LCGPackage_Add(
+  hydjet++
+  DOWNLOAD_COMMAND ${CMAKE_COMMAND} -Durl=http://lokhtin.web.cern.ch/lokhtin/hydjet++/HYDJET++${hydjet++_native_version}.ZIP
+                                    -Dsource_dir=<SOURCE_DIR>
+                                    -P ${CMAKE_SOURCE_DIR}/cmake/scripts/DownloadURL.cmake
+  COMMAND unzip <SOURCE_DIR>/HYDJET++${hydjet++_native_version}.ZIP -d <SOURCE_DIR>
+  COMMAND cp <SOURCE_DIR>/Makefile <SOURCE_DIR>/Makefile.orig
+  UPDATE_COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/hydjet++/files  <SOURCE_DIR>
+  CONFIGURE_COMMAND <SOURCE_DIR>/configure
+  BUILD_COMMAND make
+#  BUILD_COMMAND make  CXX=${CMAKE_CXX_COMPILER}
+#                      PRIMARYF77=${CMAKE_Fortran_COMPILER}
+#                     PATH=$ENV{PATH}:/afs/cern.ch/sw/lcg/app/releases/ROOT/5.34.00/x86_64-slc5-gcc43-opt/root/bin
+  INSTALL_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/lib <INSTALL_DIR>/lib
+  BUILD_IN_SOURCE 1
+)

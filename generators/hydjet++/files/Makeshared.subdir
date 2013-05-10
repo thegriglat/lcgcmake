@@ -1,0 +1,69 @@
+#
+# Subdirectory shared library Makefile.
+#
+#                  M. Kirsanov 25.10.2006
+
+SHELL = /bin/sh
+
+
+all: entermessage $(LIBNAME)
+
+
+entermessage:
+	@echo compilation for the shared library $(LIBNAME)
+
+
+$(TMPD)/%.o : $(DIRNAME)/%.f
+	@mkdir -p $(TMPD)
+	$(FC) $(FFLAGS) $(FFLAGS2) $(FFLAGSSHARED) -c $< -o $@
+
+$(TMPD)/%.o : $(DIRNAME)/%.F
+	@mkdir -p $(TMPD)
+	$(FC) $(FFLAGS) $(FFLAGS2) $(FFLAGSSHARED) -c -I$(INCDIR) $< -o $@
+
+$(TMPD)/%.o : $(DIRNAME)/%.c
+	@mkdir -p $(TMPD)
+	$(CC) $(CFLAGS) $(CFLAGSSHARED) -c -I$(INCDIR) $< -o $@
+
+$(TMPD)/%.o : $(DIRNAME)/%.cc
+	@mkdir -p $(TMPD)
+	$(CXX) $(CXXFLAGS) $(CXXFLAGSSHARED) -c -I$(INCDIR) -I$(ROOTSYS)/include \
+	       $< -o $@
+
+# Creating the dependency files *.d
+
+$(TMPD)/%.d : $(DIRNAME)/%.F
+	@echo Making dependency for file $<; \
+	mkdir -p $(TMPD); \
+	$(CC) -M -I$(INCDIR) $< | \
+	sed 's,\($*\)\.o[ :]*,\1.o $@ : ,g' | \
+	sed 's/$*.o/$(TMPD)\/$*.o/' > $@; \
+	[ -s $@ ] || rm -f $@
+
+$(TMPD)/%.d : $(DIRNAME)/%.cc
+	@echo Making dependency for file $<; \
+	mkdir -p $(TMPD); \
+	$(CC) -M -I$(INCDIR) -I$(ROOTSYS)/include $< | \
+	sed 's,\($*\)\.o[ :]*,\1.o $@ : ,g' | \
+	sed 's/$*.o/$(TMPD)\/$*.o/' > $@; \
+	[ -s $@ ] || rm -f $@
+
+objects := $(patsubst $(DIRNAME)/%.f,$(TMPD)/%.o,$(wildcard $(DIRNAME)/*.f))
+objects += $(patsubst $(DIRNAME)/%.F,$(TMPD)/%.o,$(wildcard $(DIRNAME)/*.F))
+objects += $(patsubst $(DIRNAME)/%.c,$(TMPD)/%.o,$(wildcard $(DIRNAME)/*.c))
+objects += $(patsubst $(DIRNAME)/%.cc,$(TMPD)/%.o,$(wildcard $(DIRNAME)/*.cc))
+
+$(LIBNAME): $(objects)
+	@mkdir -p $(LIBDIR)
+	@echo creating the shared library $@
+	$(CXX) $(LDFLAGSSHARED) $(objects) -o $@ -shared -Wl,-soname,$(notdir $@)
+
+deps := $(patsubst $(DIRNAME)/%.F,$(TMPD)/%.d,$(wildcard $(DIRNAME)/*.F))
+deps := $(patsubst $(DIRNAME)/%.c,$(TMPD)/%.d,$(wildcard $(DIRNAME)/*.c))
+deps := $(patsubst $(DIRNAME)/%.cc,$(TMPD)/%.d,$(wildcard $(DIRNAME)/*.cc))
+
+ifneq ($(MAKECMDGOALS),clean)
+ ifneq ($(deps),)
+  -include $(deps)
+ endif
+endif

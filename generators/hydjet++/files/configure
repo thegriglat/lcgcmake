@@ -1,0 +1,150 @@
+#!/bin/sh
+#
+# Configuration script, to be run before compilation
+#
+# Author: M. Kirsanov
+
+#
+# User-changeable part -------------------------------
+#
+
+LCGPLATFORM=x86_64-slc5-gcc43-opt
+
+# check arguments
+
+for arg in $* ; do
+  if [ "x$arg" = "x--enable-debug" ] ; then
+    COMPMODE=DBG
+  elif [ "x$arg" = "x--enable-optimize" ] ; then
+    COMPMODE=OPT
+  elif [ "x$arg" = "x--help" ] ; then
+    echo "Usage: ./configure [options] , where options are:"
+    echo "--help            : prints this help"
+    echo "--enable-optimize : turns on compiler optimizations (default)"
+    echo "--enable-debug    : turns on debugging flags"
+    echo "--lcgplatform=lcgplatformname : platform, default is slc4_ia32_gcc34"
+    echo
+    echo "It is assumed that the ROOT environment is already defined:"
+    echo "variables ROOTSYS, LD_LIBRARY_PATH, PATH are set accordingly"
+    exit
+  elif [ x`echo x${arg} | grep "="` != x ] ; then
+    option=`echo ${arg} | awk -F = '{print $1}'`
+    value=`echo ${arg} | awk -F = '{print $2}'`
+    if [ "x${option}" = "x--lcgplatform" ] ; then
+      LCGPLATFORM=${value}
+    else
+      echo "${arg}: wrong option. Ignored." >&2
+    fi
+  fi
+done
+
+if [ x$MCGENERATORS = x ]; then
+  echo "Warning: MCGENERATORS variable is not defined. Running in a standalone mode."
+fi
+
+if [ "x$LCGPLATFORM" != "x" ] ; then
+	echo LCGPLATFORM is ${LCGPLATFORM}
+fi
+
+#Compilation mode. Is not changed if specified outside
+if [ x$COMPMODE = x ]; then
+  export COMPMODE=OPT
+fi
+#if [ x$COMPMODE = x ]; then
+#  export COMPMODE=DBG
+#fi
+
+echo compilation mode is $COMPMODE
+
+#
+# User-changeable part, experts  -----------------------------
+#
+
+export FFLAGS_OPT="-O2 -Wuninitialized"
+export FFLAGS_DBG=-g
+export CFLAGS_OPT=-O2
+export CFLAGS_DBG=-g
+export CXXFLAGS_OPT="-O2 -ansi -W -Wall"
+export CXXFLAGS_DBG="-g -ansi -W -Wall"
+#
+# Find platform.
+#
+export ARCH="`uname`"
+export theGcc1=`g++ --version | awk '{print$3}'`
+export theGcc=`echo ${theGcc1} | awk -F . '{print $1}'`
+if [ ${theGcc} = 4 ]; then
+  export ARCH=${ARCH}-gcc4
+fi
+echo Platform is $ARCH
+
+#default platform settings:
+export FC=g77
+export CC=gcc
+export FFLAGS="${FFLAGS_OPT}"
+export CFLAGS="${CFLAGS_OPT}"
+export CXXFLAGS="${CXXFLAGS_OPT}"
+export FLIBS="-lfrtbegin -lg2c"
+if [ ${COMPMODE} = OPT ]; then
+  export FFLAGS="${FFLAGS_OPT}"
+  export CFLAGS="${CFLAGS_OPT}"
+  export CXXFLAGS="${CXXFLAGS_OPT}"
+fi
+if [ ${COMPMODE} = DBG ]; then
+  export FFLAGS="${FFLAGS_DBG}"
+  export CFLAGS="${CFLAGS_DBG}"
+  export CXXFLAGS="${CXXFLAGS_DBG}"
+fi
+if [ $ARCH = Linux ]; then
+  export FC=g77
+  export FFLAGS="${FFLAGS_OPT} -Wno-globals"
+  export CFLAGS="${CFLAGS_OPT}"
+  export CXXFLAGS="${CXXFLAGS_OPT}"
+  export FLIBS="-lfrtbegin -lg2c"
+  if [ ${COMPMODE} = OPT ]; then
+    export FFLAGS="${FFLAGS_OPT}"
+    export CFLAGS="${CFLAGS_OPT}"
+    export CXXFLAGS="${CXXFLAGS_OPT}"
+  fi
+  if [ ${COMPMODE} = DBG ]; then
+    export FFLAGS="${FFLAGS_DBG} -Wno-globals"
+    export CFLAGS="${CFLAGS_DBG}"
+    export CXXFLAGS="${CXXFLAGS_DBG}"
+  fi
+fi
+# Linux platform with gcc4: new Fortran90 compiler.
+if [ $ARCH = Linux-gcc4 ]; then
+  export FC=gfortran
+  export FFLAGS="${FFLAGS_OPT}"
+  export CFLAGS="${CFLAGS_OPT}"
+  export CXXFLAGS="${CXXFLAGS_OPT}"
+  export FLIBS="-lgfortran -lgfortranbegin"
+  if [ ${COMPMODE} = OPT ]; then
+    export FFLAGS="${FFLAGS_OPT}"
+    export CFLAGS="${CFLAGS_OPT}"
+    export CXXFLAGS="${CXXFLAGS_OPT}"
+  fi
+  if [ ${COMPMODE} = DBG ]; then
+    export FFLAGS="${FFLAGS_DBG}"
+    export CFLAGS="${CFLAGS_DBG}"
+    export CXXFLAGS="${CXXFLAGS_DBG}"
+  fi
+fi
+
+#Platform & opt/dbg - independent flags and variables:
+
+
+#
+# End of the user-changeable part ---------------------------
+#
+
+rm -f config.mk
+
+echo SHELL = /bin/sh > config.mk
+echo ARCH = ${ARCH} >> config.mk
+echo LCGPLATFORM = ${LCGPLATFORM} >> config.mk
+echo FC = ${FC} >> config.mk
+echo CC = ${CC} >> config.mk
+echo FFLAGS = ${FFLAGS} >> config.mk
+echo CFLAGS = ${CFLAGS} >> config.mk
+echo CXXFLAGS = ${CXXFLAGS} >> config.mk
+echo FLIBS = ${FLIBS} >> config.mk

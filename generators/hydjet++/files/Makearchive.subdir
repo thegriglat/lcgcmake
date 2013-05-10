@@ -1,0 +1,68 @@
+#
+# Subdirectory archive library Makefile.
+#
+#                  M. Kirsanov 25.10.2006
+
+SHELL = /bin/sh
+
+
+all: entermessage $(LIBNAME)
+
+
+entermessage:
+	@echo compilation for the archive library $(LIBNAME)
+
+
+$(TMPD)/archive/%.o : $(DIRNAME)/%.f
+	@mkdir -p $(TMPD)/archive
+	$(FC) $(FFLAGS) -c $< -o $@
+
+$(TMPD)/archive/%.o : $(DIRNAME)/%.F
+	@mkdir -p $(TMPD)/archive
+	$(FC) $(FFLAGS) -c -I$(INCDIR) $< -o $@
+
+$(TMPD)/archive/%.o : $(DIRNAME)/%.c
+	@mkdir -p $(TMPD)/archive
+	$(CC) $(CFLAGS) -c -I$(INCDIR) $< -o $@
+
+$(TMPD)/archive/%.o : $(DIRNAME)/%.cc
+	@mkdir -p $(TMPD)/archive
+	$(CXX) $(CXXFLAGS) -c -I$(INCDIR) -I$(ROOTSYS)/include $< -o $@
+
+# Creating the dependency files *.d
+
+$(TMPD)/archive/%.d : $(DIRNAME)/%.F
+	@echo Making dependency for file $<; \
+	mkdir -p $(TMPD)/archive; \
+	$(CC) -M -I$(INCDIR) $< | \
+	sed 's,\($*\)\.o[ :]*,\1.o $@ : ,g' | \
+	sed 's/$*.o/$(TMPD)\/archive\/$*.o/' > $@; \
+	[ -s $@ ] || rm -f $@
+
+$(TMPD)/archive/%.d : $(DIRNAME)/%.cc
+	@echo Making dependency for file $<; \
+	mkdir -p $(TMPD)/archive; \
+	$(CC) -M -I$(INCDIR) -I$(ROOTSYS)/include $< | \
+	sed 's,\($*\)\.o[ :]*,\1.o $@ : ,g' | \
+	sed 's/$*.o/$(TMPD)\/archive\/$*.o/' > $@; \
+	[ -s $@ ] || rm -f $@
+
+objects := $(patsubst $(DIRNAME)/%.f,$(TMPD)/archive/%.o,$(wildcard $(DIRNAME)/*.f))
+objects += $(patsubst $(DIRNAME)/%.F,$(TMPD)/archive/%.o,$(wildcard $(DIRNAME)/*.F))
+objects += $(patsubst $(DIRNAME)/%.c,$(TMPD)/archive/%.o,$(wildcard $(DIRNAME)/*.c))
+objects += $(patsubst $(DIRNAME)/%.cc,$(TMPD)/archive/%.o,$(wildcard $(DIRNAME)/*.cc))
+
+$(LIBNAME): $(objects)
+	@mkdir -p $(LIBDIRARCH)
+	@echo creating the archive library $(LIBNAME)
+	ar cru $@ $(objects)
+
+deps := $(patsubst $(DIRNAME)/%.F,$(TMPD)/archive/%.d,$(wildcard $(DIRNAME)/*.F))
+deps += $(patsubst $(DIRNAME)/%.c,$(TMPD)/archive/%.d,$(wildcard $(DIRNAME)/*.c))
+deps += $(patsubst $(DIRNAME)/%.cc,$(TMPD)/archive/%.d,$(wildcard $(DIRNAME)/*.cc))
+
+ifneq ($(MAKECMDGOALS),clean)
+ ifneq ($(deps),)
+  -include $(deps)
+ endif
+endif
