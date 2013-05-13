@@ -139,6 +139,7 @@ endif()
 
 
 #---Additional External packages------(Generators)-----------------
+LCG_external_package(powheg-box         r2092          MCGenerators/powheg-box       )
 LCG_external_package(lhapdf            5.8.9          MCGenerators/lhapdf       )
 LCG_external_package(lhapdfsets        5.8.9          MCGenerators/lhapdfsets   )
 LCG_external_package(pythia8           175            MCGenerators/pythia8      )
