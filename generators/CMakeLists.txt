@@ -37,6 +37,23 @@ LCGPackage_Add(
   BUILD_IN_SOURCE 1
 )
 
+#---pyquen--------------------------------------------------------------------------------------
+#http://lokhtin.web.cern.ch/lokhtin/pyquen/pyquen1_5.f
+LCGPackage_Add(
+  pyquen
+#  DOWNLOAD_COMMAND ${CMAKE_COMMAND} -Durl=http://lokhtin.web.cern.ch/lokhtin/pyquen/pyquen${pyquen_native_version}.f
+DOWNLOAD_COMMAND ${CMAKE_COMMAND} -Durl=http://lokhtin.web.cern.ch/lokhtin/pyquen/pyquen1_5.f
+                                    -Dsource_dir=<SOURCE_DIR>/src
+                                    -P  ${CMAKE_SOURCE_DIR}/cmake/scripts/DownloadURL.cmake
+
+  UPDATE_COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/pyquen/files  <SOURCE_DIR>
+         COMMAND ${CMAKE_COMMAND} -E chdir <SOURCE_DIR> ${CMAKE_COMMAND} -P preparePyquen.cmake
+
+  CMAKE_ARGS -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
+  BUILD_IN_SOURCE 1
+)
+
+
 
 #---lhapdfsets--------------------------------------------------------------------------------------
 
