@@ -467,7 +467,3 @@ LCGPackage_Add(
   CMAKE_ARGS -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
   BUILD_IN_SOURCE 1
 )        
-
-
-add_test (test_hydjet sh ${CMAKE_CURRENT_SOURCE_DIR}/hydjet/test/runtest.sh ${CMAKE_CURRENT_SOURCE_DIR}/hydjet/test ${hydjet_home}/../../)
-add_test (test_photos sh ${CMAKE_CURRENT_SOURCE_DIR}/photos/test/runtest.sh ${CMAKE_CURRENT_SOURCE_DIR}/photos/test ${photos_home}/../../)
