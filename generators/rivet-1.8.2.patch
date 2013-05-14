@@ -1,0 +1,11 @@
+--- include/LWH/Axis.h.orig	2013-05-14 18:30:02.000000000 +0200
++++ include/LWH/Axis.h	2013-05-14 18:31:35.000000000 +0200
+@@ -115,7 +115,7 @@
+    *
+    */
+   int coordToIndex(double coord) const {
+-    assert( ! isnan(coord) );
++    assert( ! std::isnan(coord) );
+     if ( coord >= upper ) return OVERFLOW_BIN;
+     else if ( coord < lower ) return UNDERFLOW_BIN;
+     else return int((coord - lower)/binWidth(0));
