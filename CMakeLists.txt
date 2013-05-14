@@ -9,6 +9,10 @@ endif()
 include(${CMAKE_SOURCE_DIR}/toolchain.cmake)
 include(lcgsoft-macros)
 
+#---Enable (the defintion) of tests by default
+enable_testing()
+include(CTest)
+
 add_subdirectory(externals)
 add_subdirectory(projects)
 add_subdirectory(pyexternals)

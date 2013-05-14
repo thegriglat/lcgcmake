@@ -295,3 +295,158 @@ endfunction()
 macro( LCGPackage_set_home name)
    set(${name}_home ${CMAKE_INSTALL_PREFIX}/${${name}_directory_name}/${${name}_native_version}/${LCG_system})
 endmacro()
+
+
+#-----------------------------------------------------------------------
+# function LCG_add_test(<name> COMMAND cmd [arg1... ] 
+#                           [PRECMD cmd [arg1...]] [POSTCMD cmd [arg1...]]
+#                           OUTPUT outfile] [ERROR errfile]
+#                           [WORKING_DIRECTORY directory]
+#                           [ENVIRONMENT var1=val1 var2=val2 ...
+#                           [DEPENDS test1 ...]
+#                           [TIMEOUT seconds] 
+#                           [DEBUG]
+#                           [SOURCE_DIR dir] [BINARY_DIR dir]
+#                           [BUILD target] [PROJECT project]
+#                           [PASSREGEX exp] [FAILREGEX epx]
+#                           [LABELS label1 label2 ...])
+#
+function(LCG_add_test test)
+  cmake_parse_arguments(ARG
+    "DEBUG" 
+    "TIMEOUT;BUILD;OUTPUT;ERROR;SOURCE_DIR;BINARY_DIR;PROJECT;PASSREGEX;FAILREGEX;WORKING_DIRECTORY" 
+    "COMMAND;PRECMD;POSTCMD;ENVIRONMENT;DEPENDS;LABELS" 
+    ${ARGN})
+
+  if(NOT CMAKE_GENERATOR MATCHES Makefiles)
+    set(_cfg $<CONFIGURATION>/)
+  endif()
+  
+  #- Handle COMMAND argument
+  list(LENGTH ARG_COMMAND _len)
+  if(_len LESS 1)
+    if(NOT ARG_BUILD)
+      message(FATAL_ERROR "LCG_ADD_TEST: command is mandatory (without build)")
+    endif()
+  else()
+    list(GET ARG_COMMAND 0 _prg)
+    list(REMOVE_AT ARG_COMMAND 0)
+    if(NOT IS_ABSOLUTE ${_prg})
+      set(_prg ${CMAKE_CURRENT_BINARY_DIR}/${_cfg}${_prg})
+    elseif(EXISTS ${_prg})
+    else()
+      get_filename_component(_path ${_prg} PATH)
+      get_filename_component(_file ${_prg} NAME)
+      set(_prg ${_path}/${_cfg}${_file})
+    endif()
+    set(_cmd ${_prg} ${ARG_COMMAND})
+    string(REPLACE ";" "#" _cmd "${_cmd}")
+  endif()
+
+  set(_command ${CMAKE_COMMAND} -DTST=${test} -DCMD=${_cmd})
+
+  #- Handle PRE and POST commands
+  if(ARG_PRECMD)
+    set(_pre ${ARG_PRECMD})
+    string(REPLACE ";" "#" _pre "${_pre}")
+    set(_command ${_command} -DPRE=${_pre})
+  endif()
+  if(ARG_POSTCMD)
+    set(_post ${ARG_POSTCMD})
+    string(REPLACE ";" "#" _post "${_post}")
+    set(_command ${_command} -DPOST=${_post})
+  endif()
+
+  #- Handle OUTPUT, ERROR, DEBUG arguments
+  if(ARG_OUTPUT)
+    set(_command ${_command} -DOUT=${ARG_OUTPUT})
+  endif()
+
+  if(ARG_ERROR)
+    set(_command ${_command} -DERR=${ARG_ERROR})
+  endif()
+
+  if(ARG_DEBUG)
+    set(_command ${_command} -DDBG=ON)
+  endif()
+  
+  if(ARG_WORKING_DIRECTORY)
+    set(_command ${_command} -DCWD=${ARG_WORKING_DIRECTORY})
+  endif()
+  
+  if(ARG_TIMEOUT)
+    set(_command ${_command} -DTIM=${ARG_TIMEOUT})
+  endif()
+
+  #- Handle ENVIRONMENT argument
+  if(ARG_ENVIRONMENT)
+    string(REPLACE ";" "#" _env "${ARG_ENVIRONMENT}")
+    string(REPLACE "=" "@" _env "${_env}")
+    set(_command ${_command} -DENV=${_env})
+  endif()
+
+  #- Locate the test driver
+  set(_driver ${CMAKE_SOURCE_DIR}/cmake/scripts/TestDriver.cmake)
+  if(NOT EXISTS ${_driver})
+    message(FATAL_ERROR "LCG_ADD_TEST: TestDriver.cmake not found!")
+  endif()
+  set(_command ${_command} -P ${_driver})
+
+  #- Now we can actually add the test
+  if(ARG_BUILD)
+    if(NOT ARG_SOURCE_DIR)
+      set(ARG_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR})
+    endif()
+    if(NOT ARG_BINARY_DIR)
+      set(ARG_BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR})
+    endif()
+    if(NOT ARG_PROJECT)
+       if(NOT PROJECT_NAME STREQUAL "LCGSoft")
+         set(ARG_PROJECT ${PROJECT_NAME})
+       else()
+         set(ARG_PROJECT ${ARG_BUILD})
+       endif()
+    endif() 
+    add_test(NAME ${test} COMMAND ${CMAKE_CTEST_COMMAND}
+      --build-and-test  ${ARG_SOURCE_DIR} ${ARG_BINARY_DIR}
+      --build-generator ${CMAKE_GENERATOR}
+      --build-makeprogram ${CMAKE_MAKE_PROGRAM}
+      --build-target ${ARG_BUILD}
+      --build-project ${ARG_PROJECT}
+      --build-config $<CONFIGURATION>
+      --build-noclean
+      --test-command ${_command} )
+    set_property(TEST ${test} PROPERTY ENVIRONMENT Geant4_DIR=${CMAKE_BINARY_DIR})
+    if(ARG_FAILREGEX)
+      set_property(TEST ${test} PROPERTY FAIL_REGULAR_EXPRESSION "warning:|(${ARG_FAILREGEX})")
+    else()
+      set_property(TEST ${test} PROPERTY FAIL_REGULAR_EXPRESSION "warning:")      
+    endif()
+  else()
+    add_test(NAME ${test} COMMAND ${_command})
+    if(ARG_FAILREGEX)
+      set_property(TEST ${test} PROPERTY FAIL_REGULAR_EXPRESSION ${ARG_FAILREGEX})
+    endif()
+  endif()
+
+  #- Handle TIMOUT and DEPENDS arguments
+  if(ARG_TIMEOUT)
+    set_property(TEST ${test} PROPERTY TIMEOUT ${ARG_TIMEOUT})
+  endif()
+
+  if(ARG_DEPENDS)
+    set_property(TEST ${test} PROPERTY DEPENDS ${ARG_DEPENDS})
+  endif()
+
+  if(ARG_PASSREGEX)
+    set_property(TEST ${test} PROPERTY PASS_REGULAR_EXPRESSION ${ARG_PASSREGEX})
+  endif()
+  
+  if(ARG_LABELS)
+    set_property(TEST ${test} PROPERTY LABELS ${ARG_LABELS})
+  else()
+    set_property(TEST ${test} PROPERTY LABELS Nightly)  
+  endif()
+endfunction()
+
+
