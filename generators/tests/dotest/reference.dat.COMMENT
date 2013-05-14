@@ -1,0 +1,59 @@
+22.04.2012
+Test for tauola++ is changed. Now all hadrons are taken instead of A1, rho, pi, K.
+This does not change tauola++ result within errors because 30% of decays in it
+go through A1, but changes pythia8 result, where decays are made without A1.
+Since version 150 polarization is taken into account in pythia8 tau decays.
+With this change of test pythia8 result becomes closer to tauola++ since
+version 150
+
+11.04.2011
+reference values for hydjet updated: taken from version 1.7,
+platform x86_64-slc5-gcc43-opt. Change happened in the version 1.6
+due to the decays of K0 and pi0 that were forbidden before
+-------------------------------------------------------------------
+26.09.2010
+Test "herwig_test1" obsolete and removed.
+-------------------------------------------------------------------
+12.01.2010
+Replacing pythia8 reference results by the numbers from version 130:
+new tune. Test2 is changed.
+-------------------------------------------------------------------
+04.11.2009
+Replacing sherpa reference results by the results obtained with
+sherpa version 1.2.0 with new LHC steering files Run.dat essentially
+taken from Examples, with the following changes: 1. amegic; 2. N events = 1000
+-------------------------------------------------------------------
+03.03.2009
+Replacing pythia6 reference results by 411.2(atlas default)
+(but test3 361,363,367-370,373-377 changed to ones from pythia6 419)
+
+--------------------------------------------------------------------
+17.03.2008
+As suggested by Hannes Jung the results of cascade-2.0.1 tests should be
+considered as the new reference values. Corresponding changes in
+reference data file have been made.
+--------------------------------------------------------------------
+09.08.2008
+Reference values for Alpgen tests are changed to the ones 
+from Alpgen-2.1.3b-slc4_ia32_gcc34
+--------------------------------------------------------------------
+09.12.2008
+Reference values for pythia6 test3 361,363,367-370,373-377 changed
+to ones from pythia6 419. They are changed since 414 due to changes
+in the technicolor sector (new particle etc.). Discussed
+with S. Mrenna 02.12.2008
+--------------------------------------------------------------------
+14.12.2008
+Reference values for pythia6 test1 changed, taken from version 2.3.0
+with statistics 4000 events. Nlljj increased by a factor about 2
+due to new underlying event tunings. Cross section slightly increaded.
+Discussed with Richardson 12.12.2008
+--------------------------------------------------------------------
+30.07.2007
+Reference results are obtained with:
+pythia6_lhcb: Pythia 6.227  on slc3_ia32_gcc323
+Sherpa:       Sherpa 1.0.10 on slc3_ia32_gcc323
+Jimmy:        Jimmy  4.2    on slc3_ia32_gcc323
+--------------------------------------------------------------------
+28.06.2007
+pythia6_lhcb reference results were obtained with Pythia 6.227 

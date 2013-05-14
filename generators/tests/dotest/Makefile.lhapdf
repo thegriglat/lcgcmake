@@ -1,0 +1,45 @@
+include ./libtests.mk
+include ./config.mk
+
+# Location of directories.
+BINDIR=bin
+
+MYLIBSLHAPDF=$(LIBS_LHAPDF)
+ifeq ($(TESTS_ARCHIVE),1)
+ MYLIBSLHAPDF = $(LIBS_LHAPDF_STATIC)
+endif
+
+lhapdf_test1 lhapdf_test2:
+	mkdir -p $(BINDIR)
+	$(FC) $(LDFLAGS) $(FFLAGS) -o $(BINDIR)/$@.exe $@.f $(MYLIBSLHAPDF)
+	@ln -fs $(BINDIR)/$@.exe $@.exe
+	@rm -f ldlp.sh
+	@echo "#!/bin/sh" > ldlp.sh
+	@echo export LD_LIBRARY_PATH=$(LIBS_LHAPDF_PATH):$(LD_LIBRARY_PATH) >> ldlp.sh
+	@echo export DYLD_LIBRARY_PATH=$(LIBS_LHAPDF_PATH):$(DYLD_LIBRARY_PATH) >> ldlp.sh
+	@echo export LHAPATH=$(LHAPDF_PATH)/../share/PDFsets >> ldlp.sh
+
+.PHONY: install clean distclean
+
+install: $(LHAPDF_PATH)/lib/libLHAPDF$(SOEXT)
+
+$(LHAPDF_PATH)/lib/libLHAPDF$(SOEXT) :
+	cd $(MCGTESTDIR) && \
+	tar xfz $(MCGENERATORS)/distribution/lhapdf/lhapdf-$(LHAPDF_VERSION)-src.tgz && \
+	cd lhapdf/$(LHAPDF_VERSION) && \
+	chmod a+x lcg_configure && \
+	INSTALL_DIR=$(LHAPDF_PATH) SHARE_DIR=$(LHAPDF_PATH)/../share ./lcg_configure && \
+	make && \
+	make install && \
+	cd $(LHAPDF_PATH)/../share && \
+	ln -fs -T lhapdf/PDFsets PDFsets
+
+# Clean up: remove executables and outdated files.
+
+clean:
+	rm -f lhapdf_test*.exe ldlp.sh
+
+distclean: clean
+	rm -f $(BINDIR)/lhapdf_test*.exe
+	rm *~
+

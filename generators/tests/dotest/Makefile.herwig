@@ -1,0 +1,61 @@
+include ./libtests.mk
+include ./config.mk
+
+# Location of directories.
+TMPDIR=tmp
+BINDIR=bin
+
+MYHERWIGLIBPATH = $(LIBS_HERWIG_PATH)
+MYTESTSLIBPATH = $(LIBS_LIBTESTS_PATH)
+MYLHAPDFLIBPATH = $(LIBS_LHAPDF_PATH)
+MYHERWIGLIBNAME1 = libherwig$(SOEXT)
+ifeq ($(TESTS_ARCHIVE),1)
+ MYHERWIGLIBPATH = $(LIBS_HERWIG_PATH)/archive
+ MYTESTSLIBPATH = $(LIBS_LIBTESTS_PATH)/archive
+ MYLHAPDFLIBPATH = $(LIBS_LHAPDF_PATH)/archive
+ MYHERWIGLIBNAME1 = libherwig.a
+endif
+
+install: $(MYHERWIGLIBPATH)/$(MYHERWIGLIBNAME1)
+$(MYHERWIGLIBPATH)/$(MYHERWIGLIBNAME1) :
+	cd $(MCGTESTDIR) && \
+	cp $(MCGENERATORS)/distribution/herwig/herwig-$(HERWIG_VERSION)-src.tgz . && \
+	tar xfz herwig-$(HERWIG_VERSION)-src.tgz && \
+	cd herwig/$(HERWIG_VERSION) && \
+	./configure --enable-shared --prefix=$(HERWIG_PATH) && \
+	make install
+
+herwig_hepmc: $(MYHERWIGLIBPATH)/$(MYHERWIGLIBNAME1)
+	@mkdir -p $(BINDIR)
+	$(CXX) $(CXXFLAGS) $(INCLUDE_LIBTESTS) $(INCLUDE_HEPMC) $(INCLUDE_CLHEP) \
+	$@.cc -o $(BINDIR)/$@.exe \
+	-L$(MYHERWIGLIBPATH) -lherwig -lherwig_dummy -lherwig_pdfdummy \
+	-L$(MYTESTSLIBPATH) -lanalyserhepmc \
+	-L$(LIBS_HEPMC_PATH) -lHepMC -lHepMCfio \
+	-L$(LIBS_CLHEP_PATH) -lCLHEP \
+	$(FLIBS)
+	@ln -fs $(BINDIR)/$@.exe ./$@.exe
+	@echo export LD_LIBRARY_PATH=$(MYHERWIGLIBPATH):$(MYTESTSLIBPATH):$(LIBS_HEPMC_PATH):$(LIBS_CLHEP_PATH):$(LD_LIBRARY_PATH) >> ldlp.sh
+	@echo export DYLD_LIBRARY_PATH=$(MYHERWIGLIBPATH):$(MYTESTSLIBPATH):$(LIBS_HEPMC_PATH):$(LIBS_CLHEP_PATH):$(DYLD_LIBRARY_PATH) >> ldlp.sh
+
+herwig_lhapdf: $(MYHERWIGLIBPATH)/$(MYHERWIGLIBNAME1)
+	@mkdir -p $(BINDIR)
+	$(FC) $(FFLAGS) $(INCLUDE_HERWIG) $@.F -c -o $(TMPDIR)/$@.o && \
+	$(CXX) $(CXXFLAGS) $(MYHERWIGLIBPATH)/hwudat.o $(TMPDIR)/$@.o -o $(BINDIR)/$@.exe \
+	-L$(MYHERWIGLIBPATH) -lherwig -lherwig_dummy \
+	$(LIBS_LHAPDF) \
+	$(FLIBS)
+	@ln -fs $(BINDIR)/$@.exe ./$@.exe
+	@echo export LHAPATH=$(LHAPDF_PATH)/../share/PDFsets > ldlp.sh
+	@echo export LD_LIBRARY_PATH=$(MYHERWIGLIBPATH):$(MYLHAPDFLIBPATH):$(MYTESTSLIBPATH):$(LD_LIBRARY_PATH) >> ldlp.sh
+	@echo export DYLD_LIBRARY_PATH=$(MYHERWIGLIBPATH):$(MYLHAPDFLIBPATH):$(MYTESTSLIBPATH):$(LD_LIBRARY_PATH) >> ldlp.sh
+
+# Clean up: remove executables and outdated files.
+.PHONY: clean distclean
+
+clean:
+	rm -f $(PROGNAME).exe fort.77 fort.88 ldlp.sh
+
+distclean: clean
+	rm -f $(BINDIR)/$(PROGNAME).exe
+

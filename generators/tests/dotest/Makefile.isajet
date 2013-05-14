@@ -1,0 +1,34 @@
+include ./libtests.mk
+include ./config.mk
+
+# Location of directories.
+TMPDIR=tmp
+BINDIR=bin
+INCDIR=include
+
+isajet_test1: $(ISAJET_PATH)/lib/libisajet.so
+	@mkdir -p $(INCDIR)
+	@ln -s $(ISAJET_PATH)/../share/src/aldata.f $(INCDIR)/
+	@mkdir -p $(BINDIR)
+	$(FC) $(FFLAGS) -I$(INCDIR) $(INCLUDE_ISAJET) $@.f -c -o $(TMPDIR)/$@.o
+	$(CXX) $(CXXFLAGS) $(TMPDIR)/$@.o -o $(BINDIR)/$@.exe \
+	-L$(LIBS_PYTHIA6_PATH) -lpythia6 \
+	$(LIBS_ISAJET) \
+	-lpythia6_dummy -lpythia6_pdfdummy \
+	-L$(LIBTESTS_PATH)/lib/archive -ltests \
+	$(LIBS_LHAPDF) \
+	-L$(LIBS_CERNLIB_PATH) -lmathlib -lpacklib_noshift \
+	$(FLIBS)
+	@ln -fs $(BINDIR)/$@.exe $@.exe
+	@echo export LD_LIBRARY_PATH=$(LIBS_PYTHIA6_PATH):$(LIBS_ISAJET_PATH):$(LIBS_LHAPDF_PATH):$(LIBS_CERNLIB_PATH) > ldlp.sh
+
+# Clean up: remove executables and outdated files.
+.PHONY: clean distclean
+
+clean:
+	rm -f $(PROGNAME).exe ldlp.sh
+	rm -f $(INCDIR)/aldata.f
+
+
+distclean: clean
+	rm -f $(BINDIR)/$(PROGNAME).exe

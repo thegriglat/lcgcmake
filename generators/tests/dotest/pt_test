@@ -1,0 +1,264 @@
+#!/bin/sh
+#
+# Variables for the run:
+#------------------------------------------------------
+
+libtype=shared
+#libtype=archive
+
+
+# This script can be started as, e.g., ./dotestnew --vers_pythia6=408 --vers_herwig=6.5XX , etc.:
+
+for arg in $* ; do
+	option=${arg/=*/}
+	value=${arg/*=/}
+	if   [ "x${option}" = "x--vers_pythia6"   ] ; then 
+		export VERS_PYTHIA6=${value}  ;export vers_pythia6=${value}  ;
+	elif [ "x${option}" = "x--vers_herwig"    ] ; then 
+		export VERS_HERWIG=${value}   ;export vers_herwig=${value}   ;
+	elif [ "x${option}" = "x--vers_photos"    ] ; then 
+		export VERS_PHOTOS=${value}   ;export vers_photos=${value}   ;
+	elif [ "x${option}" = "x--vers_herwigpp"  ] ; then 
+		export VERS_HERWIGPP=${value} ;export vers_herwigpp=${value} ;
+	elif [ "x${option}" = "x--vers_thepeg"    ] ; then 
+		export VERS_THEPEG=${value}   ;export vers_thepeg=${value}   ;
+	elif [ "x${option}" = "x--vers_isajet"    ] ; then 
+		export VERS_ISAJET=${value}   ;export vers_isajet=${value}   ;
+	elif [ "x${option}" = "x--vers_evtgenlhc" ] ; then 
+		export VERS_EVTGENLHC=${value};export vers_evtgenlhc=${value};
+	elif [ "x${option}" = "x--vers_lhapdf"    ] ; then 
+		export VERS_LHAPDF=${value}   ;export vers_lhapdf=${value}   ;
+	elif [ "x${option}" = "x--vers_tauola"    ] ; then 
+		export VERS_TAUOLA=${value}   ;export vers_tauola=${value}   ;
+	elif [ "x${option}" = "x--vers_pythia8"   ] ; then 
+		export VERS_PYTHIA8=${value}  ;export vers_pythia8=${value}  ;
+	elif [ "x${option}" = "x--vers_pyquen"    ] ; then 
+		export VERS_PYQUEN=${value}   ;export vers_pyquen=${value}   ;
+	elif [ "x${option}" = "x--vers_alpgen"    ] ; then 
+		export VERS_ALPGEN=${value}   ;export vers_alpgen=${value}   ;
+	elif [ "x${option}" = "x--vers_toprex"    ] ; then 
+		export VERS_TOPREX=${value}   ;export vers_toprex=${value}   ;
+	elif [ "x${option}" = "x--vers_sherpa"    ] ; then 
+		export VERS_SHERPA=${value}   ;export vers_sherpa=${value}   ;
+	else
+		echo "${arg}: unknown option. Exit." >&2
+		exit 2
+	fi
+done
+
+#- Versions to be used if not stated otherwise:
+
+if [ "x${VERS_PYTHIA6}"   = "x" ] ; then export VERS_PYTHIA6=409 ;    fi
+if [ "x${VERS_PHOTOS}"    = "x" ] ; then export VERS_PHOTOS=215 ;     fi
+if [ "x${VERS_HERWIG}"    = "x" ] ; then export VERS_HERWIG=6.510 ;   fi
+if [ "x${VERS_HERWIGPP}"  = "x" ] ; then export VERS_HERWIGPP=2.0.1 ; fi
+if [ "x${VERS_THEPEG}"    = "x" ] ; then export VERS_THEPEG=1.0.1 ;   fi
+if [ "x${VERS_ISAJET}"    = "x" ] ; then export VERS_ISAJET=7.74 ;    fi
+if [ "x${VERS_EVTGENLHC}" = "x" ] ; then export VERS_EVTGENLHC=8.14 ;  fi
+if [ "x${VERS_LHAPDF}"    = "x" ] ; then export VERS_LHAPDF=5.2.3 ;   fi
+if [ "x${VERS_TAUOLA}"    = "x" ] ; then export VERS_TAUOLA=27.121 ;  fi
+if [ "x${VERS_PYTHIA8}"   = "x" ] ; then export VERS_PYTHIA8=070 ;    fi
+if [ "x${VERS_PYQUEN}"    = "x" ] ; then export VERS_PYQUEN=1.1 ;     fi
+if [ "x${VERS_ALPGEN}"    = "x" ] ; then export VERS_ALPGEN=2.1.1 ;   fi
+if [ "x${VERS_TOPREX}"    = "x" ] ; then export VERS_TOPREX=4.23 ;     fi
+if [ "x${VERS_SHERPA}"    = "x" ] ; then export VERS_SHERPA=1.0.9 ;   fi # 1.0.8 was claimed to be buggy (?)
+
+
+hepevtadd=.2
+
+#- Generators to be run by default, despite script's arguments:
+
+#vers_pythia6=${VERS_PYTHIA6}
+#vers_photos=${VERS_PHOTOS}
+#vers_herwig=${VERS_HERWIG}
+#vers_herwigpp=${VERS_HERWIGPP}
+###vers_isajet=${VERS_ISAJET}
+#vers_evtgenlhc=${VERS_EVTGENLHC}
+#vers_lhapdf=${VERS_LHAPDF}
+#vers_tauola=${VERS_TAUOLA}
+#vers_pythia8=${VERS_PYTHIA8}
+###vers_pyquen=${VERS_PYQUEN}
+#vers_toprex=${VERS_TOPREX}
+vers_alpgen=${VERS_ALPGEN}
+#vers_sherpa=${VERS_SHERPA}
+ 
+#- Using settings from ../configure 
+
+if ! [ -s ../config.mk ] ; then
+	echo "can't find ../config.mk  to include. Run configure in ../.  first." >&2
+	exit 1
+fi
+sed 's/[ ]*=[ ]*/=\"/g;/=/s/[ ]*$/\"/;s/\$(\([^)]\+\))/\${\1}/g;' < ../config.mk > .__config.mk.1__
+. .__config.mk.1__
+
+#-  ./configure settings:
+
+configure_args=
+
+for generator in pythia6 alpgen ; do
+	arg=vers_${generator} 
+	vers_generator=${!arg}
+	if [ "x${vers_generator}" != "x" ] ; then
+		path_to_generator="${MCGENERATORS}/${generator}/${vers_generator}/${platform}"
+		if ! [ -d ${path_to_generator} ] ; then
+			echo "${path_to_generator} does not exist. Try another ${generator} version. Exit." >&2
+			exit 3
+		fi
+		configure_args="${configure_args} --with-${generator}=${path_to_generator}"
+	fi
+done
+
+./configure "${configure_args}"
+
+if ! [ -s ./config.mk ] ; then
+	echo "can't find ./config.mk  to include. Check if ./configure worked properly. Exit." >&2
+	exit 1
+fi
+sed 's/[ ]*=[ ]*/=\"/g;/=/s/[ ]*$/\"/;s/\$(\([^)]\+\))/\${\1}/g;' <  ./config.mk > .__config.mk.2__
+. .__config.mk.2__
+
+#----
+
+export LD_LIBRARY_PATH=${LIBS_LIBTESTS_PATH}:${LIBS_LHAPDF_PATH}:${LIBS_PYTHIA6_PATH}:${LIBS_HERWIG_PATH}:${LIBS_HEPMC_PATH}:${LIBS_CLHEP_PATH}:${LIBS_PHOTOS_PATH}:${LIBS_EVTGENLHC_PATH}:${LIBS_ROOT_PATH}:${LIBS_SHERPA_PATH}
+
+
+#===============================================================
+
+echo -e "\n Start run --------------------\n"
+echo -e "working with ${libtype} libraries \n"
+
+
+all_prognames="" # names of test routines collected here
+
+#======= Alpgen ======================
+
+if [ "x${vers_alpgen}" != "x" ] ; then
+	
+ echo -e "\n ---  running alpgen "${VERS_ALPGEN}" test  ---\n"
+ 
+ progname=alpgen
+ prognames="${prognames} ${progname}"
+ 
+ mkdir -p tmpalpgen
+ cd tmpalpgen
+ cp ${MCGENERATORS}/alpgen/${VERS_ALPGEN}/share/examples/* .
+ 
+ ./configure --lcgplatform=${PLATFORM} \
+           --with-alpgeninstalled=${MCGENERATORS}/alpgen/${VERS_ALPGEN}/share \
+           --with-alpgenlibs=${MCGENERATORS}/alpgen/${VERS_ALPGEN}/${PLATFORM}/lib/archive \
+           --with-pythia6=${MCGENERATORS}/pythia6/${VERS_PYTHIA6}/${PLATFORM}/lib/archive \
+           --with-tests=../../lib/archive
+ make wjet 
+ 
+ sed -i 's/^[ ]*njets .*$/njets 0/' ../inputalpgen.pt_W # W + 0jets
+ ../bin/wjetgen.exe < ../inputalpgen.pt_W
+ ../bin/wjetgen.exe < ../inputalpgen2.pt_W
+ 
+ make pyuserex2_pt_W
+ 
+ sed '/^[ ]*#/d;s/#.*$//' < ../pt_W_hist.bins > pt_W_hist.bins # <<<<<<  
+ 
+ LD_LIBRARY_PATH=$LD_LIBPRARY_PATH:$LIBS_LIBTESTS_PATH:$LIBS_HEPMC_PATH:$LIBS_CLHEP_PATH:$LIBS_ROOT_PATH ./pyuserex2_pt_W.exe < ../inputalpgen3.pt_W
+ 
+ mv -f alpgen_pt_W.root alpgen_pt_W-0jet.root
+ mv -f alpgen_pt_W.sig  alpgen_pt_W-0jet.sig
+ 
+ sed -i 's/^[ ]*njets .*$/njets 1/' ../inputalpgen.pt_W # W + 1jet
+ 
+ ../bin/wjetgen.exe < ../inputalpgen.pt_W
+ ../bin/wjetgen.exe < ../inputalpgen2.pt_W
+ 
+ LD_LIBRARY_PATH=$LD_LIBPRARY_PATH:$LIBS_LIBTESTS_PATH:$LIBS_HEPMC_PATH:$LIBS_CLHEP_PATH:$LIBS_ROOT_PATH ./pyuserex2_pt_W.exe < ../inputalpgen3.pt_W
+ 
+ mv -f alpgen_pt_W.root alpgen_pt_W-1jet.root
+ mv -f alpgen_pt_W.sig  alpgen_pt_W-1jet.sig
+ 
+ cd ../pt_W_analysis/
+ 
+ make pt_W_cmb_cmp.exe
+ 
+ # cross sections are in [mb]. 
+ # To be explicitly converted in pt_W_analysis/pt_W_cmb_cmp.cc
+ 
+ sig_W_0jet=$(sed '/^[ ]*#/d;s/#.*$//' < ../tmpalpgen/alpgen_pt_W-0jet.sig | sed '2d;s/ +.*$//')
+ Nev_W_0jet=$(sed '/^[ ]*#/d;s/#.*$//' < ../tmpalpgen/alpgen_pt_W-0jet.sig | sed '1d;s/ [ ]*//g;')
+ 
+ sig_W_1jet=$(sed '/^[ ]*#/d;s/#.*$//' < ../tmpalpgen/alpgen_pt_W-1jet.sig | sed '2d;s/ +.*$//')
+ Nev_W_1jet=$(sed '/^[ ]*#/d;s/#.*$//' < ../tmpalpgen/alpgen_pt_W-1jet.sig | sed '1d;s/ [ ]*//g;')
+ 
+ ./pt_W_cmb_cmp.exe  ../pt_W_D0.hepex-0106027 \
+ ../tmpalpgen/alpgen_pt_W-0jet.root ${sig_W_0jet} ${Nev_W_0jet} \
+ ../tmpalpgen/alpgen_pt_W-1jet.root ${sig_W_1jet} ${Nev_W_1jet}
+# make clean
+# cd ..
+# rm -fr tmpalpgen/
+fi
+
+
+#==========================================================================
+#
+# Below we use the old Makefile (Dec 2006) to compile and run some tests.
+# Do not use this to implement new tests.
+#
+#-
+vers_pkg () {
+	vers=vers_$1 # see the versions table at the top of the file
+	echo ${!vers}
+}
+
+run_test () {    # compiles and automatically runs tests specified in the argument list:
+ pkg_name=$1     # generator name, see vers_generator=... above
+ pkg_version=$2  # its version
+ prognames="$3"  # test source file names, e.g., pythia_test1, pythia_hepmc (w/o .f, .cc, etc.)
+ test_arguments="$4"
+ if [ "x${pkg_name}" = "x" ] ; then
+	 echo "run_test: empty pkg_name." >&2
+	 echo "Usage:  run_test generator_name version test_name1 [test_name2 ...] " >&2
+	 return
+ fi
+ if [ "x${pkg_version}" = "x" ] ; then
+	echo "$pkg_name: version not specified." >&2
+	return
+ fi
+ if [ "x${prognames}" = "x" ] ; then
+	 echo "$pkg_name: test names not specified. Look for the names of the test source files." >&2
+	 return
+ fi
+ rm -f testi.dat
+ echo "-----  ${pkg_name} ${pkg_version} tests: ----"
+ if [ -s ./config.mk ] ; then
+	 mv -f ./config.mk ./config.mk.bak
+ fi
+ ./configure --with-${pkg_name}=${MCGENERATORS}/${pkg_name}/${pkg_version}/${platform} ${libopt} && \
+ for progname in ${prognames}   ; do
+	make -f Makefile ${progname}_bin test=${progname} && \
+	make -f Makefile ${progname}_run test=${progname} test_name="${progname} ..." test_arguments="${test_arguments}"
+ done #&& \
+ #make -f Makefile clean 
+ # we keep ../bin/*.exe to find the libraries it was linked  against.
+ # This is done in the 'check' script started when all the tests are completed.
+ mv -f ./config.mk.bak ./config.mk
+}
+
+#======== Pythia6 ==============================================================
+
+if [ "x$(vers_pkg pythia6)" != "x" ] ; then
+#..... 
+	echo "******* dsig(p pbar --> W < e nu > X)/dPT(W), sqrt(s) = 1.8 TeV (D0): ******"
+	prognames="${prognames} pythia_hepmc_W"
+        mv -f pt_W_hist.bins pt_W_hist.bins.BAK
+	sed '/^[ ]*#/d;s/#.*$//' < pt_W_hist.bins.BAK > pt_W_hist.bins # <<<<<<  
+# << name of this input file  is specified in pythia_hepmc_W.cc 
+	mv -f pythia_pt_W.root pythia_pt_W.root.previous
+	mv -f pythia_pt_W.sig  pythia_pt_W.sig.previous
+#... Now compiling and running the test:
+	run_test pythia6 "$(vers_pkg pythia6)" "pythia_hepmc_W"
+	echo "See pythia_pt_W.{root,sig} for the histograms and the total cross section, respectively."
+	mv -f pt_W_hist.bins.BAK pt_W_hist.bins
+fi
+
+#=================================================================================
+
+
+echo -e "\n ---  Comparing results  ---\n"
+exit

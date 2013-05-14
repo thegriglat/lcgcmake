@@ -1,0 +1,60 @@
+include ./libtests.mk
+include ./config.mk
+
+# Location of directories
+BINDIR=bin
+
+MYLIBSEVTGENLHC = $(LIBS_EVTGENLHC)
+MYLIBSCLHEP = $(LIBS_CLHEP)
+MYLIBSPYTHIA6 = $(LIBS_PYTHIA6)
+MYLIBSPHOTOS = $(LIBS_PHOTOS)
+LDLIBPATH=$(LIBS_CLHEP_PATH):$(LIBS_ROOT_PATH):$(LIBS_EVTGENLHC_PATH):$(LIBS_PYTHIA6_PATH):$(LIBS_PHOTOS_PATH)
+MYEVTGENLHCLIBNAME1=libevtgenlhc.so
+ifeq ($(TESTS_ARCHIVE),1)
+  MYLIBSEVTGENLHC = $(LIBS_EVTGENLHC_STATIC)
+  MYLIBSCLHEP = $(LIBS_CLHEP_STATIC)
+  MYLIBSPYTHIA6 = $(LIBS_PYTHIA6_STATIC)
+  MYLIBSPHOTOS = $(LIBS_PHOTOS_STATIC)
+  LDLIBPATH=$(LIBS_ROOT_PATH)
+endif
+
+MYLIBSCERN = $(LIBS_CERNLIB_PATH)/libmathlib.a
+MYLIBSROOT = `$(ROOT_PATH)/bin/root-config --libs`
+
+#### EvtGenLHC #####
+
+install: $(LIBS_EVTGENLHC_PATH)/$(MYEVTGENLHCLIBNAME1)
+
+$(LIBS_EVTGENLHC_PATH)/$(MYEVTGENLHCLIBNAME1):
+	cd $(MCGTESTDIR) && \
+	cp $(MCGENERATORS)/distribution/evtgenlhc/evtgenlhc-$(EVTGENLHC_VERSION)-src.tgz . && \
+	tar xfz evtgenlhc-$(EVTGENLHC_VERSION)-src.tgz && \
+	cd evtgenlhc/$(EVTGENLHC_VERSION) && \
+	chmod a+x lcg_configure && \
+	./lcg_configure && \
+	make && \
+	mkdir -p $(EVTGENLHC_PATH) && \
+	cp -rf lib EvtGen EvtGenBase EvtGenModels $(EVTGENLHC_PATH)/ && \
+	ln -sf -T . share
+
+evtgenlhc_test1: # Compile evtgenlhc_test1
+	@mkdir -p $(BINDIR)
+	$(CXX) $@.cc -o $(BINDIR)/$@.exe $(CXXFLAGS) $(INCLUDE_EVTGENLHC) $(INCLUDE_CLHEP) $(INCLUDE_ROOT) \
+	$(MYLIBSEVTGENLHC) \
+	$(MYLIBSCLHEP) $(MYLIBSROOT) \
+	$(MYLIBSPYTHIA6) $(MYLIBSPHOTOS) \
+	$(FLIBS) -ldl \
+	$(MYLIBSCERN)
+	@ln -fs $(BINDIR)/$@.exe $@.exe
+	@rm -f ldlp.sh
+	@echo export LD_LIBRARY_PATH=$(LDLIBPATH):$(LD_LIBRARY_PATH) > ldlp.sh
+	@echo export ROOTSYS=$(ROOTSYS) >> ldlp.sh
+
+# Clean up: remove executables and outdated files.
+.PHONY: clean distclean
+
+clean:
+	rm -f $(PROGNAME).exe ldlp.sh 
+
+distclean: clean
+	rm -f $(BINDIR)/$(PROGNAME).exe

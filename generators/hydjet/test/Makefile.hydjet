@@ -1,0 +1,47 @@
+include ./libtests.mk
+include ./config.mk
+
+# Location of directories.
+BINDIR=bin
+
+MYHYDJETLIBS = $(LIBS_HYDJET)
+ifeq ($(TESTS_ARCHIVE),1)
+  MYHYDJETLIBS = $(LIBS_HYDJET_STATIC)
+endif
+
+hydjet_test1 : $(HYDJET_PATH)/lib/libhydjet$(SOEXT) $(HYDJET_PATH)/lib/libjetset73hydjet$(SOEXT) $(LIBTESTS_PATH)/lib/libtests$(SOEXT)
+	@mkdir -p $(BINDIR)
+	$(FC) $(PROGNAME).f -o $(BINDIR)/$@.exe $(FFLAGS) $(CXXFLAGS) \
+	$(LIBS_PYTHIA6_PATH)/pydata.o \
+	$(MYHYDJETLIBS) \
+	-L$(LIBS_PYTHIA6_PATH) -lpythia6 \
+	$(LIBS_PYQUEN) \
+	-lpythia6_dummy -lpythia6_pdfdummy \
+	-L$(LIBTESTS_PATH)/lib/archive -ltests \
+	$(FLIBS)
+	@ln -fs $(BINDIR)/$@.exe $@.exe
+	@echo export LD_LIBRARY_PATH=$(LIBS_PYTHIA6_PATH):$(LIBS_PYQUEN_PATH):$(LIBS_HYDJET_PATH):$(LD_LIBRARY_PATH) > ldlp.sh
+	@echo export DYLD_LIBRARY_PATH=$(LIBS_PYTHIA6_PATH):$(LIBS_PYQUEN_PATH):$(LIBS_HYDJET_PATH):$(DYLD_LIBRARY_PATH) >> ldlp.sh
+
+
+install: $(HYDJET_PATH)/lib/libhydjet$(SOEXT)
+
+$(HYDJET_PATH)/lib/libhydjet$(SOEXT) :
+	cd $(MCGTESTDIR) && \
+	cp $(MCGENERATORS)/distribution/hydjet/hydjet-$(HYDJET_VERSION)-src.tgz . && \
+	tar xfz hydjet-$(HYDJET_VERSION)-src.tgz && \
+	cd hydjet/$(HYDJET_VERSION) && \
+	chmod a+x lcg_configure && \
+	sed -e 's,-m32,,' -i lcg_configure && \
+	INSTALL_DIR=$(HYDJET_PATH) ./lcg_configure && \
+	make && \
+	make install
+
+# Clean up: remove executables and outdated files.
+.PHONY: clean distclean
+
+clean:
+#	rm -f $(PROGNAME).exe ldlp.sh
+
+distclean: clean
+	rm -f $(BINDIR)/$(PROGNAME).exe

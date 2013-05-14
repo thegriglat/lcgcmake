@@ -1,0 +1,61 @@
+pythia 1       Cross section of Z + jet with lower Qt cut 20 GeV
+pythia 2       Fraction of events from  Z + jet (Z -> all leptons) with 
+               2 detectable electrons or muons and 2 jets.
+pythia 3       Same as pythia 1,2 (using HepMC/PythiaWrapper.h and event
+pythia 4       analyzers from libtests*, see include/ANNHEPMC/)
+pythia 5-26    Cross section of single W+- production is calculated using
+               various proton PDF sets via LHAPDF library. Tests were up to
+               27 (up to 70350), but 70350 stopped to work in lhapdf 5.2.1
+
+photos 1       Fraction of events Z'->e+e- with at least one detectable gamma
+               as simulated by PYTHIA with QED corr. on (no photos in fact)
+photos 2       Fraction of events Z'->e+e- with at least one detectable gamma
+               as simulated by PYTHIA(QED off) + PHOTOS
+
+herwig 1       Cross section of Z + jet (Z -> all leptons)
+herwig 2       Fraction of events from  Z + jet (Z -> all leptons) with
+               2 detectable electrons or muons and 2 jets.
+herwig 3       Same as 1,2 above but with  Z->e,mu
+herwig 4       and using HepMC. (see ./herwig_hepmc.cc)
+herwig 5-26    Cross section of single W+- production is calculated using
+               various proton PDF sets via LHAPDF library.
+
+Herwig++ 1     Cross section of the default process as run with LHC.in
+               In the version 2_0_0 the default process is qq2gZ2ff (note
+               that it was different in earlier versions)
+
+isajet 1-24    cross section of single W production (Drell-Yan) at LHC for
+               different PDF sets of lhapdf (same as pythia-lhapdf)
+
+evtgenlhc 1    In Dalitz decay: average invariant mass of particles 1 and 2
+evtgenlhc 2    In Dalitz decay: average invariant mass of particles 2 and 3
+
+lhapdf 1-20    PDF sets values with self-explanatory comments
+lhapdf 21-40   PDF sets values obtained using lhaglue with self-explanatory
+               comments
+
+tauola 1       E(PI+- + K+- + A1+-) / E(TAU) ratio
+               in f + fbar  -> Z0 + W+/- with Z0 -> tau+ tau- and
+               W+/- -> tau+/- nutau with TAU decayed BY PYTHIA (no tauola)
+tauola 2       E(PI+- + K+- + A1+-) / E(TAU) as above TAU decayed by TAUOLA
+             
+pythia8 1      Do the same as pythia tests 1 and 2. Note that for new
+pythia8 2      versions one could need to change the code of the test
+               since now part of parameters are set in Fortran part of pythia.
+
+pyquen 1       Mean mult. in QCD jets events simulated by PYTHIA (no PYQUEN)
+pyquen 2       Mean |Eta| in QCD jets events simulated by PYTHIA (no PYQUEN)
+pyquen 3       Mean Pt in QCD jets events simulated by PYTHIA (no PYQUEN)
+pyquen 4       Mean mult. in QCD jets events simulated by PYTHIA - PYQUEN
+pyquen 5       Mean |Eta| in QCD jets events simulated by PYTHIA - PYQUEN
+pyquen 6       Mean Pt in QCD jets events simulated by PYTHIA - PYQUEN
+
+toprex 1       cross section of the tW-channel single top production
+
+alpgen 1       Cross section of Z + 2jets with lower Pt cut 20 GeV
+alpgen 2       Fraction of events from  Z + 2jets (Z -> electrons) with
+               2 detectable electrons and 2 jets. (alpgen + pythia)
+
+
+ The examples also use (and thus test) ThePEG and HepMC
+

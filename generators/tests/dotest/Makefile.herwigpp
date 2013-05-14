@@ -1,0 +1,45 @@
+include ./libtests.mk
+include ./config.mk
+
+BINDIR=bin
+
+ADD_LIBRARY_PATH=$(LIBS_THEPEG_PATH):$(LIBS_HEPMC_PATH):$(LIBS_CLHEP_PATH):$(LIBS_GSL_PATH):$(LIBS_HERWIGPP_PATH):$(LIBS_LHAPDF_PATH):$(LIBS_LIBTESTS_PATH)
+
+herwigpp_test1: readherwigpp.cc
+	@mkdir -p $(BINDIR)
+	rm -f bin/herwigpp_test1.exe
+	ln -s $(HERWIGPP_PATH)/bin/Herwig++ bin/herwigpp_test1.exe
+	$(CXX) $(CXXFLAGS) $(INCLUDE_LIBTESTS) $(INCLUDE_HEPMC) $(INCLUDE_CLHEP) \
+	  readherwigpp.cc -o $(BINDIR)/readherwigpp.exe \
+	  -L$(LIBS_LIBTESTS_PATH) -lanalyserhepmc \
+	  -L$(LIBS_HEPMC_PATH) -lHepMC $(LIBS_CLHEP)
+	@echo "export LD_LIBRARY_PATH=$(ADD_LIBRARY_PATH):$(LD_LIBRARY_PATH)" > ldlp.sh
+	@echo "export DYLD_LIBRARY_PATH=$(ADD_LIBRARY_PATH):$(DYLD_LIBRARY_PATH)" >> ldlp.sh
+	@echo export LHAPATH=$(LHAPDF_PATH)/../share/PDFsets >> ldlp.sh
+
+
+install: $(HERWIGPP_PATH)/lib/Herwig++/Herwig.so
+$(HERWIGPP_PATH)/lib/Herwig++/Herwig.so : $(THEPEG_PATH)/lib/ThePEG/libThePEG.so
+	cd $(MCGTESTDIR) && \
+	cp $(MCGENERATORS)/distribution/herwig++/herwig++-$(HERWIGPP_VERSION)-src.tgz . && \
+	tar xfz herwig++-$(HERWIGPP_VERSION)-src.tgz && \
+	ln -fs -T herwig++ herwigpp && \
+	cd herwigpp/$(HERWIGPP_VERSION) && \
+	chmod a+x ./lcg_configure && \
+	INSTALL_DIR=$(HERWIGPP_PATH) GSL_PATH=$(GSL_PATH) THEPEG_PATH=$(THEPEG_PATH) BOOST_PATH=$(BOOST_PATH) ./lcg_configure && \
+	make && \
+	make install
+
+$(THEPEG_PATH)/lib/ThePEG/libThePEG.so :
+	cd $(MCGTESTDIR) && \
+	cp $(MCGENERATORS)/distribution/thepeg/thepeg-$(THEPEG_VERSION)-src.tgz . && \
+	tar xfz thepeg-$(THEPEG_VERSION)-src.tgz && \
+	cd thepeg/$(THEPEG_VERSION) && \
+	chmod a+x ./lcg_configure && \
+	INSTALL_DIR=$(THEPEG_PATH) HEPMC_PATH=$(HEPMC_PATH) LHAPDF_PATH=$(LHAPDF_PATH) GSL_PATH=$(GSL_PATH) ./lcg_configure && \
+	make && \
+	make install
+
+clean:
+	rm -f ldlp.sh
+	rm -f $(BINDIR)/readherwigpp.exe 

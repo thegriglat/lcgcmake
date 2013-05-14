@@ -1,0 +1,4 @@
+#@# See input file Run2.dat in corresponding <a href="http://svnweb.cern.ch/world/wsvn/GENSER/validation/trunk/tests/Sherpa/">LHC-${SHERPA_VERSION}/</a>.#@# 
+#@# 1. p p --> e+ nu + jets cross section [pb] at LHC
+#@# 2. p p --> e+ nu + jets  event fraction with 1 isolepton, >=2 jets and ET > 20GeV
+#@# 3. p p --> e+ nu + jets  cross section [pb] at LHC multiplied by event fraction (PHYSICAL TEST)

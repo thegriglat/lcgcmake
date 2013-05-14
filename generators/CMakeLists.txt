@@ -16,6 +16,7 @@ string(REPLACE "." "_" hydjet_native_version ${hydjet_native_version})
 
 set(CMAKE_VERBOSE_MAKEFILE ON)
 include (CTest)
+add_subdirectory(tests/dotest)
 
 #---hydjet--------------------------------------------------------------------------------------
 

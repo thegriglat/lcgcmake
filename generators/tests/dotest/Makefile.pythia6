@@ -1,0 +1,104 @@
+include ./libtests.mk
+include ./config.mk
+
+# Location of directories.
+TMPDIR=tmp
+BINDIR=bin
+
+MYPYTHIA6LIBPATH = $(LIBS_PYTHIA6_PATH)
+MYTESTSLIBPATH = $(LIBS_LIBTESTS_PATH)
+MYLHAPDFLIBPATH = $(LIBS_LHAPDF_PATH)
+MYPYTHIA6LIBNAME1 = libpythia6$(SOEXT)
+ifeq ($(TESTS_ARCHIVE),1)
+ MYPYTHIA6LIBPATH = $(LIBS_PYTHIA6_PATH)/archive
+ MYTESTSLIBPATH = $(LIBS_LIBTESTS_PATH)/archive
+ MYLHAPDFLIBPATH = $(LIBS_LHAPDF_PATH)/archive
+ MYPYTHIA6LIBNAME1 = libpythia6.a
+endif
+
+install: $(MYPYTHIA6LIBPATH)/$(MYPYTHIA6LIBNAME1)
+
+$(MYPYTHIA6LIBPATH)/$(MYPYTHIA6LIBNAME1) :
+	cd $(MCGTESTDIR) && \
+	cp $(MCGENERATORS)/distribution/pythia6/pythia6-$(PYTHIA6_VERSION)-src.tgz . && \
+	tar xfz pythia6-$(PYTHIA6_VERSION)-src.tgz && \
+	cd pythia6/$(PYTHIA6_VERSION) && \
+	chmod a+x lcg_configure && \
+	INSTALL_DIR=$(PYTHIA6_PATH) SHARE_DIR=$(PYTHIA6_PATH)/../share ./lcg_configure && \
+	make && \
+	make install
+
+pythia6_hepmc: $(MYPYTHIA6LIBPATH)/$(MYPYTHIA6LIBNAME1)
+	@mkdir -p $(BINDIR)
+	@mkdir -p $(TMPDIR)
+	$(CXX) $(CXXFLAGS) $(INCLUDE_LIBTESTS) $(INCLUDE_HEPMC) $(INCLUDE_CLHEP) \
+	$@.cc -o $(BINDIR)/$@.exe \
+	-L$(MYPYTHIA6LIBPATH) -lpythia6 -lpythia6_dummy -lpythia6_pdfdummy \
+	-L$(MYTESTSLIBPATH) -lanalyserhepmc \
+	-L$(LIBS_HEPMC_PATH) -lHepMC -lHepMCfio \
+	-L$(LIBS_CLHEP_PATH) -lCLHEP \
+	$(FLIBS)
+	@ln -fs $(BINDIR)/$@.exe ./$@.exe
+	@echo export   LD_LIBRARY_PATH=$(MYPYTHIA6LIBPATH):$(MYTESTSLIBPATH):$(LIBS_HEPMC_PATH):$(LIBS_CLHEP_PATH):$(LD_LIBRARY_PATH) >> ldlp.sh
+	@echo export DYLD_LIBRARY_PATH=$(MYPYTHIA6LIBPATH):$(MYTESTSLIBPATH):$(LIBS_HEPMC_PATH):$(LIBS_CLHEP_PATH):$(LD_LIBRARY_PATH) >> ldlp.sh
+
+pythia6_lhapdf: $(MYPYTHIA6LIBPATH)/$(MYPYTHIA6LIBNAME1)
+	@mkdir -p $(BINDIR)
+	@mkdir -p $(TMPDIR)
+	$(FC) $(FFLAGS) $(INCLUDE_PYTHIA6) $@.f -c -o $(TMPDIR)/$@.o
+	$(CXX) $(CXXFLAGS) $(LIBS_PYTHIA6_PATH)/pydata.o $(TMPDIR)/$@.o -o $(BINDIR)/$@.exe \
+	-L$(MYPYTHIA6LIBPATH) -lpythia6 -lpythia6_dummy \
+	-L$(MYLHAPDFLIBPATH) -lLHAPDF \
+	$(FLIBS)
+	@ln -fs $(BINDIR)/$@.exe ./$@.exe
+	@echo export LHAPATH=$(LHAPDF_PATH)/../share/PDFsets > ldlp.sh
+	@echo export LD_LIBRARY_PATH=$(MYPYTHIA6LIBPATH):$(MYLHAPDFLIBPATH):$(MYTESTSLIBPATH):$(LD_LIBRARY_PATH) >> ldlp.sh
+	@echo export DYLD_LIBRARY_PATH=$(MYPYTHIA6LIBPATH):$(MYLHAPDFLIBPATH):$(MYTESTSLIBPATH):$(LD_LIBRARY_PATH) >> ldlp.sh
+
+pythia6_test2: $(MYPYTHIA6LIBPATH)/$(MYPYTHIA6LIBNAME1)
+	@mkdir -p $(BINDIR)
+	@mkdir -p $(TMPDIR)
+	$(FC) $(FFLAGS) $(INCLUDE_PYTHIA6) $@.F -c -o $(TMPDIR)/$@.o
+	$(CXX) $(CXXFLAGS) $(LIBS_PYTHIA6_PATH)/pydata.o $(TMPDIR)/$@.o -o $(BINDIR)/$@.exe \
+	-L$(MYPYTHIA6LIBPATH) -lpythia6 -lpythia6_dummy \
+	-L$(MYLHAPDFLIBPATH) -lLHAPDF \
+	-L$(MYTESTSLIBPATH) -ltests -lcernlibgenser \
+	$(FLIBS)
+	@ln -fs $(BINDIR)/$@.exe ./$@.exe
+	@echo export LHAPATH=$(LHAPDF_PATH)/../share/PDFsets > ldlp.sh 	
+	@echo export LD_LIBRARY_PATH=$(MYPYTHIA6LIBPATH):$(MYLHAPDFLIBPATH):$(MYTESTSLIBPATH):$(LD_LIBRARY_PATH) >> ldlp.sh
+	@echo export DYLD_LIBRARY_PATH=$(MYPYTHIA6LIBPATH):$(MYLHAPDFLIBPATH):$(MYTESTSLIBPATH):$(LD_LIBRARY_PATH) >> ldlp.sh
+
+pythia6_test3: $(MYPYTHIA6LIBPATH)/$(MYPYTHIA6LIBNAME1)
+	@mkdir -p $(BINDIR)
+	@mkdir -p $(TMPDIR)
+	$(FC) $(FFLAGS) -I$(PYTHIA6_PATH)/include $@.F -c -o $(TMPDIR)/$@.o
+	$(CXX) $(CXXFLAGS) $(LIBS_PYTHIA6_PATH)/pydata.o $(TMPDIR)/$@.o -o $(BINDIR)/$@.exe \
+	-L$(MYPYTHIA6LIBPATH) -lpythia6 -lpythia6_dummy -lpythia6_pdfdummy \
+	-L$(MYTESTSLIBPATH) -ltests -lcernlibgenser \
+	$(FLIBS)
+	@ln -fs $(BINDIR)/$@.exe $@.exe
+	@echo export LD_LIBRARY_PATH=$(MYPYTHIA6LIBPATH):$(MYTESTSLIBPATH):$(LD_LIBRARY_PATH) > ldlp.sh
+	@echo export DYLD_LIBRARY_PATH=$(MYPYTHIA6LIBPATH):$(MYTESTSLIBPATH):$(LD_LIBRARY_PATH) >> ldlp.sh
+
+pythia6_test4: $(MYPYTHIA6LIBPATH)/$(MYPYTHIA6LIBNAME1)
+	@mkdir -p $(BINDIR)
+	@mkdir -p $(TMPDIR)
+	$(FC) $(FFLAGS) -I$(PYTHIA6_PATH)/include $@.F -c -o $(TMPDIR)/$@.o
+	$(CXX) $(CXXFLAGS) $(LIBS_PYTHIA6_PATH)/pydata.o $(TMPDIR)/$@.o -o $(BINDIR)/$@.exe \
+	-L$(MYPYTHIA6LIBPATH) -lpythia6 -lpythia6_dummy -lpythia6_pdfdummy \
+	-L$(MYTESTSLIBPATH) -ltests -lcernlibgenser \
+	$(FLIBS)
+	@ln -fs $(BINDIR)/$@.exe $@.exe
+	@echo export LD_LIBRARY_PATH=$(MYPYTHIA6LIBPATH):$(MYTESTSLIBPATH):$(LD_LIBRARY_PATH) > ldlp.sh
+	@echo export DYLD_LIBRARY_PATH=$(MYPYTHIA6LIBPATH):$(MYTESTSLIBPATH):$(LD_LIBRARY_PATH) >> ldlp.sh
+
+# Clean up: remove executables and outdated files.
+.PHONY: clean distclean
+
+clean:
+	rm -f $(PROGNAME).exe ldlp.sh
+
+distclean: clean
+	rm -f $(BINDIR)/$(PROGNAME).exe
+

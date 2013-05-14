@@ -1,0 +1,893 @@
+#!/bin/bash -e
+pwd
+echo "===> [dotest] arguments = $*"
+echo ""
+
+source /afs/.cern.ch/sw/lcg/external/MCGenerators/.work/GBUILD/noarch/TOOLS/genser.rc
+
+
+#
+# Variables for the run:
+#------------------------------------------------------
+#- Generators to be run (possible values are mcg, mcgrep and mcgtest)
+#- If the value is mcgrep a generator in MCGenerators replica is tested
+#- If the value is mcgtest a generator in ${MCGTESTDIR} is tested
+
+#run_pythia6=mcg
+#run_herwig=mcgtest
+#run_jimmy=mcg
+#run_photos=mcg
+#run_photospp=mcg     
+#run_herwigpp=mcgtest
+#run_thepeg=mcgtest
+####run_isajet=mcg
+#run_evtgen=lcgcmt64
+#run_evtgenlhc=mcgtest
+#run_lhapdf=mcg
+#run_mcfm=mcg
+#run_tauola=mcgrep
+#run_tauolapp=mcg
+#run_pythia8=mcg
+#run_pyquen=mcg
+#run_hijing=mcgrep
+#run_hydjet=mcgtest
+#run_hydjet=mcgrep
+#run_cascade=mcg
+#run_isajet=mcg
+#run_toprex=mcg
+#run_alpgen=mcg
+#run_sherpa=mcg
+#run_charybdis=mcg
+#run_phojet=mcg
+#run_winhac=mcg
+#run_powheg=mcg
+#run_powhegbox=mcg
+#run_mcatnlo=mcg
+#run_epos=mcg
+
+# default values:
+default_mode="lcgcmt64"
+mode=$default_mode
+no_compare=0   # =1 if no comparison of test results with test0*.dat is needed
+args=""        # configure settings
+
+#check arguments:
+readonly generators=" alpgen blackmax cascade charybdis charybdis2 epos evtgen evtgenlhc hej herwig herwigpp hijing hydjet isajet jimmy lhapdf mcatnlo mcfm phojet photos photospp pomwig powheg powhegbox pyquen pythia6 pythia8 sherpa starlight tauola tauolapp thepeg toprex vincia winhac "
+
+for arg in $* ; do
+  option=${arg/=*/}
+  value=${arg/*=/}
+  case "${option}" in
+    "--cd" ) cd $value; pwd ;;
+    "--mcgtestdir" )  export MCGTESTDIR=$value ;;
+    "--help" )
+      echo "The script for testing generators on current platform"
+      echo "  ./dotest {options}"
+      echo ""
+      echo "  Options:"
+      echo "    --no_compare   - don't do the comparision with reference data"
+      echo "    --mode={value} - place in which the generator situated, values:"
+      echo '                       mcg          - in $MCGENERATORS'
+      echo '                       hepmcX.YY.ZZ - in parallel tree MCGenerators_hepmcX.YY.ZZ'
+      echo '                       lcgcmtNNN    - in parallel tree MCGenerators_lcgcmtNNN'
+      echo '                       mcgrep       - in $MCGREPLICA'
+      echo '                       g3shadow     - in GENSER3 shadow area:'
+      echo '                                      $MCGREPLICA/.work/GENSER-BUILD/external/MCGenerators'
+      echo '                       mcgtest      - in $MCGTESTDIR, all dependencies are in $MCGENERATORS'
+      echo "   --vers_{name}={version}"
+      echo "                   - which generator to test"
+      echo "                       name    - generator name"
+      echo "                       version - generator version"
+      echo ""
+      echo "  List of supported generators:"
+      echo $generators | xargs -d " " -L 1 | sort | xargs -n 10 echo "   "
+      exit
+      ;;
+    "--no_compare" ) no_compare=1 ;;
+    "--mode"       ) mode=$value ;;
+    --vers_* )
+      # remove "--vers_" from  $option, to have generator name
+      gen=${option/--vers_/}
+
+      # check generator name
+      if [ "$(echo $generators | grep $gen)" = "" ] ; then
+        echo "ERROR: unknown generator name: $gen"
+        echo "       available generators: $generators"
+        echo "       check your command line parameters"
+        exit 1
+      fi
+      
+      readonly run_${gen}=$mode
+      args="$args --with-${gen}version=${value}"
+
+      # specify additional dependencies
+      case "${gen}-${value}" in
+        "herwigpp-2.3.0" ) args="$args --with-thepegversion=1.4.0" ;;
+        "herwigpp-2.3.1" ) args="$args --with-thepegversion=1.4.1" ;;
+        "herwigpp-2.3.2" ) args="$args --with-thepegversion=1.4.2" ;;
+        "herwigpp-2.4.0" ) args="$args --with-thepegversion=1.5.0" ;;
+        "herwigpp-2.4.2" ) args="$args --with-thepegversion=1.6.1" ;;
+        "herwigpp-2.5.0" ) args="$args --with-thepegversion=1.7.0" ;;
+        "herwigpp-2.5.1" ) args="$args --with-thepegversion=1.7.1" ;;
+        "herwigpp-2.5.2" ) args="$args --with-thepegversion=1.7.3" ;;
+        "herwigpp-2.6.0" ) args="$args --with-thepegversion=1.8.0" ;;
+        "herwigpp-2.6.1a" ) args="$args --with-thepegversion=1.8.1" ;;
+        "herwigpp-2.6.2" ) args="$args --with-thepegversion=1.8.2" ;;
+        "herwigpp-2.6.3" ) args="$args --with-thepegversion=1.8.3" ;;
+        
+        "vincia-1.0.24"  ) args="$args --with-pythia8version=142" ;;
+        "vincia-1.0.25"  ) args="$args --with-pythia8version=145" ;;
+        "vincia-1.0.26"  ) args="$args --with-pythia8version=145" ;;
+        "vincia-1.0.27"  ) args="$args --with-pythia8version=157" ;;
+        "vincia-1.0.28"  ) args="$args --with-pythia8version=165" ;;
+        "vincia-1.0.29"  ) args="$args --with-pythia8version=175" ;;
+        
+        herwigpp-* | vincia-* )
+          echo "ERROR: missing additional dependency specification for ${gen}-${value}"
+          echo "       edit file ./dotest to specify the dependency"
+          exit 1
+          ;;
+        
+        "sherpa-1.2.0"  ) args="$args --with-hepmcversion=2.03.09" ;;
+      esac
+
+      ;;
+    * )
+      echo "ERROR: ${arg}: unknown option. Exit." >&2
+      exit 1
+      ;;
+  esac
+done
+
+# default mode
+if [[ "$mode" == "mcgtest" ]] ; then
+  mode=$default_mode
+fi
+
+args="${args} --mode=$mode"
+
+# select library type
+libtype=shared
+if [ "x${TESTS_ARCHIVE}" = "x1" ] ; then
+  libtype=archive
+fi
+
+for gen in $generators; do
+  arg=run_${gen}
+  run_generator=${!arg}
+  if [ "x${run_generator}" != "x" ] ; then
+    args="${args} --run-${gen}=${run_generator}"
+  fi
+done
+
+source ./configure "${args}"
+echo ""
+
+echo "PLATFORM = $PLATFORM"
+echo "Library type = ${libtype}"
+echo ""
+
+source $LIBTESTS_PATH/config1.mk
+cp -f $LIBTESTS_PATH/config.mk libtests.mk
+
+#====== End of settings. =====================
+
+# function to add an output of a particular test to test.dat
+add_to_test () {
+  # 1st parameter - name of file with test results
+  local testf=$1
+  # 2nd parameter - test name
+  local testname=$2
+  
+  if [ -s $testf ] ; then
+    cat $testf >> test.dat
+  else
+    echo "WARNING: can not find file $testf with test results of test $testname"
+    echo "         most probably this test failed to run"
+    echo "         error record added to file test.dat"
+    
+    echo "$2 -999 1 1 ! ERROR" >> test.dat
+  fi
+}
+
+# the function test the existence of path
+check_path () {
+  # first parameter is variable name
+  local pathname=$1
+  # dereference variable to have path
+  local path=${!pathname}
+
+  if ! test -d "$path" ; then
+    echo "ERROR: can't find path pointed by $pathname"
+    echo "       $pathname=$path"
+    exit 1
+  fi
+
+  echo "$pathname = $path"
+}
+
+check_paths () {
+  for arg in $* ; do
+    check_path $arg
+  done
+}
+
+# the function executes standard testing sequence
+do_standard_test_sequence () {
+  # 1st parameter - generator name
+  local genname=$1
+  # 2st parameter - test name
+  local testname=$2
+
+  echo
+  echo "${testname} ---------------------------"
+  echo
+  rm -f testi.dat
+  make -f Makefile.$genname ${testname}
+
+  if [[ "$?" != 0 ]]; then
+    echo "ERROR: make error"
+    exit 1
+  fi
+
+  cat ldlp.sh 
+  ( . ./ldlp.sh ;   ./${testname}.exe  )
+  add_to_test testi.dat ${testname}
+  make -f Makefile.$genname PROGNAME=${testname} clean
+}
+
+# the function implements special kind of generator testing:
+# it tries to install generator from source tarball
+do_hot_install_test () {
+  # 1st parameter - generator name
+  local genname=$1
+  # 2nd parameter - value of $run_xxx for corresponding generator
+  local run_gen=$2
+
+  if [ "$run_gen" = "mcgtest" ] ; then
+    if [ "${MCGTESTDIR}" != "" ] ; then
+      echo "Installing $genname from GENSER src tarball if not yet done..."
+      echo "installation prefix = $MCGTESTDIR"
+      mkdir -p $MCGTESTDIR
+      make -f Makefile.$genname install
+      echo
+    fi
+  fi
+}
+
+
+#===============================================================
+
+echo " --- Start test run ------------------------"
+
+rm -f test.dat result.txt testi.dat
+
+# check LIBTESTS package as all tests depend on it:
+check_paths LIBTESTS_PATH
+
+#- Pythia6  --
+if [ "x${run_pythia6}" != "x" ] ; then
+  do_hot_install_test pythia6 $run_pythia6
+  check_paths PYTHIA6_PATH HEPMC_PATH CLHEP_PATH LHAPDF_PATH
+#  do_standard_test_sequence pythia6 pythia6_hepmc
+#  do_standard_test_sequence pythia6 pythia6_lhapdf
+  do_standard_test_sequence pythia6 pythia6_test2
+#  do_standard_test_sequence pythia6 pythia6_test3
+#  do_standard_test_sequence pythia6 pythia6_test4
+fi
+
+#- Herwig  --
+if [ "x${run_herwig}" != "x" ] ; then
+  do_hot_install_test herwig $run_herwig
+  check_paths HERWIG_PATH LHAPDF_PATH HEPMC_PATH CLHEP_PATH
+  do_standard_test_sequence herwig herwig_hepmc
+#  do_standard_test_sequence herwig herwig_lhapdf
+fi
+
+#- Jimmy  --
+if [ "x${run_jimmy}" != "x" ] ; then
+  check_paths JIMMY_PATH HERWIG_PATH PYTHIA6_PATH
+  do_standard_test_sequence jimmy jimmy_test1
+#  do_standard_test_sequence jimmy jimmy_test2
+fi
+
+#- pomwig  --
+if [ "x${run_pomwig}" != "x" ] ; then
+  check_paths POMWIG_PATH HERWIG_PATH
+  do_standard_test_sequence pomwig pomwig_test1
+fi
+
+#- hej  --
+if [ "x${run_hej}" != "x" ] ; then
+ echo -e "\n ---  running hej "${HEJ_VERSION}" test  ---\n"
+  check_paths HEJ_PATH
+
+  echo
+  echo "hej_test0 ---------------------------"
+  echo
+  rm -f testi.dat
+  make -f Makefile.hej hej_test0_bin
+
+  cat ldlp.sh
+  source ldlp.sh
+
+  echo "Executable works, output in hej.out ---------------------------"
+  ./JetGen input_jets_vanilla > hej.out
+  cat hej.out |  grep 'Cross section passing cuts' | sed -e 's/Cross section passing cuts (mub): //g' | sed -e 's,+/- ,,g' > hej_val.out
+
+  make -f Makefile.hej PROGNAME=hej_test0 clean
+
+  do_standard_test_sequence hej hej_test0
+  rm hej_*.out
+fi
+
+#- blackmax  --
+if [ "x${run_blackmax}" != "x" ] ; then
+ echo -e "\n ---  running blackmax "${BLACKMAX_VERSION}" test  ---\n"
+  check_paths BLACKMAX_PATH
+  
+  echo
+  echo "blackmax_test0 ---------------------------"
+  echo
+  
+  # run generator
+  source ${BLACKMAX_PATH}/bin/setup.sh
+  ln -sf blackmax.parameter.txt parameter.txt
+  ln -sf ${SHARE_BLACKMAX_PATH}/spectrum
+  ln -sf ${SHARE_BLACKMAX_PATH}/yoshino
+  ${BLACKMAX_PATH}/bin/BlackMax || exit 1
+  
+  # extract crosssection:
+  xs=$(cat output.txt | grep "^total cross section" | cut -d = -f 3 | ( read a b && echo $a ) )
+  err=$(cat output.txt | grep "^cross section error" | cut -d = -f 3 | ( read a b && echo $a ) )
+  echo "blackmax_test0    1     $xs   $err" > test.dat
+  
+  # create symlink to BlackMax executable to extract dependencies:
+  ln -sf ${BLACKMAX_PATH}/bin/BlackMax blackmax_test0.exe
+  
+  # remove imtermediate files:
+  rm -f parameter.txt spectrum yoshino output.txt BlackMaxLHArecord.lhe
+fi
+
+#- Herwig++  --
+if [ "x${run_herwigpp}" != "x" ] ; then
+  if [ "${libtype}" = "archive" ] ; then
+    echo "ERROR: can't test archive libraries of Herwig++" >&2
+    echo "        only shared libs available" >&2
+    exit 1
+  fi
+  
+  progname="herwigpp_test1"
+  echo
+  echo ${progname} ---------------------------
+  echo
+
+  do_hot_install_test herwigpp $run_herwigpp
+  check_paths HERWIGPP_PATH THEPEG_PATH HEPMC_PATH GSL_PATH LHAPDF_PATH BOOST_PATH
+
+  echo -e "\n ---   running Herwig++ "${HERWIGPP_VERSION}" test  ---\n"
+  
+  make -f Makefile.herwigpp herwigpp_test1
+  source ./ldlp.sh
+  
+  mkdir -p herwigpp-work/
+  cd herwigpp-work/
+  
+  if [[ "${HERWIGPP_VERSION}" < "2.4.0" ]] ; then
+    _input_file_=../herwigpp_test1-before2.4.in
+    echo "version before 2.4"
+  else
+    _input_file_=../herwigpp_test1.in
+  fi
+  cp $_input_file_ LHC.in
+
+  readonly rpo=$HERWIGPP_PATH/share/Herwig++/HerwigDefaults.rpo
+  if ! test -s $rpo ; then
+    echo "ERROR: Herwig++ test: can't find HerwigDefaults.rpo" >&2
+    echo "       search path is $rpo" >&2
+    exit 1
+  fi
+  
+  # prepare command to execute herwig++
+  readonly rpo_opt="--repo"
+  if [[ "$HERWIGPP_VERSION" < "2.6.1" ]] ; then
+    rpo_opt="-r"
+  fi
+  
+  echo "LD_LIBRARY_PATH = $LD_LIBRARY_PATH"
+  echo "DYLD_LIBRARY_PATH = $DYLD_LIBRARY_PATH"
+  
+  echo "-> part1"
+  # default LHC: p p --> gamma,Z --> l+ l-
+  nevtot="2000"
+  $HERWIGPP_PATH/bin/Herwig++ read $rpo_opt $rpo           LHC.in # hard processes
+  $HERWIGPP_PATH/bin/Herwig++ run  $rpo_opt $rpo -N$nevtot LHC.run # hard processes
+  
+  if [[ "$?" != "0" ]] ; then
+    echo "ERROR: failed to run test"
+    exit 1
+  fi
+  
+  #extract XS total in [mb] and its error
+  xs=$(cat LHC.out | grep "Total" | head -n 1 | grep -o "[^ ]*$" | sed -e 's,([0-9]*),,' -e 's,[Ee],*10^,' -e 's,+,,')
+  xsmb=$(echo "scale=10; $xs / 1000000." | bc -q)
+  erxs=$(echo "scale=12; $xsmb / sqrt($nevtot)" | bc -q)
+  echo "$progname  1   $xsmb   $erxs" > testi.dat
+  cd ..
+  add_to_test herwigpp-work/testi.dat "$progname"
+  
+  
+  echo "-> part 2"
+  bin/readherwigpp.exe "herwigpp-work/LHC.hepmc"
+  add_to_test testi.dat "$progname"
+  rm -rf herwigpp-work/
+  make -f Makefile.herwigpp clean
+fi
+
+#- Tauola  --
+if [ "${run_tauola}" != "" ] ; then
+  echo -e "\n ---  running tauola "${TAUOLA_VERSION}" test  ---\n"
+  do_hot_install_test tauola $run_tauola
+  check_paths PYTHIA6_PATH PHOTOS_PATH TAUOLA_PATH
+  do_standard_test_sequence tauola tauola_test1
+fi
+
+#- Tauola++  --
+if [ "${run_tauolapp}" != "" ] ; then
+  echo -e "\n ---  running tauola++ "${TAUOLAPP_VERSION}" test  ---\n"
+  
+  do_hot_install_test tauolapp $run_tauolapp
+  check_paths PYTHIA8_PATH TAUOLAPP_PATH
+  export PYTHIA8DATA=${PYTHIA8_PATH}/xmldoc
+  do_standard_test_sequence tauolapp tauolapp_test1
+fi
+
+#- Photos -
+if [ "${run_photos}" != "" ] ; then
+  echo -e "\n ---  running photos "${PHOTOS_VERSION}" test  ---\n"
+  do_hot_install_test photos $run_photos
+  check_paths PHOTOS_PATH PYTHIA6_PATH
+  do_standard_test_sequence photos photos_test1
+fi
+
+#- Photos++  --
+if [ "${run_photospp}" != "" ] ; then
+  echo -e "\n ---  running photos++ "${PHOTOSPP_VERSION}" test  ---\n"
+  
+  do_hot_install_test photospp $run_photospp
+  check_paths PYTHIA8_PATH PHOTOSPP_PATH
+  export PYTHIA8DATA=${PYTHIA8_PATH}/xmldoc
+  do_standard_test_sequence photospp photospp_test1
+#  do_standard_test_sequence photospp photospp_test2
+fi
+
+#- Pythia8 -
+if [ "x${run_pythia8}" != "x" ] ; then
+  echo -e "\n ---  running pythia8 "${PYTHIA8_VERSION}" + HepMC test  ---\n"
+  do_hot_install_test pythia8 $run_pythia8
+  check_paths PYTHIA8_PATH
+  export PYTHIA8DATA=${PYTHIA8_PATH}/xmldoc
+  do_standard_test_sequence pythia8 pythia8_test1
+#  do_standard_test_sequence pythia8 pythia8_test2
+#  do_standard_test_sequence pythia8 pythia8_test3
+#  do_standard_test_sequence pythia8 pythia8_test4
+fi
+
+#- epos -
+if [ "x${run_epos}" != "x" ] ; then
+  echo -e "\n ---  running epos "${EPOS_VERSION}" test  ---\n"
+  do_hot_install_test epos $run_epos
+  check_paths EPOS_PATH
+  make -f Makefile.epos epos_test1
+  rm -f testi.dat
+  cat ldlp.sh
+  cp -f ${EPOS_PATH}/crmc.param .
+  ( . ./ldlp.sh ;   ./epos_test1.exe -T 1 )
+  add_to_test testi.dat epos_test1
+  make -f Makefile.epos PROGNAME=epos_test1 clean
+fi
+
+#- PYQUEN -
+if [ "x${run_pyquen}" != "x" ] ; then
+  echo -e "\n ---  running pyquen "${PYQUEN_VERSION}" test  ---\n"
+  do_hot_install_test pyquen $run_pyquen
+  check_paths PYQUEN_PATH PYTHIA6_PATH
+  do_standard_test_sequence pyquen pyquen_test1
+fi
+
+#- MCFM -
+if [ "x${run_mcfm}" != "x" ] ; then
+ echo -e "\n ---  running mcfm "${MCFM_VERSION}" test  ---\n"
+#  do_hot_install_test mcfm $run_mcfm
+  check_paths MCFM_PATH
+
+  echo
+  echo "mcfm_test0 bin ---------------------------"
+  echo
+  rm -f testi.dat
+  make -f Makefile.mcfm_bin mcfm_test0_bin
+
+  if [[ "$?" != 0 ]]; then
+    echo "ERROR: make error"
+    exit 1
+  fi
+
+  cat ldlp.sh
+  source ldlp.sh
+  ./mcfm_test0.exe
+  make -f Makefile.mcfm_bin PROGNAME=mcfm_test0 clean
+
+  sed -e '/Central value/!d; s/[A-Za-z *]//g' pdferrors.res > mcfm_val.out
+  sed -e '/Fractional error/!d; s/[A-Za-z *]//g' pdferrors.res > mcfm_err.out
+
+  do_standard_test_sequence mcfm mcfm_test0
+  rm mcfm_*.out
+fi
+
+#- HIJING -
+if [ "x${run_hijing}" != "x" ] ; then
+ echo -e "\n ---  running hijing "${HIJING_VERSION}" test  ---\n"
+#  do_hot_install_test hijing $run_hijing
+  check_paths HIJING_PATH
+  do_standard_test_sequence hijing hijing_test0
+fi
+
+#- HYDJET -
+if [ "x${run_hydjet}" != "x" ] ; then
+ echo -e "\n ---  running hydjet "${HYDJET_VERSION}" test  ---\n"
+ case "${HYDJET_VERSION}" in
+   "1.1" ) progname=hydjet_test0 ;;
+   "1.2" ) progname=hydjet_test1 ;;
+   "1.3" ) progname=hydjet_test2 ;;
+   *     ) progname=hydjet_test3 ;;
+ esac
+
+ rm -f testi.dat
+ make -f Makefile.hydjet hydjet_test1 PROGNAME=${progname}
+ cat ldlp.sh
+ source ldlp.sh
+ ./hydjet_test1.exe
+ add_to_test testi.dat ${progname}
+ make -f Makefile.hydjet PROGNAME=hydjet_test1 clean
+fi
+
+#- CASCADE -
+if [ "x${run_cascade}" != "x" ] ; then
+ echo -e "\n ---  running cascade "${CASCADE_VERSION}" test  ---\n"
+ progname=cascade_test1
+ rm -f testi.dat
+ make -f Makefile.cascade cascade_test1 PROGNAME=${progname}
+ cat ldlp.sh
+ source ldlp.sh
+ ./cascade_test1.exe < Cascade/steer_pp
+# ./cascade_test1.exe < ${CASCADE_PATH}/../share/data/steer_pp
+ add_to_test testi.dat ${progname}
+ make -f Makefile.cascade PROGNAME=${progname} clean
+fi
+
+#- ISAJET -
+if [ "x${run_isajet}" != "x" ] ; then
+  echo -e "\n ---  running isajet "${ISAJET_VERSION}" test  ---\n"
+  check_paths ISAJET_PATH
+  do_standard_test_sequence isajet isajet_test1
+fi
+
+#- CHARYBDIS -
+if [ "x${run_charybdis}" != "x" ] ; then
+  echo -e "\n ---  running charybdis "${CHARYBDIS_VERSION}" test  ---\n"
+  check_paths CHARYBDIS_PATH PYTHIA6_PATH HERWIG_PATH
+
+  if test x`echo ${CHARYBDIS_VERSION} | grep -E "h$"` = x ; then
+    do_standard_test_sequence charybdis charybdis_test1
+  fi
+
+  do_standard_test_sequence charybdis charybdis_test2
+fi
+
+#- CHARYBDIS2 -
+if [ "x${run_charybdis2}" != "x" ] ; then
+  echo -e "\n ---  running charybdis2 "${CHARYBDIS2_VERSION}" test  ---\n"
+  check_paths CHARYBDIS2_PATH PYTHIA6_PATH HERWIG_PATH
+
+  do_standard_test_sequence charybdis2 charybdis2_test1
+#  do_standard_test_sequence charybdis2 charybdis2_test2
+fi
+
+#- PHOJET -
+if [ "x${run_phojet}" != "x" ] ; then
+  echo -e "\n ---  running phojet "${PHOJET_VERSION}" test  ---\n"
+  
+  check_paths PHOJET_PATH PYTHIA6_PATH HEPMC_PATH
+  do_standard_test_sequence phojet phojet_test
+fi
+
+#- VINCIA  --
+if [ "x${run_vincia}" != "x" ] ; then
+  echo -e "\n ---  running vincia "${VINCIA_VERSION}" test  ---\n"
+  check_paths VINCIA_PATH PYTHIA8_PATH
+
+  export PYTHIA8DATA=${PYTHIA8_PATH}/xmldoc
+  do_standard_test_sequence vincia vincia_test1
+
+fi
+
+#- WINHAC -
+if [ "x${run_winhac}" != "x" ] ; then
+  echo -e "\n ---  running winhac "${WINHAC_VERSION}" test  ---\n"
+  check_paths WINHAC_PATH
+  do_standard_test_sequence winhac winhac_test
+fi
+
+#- POWHEG -
+if [ "x${run_powheg}" != "x" ] ; then
+  echo -e "\n ---  running powheg "${POWHEG_VERSION}" test  ---\n"
+  check_paths POWHEG_PATH
+  do_standard_test_sequence powheg powheg_test
+fi
+
+#- POWHEGBOX -
+if [ "x${run_powhegbox}" != "x" ] ; then
+  echo -e "\n ---  running powhegbox "${POWHEGBOX_VERSION}" test  ---\n"
+  check_paths POWHEGBOX_PATH
+
+  echo
+  echo "powheg-box test ---------------------------"
+  echo
+  rm -f testi.dat
+  rm -f *.lhe
+  make -f Makefile.powhegbox powhegbox_bin
+
+  if [[ "$?" != 0 ]]; then
+    echo "ERROR: make error"
+    exit 1
+  fi
+
+  cat ldlp.sh
+  source ldlp.sh
+  cd powhegbox_bin
+  echo "z" > z.help
+  echo "start of executable  ---------------------------"
+  ./powhegbox.exe < z.help
+  rm -f z.help
+  mv z-events.lhe ../
+  cd ..
+  rm -r powhegbox_bin
+  
+  export PYTHIA8DATA=${PYTHIA8_PATH}/xmldoc
+  echo "start reading .lhe file  ---------------------------"
+  do_standard_test_sequence powhegbox powhegbox_test1
+fi
+
+#- MCatNLO -
+if [ "x${run_mcatnlo}" != "x" ] ; then
+  echo -e "\n ---  running mcatnlo "${MCATNLO_VERSION}" test  ---\n"
+  check_paths MCATNLO_PATH
+  progname=mcatnlo
+  make -f Makefile.mcatnlo mcatnlo_test
+  add_to_test testi.dat ${progname}
+fi
+
+#- Alpgen -
+if [ "x${run_alpgen}" != "x" ] ; then
+ echo -e "\n ---  running alpgen "${ALPGEN_VERSION}" test  ---\n"
+ check_paths ALPGEN_PATH PYTHIA6_PATH HEPMC_PATH CLHEP_PATH
+
+ rm -f testi.dat
+ rm -rf tmpalpgen
+ mkdir tmpalpgen
+ cd tmpalpgen
+ cp -rf ${ALPGEN_PATH}/../share/examples/* .
+ if ! test -f configure.ac ; then
+   ./configure --with-alpgeninstalled=${ALPGEN_PATH}/../share \
+             --with-alpgenlibs=${LIBS_ALPGEN_PATH} \
+             --with-pythia6=${LIBS_PYTHIA6_PATH}/archive \
+             --with-tests=${LIBS_LIBTESTS_PATH}/archive \
+             --with-hepmc=${HEPMC_PATH} \
+             --with-clhep=${CLHEP_PATH}
+ else
+   autoreconf --install --force && \
+   ./configure --with-alpgen=${ALPGEN_PATH} \
+             --with-pythia6=${LIBS_PYTHIA6_PATH}/../ \
+             --with-tests=${LIBS_LIBTESTS_PATH}/../ \
+             --with-hepmc=${HEPMC_PATH} \
+             --with-clhep=${CLHEP_PATH}
+ fi
+ 
+ _LD_LIBRARY_PATH_tmp=${LD_LIBRARY_PATH}:${LIBS_ALPGEN_PATH}:${LIBS_PYTHIA6_PATH}:${LIBS_LIBTESTS_PATH}:${HEPMC_PATH}/lib:${CLHEP_PATH}/lib
+ make zjet || exit 1
+ LD_LIBRARY_PATH=${_LD_LIBRARY_PATH_tmp} ./zjet < ../inputalpgen
+ LD_LIBRARY_PATH=${_LD_LIBRARY_PATH_tmp} ./zjet < ../inputalpgen2
+ 
+ make pyuserex2 || exit 1
+ mkdir -p ../bin
+ cp -f pyuserex2 ../bin/alpgen_test1.exe
+ if test -s ./config.sh ; then
+   . ./config.sh
+ fi
+ #echo LD_LIBRARY_PATH=${_LD_LIBRARY_PATH_tmp} ./pyuserex2.exe 
+ #< ../inputalpgen3
+ LD_LIBRARY_PATH=${_LD_LIBRARY_PATH_tmp} ./pyuserex2 < ../inputalpgen3
+ unset _LD_LIBRARY_PATH_tmp
+ make clean
+ 
+ # correct test name:
+ sed 's,^alpgen ,alpgen_test1 ,' -i testi.dat
+ 
+ cd ..
+ add_to_test tmpalpgen/testi.dat alpgen
+ rm -fr tmpalpgen/
+ cat > alpgen_test1.comment << EOC
+ #@# p p --> Z + jets
+ #@# (1) total cross section in [mb]
+ #@# (2) fraction of 2lepton+- + >=2 jets events
+ #@# Alpgen version is ${ALPGEN_VERSION}
+EOC
+fi
+
+#- Sherpa -------------------------------
+# Sherpa test1
+if [ "x${run_sherpa}" != "x" ] ; then
+  echo "Running tests for sherpa ${SHERPA_VERSION} ..."
+  echo ""
+  
+  do_hot_install_test sherpa $run_sherpa
+  check_paths SHERPA_PATH HEPMC_PATH LHAPDF_PATH FASTJET_PATH RIVET_PATH BOOST_PATH 
+  
+  do_standard_test_sequence sherpa sherpa_test1
+  echo "-> part 2"
+  make -f Makefile.sherpa sherpa_readtest1
+  . ./ldlp.sh
+  bin/sherpa_readtest1.exe "Sherpa/sherpa.hepmc2g"
+  add_to_test testi.dat sherpa_test1
+  make -f Makefile.sherpa clean
+  rm -f Sherpa/sherpa.hepmc2g
+  
+  do_standard_test_sequence sherpa sherpa_test2
+  echo "-> part 2"
+  make -f Makefile.sherpa sherpa_readtest2
+  . ./ldlp.sh
+  bin/sherpa_readtest2.exe "Sherpa/sherpa2.hepmc2g"
+  add_to_test testi.dat sherpa_test2
+  make -f Makefile.sherpa clean
+  rm -f Sherpa/sherpa2.hepmc2g
+ 
+  rm -rf Sherpa/{hepmc*,xsec.out,_sherpa_logfile_,Sherpa_References.tex}
+fi
+
+
+#- starlight  --
+if [ "x${run_starlight}" != "x" ] ; then
+ echo -e "\n ---  running starlight "${STARLIGHT_VERSION}" test  ---\n"
+  check_paths STARLIGHT_PATH
+  
+  rm -f testi.dat
+  make -f Makefile.starlight starlight_test0_bin
+  
+  cat ldlp.sh
+  source ldlp.sh
+  
+  echo "Executable works, output in starlight.out ---------------------------"
+  sed -e 's/N_EVENTS = 10/N_EVENTS = 1000/g' -i slight.in
+  ./starlight.exe > starlight.out
+  cat starlight.out | grep '\(Cross section \| number of events \)' | sed -e 's/Cross section (mb)://g' -e 's/number of events to generate ...........//g' > starlight_val.out
+  make -f Makefile.starlight PROGNAME=starlight clean
+  
+  do_standard_test_sequence starlight starlight_test0
+  rm starlight_*.out slight.in
+fi
+
+
+#- TopRex: ----------------------------------------------------
+if [ "${run_toprex}" != "" ] ; then
+  echo -e "\n ---  running toprex "${TOPREX_VERSION}" test  ---\n"
+  check_paths TOPREX_PATH PYTHIA6_PATH
+  do_standard_test_sequence toprex toprex_test1
+fi
+
+#- LHAPDF -
+if [ "${run_lhapdf}" != "" ] ; then
+  do_hot_install_test lhapdf $run_lhapdf
+  echo -e "\n ---  running lhapdf "${LHAPDF_VERSION}" tests  ---\n"
+  check_paths LHAPDF_PATH
+  do_standard_test_sequence lhapdf lhapdf_test1
+#  do_standard_test_sequence lhapdf lhapdf_test2
+fi
+
+# lookup file at paths starting from $2
+# and create symlink to the first existing file with the name given in $1
+lookup_and_symlink () {
+  local symname=$1
+  local fpath=""
+  
+  while shift 1 ; do
+    local i=$1
+    if [[ "$i" = "" ]] ; then
+      continue
+    fi
+    
+    echo "Looking for $i ..."
+    
+    if [ -s $i ] ; then
+      fpath=$i
+      break
+    fi
+  done
+  
+  if [[ "$fpath" != "" ]] ; then
+    ln -sf -T $fpath $symname
+    echo "Symlinked: $symname -> $fpath"
+  else
+    rm -f $symname
+    echo  "ERROR: $symname is not found!"
+    return 1
+  fi
+}
+
+
+#- EVTGENLHC -
+if [ "x${run_evtgenlhc}" != "x" ] ; then
+  do_hot_install_test evtgenlhc $run_evtgenlhc
+  echo -e "\n ---  running evtgenlhc "${EVTGENLHC_VERSION}" tests  ---\n"
+  
+  echo "Setting up symlinks for EvtGenLHC data files:"
+  lookup_and_symlink DECAY.DEC \
+    "${EVTGENLHC_PATH}/../share/DecFiles/dkfiles/DECAY.DEC"
+  
+  lookup_and_symlink evt.pdl \
+    "${EVTGENLHC_PATH}/../share/DecFiles/scripts/evt.pdl"
+  
+  progname=evtgenlhc_test1
+  make -f Makefile.evtgenlhc ${progname}
+  cat ldlp.sh
+  source ldlp.sh
+  rm -f testi.dat
+  bin/${progname}.exe ddalitz 10000
+  add_to_test testi.dat ${progname}
+  make -f Makefile.evtgenlhc clean PROGNAME=${progname}
+fi
+
+
+#- EVTGEN -
+if [ "x${run_evtgen}" != "x" ] ; then
+  do_hot_install_test evtgen $run_evtgen
+  echo -e "\n ---  running evtgen "${EVTGEN_VERSION}" tests  ---\n"
+  
+  echo "Setting up symlinks for EvtGen data files:"
+  # the `find | sort | tail` is necessary to pick the latest available *.DEC file
+  lookup_and_symlink DECAY.DEC \
+    $(find ${EVTGEN_PATH}/share/*.DEC | sort | tail -n 1)
+  
+  lookup_and_symlink evt.pdl \
+    "${EVTGEN_PATH}/share/evt.pdl"
+  
+  progname=evtgen_test1
+  make -f Makefile.evtgen ${progname}
+  cat ldlp.sh
+  source ldlp.sh
+  rm -f testi.dat
+  bin/${progname}.exe ddalitz 10000
+  add_to_test testi.dat ${progname}
+  make -f Makefile.evtgen clean PROGNAME=${progname}
+fi
+
+
+#=================================================================================
+if [ "$no_compare" = "0" ] ; then
+  echo ""
+  echo " --- Comparing results ---"
+  echo "Current directory: $(pwd)"
+  echo "Test data: test.dat"
+  echo "Reference: reference.dat"
+  
+  # generate the html table with the results to be put to
+  # http://lcgapp.cern.ch/project/simu/generator/test.html
+  # will compare test data (file test.dat) with reference data (file reference.dat),
+  #   the latter can be a symlink to any file
+  ./cmpr.sh test.dat html > test-${PLATFORM}.html && \
+  echo "See tests results in test-${PLATFORM}.html"
+  echo ""
+fi
+
+echo "<=== [dotest]"
+
+exit
