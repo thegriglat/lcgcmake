@@ -19,7 +19,7 @@ ctest_configure(BUILD   ${CTEST_BINARY_DIRECTORY}
                 SOURCE  ${CTEST_SOURCE_DIRECTORY}
                 OPTIONS "-DCMAKE_INSTALL_PREFIX=${CTEST_BINARY_DIRECTORY}-install")
 ctest_build(BUILD ${CTEST_BINARY_DIRECTORY})
-ctest_test(ctest_test(PARALLEL_LEVEL ${ncpu})
+ctest_test(PARALLEL_LEVEL ${ncpu})
 ctest_submit()
 
 
