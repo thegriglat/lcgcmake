@@ -173,6 +173,7 @@ LCG_external_package(hydjet              1.8          ${MCGENPATH}/hydjet       
 LCG_external_package(tauola              28.121.2     ${MCGENPATH}/tauola         )
 LCG_external_package(jimmy              4.31.3        ${MCGENPATH}/jimmy         )
 LCG_external_package(hydjet++           2.1           ${MCGENPATH}/hydjet++     )
+LCG_external_package(alpgen            2.1.4          ${MCGENPATH}/alpgen author=214 )
 
 # Prepare the search paths according to the versions above
 LCG_prepare_paths()
