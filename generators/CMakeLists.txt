@@ -440,3 +440,5 @@ LCGPackage_Add(
   INSTALL_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/lib <INSTALL_DIR>/lib
   BUILD_IN_SOURCE 1
 )
+
+add_test (test_hydjet sh ${CMAKE_CURRENT_SOURCE_DIR}/hydjet/test/runtest.sh ${CMAKE_CURRENT_SOURCE_DIR}/hydjet/test ${hydjet_home}/../../)
