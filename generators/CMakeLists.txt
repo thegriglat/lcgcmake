@@ -452,3 +452,4 @@ LCGPackage_Add(
 
 
 add_test (test_hydjet sh ${CMAKE_CURRENT_SOURCE_DIR}/hydjet/test/runtest.sh ${CMAKE_CURRENT_SOURCE_DIR}/hydjet/test ${hydjet_home}/../../)
+add_test (test_photos sh ${CMAKE_CURRENT_SOURCE_DIR}/photos/test/runtest.sh ${CMAKE_CURRENT_SOURCE_DIR}/photos/test ${photos_home}/../../)
