@@ -1,0 +1,56 @@
+include ./libtests.mk
+include ./config.mk
+
+# Location of directories.
+BINDIR=bin
+
+MYPHOTOSPPLIBPATH = $(LIBS_PHOTOSPP_PATH)
+MYPHOTOSPPLIBS = $(LIBS_PHOTOSPP)
+MYPYTHIA8LIBPATH = $(LIBS_PYTHIA8_PATH)
+MYPYTHIA8LIBS = $(LIBS_PYTHIA8)
+MYTESTSLIBPATH = $(LIBS_LIBTESTS_PATH)
+MYPHOTOSPPLIBNAME1 = libPhotosCxxInterface$(SOEXT)
+ifeq ($(TESTS_ARCHIVE),1)
+  MYPHOTOSPPLIBS = $(LIBS_PHOTOSPP_STATIC)
+  MYPYTHIA8LIBS = $(LIBS_PYTHIA8_STATIC)
+  MYPHOTOSPPLIBNAME1 = libPhotosCxxInterface.a
+endif
+
+photospp_test1 photospp_test2: $(MYPHOTOSPPLIBPATH)/$(MYPHOTOSPPLIBNAME1)
+	@mkdir -p $(BINDIR)
+	$(CXX) $@.cc -o $(BINDIR)/$@.exe $(CXXFLAGS) \
+	$(INCLUDE_PYTHIA8) \
+	$(INCLUDE_PHOTOSPP) \
+	$(INCLUDE_PHOTOSPP)/Photos \
+	$(INCLUDE_HEPMC) \
+	$(MYPYTHIA8LIBS) \
+	$(MYPHOTOSPPLIBS) \
+	-L$(LIBS_HEPMC_PATH) -lHepMC \
+	$(FLIBS)
+	@ln -fs $(BINDIR)/$@.exe ./$@.exe
+	@echo export LD_LIBRARY_PATH=$(MYPYTHIA8LIBPATH):$(MYPHOTOSPPLIBPATH):$(LIBS_HEPMC_PATH):$(LD_LIBRARY_PATH) > ldlp.sh
+	@echo export DYLD_LIBRARY_PATH=$(MYPYTHIA8LIBPATH):$(MYPHOTOSPPLIBPATH):$(LIBS_HEPMC_PATH):$(DYLD_LIBRARY_PATH) >> ldlp.sh
+
+
+install: $(MYPHOTOSPPLIBPATH)/$(MYPHOTOSPPLIBNAME1)
+
+$(MYPHOTOSPPLIBPATH)/$(MYPHOTOSPPLIBNAME1) :
+	echo $(MYPHOTOSPPLIBPATH)/$(MYPHOTOSPPLIBNAME1) && \
+	cd $(MCGTESTDIR) && \
+	cp $(MCGENERATORS)/distribution/photos++/photos++-$(PHOTOSPP_VERSION)-src.tgz . && \
+	tar zxf photos++-$(PHOTOSPP_VERSION)-src.tgz && \
+	cd photos++/$(PHOTOSPP_VERSION) && \
+	chmod a+x lcg_configure && \
+	INSTALL_DIR=$(PHOTOSPP_PATH) HEPMC_INSTALL_DIR=$(HEPMC_PATH) ./lcg_configure && \
+	make && \
+	make install
+
+
+# Clean up: remove executables and outdated files.
+.PHONY: clean distclean
+
+clean:
+	rm -f $(PROGNAME).exe ldlp.sh
+
+distclean: clean
+	rm -f $(BINDIR)/$(PROGNAME).exe

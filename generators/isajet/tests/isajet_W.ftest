@@ -1,0 +1,90 @@
+      PROGRAM TEST1
+
+c..... ISAJET FINAL common block:
+      
+      common/FINAL/NKINF,SIGF,ALUM,ACCEPT,NRECS
+      integer NKINF,NRECS
+      real    SIGF,ALUM,ACCEPT
+
+      COMMON/QCDPAR/ALAM,ALAM2,CUTJET,ISTRUC
+      INTEGER ISTRUC
+      REAL    ALAM,ALAM2,CUTJET
+
+C...  Copy of PDFLIB common block
+
+      COMMON/W50510/IFLPRT
+      INTEGER IFLPRT
+      SAVE /W50510/
+C...  Copy of PDFLIB common block
+
+      COMMON/W50517/N6
+      INTEGER N6
+c.....
+      character*255 f_name
+      character*16  f_str(3), f_stat(3), f_form(3)
+      data f_str /'Data',       'Parameter','Listing'  /,
+     &    f_stat /'NEW',        'OLD',      'NEW'      /,
+     &    f_form /'UNFORMATTED','FORMATTED','FORMATTED'/
+
+      integer IFL, ITEST, iloop
+      logical  ok, done
+
+      character*20 pdfpar
+      double precision pdfval
+       
+      double precision DXPDF(-6:6)
+
+      external PFTOPDG
+c. waiting the file names from stdin:
+c. LHC.dat 
+c. LHC.par -- batch command and parameter file
+c. LHC.lis -- log file
+
+      do 01 i=1,3
+         read(*,10) f_name
+         open(i+1,file=f_name,status=f_stat(i),form=f_form(i))
+         write(*,20) f_str(i), f_name
+01    continue
+
+c. isadecay.dat:
+
+      read(*,10) f_name
+
+c... note that LUN=1 shouldn't be used to avoid an 
+c... interference with LHAPDF:
+
+      open(11,file=f_name,status='OLD',form='FORMATTED')
+
+      open(5,file='testi.dat',status='UNKNOWN')
+
+C      CALL ISAJET(-11,2,3,4)
+
+      ITEST = 0
+02    IFL = 0
+      ITEST = ITEST + 1
+
+      call ISAINI(-11,2,3,4)
+
+      call ISABEG(IFL)
+
+      if (IFL.NE.0) STOP
+       
+      iloop = 0
+03    iloop = iloop + 1
+      call ISAEVT(iloop,ok,done)
+      if (.not.done) goto 03
+      call ISAEND()
+
+      if(NKINF.gt.0) write(5,30) ITEST, SIGF, SIGF/sqrt(real(NKINF))
+      goto 02
+
+      close(5)
+
+      do 09 i=1,4
+09    close(i)
+ 
+10    format(A)
+20    format(A9,' file: ',A)
+30    format('isajet',I3,2E15.6)
+      END
+

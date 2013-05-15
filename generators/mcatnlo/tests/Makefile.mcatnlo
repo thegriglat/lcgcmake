@@ -1,0 +1,27 @@
+include ./libtests.mk
+include ./config.mk
+
+# Location of directories.
+
+mcatnlo_test: mcatnlo.inputs
+	rm -rf mcatnlotest ; rm -f testi.dat ; \
+	mkdir mcatnlotest ; \
+	cd mcatnlotest ; \
+	cp ${MCATNLO_PATH}/../share/examples/Makefile . ; \
+	cp ${MCATNLO_PATH}/../share/examples/configure . ; \
+	cp ${MCATNLO_PATH}/../share/examples/MCatNLO.Script . ; \
+	cp ../mcatnlo.inputs . ; \
+	./configure --lcgplatform=$(PLATFORM) --with-mcatnlo=$(MCATNLO_PATH) --with-herwig=$(HERWIG_PATH) --with-lhapdf=$(LHAPDF_PATH) --with-lhapdfsets=$(LHAPDF_PATH)/../share/PDFsets ; \
+	export HEPMC_PATH=$(HEPMC_PATH) ; \
+	export CLHEP_PATH=$(CLHEP_PATH) ; \
+	export LD_LIBRARY_PATH=$(HEPMC_PATH)/lib:$(CLHEP_PATH)/lib:${LD_LIBRARY_PATH} ; \
+	sh ./mcatnlo.inputs ; \
+	cp Linux/testi.dat ../. ; \
+	cd .. ; rm -rf mcatnlotest ; \
+	cp bin/ZgMC_EXE_LHAPDF bin/mcatnlo_test1.exe ; \
+
+# Clean up: remove executables and outdated files.
+.PHONY: clean distclean
+
+clean:
+	rm -rf mcatnlotest

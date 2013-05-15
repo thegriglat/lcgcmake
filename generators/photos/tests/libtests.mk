@@ -13,23 +13,23 @@ CFLAGSSHARED = -fPIC
 CXXFLAGSSHARED = -fPIC
 LDFLAGSSHARED =
 
-FLIBS =   -L/afs/cern.ch/sw/lcg/contrib/gcc/4.3.5/x86_64-slc5-gcc34-opt/bin/../lib/gcc/x86_64-unknown-linux-gnu/4.3.5 -L/afs/cern.ch/sw/lcg/contrib/gcc/4.3.5/x86_64-slc5-gcc34-opt/bin/../lib/gcc -L/afs/cern.ch/sw/lcg/contrib/gcc/4.3.5/x86_64-slc5-gcc34-opt/bin/../lib/gcc/x86_64-unknown-linux-gnu/4.3.5/../../../../lib64 -L/lib/../lib64 -L/usr/lib/../lib64 -L/afs/cern.ch/sw/lcg/contrib/gcc/4.3.5/x86_64-slc5-gcc34-opt/bin/../lib/gcc/x86_64-unknown-linux-gnu/4.3.5/../../.. -R/afs/.cern.ch/sw/lcg/external/MCGenerators/.work/GBUILD/i686-slc4-gcc34-opt/lib -lgfortranbegin -lgfortran -lm -lgcc_s
+FLIBS =   -L/afs/cern.ch/sw/lcg/contrib/gcc/4.6.2/x86_64-slc6-gcc46-opt/lib/gcc/x86_64-unknown-linux-gnu/4.6.2 -L/afs/cern.ch/sw/lcg/contrib/gcc/4.6.2/x86_64-slc6-gcc46-opt/lib/gcc/x86_64-unknown-linux-gnu/4.6.2/../../../../lib64 -L/lib/../lib64 -L/usr/lib/../lib64 -L/afs/cern.ch/sw/lcg/contrib/gcc/4.6.2/x86_64-slc6-gcc46-opt/lib/gcc/x86_64-unknown-linux-gnu/4.6.2/../../.. -lgfortran -lm -lquadmath
 
 #Package-specific:>
 TESTS_SHARED = 1
 TESTS_ARCHIVE =
 
 HEPMC_VERSION = 
-HEPMC_PATH = /afs/cern.ch/sw/lcg/external/HepMC/2.06.05/x86_64-slc5-gcc43-opt
-INCLUDE_HEPMC =   -I/afs/cern.ch/sw/lcg/external/HepMC/2.06.05/x86_64-slc5-gcc43-opt/include 
-LIBS_HEPMC =   -L/afs/cern.ch/sw/lcg/external/HepMC/2.06.05/x86_64-slc5-gcc43-opt/lib -lHepMC -lHepMCfio 
-LIBS_HEPMC_PATH = /afs/cern.ch/sw/lcg/external/HepMC/2.06.05/x86_64-slc5-gcc43-opt/lib
+HEPMC_PATH = /afs/cern.ch/sw/lcg/external/HepMC/2.06.05/x86_64-slc6-gcc46-opt
+INCLUDE_HEPMC =   -I/afs/cern.ch/sw/lcg/external/HepMC/2.06.05/x86_64-slc6-gcc46-opt/include 
+LIBS_HEPMC =   -L/afs/cern.ch/sw/lcg/external/HepMC/2.06.05/x86_64-slc6-gcc46-opt/lib -lHepMC -lHepMCfio 
+LIBS_HEPMC_PATH = /afs/cern.ch/sw/lcg/external/HepMC/2.06.05/x86_64-slc6-gcc46-opt/lib
 
-CLHEP_VERSION = 2.1.0.1
-CLHEP_PATH = /afs/cern.ch/sw/lcg/external/clhep/2.1.0.1/x86_64-slc5-gcc43-opt
-INCLUDE_CLHEP =   -I/afs/cern.ch/sw/lcg/external/clhep/2.1.0.1/x86_64-slc5-gcc43-opt/include 
-LIBS_CLHEP_PATH = /afs/cern.ch/sw/lcg/external/clhep/2.1.0.1/x86_64-slc5-gcc43-opt/lib
-LIBS_CLHEP =  -L/afs/cern.ch/sw/lcg/external/clhep/2.1.0.1/x86_64-slc5-gcc43-opt/lib -lCLHEP 
+CLHEP_VERSION = 2.1.2.5
+CLHEP_PATH = /afs/cern.ch/sw/lcg/external/clhep/2.1.2.5/x86_64-slc6-gcc46-opt
+INCLUDE_CLHEP =   -I/afs/cern.ch/sw/lcg/external/clhep/2.1.2.5/x86_64-slc6-gcc46-opt/include 
+LIBS_CLHEP_PATH = /afs/cern.ch/sw/lcg/external/clhep/2.1.2.5/x86_64-slc6-gcc46-opt/lib
+LIBS_CLHEP =  -L/afs/cern.ch/sw/lcg/external/clhep/2.1.2.5/x86_64-slc6-gcc46-opt/lib -lCLHEP 
 
 # from above:
 export FC

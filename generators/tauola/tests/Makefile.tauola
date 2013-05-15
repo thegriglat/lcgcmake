@@ -1,0 +1,43 @@
+include ./libtests.mk
+include ./config.mk
+
+# Location of directories.
+BINDIR=bin
+
+MYTAUOLALIBS = $(LIBS_TAUOLA)
+ifeq ($(TESTS_ARCHIVE),1)
+ MYTAUOLALIBS = $(LIBS_TAUOLA_STATIC)
+endif
+
+install: $(LIBS_TAUOLA_PATH)/libtauola.so
+$(LIBS_TAUOLA_PATH)/libtauola.so:
+	cd $(MCGTESTDIR) && \
+	cp $(MCGENERATORS)/distribution/tauola/tauola-$(TAUOLA_VERSION)-src.tgz . && \
+	tar xfz tauola-$(TAUOLA_VERSION)-src.tgz && \
+	cd tauola/$(TAUOLA_VERSION) && \
+	chmod a+x lcg_configure && \
+	./lcg_configure && \
+	mkdir -p data && \
+	make && \
+	make install
+
+tauola_test1:
+	@mkdir -p $(BINDIR)
+	$(FC) $@.F -o $(BINDIR)/$@.exe $(FFLAGS) $(CXXFLAGS) $(INCLUDE_PYTHIA6) \
+	-L$(PYTHIA6_PATH)/lib -lpythia6 \
+	$(MYTAUOLALIBS) \
+	-lpythia6_dummy -lpythia6_pdfdummy \
+	$(LIBS_PHOTOS) \
+	-L$(LIBTESTS_PATH)/lib/archive -ltests \
+	$(FLIBS)
+	@ln -fs $(BINDIR)/$@.exe $@.exe
+	@echo export LD_LIBRARY_PATH=$(LIBS_PYTHIA6_PATH):$(LIBS_TAUOLA_PATH):$(LIBS_PHOTOS_PATH) > ldlp.sh
+
+# Clean up: remove executables and outdated files.
+#.PHONY: clean distclean
+
+clean:
+	rm -f $(PROGNAME).exe ldlp.sh
+
+distclean: clean
+	rm -f $(BINDIR)/$(PROGNAME).exe

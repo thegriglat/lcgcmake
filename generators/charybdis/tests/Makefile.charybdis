@@ -1,0 +1,49 @@
+include ./libtests.mk
+include ./config.mk
+
+# Location of directories.
+TMPDIR=tmp
+BINDIR=bin
+MYLIBSCHARYB=$(LIBS_CHARYBDIS_PATH)
+MYLIBSPYTHIA=$(LIBS_PYTHIA6_PATH)
+MYLIBSHERWIG=$(LIBS_HERWIG_PATH)
+
+ifeq ($(TESTS_ARCHIVE),1)
+ MYLIBSCHARYB = $(LIBS_CHARYBDIS_PATH)/archive
+ MYLIBSPYTHIA = $(LIBS_PYTHIA6_PATH)/archive
+ MYLIBSHERWIG = $(LIBS_HERWIG_PATH)/archive
+endif
+
+
+charybdis_test1:
+	@mkdir -p $(BINDIR)
+	$(FC) $(FFLAGS) -I$(CHARYBDIS_PATH)/include $@.F -c -o $(TMPDIR)/$@.o
+	$(CXX) $(CXXFLAGS) $(TMPDIR)/$@.o -o $(BINDIR)/$@.exe \
+	-L$(MYLIBSPYTHIA) -lpythia6 \
+	-L$(MYLIBSCHARYB) -lcharybdis \
+	-L$(MYLIBSPYTHIA) -lpythia6_dummy -lpythia6_pdfdummy \
+	$(FLIBS)
+	@ln -fs $(BINDIR)/$@.exe $@.exe
+	@echo export LD_LIBRARY_PATH=$(PYTHIA6_PATH)/lib:$(CHARYBDIS_PATH)/lib:$(LD_LIBRARY_PATH) > ldlp.sh
+
+charybdis_test2:
+	@mkdir -p $(BINDIR)
+	$(FC) $(FFLAGS) -I$(HERWIG_PATH)/include -I$(CHARYBDIS_PATH)/include $@.F -c -o $(TMPDIR)/$@.o
+	$(FC)  $(TMPDIR)/$@.o -o $(BINDIR)/$@.exe \
+	-L$(MYLIBSPYTHIA) -lpythia6 \
+	-L$(MYLIBSCHARYB) -lcharybdis \
+	-L$(MYLIBSPYTHIA) -lpythia6_dummy -lpythia6_pdfdummy \
+	$(MYLIBSHERWIG)/hwudat.o \
+	-L$(MYLIBSCHARYB) -lcharybdis \
+	-L$(MYLIBSHERWIG) -lherwig  -lherwig_dummy -lherwig_pdfdummy 
+	@ln -fs $(BINDIR)/$@.exe $@.exe
+	@echo export LD_LIBRARY_PATH=$(MYLIBSHERWIG):$(PYTHIA6_PATH)/lib:$(CHARYBDIS_PATH)/lib:$(LD_LIBRARY_PATH) > ldlp.sh
+
+# Clean up: remove executables and outdated files.
+.PHONY: clean distclean
+
+clean:
+	rm -f $(PROGNAME).exe ldlp.sh
+
+distclean: clean
+	rm -f $(BINDIR)/$(PROGNAME).exe

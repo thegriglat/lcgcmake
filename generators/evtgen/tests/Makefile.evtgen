@@ -1,0 +1,63 @@
+include ./libtests.mk
+include ./config.mk
+
+# Location of directories
+BINDIR=bin
+
+MYLIBSEVTGEN = $(LIBS_EVTGEN)
+MYLIBSCLHEP = $(LIBS_CLHEP)
+MYLIBSPHOTOSPP = $(LIBS_PHOTOSPP)
+MYTAUOLAPPLIBS = $(LIBS_TAUOLAPP)
+MYPYTHIA8LIBS = $(LIBS_PYTHIA8)
+LDLIBPATH=$(LIBS_CLHEP_PATH):$(LIBS_ROOT_PATH):$(LIBS_EVTGEN_PATH):$(LIBS_PHOTOSPP_PATH):$(LIBS_PYTHIA8_PATH):$(LIBS_PYTHIA8_PATH)/..:$(LIBS_TAUOLAPP_PATH):$(LIBS_HEPMC_PATH)
+
+ifeq ($(TESTS_ARCHIVE),1)
+  MYLIBSEVTGEN = $(LIBS_EVTGEN_STATIC)
+  MYLIBSCLHEP = $(LIBS_CLHEP_STATIC)
+  MYPYTHIA8LIBS = $(LIBS_PYTHIA8_STATIC)
+  MYLIBSPHOTOSPP = $(LIBS_PHOTOSPP_STATIC)
+  MYTAUOLAPPLIBS = $(LIBS_TAUOLAPP_STATIC)
+  LDLIBPATH=$(LIBS_ROOT_PATH)
+endif
+
+MYLIBSCERN = $(LIBS_CERNLIB_PATH)/libmathlib.a
+MYLIBSROOT = `$(ROOT_PATH)/bin/root-config --libs`
+
+#### EVTGEN #####
+
+install: $(LIBS_EVTGEN_PATH)/libEvtGen.so
+
+$(LIBS_EVTGEN_PATH)/libEvtGen.so:
+	cd $(MCGTESTDIR) && \
+	cp $(MCGENERATORS)/distribution/evtgen/evtgen-$(EVTGEN_VERSION)-src.tgz . && \
+	tar xfz evtgen-$(EVTGEN_VERSION)-src.tgz && \
+	cd evtgen/$(EVTGEN_VERSION) && \
+	chmod a+x lcg_configure && \
+	INSTALL_DIR=$(EVTGEN_PATH) PYTHIA8_DIR=$(PYTHIA8_PATH) HEPMC_INSTALL_DIR=$(HEPMC_PATH) PHOTOSPP_DIR=$(PHOTOSPP_PATH) TAUOLAPP_DIR=$(TAUOLAPP_PATH) ./lcg_configure && \
+	make && \
+	make install
+
+#Note: in the version 1.0.0 includes were directly in the path, not in /include
+evtgen_test1: # Compile evtgen_test1
+	@mkdir -p $(BINDIR)
+	$(CXX) $@.cc -o $(BINDIR)/$@.exe $(CXXFLAGS) \
+	  $(INCLUDE_EVTGEN) $(INCLUDE_CLHEP) $(INCLUDE_ROOT) \
+	  $(INCLUDE_PYTHIA8) $(INCLUDE_PYTHIA8)/.. $(INCLUDE_HEPMC) \
+	  $(INCLUDE_TAUOLAPP) $(INCLUDE_PHOTOSPP) $(INCLUDE_PHOTOSPP)/Photos \
+	  $(MYLIBSEVTGEN) $(MYLIBSCLHEP) $(MYLIBSROOT) \
+	  $(MYPYTHIA8LIBS) $(MYLIBSPHOTOSPP) $(MYTAUOLAPPLIBS) \
+	  -L$(LIBS_HEPMC_PATH) -lHepMC $(FLIBS) -ldl $(MYLIBSCERN)
+	@ln -fs $(BINDIR)/$@.exe $@.exe
+	@rm -f ldlp.sh
+	@echo export LD_LIBRARY_PATH=$(LDLIBPATH):$(LD_LIBRARY_PATH) > ldlp.sh
+	@echo export ROOTSYS=$(ROOTSYS) >> ldlp.sh
+	@echo export PYTHIA8DATA=$(PYTHIA8_PATH)/xmldoc >> ldlp.sh
+
+# Clean up: remove executables and outdated files.
+.PHONY: clean distclean
+
+clean:
+	rm -f $(PROGNAME).exe ldlp.sh 
+
+distclean: clean
+	rm -f $(BINDIR)/$(PROGNAME).exe

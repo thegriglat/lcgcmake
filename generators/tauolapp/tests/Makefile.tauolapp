@@ -1,0 +1,52 @@
+include ./libtests.mk
+include ./config.mk
+
+# Location of directories.
+BINDIR=bin
+
+MYTAUOLAPPLIBPATH = $(LIBS_TAUOLAPP_PATH)
+MYTAUOLAPPLIBS = $(LIBS_TAUOLAPP)
+MYPYTHIA8LIBS = $(LIBS_PYTHIA8)
+MYTAUOLAPPLIBNAME1 = libTauolaCxxInterface$(SOEXT)
+ifeq ($(TESTS_ARCHIVE),1)
+  MYTAUOLAPPLIBS = $(LIBS_TAUOLAPP_STATIC)
+  MYPYTHIA8LIBS = $(LIBS_PYTHIA8_STATIC)
+  MYTAUOLAPPLIBNAME1 = libTauolaCxxInterface.a
+endif
+
+tauolapp_test1: $(MYTAUOLAPPLIBPATH)/$(MYTAUOLAPPLIBNAME1)
+	@mkdir -p $(BINDIR)
+	$(CXX) $@.cc -o $(BINDIR)/$@.exe $(CXXFLAGS) \
+	$(INCLUDE_PYTHIA8) \
+	$(INCLUDE_TAUOLAPP) \
+	$(INCLUDE_TAUOLAPP)/Tauola \
+	$(INCLUDE_HEPMC) \
+	$(MYPYTHIA8LIBS) \
+	$(MYTAUOLAPPLIBS) \
+	-L$(LIBS_HEPMC_PATH) -lHepMC \
+	$(FLIBS)
+	@ln -fs $(BINDIR)/$@.exe ./$@.exe
+	@echo export LD_LIBRARY_PATH=$(LIBS_PYTHIA8_PATH):$(MYTAUOLAPPLIBPATH):$(LIBS_HEPMC_PATH):$(LD_LIBRARY_PATH) >> ldlp.sh
+	@echo export DYLD_LIBRARY_PATH=$(LIBS_PYTHIA8_PATH):$(MYTAUOLAPPLIBPATH):$(LIBS_HEPMC_PATH):$(DYLD_LIBRARY_PATH) >> ldlp.sh
+
+
+install: $(MYTAUOLAPPLIBPATH)/$(MYTAUOLAPPLIBNAME1)
+
+$(MYTAUOLAPPLIBPATH)/$(MYTAUOLAPPLIBNAME1) :
+	cd $(MCGTESTDIR) && \
+	cp $(MCGENERATORS)/distribution/tauola++/tauola++-$(TAUOLAPP_VERSION)-src.tgz . && \
+	tar xfz tauola++-$(TAUOLAPP_VERSION)-src.tgz && \
+	cd tauola++/$(TAUOLAPP_VERSION) && \
+	chmod a+x lcg_configure && \
+	INSTALL_DIR=$(TAUOLAPP_PATH) HEPMC_INSTALL_DIR=$(HEPMC_PATH) LHAPDF_INSTALL_DIR=$(LHAPDF_PATH) ./lcg_configure && \
+	make && \
+	make install
+
+# Clean up: remove executables and outdated files.
+.PHONY: clean distclean
+
+clean:
+	rm -f $(PROGNAME).exe ldlp.sh
+
+distclean: clean
+	rm -f $(BINDIR)/$(PROGNAME).exe

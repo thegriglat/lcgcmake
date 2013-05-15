@@ -49,7 +49,7 @@ C      include 'pythia_cms.inc'
 *
 *                       You can change the main parameters here:
       iprint = 1
-      NEVENT=10000
+      NEVENT=1
       PHTHRESH = 10.  ! Threshold to accept photon
 *
 cc      CALL HLIMIT(100000)

@@ -1,0 +1,33 @@
+include ./libtests.mk
+include ./config.mk
+
+# Location of directories.
+TMPDIR=tmp
+BINDIR=bin
+
+cascade_test1: $(CASCADE_PATH)/lib/libcascade2.a
+	@mkdir -p $(BINDIR)
+	$(FC) $(FFLAGS) -ffixed-line-length-132 -I$(CASCADE_PATH)/include/cascade $@.F -c -o $(TMPDIR)/$@.o
+	$(CXX) $(CXXFLAGS) $(TMPDIR)/$@.o -o $(BINDIR)/$@.exe \
+	-L$(LIBTESTS_PATH)/lib/archive -ltests -lcernlibgenser \
+	-L$(PYTHIA6_PATH)/lib -lpythia6   \
+	-L$(CASCADE_PATH)/lib -lcascade2 -lbases \
+	-lpythia6_dummy \
+	-L$(LHAPDF_PATH)/lib -lLHAPDF \
+	-lmycern \
+	$(FLIBS)
+	@ln -fs $(BINDIR)/$@.exe $@.exe
+	@echo export LD_LIBRARY_PATH=$(PYTHIA6_PATH)/lib:$(CASCADE_PATH)/lib:$(LHAPDF_PATH)/lib:$(LD_LIBRARY_PATH) > ldlp.sh
+	@echo export LHAPATH=$(LHAPDF_PATH)/../share/PDFsets >> ldlp.sh
+	@echo export PDFPATH=$(CASCADE_PATH)/../share/data >> ldlp.sh
+
+
+# Clean up: remove executables and outdated files.
+.PHONY: clean distclean
+
+clean:
+	rm -f $(PROGNAME).exe ldlp.sh
+	rm -f cc*.dat kmr.dat kms.dat
+
+distclean: clean
+	rm -f $(BINDIR)/$(PROGNAME).exe
