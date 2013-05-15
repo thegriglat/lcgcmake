@@ -214,15 +214,12 @@ LCGPackage_Add(
   UPDATE_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/<NATIVE_VERSION> <SOURCE_DIR>
          COMMAND ${CMAKE_COMMAND} -E remove_directory <SOURCE_DIR>/<NATIVE_VERSION>
   CONFIGURE_COMMAND ./configure --lcgplatform=${LCG_platform}  --userfflags=-fno-automatic --enable-shared
+  BUILD_COMMAND make FC=${CMAKE_Fortran_COMPILER} CC=${CMAKE_C_COMPILER} CXX=${CMAKE_Fortran_COMPILER}
   BUILD_IN_SOURCE 1
   INSTALL_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/lib  <INSTALL_DIR>/lib
-  	  COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/include  <INSTALL_DIR>/include
-	  COMMAND ${CMAKE_COMMAND} -E chdir <INSTALL_DIR>/lib ${CMAKE_COMMAND} -E create_symlink archive/libphotos.a libphotos.a
-#  DEPENDS HepMC
-) 
-         
-
-
+          COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/include  <INSTALL_DIR>/include
+          COMMAND ${CMAKE_COMMAND} -E chdir <INSTALL_DIR>/lib ${CMAKE_COMMAND} -E create_symlink archive/libphotos.a libphotos.a
+)
 
 #---evtgen------------------------------------------------------------------------------------------
 if(NOT APPLE)    #  (build fails on Mac " unknown option: -soname")
@@ -324,6 +321,12 @@ LCGPackage_Add(
   BUILD_IN_SOURCE 1
   DEPENDS HepMC Boost fastjet GSL Python swig
 )
+
+#LCG_add_test(rivet-test1 COMMAND ${rivet_home}/bin/test1)
+#LCG_add_test(rivet-test2 COMMAND ${rivet_home}/bin/test2)
+#LCG_add_test(rivet-build SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/rivet/test
+#                         BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR}/rivet/test)
+
 
 #---Sherpa------------------------------------------------------------------------------------------
 LCGPackage_Add(
