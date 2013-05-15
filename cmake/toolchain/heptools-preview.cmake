@@ -155,7 +155,7 @@ LCG_external_package(photos++          3.52           ${MCGENPATH}/photos++     
 LCG_external_package(photos            215.4          ${MCGENPATH}/photos     ) 
 #LCG_external_package(photos            215.3         ${MCGENPATH}/photos     ) 
 LCG_external_package(evtgen            1.1.0          ${MCGENPATH}/evtgen         tag=R01-01-00)
-LCG_external_package(rivet             1.8.2          ${MCGENPATH}/rivet        )
+LCG_external_package(rivet             1.8.3          ${MCGENPATH}/rivet        )
 LCG_external_package(rivet2            2.0.0b1        ${MCGENPATH}/rivet2       )
 LCG_external_package(sherpa            1.4.3          ${MCGENPATH}/sherpa         author=1.4.3 hepevt=4000  )
 LCG_external_package(sherpa            1.4.3.2        ${MCGENPATH}/sherpa         author=1.4.3 hepevt=10000 )
