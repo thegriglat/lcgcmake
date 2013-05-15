@@ -318,8 +318,8 @@ $(gen_vars EPOS) \
 "
 
 # print all vars to config.mk in format var=$var
-for i in $vars; do
-  echo "$i = $(val $i)"
-done > config.mk
+#for i in $vars; do
+#  echo "$i = $(val $i)"
+#done > config.mk
 
 echo "<=== [configure]"
