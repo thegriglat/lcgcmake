@@ -8,6 +8,7 @@ endif()
 
 include(${CMAKE_SOURCE_DIR}/toolchain.cmake)
 include(lcgsoft-macros)
+include(GNUMakeTestfile)
 
 #---Enable (the defintion) of tests by default
 enable_testing()
