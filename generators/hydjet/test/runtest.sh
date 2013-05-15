@@ -5,7 +5,6 @@ if [ "$1" != "" ]; then
  cd $1
 fi
 
-
 source /afs/.cern.ch/sw/lcg/external/MCGenerators/.work/GBUILD/noarch/TOOLS/genser.rc
 export MCGTESTDIR=$2
 ./configure --with-hydjetversion=$3 --run-hydjet=mcgtest
