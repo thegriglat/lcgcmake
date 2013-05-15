@@ -1,0 +1,26 @@
+# - Locate pyquen library
+# Defines:
+#
+#  PYQUEN_FOUND
+#  PYQUEN_INCLUDE_DIR
+#  PYQUEN_INCLUDE_DIRS (not cached)
+#  PYQUEN_LIBRARY
+#  PYQUEN_LIBRARIES (not cached)
+
+
+#find_path(PYQUEN_INCLUDE_DIR libpyquen.so
+#          HINTS $ENV{PYQUEN_ROOT_DIR}/lib ${PYQUEN_ROOT_DIR}/lib)
+
+find_library(PYQUEN_LIBRARY NAMES pyquen
+             HINTS $ENV{PYQUEN_ROOT_DIR}/lib ${PYQUEN_ROOT_DIR}/lib)
+
+set(PYQUEN_INCLUDE_DIRS ${PYQUEN_INCLUDE_DIR})
+set(PYQUEN_LIBRARIES ${PYQUEN_LIBRARY})
+
+# handle the QUIETLY and REQUIRED arguments and set PYQUEN_FOUND to TRUE if
+# all listed variables are TRUE
+
+INCLUDE(FindPackageHandleStandardArgs)
+FIND_PACKAGE_HANDLE_STANDARD_ARGS(pyquen DEFAULT_MSG PYQUEN_INCLUDE_DIR PYQUEN_LIBRARY)
+
+mark_as_advanced(PYQUEN_FOUND PYQUEN_INCLUDE_DIR PYQUEN_LIBRARY)

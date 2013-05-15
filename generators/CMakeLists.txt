@@ -50,6 +50,14 @@ LCGPackage_Add(
   BUILD_IN_SOURCE 1
 )
 
+LCG_add_test(pyquen-test1 COMMAND pyquen/tests/pyquen_test1
+                          BINARY_DIR pyquen/tests
+                          SOURCE_DIR pyquen/tests
+                          BUILD pyquen_test1
+                          BUILD_OPTIONS -DPYQUEN_ROOT_DIR=${pyquen_home} -DPYTHIA6_ROOT_DIR=${pythia6_home}
+                          ENVIRONMENT ${library_path}=${pyquen_home}/lib:${pythia6_home}/lib)
+
+
 #---lhapdfsets--------------------------------------------------------------------------------------
 
 LCGPackage_set_home(lhapdfsets)
@@ -429,7 +437,13 @@ LCGPackage_Add(
   BUILD_IN_SOURCE 1
   DEPENDS photos pythia6
 )
-  
+LCG_add_test(tauola-test1 COMMAND tauola/tests/tauola_test1
+                          BINARY_DIR tauola/tests
+                          SOURCE_DIR tauola/tests
+                          BUILD tauola_test1
+                          BUILD_OPTIONS -DTAUOLA_ROOT_DIR=${tauola_home} -DPHOTOS_ROOT_DIR=${photos_home} -DPYTHIA6_ROOT_DIR=${pythia6_home}
+                          ENVIRONMENT ${library_path}=${tauola_home}/lib:${photos_home}/lib:${pythia6_home}/lib)
+
 #---jimmy------------------------------------------------------------------------------------------
 LCGPackage_Add(
   jimmy
