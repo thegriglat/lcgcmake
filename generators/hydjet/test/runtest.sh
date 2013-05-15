@@ -6,8 +6,8 @@ if [ "$1" != "" ]; then
 fi
 
 source /afs/.cern.ch/sw/lcg/external/MCGenerators/.work/GBUILD/noarch/TOOLS/genser.rc
-export MCGTESTDIR=$2
-./configure --with-hydjetversion=$3 --run-hydjet=mcg
+#export MCGTESTDIR=$2
+#./configure --with-hydjetversion=1.8 --run-hydjet=mcg
 source config.mk
 make -f Makefile.hydjet hydjet_test1 PROGNAME=hydjet_test3
 source ldlp.sh
