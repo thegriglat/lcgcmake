@@ -11,49 +11,44 @@
 string(REPLACE "." "_" Boost_underscore_twodigit ${Boost_config_version_twodigit})
 set(Boost_home_include ${Boost_home}/include/boost-${Boost_underscore_twodigit})
 
-# cook hydjet version
-string(REPLACE "." "_" hydjet_native_version ${hydjet_native_version})
-
+if(APPLE)
+  set(library_path DYLD_LIBRARY_PATH)
+else()
+  set(library_path LD_LIBRARY_PATH)
+endif()
 set(CMAKE_VERBOSE_MAKEFILE ON)
-include (CTest)
 
 #---hydjet--------------------------------------------------------------------------------------
 
+string(REPLACE "." "_" hydjet_underscore_version ${hydjet_native_version})
 LCGPackage_Add(
   hydjet
-#  URL  http://lokhtin.web.cern.ch/lokhtin/hydro/hydjet1_8.f
-  DOWNLOAD_COMMAND ${CMAKE_COMMAND} -Durl=http://lokhtin.web.cern.ch/lokhtin/hydro/hydjet${hydjet_native_version}.f
+  DOWNLOAD_COMMAND ${CMAKE_COMMAND} -Durl=http://lokhtin.web.cern.ch/lokhtin/hydro/hydjet${hydjet_underscore_version}.f
                                     -Dsource_dir=<SOURCE_DIR>/src
                                     -P  ${CMAKE_SOURCE_DIR}/cmake/scripts/DownloadURL.cmake
-
   DOWNLOAD_COMMAND ${CMAKE_COMMAND} -Durl=http://lokhtin.web.cern.ch/lokhtin/hydro/jetset_73.f
                                     -Dsource_dir=<SOURCE_DIR>/jetset
                                     -P ${CMAKE_SOURCE_DIR}/cmake/scripts/DownloadURL.cmake
-
   UPDATE_COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/hydjet/files  <SOURCE_DIR>
          COMMAND ${CMAKE_COMMAND} -E chdir <SOURCE_DIR> ${CMAKE_COMMAND} -P prepareHydjet.cmake
-
   CMAKE_ARGS -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
   BUILD_IN_SOURCE 1
 )
 
 #---pyquen--------------------------------------------------------------------------------------
-#http://lokhtin.web.cern.ch/lokhtin/pyquen/pyquen1_5.f
+
+string(REPLACE "." "_" pyquen_underscore_version ${pyquen_native_version})
 LCGPackage_Add(
   pyquen
-#  DOWNLOAD_COMMAND ${CMAKE_COMMAND} -Durl=http://lokhtin.web.cern.ch/lokhtin/pyquen/pyquen${pyquen_native_version}.f
-DOWNLOAD_COMMAND ${CMAKE_COMMAND} -Durl=http://lokhtin.web.cern.ch/lokhtin/pyquen/pyquen1_5.f
+  DOWNLOAD_COMMAND ${CMAKE_COMMAND} -Durl=http://lokhtin.web.cern.ch/lokhtin/pyquen/pyquen${pyquen_underscore_version}.f
                                     -Dsource_dir=<SOURCE_DIR>/src
                                     -P  ${CMAKE_SOURCE_DIR}/cmake/scripts/DownloadURL.cmake
-
   UPDATE_COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/pyquen/files  <SOURCE_DIR>
          COMMAND ${CMAKE_COMMAND} -E chdir <SOURCE_DIR> ${CMAKE_COMMAND} -P preparePyquen.cmake
 
   CMAKE_ARGS -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
   BUILD_IN_SOURCE 1
 )
-
-
 
 #---lhapdfsets--------------------------------------------------------------------------------------
 
@@ -69,7 +64,7 @@ LCGPackage_Add(
           COMMAND <SOURCE_DIR>/bin/lhapdf-getdata --force --dest=<INSTALL_DIR>/../share/PDFsets cteq6l
 )
 else()
-add_custom_target(lhapdfsets COMMENT "LHAPDF data sets already installed.")
+  add_custom_target(lhapdfsets COMMENT "LHAPDF data sets already installed.")
 endif()
 
 #---lhapdf------------------------------------------------------------------------------------------
@@ -131,6 +126,14 @@ LCGPackage_Add(
   TEST_COMMAND ${CMAKE_COMMAND} -E chdir  <INSTALL_DIR>/bin ./test
   DEPENDS HepMC lhapdf
 )
+foreach(t test1 test2 test3 test4)
+  LCG_add_test(pythia8-${t} COMMAND pythia8/tests/pythia8_${t}
+                            BINARY_DIR pythia8/tests
+                            SOURCE_DIR pythia8/tests
+                            BUILD pythia8_${t}
+                            BUILD_OPTIONS -DPYTHIA8_ROOT_DIR=${pythia8_home} -DHEPMC_ROOT_DIR=${HepMC_home}
+                            ENVIRONMENT ${library_path}=${pythia8_home}/lib:${HepMC_home}/lib)
+endforeach()
 
 #---ThePEG------------------------------------------------------------------------------------------
 #todo: will autoreconf work if the patches are applied?
@@ -219,6 +222,13 @@ LCGPackage_Add(
           COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/include  <INSTALL_DIR>/include
           COMMAND ${CMAKE_COMMAND} -E chdir <INSTALL_DIR>/lib ${CMAKE_COMMAND} -E create_symlink archive/libphotos.a libphotos.a
 )
+
+LCG_add_test(photos-test1 COMMAND photos/tests/photos_test1
+                          BINARY_DIR photos/tests
+                          SOURCE_DIR photos/tests
+                          BUILD photos_test1
+                          BUILD_OPTIONS -DPHOTOS_ROOT_DIR=${photos_home} -DPYTHIA6_ROOT_DIR=${pythia6_home}
+                          ENVIRONMENT ${library_path}=${photos_home}/lib:${pythia6_home}/lib)
 
 #---evtgen------------------------------------------------------------------------------------------
 if(NOT APPLE)    #  (build fails on Mac " unknown option: -soname")
@@ -321,12 +331,6 @@ LCGPackage_Add(
   DEPENDS HepMC Boost fastjet GSL Python swig
 )
 
-#LCG_add_test(rivet-test1 COMMAND ${rivet_home}/bin/test1)
-#LCG_add_test(rivet-test2 COMMAND ${rivet_home}/bin/test2)
-#LCG_add_test(rivet-build SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/rivet/test
-#                         BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR}/rivet/test)
-
-
 #---Sherpa------------------------------------------------------------------------------------------
 LCGPackage_Add(
   sherpa
@@ -425,9 +429,6 @@ LCGPackage_Add(
   BUILD_IN_SOURCE 1
   DEPENDS photos pythia6
 )
-  
-  
-
   
 #---jimmy------------------------------------------------------------------------------------------
 LCGPackage_Add(

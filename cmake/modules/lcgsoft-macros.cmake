@@ -308,6 +308,7 @@ endmacro()
 #                           [DEBUG]
 #                           [SOURCE_DIR dir] [BINARY_DIR dir]
 #                           [BUILD target] [PROJECT project]
+#                           [BUILD_OPTIONS options]
 #                           [PASSREGEX exp] [FAILREGEX epx]
 #                           [LABELS label1 label2 ...])
 #
@@ -315,7 +316,7 @@ function(LCG_add_test test)
   cmake_parse_arguments(ARG
     "DEBUG" 
     "TIMEOUT;BUILD;OUTPUT;ERROR;SOURCE_DIR;BINARY_DIR;PROJECT;PASSREGEX;FAILREGEX;WORKING_DIRECTORY" 
-    "COMMAND;PRECMD;POSTCMD;ENVIRONMENT;DEPENDS;LABELS" 
+    "COMMAND;PRECMD;POSTCMD;ENVIRONMENT;DEPENDS;LABELS;BUILD_OPTIONS"
     ${ARGN})
 
   if(NOT CMAKE_GENERATOR MATCHES Makefiles)
@@ -394,10 +395,18 @@ function(LCG_add_test test)
 
   #- Now we can actually add the test
   if(ARG_BUILD)
-    if(NOT ARG_SOURCE_DIR)
+    if(ARG_SOURCE_DIR)
+      if(NOT IS_ABSOLUTE ${ARG_SOURCE_DIR})
+        set(ARG_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/${ARG_SOURCE_DIR})
+      endif()
+    else()
       set(ARG_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR})
     endif()
-    if(NOT ARG_BINARY_DIR)
+    if(ARG_BINARY_DIR)
+      if(NOT IS_ABSOLUTE ${ARG_BINARY_DIR})
+        set(ARG_BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR}/${ARG_BINARY_DIR})
+      endif()
+    else()
       set(ARG_BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR})
     endif()
     if(NOT ARG_PROJECT)
@@ -415,6 +424,7 @@ function(LCG_add_test test)
       --build-project ${ARG_PROJECT}
       --build-config $<CONFIGURATION>
       --build-noclean
+      --build-options ${ARG_BUILD_OPTIONS}
       --test-command ${_command} )
     set_property(TEST ${test} PROPERTY ENVIRONMENT Geant4_DIR=${CMAKE_BINARY_DIR})
     if(ARG_FAILREGEX)
