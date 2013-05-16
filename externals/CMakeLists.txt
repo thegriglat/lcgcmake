@@ -289,10 +289,14 @@ LCGPackage_Add(
   DEPENDS Qt
 )
 #---coin3d-----------------------------------------------------------------------------------------------
+if(LCG_TARGET MATCHES "mac")
+  set(coin3d_config_opts --without-framework)
+endif()
+
 LCGPackage_Add(
   coin3d
   URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/Coin-${coin3d_native_version}.tar.gz
-  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --enable-debug=no --enable-symbols=no
+  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --enable-debug=no --enable-symbols=no ${coin3d_config_opts}
   BUILD_COMMAND  make
   BUILD_IN_SOURCE 1
 )
@@ -372,7 +376,7 @@ LCGPackage_Add(
   libunwind
   URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/libunwind-${libunwind_native_version}.tar.gz
   CONFIGURE_COMMAND autoreconf -i
-            COMMAND ./configure --prefix=<INSTALL_DIR>
+            COMMAND ./configure --prefix=<INSTALL_DIR> CC=${CMAKE_C_COMPILER} CXX=${CMAKE_CXX_COMPILER}
   BUILD_COMMAND  make CFLAGS=-fPIC
   BUILD_IN_SOURCE 1
 )

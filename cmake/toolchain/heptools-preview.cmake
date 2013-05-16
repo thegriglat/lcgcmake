@@ -52,14 +52,12 @@ LCG_external_package(graphviz          2.28.0                                   
 LCG_external_package(GSL               1.10                                     )
 LCG_external_package(HepMC             2.06.08                                  )
 LCG_external_package(HepPDT            2.06.01                                  )
-LCG_external_package(igprof            5.9.6                                    )
 LCG_external_package(ipython           0.12.1                                   )
 LCG_external_package(json              2.5.2                                    )
 LCG_external_package(lapack            3.4.0                                    )
 LCG_external_package(lcov              1.9                                      )
 LCG_external_package(libsvm            2.86                                     )
 LCG_external_package(libtool           1.5.26                                   )
-LCG_external_package(libunwind         5c2cade                                  )
 LCG_external_package(lxml              2.3                                      )
 LCG_external_package(matplotlib        1.1.0                                    )
 LCG_external_package(minuit            5.27.02                                  )
@@ -111,6 +109,8 @@ LCG_external_package(xrootd            3.2.7                                    
 
 #---EMI-2 grid externals and other binary packages---------------------
 if(NOT ${LCG_OS} STREQUAL mac)
+  LCG_external_package(libunwind       5c2cade                                  )
+  LCG_external_package(igprof          5.9.6                                    )
   LCG_external_package(CASTOR          2.1.13-6               castor            )
   LCG_external_package(cream           1.14.0-4               Grid/cream        )
   LCG_external_package(dcap            2.47.7-1               Grid/dcap         )
