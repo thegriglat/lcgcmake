@@ -236,6 +236,7 @@ LCG_add_test(photos-test1 COMMAND photos/tests/photos_test1
                           SOURCE_DIR photos/tests
                           BUILD photos_test1
                           BUILD_OPTIONS -DPHOTOS_ROOT_DIR=${photos_home} -DPYTHIA6_ROOT_DIR=${pythia6_home}
+                          FAILREGEX "Fatal error"
                           ENVIRONMENT ${library_path}=${photos_home}/lib:${pythia6_home}/lib)
 
 #---evtgen------------------------------------------------------------------------------------------
