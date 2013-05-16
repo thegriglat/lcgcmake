@@ -35,28 +35,6 @@ LCGPackage_Add(
   BUILD_IN_SOURCE 1
 )
 
-#---pyquen--------------------------------------------------------------------------------------
-
-string(REPLACE "." "_" pyquen_underscore_version ${pyquen_native_version})
-LCGPackage_Add(
-  pyquen
-  DOWNLOAD_COMMAND ${CMAKE_COMMAND} -Durl=http://lokhtin.web.cern.ch/lokhtin/pyquen/pyquen${pyquen_underscore_version}.f
-                                    -Dsource_dir=<SOURCE_DIR>/src
-                                    -P  ${CMAKE_SOURCE_DIR}/cmake/scripts/DownloadURL.cmake
-  UPDATE_COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/pyquen/files  <SOURCE_DIR>
-         COMMAND ${CMAKE_COMMAND} -E chdir <SOURCE_DIR> ${CMAKE_COMMAND} -P preparePyquen.cmake
-
-  CMAKE_ARGS -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
-  BUILD_IN_SOURCE 1
-)
-
-LCG_add_test(pyquen-test1 COMMAND pyquen/tests/pyquen_test1
-                          BINARY_DIR pyquen/tests
-                          SOURCE_DIR pyquen/tests
-                          BUILD pyquen_test1
-                          BUILD_OPTIONS -DPYQUEN_ROOT_DIR=${pyquen_home} -DPYTHIA6_ROOT_DIR=${pythia6_home}
-                          ENVIRONMENT ${library_path}=${pyquen_home}/lib:${pythia6_home}/lib)
-
 
 #---lhapdfsets--------------------------------------------------------------------------------------
 
@@ -241,6 +219,29 @@ LCG_add_test(photos-test1 COMMAND photos/tests/photos_test1
                           BUILD_OPTIONS -DPHOTOS_ROOT_DIR=${photos_home} -DPYTHIA6_ROOT_DIR=${pythia6_home}
                           FAILREGEX "Fatal error"
                           ENVIRONMENT ${library_path}=${photos_home}/lib:${pythia6_home}/lib)
+
+#---pyquen--------------------------------------------------------------------------------------
+
+string(REPLACE "." "_" pyquen_underscore_version ${pyquen_native_version})
+LCGPackage_Add(
+  pyquen
+  DOWNLOAD_COMMAND ${CMAKE_COMMAND} -Durl=http://lokhtin.web.cern.ch/lokhtin/pyquen/pyquen${pyquen_underscore_version}.f
+                                    -Dsource_dir=<SOURCE_DIR>/src
+                                    -P  ${CMAKE_SOURCE_DIR}/cmake/scripts/DownloadURL.cmake
+  UPDATE_COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/pyquen/files  <SOURCE_DIR>
+         COMMAND ${CMAKE_COMMAND} -E chdir <SOURCE_DIR> ${CMAKE_COMMAND} -P preparePyquen.cmake
+
+  CMAKE_ARGS -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
+  BUILD_IN_SOURCE 1
+)
+
+LCG_add_test(pyquen-test1 COMMAND pyquen/tests/pyquen_test1
+                          BINARY_DIR pyquen/tests
+                          SOURCE_DIR pyquen/tests
+                          BUILD pyquen_test1
+                          BUILD_OPTIONS -DPYQUEN_ROOT_DIR=${pyquen_home} -DPYTHIA6_ROOT_DIR=${pythia6_home}
+                          ENVIRONMENT ${library_path}=${pyquen_home}/lib:${pythia6_home}/lib)
+
 
 #---evtgen------------------------------------------------------------------------------------------
 if(NOT APPLE)    #  (build fails on Mac " unknown option: -soname")
