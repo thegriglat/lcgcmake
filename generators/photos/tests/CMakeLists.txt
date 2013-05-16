@@ -8,6 +8,6 @@ find_package(Pythia6 REQUIRED)
 
 include_directories(${PHOTOS_INCLUDE_DIR} ${PYTHIA6_INCLUDE_DIR})
 
-add_executable(photos_test1 photos_test1.F)
+add_executable(photos_test1 photos_test1.F ${PYTHIA6_INCLUDE_DIR}/../../share/sources/src/pydata.f)
 target_link_libraries(photos_test1 ${PHOTOS_LIBRARIES} ${PYTHIA6_LIBRARIES})
 
