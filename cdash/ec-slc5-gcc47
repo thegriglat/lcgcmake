@@ -10,6 +10,7 @@ export PATH=/afs/cern.ch/sw/lcg/external/CMake/2.8.9/Linux-i386/bin:${PATH}
 #---Compiler------------------------------------------------------
 export PATH=/afs/cern.ch/sw/lcg/contrib/gcc/4.7.2/x86_64-slc5/bin:${PATH}
 export LD_LIBRARY_PATH=/afs/cern.ch/sw/lcg/contrib/gcc/4.7.2/x86_64-slc5/lib64:${LD_LIBRARY_PATH}
+export FC=gfortran
 
 #-----------------------------------------------------------------
 THIS=$(dirname $0)
