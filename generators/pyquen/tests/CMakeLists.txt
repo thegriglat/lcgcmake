@@ -8,5 +8,5 @@ find_package(Pythia6 REQUIRED)
 
 include_directories(${PYQUEN_INCLUDE_DIR} ${PYTHIA6_INCLUDE_DIR})
 
-add_executable(pyquen_test1 pyquen_test1.F)
+add_executable(pyquen_test1 pyquen_test1.f)
 target_link_libraries(pyquen_test1 ${PYQUEN_LIBRARIES} ${PYTHIA6_LIBRARIES})
