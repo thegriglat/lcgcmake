@@ -89,10 +89,10 @@ C...Begin event loop.
       print*,'* ERPYTHIA =',DRPYT,' ERTAUOLA =',DRTAU,'  *'
       print*,'******************************************************'
     
-      call testfileopen
-      call testfile('tauola_test1', 1, RRPYT, DRPYT)
-      call testfile('tauola_test1', 2, RRTAU, DRTAU)
-      call testfileclose
+*      call testfileopen
+*      call testfile('tauola_test1', 1, RRPYT, DRPYT)
+*      call testfile('tauola_test1', 2, RRTAU, DRTAU)
+*      call testfileclose
 
       stop
       end
