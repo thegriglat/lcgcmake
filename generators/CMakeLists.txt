@@ -119,7 +119,7 @@ LCG_add_test(pythia8-build  BINARY_DIR pythia8/tests SOURCE_DIR pythia8/tests
 
 foreach(t test3 test4)
   LCG_add_test(pythia8-${t} COMMAND pythia8/tests/pythia8_${t}
-                            ENVIRONMENT ${library_path}=${pythia8_home}/lib:${HepMC_home}/lib
+                            ENVIRONMENT ${library_path}=${pythia8_home}/lib:${HepMC_home}/lib:$ENV{${library_path}}
                                         PYTHIA8DATA=${pythia8_home}/xmldoc
                             DEPENDS pythia8-build)
 endforeach()
@@ -218,7 +218,7 @@ LCG_add_test(photos-test1 COMMAND photos/tests/photos_test1
                           BUILD photos_test1
                           BUILD_OPTIONS -DPHOTOS_ROOT_DIR=${photos_home} -DPYTHIA6_ROOT_DIR=${pythia6_home}
                           FAILREGEX "Fatal error"
-                          ENVIRONMENT ${library_path}=${photos_home}/lib:${pythia6_home}/lib)
+                          ENVIRONMENT ${library_path}=${photos_home}/lib:${pythia6_home}/lib:$ENV{${library_path}})
 
 #---pyquen--------------------------------------------------------------------------------------
 
@@ -240,7 +240,7 @@ LCG_add_test(pyquen-test1 COMMAND pyquen/tests/pyquen_test1
                           SOURCE_DIR pyquen/tests
                           BUILD pyquen_test1
                           BUILD_OPTIONS -DPYQUEN_ROOT_DIR=${pyquen_home} -DPYTHIA6_ROOT_DIR=${pythia6_home}
-                          ENVIRONMENT ${library_path}=${pyquen_home}/lib:${pythia6_home}/lib)
+                          ENVIRONMENT ${library_path}=${pyquen_home}/lib:${pythia6_home}/lib:$ENV{${library_path}})
 
 
 #---evtgen------------------------------------------------------------------------------------------
@@ -447,7 +447,7 @@ LCG_add_test(tauola-test1 COMMAND tauola/tests/tauola_test1
                           SOURCE_DIR tauola/tests
                           BUILD tauola_test1
                           BUILD_OPTIONS -DTAUOLA_ROOT_DIR=${tauola_home} -DPHOTOS_ROOT_DIR=${photos_home} -DPYTHIA6_ROOT_DIR=${pythia6_home}
-                          ENVIRONMENT ${library_path}=${tauola_home}/lib:${photos_home}/lib:${pythia6_home}/lib)
+                          ENVIRONMENT ${library_path}=${tauola_home}/lib:${photos_home}/lib:${pythia6_home}/lib:$ENV{${library_path}})
 
 #---jimmy------------------------------------------------------------------------------------------
 LCGPackage_Add(
