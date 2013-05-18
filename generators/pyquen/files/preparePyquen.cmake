@@ -4,6 +4,8 @@ find_program(PERL_COMMAND perl)
 
 file(GLOB pyquen_files src/pyquen*.f)
 execute_process(COMMAND ${PERL_COMMAND} splitter.pl ${pyquen_files})
+
+file(COPY pyquen.f DESTINATION orig)
 file(REMOVE pyquen.f)
 file(REMOVE ${pyquen_files})
 

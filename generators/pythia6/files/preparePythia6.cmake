@@ -6,6 +6,7 @@ execute_process(COMMAND ${PERL_COMMAND} splitter.pl ${pythiafile})
 
 set(dummy_files fhhiggscorr.f fhsetflags.f fhsetpara.f pyevwt.f pykcut.f pytaud.f pytime.f ssmssm.f sugra.f upevnt.f upinit.f upveto.f visaje.f)
 file(COPY ${dummy_files} DESTINATION dummy)
+file(COPY ${pythiafile} DESTINATION orig)
 file(REMOVE ${dummy_files})
 
 set(pdfdummy_files pdfset.f structm.f structp.f )
