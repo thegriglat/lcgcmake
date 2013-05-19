@@ -4,8 +4,8 @@ find_program(PERL_COMMAND perl)
 
 file(GLOB jetset_files jetset/jetset*.f)
 execute_process(COMMAND ${PERL_COMMAND} splitter.pl ${jetset_files})
+file(COPY ${jetset_files} DESTINATION jetset_orig)
 file(REMOVE ${jetset_files})
-
 file(COPY luhepc.f DESTINATION examples)
 file(REMOVE luhepc.f)
 

@@ -104,7 +104,7 @@ ccc      dna0=35700.d0
       call hyinit(energy,A,ifb,bmin,bmax,bfix,nh)
        
 * set number of generated events 
-      ntot=100
+      ntot=10
 c
       do ne=1,ntot                        ! cycle on events 
 c
@@ -162,17 +162,17 @@ c
      > '+-  ',f5.2)    
 
 c            test output
-      call testfileopen
+*      call testfileopen
       val=dnam
       errval=dnrms
-      call testfile('hydjet_test1', 1, val, 2.5*errval)
+*      call testfile('hydjet_test1', 1, val, 2.5*errval)
       val=etam
       errval=etrms
-      call testfile('hydjet_test1', 2, val, 2.5*errval)
+*      call testfile('hydjet_test1', 2, val, 2.5*errval)
       val=ptam
       errval=ptrms
-      call testfile('hydjet_test1', 3, val, 2.5*errval)
-      call testfileclose 
+*      call testfile('hydjet_test1', 3, val, 2.5*errval)
+*      call testfileclose 
 c       
       end
 *******************************************************************************

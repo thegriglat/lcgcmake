@@ -18,23 +18,6 @@ else()
 endif()
 set(CMAKE_VERBOSE_MAKEFILE ON)
 
-#---hydjet--------------------------------------------------------------------------------------
-
-string(REPLACE "." "_" hydjet_underscore_version ${hydjet_native_version})
-LCGPackage_Add(
-  hydjet
-  DOWNLOAD_COMMAND ${CMAKE_COMMAND} -Durl=http://lokhtin.web.cern.ch/lokhtin/hydro/hydjet${hydjet_underscore_version}.f
-                                    -Dsource_dir=<SOURCE_DIR>/src
-                                    -P  ${CMAKE_SOURCE_DIR}/cmake/scripts/DownloadURL.cmake
-  DOWNLOAD_COMMAND ${CMAKE_COMMAND} -Durl=http://lokhtin.web.cern.ch/lokhtin/hydro/jetset_73.f
-                                    -Dsource_dir=<SOURCE_DIR>/jetset
-                                    -P ${CMAKE_SOURCE_DIR}/cmake/scripts/DownloadURL.cmake
-  UPDATE_COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/hydjet/files  <SOURCE_DIR>
-         COMMAND ${CMAKE_COMMAND} -E chdir <SOURCE_DIR> ${CMAKE_COMMAND} -P prepareHydjet.cmake
-  CMAKE_ARGS -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
-  BUILD_IN_SOURCE 1
-)
-
 
 #---lhapdfsets--------------------------------------------------------------------------------------
 
@@ -151,7 +134,16 @@ if(NOT APPLE)    #  (installation fails on MacOSX)
     BUILD_IN_SOURCE 1
     DEPENDS GSL Boost thepeg
   )
+#LCG_add_test(herwigpp-test0 COMMAND herwig++/tests/herwigpp_test
+#                          BINARY_DIR herwig++/tests
+#                          SOURCE_DIR herwig++/tests
+#                          BUILD herwigpp_test
+#                          BUILD_OPTIONS -DHERWIGPP_ROOT_DIR=${herwig++_home}
+#                          ENVIRONMENT ${library_path}=${herwig++_home}/lib:$ENV{${library_path}})
+
 endif()
+
+
 
 #---tauola++------------------------------------------------------------------------------------------
 LCGPackage_Add(
@@ -241,6 +233,33 @@ LCG_add_test(pyquen-test1 COMMAND pyquen/tests/pyquen_test1
                           BUILD pyquen_test1
                           BUILD_OPTIONS -DPYQUEN_ROOT_DIR=${pyquen_home} -DPYTHIA6_ROOT_DIR=${pythia6_home}
                           ENVIRONMENT ${library_path}=${pyquen_home}/lib:${pythia6_home}/lib:$ENV{${library_path}})
+
+#---hydjet--------------------------------------------------------------------------------------
+
+string(REPLACE "." "_" hydjet_underscore_version ${hydjet_native_version})
+LCGPackage_Add(
+  hydjet
+  DOWNLOAD_COMMAND ${CMAKE_COMMAND} -Durl=http://lokhtin.web.cern.ch/lokhtin/hydro/hydjet${hydjet_underscore_version}.f
+                                    -Dsource_dir=<SOURCE_DIR>/src
+                                    -P  ${CMAKE_SOURCE_DIR}/cmake/scripts/DownloadURL.cmake
+  DOWNLOAD_COMMAND ${CMAKE_COMMAND} -Durl=http://lokhtin.web.cern.ch/lokhtin/hydro/jetset_73.f
+                                    -Dsource_dir=<SOURCE_DIR>/jetset
+                                    -P ${CMAKE_SOURCE_DIR}/cmake/scripts/DownloadURL.cmake
+  UPDATE_COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/hydjet/files  <SOURCE_DIR>
+         COMMAND ${CMAKE_COMMAND} -E chdir <SOURCE_DIR> ${CMAKE_COMMAND} -P prepareHydjet.cmake
+  CMAKE_ARGS -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
+  BUILD_IN_SOURCE 1
+)
+LCG_add_test(hydjet-test COMMAND hydjet/tests/hydjet_test
+                          BINARY_DIR hydjet/tests
+                          SOURCE_DIR hydjet/tests
+                          BUILD hydjet_test
+                          BUILD_OPTIONS -DHYDJET_ROOT_DIR=${hydjet_home} -DPYTHIA6_ROOT_DIR=${pythia6_home} -DPYQUEN_ROOT_DIR=${pyquen_home}
+                          ENVIRONMENT ${library_path}=${hydjet_home}/lib:${pyquen_home}/lib:${pythia6_home}/lib:$ENV{${library_path}})
+
+
+
+
 
 
 #---evtgen------------------------------------------------------------------------------------------
