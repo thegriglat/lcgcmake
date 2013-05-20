@@ -100,7 +100,23 @@ LCG_add_test(pythia8-build  BINARY_DIR pythia8/tests SOURCE_DIR pythia8/tests
                             BUILD all
                             BUILD_OPTIONS -DPYTHIA8_ROOT_DIR=${pythia8_home} -DHEPMC_ROOT_DIR=${HepMC_home})
 
-foreach(t test3 test4)
+foreach(t genser_test3 genser_test4 
+orig_test1 
+orig_test2
+orig_test3 
+orig_test4 
+orig_test5 
+orig_test6 
+orig_test7 
+orig_test8 
+orig_test9 
+orig_test10 
+orig_test11
+orig_test12
+orig_test13
+orig_test14
+orig_test15
+)
   LCG_add_test(pythia8-${t} COMMAND pythia8/tests/pythia8_${t}
                             ENVIRONMENT ${library_path}=${pythia8_home}/lib:${HepMC_home}/lib:$ENV{${library_path}}
                                         PYTHIA8DATA=${pythia8_home}/xmldoc
