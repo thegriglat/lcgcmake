@@ -1,0 +1,32 @@
+# - Locate herwigpp library
+# Defines:
+#
+#  HERWIGPP_FOUND
+#  HERWIGPP_INCLUDE_DIR
+#  HERWIGPP_INCLUDE_DIRS (not cached)
+#  HERWIGPP_LIBRARY
+#  HERWIGPP_LIBRARIES (not cached)
+
+
+#find_path(HERWIGPP_INCLUDE_DIR BELLECharmAnalysis.h
+#          HINTS $ENV{HERWIGPP_ROOT_DIR}/include ${HERWIGPP_ROOT_DIR}/include)
+
+#find_library(HERWIGPP_LIBRARY NAMES herwig++ Herwig++
+#             HINTS $ENV{HERWIGPP_ROOT_DIR}/lib ${HERWIGPP_ROOT_DIR}/lib)
+
+
+set(HERWIGPP_INCLUDE_DIR ${HERWIGPP_ROOT_DIR}/include/Herwig++)
+set(HERWIGPP_INCLUDE_DIRS ${HERWIGPP_INCLUDE_DIR})
+
+set(THEPEG_DIR ${THEPEG_ROOT_DIR})
+
+set(HERWIGPP_LIBRARY ${HERWIGPP_ROOT_DIR}/lib)
+set(HERWIGPP_LIBRARIES ${HERWIGPP_LIBRARY})
+
+# handle the QUIETLY and REQUIRED arguments and set PHOTOS_FOUND to TRUE if
+# all listed variables are TRUE
+
+INCLUDE(FindPackageHandleStandardArgs)
+FIND_PACKAGE_HANDLE_STANDARD_ARGS(Herwigpp DEFAULT_MSG HERWIGPP_INCLUDE_DIR)
+
+mark_as_advanced(HERWIGPP_FOUND HERWIGPP_INCLUDE_DIR HERWIGPP_LIBRARY)
