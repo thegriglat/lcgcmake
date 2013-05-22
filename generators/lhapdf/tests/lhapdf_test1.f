@@ -15,7 +15,7 @@
       integer lun
 *
       lun = 99
-      open(lun,file='testi.dat',form='formatted',status='new')
+c      open(lun,file='testi.dat',form='formatted',status='new')
       call TestPDFset(lun,'cteq6.LHpdf')
 cc      call TestPDFset(lun,'cteq6mE.LHgrid')
 cc      call TestPDFset(lun,'MRST2001E.LHgrid')
@@ -26,7 +26,7 @@ cc      call TestPDFset(lun,'a02m_lo.LHgrid')
       call TestPDFset(lun,'a02m_nnlo.LHgrid')
 cc      call TestPDFset(lun,'H12000msE.LHgrid')
       call TestPDFset(lun,'H12000loE.LHgrid')
-      close(lun)
+c      close(lun)
       end
     
       subroutine TestPDFset(lun,name)

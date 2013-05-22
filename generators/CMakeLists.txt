@@ -64,6 +64,12 @@ LCGPackage_Add(
   BUILD_IN_SOURCE 1
   DEPENDS lhapdfsets
 )
+LCG_add_test(lhapdf_genser_test1 COMMAND lhapdf/tests/lhapdf_genser_test1
+                          BINARY_DIR lhapdf/tests
+                          SOURCE_DIR lhapdf/tests
+                          BUILD lhapdf_genser_test1
+                          BUILD_OPTIONS -DLHAPDF_ROOT_DIR=${lhapdf_home} -DLHAPDFSETS_ROOT_DIR=${lhapdfsets_home} -DLHAPATH=${lhapdfsets_home}/../share
+                          ENVIRONMENT ${library_path}=${lhapdf_home}/lib:$ENV{${library_path}})
 
 
 #---pythia8------------------------------------------------------------------------------------------
@@ -102,20 +108,6 @@ LCG_add_test(pythia8-build  BINARY_DIR pythia8/tests SOURCE_DIR pythia8/tests
 
 foreach(t genser_test3 genser_test4 
 orig_test1 
-orig_test2
-orig_test3 
-orig_test4 
-orig_test5 
-orig_test6 
-orig_test7 
-orig_test8 
-orig_test9 
-orig_test10 
-orig_test11
-orig_test12
-orig_test13
-orig_test14
-orig_test15
 )
   LCG_add_test(pythia8-${t} COMMAND pythia8/tests/pythia8_${t}
                             ENVIRONMENT ${library_path}=${pythia8_home}/lib:${HepMC_home}/lib:$ENV{${library_path}}
@@ -150,12 +142,13 @@ if(NOT APPLE)    #  (installation fails on MacOSX)
     BUILD_IN_SOURCE 1
     DEPENDS GSL Boost thepeg
   )
-#LCG_add_test(herwigpp-test0 COMMAND herwig++/tests/herwigpp_test
-#                          BINARY_DIR herwig++/tests
-#                          SOURCE_DIR herwig++/tests
-#                          BUILD herwigpp_test
-#                          BUILD_OPTIONS -DHERWIGPP_ROOT_DIR=${herwig++_home}
-#                          ENVIRONMENT ${library_path}=${herwig++_home}/lib:$ENV{${library_path}})
+
+LCG_add_test(herwigpp_orig_test1 COMMAND herwig++/tests/herwigpp_orig_test1
+                          BINARY_DIR herwig++/tests
+                          SOURCE_DIR herwig++/tests
+                          BUILD herwigpp_orig_test1
+                          BUILD_OPTIONS -DHERWIGPP_ROOT_DIR=${herwig++_home}
+                          ENVIRONMENT ${library_path}=${herwig++_home}/lib:$ENV{${library_path}})
 
 endif()
 
@@ -195,15 +188,6 @@ LCGPackage_Add(
   INSTALL_COMMAND make install LD_LIBRARY_PATH=${Python_home}/lib:$ENV{LD_LIBRARY_PATH}
   BUILD_IN_SOURCE 1
   DEPENDS HepMC Boost Python swig
-)
-
-#---photos++------------------------------------------------------------------------------------------
-LCGPackage_Add(
-  photos++
-  URL http://annapurna.ifj.edu.pl/~tprzedzinski/resources/PHOTOS.${photos++_native_version}/PHOTOS.${photos++_native_version}-LHC.tar.gz
-  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --with-hepmc=${HepMC_home}
-  BUILD_IN_SOURCE 1
-  DEPENDS HepMC
 )
 
 #---photos------------------------------------------------------------------------------------------
@@ -274,6 +258,20 @@ LCG_add_test(hydjet-test COMMAND hydjet/tests/hydjet_test
                           ENVIRONMENT ${library_path}=${hydjet_home}/lib:${pyquen_home}/lib:${pythia6_home}/lib:$ENV{${library_path}})
 
 
+#---photos++------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  photos++
+  URL http://annapurna.ifj.edu.pl/~tprzedzinski/resources/PHOTOS.${photos++_native_version}/PHOTOS.${photos++_native_version}-LHC.tar.gz
+  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --with-hepmc=${HepMC_home}
+  BUILD_IN_SOURCE 1
+  DEPENDS HepMC
+)
+LCG_add_test(photospp_genser_test1 COMMAND photos++/tests/photospp_genser_test1
+                          BINARY_DIR photospp/tests
+                          SOURCE_DIR photospp/tests
+                          BUILD photospp_genser_test1
+                          BUILD_OPTIONS -DPHOTOSPP_ROOT_DIR=${photos++_home}
+                          ENVIRONMENT ${library_path}=${photos++_home}/lib:$ENV{${library_path}})
 
 
 
@@ -429,6 +427,12 @@ LCGPackage_Add(
   INSTALL_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/lib <INSTALL_DIR>/lib
   BUILD_IN_SOURCE 1
 )
+LCG_add_test(hijing_genser_test1 COMMAND hijing/tests/hijing_genser_test1
+                          BINARY_DIR hijing/tests
+                          SOURCE_DIR hijing/tests
+                          BUILD hijing_genser_test1
+                          BUILD_OPTIONS -DHIJING_ROOT_DIR=${hijing_home}
+                          ENVIRONMENT ${library_path}=${hijing_home}/lib:$ENV{${library_path}})
 
 #---Starlight---------------------------------------------------------------------------------------
 string(SUBSTRING ${starlight_native_version} 1 -1 STARLIGHT_REV)
@@ -440,6 +444,14 @@ LCGPackage_Add(
   PATCH_COMMAND patch -p0 < ${CMAKE_CURRENT_SOURCE_DIR}/starlight/patches/patch-${starlight_native_version}
   CMAKE_ARGS -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
 )
+LCG_add_test(starlight_genser_test1 COMMAND starlight/tests/starlight_genser_test1
+                          BINARY_DIR starlight/tests
+                          SOURCE_DIR starlight/tests
+                          BUILD starlight_genser_test1
+                          BUILD_OPTIONS -DSTARLIGHT_ROOT_DIR=${starlight_home}
+                          ENVIRONMENT ${library_path}=${starlight_home}/lib:$ENV{${library_path}})
+
+
 
 #---HERWIG----------------------------------------------------------------------------------------
 LCGPackage_Add(

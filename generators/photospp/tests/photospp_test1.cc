@@ -197,6 +197,4 @@ int main(int argc,char **argv)
 	Log::RedirectOutput(Log::Info());
         pythia.statistics();
         Log::RevertOutput();
-
-
 }

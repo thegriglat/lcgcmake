@@ -8,17 +8,17 @@ C #@# 1: cross-section
 
 c        GENSER test output
 
-      call testfileopen  
+c      call testfileopen  
 
-      open(UNIT=33,FILE='starlight_val.out')
-      read(33,*) evnum, val
+c      open(UNIT=33,FILE='starlight_val.out')
+c      read(33,*) evnum, val
 
       err=val/sqrt(evnum)
 
-      close(33)
+c      close(33)
              
-      call testfile('starlight_test0', 1, val, err)
-      call testfileclose
+c      call testfile('starlight_test0', 1, val, err)
+c      call testfileclose
    
       end
 

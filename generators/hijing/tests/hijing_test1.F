@@ -335,14 +335,14 @@ c================ Normalization ===========================
 
 c        GENSER test output
 
-      call testfileopen  
+c      call testfileopen  
 
 ccc   Y = charged particles multiplicity
       val=mean1
 c     Y error is calculated as for gauss distribution
       errval=sqrt(sqr1 - mean1**2)/sqrt(float(N_events))                
-      call testfile('hijing_test1', 1, val, errval)
-      call testfileclose
+c      call testfile('hijing_test1', 1, val, errval)
+c      call testfileclose
 
 
       print*,'mean,error, D, N_events  ',mean1,errval,sqr1,N_events
