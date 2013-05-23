@@ -9,7 +9,7 @@
 // This is the declaration of the GTestAnalysis class.
 //
 
-#include "ThePEG/HepMCFile.h"
+#include "ThePEG/Analysis/HepMCFile.h"
 #include "ThePEG/Handlers/AnalysisHandler.h"
 #include "ThePEG/Repository/Repository.h"
 #include "ThePEG/PDT/ParticleData.h"
@@ -17,7 +17,7 @@
 #include "Herwig++/Utilities/Statistic.h"
 
 #include "HepMC/GenEvent.h"
-#include "HepMC/IO_Ascii.h"
+#include "IO_Ascii.h"
 
 //#include "ANHEPMC/JetableInputFromHepMC.h"
 //#include "ANHEPMC/JetFinderUA.h"

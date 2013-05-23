@@ -147,9 +147,8 @@ LCG_add_test(herwigpp_orig_test1 COMMAND herwig++/tests/herwigpp_orig_test1
                           BINARY_DIR herwig++/tests
                           SOURCE_DIR herwig++/tests
                           BUILD herwigpp_orig_test1
-                          BUILD_OPTIONS -DHERWIGPP_ROOT_DIR=${herwig++_home}
+                          BUILD_OPTIONS -DHERWIGPP_ROOT_DIR=${herwig++_home} -DTHEPEG_ROOT_DIR=${thepeg_home} -DHEPMC_ROOT_DIR=${HepMC_home}
                           ENVIRONMENT ${library_path}=${herwig++_home}/lib:$ENV{${library_path}})
-
 endif()
 
 
@@ -266,11 +265,11 @@ LCGPackage_Add(
   BUILD_IN_SOURCE 1
   DEPENDS HepMC
 )
-LCG_add_test(photospp_genser_test1 COMMAND photos++/tests/photospp_genser_test1
+LCG_add_test(photospp_genser_test1 COMMAND photospp/tests/photospp_genser_test1
                           BINARY_DIR photospp/tests
                           SOURCE_DIR photospp/tests
                           BUILD photospp_genser_test1
-                          BUILD_OPTIONS -DPHOTOSPP_ROOT_DIR=${photos++_home}
+                          BUILD_OPTIONS -DPHOTOSPP_ROOT_DIR=${photos++_home} -DPYTHIA8_ROOT_DIR=${pythia8_home} -DHEPMC_ROOT_DIR=${HepMC_home}
                           ENVIRONMENT ${library_path}=${photos++_home}/lib:$ENV{${library_path}})
 
 
