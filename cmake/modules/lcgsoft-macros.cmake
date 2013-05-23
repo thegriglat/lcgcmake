@@ -212,14 +212,23 @@ macro(LCGPackage_Add name)
       add_dependencies(clean-${name} clean-${targetname})
     endif()
   endforeach()
+  
+  #---Prepare 'group' targets------------------------------------------------------------------------
+  get_filename_component(group ${CMAKE_CURRENT_SOURCE_DIR} NAME)
+  if(NOT TARGET ${group})
+    add_custom_target(${group} COMMENT "Grouping ${group} global target")
+    add_custom_target(clean-${group} COMMENT "Clean group target ${group}")
+  endif()
+  add_dependencies(${group} ${name})
+  add_dependencies(clean-${group} clean-${name})
 
-  #--- export the latest ${name}_home variable to the other subdirectories
+  #--- export the latest ${name}_home variable to the other subdirectories---------------------------
   set(${name}_home ${${name}_home} PARENT_SCOPE)
 
-  #--- mark that the target exists
+  #--- mark that the target exists-------------------------------------------------------------------
   set(${name}_exists 1 PARENT_SCOPE)
 
-  #--- export the dependencies to the outside files 
+  #--- export the dependencies to the outside files--------------------------------------------------
   set(${targetname}_dependencies ${${targetname}_dependencies} PARENT_SCOPE)
 
 endmacro()

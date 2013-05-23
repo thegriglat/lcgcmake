@@ -42,7 +42,7 @@ LCG_external_package(cx_oracle         5.1.1                                    
 #LCG_external_package(dcache_client     2.47.6-1                                 ) deprecated due to Grid/dcap
 #LCG_external_package(dcache_srm        1.9.5-23                                 ) deprecated due to Grid/dcap 
 LCG_external_package(doxygen           1.8.2                                    ) 
-LCG_external_package(Expat             2.0.1                     Expat          )
+LCG_external_package(expat             2.0.1                                    )
 LCG_external_package(fastjet           3.0.3                                    )
 LCG_external_package(fftw              3.1.2                     fftw3          )
 LCG_external_package(Frontier_Client   2.8.5p1                   frontier_client)

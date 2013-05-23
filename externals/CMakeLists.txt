@@ -310,10 +310,10 @@ LCGPackage_Add(
   DEPENDS graphviz
 )
 
-#---Expat------------------------------------------------------------------------------------------------
+#---expat------------------------------------------------------------------------------------------------
 LCGPackage_Add(
-  Expat
-  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/expat-${Expat_native_version}.tar.gz
+  expat
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/expat-${expat_native_version}.tar.gz
   CONFIGURE_COMMAND ./configure --prefix <INSTALL_DIR>
   BUILD_IN_SOURCE 1
 )
@@ -323,10 +323,10 @@ LCGPackage_Add(
   Frontier_Client
   URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/frontier_client__${Frontier_Client_native_version}__src.tar.gz
   CONFIGURE_COMMAND <VOID>
-  BUILD_COMMAND make dist EXPAT_DIR=${Expat_home} LD_LIBRARY_PATH=${Expat_home}/lib:$ENV{LD_LIBRARY_PATH}
+  BUILD_COMMAND make dist EXPAT_DIR=${expat_home} LD_LIBRARY_PATH=${expat_home}/lib:$ENV{LD_LIBRARY_PATH}
   INSTALL_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/dist <INSTALL_DIR>
   BUILD_IN_SOURCE 1
-  DEPENDS Expat
+  DEPENDS expat
 )
 
 #---lcov-------------------------------------------------------------------------------------------------
