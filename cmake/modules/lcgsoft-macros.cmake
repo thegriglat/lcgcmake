@@ -83,11 +83,9 @@ macro(LCGPackage_Add name)
       if(${name} STREQUAL ROOT)  # ROOT in LCG installations is special
         set(_path ${_path}/root)
       endif()
-      add_custom_target(${targetname} ALL COMMAND ${CMAKE_COMMAND} -E make_directory  ${CMAKE_INSTALL_PREFIX}/${${name}_directory_name}/${version}
-                                          COMMAND ${CMAKE_COMMAND} -E create_symlink ${_path} ${CMAKE_INSTALL_PREFIX}/${install_path}
-                                          COMMENT "${targetname} package already existing in ${_path}. Making a soft-link.")
-      add_custom_target(clean-${targetname} COMMAND ${CMAKE_COMMAND} -E remove ${CMAKE_INSTALL_PREFIX}/${install_path}
-                                            COMMENT "${targetname} deleting soft-link")
+      set(${name}_home ${LCG_INSTALL_PREFIX}/../app/releases/${install_path})
+      add_custom_target(${targetname} ALL COMMENT "${targetname} package already existing in ${_path}. Using it directly.")
+      add_custom_target(clean-${targetname} COMMENT "${targetname} nothing to be done")
 
     else()
       #---Replace patterns for multiversion cases-----------------------------------------------------

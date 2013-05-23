@@ -2,7 +2,7 @@
 set(heptools_version preview)
 
 # Remove the reference to this file from the cache.
-unset(CMAKE_TOOLCHAIN_FILE CACHE)
+#unset(CMAKE_TOOLCHAIN_FILE CACHE)
 
 # Find the actual toolchain file.
 find_file(CMAKE_TOOLCHAIN_FILE
@@ -18,5 +18,6 @@ endif()
 # Reset the cache variable to have proper documentation.
 set(CMAKE_TOOLCHAIN_FILE ${CMAKE_TOOLCHAIN_FILE}
     CACHE FILEPATH "The CMake toolchain file" FORCE)
+message(STATUS "Using toolchain file:       ${CMAKE_TOOLCHAIN_FILE}")
 
 include(${CMAKE_TOOLCHAIN_FILE})
