@@ -161,6 +161,25 @@ LCGPackage_Add(
   BUILD_IN_SOURCE 1
   DEPENDS HepMC lhapdf
 )
+LCG_add_test(tauolapp_orig_test1 COMMAND tauolapp/tests/tauolapp_orig_test1
+                          BINARY_DIR tauolapp/tests
+                          SOURCE_DIR tauolapp/tests
+                          BUILD tauolapp_orig_test1
+                          BUILD_OPTIONS -DTAUOLAPP_ROOT_DIR=${tauola++_home} -DPYTHIA8_ROOT_DIR=${pythia8_home} -DHEPMC_ROOT_DIR=${HepMC_home}
+                          ENVIRONMENT ${library_path}=${tauola++_home}/lib:$ENV{${library_path}})
+LCG_add_test(tauolapp_orig_test2 COMMAND tauolapp/tests/tauolapp_orig_test2
+                          BINARY_DIR tauolapp/tests
+                          SOURCE_DIR tauolapp/tests
+                          BUILD tauolapp_orig_test2
+                          BUILD_OPTIONS -DTAUOLAPP_ROOT_DIR=${tauola++_home} -DPYTHIA8_ROOT_DIR=${pythia8_home} -DHEPMC_ROOT_DIR=${HepMC_home} -DMCTESTER_ROOT_DIR=${mctester_home}
+                          ENVIRONMENT ${library_path}=${tauola++_home}/lib:$ENV{${library_path}})
+
+LCG_add_test(tauolapp_orig_test3 COMMAND tauolapp/tests/tauolapp_orig_test3
+                          BINARY_DIR tauolapp/tests
+                          SOURCE_DIR tauolapp/tests
+                          BUILD tauolapp_orig_test3
+                          BUILD_OPTIONS -DTAUOLAPP_ROOT_DIR=${tauola++_home} -DPYTHIA8_ROOT_DIR=${pythia8_home} -DHEPMC_ROOT_DIR=${HepMC_home} -DMCTESTER_ROOT_DIR=${mctester_home}
+                          ENVIRONMENT ${library_path}=${tauola++_home}/lib:$ENV{${library_path}})
 
 #---pythia6-------------------------------------------------------------------------------------------
 LCGPackage_Add(
@@ -265,15 +284,18 @@ LCGPackage_Add(
   BUILD_IN_SOURCE 1
   DEPENDS HepMC
 )
-LCG_add_test(photospp_genser_test1 COMMAND photospp/tests/photospp_genser_test1
+LCG_add_test(photospp_orig_test1 COMMAND photospp/tests/photospp_orig_test1
                           BINARY_DIR photospp/tests
                           SOURCE_DIR photospp/tests
-                          BUILD photospp_genser_test1
+                          BUILD photospp_orig_test1
                           BUILD_OPTIONS -DPHOTOSPP_ROOT_DIR=${photos++_home} -DPYTHIA8_ROOT_DIR=${pythia8_home} -DHEPMC_ROOT_DIR=${HepMC_home}
                           ENVIRONMENT ${library_path}=${photos++_home}/lib:$ENV{${library_path}})
-
-
-
+LCG_add_test(photospp_orig_test2 COMMAND photospp/tests/photospp_orig_test2
+                          BINARY_DIR photospp/tests
+                          SOURCE_DIR photospp/tests
+                          BUILD photospp_orig_test2
+                          BUILD_OPTIONS -DPHOTOSPP_ROOT_DIR=${photos++_home} -DPYTHIA8_ROOT_DIR=${pythia8_home} -DHEPMC_ROOT_DIR=${HepMC_home} -DMCTESTER_ROOT_DIR=${mctester_home}
+                          ENVIRONMENT ${library_path}=${photos++_home}/lib:$ENV{${library_path}})
 
 #---evtgen------------------------------------------------------------------------------------------
 if(NOT APPLE)    #  (build fails on Mac " unknown option: -soname")
@@ -426,10 +448,10 @@ LCGPackage_Add(
   INSTALL_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/lib <INSTALL_DIR>/lib
   BUILD_IN_SOURCE 1
 )
-LCG_add_test(hijing_genser_test1 COMMAND hijing/tests/hijing_genser_test1
+LCG_add_test(hijing_orig_test1 COMMAND hijing/tests/hijing_orig_test1
                           BINARY_DIR hijing/tests
                           SOURCE_DIR hijing/tests
-                          BUILD hijing_genser_test1
+                          BUILD hijing_orig_test1
                           BUILD_OPTIONS -DHIJING_ROOT_DIR=${hijing_home}
                           ENVIRONMENT ${library_path}=${hijing_home}/lib:$ENV{${library_path}})
 
@@ -534,4 +556,7 @@ LCGPackage_Add(
   UPDATE_COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/alpgen/files  <SOURCE_DIR>
   CMAKE_ARGS -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
   BUILD_IN_SOURCE 1
-)        
+)
+
+
+
