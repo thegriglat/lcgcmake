@@ -422,7 +422,7 @@ LCGPackage_Add(
   INSTALL_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/lib <INSTALL_DIR>/lib
           COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/include <INSTALL_DIR>/include
   BUILD_IN_SOURCE 1
-  DEPENDS HepMC fastjet CLHEP #ROOT
+  DEPENDS HepMC fastjet CLHEP ROOT
 
 )
 
@@ -434,7 +434,7 @@ LCGPackage_Add(
   CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --with-HepMC=${HepMC_home} --with-root=${ROOT_home}/bin
   BUILD_COMMAND make LD_LIBRARY_PATH=${ROOT_home}/lib:$ENV{LD_LIBRARY_PATH}
   BUILD_IN_SOURCE 1
-  DEPENDS HepMC #ROOT
+  DEPENDS HepMC ROOT
 )
 
 #---HIJING----------------------------------------------------------------------------------------
