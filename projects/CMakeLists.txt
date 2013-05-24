@@ -75,8 +75,9 @@ else()
                -Ddcache=ON -DDCAP_DIR=${dcap_home}
                -Dgfal=ON -DGFAL_DIR=${gfal_home}
                          -DSRM_IFCE_DIR=${srm_ifce_home} 
+               -Doracle=ON -DORACLE_HOME=${oracle_home}
         )
-     set(ROOT_slc_dependencies CASTOR dcap gfal srm_ifce)
+     set(ROOT_slc_dependencies CASTOR dcap gfal srm_ifce oracle)
   endif()
   LCGPackage_Add(
     ROOT
@@ -104,7 +105,6 @@ else()
                -Dmysql=ON -DMYSQL_CONFIG_EXECUTABLE=${mysql_home}/bin/mysql_config
                -Dodbc=ON
                -Dopengl=ON
-               -Doracle=ON -DORACLE_HOME=${oracle_home}
                -Dpythia8=ON -DPYTHIA8_LIBRARY=${pythia8_home}/lib/libpythia8${CMAKE_SHARED_LIBRARY_SUFFIX}
                             -DPYTHIA8_INCLUDE_DIR=${pythia8_home}/include
                -Dqt=ON -DQT_QMAKE_EXECUTABLE=${Qt_home}/bin/qmake
@@ -122,7 +122,7 @@ else()
                -DCINTMAXTYPEDEF=36000
                -DCINTLONGLINE=4096
                ${ROOT_slc_options}
-    DEPENDS Python fftw graphviz GSL mysql oracle pythia8 Qt xrootd ${ROOT_slc_dependencies}
+    DEPENDS Python fftw graphviz GSL mysql pythia8 Qt xrootd ${ROOT_slc_dependencies}
   )
 endif()
 #---cmaketool----------------------------------------------------------------------------------------

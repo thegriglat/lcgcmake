@@ -63,7 +63,7 @@ LCG_external_package(matplotlib        1.1.0                                    
 LCG_external_package(minuit            5.27.02                                  )
 LCG_external_package(mock              0.8.0                                    )
 LCG_external_package(multiprocessing   2.6.2.1                                  )
-LCG_external_package(mysql             5.5.14                                   )
+LCG_external_package(mysql             5.5.27                                   )
 LCG_external_package(mysql_python      1.2.3                                    )
 LCG_external_package(nose              1.1.2                                    )
 LCG_external_package(numpy             1.6.1                                    )
