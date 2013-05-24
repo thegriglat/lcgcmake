@@ -343,21 +343,6 @@ endif()
 macro(LCG_AA_project name version)
   set(${name}_config_version ${version})
   set(${name}_native_version ${version})
-  set(${name}_base ${LCG_releases}/${name}/${${name}_native_version})
-  set(${name}_home ${${name}_base}/${LCG_platform})
-  if(${name} STREQUAL ROOT)
-    # ROOT is special
-    set(ROOT_home ${ROOT_home}/root)
-  endif()
-  if(NOT LCG_platform STREQUAL LCG_system)
-    # For AA projects we want to be able to fall back on non-debug builds.
-    if(NOT ${name} STREQUAL ROOT)
-      set(${name}_home ${${name}_home} ${${name}_base}/${LCG_system})
-    else()
-      # ROOT is special
-      set(ROOT_home ${ROOT_home} ${ROOT_base}/${LCG_system}/root)
-    endif()
-  endif()
   if(${ARGC} GREATER 2)
     set(${name}_directory_name ${ARGV2})
   else()
@@ -472,40 +457,6 @@ macro(LCG_prepare_paths)
   if(comp STREQUAL clang30)
     set(GCCXML_CXX_COMPILER gcc CACHE STRING "Compiler that GCCXML must use.")
   endif()
-
-  # This is not really needed because Xerces has its own version macro, but it was
-  # added at some point, so it is kept for backward compatibility.
-  #add_definitions(-DXERCESC_GE_31)
-
-  #===============================================================================
-  # Construct the actual PREFIX and INCLUDE PATHs
-  #===============================================================================
-  # Define the _home variables (not cached)
-  foreach(name ${LCG_externals})
-    set(${name}_home ${LCG_external}/${${name}_directory_name}/${${name}_native_version}/${LCG_system})
-  endforeach()
-
-  foreach(name ${LCG_projects})
-    list(APPEND LCG_PREFIX_PATH ${${name}_home})
-    list(APPEND LCG_INCLUDE_PATH ${${name}_base}/include)
-    # We need to add python to the include path because it's the only
-    # way to search for a (generic) file.
-    foreach(h ${${name}_home})
-      list(APPEND LCG_INCLUDE_PATH ${h}/python)
-    endforeach()
-  endforeach()
-  # Add the LCG externals dirs to the search paths.
-  foreach(name ${LCG_externals})
-    list(APPEND LCG_PREFIX_PATH ${${name}_home})
-  endforeach()
-
-  # AIDA is special
-  list(APPEND LCG_INCLUDE_PATH ${LCG_external}/${AIDA_directory_name}/${AIDA_native_version}/share/src/cpp)
-
-  set(CMAKE_PREFIX_PATH ${LCG_PREFIX_PATH} ${CMAKE_PREFIX_PATH})
-  set(CMAKE_INCLUDE_PATH ${LCG_INCLUDE_PATH} ${CMAKE_INCLUDE_PATH})
-
-  #message(STATUS "LCG_PREFIX_PATH: ${LCG_PREFIX_PATH}")
 
   #===============================================================================
   # Path to programs that a toolchain should define (not mandatory).

@@ -1,7 +1,19 @@
+Index: cmake/cmake/modules/RootBuildOptions.cmake
+--- cmake/modules/RootBuildOptions.cmake.orig	2013-05-23 23:03:10.000000000 +0200
++++ cmake/modules/RootBuildOptions.cmake	2013-05-23 23:03:46.000000000 +0200
+@@ -76,7 +76,7 @@
+ ROOT_BUILD_OPTION(chirp ON "Chirp support (Condor remote I/O), requires libchirp_client")
+ ROOT_BUILD_OPTION(cintex ON "Build the libCintex Reflex interface library")
+ ROOT_BUILD_OPTION(clarens ON "Clarens RPC support, optionally used by PROOF")
+-ROOT_BUILD_OPTION(cling ON "Enable new CLING C++ interpreter")
++ROOT_BUILD_OPTION(cling OFF "Enable new CLING C++ interpreter")
+ ROOT_BUILD_OPTION(cocoa OFF "Use native Cocoa/Quartz graphics backend (MacOS X only)")
+ ROOT_BUILD_OPTION(dcache ON "dCache support, requires libdcap from DESY")
+ ROOT_BUILD_OPTION(exceptions ON "Turn on compiler exception handling capability")
 Index: cmake/modules/FindXROOTD.cmake
 ==============================================================================
---- FindXROOTD.cmake.orig	2013-02-14 23:27:31.000000000 +0100
-+++ cmake/modules/FindXROOTD.cmake	2013-05-23 18:05:02.000000000 +0200
+--- cmake/modules/FindXROOTD.cmake.orig	2013-04-26 13:00:51.000000000 +0200
++++ cmake/modules/FindXROOTD.cmake	2013-05-23 22:30:58.000000000 +0200
 @@ -4,6 +4,7 @@
  #
  #  XROOTD_FOUND - system has XROOTD
@@ -10,7 +22,7 @@ Index: cmake/modules/FindXROOTD.cmake
  #  XROOTD_LIBRARIES - The libraries needed to use XROOTD
  #  XROOTD_CFLAGS - Additional compilation flags (defines)
  #  XROOTD_OLDPACK - old-style packaging for XROOTD libraries
-@@ -13,105 +14,53 @@
+@@ -13,18 +14,11 @@
    set(XROOTD_FIND_QUIETLY TRUE)
  endif()
  
@@ -34,59 +46,27 @@ Index: cmake/modules/FindXROOTD.cmake
  )
  
  if (XROOTD_INCLUDE_DIR)
--  file(STRINGS ${XROOTD_INCLUDE_DIR}/XrdVersion.hh xrdvers REGEX "^#define XrdVERSION")
-+  file(STRINGS ${XROOTD_INCLUDE_DIR}/XrdVersion.hh xrdvers REGEX "^#define XrdVERSION ")
-   string(REGEX REPLACE "#define[ ]+XrdVERSION[ ]+" "" xrdvers ${xrdvers})
-   string(REGEX REPLACE "[^v\\.]+" "" xrdversdots ${xrdvers})
-   if (${xrdversdots} STREQUAL "v..")
-     # Regular version string; parse it out
-     string(REGEX MATCH "[0-9\\.]+" xrdvers ${xrdvers})
--    string(REGEX MATCH "[0-9]" xrdversmajor ${xrdvers})
--    string(REPLACE "${xrdversmajor}." "" xrdversminor ${xrdvers})
--    string(REGEX MATCH "[0-9]" xrdversminor ${xrdversminor})
--    string(REPLACE "${xrdversmajor}.${xrdversminor}." "" xrdverspatch ${xrdvers})
--    string(REGEX MATCH "[0-9]+" xrdverspatch ${xrdverspatch})
-+    string(REGEX REPLACE "^([^.]*)\\.(.*)\\.(.*)" "\\1" xrdversmajor ${xrdvers})
-+    string(REGEX REPLACE "^([^.]*)\\.(.*)\\.(.*)" "\\2" xrdversminor ${xrdvers})
-+    string(REGEX REPLACE "^([^.]*)\\.(.*)\\.(.*)" "\\3" xrdverspatch ${xrdvers})
-     math(EXPR xrdversnum ${xrdversmajor}*100000000+${xrdversminor}*10000+${xrdverspatch})
-   else ()
-     # Old version string: we keep only the first numerics, i.e. the date
-     string(REGEX REPLACE "[v\"]" "" xrdvers ${xrdvers})
--    message(STATUS "Found Xrootd version ${xrdvers}")
--    string(REGEX REPLACE "[^0-9-]+" " " xrdvers ${xrdvers})
-     string(SUBSTRING ${xrdvers} 0 8 xrdversnum)
-   endif ()
+@@ -52,86 +46,21 @@
+ endif()
+ 
+ if(XROOTD_FOUND)
 -  # This we used as a compiler macro variable
-+  if ( ${xrdversnum} EQUAL 300030000 )
-+     SET(XROOTD_FOUND FALSE)
-+     message(WARNING " >>> Cannot build with XRootD version 3.3.0: please install >=3.3.1 or <= 3.2.x")
-+  else()
-+     SET(XROOTD_FOUND TRUE)
-+  endif ()
-+endif()
-+
-+if(XROOTD_FOUND)
 +  # Set include dirs and compiler macro variable
 +
    if(NOT XROOTD_FIND_QUIETLY )
--    message(STATUS "Found Xrootd version num: ${xrdvers}")
-+    message(STATUS "Found Xrootd version num: ${xrdvers} (setting -DROOTXRDVERS=${xrdversnum})")
+     message(STATUS "Found Xrootd version num: ${xrdvers} (setting -DROOTXRDVERS=${xrdversnum})")
    endif()
 -  SET(XROOTD_CFLAGS "-DROOTXRDVERS=${xrdversnum}")
 +  set(XROOTD_CFLAGS "-DROOTXRDVERS=${xrdversnum}")
  
--  if ( ${xrdversnum} LESS 300010000 )
+   if ( ${xrdversnum} LESS 300010000 AND ${xrdversnum} LESS 20111022)
 -     SET(XROOTD_OLDPACK TRUE)
-+  if ( ${xrdversnum} LESS 300010000 AND ${xrdversnum} LESS 20111022)
 +     set(XROOTD_OLDPACK TRUE)
 +     set(XROOTD_INCLUDE_DIRS ${XROOTD_ROOT_DIR})
       message(STATUS "Setting OLDPACK TRUE")
    else()
 -     SET(XROOTD_OLDPACK FALSE)
-+     set(XROOTD_OLDPACK FALSE)
-+     set(XROOTD_INCLUDE_DIRS ${XROOTD_INCLUDE_DIR} ${XROOTD_INCLUDE_DIR}/private)
-   endif()
+-  endif()
 -
 -  # Check for additional headers
 -  if ( ${xrdversnum} LESS 20070723 )
@@ -100,14 +80,16 @@ Index: cmake/modules/FindXROOTD.cmake
 -        XrdOuc/XrdOucPthread.hh
 -        XrdOuc/XrdOucSemWait.hh
 -        XrdOuc/XrdOucTimer.hh
+-        PATHS 
 -        ${XROOTD_INCLUDE_DIR}
 -     )
 -  else()
--     if ( ${xrdversnum} LESS 300010000 )
+-     if ( ${xrdversnum} LESS 300010000 AND ${xrdversnum} LESS 20111022)
 -        # DNS stuff was under XrdNet
 -        find_path(XROOTD_INCLUDE_DIR
 -           NAMES
 -           XrdNet/XrdNetDNS.hh
+-           PATHS 
 -           ${XROOTD_INCLUDE_DIR}
 -        )
 -     else ()
@@ -115,6 +97,7 @@ Index: cmake/modules/FindXROOTD.cmake
 -        find_path(XROOTD_INCLUDE_DIR
 -           NAMES
 -           XrdSys/XrdSysDNS.hh
+-           PATHS 
 -           ${XROOTD_INCLUDE_DIR}
 -        )
 -     endif ()
@@ -129,10 +112,24 @@ Index: cmake/modules/FindXROOTD.cmake
 -            XrdSys/XrdSysPthread.hh
 -            XrdSys/XrdSysSemWait.hh
 -            XrdSys/XrdSysTimer.hh
+-            PATHS 
 -            ${XROOTD_INCLUDE_DIR}
 -        )
 -     endif()
--  endif()
+-
+-     SET(XROOTD_PRIVATE_INCLUDE_DIR FALSE)     
+-     if (XROOTD_INCLUDE_DIR)
+-        # Check for additional headers in new directories
+-        find_path(XROOTD_PRIVATE_INCLUDE_DIR
+-            NAMES
+-            XrdSys/XrdSysPriv.hh
+-            PATHS 
+-            ${XROOTD_INCLUDE_DIR}/private
+-        )
+-     endif()
++     set(XROOTD_OLDPACK FALSE)
++     set(XROOTD_INCLUDE_DIRS ${XROOTD_INCLUDE_DIR} ${XROOTD_INCLUDE_DIR}/private)
+   endif()
 -  if (XROOTD_INCLUDE_DIR)
 -     SET(XROOTD_FOUND TRUE)
 -  else ()
@@ -143,7 +140,7 @@ Index: cmake/modules/FindXROOTD.cmake
  endif()
  
  if(XROOTD_FOUND)
-@@ -121,30 +70,24 @@
+@@ -141,30 +70,24 @@
      foreach(l XrdNet XrdOuc XrdSys XrdClient Xrd)
        find_library(XROOTD_${l}_LIBRARY
           NAMES ${l} 
@@ -181,25 +178,27 @@ Index: cmake/modules/FindXROOTD.cmake
        list(APPEND XROOTD_LIBRARIES ${XROOTD_${l}_LIBRARY})
      endforeach()
    endif()
-@@ -152,7 +95,7 @@
+@@ -172,11 +95,7 @@
    if(XROOTD_LIBRARIES)
      set(XROOTD_FOUND TRUE)
      if(NOT XROOTD_FIND_QUIETLY )
--      message(STATUS "             include_dir: ${XROOTD_INCLUDE_DIR}")
+-      if (XROOTD_PRIVATE_INCLUDE_DIR)
+-         message(STATUS "             include_dir: ${XROOTD_INCLUDE_DIR} ${XROOTD_PRIVATE_INCLUDE_DIR}")
+-      else ()
+-         message(STATUS "             include_dir: ${XROOTD_INCLUDE_DIR}")
+-      endif ()
 +      message(STATUS "             include_dirs: ${XROOTD_INCLUDE_DIRS}")
        message(STATUS "             libraries: ${XROOTD_LIBRARIES}")
      endif() 
    else ()
-@@ -160,7 +103,7 @@
-   endif ()
+@@ -185,7 +104,6 @@
  endif()
  
--mark_as_advanced(XROOTD_INCLUDE_DIR 
-+mark_as_advanced(XROOTD_INCLUDE_DIR
+ mark_as_advanced(XROOTD_INCLUDE_DIR
+-                 XROOTD_PRIVATE_INCLUDE_DIR
                   XROOTD_XrdMain_LIBRARY
                   XROOTD_XrdUtils_LIBRARY
                   XROOTD_XrdClient_LIBRARY
-Index: net/netx/CMakeLists.txt
 =========================================================================================================
 --- net/netx/CMakeLists.txt.orig	2013-02-14 23:27:52.000000000 +0100
 +++ net/netx/CMakeLists.txt	2013-05-23 18:12:17.000000000 +0200
@@ -207,7 +206,7 @@ Index: net/netx/CMakeLists.txt
  ROOT_USE_PACKAGE(net/net)
  ROOT_USE_PACKAGE(proof/proofd)
  
--include_directories(${XROOTD_INCLUDE_DIR})
+-include_directories(${XROOTD_INCLUDE_DIR} ${XROOTD_PRIVATE_INCLUDE_DIR})
 +include_directories(${XROOTD_INCLUDE_DIRS})
  add_definitions(${XROOTD_CFLAGS})
  #---------------------------------------------------------------------------
@@ -220,7 +219,7 @@ Index: proof/proofd/CMakeLists.txt
  ROOT_USE_PACKAGE(net/rpdutils)
  ROOT_USE_PACKAGE(net/auth)
  
--include_directories(${XROOTD_INCLUDE_DIR})
+-include_directories(${XROOTD_INCLUDE_DIR} ${XROOTD_PRIVATE_INCLUDE_DIR})
 +include_directories(${XROOTD_INCLUDE_DIRS})
  add_definitions(${XROOTD_CFLAGS})
  
@@ -254,7 +253,7 @@ Index: proof/proofx
    ROOT_GLOB_SOURCES(sources RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}/src ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cxx)
  endif()
  
--include_directories(${XROOTD_INCLUDE_DIR})
+-include_directories(${XROOTD_INCLUDE_DIR} ${XROOTD_PRIVATE_INCLUDE_DIR})
 +include_directories(${XROOTD_INCLUDE_DIRS})
  link_directories(${XROOTD_LIBRARY_DIR})
  add_definitions(${XROOTD_CFLAGS})
@@ -294,167 +293,6 @@ Index: net/bonjour/CMakeLists.txt
  
  ROOT_INSTALL_HEADERS()
 
-Index: cmake/modules/FindGraphviz.cmake
-===================================================================
---- cmake/modules/FindGraphviz.cmake	(revision 48791)
-+++ cmake/modules/FindGraphviz.cmake	(working copy)
-@@ -10,12 +10,12 @@
- endif()
- 
- 
--find_path(GRAPHVIZ_INCLUDE_DIR graphviz/graph.h PATHS $ENV{GRAPHVIZ_DIR}/include)
-+find_path(GRAPHVIZ_INCLUDE_DIR graphviz/graph.h HINTS $ENV{GRAPHVIZ_DIR}/include ${GRAPHVIZ_DIR}/include)
- 
--find_library(GRAPHVIZ_CDT_LIBRARY NAMES cdt PATHS $ENV{GRAPHVIZ_DIR}/lib)
--find_library(GRAPHVIZ_GVC_LIBRARY NAMES gvc PATHS $ENV{GRAPHVIZ_DIR}/lib)
--find_library(GRAPHVIZ_GRAPH_LIBRARY NAMES graph PATHS $ENV{GRAPHVIZ_DIR}/lib)
--find_library(GRAPHVIZ_PATHPLAN_LIBRARY NAMES pathplan PATHS $ENV{GRAPHVIZ_DIR}/lib)
-+find_library(GRAPHVIZ_CDT_LIBRARY NAMES cdt HINTS $ENV{GRAPHVIZ_DIR}/lib ${GRAPHVIZ_DIR}/lib)
-+find_library(GRAPHVIZ_GVC_LIBRARY NAMES gvc HINTS $ENV{GRAPHVIZ_DIR}/lib ${GRAPHVIZ_DIR}/lib)
-+find_library(GRAPHVIZ_GRAPH_LIBRARY NAMES graph HINTS $ENV{GRAPHVIZ_DIR}/lib ${GRAPHVIZ_DIR}/lib)
-+find_library(GRAPHVIZ_PATHPLAN_LIBRARY NAMES pathplan HINTS $ENV{GRAPHVIZ_DIR}/lib ${GRAPHVIZ_DIR}/lib)
- 	
- if(GRAPHVIZ_INCLUDE_DIR AND GRAPHVIZ_CDT_LIBRARY AND GRAPHVIZ_GVC_LIBRARY AND GRAPHVIZ_GRAPH_LIBRARY AND GRAPHVIZ_PATHPLAN_LIBRARY)
-   set(GRAPHVIZ_FOUND 1)
-Index: config/genreflex.in
-===================================================================
-diff -r -u -P /build/mato/gcc48-build/LocalInstallArea/ROOT/5.34.05/share/sources/config/genreflex.in ./config/genreflex.in
---- /build/mato/gcc48-build/LocalInstallArea/ROOT/5.34.05/share/sources/config/genreflex.in	2013-04-04 17:46:39.000000000 +0200
-+++ config/genreflex.in	2013-04-04 18:58:22.000000000 +0200
-@@ -1,3 +1,6 @@
--#!/bin/sh
--dir=@libdir@
--python ${dir}/python/genreflex/genreflex.py "$@"
-+#!/bin/bash
-+if [ "x${ROOTSYS}" = "x" ]; then
-+    THIS=$(dirname $0)
-+    ROOTSYS=$(cd ${THIS}/..;pwd); export ROOTSYS
-+fi
-+python ${ROOTSYS}/lib/python/genreflex/genreflex.py "$@"
-Index: cmake/modules/SearchInstalledSoftware.cmake
-===================================================================
---- ../../../../LocalInstallArea/ROOT/5.34.05/share/sources/cmake/modules/SearchInstalledSoftware.cmake	2013-04-04 16:26:43.000000000 +0200
-+++ cmake/modules/SearchInstalledSoftware.cmake	2013-04-04 16:52:58.000000000 +0200
-@@ -266,7 +266,7 @@
- if(opengl)
-   message(STATUS "Looking for OpenGL")
-   find_package(OpenGL)
--  if(NOT OPENGL_FOUND)
-+  if(NOT OPENGL_FOUND OR NOT OPENGL_GLU_FOUND)
-     if(fail-on-missing)
-       message(FATAL_ERROR "OpenGL package not found and opengl option required")
-     else()
-Index: cmake/modules/FindGSL.cmake
-===================================================================
---- cmake/modules/FindGSL.cmake	(revision 48875)
-+++ cmake/modules/FindGSL.cmake	(working copy)
-@@ -25,14 +25,14 @@
-   # look for headers
-   find_path( GSL_INCLUDE_DIR
-     NAMES gsl/gsl_cdf.h gsl/gsl_randist.h
--	PATHS $ENV{GSL_DIR}/include
-+    PATHS $ENV{GSL_DIR}/include ${GSL_DIR}/include
-     )
-   if( GSL_INCLUDE_DIR )
-     # look for gsl library
-     find_library( GSL_LIBRARY
-       NAMES gsl
--	  PATHS $ENV{GSL_DIR}/lib
--    )
-+      PATHS $ENV{GSL_DIR}/lib ${GSL_DIR}/lib
-+      )
-     if( GSL_LIBRARY )
-       set( GSL_INCLUDE_DIRS ${GSL_INCLUDE_DIR} )
-       get_filename_component( GSL_LIBRARY_DIRS ${GSL_LIBRARY} PATH )
-@@ -41,15 +41,15 @@
-  
-     # look for gsl cblas library
-     find_library( GSL_CBLAS_LIBRARY
--        NAMES gslcblas
--		PATHS $ENV{GSL_DIR}/lib
-+      NAMES gslcblas
-+      PATHS $ENV{GSL_DIR}/lib ${GSL_DIR}/lib
-       )
-     if( GSL_CBLAS_LIBRARY )
-       set( GSL_CBLAS_FOUND ON )
-     endif( GSL_CBLAS_LIBRARY )
-  
-     set( GSL_LIBRARIES ${GSL_LIBRARY} ${GSL_CBLAS_LIBRARY} )
--	set( GSL_CFLAGS "-DGSL_DLL")
-+    set( GSL_CFLAGS "-DGSL_DLL")
-   endif( GSL_INCLUDE_DIR )
-  
-   mark_as_advanced(
-@@ -60,10 +60,10 @@
- else( WIN32 AND NOT CYGWIN AND NOT MSYS )
-   if( UNIX OR MSYS )
-     find_program( GSL_CONFIG_EXECUTABLE gsl-config
-+      $ENV{GSL_DIR}/bin
-+      ${GSL_DIR}/bin
-       /usr/bin/
-       /usr/local/bin
--      $ENV{GSL_DIR}/bin
--      ${GSL_DIR}/bin
-     )
-  
-     if( GSL_CONFIG_EXECUTABLE )
-Index: graf3d/x3d/CMakeLists.txt
-===================================================================
---- graf3d/x3d/CMakeLists.txt	(revision 48875)
-+++ graf3d/x3d/CMakeLists.txt	(working copy)
-@@ -6,6 +6,7 @@
- 
- ROOT_USE_PACKAGE(graf3d/g3d)
- ROOT_USE_PACKAGE(gui/gui)
-+include_directories(${X11_INCLUDE_DIR})
- 
- ROOT_GENERATE_DICTIONARY(G__X3D TViewerX3D.h TX3DFrame.h LINKDEF LinkDef.h)
- ROOT_GENERATE_ROOTMAP(${libname} LINKDEF LinkDef.h DEPENDENCIES Graf3d Gui)
-Index: rootx/CMakeLists.txt
-===================================================================
---- rootx/CMakeLists.txt	(revision 48875)
-+++ rootx/CMakeLists.txt	(working copy)
-@@ -4,6 +4,7 @@
- ############################################################################
- 
- ROOT_USE_PACKAGE(core)
-+include_directories(${X11_INCLUDE_DIR})
- 
- ROOT_EXECUTABLE(root *.cxx  ${CMAKE_SOURCE_DIR}/core/clib/src/strlcpy.c 
-                 LIBRARIES ${X11_LIBRARIES} ${X11_Xpm_LIB} ${X11_Xft_LIB} ${X11_Xext_LIB})
-Index: test/CMakeLists.txt
-===================================================================
---- test/CMakeLists.txt	(revision 48875)
-+++ test/CMakeLists.txt	(working copy)
-@@ -11,9 +11,13 @@
- include(${ROOT_USE_FILE})
- 
- include_directories(${ROOT_INCLUDE_DIRS})
--include_directories(${ROOT_INCLUDE_DIRS}/../tutorials)
-+if(DEFINED ROOT_SOURCE_DIR)  # Testing using the binary tree
-+  include_directories(${ROOT_SOURCE_DIR}/tutorials)
-+  include_directories(${ROOT_SOURCE_DIR}/tmva/inc)
-+else()
-+  include_directories(${ROOT_INCLUDE_DIRS}/../tutorials)
-+endif()
- 
--
- #---environment-------------------------------------------------------------------------------
- ROOT_ADD_TEST(show-environment COMMAND ${CMAKE_COMMAND} -E environment)
- 
-Index: graf2d/x11/CMakeLists.txt
-===================================================================
---- graf2d/x11/CMakeLists.txt	(revision 48875)
-+++ graf2d/x11/CMakeLists.txt	(working copy)
-@@ -5,6 +5,7 @@
- set(libname GX11)
- 
- ROOT_USE_PACKAGE(core)
-+include_directories(${X11_INCLUDE_DIR})
- 
- ROOT_GENERATE_DICTIONARY(G__${libname} T*.h LINKDEF LinkDef.h)
- ROOT_GENERATE_ROOTMAP(${libname} LINKDEF LinkDef.h)
-
 Index: cmake/modules/FindGFAL.cmake
 ===================================================================
 --- cmake/modules/FindGFAL.cmake	(revision 48875)
@@ -483,26 +321,20 @@ Index: cmake/modules/FindGFAL.cmake
 
 Index: cmake/modules/SearchInstalledSoftware.cmake
 ===================================================================
---- cmake/modules/SearchInstalledSoftware.cmake	(revision 48875)
-+++ cmake/modules/SearchInstalledSoftware.cmake	(working copy)
-@@ -558,8 +558,51 @@ if(xrootd)
+--- cmake/modules/SearchInstalledSoftware.cmake.orig	2013-04-26 13:00:51.000000000 +0200
++++ cmake/modules/SearchInstalledSoftware.cmake	2013-05-23 22:37:16.000000000 +0200
+@@ -566,14 +566,72 @@
+       INSTALL_DIR ${CMAKE_BINARY_DIR}
+       CMAKE_ARGS -DCMAKE_INSTALL_PREFIX:PATH=<INSTALL_DIR>
+     )
+-    set(XROOTD_INCLUDE_DIR ${CMAKE_BINARY_DIR}/include/xrootd)
+-    set(XROOTD_LIBRARIES -L${CMAKE_BINARY_DIR}/lib64 -lXrdMain -lXrdUtils -lXrdClient)
++    set(XROOTD_INCLUDE_DIRS ${CMAKE_BINARY_DIR}/include/xrootd)
++    set(XROOTD_LIBRARIES -L${CMAKE_BINARY_DIR}/lib -lXrdMain -lXrdUtils -lXrdClient)
+     set(XROOTD_CFLAGS "-DROOTXRDVERS=${xrootd_versionnum}")
    endif()
  endif()
  
-+#---Check for dCache-------------------------------------------------------------------
-+if(dcache)
-+  find_package(DCAP)
-+  if(NOT DCAP_FOUND)
-+    if(fail-on-missing)
-+      message(FATAL_ERROR "dCap library not found and is required (dcache option enabled)")
-+    else()
-+      message(STATUS "dCap library not found. Set variable DCAP_DIR to point to your dCache installation")
-+      message(STATUS "For the time being switching OFF 'dcache' option")
-+      set(dcache OFF CACHE BOOL "" FORCE)
-+    endif()
-+  endif()
-+endif()
-+
 +#---Check for gfal-------------------------------------------------------------------
 +if(gfal)
 +  find_package(GFAL)
@@ -514,6 +346,21 @@ Index: cmake/modules/SearchInstalledSoftware.cmake
 +                      and the variable SRM_IFCE_DIR to the srm_ifce installation")
 +      message(STATUS "For the time being switching OFF 'gfal' option")
 +      set(gfal OFF CACHE BOOL "" FORCE)
++    endif()
++  endif()
++endif()
++
++
++#---Check for dCache-------------------------------------------------------------------
++if(dcache)
++  find_package(DCAP)
++  if(NOT DCAP_FOUND)
++    if(fail-on-missing)
++      message(FATAL_ERROR "dCap library not found and is required (dcache option enabled)")
++    else()
++      message(STATUS "dCap library not found. Set variable DCAP_DIR to point to your dCache installation")
++      message(STATUS "For the time being switching OFF 'dcache' option")
++      set(dcache OFF CACHE BOOL "" FORCE)
 +    endif()
 +  endif()
 +endif()
@@ -532,13 +379,26 @@ Index: cmake/modules/SearchInstalledSoftware.cmake
 +  endif()
 +endif()
 +
++#---Check for globus--------------------------------------------------------------------
++if(globus)
++  find_package(Globus)
++  if(NOT GLOBUS_FOUND)
++    if(fail-on-missing)
++      message(FATAL_ERROR "globus libraries not found and is required ('globus' option enabled)")
++    else()
++      message(STATUS "globus libraries not found. Set environment var GLOBUS_LOCATION or varibale GLOBUS_DIR to point to your globus installation")
++      message(STATUS "For the time being switching OFF 'globus' option")
++      set(globus OFF CACHE BOOL "" FORCE)
++    endif()
++  endif()
++endif()
++
  #---Report non implemented options---------------------------------------------------
--foreach(opt afs chirp clarens cling dcache gfal glite globus hdfs lzma pch peac pgsql sapdb srp)
-+foreach(opt afs chirp clarens cling glite globus hdfs lzma pch peac pgsql sapdb srp)
+-foreach(opt afs chirp clarens cling dcache gfal glite globus hdfs lzma pch peac sapdb srp)
++foreach(opt afs chirp clarens glite hdfs pch peac sapdb srp)
    if(${opt})
      message(STATUS ">>> Option '${opt}' not implemented yet! Signal your urgency to pere.mato@cern.ch")
      set(${opt} OFF CACHE BOOL "" FORCE)
-
 Index: io/CMakeLists.txt
 ===================================================================
 --- io/CMakeLists.txt	(revision 48875)

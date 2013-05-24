@@ -19,9 +19,9 @@ enable_testing()
 include(CTest)
 
 add_subdirectory(externals)
+add_subdirectory(gridexternals)
 add_subdirectory(projects)
 add_subdirectory(pyexternals)
 add_subdirectory(generators)
-add_subdirectory(gridexternals)
 
 LCG_create_dependency_files()
