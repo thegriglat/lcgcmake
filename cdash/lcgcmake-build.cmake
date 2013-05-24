@@ -4,7 +4,9 @@ cmake_minimum_required(VERSION 2.8)
 include(${CTEST_SCRIPT_DIRECTORY}/common.cmake)
 
 set(CTEST_UPDATE_COMMAND  "svn")
-set(CTEST_CHECKOUT_COMMAND "svn co svn+ssh://svn.cern.ch/reps/lcgsoft/$ENV{VERSION}/lcgcmake ${CTEST_SOURCE_DIRECTORY}")
+if(NOT EXISTS ${CTEST_SOURCE_DIRECTORY})
+  set(CTEST_CHECKOUT_COMMAND "svn co svn+ssh://svn.cern.ch/reps/lcgsoft/$ENV{VERSION}/lcgcmake ${CTEST_SOURCE_DIRECTORY}")
+endif()
 set(CTEST_CMAKE_GENERATOR "Unix Makefiles")
 set(CTEST_BUILD_COMMAND "make -k -j${ncpu} $ENV{TARGET}")
 
