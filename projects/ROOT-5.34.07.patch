@@ -1,4 +1,40 @@
+Index: cint/cint/CMakeLists.txt
+=================================================================================
+--- cint/cint/CMakeLists.txt.orig
++++ cint/cint/CMakeLists.txt
+@@ -117,6 +117,17 @@ endforeach()
+ 
+ include_directories(src)
+ 
++#---Add defines for CINT limits------------------------------------------------------------------------------
++if(DEFINED CINTMAXSTRUCT)
++  add_definitions(-DG__MAXSTRUCT=${CINTMAXSTRUCT})
++endif()
++if(DEFINED CINTMAXTYPEDEF)
++  add_definitions(-DG__MAXTYPEDEF=${CINTMAXTYPEDEF})
++endif()
++if(DEFINED CINTLONGLINE)
++  add_definitions(-DG__LONGLINE=${CINTLONGLINE})
++endif()
++
+ #---Define libraries and executables to be build------------------------------------------------------------
+ 
+ add_definitions(-DG__HAVE_CONFIG -DG__NOMAKEINFO -DG__CINTBODY)
+Index: cmake/modules/FindOracle.cmake
+================================================================================
+--- cmake/modules/FindOracle.cmake.orig	2013-05-24 14:38:30.000000000 +0200
++++ cmake/modules/FindOracle.cmake	2013-05-24 14:44:37.000000000 +0200
+@@ -75,6 +75,8 @@
+       ${ORACLE_HOME}/bin
+     )
+     IF(SQLPLUS_EXECUTABLE)
++                get_filename_component(bindir ${SQLPLUS_EXECUTABLE} PATH)         # sqlplus executable needs its shared libraries
++                set(ENV{LD_LIBRARY_PATH} ${bindir}/../lib:$ENV{LD_LIBRARY_PATH})
+ 		EXECUTE_PROCESS(COMMAND ${SQLPLUS_EXECUTABLE} -version OUTPUT_VARIABLE sqlplus_out)
+ 		STRING(REGEX MATCH "([0-9.]+)" sqlplus_version ${sqlplus_out})
+ 		MESSAGE(STATUS "Found sqlplus version: ${sqlplus_version}")
 Index: cmake/cmake/modules/RootBuildOptions.cmake
+===============================================================================
 --- cmake/modules/RootBuildOptions.cmake.orig	2013-05-23 23:03:10.000000000 +0200
 +++ cmake/modules/RootBuildOptions.cmake	2013-05-23 23:03:46.000000000 +0200
 @@ -76,7 +76,7 @@

@@ -66,9 +66,18 @@ if(LCG_TARGET MATCHES "mac.*-gcc(47|48)")
             COMMAND  ${CMAKE_COMMAND} -E make_directory <INSTALL_DIR>
             COMMAND  $ENV{SHELL} -c "tar -C <INSTALL_DIR> --strip=1 -xf <SOURCE_DIR>/../root_v${ROOT_native_version}*.tar.gz"
     BUILD_IN_SOURCE 1
-    DEPENDS Python
+    DEPENDS Python CASTOR dcap fftw gfal graphviz GSL mysql oracle pythia8 Qt xrootd srm_ifce
   )
 else()
+  if(LCG_TARGET MATCHES "slc")
+     set(ROOT_slc_options  
+               -Dcastor=ON -DCASTOR_DIR=${CASTOR_home}
+               -Ddcache=ON -DDCAP_DIR=${dcap_home}
+               -Dgfal=ON -DGFAL_DIR=${gfal_home}
+                         -DSRM_IFCE_DIR=${srm_ifce_home} 
+        )
+     set(ROOT_slc_dependencies CASTOR dcap gfal srm_ifce)
+  endif()
   LCGPackage_Add(
     ROOT
     URL ftp://root.cern.ch/root/root_v${ROOT_native_version}.source.tar.gz
@@ -79,20 +88,16 @@ else()
                            -DPYTHON_LIBRARY=${Python_home}/lib/libpython${Python_config_version_twodigit}${CMAKE_SHARED_LIBRARY_SUFFIX}
                -DGRAPHVIZ_DIR=${graphviz_home}
                -Dbuiltin_pcre=ON
-               -Dcastor=ON -DCASTOR_DIR=${CASTOR_home}
                -Dcintex=ON
-               -Ddcache=ON -DDCAP_DIR=${dcap_home}
                -Dexceptions=ON
                -Dexplicitlink=ON
                -Dfftw3=ON -DFFTW_LIBRARY=${fftw_home}/lib/libfftw3${CMAKE_SHARED_LIBRARY_SUFFIX}
                           -DFFTW_INCLUDE_DIR=${fftw_home}/include
                -Dgdml=ON
-               -Dgfal=ON -DGFAL_DIR=${gfal_home}
-                         -DSRM_IFCE_DIR=${srm_ifce_home}
                -Dgsl_shared=ON
                -Dkrb5=ON
-               -Dldap=ON
                -Dgenvector=ON
+               -Dldap=ON
                -Dmathmore=ON -DGSL_DIR=${GSL_home}
                -Dmemstat=ON
                -Dminuit2=ON
@@ -113,7 +118,11 @@ else()
                -Dxft=ON
                -Dxml=ON
                -Dxrootd=ON -DXROOTD_ROOT_DIR=${xrootd_home}
-    DEPENDS Python CASTOR dcap fftw gfal graphviz GSL mysql oracle pythia8 Qt xrootd srm_ifce
+               -DCINTMAXSTRUCT=36000
+               -DCINTMAXTYPEDEF=36000
+               -DCINTLONGLINE=4096
+               ${ROOT_slc_options}
+    DEPENDS Python fftw graphviz GSL mysql oracle pythia8 Qt xrootd ${ROOT_slc_dependencies}
   )
 endif()
 #---cmaketool----------------------------------------------------------------------------------------
