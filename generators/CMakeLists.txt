@@ -161,25 +161,16 @@ LCGPackage_Add(
   BUILD_IN_SOURCE 1
   DEPENDS HepMC lhapdf
 )
-LCG_add_test(tauolapp_orig_test1 COMMAND tauolapp/tests/tauolapp_orig_test1
-                          BINARY_DIR tauolapp/tests
-                          SOURCE_DIR tauolapp/tests
-                          BUILD tauolapp_orig_test1
-                          BUILD_OPTIONS -DTAUOLAPP_ROOT_DIR=${tauola++_home} -DPYTHIA8_ROOT_DIR=${pythia8_home} -DHEPMC_ROOT_DIR=${HepMC_home}
-                          ENVIRONMENT ${library_path}=${tauola++_home}/lib:$ENV{${library_path}})
-LCG_add_test(tauolapp_orig_test2 COMMAND tauolapp/tests/tauolapp_orig_test2
-                          BINARY_DIR tauolapp/tests
-                          SOURCE_DIR tauolapp/tests
-                          BUILD tauolapp_orig_test2
-                          BUILD_OPTIONS -DTAUOLAPP_ROOT_DIR=${tauola++_home} -DPYTHIA8_ROOT_DIR=${pythia8_home} -DHEPMC_ROOT_DIR=${HepMC_home} -DMCTESTER_ROOT_DIR=${mctester_home}
-                          ENVIRONMENT ${library_path}=${tauola++_home}/lib:$ENV{${library_path}})
 
-LCG_add_test(tauolapp_orig_test3 COMMAND tauolapp/tests/tauolapp_orig_test3
-                          BINARY_DIR tauolapp/tests
-                          SOURCE_DIR tauolapp/tests
-                          BUILD tauolapp_orig_test3
-                          BUILD_OPTIONS -DTAUOLAPP_ROOT_DIR=${tauola++_home} -DPYTHIA8_ROOT_DIR=${pythia8_home} -DHEPMC_ROOT_DIR=${HepMC_home} -DMCTESTER_ROOT_DIR=${mctester_home}
-                          ENVIRONMENT ${library_path}=${tauola++_home}/lib:$ENV{${library_path}})
+LCG_add_test(tauolapp-build  BINARY_DIR tauolapp/tests SOURCE_DIR tauolapp/tests
+                            BUILD all
+                            BUILD_OPTIONS -DTAUOLAPP_ROOT_DIR=${tauola++_home} -DPYTHIA8_ROOT_DIR=${pythia8_home} -DHEPMC_ROOT_DIR=${HepMC_home})
+
+foreach(t 1 2 3)
+  LCG_add_test(tauolapp_orig_test${t} COMMAND tauolapp/tests/tauolapp_orig_test${t}
+                            ENVIRONMENT ${library_path}=${tauola++_home}/lib:$ENV{${library_path}}
+                            DEPENDS pythia8-build)
+endforeach()
 
 #---pythia6-------------------------------------------------------------------------------------------
 LCGPackage_Add(
