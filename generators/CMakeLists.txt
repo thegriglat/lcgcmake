@@ -302,6 +302,13 @@ LCGPackage_Add(
   BUILD_IN_SOURCE 1  
   DEPENDS HepMC pythia8 photos++ tauola++
 )
+
+LCG_add_test(evtgen_orig_test1 COMMAND evtgen/tests/evtgen_orig_test1
+                          BINARY_DIR evtgen/tests
+                          SOURCE_DIR evtgen/tests
+                          BUILD evtgen_orig_test1
+                          BUILD_OPTIONS -DEVTGEN_ROOT_DIR=${evtgen_home} -DPYTHIA8_ROOT_DIR=${pythia8_home} -DPHOTOSPP_ROOT_DIR=${photos++_home} -DTAUOLAPP_ROOT_DIR=${tauola++_home} -DHEPMC_ROOT_DIR=${HepMC_home}
+                          ENVIRONMENT ${library_path}=${evtgen_home}/lib:${photos++_home}/lib:${pythia8_home}/lib:${tauola++_home}/lib:$ENV{${library_path}})
 endif()
 
 #---Cython------------------------------------------------------------------------------------------
