@@ -5,6 +5,7 @@
 #  PYTHIA6_INCLUDE_DIR
 #  PYTHIA6_INCLUDE_DIRS (not cached)
 #  PYTHIA6_LIBRARY
+#  PYTHIA6_LIBRARY_DIR (not cached)
 #  PYTHIA6_LIBRARIES (not cached)
 
 
@@ -23,6 +24,7 @@ find_library(PYTHIA6_pdfdummy_LIBRARY NAMES pythia6_pdfdummy Pythia6_pdfdummy
 
 set(PYTHIA6_INCLUDE_DIRS ${PYTHIA6_INCLUDE_DIR})
 set(PYTHIA6_LIBRARIES ${PYTHIA6_LIBRARY} ${PYTHIA6_dummy_LIBRARY} ${PYTHIA6_pdfdummy_LIBRARY})
+get_filename_component(PYTHIA6_LIBRARY_DIR ${PYTHIA6_LIBRARY} PATH)
 
 # handle the QUIETLY and REQUIRED arguments and set PHOTOS_FOUND to TRUE if
 # all listed variables are TRUE

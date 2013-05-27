@@ -9,6 +9,6 @@ find_package(Tauola REQUIRED)
 
 include_directories(${PHOTOS_INCLUDE_DIR} ${PYTHIA6_INCLUDE_DIR}  ${TAUOLA_INCLUDE_DIR})
 
-add_executable(tauola_test1 tauola_test1.F ${PYTHIA6_INCLUDE_DIR}/../../share/sources/src/pydata.f)
-target_link_libraries(tauola_test1 ${TAUOLA_LIBRARIES} ${PHOTOS_LIBRARIES} ${PYTHIA6_LIBRARIES} )
+add_executable(tauola_test1 tauola_test1.F)
+target_link_libraries(tauola_test1 ${TAUOLA_LIBRARIES} ${PHOTOS_LIBRARIES} ${PYTHIA6_LIBRARIES} ${PYTHIA6_LIBRARY_DIR}/pydata.o)
 

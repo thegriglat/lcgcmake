@@ -43,8 +43,10 @@ add_library(rootinterface SHARED ${rootinterface_sources})
 add_library(rootinterface_static STATIC ${rootinterface_sources})
 set_target_properties(rootinterface_static PROPERTIES OUTPUT_NAME rootinterface)
 
-
 #---Install build products---------------------------------------------------
 install(TARGETS pythia6  pythia6_dummy  pythia6_pdfdummy rootinterface DESTINATION lib)
 install(TARGETS pythia6_static  pythia6_dummy_static  pythia6_pdfdummy_static rootinterface_static DESTINATION lib)
 install(DIRECTORY include/ DESTINATION include FILES_MATCHING PATTERN *.inc PATTERN *.f PATTERN .svn EXCLUDE)
+
+#---Install pydata.o file----------------------------------------------------
+install(FILES ${CMAKE_BINARY_DIR}/CMakeFiles/pythia6.dir/src/pydata.f.o DESTINATION lib RENAME pydata.o)
