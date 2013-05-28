@@ -30,7 +30,7 @@ LCGPackage_Add(
   CONFIGURE_COMMAND <VOID> 
   BUILD_COMMAND <VOID>
   INSTALL_COMMAND ${CMAKE_COMMAND} -E make_directory <INSTALL_DIR>
-          COMMAND <SOURCE_DIR>/bin/lhapdf-getdata --force --dest=<INSTALL_DIR>/../share/PDFsets cteq6l
+          COMMAND <SOURCE_DIR>/bin/lhapdf-getdata --force --dest=<INSTALL_DIR>/../share/PDFsets --all
 )
 else()
   add_custom_target(lhapdfsets COMMENT "LHAPDF data sets already installed.")
@@ -182,6 +182,12 @@ LCGPackage_Add(
          COMMAND ${CMAKE_COMMAND} -E chdir <SOURCE_DIR> ${CMAKE_COMMAND} -DHEPEVT_SIZE=<pythia6_<NATIVE_VERSION>_hepevt> -P preparePythia6.cmake
   CMAKE_ARGS -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
 )
+LCG_add_test(pythia6-test1 COMMAND pytyia6/tests/pythia6_test1
+                          BINARY_DIR pythia6/tests
+                          SOURCE_DIR pythia6/tests
+                          BUILD pythia6_test1
+                          BUILD_OPTIONS -DPYTHIA6_ROOT_DIR=${pythia6_home}
+                          ENVIRONMENT ${library_path}=${pythia6_home}/lib:$ENV{${library_path}})
 
 #---agile------------------------------------------------------------------------------------------  
 LCGPackage_Add(
