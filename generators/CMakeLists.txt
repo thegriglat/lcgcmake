@@ -295,13 +295,19 @@ LCG_add_test(photospp_orig_test2 COMMAND photospp/tests/photospp_orig_test2
                           ENVIRONMENT ${library_path}=${photos++_home}/lib:$ENV{${library_path}})
 
 #---evtgen------------------------------------------------------------------------------------------
-if(NOT APPLE)    #  (build fails on Mac " unknown option: -soname")
+if(LCG_TARGET MATCHES "mac")
+  set(evtgen-build-options "FLIBS=-L/usr/local/gfortran/lib\ -lgfortran")
+endif()
 LCGPackage_Add(
   evtgen
   SVN_REPOSITORY http://svnweb.cern.ch/guest/evtgen/tags/<evtgen_<NATIVE_VERSION>_tag>
   UPDATE_COMMAND <VOID>
-  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --hepmcdir=${HepMC_home} --pythiadir=${pythia8_home} --photosdir=${photos++_home} --tauoladir=${tauola++_home} 
-  BUILD_COMMAND make -j1
+  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> 
+                                --hepmcdir=${HepMC_home}
+                                --pythiadir=<pythia8-<evtgen_<NATIVE_VERSION>_p8vers>_home> 
+                                --photosdir=${photos++_home} 
+                                --tauoladir=${tauola++_home}
+  BUILD_COMMAND make -j1 "${evtgen-build-options}"
   INSTALL_COMMAND make install
           COMMAND ${CMAKE_COMMAND} -E chdir <INSTALL_DIR>/../share ${CMAKE_COMMAND} -E create_symlink  sources/evt.pdl evt.pdl
           COMMAND ${CMAKE_COMMAND} -E chdir <INSTALL_DIR>/../share ${CMAKE_COMMAND} -E create_symlink  sources/DECAY_2010.DEC DECAY.DEC
@@ -315,7 +321,6 @@ LCG_add_test(evtgen_orig_test1 COMMAND evtgen/tests/evtgen_orig_test1
                           BUILD evtgen_orig_test1
                           BUILD_OPTIONS -DEVTGEN_ROOT_DIR=${evtgen_home} -DPYTHIA8_ROOT_DIR=${pythia8_home} -DPHOTOSPP_ROOT_DIR=${photos++_home} -DTAUOLAPP_ROOT_DIR=${tauola++_home} -DHEPMC_ROOT_DIR=${HepMC_home}
                           ENVIRONMENT ${library_path}=${evtgen_home}/lib:${photos++_home}/lib:${pythia8_home}/lib:${tauola++_home}/lib:$ENV{${library_path}})
-endif()
 
 #---Cython------------------------------------------------------------------------------------------
 LCGPackage_Add(

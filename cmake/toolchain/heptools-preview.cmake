@@ -143,7 +143,10 @@ set(MCGENPATH  MCGenerators_lcgcmt${heptools_version})
 LCG_external_package(powheg-box         r2092         ${MCGENPATH}/powheg-box       )
 LCG_external_package(lhapdf            5.8.9          ${MCGENPATH}/lhapdf       )
 LCG_external_package(lhapdfsets        5.8.9          ${MCGENPATH}/lhapdfsets   )
+
 LCG_external_package(pythia8           175            ${MCGENPATH}/pythia8      )
+LCG_external_package(pythia8           176            ${MCGENPATH}/pythia8      )
+
 LCG_external_package(thepeg            1.8.2          ${MCGENPATH}/thepeg       )
 LCG_external_package(herwig++          2.6.3          ${MCGENPATH}/herwig++     )
 LCG_external_package(tauola++          1.1.1a         ${MCGENPATH}/tauola++     )
@@ -154,7 +157,12 @@ LCG_external_package(photos++          3.52           ${MCGENPATH}/photos++     
 #LCG_external_package(photos            215.5         ${MCGENPATH}/photos     )
 LCG_external_package(photos            215.4          ${MCGENPATH}/photos     ) 
 #LCG_external_package(photos            215.3         ${MCGENPATH}/photos     ) 
-LCG_external_package(evtgen            1.1.0          ${MCGENPATH}/evtgen         tag=R01-01-00)
+
+LCG_external_package(evtgen            1.1.0          ${MCGENPATH}/evtgen         tag=R01-01-00 p8vers=175 )
+LCG_external_package(evtgen            1.1.0-176      ${MCGENPATH}/evtgen         tag=R01-01-00 p8vers=176 )
+LCG_external_package(evtgen            1.2.0          ${MCGENPATH}/evtgen         tag=R01-02-00 p8vers=176 )
+LCG_external_package(evtgen            1.2.0-175      ${MCGENPATH}/evtgen         tag=R01-02-00 p8vers=175 )
+
 LCG_external_package(rivet             1.8.3          ${MCGENPATH}/rivet        )
 LCG_external_package(rivet2            2.0.0b1        ${MCGENPATH}/rivet2       )
 LCG_external_package(sherpa            1.4.3          ${MCGENPATH}/sherpa         author=1.4.3 hepevt=4000  )

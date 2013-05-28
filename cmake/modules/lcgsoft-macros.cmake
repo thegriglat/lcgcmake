@@ -92,17 +92,20 @@ macro(LCGPackage_Add name)
       #---Replace patterns for multiversion cases-----------------------------------------------------
       string(REPLACE <NATIVE_VERSION> ${version} ARGUMENTS "${ARG_UNPARSED_ARGUMENTS}")
       string(REPLACE <VOID> "" ARGUMENTS "${ARGUMENTS}")
-      string(REGEX MATCHALL "<[^ <>(){}]+>" vars ${ARGUMENTS})
-      foreach(var ${vars})
-        string(REPLACE "<" "" v ${var})
-        string(REPLACE ">" "" v ${v})
-        if(DEFINED ${v})
-           string(REPLACE ${var} ${${v}} ARGUMENTS "${ARGUMENTS}")
-        endif()
+      foreach(iter 1 2 3)  # 3 nested replacements
+        string(REGEX MATCHALL "<[^ <>(){}]+>" vars ${ARGUMENTS})
+        foreach(var ${vars})
+          string(REPLACE "<" "" v ${var})
+          string(REPLACE ">" "" v ${v})
+          if(DEFINED ${v})
+             string(REPLACE ${var} ${${v}} ARGUMENTS "${ARGUMENTS}")
+          endif()
+        endforeach()
       endforeach()
 
       #---Set home and install name-------------------------------------------------------------------
       set(${name}_home ${CMAKE_INSTALL_PREFIX}/${${name}_directory_name}/${version}/${LCG_system})
+      set(${targetname}_home ${CMAKE_INSTALL_PREFIX}/${${name}_directory_name}/${version}/${LCG_system})
       if(ARG_DEST_NAME)
         set(dest_name ${ARG_DEST_NAME})
         set(dest_version ${${ARG_DEST_NAME}_native_version})
@@ -211,6 +214,9 @@ macro(LCGPackage_Add name)
       add_dependencies(${name} ${targetname})
       add_dependencies(clean-${name} clean-${targetname})
     endif()
+
+    set(${targetname}_home ${${name}_home} PARENT_SCOPE)
+
   endforeach()
   
   #---Prepare 'group' targets------------------------------------------------------------------------
