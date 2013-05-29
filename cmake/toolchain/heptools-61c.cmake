@@ -18,11 +18,11 @@ LCG_AA_project(RELAX RELAX_1_3_0d)
 LCG_AA_project(ROOT  5.30.05)
 
 # Compilers
-LCG_compiler(gcc43 gcc 4.3.5)
-LCG_compiler(gcc46 gcc 4.6.2)
-LCG_compiler(gcc47 gcc 4.7.2)
-LCG_compiler(clang30 clang 3.0)
-LCG_compiler(gccmax gcc 4.7.2)
+#LCG_compiler(gcc43 gcc 4.3.5)
+#LCG_compiler(gcc46 gcc 4.6.2)
+#LCG_compiler(gcc47 gcc 4.7.2)
+#LCG_compiler(clang30 clang 3.0)
+#LCG_compiler(gccmax gcc 4.7.2)
 
 # Externals
 
@@ -130,9 +130,10 @@ LCG_external_package(vomsclients       1.9.17-1                                 
 LCG_external_package(XercesC           3.1.1p1                                  )
 LCG_external_package(xqilla            2.2.4                                    )
 LCG_external_package(zlib              1.2.3p1                                  )
-
-
-
+LCG_external_package(xrootd            3.2.7                                    )
+LCG_external_package(dcap              2.47.6                                   )
+LCG_external_package(expat             2.0.1                                    )
+LCG_external_package(srm_ifce          1.13.0-0                                 )
 
 set(MCGENPATH  MCGenerators_lcgcmt${heptools_version})
 
@@ -140,7 +141,10 @@ set(MCGENPATH  MCGenerators_lcgcmt${heptools_version})
 LCG_external_package(powheg-box         r2092         ${MCGENPATH}/powheg-box       )
 LCG_external_package(lhapdf            5.8.9          ${MCGENPATH}/lhapdf       )
 LCG_external_package(lhapdfsets        5.8.9          ${MCGENPATH}/lhapdfsets   )
+
 LCG_external_package(pythia8           175            ${MCGENPATH}/pythia8      )
+LCG_external_package(pythia8           176            ${MCGENPATH}/pythia8      )
+
 LCG_external_package(thepeg            1.8.2          ${MCGENPATH}/thepeg       )
 LCG_external_package(herwig++          2.6.3          ${MCGENPATH}/herwig++     )
 LCG_external_package(tauola++          1.1.1a         ${MCGENPATH}/tauola++     )
@@ -151,7 +155,12 @@ LCG_external_package(photos++          3.52           ${MCGENPATH}/photos++     
 #LCG_external_package(photos            215.5         ${MCGENPATH}/photos     )
 LCG_external_package(photos            215.4          ${MCGENPATH}/photos     ) 
 #LCG_external_package(photos            215.3         ${MCGENPATH}/photos     ) 
-LCG_external_package(evtgen            1.2.0          ${MCGENPATH}/evtgen         tag=R01-02-00)
+
+LCG_external_package(evtgen            1.1.0          ${MCGENPATH}/evtgen         tag=R01-01-00 p8vers=175 )
+LCG_external_package(evtgen            1.1.0-176      ${MCGENPATH}/evtgen         tag=R01-01-00 p8vers=176 )
+LCG_external_package(evtgen            1.2.0          ${MCGENPATH}/evtgen         tag=R01-02-00 p8vers=176 )
+LCG_external_package(evtgen            1.2.0-175      ${MCGENPATH}/evtgen         tag=R01-02-00 p8vers=175 )
+
 LCG_external_package(rivet             1.8.3          ${MCGENPATH}/rivet        )
 LCG_external_package(rivet2            2.0.0b1        ${MCGENPATH}/rivet2       )
 LCG_external_package(sherpa            1.4.3          ${MCGENPATH}/sherpa         author=1.4.3 hepevt=4000  )
@@ -172,6 +181,7 @@ LCG_external_package(jimmy              4.31.3        ${MCGENPATH}/jimmy        
 LCG_external_package(hydjet++           2_1           ${MCGENPATH}/hydjet++     )
 LCG_external_package(alpgen            2.1.4          ${MCGENPATH}/alpgen author=214 )
 LCG_external_package(pyquen           1.5             ${MCGENPATH}/pyquen     )
+
 
 # Prepare the search paths according to the versions above
 LCG_prepare_paths()
