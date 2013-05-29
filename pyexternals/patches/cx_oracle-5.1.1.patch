@@ -1,0 +1,23 @@
+--- setup.py.orig	2013-05-29 18:38:19.000000000 +0200
++++ setup.py	2013-05-29 18:37:20.000000000 +0200
+@@ -78,7 +78,10 @@
+         filesToCheck = [
+                 ("11g", "libclntsh.dylib.11.1"),
+                 ("10g", "libclntsh.dylib.10.1"),
+-                ("9i", "libclntsh.dylib.9.0")
++                ("9i", "libclntsh.dylib.9.0"),
++                ("11g", "libclntsh.so.11.1"),
++                ("10g", "libclntsh.so.10.1"),
++                ("9i", "libclntsh.so.9.0")
+         ]
+     else:
+         if struct.calcsize("P") == 4:
+@@ -160,7 +163,7 @@
+     libDirs = [oracleLibDir]
+     libs = ["clntsh"]
+     possibleIncludeDirs = ["rdbms/demo", "rdbms/public", "network/public",
+-            "sdk/include"]
++            "sdk/include", "include"]
+     if sys.platform == "darwin":
+         possibleIncludeDirs.append("plsql/public")
+     includeDirs = []

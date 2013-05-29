@@ -24,7 +24,6 @@ LCGPackage_Add(
 LCGPackage_Add(
   scipy
   URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/scipy-${scipy_native_version}.tar.gz
-  PATCH_COMMAND patch -p0 -i ${CMAKE_CURRENT_SOURCE_DIR}/scipy-${scipy_native_version}.patch
   CONFIGURE_COMMAND <VOID>
   BUILD_COMMAND ${Exec_cmd} PYTHONPATH=${pyanalysis_home}/lib/python${Python_config_version_twodigit}/site-packages
                             BLAS=${blas_home}/lib/libBLAS.a LAPACK=${lapack_home}/lib/libLAPACK.a
@@ -463,7 +462,7 @@ LCGPackage_Add(
   CONFIGURE_COMMAND <VOID>
   BUILD_COMMAND make
         COMMAND make PYTHON_INCLUDEDIR=${Python_home}/include/python${Python_config_version_twodigit} 
-                     -C python all LDFLAGS=\ -shared  
+                     -C python all LDFLAGS=\ -shared\ -L${Python_home}/lib\ -lpython${Python_config_version_twodigit}
   INSTALL_COMMAND ${CMAKE_COMMAND} -E make_directory <INSTALL_DIR>/bin
           COMMAND cp svm-train svm-predict svm-scale <INSTALL_DIR>/bin
           COMMAND ${CMAKE_COMMAND} -E make_directory <INSTALL_DIR>/include

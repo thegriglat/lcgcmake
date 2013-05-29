@@ -188,7 +188,6 @@ LCGPackage_Add(
 LCGPackage_Add(
   CppUnit
   URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/cppunit-<CppUnit_<NATIVE_VERSION>_author>.tar.gz
-  PATCH_COMMAND patch -p1 -i ${CMAKE_CURRENT_SOURCE_DIR}/CppUnit-${CppUnit_native_version}.patch
   CONFIGURE_COMMAND ./configure --prefix <INSTALL_DIR>
             COMMAND echo to ignore the status code
   BUILD_IN_SOURCE 1
@@ -202,7 +201,6 @@ if(NOT APPLE) # There are problems building on MacOSX
   LCGPackage_Add(
     tcmalloc
     URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/google-perftools-${tcmalloc_native_version}.tar.gz
-    PATCH_COMMAND patch -p1 -i ${CMAKE_CURRENT_SOURCE_DIR}/tcmalloc-${tcmalloc_native_version}.patch
     CONFIGURE_COMMAND ./configure --prefix <INSTALL_DIR> ${tcmalloc_config_options}
     BUILD_IN_SOURCE 1
   )

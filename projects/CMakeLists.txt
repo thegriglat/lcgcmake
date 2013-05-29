@@ -129,7 +129,6 @@ endif()
 LCGPackage_Add(
   cmaketools
   SVN_REPOSITORY  http://svnweb.cern.ch/guest/cmaketools/trunk
-  PATCH_COMMAND patch -p0 -t -N -i  ${CMAKE_CURRENT_SOURCE_DIR}/cmaketools.patch
   UPDATE_COMMAND <VOID>
   CONFIGURE_COMMAND <VOID>
   BUILD_COMMAND <VOID>
@@ -141,7 +140,6 @@ LCGPackage_Add(
   RELAX
   SVN_REPOSITORY http://svnweb.cern.ch/guest/relax/tags/${RELAX_native_version}/relax
   UPDATE_COMMAND <VOID>
-  PATCH_COMMAND patch -p0 -i ${CMAKE_CURRENT_SOURCE_DIR}/${RELAX_native_version}.patch
   CMAKE_ARGS -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
              -DCMAKE_MODULE_PATH=${cmaketools_home}/modules
              -DROOTSYS=${ROOT_home}

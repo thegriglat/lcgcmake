@@ -134,7 +134,6 @@ if(NOT APPLE)    #  (installation fails on MacOSX)
   LCGPackage_Add(
     herwig++
     URL http://www.hepforge.org/archive/herwig/Herwig++-${herwig++_native_version}.tar.bz2
-    PATCH_COMMAND patch -p0 -i ${CMAKE_CURRENT_SOURCE_DIR}/herwig++-${herwig++_native_version}.patch
     CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --with-gsl=${GSL_home} --with-thepeg=${thepeg_home} 
                       --with-boost=${Boost_home} LD_LIBRARY_PATH=${thepeg_home}/lib:${GSL_home}/lib:${Boost_home}/lib:$ENV{LD_LIBRARY_PATH}
     BUILD_COMMAND make all V=1 LD_LIBRARY_PATH=${thepeg_home}/lib:${GSL_home}/lib:${Boost_home}/lib:$ENV{LD_LIBRARY_PATH}
@@ -532,7 +531,8 @@ LCGPackage_Add(
     URL http://sftweb.cern.ch/generators/files/generator/tarballs/jimmy-${jimmy_native_version}-src.tgz
     UPDATE_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/<NATIVE_VERSION> <SOURCE_DIR>
            COMMAND ${CMAKE_COMMAND} -E remove_directory <SOURCE_DIR>/<NATIVE_VERSION>
-    CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --with-herwig=${herwig_home}
+    CONFIGURE_COMMAND ./configure --with-herwig=${herwig_home}
+    BUILD_COMMAND make FC=${CMAKE_Fortran_COMPILER}
     INSTALL_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/lib <INSTALL_DIR>/lib
             COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/include <INSTALL_DIR>/include
 	    COMMAND ${CMAKE_COMMAND} -E chdir <INSTALL_DIR>/lib ${CMAKE_COMMAND} -E create_symlink archive/libjimmy.a libjimmy.a

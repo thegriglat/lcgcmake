@@ -1,6 +1,6 @@
 diff -ru cppunit-1.12.1/include/cppunit/extensions/ExceptionTestCaseDecorator.h cppunit-1.12.1.new/include/cppunit/extensions/ExceptionTestCaseDecorator.h
 --- cppunit-1.12.1/include/cppunit/extensions/ExceptionTestCaseDecorator.h	2003-03-15 09:55:28.000000000 +0100
-+++ cppunit-1.12.1.new/include/cppunit/extensions/ExceptionTestCaseDecorator.h	2008-10-13 14:53:53.000000000 +0200
++++ include/cppunit/extensions/ExceptionTestCaseDecorator.h	2008-10-13 14:53:53.000000000 +0200
 @@ -92,7 +92,7 @@
     *
     * Should be overriden to check the exception.
@@ -12,7 +12,7 @@ diff -ru cppunit-1.12.1/include/cppunit/extensions/ExceptionTestCaseDecorator.h 
  };
 diff -ru cppunit-1.12.1/include/cppunit/extensions/TestFixtureFactory.h cppunit-1.12.1.new/include/cppunit/extensions/TestFixtureFactory.h
 --- cppunit-1.12.1/include/cppunit/extensions/TestFixtureFactory.h	2007-01-12 05:54:34.000000000 +0100
-+++ cppunit-1.12.1.new/include/cppunit/extensions/TestFixtureFactory.h	2008-10-13 14:48:07.000000000 +0200
++++ include/cppunit/extensions/TestFixtureFactory.h	2008-10-13 14:48:07.000000000 +0200
 @@ -30,6 +30,10 @@
  template<class TestFixtureType>
  class ConcretTestFixtureFactory : public CPPUNIT_NS::TestFixtureFactory
@@ -25,7 +25,7 @@ diff -ru cppunit-1.12.1/include/cppunit/extensions/TestFixtureFactory.h cppunit-
     * \return A new fixture instance. The fixture instance is returned by
     *         the TestFixtureFactory passed on construction. The actual type 
 --- ../../../../LocalInstallArea/CppUnit/1.12.1_p1/share/sources/configure	2013-03-26 18:54:53.000000000 +0100
-+++ cppunit-1.12.1.new/configure	2013-03-26 19:08:03.000000000 +0100
++++ configure	2013-03-26 19:08:03.000000000 +0100
 @@ -23318,5 +23318,5 @@
  echo "$as_me: error: input file $ac_prefix_conf_IN does not exist,     skip generating $ac_prefix_conf_OUT" >&2;}
     { (exit 1); exit 1; }; }
@@ -34,7 +34,7 @@ diff -ru cppunit-1.12.1/include/cppunit/extensions/TestFixtureFactory.h cppunit-
 +  rm -rf conftest.*
  fi
 --- cppunit-1.12.1/src/DllPlugInTester/Makefile.in	2008-02-20 06:59:55.000000000 +0100
-+++ cppunit-1.12.1.new/src/DllPlugInTester/Makefile.in	2013-04-11 12:02:42.581898017 +0200
++++ src/DllPlugInTester/Makefile.in	2013-04-11 12:02:42.581898017 +0200
 @@ -236,9 +236,8 @@
  	CommandLineParser.cpp
  
@@ -71,7 +71,7 @@ diff -ru cppunit-1.12.1/include/cppunit/extensions/TestFixtureFactory.h cppunit-
  	$(DllPlugInTesterTest_LINK) $(DllPlugInTesterTest_OBJECTS) $(DllPlugInTesterTest_LDADD) $(LIBS)
  
 --- cppunit-1.12.1/examples/simple/Makefile.in	2008-02-20 06:59:53.000000000 +0100
-+++ cppunit-1.12.1.new/examples/simple/Makefile.in	2013-04-11 11:12:30.371108640 +0200
++++ examples/simple/Makefile.in	2013-04-11 11:12:30.371108640 +0200
 @@ -217,9 +217,9 @@
  INCLUDES = -I$(top_builddir)/include -I$(top_srcdir)/include
  simple_SOURCES = ExampleTestCase.cpp Main.cpp  ExampleTestCase.h

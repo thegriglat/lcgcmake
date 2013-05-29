@@ -1,5 +1,5 @@
 --- 1.7p3/src/tcmalloc.cc.orig	2013-04-11 12:17:48.081724994 +0200
-+++ 1.7p3/src/tcmalloc.cc	2013-04-11 12:21:36.879783939 +0200
++++ src/tcmalloc.cc	2013-04-11 12:21:36.879783939 +0200
 @@ -1669,5 +1669,9 @@
    MallocHook::InvokeNewHook(result, size);
    return result;
@@ -12,7 +12,7 @@
 +void *(*__MALLOC_HOOK_VOLATILE __memalign_hook)(size_t, size_t, const void *) = MemalignOverride;
  #endif  // #ifndef TCMALLOC_FOR_DEBUGALLOCATION
 --- 1.7p3/src/debugallocation.cc.orig	2013-04-11 12:43:05.547280497 +0200
-+++ 1.7p3/src/debugallocation.cc	2013-04-11 12:45:05.880321549 +0200
++++ src/debugallocation.cc	2013-04-11 12:45:05.880321549 +0200
 @@ -1135,7 +1135,11 @@
    MallocHook::InvokeNewHook(p, size);
    return p;
