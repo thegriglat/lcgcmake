@@ -122,8 +122,12 @@ macro(LCGPackage_Add name)
       endif()
       
       #---Check if a patch file exists and apply it by default---------------------------------------
-      if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/${name}-${version}.patch AND NOT ARGUMENTS MATCHES PATCH_COMMAND)
-        list(APPEND ARGUMENTS PATCH_COMMAND patch -p0 -i ${CMAKE_CURRENT_SOURCE_DIR}/${name}-${version}.patch)
+      if(NOT ARGUMENTS MATCHES PATCH_COMMAND)
+        if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/${name}-${version}.patch)
+          list(APPEND ARGUMENTS PATCH_COMMAND patch -p0 -i ${CMAKE_CURRENT_SOURCE_DIR}/${name}-${version}.patch)
+        elseif(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/patches/${name}-${version}.patch)
+          list(APPEND ARGUMENTS PATCH_COMMAND patch -p0 -i ${CMAKE_CURRENT_SOURCE_DIR}/patches/${name}-${version}.patch)
+        endif()
       endif()
 
       #---We cannot use the argument INSTALL_DIR becuase cmake itself will create the directory 
@@ -308,7 +312,9 @@ endfunction()
 # Helper macro to define the home of a package
 #---------------------------------------------------------------------------------------------------
 macro( LCGPackage_set_home name)
-   set(${name}_home ${CMAKE_INSTALL_PREFIX}/${${name}_directory_name}/${${name}_native_version}/${LCG_system})
+  foreach( version ${${name}_native_version} )
+    set(${name}_home ${CMAKE_INSTALL_PREFIX}/${${name}_directory_name}/${version}/${LCG_system})
+  endforeach()
 endmacro()
 
 
