@@ -161,7 +161,8 @@ macro(LCGPackage_Add name)
       #---Adding extra step to build the binary tarball-----------------------------------------------
       if(NOT ARG_DEST_NAME)  # Only if is not installed grouped with other packages
         get_filename_component(n_name ${${name}_directory_name} NAME)
-        string(SHA1 targethash "${${name}_full_version}" )
+        string(SHA1 longtargethash "${${name}_full_version}" )
+        string(SUBSTRING "${longtargethash}" 0 5 targethash ) 
         ExternalProject_Add_Step(${targetname} package COMMENT "Creating binary tarball and version.txt file for '${targetname}'"
                   COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_INSTALL_PREFIX}/${${name}_directory_name}/../distribution/${name}
                   COMMAND ${CMAKE_COMMAND} -E chdir ${${dest_name}_home}/../../..
