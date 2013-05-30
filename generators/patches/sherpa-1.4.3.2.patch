@@ -1,0 +1,11 @@
+--- PDF/LHAPDF/LHAPDF_Fortran_Interface.C.orig	2013-05-30 18:30:07.000000000 +0200
++++ PDF/LHAPDF/LHAPDF_Fortran_Interface.C	2013-05-30 18:31:47.000000000 +0200
+@@ -122,7 +122,7 @@
+   str<<"LHAPDF interface";
+ }
+ 
+-int LHAPDF_DummyInclude(DIRENT_TYPE *entry)
++int LHAPDF_DummyInclude(const DIRENT_TYPE *entry)
+ {
+   return true;
+ }
