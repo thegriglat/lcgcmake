@@ -566,5 +566,19 @@ LCGPackage_Add(
   BUILD_IN_SOURCE 1
 )
 
+#---baurmc------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  baurmc
+  URL http://service-spi.web.cern.ch/service-spi/external/MCGenerators/distribution/baurmc/baurmc-<NATIVE_VERSION>-src.tgz
+  UPDATE_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/<NATIVE_VERSION> <SOURCE_DIR>
+         COMMAND ${CMAKE_COMMAND} -E remove_directory <SOURCE_DIR>/<NATIVE_VERSION>
+  CONFIGURE_COMMAND ./configure --lcgplatform=${LCG_platform}  --userfflags=-fno-automatic --enable-shared
+  BUILD_COMMAND make FC=${CMAKE_Fortran_COMPILER} CC=${CMAKE_C_COMPILER} CXX=${CMAKE_Fortran_COMPILER}
+  INSTALL_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/lib <INSTALL_DIR>/lib
+  BUILD_IN_SOURCE 1
+)
+
+
+
 
 
