@@ -182,7 +182,8 @@ LCG_external_package(tauola              28.121.2     ${MCGENPATH}/tauola       
 LCG_external_package(jimmy              4.31.3        ${MCGENPATH}/jimmy         )
 LCG_external_package(hydjet++           2_1           ${MCGENPATH}/hydjet++     )
 LCG_external_package(alpgen            2.1.4          ${MCGENPATH}/alpgen author=214 )
-LCG_external_package(pyquen           1.5             ${MCGENPATH}/pyquen     )
+LCG_external_package(pyquen            1.5.1            ${MCGENPATH}/pyquen author=1.5)
+LCG_external_package(baurmc            1.0             ${MCGENPATH}/baurmc     )
 
 # Prepare the search paths according to the versions above
 LCG_prepare_paths()

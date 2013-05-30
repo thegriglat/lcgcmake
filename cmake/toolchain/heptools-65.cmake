@@ -61,7 +61,7 @@ LCG_external_package(globus            4.0.7-VDT-1.10.1                         
 LCG_external_package(graphviz          2.28.0                                   )
 LCG_external_package(gridftp_ifce      2.1.4-2                                  )
 LCG_external_package(GSL               1.10                                     )
-LCG_external_package(HepMC             2.06.08                                  )
+LCG_external_package(HepMC             2.06.05                                  )
 LCG_external_package(HepPDT            2.06.01                                  )
 LCG_external_package(igprof            5.9.6                                    )
 LCG_external_package(ipython           0.12.1                                   )
@@ -148,7 +148,8 @@ LCG_external_package(lhapdfsets        5.8.9          ${MCGENPATH}/lhapdfsets   
 LCG_external_package(pythia8           175            ${MCGENPATH}/pythia8      )
 LCG_external_package(thepeg            1.8.3          ${MCGENPATH}/thepeg       )
 LCG_external_package(herwig++          2.6.3          ${MCGENPATH}/herwig++     )
-LCG_external_package(tauola++          1.1.1a         ${MCGENPATH}/tauola++     )
+#LCG_external_package(tauola++          1.1.1a         ${MCGENPATH}/tauola++     )
+LCG_external_package(tauola++          1.1.1         ${MCGENPATH}/tauola++     )
 #LCG_external_package(pythia6           427            ${MCGENPATH}/pythia6        author=6.4.27 hepevt=4000   )
 LCG_external_package(pythia6           427.2          ${MCGENPATH}/pythia6        author=6.4.27 hepevt=10000  )
 LCG_external_package(agile             1.4.0          ${MCGENPATH}/agile        )
@@ -182,7 +183,8 @@ LCG_external_package(tauola            28.121.2     ${MCGENPATH}/tauola         
 LCG_external_package(jimmy             4.31.3        ${MCGENPATH}/jimmy         )
 LCG_external_package(hydjet++          2_1           ${MCGENPATH}/hydjet++     )
 LCG_external_package(alpgen            2.1.4          ${MCGENPATH}/alpgen author=214 )
-LCG_external_package(pyquen            1.5             ${MCGENPATH}/pyquen     )
+LCG_external_package(pyquen            1.5.1          ${MCGENPATH}/pyquen author=1.5.1)
+LCG_external_package(baurmc            1.0             ${MCGENPATH}/baurmc     )
 
 # Prepare the search paths according to the versions above
 LCG_prepare_paths()
