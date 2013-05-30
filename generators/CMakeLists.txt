@@ -146,8 +146,8 @@ LCG_add_test(herwigpp_orig_test1 COMMAND herwig++/tests/herwigpp_orig_test1
                           BINARY_DIR herwig++/tests
                           SOURCE_DIR herwig++/tests
                           BUILD herwigpp_orig_test1
-                          BUILD_OPTIONS -DHERWIGPP_ROOT_DIR=${herwig++_home} -DTHEPEG_ROOT_DIR=${thepeg_home} -DHEPMC_ROOT_DIR=${HepMC_home}
-                          ENVIRONMENT ${library_path}=${herwig++_home}/lib:$ENV{${library_path}})
+                          BUILD_OPTIONS -DHERWIGPP_ROOT_DIR=${herwig++_home} -DTHEPEG_ROOT_DIR=${thepeg_home} -DHEPMC_ROOT_DIR=${HepMC_home} -DGSL_ROOT_DIR=${GSL_home}
+                          ENVIRONMENT ${library_path}=${herwig++_home}/lib:${GSL_home}/lib:$ENV{${library_path}})
 endif()
 
 
@@ -318,8 +318,8 @@ LCG_add_test(evtgen_orig_test1 COMMAND evtgen/tests/evtgen_orig_test1
                           BINARY_DIR evtgen/tests
                           SOURCE_DIR evtgen/tests
                           BUILD evtgen_orig_test1
-                          BUILD_OPTIONS -DEVTGEN_ROOT_DIR=${evtgen_home} -DPYTHIA8_ROOT_DIR=${pythia8_home} -DPHOTOSPP_ROOT_DIR=${photos++_home} -DTAUOLAPP_ROOT_DIR=${tauola++_home} -DHEPMC_ROOT_DIR=${HepMC_home}
-                          ENVIRONMENT ${library_path}=${evtgen_home}/lib:${photos++_home}/lib:${pythia8_home}/lib:${tauola++_home}/lib:$ENV{${library_path}})
+                          BUILD_OPTIONS -DEVTGEN_ROOT_DIR=${evtgen_home} -DPYTHIA8_ROOT_DIR=${pythia8_home} -DPHOTOSPP_ROOT_DIR=${photos++_home} -DHEPMC_ROOT_DIR=${HepMC_home}
+                          ENVIRONMENT ${library_path}=${evtgen_home}/lib:${photos++_home}/lib:${pythia8_home}/lib:$ENV{${library_path}})
 
 #---Cython------------------------------------------------------------------------------------------
 LCGPackage_Add(
