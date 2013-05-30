@@ -20,7 +20,9 @@ else()
   set(library_path LD_LIBRARY_PATH)
 endif()
 set(CMAKE_VERBOSE_MAKEFILE ON)
-find_library(FORTRAN_LIBRARY NAMES gfortran HINTS /usr/local/gfortran/lib)
+find_library(FORTRAN_LIBRARY NAMES gfortran
+             HINTS /usr/local/gfortran/lib ENV LD_LIBRARY_PATH)
+
 
 #---lhapdfsets--------------------------------------------------------------------------------------
 

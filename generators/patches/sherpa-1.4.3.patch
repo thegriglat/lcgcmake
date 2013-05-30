@@ -1,11 +1,11 @@
---- PDF/LHAPDF/LHAPDF_Fortran_Interface.C.orig	2013-05-30 18:30:07.000000000 +0200
-+++ PDF/LHAPDF/LHAPDF_Fortran_Interface.C	2013-05-30 18:31:47.000000000 +0200
-@@ -122,7 +122,7 @@
-   str<<"LHAPDF interface";
- }
+--- PDF/LHAPDF/LHAPDF_Fortran_Interface.C.orig	2013-05-31 01:01:24.000000000 +0200
++++ PDF/LHAPDF/LHAPDF_Fortran_Interface.C	2013-05-31 01:02:19.000000000 +0200
+@@ -11,7 +11,7 @@
+ #include <dirent.h>
+ #include <cstring>
  
--int LHAPDF_DummyInclude(DIRENT_TYPE *entry)
-+int LHAPDF_DummyInclude(const DIRENT_TYPE *entry)
- {
-   return true;
- }
+-#ifdef ARCH_LINUX
++#if defined(ARCH_LINUX) || defined(ARCH_DARWIN)
+ #define DIRENT_TYPE const dirent
+ #else
+ #define DIRENT_TYPE dirent
