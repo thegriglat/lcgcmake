@@ -185,8 +185,8 @@ LCG_add_test(pythia6-test1 COMMAND pytyia6/tests/pythia6_test1
                           BINARY_DIR pythia6/tests
                           SOURCE_DIR pythia6/tests
                           BUILD pythia6_test1
-                          BUILD_OPTIONS -DPYTHIA6_ROOT_DIR=${pythia6_home}
-                          ENVIRONMENT ${library_path}=${pythia6_home}/lib:$ENV{${library_path}})
+                          BUILD_OPTIONS -DPYTHIA6_ROOT_DIR=${pythia6_home} -DHEPMC_ROOT_DIR=${HepMC_home}
+                          ENVIRONMENT ${library_path}=${pythia6_home}/lib:${HepMC_home}:$ENV{${library_path}})
 
 #---agile------------------------------------------------------------------------------------------  
 LCGPackage_Add(
