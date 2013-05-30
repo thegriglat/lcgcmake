@@ -8,16 +8,19 @@
 #todo: tarballs
 
 # cook Boost include subpath string (used by several packages)
+#---General parameters--------------------------------------------------------------------------------------------
+set(Python_cmd ${Python_home}/bin/python)
+set(Exec_cmd ${CMAKE_SOURCE_DIR}/cmake/scripts/exec-with-env)
+
 string(REPLACE "." "_" Boost_underscore_twodigit ${Boost_config_version_twodigit})
 set(Boost_home_include ${Boost_home}/include/boost-${Boost_underscore_twodigit})
-
 if(APPLE)
   set(library_path DYLD_LIBRARY_PATH)
 else()
   set(library_path LD_LIBRARY_PATH)
 endif()
 set(CMAKE_VERBOSE_MAKEFILE ON)
-
+find_library(FORTRAN_LIBRARY NAMES gfortran HINTS /usr/local/gfortran/lib)
 
 #---lhapdfsets--------------------------------------------------------------------------------------
 
@@ -546,16 +549,12 @@ LCGPackage_Add(
   DOWNLOAD_COMMAND ${CMAKE_COMMAND} -Durl=http://lokhtin.web.cern.ch/lokhtin/hydjet++/HYDJET++${hydjet++_native_version}.ZIP
                                     -Dsource_dir=<SOURCE_DIR>
                                     -P ${CMAKE_SOURCE_DIR}/cmake/scripts/DownloadURL.cmake
-  COMMAND unzip <SOURCE_DIR>/HYDJET++${hydjet++_native_version}.ZIP -d <SOURCE_DIR>
-  COMMAND cp <SOURCE_DIR>/Makefile <SOURCE_DIR>/Makefile.orig
-  UPDATE_COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/hydjet++/files  <SOURCE_DIR>
-  CONFIGURE_COMMAND <SOURCE_DIR>/configure
-  BUILD_COMMAND make
-#  BUILD_COMMAND make  CXX=${CMAKE_CXX_COMPILER}
-#                      PRIMARYF77=${CMAKE_Fortran_COMPILER}
-#                     PATH=$ENV{PATH}:/afs/cern.ch/sw/lcg/app/releases/ROOT/5.34.00/x86_64-slc5-gcc43-opt/root/bin
+           COMMAND unzip <SOURCE_DIR>/HYDJET++${hydjet++_native_version}.ZIP -d <SOURCE_DIR>
+  CONFIGURE_COMMAND <VOID>
+  BUILD_COMMAND ${Exec_cmd} PATH=${ROOT_home}/bin:$ENV{PATH} make F77LIBSO=${FORTRAN_LIBRARY}
   INSTALL_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/lib <INSTALL_DIR>/lib
   BUILD_IN_SOURCE 1
+  DEPENDS ROOT
 )
 
 #---alpgen-----------------------------------------------------------------------------
