@@ -253,11 +253,9 @@ LCG_add_test(pyquen-test1 COMMAND pyquen/tests/pyquen_test1
                           ENVIRONMENT ${library_path}=${pyquen_home}/lib:${pythia6_home}/lib:$ENV{${library_path}})
 
 #---hydjet--------------------------------------------------------------------------------------
-
-string(REPLACE "." "_" hydjet_underscore_version ${hydjet_native_version})
 LCGPackage_Add(
   hydjet
-  DOWNLOAD_COMMAND ${CMAKE_COMMAND} -Durl=http://lokhtin.web.cern.ch/lokhtin/hydro/hydjet${hydjet_underscore_version}.f
+  DOWNLOAD_COMMAND ${CMAKE_COMMAND} -Durl=http://lokhtin.web.cern.ch/lokhtin/hydro/hydjet<hydjet_<NATIVE_VERSION>_author>.f
                                     -Dsource_dir=<SOURCE_DIR>/src
                                     -P  ${CMAKE_SOURCE_DIR}/cmake/scripts/DownloadURL.cmake
   DOWNLOAD_COMMAND ${CMAKE_COMMAND} -Durl=http://lokhtin.web.cern.ch/lokhtin/hydro/jetset_73.f
