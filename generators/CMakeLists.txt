@@ -233,10 +233,9 @@ LCG_add_test(photos-test1 COMMAND photos/tests/photos_test1
 
 #---pyquen--------------------------------------------------------------------------------------
 
-string(REPLACE "." "_" pyquen_underscore_version ${pyquen_native_version})
 LCGPackage_Add(
   pyquen
-  DOWNLOAD_COMMAND ${CMAKE_COMMAND} -Durl=http://lokhtin.web.cern.ch/lokhtin/pyquen/pyquen${pyquen_underscore_version}.f
+  DOWNLOAD_COMMAND ${CMAKE_COMMAND} -Durl=http://lokhtin.web.cern.ch/lokhtin/pyquen/pyquen<pyquen_<NATIVE_VERSION>_author>.f
                                     -Dsource_dir=<SOURCE_DIR>/src
                                     -P  ${CMAKE_SOURCE_DIR}/cmake/scripts/DownloadURL.cmake
   UPDATE_COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/pyquen/files  <SOURCE_DIR>
