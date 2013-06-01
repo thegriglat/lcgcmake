@@ -35,7 +35,7 @@ LCGPackage_Add(
   CONFIGURE_COMMAND <VOID> 
   BUILD_COMMAND <VOID>
   INSTALL_COMMAND ${CMAKE_COMMAND} -E make_directory <INSTALL_DIR>
-          COMMAND <SOURCE_DIR>/bin/lhapdf-getdata --force --dest=<INSTALL_DIR>/../share/PDFsets --all
+          COMMAND <SOURCE_DIR>/bin/lhapdf-getdata --force --dest=<INSTALL_DIR>/../share/PDFsets cteq6l
 )
 else()
   add_custom_target(lhapdfsets COMMENT "LHAPDF data sets already installed.")
@@ -307,7 +307,7 @@ LCGPackage_Add(
                                 --hepmcdir=${HepMC_home}
                                 --pythiadir=<pythia8-<evtgen_<NATIVE_VERSION>_p8vers>_home> 
                                 --photosdir=${photos++_home} 
-                                --tauoladir=${tauola++_home}
+                                --tauoladir=<tauola++-<evtgen_<NATIVE_VERSION>_tvers>_home>
   BUILD_COMMAND make -j1 "${evtgen-build-options}"
   INSTALL_COMMAND make install
           COMMAND ${CMAKE_COMMAND} -E chdir <INSTALL_DIR>/../share ${CMAKE_COMMAND} -E create_symlink  sources/evt.pdl evt.pdl
