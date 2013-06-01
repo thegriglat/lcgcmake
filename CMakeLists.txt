@@ -5,6 +5,11 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake/modules)
 if(NOT CMAKE_CONFIGURATION_TYPES AND NOT CMAKE_BUILD_TYPE) # Default to a Release build
   set(CMAKE_BUILD_TYPE Release CACHE STRING "Choose the type of build [Release MinSizeRel Debug RelWithDebInfo]" FORCE)
 endif()
+
+if(NOT LCG_INSTALL_POLICY) # Default to separate installation of packages
+  set(LCG_INSTALL_POLICY separate)
+endif()
+
 #---Installation pathes------------------------------------------------------------------------------------------------
 set(LCG_INSTALL_PREFIX "" CACHE PATH "Existing LCG installation path prefix.")
 message(STATUS "Target installation prefix: ${CMAKE_INSTALL_PREFIX}")

@@ -115,6 +115,8 @@ macro(LCGPackage_Add name)
         set(dest_version ${version})
         set(curr_name)
       endif()
+      set(${targetname}_dest_name ${dest_name} PARENT_SCOPE)
+     
       
       #---Remove previous sym-links------------------------------------------------------------------
       if(IS_SYMLINK ${${name}_home})
@@ -163,6 +165,7 @@ macro(LCGPackage_Add name)
         get_filename_component(n_name ${${name}_directory_name} NAME)
         string(SHA1 longtargethash "${${name}_full_version}" )
         string(SUBSTRING "${longtargethash}" 0 5 targethash ) 
+        set( ${targetname}_hash ${targethash} PARENT_SCOPE)
         ExternalProject_Add_Step(${targetname} package COMMENT "Creating binary tarball and version.txt file for '${targetname}'"
                   COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_INSTALL_PREFIX}/${${name}_directory_name}/../distribution/${name}
                   COMMAND ${CMAKE_COMMAND} -E chdir ${${dest_name}_home}/../../..
@@ -247,7 +250,13 @@ endmacro()
 #----------------------------------------------------------------------------------------------------
 # LCGPackage_create_dependency_file function 
 #  o creates json and dot files containing the dependency tree
-#  o uses ${name}_dependencies, ${name}_exists and ${targetname}_native_version
+#  o uses 
+#      ${name}_dependencies
+#      ${name}_exists
+#      ${targetname}_dest_name
+#      ${targetname}_hash
+#      ${targetname}_native_version
+#  o TODO: does not work with multi-version packages yet
 #----------------------------------------------------------------------------------------------------
 function(LCG_create_dependency_files)
   set(dotfile ${CMAKE_BINARY_DIR}/dependencies.dot)
@@ -264,7 +273,7 @@ function(LCG_create_dependency_files)
     string(REPLACE "-" "_" cleaned_name ${cleaned_name})
     string(REPLACE "-" "_" cleaned_name ${cleaned_name})
     file(APPEND ${dotfile} "_${cleaned_name}_ [label=\"${targetname}\"];\n")
-    set(json_string "'${targetname}' : {'version': '${${targetname}_native_version}', 'dependencies' : [")
+    set(json_string "'${targetname}' : {'version': '${${targetname}_native_version}', 'hash': '${${targetname}_hash}','dest_name':'${${targetname}_dest_name}' ,'dependencies' : [")
     foreach(dep ${${targetname}_dependencies})
       string(REPLACE "+" "p" cleaned_dep ${dep})
       set(json_string "${json_string} '${dep}',")
@@ -311,13 +320,27 @@ endfunction()
 
 #---------------------------------------------------------------------------------------------------
 # Helper macro to define the home of a package
+#   o The home depends on the installation policy LCG_INSTALL_POLICY (collapsed, separatewithid, separate) 
+#   o In case of 'separatewithid' it assumes all dependencies to be known beforehand already  
 #---------------------------------------------------------------------------------------------------
 macro( LCGPackage_set_home name)
   foreach( version ${${name}_native_version} )
-    set(${name}_home ${CMAKE_INSTALL_PREFIX}/${${name}_directory_name}/${version}/${LCG_system})
+    LCGPackage_set_install_path( name )
+    if(LCG_INSTALL_POLICY MATCHES separate) 
+      set(${name}_home ${CMAKE_INSTALL_PREFIX}/${${name}_directory_name}/${version}/${LCG_system})
+    elseif(LCG_INSTALL_POLICY MATCHES collapsed)
+      set(${name}_home ${CMAKE_INSTALL_PREFIX}/${LCG_system})
+    else()
+      message(FATAL_ERROR "LCG_INSTALL_POLICY not set or not recognized.")
+    endif()
   endforeach()
 endmacro()
 
+macro( LCGPackage_set_install_path name)
+  foreach( version ${${name}_native_version} )
+    set(${name}_install_path ${${name}_directory_name}/${version}/${LCG_system})
+  endforeach()
+endmacro()
 
 #-----------------------------------------------------------------------
 # function LCG_add_test(<name> COMMAND cmd [arg1... ] 
