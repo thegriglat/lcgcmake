@@ -154,9 +154,14 @@ LCG_external_package(photos            215.4          ${MCGENPATH}/photos     )
 #LCG_external_package(photos            215.3         ${MCGENPATH}/photos     ) 
 
 #LCG_external_package(evtgen            1.1.0          ${MCGENPATH}/evtgen         tag=R01-01-00 p8vers=175 )
-LCG_external_package(evtgen            1.1.0-176      ${MCGENPATH}/evtgen         tag=R01-01-00 p8vers=176 )
+#LCG_external_package(evtgen            1.1.0-176      ${MCGENPATH}/evtgen         tag=R01-01-00 p8vers=176 )
 #LCG_external_package(evtgen            1.2.0          ${MCGENPATH}/evtgen         tag=R01-02-00 p8vers=176 )
 #LCG_external_package(evtgen            1.2.0-175      ${MCGENPATH}/evtgen         tag=R01-02-00 p8vers=175 )
+
+LCG_external_package(evtgen            1.1.0-t1.1.1          ${MCGENPATH}/evtgen         tag=R01-01-00 p8vers=175 tvers=1.1.1)
+LCG_external_package(evtgen            1.1.0-176-t1.1.1      ${MCGENPATH}/evtgen         tag=R01-01-00 p8vers=176 tvers=1.1.1)
+LCG_external_package(evtgen            1.2.0-t1.1.1          ${MCGENPATH}/evtgen         tag=R01-02-00 p8vers=176 tvers=1.1.1)
+LCG_external_package(evtgen            1.2.0-175-t1.1.1      ${MCGENPATH}/evtgen         tag=R01-02-00 p8vers=175 tvets=1.1.1)
 
 LCG_external_package(rivet             1.8.3          ${MCGENPATH}/rivet        )
 LCG_external_package(rivet2            2.0.0b1        ${MCGENPATH}/rivet2       )
