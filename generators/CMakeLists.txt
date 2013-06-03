@@ -234,16 +234,16 @@ LCG_add_test(photos-test1 COMMAND photos/tests/photos_test1
 #---pyquen--------------------------------------------------------------------------------------
 
 LCGPackage_Add(
- pyquen
-  URL http://service-spi.web.cern.ch/service-spi/external/MCGenerators/distribution/pyquen/pyquen-<NATIVE_VERSION>-src.tgz
-  UPDATE_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/<NATIVE_VERSION> <SOURCE_DIR>
-         COMMAND ${CMAKE_COMMAND} -E remove_directory <SOURCE_DIR>/<NATIVE_VERSION>
-  CONFIGURE_COMMAND ./configure  --prefix=<INSTALL_DIR> --datadir=<INSTALL_DIR>/../share
-  BUILD_COMMAND make FC=${CMAKE_Fortran_COMPILER} CC=${CMAKE_C_COMPILER} CXX=${CMAKE_Fortran_COMPILER}
-  INSTALL_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/lib <INSTALL_DIR>/lib
+  pyquen
+  DOWNLOAD_COMMAND ${CMAKE_COMMAND} -Durl=http://lokhtin.web.cern.ch/lokhtin/pyquen/pyquen${pyquen_underscore_version}.f
+                                    -Dsource_dir=<SOURCE_DIR>/src
+                                    -P  ${CMAKE_SOURCE_DIR}/cmake/scripts/DownloadURL.cmake
+  UPDATE_COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/pyquen/files  <SOURCE_DIR>
+         COMMAND ${CMAKE_COMMAND} -E chdir <SOURCE_DIR> ${CMAKE_COMMAND} -P preparePyquen.cmake
+
+  CMAKE_ARGS -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
   BUILD_IN_SOURCE 1
 )
-
 
 LCG_add_test(pyquen-test1 COMMAND pyquen/tests/pyquen_test1
                           BINARY_DIR pyquen/tests
