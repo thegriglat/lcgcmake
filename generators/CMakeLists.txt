@@ -550,7 +550,7 @@ LCGPackage_Add(
                                     -P ${CMAKE_SOURCE_DIR}/cmake/scripts/DownloadURL.cmake
            COMMAND unzip <SOURCE_DIR>/HYDJET++${hydjet++_native_version}.ZIP -d <SOURCE_DIR>
   CONFIGURE_COMMAND <VOID>
-  BUILD_COMMAND ${Exec_cmd} PATH=${ROOT_home}/bin:$ENV{PATH} make F77LIBSO=${FORTRAN_LIBRARY}
+  BUILD_COMMAND ${Exec_cmd} PATH=${ROOT_home}/bin:$ENV{PATH} $(MAKE) F77LIBSO=${FORTRAN_LIBRARY}
   INSTALL_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/lib <INSTALL_DIR>/lib
   BUILD_IN_SOURCE 1
   DEPENDS ROOT
