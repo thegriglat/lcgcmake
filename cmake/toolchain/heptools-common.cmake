@@ -469,10 +469,19 @@ macro(LCG_prepare_paths)
     find_program(CMAKE_OBJDUMP  objdump  )
     find_program(CMAKE_RANLIB   ranlib   )
     find_program(CMAKE_STRIP    strip    )
+    find_program(CMAKE_TAR      tar      )
     mark_as_advanced(CMAKE_AR CMAKE_LINKER CMAKE_NM CMAKE_OBJCOPY CMAKE_OBJDUMP
-                     CMAKE_RANLIB CMAKE_STRIP)
+                     CMAKE_RANLIB CMAKE_STRIP CMAKE_TAR)
+  elseif(CMAKE_SYSTEM_NAME STREQUAL Darwin)
+    find_program(CMAKE_AR       ar       )
+    find_program(CMAKE_LINKER   ld       )
+    find_program(CMAKE_NM       nm       )
+    find_program(CMAKE_RANLIB   ranlib   )
+    find_program(CMAKE_STRIP    strip    )
+    find_program(CMAKE_TAR      gnutar   )
+    mark_as_advanced(CMAKE_AR CMAKE_LINKER CMAKE_NM
+                     CMAKE_RANLIB CMAKE_STRIP CMAKE_TAR)
   endif()
-
 endmacro()
 
 #--Clear globals. It seems that toolchain file is processed several times---------
