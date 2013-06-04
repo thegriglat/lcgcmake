@@ -4,7 +4,7 @@ project(herwigpp-tests CXX)
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/../../../cmake/modules)
 
 find_package(Herwigpp REQUIRED)
-find_package(Thepeg REQUIRED)
+find_package(ThePEG REQUIRED)
 find_package(HepMC REQUIRED)
 find_package(GSL REQUIRED)
 

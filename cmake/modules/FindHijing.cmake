@@ -8,7 +8,6 @@
 #  HIJING_LIBRARIES (not cached)
 
 
-
 find_library(HIJING_LIBRARY NAMES hijing
              HINTS $ENV{HIJING_ROOT_DIR}/lib ${HIJING_ROOT_DIR}/lib)
 
@@ -21,7 +20,7 @@ set(HIJING_LIBRARIES ${HIJING_LIBRARY} ${HIJING_dummy_LIBRARY})
 # handle the QUIETLY and REQUIRED arguments and set PHOTOS_FOUND to TRUE if
 # all listed variables are TRUE
 
-INCLUDE(FindPackageHandleStandardArgs)
-FIND_PACKAGE_HANDLE_STANDARD_ARGS(hijing DEFAULT_MSG HIJING_LIBRARY)
+include(FindPackageHandleStandardArgs)
+find_package_handle_standard_args(HIJING DEFAULT_MSG HIJING_LIBRARY HIJING_dummy_LIBRARY)
 
-mark_as_advanced(HIJING_FOUND HIJING_LIBRARY)
+mark_as_advanced(HIJING_FOUND HIJING_LIBRARY HIJING_dummy_LIBRARY)

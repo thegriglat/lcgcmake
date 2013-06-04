@@ -4,15 +4,20 @@ project(evtgen-tests CXX)
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/../../../cmake/modules)
 
 
-find_package(Evtgen REQUIRED)
+find_package(EvtGen REQUIRED)
 find_package(Photospp REQUIRED)
 find_package(Pythia8 REQUIRED)
 find_package(HepMC REQUIRED)
+find_package(ROOT COMPONENTS Hist RIO)
 
 set(TEST_DIR ${EVTGEN_ROOT_DIR}/../share/sources/test/)
 
-include_directories(${EVTGEN_INCLUDE_DIR} ${PHOTOSPP_INCLUDE_DIR} ${HEPMC_INCLUDE_DIR} ${PYTHIA8_INCLUDE_DIR})
+include_directories(${EVTGEN_INCLUDE_DIR} 
+                    ${PHOTOSPP_INCLUDE_DIR} 
+                    ${HEPMC_INCLUDE_DIR} 
+                    ${PYTHIA8_INCLUDE_DIR}
+                    ${ROOT_INCLUDE_DIR})
 
 add_executable(evtgen_orig_test1 ${TEST_DIR}/evtgenlhc_test1.cc)
-target_link_libraries(evtgen_orig_test1 ${EVTGEN_LIBRARIES} ${PHOTOSPP_LIBRARIES} ${HEPMC_LIBRARIES} ${PYTHIA8_LIBRARIES})
+target_link_libraries(evtgen_orig_test1 ${EVTGEN_LIBRARIES} ${PHOTOSPP_LIBRARIES} ${HEPMC_LIBRARIES} ${PYTHIA8_LIBRARIES} ${ROOT_LIBRARIES})
 
