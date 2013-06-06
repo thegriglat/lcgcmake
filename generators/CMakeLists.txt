@@ -35,7 +35,7 @@ LCGPackage_Add(
   CONFIGURE_COMMAND <VOID> 
   BUILD_COMMAND <VOID>
   INSTALL_COMMAND ${CMAKE_COMMAND} -E make_directory <INSTALL_DIR>
-          COMMAND <SOURCE_DIR>/bin/lhapdf-getdata --force --dest=<INSTALL_DIR>/../share/PDFsets cteq6l
+          COMMAND <SOURCE_DIR>/bin/lhapdf-getdata --force --dest=<INSTALL_DIR>/../share/PDFsets --all
 )
 else()
   add_custom_target(lhapdfsets COMMENT "LHAPDF data sets already installed.")
@@ -280,6 +280,8 @@ LCGPackage_Add(
   URL http://annapurna.ifj.edu.pl/~tprzedzinski/resources/PHOTOS.${photos++_native_version}/PHOTOS.${photos++_native_version}-LHC.tar.gz
   CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --with-hepmc=${HepMC_home}
   BUILD_IN_SOURCE 1
+  INSTALL_COMMAND  make install
+          COMMAND  ${CMAKE_COMMAND} -E create_symlink ${CMAKE_INSTALL_PREFIX}/${MCGENPATH}/photos++ ${CMAKE_INSTALL_PREFIX}/${MCGENPATH}/photospp
   DEPENDS HepMC
 )
 LCG_add_test(photospp_orig_test1 COMMAND photospp/tests/photospp_orig_test1
