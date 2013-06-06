@@ -143,6 +143,7 @@ if(NOT APPLE)    #  (installation fails on MacOSX)
                       --with-boost=${Boost_home} LD_LIBRARY_PATH=${thepeg_home}/lib:${GSL_home}/lib:${Boost_home}/lib:$ENV{LD_LIBRARY_PATH}
     BUILD_COMMAND make all V=1 LD_LIBRARY_PATH=${thepeg_home}/lib:${GSL_home}/lib:${Boost_home}/lib:$ENV{LD_LIBRARY_PATH}
     INSTALL_COMMAND make install  LD_LIBRARY_PATH=${thepeg_home}/lib:${GSL_home}/lib:${Boost_home}/lib:${HepMC_home}/lib:$ENV{LD_LIBRARY_PATH}
+            COMMAND  ${CMAKE_COMMAND} -E create_symlink ${CMAKE_INSTALL_PREFIX}/${MCGENPATH}/herwig++ ${CMAKE_INSTALL_PREFIX}/${MCGENPATH}/herwigpp
     BUILD_IN_SOURCE 1
     DEPENDS GSL Boost thepeg
   )
@@ -162,6 +163,8 @@ LCGPackage_Add(
   tauola++
   URL http://annapurna.ifj.edu.pl/~tprzedzinski/resources/TAUOLA.${tauola++_native_version}/TAUOLA.${tauola++_native_version}-LHC.tar.gz
   CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --with-hepmc=${HepMC_home} --with-lhapdf=${lhapdf_home}
+  INSTALL_COMMAND  make install
+          COMMAND  ${CMAKE_COMMAND} -E create_symlink ${CMAKE_INSTALL_PREFIX}/${MCGENPATH}/tauola++ ${CMAKE_INSTALL_PREFIX}/${MCGENPATH}/tauolapp
   BUILD_IN_SOURCE 1
   DEPENDS HepMC lhapdf
 )
