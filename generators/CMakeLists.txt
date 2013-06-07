@@ -31,7 +31,7 @@ LCGPackage_set_home(lhapdfsets)
 if(NOT EXISTS ${lhapdfsets_home}/../share/PDFsets)
 LCGPackage_Add(
   lhapdfsets
-  URL http://www.hepforge.org/archive/lhapdf/lhapdf-${lhapdf_native_version}.tar.gz 
+  URL http://www.hepforge.org/archive/lhapdf/lhapdf-${lhapdfsets_native_version}.tar.gz 
   CONFIGURE_COMMAND <VOID> 
   BUILD_COMMAND <VOID>
   INSTALL_COMMAND ${CMAKE_COMMAND} -E make_directory <INSTALL_DIR>
