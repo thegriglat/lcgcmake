@@ -583,16 +583,16 @@ LCGPackage_Add(
         UPDATE_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/<NATIVE_VERSION> <SOURCE_DIR>
                  COMMAND ${CMAKE_COMMAND} -E remove_directory <SOURCE_DIR>/<NATIVE_VERSION 
         CMAKE_ARGS -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
-        -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR> -DPROJECT_BINARY_DIR=<INSTALL_DIR>
+        -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
         -DROOTSYS=${ROOT_home}
         -DHEPMC_PREFIX=${HepMC_home} -DBOOST_ROOT=${Boost_home}
         -DBOOST_INCLUDE_DIR=${Boost_home_include} 
         #-DBoost_LIBRARYDIR=
         BUILD_IN_SOURCE 1
-        INSTALL_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/lib  <INSTALL_DIR>/lib
-                         COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/bin  <INSTALL_DIR>/bin
-                         COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/tabs <INSTALL_DIR>/../share/tabs
-                         COMMAND ${CMAKE_COMMAND} -E chdir <INSTALL_DIR>  ${CMAKE_COMMAND} -E create_symlink  ../share/tabs tabs 
+#        INSTALL_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/lib  <INSTALL_DIR>/lib
+#                         COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/bin  <INSTALL_DIR>/bin
+#                         COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/tabs <INSTALL_DIR>/../share/tabs
+#                         COMMAND ${CMAKE_COMMAND} -E chdir <INSTALL_DIR>  ${CMAKE_COMMAND} -E create_symlink  ../share/tabs tabs 
           DEPENDS HepMC Boost ROOT
 )
 endif()
