@@ -15,12 +15,12 @@ set(CTEST_SOURCE_DIRECTORY "$ENV{SOURCE}")
 set(CTEST_BINARY_DIRECTORY "$ENV{BINARY}")
 
 #---Set the CTEST SITE according to the environment-------------------------
-if("$ENV{CTEST_SITE}" STREQUAL "")
+#if("$ENV{CTEST_SITE}" STREQUAL "")
   set(CTEST_SITE "${host}")
-else()
-  set(CTEST_SITE "$ENV{CTEST_SITE}")
-  message( "Running build and test on ${host}" )
-endif()
+#else()
+#  set(CTEST_SITE "$ENV{CTEST_SITE}")
+#  message( "Running build and test on ${host}" )
+#endif()
 
 #---------------------------------------------------------------------------
 
