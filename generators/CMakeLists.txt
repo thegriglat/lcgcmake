@@ -31,7 +31,7 @@ LCGPackage_set_home(lhapdfsets)
 if(NOT EXISTS ${lhapdfsets_home}/../share/PDFsets)
 LCGPackage_Add(
   lhapdfsets
-  URL http://www.hepforge.org/archive/lhapdf/lhapdf-${lhapdfsets_native_version}.tar.gz 
+  URL http://www.hepforge.org/archive/lhapdf/lhapdf-<NATIVE_VERSION>.tar.gz
   CONFIGURE_COMMAND <VOID> 
   BUILD_COMMAND <VOID>
   INSTALL_COMMAND ${CMAKE_COMMAND} -E make_directory <INSTALL_DIR>
@@ -47,7 +47,7 @@ endif()
 
 LCGPackage_Add(
   lhapdf
-  URL http://www.hepforge.org/archive/lhapdf/lhapdf-${lhapdf_native_version}.tar.gz 
+  URL http://www.hepforge.org/archive/lhapdf/lhapdf-<NATIVE_VERSION>.tar.gz 
   UPDATE_COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/lhapdf/files  <SOURCE_DIR>
   CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR>  --enable-low-memory  --disable-pyext --disable-doxygen --disable-octave
   INSTALL_COMMAND make install
