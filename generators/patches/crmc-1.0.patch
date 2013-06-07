@@ -1,0 +1,31 @@
+--- CMakeModules/FindRoot.cmake.orig	2013-06-05 11:46:11.000000000 +0200
++++ CMakeModules/FindRoot.cmake	2013-06-05 11:52:55.000000000 +0200
+@@ -28,7 +28,9 @@
+ 
+ # the following disables all default paths (either from cmake, from environment)
+ FIND_PATH (ROOT_BIN_DIR root-config
+-  PATHS $ENV{ROOTSYS}/bin
++  PATHS 
++  ${ROOTSYS}/bin	
++  $ENV{ROOTSYS}/bin
+   $ENV{AUGER_BASE}/External/ROOT/pro/bin
+   NO_DEFAULT_PATH
+ )
+--- CMakeModules/FindHepMC.cmake.orig	2013-06-06 14:15:32.000000000 +0200
++++ CMakeModules/FindHepMC.cmake	2013-06-06 14:57:23.000000000 +0200
+@@ -22,6 +22,7 @@
+                 ${COMPONENT}
+ 
+                 PATHS
++		${HEPMC_PREFIX}
+ 		/usr
+ 		/usr/local
+ 		$ENV{HEPMC_PREFIX}
+@@ -48,6 +49,7 @@
+                 HepMC/GenEvent.h
+ 
+                 PATHS
++		${HEPMC_PREFIX}
+ 		/usr
+ 		/usr/local
+ 		$ENV{HEPMC_PREFIX}
