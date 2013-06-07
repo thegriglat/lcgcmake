@@ -29,3 +29,63 @@
  		/usr
  		/usr/local
  		$ENV{HEPMC_PREFIX}
+--- CMakeModules/FindBoost.cmake.orig	2013-06-07 12:57:52.000000000 +0200
++++ CMakeModules/FindBoost.cmake	2013-06-07 12:59:37.000000000 +0200
+@@ -297,7 +297,7 @@
+   # The user has not requested an exact version.  Among known
+   # versions, find those that are acceptable to the user request.
+   set(_Boost_KNOWN_VERSIONS ${Boost_ADDITIONAL_VERSIONS}
+-    "1.51.0" "1.51" "1.41.0" "1.41" "1.40.0" "1.40" "1.39.0" "1.39" "1.38.0" "1.38" "1.37.0" "1.37"
++    "1.51.0" "1.51" "1.50.0" "1.50" "1.41.0" "1.41" "1.40.0" "1.40" "1.39.0" "1.39" "1.38.0" "1.38" "1.37.0" "1.37"
+     "1.36.1" "1.36.0" "1.36" "1.35.1" "1.35.0" "1.35" "1.34.1" "1.34.0"
+     "1.34" "1.33.1" "1.33.0" "1.33")
+   set(_boost_TEST_VERSIONS)
+--- CMakeLists.txt.orig	2013-06-07 17:54:05.000000000 +0200
++++ CMakeLists.txt	2013-06-07 17:55:06.000000000 +0200
+@@ -2,7 +2,16 @@
+ PROJECT (crmc)
+ 
+ ######################################ONLY EDIT THIS######################################
+-SET (CMAKE_INSTALL_PREFIX ${PROJECT_BINARY_DIR})
++
++if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
++  message("Setting CMAKE_INSTALL_PREFIX to ${PROJECT_BINARY_DIR}.")
++  set(CMAKE_INSTALL_PREFIX ${PROJECT_BINARY_DIR} CACHE PATH "" FORCE)
++else(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
++  message("CMAKE_INSTALL_PREFIX was set to ${CMAKE_INSTALL_PREFIX}.")
++endif(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
++
++MESSAGE(STATUS "PROJECT_BINARY_DIR"   " ${PROJECT_BINARY_DIR} ")
++MESSAGE(STATUS "CMAKE_INSTALL_PREFIX"   " ${CMAKE_INSTALL_PREFIX} ")
+ 
+ # Enable/Disable models to be built
+ OPTION (__QGSJET01__   "Build with model" ON)
+@@ -151,13 +160,15 @@
+ 
+ ## installation
+ # configure the parameter file
+-install(CODE "SET (CRMCROOT \"${PROJECT_BINARY_DIR}\")")
++MESSAGE(STATUS "CRMCROOT"   " ${CMAKE_INSTALL_PREFIX} ")
++
++install(CODE "SET (CRMCROOT \"${CMAKE_INSTALL_PREFIX}\")")
+ install(CODE "SET (QIITAB \"${QGSJETII_TABS}\")")
+ install(CODE "
+-             IF(NOT EXISTS ${PROJECT_BINARY_DIR}/crmc.param)
++             IF(NOT EXISTS ${CMAKE_INSTALL_PREFIX}/crmc.param)
+              MESSAGE (STATUS \"(Re)creating crmc.param\")
+-             CONFIGURE_FILE (\"${PROJECT_SOURCE_DIR}/src/crmc.param.in\" \"${PROJECT_BINARY_DIR}/crmc.param\" @ONLY IMMEDIATE)
+-             ENDIF(NOT EXISTS ${PROJECT_BINARY_DIR}/crmc.param)
++             CONFIGURE_FILE (\"${PROJECT_SOURCE_DIR}/src/crmc.param.in\"\"${CMAKE_INSTALL_PREFIX}/crmc.param\" @ONLY IMMEDIATE)
++             ENDIF(NOT EXISTS ${CMAKE_INSTALL_PREFIX}/crmc.param)
+              ")
+ 
+ # install tabs
+@@ -165,7 +176,7 @@
+ foreach(theTab ${TABS})
+   list(APPEND TABSDIR ${PROJECT_SOURCE_DIR}/tabs/${theTab} )
+ endforeach()
+-INSTALL (FILES ${TABSDIR} DESTINATION ${PROJECT_BINARY_DIR}/tabs)
++INSTALL (FILES ${TABSDIR} DESTINATION ${CMAKE_INSTALL_PREFIX}/tabs)
+ #    install(CODE "EXECUTE_PROCESS(COMMAND ${CMAKE_COMMAND} -E copy_directory ${PROJECT_SOURCE_DIR}/tabs ${PROJECT_BINARY_DIR}/tabs)")
+ 
+ # install executable
