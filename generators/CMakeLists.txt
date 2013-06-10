@@ -581,7 +581,8 @@ LCGPackage_Add(
 if ( ${crmc_native_version} MATCHES "^v")
 LCGPackage_Add(
   crmc
-  URL http://sftweb.cern.ch/generators/files/generator/tarballs/crmc-${crmc_native_version}.tar.gz
+  URL http://sftweb.cern.ch/generators/files/generator/tarballs/crmc-v3400.tar.gz
+# URL http://sftweb.cern.ch/generators/files/generator/tarballs/crmc-${crmc_native_version}.tar.gz
   # SVN_REPOSITORY https://devel-ik.fzk.de/svn/mc/crmc/tags/${crmc_native_version}
   CONFIGURE_COMMAND <VOID>
   BUILD_COMMAND make -f Makefile CRMCROOT=<INSTALL_DIR> HEP_ROOT=${HepMC_home}
@@ -590,10 +591,11 @@ LCGPackage_Add(
   BUILD_IN_SOURCE 1
   DEPENDS HepMC
 )
-else()
+else(${crmc_native_version} MATCHES "^v")
 LCGPackage_Add(
   crmc
-  URL http://sftweb.cern.ch/generators/files/generator/tarballs/crmc-${crmc_native_version}.tar.gz
+ URL http://sftweb.cern.ch/generators/files/generator/tarballs/crmc-1.0.tar.gz
+#  URL http://sftweb.cern.ch/generators/files/generator/tarballs/crmc-${crmc_native_version}.tar.gz
   UPDATE_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/<NATIVE_VERSION> <SOURCE_DIR>
          COMMAND ${CMAKE_COMMAND} -E remove_directory <SOURCE_DIR>/<NATIVE_VERSION
   CMAKE_ARGS -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
@@ -609,7 +611,7 @@ LCGPackage_Add(
 #         COMMAND ${CMAKE_COMMAND} -E chdir <INSTALL_DIR>  ${CMAKE_COMMAND} -E create_symlink  ../share/tabs tabs
   DEPENDS HepMC Boost ROOT
 )
-endif()
+endif(${crmc_native_version} MATCHES "^v")
 
 #---baurmc------------------------------------------------------------------------------------------
 LCGPackage_Add(
