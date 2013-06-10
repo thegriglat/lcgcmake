@@ -61,7 +61,7 @@ LCG_external_package(globus            4.0.7-VDT-1.10.1                         
 LCG_external_package(graphviz          2.28.0                                   )
 LCG_external_package(gridftp_ifce      2.1.4-2                                  )
 LCG_external_package(GSL               1.10                                     )
-LCG_external_package(HepMC             2.06.05                                  )
+LCG_external_package(HepMC             2.06.08                                  )
 LCG_external_package(HepPDT            2.06.01                                  )
 LCG_external_package(igprof            5.9.6                                    )
 LCG_external_package(ipython           0.12.1                                   )
