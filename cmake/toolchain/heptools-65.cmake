@@ -136,7 +136,7 @@ LCG_external_package(vomsapic          1.9.17-1                                 
 LCG_external_package(vomsapicpp        1.9.17-1                                 )
 LCG_external_package(vomsclients       1.9.17-1                                 )
 LCG_external_package(XercesC           3.1.1p1        author=3.1.1              )
-LCG_external_package(xqilla            2.2.4                                    )
+LCG_external_package(xqilla            2.2.4p1                                  )
 LCG_external_package(xrootd            3.2.7                                    )
 
 set(MCGENPATH  MCGenerators_lcgcmt${heptools_version})
