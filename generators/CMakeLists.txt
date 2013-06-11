@@ -409,7 +409,7 @@ LCGPackage_Add(
 #---Rivet------------------------------------------------------------------------------------------
 LCGPackage_Add(
   rivet
-  URL http://www.hepforge.org/archive/rivet/Rivet-${rivet_native_version}.tar.bz2
+  URL http://www.hepforge.org/archive/rivet/Rivet-${NATIVE_VERSION}.tar.bz2
   CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR>
      --with-hepmc=${HepMC_home} 
      --with-boost-incpath=${Boost_home_include}
