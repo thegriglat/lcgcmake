@@ -1,0 +1,58 @@
+--- configure.orig	2013-04-21 20:37:35.526424576 +0200
++++ configure	2013-04-21 20:42:15.997426034 +0200
+@@ -19347,15 +19347,23 @@
+ fi
+ 
+ if test -e "$boostpath/include/boost/array.hpp"; then
+-        { $as_echo "$as_me:${as_lineno-$LINENO}: result: found in $boostpath" >&5
+-$as_echo "found in $boostpath" >&6; }
+-else
+-	{ $as_echo "$as_me:${as_lineno-$LINENO}: result: not found" >&5
+-$as_echo "not found" >&6; }
+-	as_fn_error $? "boost headers are required. Please install boost." "$LINENO" 5
++        echo "$as_me:$LINENO: result: found in $boostpath" >&5
++echo "${ECHO_T}found in $boostpath" >&6
++        #GENSER PATCH: workaround for Boost include directory structure at /afs/cern.ch
++        BOOSTINCLUDE="-I$boostpath/include"
++elif test `ls $boostpath/include/boost-*/boost/array.hpp 2>/dev/null | wc -l` -gt 0 ; then
++        _boostinclude_=`echo $boostpath/include/boost-*`
++        echo "$as_me:$LINENO: result: found in $boostpath, include directory is $_boostinclude_" >&5
++echo "${ECHO_T}found in $boostpath, include directory is $_boostinclude_" >&6
++        BOOSTINCLUDE="-I$_boostinclude_"
++else
++        echo "$as_me:$LINENO: result: not found" >&5
++echo "${ECHO_T}not found" >&6
++        { { echo "$as_me:$LINENO: error: boost headers are required. Please install boost." >&5
++echo "$as_me: error: boost headers are required. Please install boost." >&2;}
++   { (exit 1); exit 1; }; }
+ fi
+ 
+-BOOSTINCLUDE="-I$boostpath/include"
+ 
+ 
+ 
+--- Makefile.am.orig    2013-04-19 12:33:37.485512397 +0200
++++ Makefile.am 2013-04-19 12:33:59.220515261 +0200
+@@ -6,7 +6,8 @@
+ 
+ EXTRA_DIST = GUIDELINES
+ 
+-DISTCHECK_CONFIGURE_FLAGS = --enable-debug --with-thepeg=$(THEPEGPATH)
++#GENSER PATCH: additional default configure argument: --with-boost=...
++DISTCHECK_CONFIGURE_FLAGS = --enable-debug --with-thepeg=$(THEPEGPATH) --with-boost=$(BOOSTPATH)
+ 
+ ACLOCAL_AMFLAGS = -I m4
+
+--- Makefile.in.orig    2013-04-19 14:29:20.000000000 +0200
++++ Makefile.in 2013-04-19 14:31:31.000000000 +0200
+@@ -309,7 +309,8 @@
+        lib src Doc Contrib Tests
+ 
+ EXTRA_DIST = GUIDELINES
+-DISTCHECK_CONFIGURE_FLAGS = --enable-debug --with-thepeg=$(THEPEGPATH)
++#GENSER PATCH: additional default configure argument: --with-boost=...
++DISTCHECK_CONFIGURE_FLAGS = --enable-debug --with-thepeg=$(THEPEGPATH) --with-boost=$(BOOSTPATH)
+ ACLOCAL_AMFLAGS = -I m4
+ DISTCLEANFILES = config.herwig
+ all: all-recursive
+
