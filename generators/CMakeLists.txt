@@ -140,7 +140,7 @@ if(NOT APPLE)    #  (installation fails on MacOSX)
     herwig++
     URL http://www.hepforge.org/archive/herwig/Herwig++-<NATIVE_VERSION>.tar.bz2
     CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --with-gsl=${GSL_home} --with-thepeg=${thepeg_v_home}
-                      --with-boost=${Boost_home} LD_LIBRARY_PATH=${thepeg_home}/lib:${GSL_home}/lib:${Boost_home}/lib:$ENV{LD_LIBRARY_PATH}
+                      --with-boost=${Boost_home} LD_LIBRARY_PATH=${thepeg_v_home}/lib:${GSL_home}/lib:${Boost_home}/lib:$ENV{LD_LIBRARY_PATH}
     BUILD_COMMAND make all V=1 LD_LIBRARY_PATH=${thepeg_v_home}/lib:${GSL_home}/lib:${Boost_home}/lib:$ENV{LD_LIBRARY_PATH}
     INSTALL_COMMAND make install  LD_LIBRARY_PATH=${thepeg_v_home}/lib:${GSL_home}/lib:${Boost_home}/lib:${HepMC_home}/lib:$ENV{LD_LIBRARY_PATH}
             COMMAND  ${CMAKE_COMMAND} -E create_symlink ${CMAKE_INSTALL_PREFIX}/${MCGENPATH}/herwig++ ${CMAKE_INSTALL_PREFIX}/${MCGENPATH}/herwigpp
