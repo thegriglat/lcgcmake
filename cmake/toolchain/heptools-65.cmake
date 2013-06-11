@@ -46,7 +46,7 @@ LCG_external_package(david             1_36a                                    
 LCG_external_package(dawn              3_88a                                    )
 LCG_external_package(dcache_client     2.47.6-1                                 )
 LCG_external_package(dcache_srm        1.9.5-23                                 )
-LCG_external_package(dcap              2.47.6                                   )
+LCG_external_package(dcap              2.47.7-1                                 )
 LCG_external_package(doxygen           1.8.2                                    )
 LCG_external_package(dpm               1.8.5-1                                  )
 LCG_external_package(epel              20120618                                 )
