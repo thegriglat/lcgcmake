@@ -150,7 +150,7 @@ endif()
 
 LCGPackage_Add(
   tbb
-  URL http://threadingbuildingblocks.org/sites/default/files/software_releases/source/tbb${tbb_native_version}oss_src.tgz
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/tbb${tbb_native_version}oss_src.tgz
   CONFIGURE_COMMAND <VOID>
   BUILD_COMMAND make ${tbb_build_options}
   INSTALL_COMMAND ${CMAKE_COMMAND} -Dinstall_dir=<INSTALL_DIR> -Dsource_dir=<SOURCE_DIR> -P ${CMAKE_SOURCE_DIR}/cmake/scripts/InstallTBB.cmake 
