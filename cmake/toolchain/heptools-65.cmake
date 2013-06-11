@@ -40,7 +40,7 @@ LCG_external_package(cmaketools        1.0                                      
 #LCG_external_package(cmt               v1r20p20081118                           )
 LCG_external_package(coin3d            3.1.3p2                                  )
 LCG_external_package(coverage          3.5.2                                    )
-LCG_external_package(CppUnit           1.12.1_p1                                )
+LCG_external_package(CppUnit           1.12.1_p1                 author=1.12.1  )
 LCG_external_package(cx_oracle         5.1.1                                    )
 LCG_external_package(david             1_36a                                    )
 LCG_external_package(dawn              3_88a                                    )
@@ -135,26 +135,30 @@ LCG_external_package(vomsapi_noglobus  1.9.17-1                                 
 LCG_external_package(vomsapic          1.9.17-1                                 )
 LCG_external_package(vomsapicpp        1.9.17-1                                 )
 LCG_external_package(vomsclients       1.9.17-1                                 )
-LCG_external_package(XercesC           3.1.1p1                                  )
+LCG_external_package(XercesC           3.1.1p1        author=3.1.1              )
 LCG_external_package(xqilla            2.2.4                                    )
 LCG_external_package(xrootd            3.2.7                                    )
 
 set(MCGENPATH  MCGenerators_lcgcmt${heptools_version})
 
 #---Additional External packages------(Generators)-----------------
-LCG_external_package(powheg-box         r2092         ${MCGENPATH}/powheg-box       )
+LCG_external_package(powheg-box         r2092         ${MCGENPATH}/powheg-box   )
 LCG_external_package(lhapdf            5.8.8          ${MCGENPATH}/lhapdf       )
 LCG_external_package(lhapdf            5.8.9          ${MCGENPATH}/lhapdf       )
 LCG_external_package(lhapdfsets        5.8.9          ${MCGENPATH}/lhapdfsets   )
 
 LCG_external_package(pythia8           175            ${MCGENPATH}/pythia8      )
 LCG_external_package(pythia8           176            ${MCGENPATH}/pythia8      )
+
 LCG_external_package(thepeg            1.8.1          ${MCGENPATH}/thepeg       )
 LCG_external_package(thepeg            1.8.3          ${MCGENPATH}/thepeg       )
+
 LCG_external_package(herwig++          2.6.1b         ${MCGENPATH}/herwig++     thepeg=1.8.1)
 LCG_external_package(herwig++          2.6.3          ${MCGENPATH}/herwig++     thepeg=1.8.3)
-LCG_external_package(tauola++          1.1.1a         ${MCGENPATH}/tauola++     )
+
 LCG_external_package(tauola++          1.1.1          ${MCGENPATH}/tauola++     )
+LCG_external_package(tauola++          1.1.1a         ${MCGENPATH}/tauola++     )
+
 LCG_external_package(pythia6           427.2          ${MCGENPATH}/pythia6        author=6.4.27 hepevt=10000  )
 LCG_external_package(agile             1.4.0          ${MCGENPATH}/agile        )
 LCG_external_package(photos++          3.52           ${MCGENPATH}/photos++     )

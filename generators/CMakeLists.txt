@@ -124,7 +124,7 @@ endforeach()
 #todo: will autoreconf work if the patches are applied?
 LCGPackage_Add(
   thepeg
-  URL http://www.hepforge.org/archive/thepeg/ThePEG-${thepeg_native_version}.tar.bz2
+  URL http://www.hepforge.org/archive/thepeg/ThePEG-<NATIVE_VERSION>.tar.bz2
 #  UPDATE_COMMAND ${CMAKE_COMMAND} -E chdir <SOURCE_DIR> autoreconf --install --force
   CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --with-hepmc=${HepMC_home} --with-LHAPDF=${lhapdf_home}/lib --with-gsl=${GSL_home} --without-javagui
   BUILD_COMMAND make all V=1 
@@ -133,16 +133,16 @@ LCGPackage_Add(
 )
 
 #---Herwig++------------------------------------------------------------------------------------------
-#todo: every version of herwig++ depends on the corresponding PARTICULAR VERSION of ThePEG
 #Version 2.6.2 compiles on Mac, however the installation does not run :-(
+set(thepeg_v_home <thepeg-<herwig++_<NATIVE_VERSION>_thepeg>_home>)
 if(NOT APPLE)    #  (installation fails on MacOSX)
   LCGPackage_Add(
     herwig++
-    URL http://www.hepforge.org/archive/herwig/Herwig++-${herwig++_native_version}.tar.bz2
-    CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --with-gsl=${GSL_home} --with-thepeg=${thepeg_home} 
+    URL http://www.hepforge.org/archive/herwig/Herwig++-<NATIVE_VERSION>.tar.bz2
+    CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --with-gsl=${GSL_home} --with-thepeg=${thepeg_v_home}
                       --with-boost=${Boost_home} LD_LIBRARY_PATH=${thepeg_home}/lib:${GSL_home}/lib:${Boost_home}/lib:$ENV{LD_LIBRARY_PATH}
-    BUILD_COMMAND make all V=1 LD_LIBRARY_PATH=${thepeg_home}/lib:${GSL_home}/lib:${Boost_home}/lib:$ENV{LD_LIBRARY_PATH}
-    INSTALL_COMMAND make install  LD_LIBRARY_PATH=${thepeg_home}/lib:${GSL_home}/lib:${Boost_home}/lib:${HepMC_home}/lib:$ENV{LD_LIBRARY_PATH}
+    BUILD_COMMAND make all V=1 LD_LIBRARY_PATH=${thepeg_v_home}/lib:${GSL_home}/lib:${Boost_home}/lib:$ENV{LD_LIBRARY_PATH}
+    INSTALL_COMMAND make install  LD_LIBRARY_PATH=${thepeg_v_home}/lib:${GSL_home}/lib:${Boost_home}/lib:${HepMC_home}/lib:$ENV{LD_LIBRARY_PATH}
             COMMAND  ${CMAKE_COMMAND} -E create_symlink ${CMAKE_INSTALL_PREFIX}/${MCGENPATH}/herwig++ ${CMAKE_INSTALL_PREFIX}/${MCGENPATH}/herwigpp
     BUILD_IN_SOURCE 1
     DEPENDS GSL Boost thepeg
@@ -161,7 +161,7 @@ endif()
 #---tauola++------------------------------------------------------------------------------------------
 LCGPackage_Add(
   tauola++
-  URL http://annapurna.ifj.edu.pl/~tprzedzinski/resources/TAUOLA.${tauola++_native_version}/TAUOLA.${tauola++_native_version}-LHC.tar.gz
+  URL http://annapurna.ifj.edu.pl/~tprzedzinski/resources/TAUOLA.<NATIVE_VERSION>/TAUOLA.<NATIVE_VERSION>-LHC.tar.gz
   CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --with-hepmc=${HepMC_home} --with-lhapdf=${lhapdf_home}
   INSTALL_COMMAND  make install
           COMMAND  ${CMAKE_COMMAND} -E create_symlink ${CMAKE_INSTALL_PREFIX}/${MCGENPATH}/tauola++ ${CMAKE_INSTALL_PREFIX}/${MCGENPATH}/tauolapp
@@ -310,9 +310,9 @@ LCGPackage_Add(
   UPDATE_COMMAND <VOID>
   CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> 
                                 --hepmcdir=${HepMC_home}
-                                --pythiadir=<pythia8-<evtgen_<NATIVE_VERSION>_p8vers>_home> 
+                                --pythiadir=<pythia8-<evtgen_<NATIVE_VERSION>_pythia8>_home> 
                                 --photosdir=${photos++_home} 
-                                --tauoladir=${tauola++_home}
+                                --tauoladir=<tauola++-<evtgen_<NATIVE_VERSION>_tauola++>_home>
   BUILD_COMMAND make -j1 "${evtgen-build-options}"
   INSTALL_COMMAND make install
           COMMAND ${CMAKE_COMMAND} -E chdir <INSTALL_DIR>/../share ${CMAKE_COMMAND} -E create_symlink  sources/evt.pdl evt.pdl

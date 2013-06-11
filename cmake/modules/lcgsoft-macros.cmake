@@ -53,7 +53,7 @@ macro(LCGPackage_Add name)
       endforeach()
     endif()
     #---Get the expanded list of dependencies with their versions-------------------------------------
-    LCG_get_full_version(${name} ${version} ${name}_full_version)
+    LCG_get_full_version(${targetname} ${version} ${name}_full_version)
 
     #---Install path----------------------------------------------------------------------------------
     set(install_path ${${name}_directory_name}/${version}/${LCG_system})
@@ -92,14 +92,16 @@ macro(LCGPackage_Add name)
       #---Replace patterns for multiversion cases-----------------------------------------------------
       string(REPLACE <NATIVE_VERSION> ${version} ARGUMENTS "${ARG_UNPARSED_ARGUMENTS}")
       string(REPLACE <VOID> "" ARGUMENTS "${ARGUMENTS}")
+      set(knownvars SOURCE_DIR INSTALL_DIR)
       foreach(iter 1 2 3)  # 3 nested replacements
         string(REGEX MATCHALL "<[^ <>(){}]+>" vars ${ARGUMENTS})
         foreach(var ${vars})
           string(REPLACE "<" "" v ${var})
           string(REPLACE ">" "" v ${v})
+          list(FIND knownvars ${v} index)
           if(DEFINED ${v})
              string(REPLACE ${var} ${${v}} ARGUMENTS "${ARGUMENTS}")
-          elseif(iter EQUAL 3 AND NOT "SOURCE_DIR;INSTALL_DIR" MATCHES ${v})
+          elseif(iter EQUAL 3 AND index EQUAL -1)
              message(FATAL_ERROR " Could not resolve variable '<${v}>' in 'LCGPackage_Add':\n ${ARGUMENTS}")
           endif()
         endforeach()
