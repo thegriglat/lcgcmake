@@ -19,7 +19,8 @@ ctest_start(Experimental)
 ctest_update()
 ctest_configure(BUILD   ${CTEST_BINARY_DIRECTORY} 
                 SOURCE  ${CTEST_SOURCE_DIRECTORY}
-                OPTIONS -DLCG_VERSION=$ENV{LCG_VERSION} -DCMAKE_INSTALL_PREFIX=${CTEST_BINARY_DIRECTORY}-install
+                OPTIONS -DLCG_VERSION=$ENV{LCG_VERSION} 
+                OPTIONS -DCMAKE_INSTALL_PREFIX=${CTEST_BINARY_DIRECTORY}-install
                )
 ctest_build(BUILD ${CTEST_BINARY_DIRECTORY})
 ctest_test(PARALLEL_LEVEL ${ncpu})
