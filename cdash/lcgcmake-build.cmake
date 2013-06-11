@@ -16,7 +16,9 @@ file(REMOVE_RECURSE ${CTEST_BINARY_DIRECTORY})
 file(REMOVE_RECURSE ${CTEST_BINARY_DIRECTORY}-install)
 
 # The build mode drives the name of the slot in cdash
-ctest_start($ENV{MODE})
+set(MODEL $ENV{MODE})
+
+ctest_start(Experimental)
 ctest_update()
 ctest_configure(BUILD   ${CTEST_BINARY_DIRECTORY} 
                 SOURCE  ${CTEST_SOURCE_DIRECTORY}
