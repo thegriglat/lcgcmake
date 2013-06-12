@@ -11,10 +11,11 @@ endif()
 LCGPackage_set_home(pythia8)
 
 #---ROOT--------------------------------------------------------------------------------------------
+string(REGEX MATCH "[0-9]+[.][0-9]+[.][0-9]+" ROOT_author_version ${ROOT_native_version})
 if(LCG_TARGET MATCHES "mac.*-gcc(47|48)")
   LCGPackage_Add(
     ROOT
-    URL ftp://root.cern.ch/root/root_v${ROOT_native_version}.source.tar.gz
+    URL ftp://root.cern.ch/root/root_v${ROOT_author_version}.source.tar.gz
     CONFIGURE_COMMAND ./configure --with-cc=${CMAKE_C_COMPILER}
                                   --with-cxx=${CMAKE_CXX_COMPILER}
                                   --with-ld=${CMAKE_CXX_COMPILER}
@@ -81,7 +82,7 @@ else()
   endif()
   LCGPackage_Add(
     ROOT
-    URL ftp://root.cern.ch/root/root_v${ROOT_native_version}.source.tar.gz
+    URL ftp://root.cern.ch/root/root_v${ROOT_author_version}.source.tar.gz
     CMAKE_ARGS -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
                -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
                -Dpython=ON -DPYTHON_EXECUTABLE=${Python_home}/bin/python
