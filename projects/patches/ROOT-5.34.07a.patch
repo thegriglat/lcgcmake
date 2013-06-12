@@ -1,0 +1,625 @@
+Index: cmake/modules/RootBuildOptions.cmake
+================================================================================
+--- cmake/modules/RootBuildOptions.cmake.orig
++++ cmake/modules/RootBuildOptions.cmake
+@@ -167,6 +167,18 @@ endif()
+ #  set(CMAKE_INSTALL_PREFIX ${ROOTSYS})
+ #endif()
+ 
++#---Add defines for CINT limits-----------------------------------------------------------------
++if(DEFINED CINTMAXSTRUCT)
++  add_definitions(-DG__MAXSTRUCT=${CINTMAXSTRUCT})
++endif()
++if(DEFINED CINTMAXTYPEDEF)
++  add_definitions(-DG__MAXTYPEDEF=${CINTMAXTYPEDEF})
++endif()
++if(DEFINED CINTLONGLINE)
++  add_definitions(-DG__LONGLINE=${CINTLONGLINE})
++endif()
++
++
+ set(ROOT_INSTALL_DIR ${CMAKE_INSTALL_PREFIX})
+ set(BIN_INSTALL_DIR ${CMAKE_INSTALL_PREFIX}/bin)
+ set(LIB_INSTALL_DIR ${CMAKE_INSTALL_PREFIX}/lib)
+Index: cmake/modules/FindOracle.cmake
+================================================================================
+--- cmake/modules/FindOracle.cmake.orig	2013-05-24 14:38:30.000000000 +0200
++++ cmake/modules/FindOracle.cmake	2013-05-24 14:44:37.000000000 +0200
+@@ -75,6 +75,8 @@
+       ${ORACLE_HOME}/bin
+     )
+     IF(SQLPLUS_EXECUTABLE)
++                get_filename_component(bindir ${SQLPLUS_EXECUTABLE} PATH)         # sqlplus executable needs its shared libraries
++                set(ENV{LD_LIBRARY_PATH} ${bindir}/../lib:$ENV{LD_LIBRARY_PATH})
+ 		EXECUTE_PROCESS(COMMAND ${SQLPLUS_EXECUTABLE} -version OUTPUT_VARIABLE sqlplus_out)
+ 		STRING(REGEX MATCH "([0-9.]+)" sqlplus_version ${sqlplus_out})
+ 		MESSAGE(STATUS "Found sqlplus version: ${sqlplus_version}")
+Index: cmake/cmake/modules/RootBuildOptions.cmake
+===============================================================================
+--- cmake/modules/RootBuildOptions.cmake.orig	2013-05-23 23:03:10.000000000 +0200
++++ cmake/modules/RootBuildOptions.cmake	2013-05-23 23:03:46.000000000 +0200
+@@ -76,7 +76,7 @@
+ ROOT_BUILD_OPTION(chirp ON "Chirp support (Condor remote I/O), requires libchirp_client")
+ ROOT_BUILD_OPTION(cintex ON "Build the libCintex Reflex interface library")
+ ROOT_BUILD_OPTION(clarens ON "Clarens RPC support, optionally used by PROOF")
+-ROOT_BUILD_OPTION(cling ON "Enable new CLING C++ interpreter")
++ROOT_BUILD_OPTION(cling OFF "Enable new CLING C++ interpreter")
+ ROOT_BUILD_OPTION(cocoa OFF "Use native Cocoa/Quartz graphics backend (MacOS X only)")
+ ROOT_BUILD_OPTION(dcache ON "dCache support, requires libdcap from DESY")
+ ROOT_BUILD_OPTION(exceptions ON "Turn on compiler exception handling capability")
+Index: cmake/modules/FindXROOTD.cmake
+==============================================================================
+--- cmake/modules/FindXROOTD.cmake.orig	2013-04-26 13:00:51.000000000 +0200
++++ cmake/modules/FindXROOTD.cmake	2013-05-23 22:30:58.000000000 +0200
+@@ -4,6 +4,7 @@
+ #
+ #  XROOTD_FOUND - system has XROOTD
+ #  XROOTD_INCLUDE_DIR - the XROOTD include directory
++#  XROOTD_INCLUDE_DIRS - with additonal include directories (non cached)
+ #  XROOTD_LIBRARIES - The libraries needed to use XROOTD
+ #  XROOTD_CFLAGS - Additional compilation flags (defines)
+ #  XROOTD_OLDPACK - old-style packaging for XROOTD libraries
+@@ -13,18 +14,11 @@
+   set(XROOTD_FIND_QUIETLY TRUE)
+ endif()
+ 
+-find_path(XROOTD_INCLUDE_DIR
+-  NAMES
+-  XrdVersion.hh
+-  PATHS 
+-  $ENV{XRDSYS}/include/xrootd
+-  $ENV{XRDSYS}/include
+-  /opt/xrootd/include/xrootd
+-  /opt/xrootd/include
+-  /usr/local/include/xrootd
+-  /usr/local/include
+-  /usr/include/xrootd
+-  /usr/include
++set(searchpath ${XROOTD_ROOT_DIR} $ENV{XRDSYS} /opt/xrootd)
++
++find_path(XROOTD_INCLUDE_DIR NAMES XrdVersion.hh
++  HINTS ${searchpath}
++  PATH_SUFFIXES include include/xrootd
+ )
+ 
+ if (XROOTD_INCLUDE_DIR)
+@@ -52,86 +46,21 @@
+ endif()
+ 
+ if(XROOTD_FOUND)
+-  # This we used as a compiler macro variable
++  # Set include dirs and compiler macro variable
++
+   if(NOT XROOTD_FIND_QUIETLY )
+     message(STATUS "Found Xrootd version num: ${xrdvers} (setting -DROOTXRDVERS=${xrdversnum})")
+   endif()
+-  SET(XROOTD_CFLAGS "-DROOTXRDVERS=${xrdversnum}")
++  set(XROOTD_CFLAGS "-DROOTXRDVERS=${xrdversnum}")
+ 
+   if ( ${xrdversnum} LESS 300010000 AND ${xrdversnum} LESS 20111022)
+-     SET(XROOTD_OLDPACK TRUE)
++     set(XROOTD_OLDPACK TRUE)
++     set(XROOTD_INCLUDE_DIRS ${XROOTD_ROOT_DIR})
+      message(STATUS "Setting OLDPACK TRUE")
+   else()
+-     SET(XROOTD_OLDPACK FALSE)
+-  endif()
+-
+-  # Check for additional headers
+-  if ( ${xrdversnum} LESS 20070723 )
+-     # Check for additional headers in old directories
+-     find_path(XROOTD_INCLUDE_DIR
+-        NAMES
+-        XrdNet/XrdNetDNS.hh
+-        XrdOuc/XrdOucError.hh
+-        XrdOuc/XrdOucLogger.hh
+-        XrdOuc/XrdOucPlugin.hh
+-        XrdOuc/XrdOucPthread.hh
+-        XrdOuc/XrdOucSemWait.hh
+-        XrdOuc/XrdOucTimer.hh
+-        PATHS 
+-        ${XROOTD_INCLUDE_DIR}
+-     )
+-  else()
+-     if ( ${xrdversnum} LESS 300010000 AND ${xrdversnum} LESS 20111022)
+-        # DNS stuff was under XrdNet
+-        find_path(XROOTD_INCLUDE_DIR
+-           NAMES
+-           XrdNet/XrdNetDNS.hh
+-           PATHS 
+-           ${XROOTD_INCLUDE_DIR}
+-        )
+-     else ()
+-        # DNS stuff is under XrdSys
+-        find_path(XROOTD_INCLUDE_DIR
+-           NAMES
+-           XrdSys/XrdSysDNS.hh
+-           PATHS 
+-           ${XROOTD_INCLUDE_DIR}
+-        )
+-     endif ()
+-
+-     if (XROOTD_INCLUDE_DIR)
+-        # Check for additional headers in new directories
+-        find_path(XROOTD_INCLUDE_DIR
+-            NAMES
+-            XrdSys/XrdSysError.hh
+-            XrdSys/XrdSysLogger.hh
+-            XrdSys/XrdSysPlugin.hh
+-            XrdSys/XrdSysPthread.hh
+-            XrdSys/XrdSysSemWait.hh
+-            XrdSys/XrdSysTimer.hh
+-            PATHS 
+-            ${XROOTD_INCLUDE_DIR}
+-        )
+-     endif()
+-
+-     SET(XROOTD_PRIVATE_INCLUDE_DIR FALSE)     
+-     if (XROOTD_INCLUDE_DIR)
+-        # Check for additional headers in new directories
+-        find_path(XROOTD_PRIVATE_INCLUDE_DIR
+-            NAMES
+-            XrdSys/XrdSysPriv.hh
+-            PATHS 
+-            ${XROOTD_INCLUDE_DIR}/private
+-        )
+-     endif()
++     set(XROOTD_OLDPACK FALSE)
++     set(XROOTD_INCLUDE_DIRS ${XROOTD_INCLUDE_DIR} ${XROOTD_INCLUDE_DIR}/private)
+   endif()
+-  if (XROOTD_INCLUDE_DIR)
+-     SET(XROOTD_FOUND TRUE)
+-  else ()
+-     SET(XROOTD_FOUND FALSE)
+-  endif ()
+-else()
+-  SET(XROOTD_FOUND FALSE)
+ endif()
+ 
+ if(XROOTD_FOUND)
+@@ -141,30 +70,24 @@
+     foreach(l XrdNet XrdOuc XrdSys XrdClient Xrd)
+       find_library(XROOTD_${l}_LIBRARY
+          NAMES ${l} 
+-         PATHS $ENV{XRDSYS}/lib
+-               /opt/xrootd/lib
+-               /usr/local/lib
+-               /usr/lib)
++         HINTS ${searchpath}
++         PATH_SUFFIXES lib)
+       list(APPEND XROOTD_LIBRARIES ${XROOTD_${l}_LIBRARY})
+     endforeach()
+ 
+     if(${xrdversnum} GREATER 20100729)
+       find_library(XROOTD_XrdNetUtil_LIBRARY
+         NAMES XrdNetUtil
+-        PATHS $ENV{XRDSYS}/lib
+-              /opt/xrootd/lib
+-              /usr/local/lib
+-              /usr/lib)
++        HINTS ${searchpath}
++        PATH_SUFFIXES lib)
+       list(APPEND XROOTD_LIBRARIES ${XROOTD_XrdNetUtil_LIBRARY})
+     endif ()
+   else()
+     foreach(l XrdMain XrdUtils XrdClient)
+       find_library(XROOTD_${l}_LIBRARY
+-         NAMES ${l} 
+-         PATHS $ENV{XRDSYS}/lib
+-               /opt/xrootd/lib
+-               /usr/local/lib
+-               /usr/lib)
++         NAMES ${l}
++         HINTS ${searchpath}
++         PATH_SUFFIXES lib)
+       list(APPEND XROOTD_LIBRARIES ${XROOTD_${l}_LIBRARY})
+     endforeach()
+   endif()
+@@ -172,11 +95,7 @@
+   if(XROOTD_LIBRARIES)
+     set(XROOTD_FOUND TRUE)
+     if(NOT XROOTD_FIND_QUIETLY )
+-      if (XROOTD_PRIVATE_INCLUDE_DIR)
+-         message(STATUS "             include_dir: ${XROOTD_INCLUDE_DIR} ${XROOTD_PRIVATE_INCLUDE_DIR}")
+-      else ()
+-         message(STATUS "             include_dir: ${XROOTD_INCLUDE_DIR}")
+-      endif ()
++      message(STATUS "             include_dirs: ${XROOTD_INCLUDE_DIRS}")
+       message(STATUS "             libraries: ${XROOTD_LIBRARIES}")
+     endif() 
+   else ()
+@@ -185,7 +104,6 @@
+ endif()
+ 
+ mark_as_advanced(XROOTD_INCLUDE_DIR
+-                 XROOTD_PRIVATE_INCLUDE_DIR
+                  XROOTD_XrdMain_LIBRARY
+                  XROOTD_XrdUtils_LIBRARY
+                  XROOTD_XrdClient_LIBRARY
+=========================================================================================================
+--- net/netx/CMakeLists.txt.orig	2013-02-14 23:27:52.000000000 +0100
++++ net/netx/CMakeLists.txt	2013-05-23 18:12:17.000000000 +0200
+@@ -6,7 +6,7 @@
+ ROOT_USE_PACKAGE(net/net)
+ ROOT_USE_PACKAGE(proof/proofd)
+ 
+-include_directories(${XROOTD_INCLUDE_DIR} ${XROOTD_PRIVATE_INCLUDE_DIR})
++include_directories(${XROOTD_INCLUDE_DIRS})
+ add_definitions(${XROOTD_CFLAGS})
+ #---------------------------------------------------------------------------
+ 
+Index: proof/proofd/CMakeLists.txt
+=========================================================================================================
+--- proof/proofd/CMakeLists.txt.orig	2013-02-14 23:27:33.000000000 +0100
++++ proof/proofd/CMakeLists.txt	2013-05-23 18:30:39.000000000 +0200
+@@ -7,19 +7,25 @@
+ ROOT_USE_PACKAGE(net/rpdutils)
+ ROOT_USE_PACKAGE(net/auth)
+ 
+-include_directories(${XROOTD_INCLUDE_DIR} ${XROOTD_PRIVATE_INCLUDE_DIR})
++include_directories(${XROOTD_INCLUDE_DIRS})
+ add_definitions(${XROOTD_CFLAGS})
+ 
+ if(WIN32)
+   ROOT_LINKER_LIBRARY(XrdProofd XProofProtUtils.cxx LIBRARIES ${XROOTD_LIBRARIES})
+ else()
+   ROOT_EXECUTABLE(proofd proofd.cxx ${CMAKE_SOURCE_DIR}/core/clib/src/strlcat.c 
+-                         LIBRARIES ${XROOTD_LIBRARIES} rpdutil rsa ${OPENSSL_LIBRARIES} ${CRYPTLIBS} )
+-  ROOT_EXECUTABLE(xproofd X*.cxx ${CMAKE_SOURCE_DIR}/net/rpdutils/src/rpdconn.cxx 
++                         LIBRARIES ${XROOTD_LIBRARIES} rpdutil rsa ${GLOBUS_LIBRARIES} ${OPENSSL_LIBRARIES} ${CRYPTLIBS} )
++  ROOT_EXECUTABLE(xproofd X*.cxx ${CMAKE_SOURCE_DIR}/net/rpdutils/src/rpdconn.cxx
+                          LIBRARIES ${XROOTD_LIBRARIES} ${SYSLIBS})
+-  ROOT_LINKER_LIBRARY(XrdProofd X*.cxx ${CMAKE_SOURCE_DIR}/net/rpdutils/src/rpdconn.cxx 
++  ROOT_LINKER_LIBRARY(XrdProofd X*.cxx ${CMAKE_SOURCE_DIR}/net/rpdutils/src/rpdconn.cxx
+                          LIBRARIES ${XROOTD_LIBRARIES} rpdutil ${CMAKE_THREAD_LIBS_INIT} ${CMAKE_DL_LIBS})
+   set_target_properties(XrdProofd PROPERTIES LINK_INTERFACE_LIBRARIES "" )
+ endif()
+ 
++if(builtin_xrootd)
++  add_dependencies(XrdProofd XROOTD)
++  add_dependencies(xproofd XROOTD)
++  add_dependencies(proofd XROOTD)
++endif()
++
+ ROOT_INSTALL_HEADERS()
+Index: proof/proofx
+===================================================================================================
+--- proof/proofx/CMakeLists.txt.orig	2013-02-14 23:27:33.000000000 +0100
++++ proof/proofx/CMakeLists.txt	2013-05-23 18:33:40.000000000 +0200
+@@ -16,7 +16,7 @@
+   ROOT_GLOB_SOURCES(sources RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}/src ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cxx)
+ endif()
+ 
+-include_directories(${XROOTD_INCLUDE_DIR} ${XROOTD_PRIVATE_INCLUDE_DIR})
++include_directories(${XROOTD_INCLUDE_DIRS})
+ link_directories(${XROOTD_LIBRARY_DIR})
+ add_definitions(${XROOTD_CFLAGS})
+ 
+Index: cmake/modules/FindCastor.cmake
+========================================================================
+--- cmake/modules/FindCastor.cmake
++++ cmake/modules/FindCastor.cmake
+@@ -14,7 +14,7 @@ if(CASTOR_INCLUDE_DIR)
+ endif()
+ 
+ find_path(CASTOR_INCLUDE_DIR NAMES rfio_api.h PATHS 
+-  $ENV{CASTOR_DIR}/include
++  $ENV{CASTOR_DIR}/include  ${CASTOR_DIR}/include
+   /cern/pro/include
+   /cern/new/include
+   /cern/old/include
+@@ -31,7 +31,7 @@ if(CASTOR_INCLUDE_DIR)
+   string(REGEX REPLACE "BASEVERSION[ ]*[\"][ ]*([^ \"]+)" "\\1" CASTOR_VERSION ${cont})
+ endif()
+ 
+-set(locations  $ENV{CASTOR_DIR}/lib /cern/pro/lib /cern/new/lib /cern/old/lib 
++set(locations  $ENV{CASTOR_DIR}/lib ${CASTOR_DIR}/lib /cern/pro/lib /cern/new/lib /cern/old/lib
+               /opt/shift/lib /usr/local/shift/lib
+               /usr/lib/shift /usr/local/lib/shift /usr/lib64 /usr/lib /usr/local/lib)
+
+Index: net/bonjour/CMakeLists.txt
+===================================================================
+--- ../../../../../LocalInstallArea/ROOT/5.34.05/share/sources/net/bonjour/CMakeLists.txt	2013-04-10 15:52:45.000000000 +0200
++++ net/bonjour/CMakeLists.txt	2013-04-10 16:00:51.000000000 +0200
+@@ -9,7 +9,7 @@
+ 
+ ROOT_GENERATE_DICTIONARY(G__BONJ *.h LINKDEF LinkDef.h)
+ ROOT_GENERATE_ROOTMAP(Bonjour LINKDEF LinkDef.h DEPENDENCIES )
+-ROOT_LINKER_LIBRARY(Bonjour *.cxx G__BONJ.cxx LIBRARIES ${BONJOUR_LIBRARIES})
++ROOT_LINKER_LIBRARY(Bonjour *.cxx G__BONJ.cxx LIBRARIES ${BONJOUR_LIBRARIES} Net)
+ 
+ ROOT_INSTALL_HEADERS()
+
+Index: cmake/modules/FindGFAL.cmake
+===================================================================
+--- cmake/modules/FindGFAL.cmake	(revision 48875)
++++ cmake/modules/FindGFAL.cmake	(working copy)
+@@ -0,0 +1,20 @@
++# - Locate GFAL library
++# Defines:
++#
++#  GFAL_FOUND
++#  GFAL_INCLUDE_DIR
++#  GFAL_INCLUDE_DIRS (not cached)
++#  GFAL_LIBRARIES
++
++find_path(GFAL_INCLUDE_DIR NAMES gfal_api.h HINTS ${GFAL_DIR}/include $ENV{GFAL_DIR}/inlcude)
++find_library(GFAL_LIBRARIES NAMES gfal HINTS ${GFAL_DIR}/lib $ENV{GFAL_DIR}/lib)
++find_path(SRM_IFCE_INCLUDE_DIR  gfal_srm_ifce_types.h HINTS ${SRM_IFCE_DIR}/include $ENV{SRM_IFCE_DIR}/include) 
++
++set(GFAL_INCLUDE_DIRS ${GFAL_INCLUDE_DIR} ${SRM_IFCE_INCLUDE_DIR})
++
++# handle the QUIETLY and REQUIRED arguments and set GFAL_FOUND to TRUE if
++# all listed variables are TRUE
++INCLUDE(FindPackageHandleStandardArgs)
++FIND_PACKAGE_HANDLE_STANDARD_ARGS(GFAL DEFAULT_MSG GFAL_INCLUDE_DIR SRM_IFCE_INCLUDE_DIR GFAL_LIBRARIES)
++
++mark_as_advanced(GFAL_FOUND GFAL_INCLUDE_DIR GFAL_LIBRARIES SRM_IFCE_INCLUDE_DIR)
+
+Index: cmake/modules/SearchInstalledSoftware.cmake
+===================================================================
+--- cmake/modules/SearchInstalledSoftware.cmake.orig	2013-04-26 13:00:51.000000000 +0200
++++ cmake/modules/SearchInstalledSoftware.cmake	2013-05-23 22:37:16.000000000 +0200
+@@ -566,14 +566,72 @@
+       INSTALL_DIR ${CMAKE_BINARY_DIR}
+       CMAKE_ARGS -DCMAKE_INSTALL_PREFIX:PATH=<INSTALL_DIR>
+     )
+-    set(XROOTD_INCLUDE_DIR ${CMAKE_BINARY_DIR}/include/xrootd)
+-    set(XROOTD_LIBRARIES -L${CMAKE_BINARY_DIR}/lib64 -lXrdMain -lXrdUtils -lXrdClient)
++    set(XROOTD_INCLUDE_DIRS ${CMAKE_BINARY_DIR}/include/xrootd)
++    set(XROOTD_LIBRARIES -L${CMAKE_BINARY_DIR}/lib -lXrdMain -lXrdUtils -lXrdClient)
+     set(XROOTD_CFLAGS "-DROOTXRDVERS=${xrootd_versionnum}")
+   endif()
+ endif()
+ 
++#---Check for gfal-------------------------------------------------------------------
++if(gfal)
++  find_package(GFAL)
++  if(NOT GFAL_FOUND)
++    if(fail-on-missing)
++      message(FATAL_ERROR "Gfal library not found and is required (gfal option enabled)")
++    else()
++      message(STATUS "GFAL library not found. Set variable GFAL_DIR to point to your gfal installation
++                      and the variable SRM_IFCE_DIR to the srm_ifce installation")
++      message(STATUS "For the time being switching OFF 'gfal' option")
++      set(gfal OFF CACHE BOOL "" FORCE)
++    endif()
++  endif()
++endif()
++
++
++#---Check for dCache-------------------------------------------------------------------
++if(dcache)
++  find_package(DCAP)
++  if(NOT DCAP_FOUND)
++    if(fail-on-missing)
++      message(FATAL_ERROR "dCap library not found and is required (dcache option enabled)")
++    else()
++      message(STATUS "dCap library not found. Set variable DCAP_DIR to point to your dCache installation")
++      message(STATUS "For the time being switching OFF 'dcache' option")
++      set(dcache OFF CACHE BOOL "" FORCE)
++    endif()
++  endif()
++endif()
++
++#---Check for Ldap--------------------------------------------------------------------
++if(ldap)
++  find_package(Ldap)
++  if(NOT LDAP_FOUND)
++    if(fail-on-missing)
++      message(FATAL_ERROR "ldap library not found and is required (ldap option enabled)")
++    else()
++      message(STATUS "ldap library not found. Set variable LDAP_DIR to point to your ldap installation")
++      message(STATUS "For the time being switching OFF 'ldap' option")
++      set(ldap OFF CACHE BOOL "" FORCE)
++    endif()
++  endif()
++endif()
++
++#---Check for globus--------------------------------------------------------------------
++if(globus)
++  find_package(Globus)
++  if(NOT GLOBUS_FOUND)
++    if(fail-on-missing)
++      message(FATAL_ERROR "globus libraries not found and is required ('globus' option enabled)")
++    else()
++      message(STATUS "globus libraries not found. Set environment var GLOBUS_LOCATION or varibale GLOBUS_DIR to point to your globus installation")
++      message(STATUS "For the time being switching OFF 'globus' option")
++      set(globus OFF CACHE BOOL "" FORCE)
++    endif()
++  endif()
++endif()
++
+ #---Report non implemented options---------------------------------------------------
+-foreach(opt afs chirp clarens cling dcache gfal glite globus hdfs lzma pch peac sapdb srp)
++foreach(opt afs chirp clarens glite hdfs pch peac sapdb srp)
+   if(${opt})
+     message(STATUS ">>> Option '${opt}' not implemented yet! Signal your urgency to pere.mato@cern.ch")
+     set(${opt} OFF CACHE BOOL "" FORCE)
+Index: io/CMakeLists.txt
+===================================================================
+--- io/CMakeLists.txt	(revision 48875)
++++ io/CMakeLists.txt	(working copy)
+@@ -10,4 +10,10 @@ endif()
+ if(rfio)
+   add_subdirectory(rfio)
+ endif()
++if(gfal)
++  add_subdirectory(gfal)
++endif()
++if(dcache)
++  add_subdirectory(dcache)
++endif()
+ 
+
+Index: io/gfal/CMakeLists.txt
+===================================================================
+--- io/gfal/CMakeLists.txt	(revision 48875)
++++ io/gfal/CMakeLists.txt	(working copy)
+@@ -0,0 +1,14 @@
++############################################################################
++# CMakeLists.txt file for building ROOT io/gfal package
++############################################################################
++
++ROOT_USE_PACKAGE(io/io)
++ROOT_USE_PACKAGE(net/net)
++include_directories(${GFAL_INCLUDE_DIRS})
++
++add_definitions(-D_FILE_OFFSET_BITS=64)
++
++ROOT_GENERATE_DICTIONARY(G__GFAL *.h LINKDEF LinkDef.h)
++ROOT_GENERATE_ROOTMAP(GFAL LINKDEF LinkDef.h DEPENDENCIES Net RIO)
++ROOT_LINKER_LIBRARY(GFAL *.cxx G__GFAL.cxx LIBRARIES Core ${GFAL_LIBRARIES} DEPENDENCIES Net RIO)
++ROOT_INSTALL_HEADERS()
+
+Index: roofit/histfactory/CMakeLists.txt
+===================================================================
+--- roofit/histfactory/CMakeLists.txt	(revision 48875)
++++ roofit/histfactory/CMakeLists.txt	(working copy)
+@@ -13,7 +13,7 @@ ROOT_GENERATE_ROOTMAP(HistFactory LINKDEF LinkDef.h
+ ROOT_LINKER_LIBRARY(HistFactory  *.cxx G__HistFactory.cxx LIBRARIES Core Cint 
+                                 DEPENDENCIES RooFit RooFitCore Tree RIO Hist Matrix MathCore Minuit Foam Graf Gpad RooStats XMLParser)
+ ROOT_EXECUTABLE(hist2workspace MakeModelAndMeasurements.cxx hist2workspace.cxx
+-			       LIBRARIES HistFactory RooFit RooFitCore Tree RIO Matrix Hist ${ROOT_MATHMORE_LIBRARY} MathCore 
++			       LIBRARIES HistFactory RooFit RooFitCore Tree RIO Matrix Hist ${ROOT_MATHMORE_LIBRARY} ${GSL_LIBRARIES} MathCore 
+                                          Graf Gpad Minuit Foam RooStats XMLParser)
+ 
+ #ROOT_INSTALL_HEADERS()
+
+Index: cmake/modules/FindDCAP.cmake
+===================================================================
+--- cmake/modules/FindDCAP.cmake	(revision 48875)
++++ cmake/modules/FindDCAP.cmake	(working copy)
+@@ -0,0 +1,21 @@
++# - Locate dCache library
++# Defines:
++#
++#  DCAP_FOUND
++#  DCAP_INCLUDE_DIR
++#  DCAP_INCLUDE_DIRS (not cached)
++#  DCAP_LIBRARIES
++
++find_path(DCAP_INCLUDE_DIR NAMES dcap.h  HINTS ${DCAP_DIR}/include $ENV{DCAP_DIR}/inlcude)
++find_library(DCAP_LIBRARY NAMES dcap HINTS ${DCAP_DIR}/lib $ENV{DCAP_DIR}/lib)
++
++set(DCAP_INCLUDE_DIRS ${DCAP_INCLUDE_DIR})
++set(DCAP_LIBRARIES ${DCAP_LIBRARY})
++
++
++# handle the QUIETLY and REQUIRED arguments and set DCAP_FOUND to TRUE if
++# all listed variables are TRUE
++INCLUDE(FindPackageHandleStandardArgs)
++FIND_PACKAGE_HANDLE_STANDARD_ARGS(DCAP DEFAULT_MSG DCAP_INCLUDE_DIR DCAP_LIBRARY)
++
++mark_as_advanced(DCAP_FOUND DCAP_INCLUDE_DIR DCAP_LIBRARY)
+
+Index: io/dcache/CMakeLists.txt
+===================================================================
+--- io/dcache/CMakeLists.txt	(revision 48875)
++++ io/dcache/CMakeLists.txt	(working copy)
+@@ -0,0 +1,13 @@
++############################################################################
++# CMakeLists.txt file for building ROOT io/dcache package
++############################################################################
++
++ROOT_USE_PACKAGE(io/io)
++ROOT_USE_PACKAGE(net/net)
++include_directories(${DCAP_INCLUDE_DIRS})
++add_definitions(-pthread)
++
++ROOT_GENERATE_DICTIONARY(G__DCache *.h LINKDEF LinkDef.h)
++ROOT_GENERATE_ROOTMAP(DCache LINKDEF LinkDef.h DEPENDENCIES Net RIO)
++ROOT_LINKER_LIBRARY(DCache *.cxx G__DCache.cxx LIBRARIES Core ${DCAP_LIBRARIES} DEPENDENCIES Net RIO)
++ROOT_INSTALL_HEADERS()
+
+Index: cmake/modules/FindLdap.cmake
+===================================================================
+--- cmake/modules/FindLdap.cmake	(revision 48875)
++++ cmake/modules/FindLdap.cmake	(working copy)
+@@ -0,0 +1,24 @@
++# - Try to find the LDAP client libraries
++# Once done this will define
++#
++#  LDAP_FOUND - system has libldap
++#  LDAP_INCLUDE_DIR - the ldap include directory
++#  LDAP_LIBRARY  libldap library
++#  LBER_LIBRARY  liblber library
++#  LDAP_LIBRARIES - libldap + liblber (if found) library
++
++
++find_path(LDAP_INCLUDE_DIR NAMES ldap.h HINTS ${LDAP_DIR}/include $ENV{LDAP_DIR}/include)
++find_library(LDAP_LIBRARY NAMES ldap HINTS ${LDAP_DIR}/lib $ENV{LDAP_DIR}/lib)
++find_library(LBER_LIBRARY NAMES lber HINTS ${LDAP_DIR}/lib $ENV{LDAP_DIR}/lib)
++
++set(LDAP_INCLUDE_DIRS ${LDAP_INCLUDE_DIR})
++set(LDAP_LIBRARIES ${LDAP_LIBRARY} ${LBER_LIBRARY})
++
++# handle the QUIETLY and REQUIRED arguments and set LDAP_FOUND to TRUE if
++# all listed variables are TRUE
++include(FindPackageHandleStandardArgs)
++find_package_handle_standard_args(LDAP DEFAULT_MSG LDAP_INCLUDE_DIR LDAP_LIBRARY)
++
++mark_as_advanced(LDAP_FOUND LDAP_INCLUDE_DIR LDAP_LIBRARY LBER_LIBRARY)
++
+
+Index: net/CMakeLists.txt
+===================================================================
+--- net/CMakeLists.txt	(revision 48875)
++++ net/CMakeLists.txt	(working copy)
+@@ -23,5 +23,7 @@ if(monalisa)
+   add_subdirectory(monalisa)
+ endif()
+ 
+-
++if(ldap)
++   add_subdirectory(ldap)
++endif()
+ 
+Index: net/ldap/CMakeLists.txt
+===================================================================
+--- net/ldap/CMakeLists.txt	(revision 48875)
++++ net/ldap/CMakeLists.txt	(working copy)
+@@ -0,0 +1,12 @@
++############################################################################
++# CMakeLists.txt file for building ROOT net/ldap package
++############################################################################
++
++ROOT_USE_PACKAGE(net/net)
++include_directories(${LDAP_INCLUDE_DIRS})
++add_definitions(-DLDAP_DEPRECATED)
++
++ROOT_GENERATE_DICTIONARY(G__LDAP *.h LINKDEF LinkDef.h)
++ROOT_GENERATE_ROOTMAP(RLDAP LINKDEF LinkDef.h DEPENDENCIES Net RIO)
++ROOT_LINKER_LIBRARY(RLDAP *.cxx G__LDAP.cxx LIBRARIES Core ${LDAP_LIBRARIES} DEPENDENCIES Net)
++ROOT_INSTALL_HEADERS()
+
+Index: proof/CMakeLists.txt
+===================================================================
+--- proof/CMakeLists.txt	(revision 48875)
++++ proof/CMakeLists.txt	(working copy)
+@@ -6,4 +6,5 @@ endif()
+ if(xrootd)
+   add_subdirectory(proofd)
+   add_subdirectory(proofx)
++  add_subdirectory(proofbench)
+ endif()
+
+Index: proof/proofbench/CMakeLists.txt
+===================================================================
+--- /dev/null
++++ proof/proofbench/CMakeLists.txt
+@@ -0,0 +1,14 @@
++############################################################################
++# CMakeLists.txt file for building ROOT proof/proofbench package
++############################################################################
++
++ROOT_USE_PACKAGE(proof/proof)
++ROOT_USE_PACKAGE(proof/proofplayer)
++
++ROOT_GLOB_HEADERS(headers inc/TProof*.h)
++ROOT_GLOB_SOURCES(sources src/TProof*.cxx)
++
++ROOT_GENERATE_DICTIONARY(G__ProofBench ${headers} LINKDEF LinkDef.h)
++ROOT_GENERATE_ROOTMAP(ProofBench LINKDEF LinkDef.h DEPENDENCIES Net RIO)
++ROOT_LINKER_LIBRARY(ProofBench ${sources} G__ProofBench.cxx LIBRARIES Core  DEPENDENCIES Hist Gpad ProofPlayer)
++ROOT_INSTALL_HEADERS()
