@@ -25,47 +25,37 @@ find_library(FORTRAN_LIBRARY NAMES gfortran
 
 
 #---lhapdfsets--------------------------------------------------------------------------------------
-
 LCGPackage_set_home(lhapdfsets)
 
-if(NOT EXISTS ${lhapdfsets_home}/../share/PDFsets)
+if(NOT EXISTS ${lhapdfsets_home}/../share/lhapdf/PDFsets)
 LCGPackage_Add(
   lhapdfsets
   URL http://www.hepforge.org/archive/lhapdf/lhapdf-<NATIVE_VERSION>.tar.gz
   CONFIGURE_COMMAND <VOID> 
   BUILD_COMMAND <VOID>
   INSTALL_COMMAND ${CMAKE_COMMAND} -E make_directory <INSTALL_DIR>
-          COMMAND <SOURCE_DIR>/bin/lhapdf-getdata --force --dest=<INSTALL_DIR>/../share/PDFsets --all
+          COMMAND <SOURCE_DIR>/bin/lhapdf-getdata --force --dest=<INSTALL_DIR>/../share/lhapdf/PDFsets --all
+          COMMAND ${CMAKE_COMMAND} -E create_symlink lhapdf/PDFsets <INSTALL_DIR>/../share/PDFsets
 )
 else()
   add_custom_target(lhapdfsets COMMENT "LHAPDF data sets already installed.")
 endif()
 
 #---lhapdf------------------------------------------------------------------------------------------
-#todo: install ALL precompiled examples and paths.sh
-#todo: making tarballs is specific for lhapdf
-
 LCGPackage_Add(
   lhapdf
   URL http://www.hepforge.org/archive/lhapdf/lhapdf-<NATIVE_VERSION>.tar.gz 
   UPDATE_COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/lhapdf/files  <SOURCE_DIR>
-  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR>  --enable-low-memory  --disable-pyext --disable-doxygen --disable-octave
+  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --datadir=${lhapdfsets_home}/../share/lhapdf/PDFsets 
+                                --enable-low-memory  --disable-pyext --disable-doxygen --disable-octave
   INSTALL_COMMAND make install
-          COMMAND ${CMAKE_COMMAND} -E create_symlink ${lhapdfsets_home}/../share/PDFsets <INSTALL_DIR>/share/lhapdf/PDFsets
-
-#          COMMAND ${CMAKE_COMMAND} -E chdir <INSTALL_DIR>/../share/lhapdf ${CMAKE_COMMAND} -E make_directory PDFsets
-#          COMMAND ${CMAKE_COMMAND} -E chdir <INSTALL_DIR>/../share ${CMAKE_COMMAND} -E create_symlink lhapdf/PDFsets PDFsets
-#          COMMAND ${CMAKE_COMMAND} -E chdir <INSTALL_DIR>/../share ${CMAKE_COMMAND} -E create_symlink lhapdf/PDFsets.index PDFsets.index
-
-          COMMAND ${CMAKE_COMMAND} -E chdir <INSTALL_DIR>/lib ${CMAKE_COMMAND} -E make_directory archive
-          COMMAND ${CMAKE_COMMAND} -E chdir <INSTALL_DIR>/lib/archive ${CMAKE_COMMAND} -E create_symlink ../libLHAPDF.a libLHAPDF.a
-
-#          this below does not work: file is not yet there
-#          COMMAND ${CMAKE_COMMAND} -E copy <INSTALL_DIR>/../logs/lhapdf-${LCG_platform}-build-out.log <INSTALL_DIR> 
+          COMMAND ${CMAKE_COMMAND} -E make_directory <INSTALL_DIR>/../share
+          COMMAND ${CMAKE_COMMAND} -E create_symlink ../../../lhapdfsets/share/PDFsets <INSTALL_DIR>/../share/PDFsets
+          COMMAND ${CMAKE_COMMAND} -E make_directory  <INSTALL_DIR>/lib/archive
+          COMMAND ${CMAKE_COMMAND} -E create_symlink ../libLHAPDF.a <INSTALL_DIR>/lib/archive/libLHAPDF.a
           COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/lhapdf/examples  <INSTALL_DIR>/../share/examples
           COMMAND ${CMAKE_COMMAND} -E copy <SOURCE_DIR>/examples/lhapdf-cctest1 <INSTALL_DIR>/bin
           COMMAND ${CMAKE_COMMAND} -E copy <SOURCE_DIR>/examples/lhapdf-example1 <INSTALL_DIR>/bin
-
   BUILD_IN_SOURCE 1
   DEPENDS lhapdfsets
 )
@@ -143,7 +133,7 @@ if(NOT APPLE)    #  (installation fails on MacOSX)
                       --with-boost=${Boost_home} LD_LIBRARY_PATH=${thepeg_v_home}/lib:${GSL_home}/lib:${Boost_home}/lib:$ENV{LD_LIBRARY_PATH}
     BUILD_COMMAND make all V=1 LD_LIBRARY_PATH=${thepeg_v_home}/lib:${GSL_home}/lib:${Boost_home}/lib:$ENV{LD_LIBRARY_PATH}
     INSTALL_COMMAND make install  LD_LIBRARY_PATH=${thepeg_v_home}/lib:${GSL_home}/lib:${Boost_home}/lib:${HepMC_home}/lib:$ENV{LD_LIBRARY_PATH}
-            COMMAND  ${CMAKE_COMMAND} -E create_symlink ${CMAKE_INSTALL_PREFIX}/${MCGENPATH}/herwig++ ${CMAKE_INSTALL_PREFIX}/${MCGENPATH}/herwigpp
+            COMMAND  ${CMAKE_COMMAND} -E create_symlink herwig++ <INSTALL_DIR>/../../../herwigpp
     BUILD_IN_SOURCE 1
     DEPENDS GSL Boost thepeg
   )
@@ -164,7 +154,7 @@ LCGPackage_Add(
   URL http://annapurna.ifj.edu.pl/~tprzedzinski/resources/TAUOLA.<NATIVE_VERSION>/TAUOLA.<NATIVE_VERSION>-LHC.tar.gz
   CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --with-pic --with-hepmc=${HepMC_home} --with-lhapdf=${lhapdf_home}
   INSTALL_COMMAND  make install
-          COMMAND  ${CMAKE_COMMAND} -E create_symlink ${CMAKE_INSTALL_PREFIX}/${MCGENPATH}/tauola++ ${CMAKE_INSTALL_PREFIX}/${MCGENPATH}/tauolapp
+          COMMAND  ${CMAKE_COMMAND} -E create_symlink tauola++ <INSTALL_DIR>/../../../tauolapp
   BUILD_IN_SOURCE 1
   DEPENDS HepMC lhapdf
 )
@@ -284,7 +274,7 @@ LCGPackage_Add(
   CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --with-hepmc=${HepMC_home}
   BUILD_IN_SOURCE 1
   INSTALL_COMMAND  make install
-          COMMAND  ${CMAKE_COMMAND} -E create_symlink ${CMAKE_INSTALL_PREFIX}/${MCGENPATH}/photos++ ${CMAKE_INSTALL_PREFIX}/${MCGENPATH}/photospp
+          COMMAND  ${CMAKE_COMMAND} -E create_symlink photos++ <INSTALL_DIR>/../../../photospp
   DEPENDS HepMC
 )
 LCG_add_test(photospp_orig_test1 COMMAND photospp/tests/photospp_orig_test1
@@ -557,13 +547,14 @@ LCGPackage_Add(
 #---hydjet++---------------------------------------------------------------------------------------
 LCGPackage_Add(
   hydjet++
-  DOWNLOAD_COMMAND ${CMAKE_COMMAND} -Durl=http://lokhtin.web.cern.ch/lokhtin/hydjet++/HYDJET++${hydjet++_native_version}.ZIP
+  DOWNLOAD_COMMAND ${CMAKE_COMMAND} -Durl=http://lokhtin.web.cern.ch/lokhtin/hydjet++/HYDJET++<hydjet++_<NATIVE_VERSION>_author>.ZIP
                                     -Dsource_dir=<SOURCE_DIR>
                                     -P ${CMAKE_SOURCE_DIR}/cmake/scripts/DownloadURL.cmake
-           COMMAND unzip <SOURCE_DIR>/HYDJET++${hydjet++_native_version}.ZIP -d <SOURCE_DIR>
+           COMMAND unzip <SOURCE_DIR>/HYDJET++<hydjet++_<NATIVE_VERSION>_author>.ZIP -d <SOURCE_DIR>
   CONFIGURE_COMMAND <VOID>
   BUILD_COMMAND ${Exec_cmd} PATH=${ROOT_home}/bin:$ENV{PATH} make -j2 F77LIBSO=${FORTRAN_LIBRARY}
   INSTALL_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/lib <INSTALL_DIR>/lib
+          COMMAND ${CMAKE_COMMAND} -E create_symlink hydjet++ <INSTALL_DIR>/../../../hydjetpp        
   BUILD_IN_SOURCE 1
   DEPENDS ROOT
 )

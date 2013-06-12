@@ -187,7 +187,7 @@ LCG_external_package(hydjet            1.6            ${MCGENPATH}/hydjet author
 LCG_external_package(hydjet            1.8            ${MCGENPATH}/hydjet author=1_8    )
 LCG_external_package(tauola            28.121.2       ${MCGENPATH}/tauola       )
 LCG_external_package(jimmy             4.31.3         ${MCGENPATH}/jimmy        )
-LCG_external_package(hydjet++          2_1            ${MCGENPATH}/hydjet++     )
+LCG_external_package(hydjet++          2.1            ${MCGENPATH}/hydjet++ author=2_1)
 LCG_external_package(alpgen            2.1.4          ${MCGENPATH}/alpgen author=214 )
 LCG_external_package(pyquen            1.5.1          ${MCGENPATH}/pyquen author=1_5)
 LCG_external_package(baurmc            1.0            ${MCGENPATH}/baurmc       )
