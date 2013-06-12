@@ -1,0 +1,13 @@
+--- config.mk.orig	2013-06-12 14:16:54.000000000 +0200
++++ config.mk	2013-06-12 14:18:12.000000000 +0200
+@@ -10,8 +10,8 @@
+ #              -I$(HepPDTdir)/include -I$(ROOTSYS)/include
+ INCLUDES    = $(INCLUDEH) $(INCLUDEF)
+ 
+-ROOTGLIBS   = `root-config --glibs`
+-ROOTCFLAGS  = `root-config --cflags` -Wno-long-long
++ROOTGLIBS   = `$(ROOTSYS)/bin/root-config --glibs`
++ROOTCFLAGS  = `$(ROOTSYS)/bin/root-config --cflags` -Wno-long-long
+ 
+ #CLHEP = -L$(CLHEPdir)/lib -lCLHEP    # causes problems in HepMCAnalysis_i interface!
+ CLHEPlib    = 
