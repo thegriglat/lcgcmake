@@ -8,6 +8,8 @@ find_package(ThePEG REQUIRED)
 find_package(HepMC REQUIRED)
 find_package(GSL REQUIRED)
 
+message("HEPMC_INCLUDE_DIR=${HEPMC_INCLUDE_DIR}")
+
 include_directories(${HERWIGPP_INCLUDE_DIR} ${GSL_INCLUDE_DIR} ${THEPEG_INCLUDE_DIR} ${HEPMC_INCLUDE_DIR})
 
 set(TESTS_DIR ${HERWIGPP_ROOT_DIR}/../share/sources/Tests)

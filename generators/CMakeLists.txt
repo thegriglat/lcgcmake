@@ -63,8 +63,9 @@ LCG_add_test(lhapdf_genser_test1 COMMAND lhapdf/tests/lhapdf_genser_test1
                           BINARY_DIR lhapdf/tests
                           SOURCE_DIR lhapdf/tests
                           BUILD lhapdf_genser_test1
-                          BUILD_OPTIONS -DLHAPDF_ROOT_DIR=${lhapdf_home} -DLHAPDFSETS_ROOT_DIR=${lhapdfsets_home} -DLHAPATH=${lhapdfsets_home}/../share
-                          ENVIRONMENT ${library_path}=${lhapdf_home}/lib:$ENV{${library_path}})
+                          BUILD_OPTIONS -DCMAKE_MODULE_PATH=${cmaketools_home}/modules 
+                                        -DLHAPDF_ROOT_DIR=${lhapdf_home} -DLHAPDFSETS_ROOT_DIR=${lhapdfsets_home}
+                          ENVIRONMENT ${library_path}=${lhapdf_home}/lib:$ENV{${library_path}} LHAPATH=${lhapdfsets_home}/../share/PDFsets)
 
 
 #---pythia8------------------------------------------------------------------------------------------
@@ -99,7 +100,7 @@ LCGPackage_Add(
 
 LCG_add_test(pythia8-build  BINARY_DIR pythia8/tests SOURCE_DIR pythia8/tests
                             BUILD all
-                            BUILD_OPTIONS -DPYTHIA8_ROOT_DIR=${pythia8_home} -DHEPMC_ROOT_DIR=${HepMC_home})
+                            BUILD_OPTIONS -DCMAKE_MODULE_PATH=${cmaketools_home}/modules -DPYTHIA8_ROOT_DIR=${pythia8_home} -DHEPMC_ROOT_DIR=${HepMC_home})
 
 foreach(t genser_test3 genser_test4 
 orig_test1 
@@ -142,7 +143,9 @@ LCG_add_test(herwigpp_orig_test1 COMMAND herwig++/tests/herwigpp_orig_test1
                           BINARY_DIR herwig++/tests
                           SOURCE_DIR herwig++/tests
                           BUILD herwigpp_orig_test1
-                          BUILD_OPTIONS -DHERWIGPP_ROOT_DIR=${herwig++_home} -DTHEPEG_ROOT_DIR=${thepeg_home} -DHEPMC_ROOT_DIR=${HepMC_home} -DGSL_ROOT_DIR=${GSL_home}
+                          BUILD_OPTIONS -DCMAKE_MODULE_PATH=${cmaketools_home}/modules
+                                        -DHERWIGPP_ROOT_DIR=${herwig++_home} -DTHEPEG_ROOT_DIR=${thepeg_home} 
+                                        -DHEPMC_ROOT_DIR=${HepMC_home} -DGSL_ROOT_DIR=${GSL_home}
                           ENVIRONMENT ${library_path}=${herwig++_home}/lib:${GSL_home}/lib:$ENV{${library_path}})
 endif()
 
@@ -159,9 +162,11 @@ LCGPackage_Add(
   DEPENDS HepMC lhapdf
 )
 
-LCG_add_test(tauolapp-build  BINARY_DIR tauolapp/tests SOURCE_DIR tauolapp/tests
+LCG_add_test(tauolapp-build BINARY_DIR tauolapp/tests SOURCE_DIR tauolapp/tests
                             BUILD all
-                            BUILD_OPTIONS -DTAUOLAPP_ROOT_DIR=${tauola++_home} -DPYTHIA8_ROOT_DIR=${pythia8_home} -DHEPMC_ROOT_DIR=${HepMC_home})
+                            BUILD_OPTIONS  -DCMAKE_MODULE_PATH=${cmaketools_home}/modules 
+                                           -DTAUOLAPP_ROOT_DIR=${tauola++_home} 
+                                           -DPYTHIA8_ROOT_DIR=${pythia8_home} -DHEPMC_ROOT_DIR=${HepMC_home})
 
 foreach(t 1 2 3)
   LCG_add_test(tauolapp_orig_test${t} COMMAND tauolapp/tests/tauolapp_orig_test${t}
@@ -179,12 +184,13 @@ LCGPackage_Add(
          COMMAND ${CMAKE_COMMAND} -E chdir <SOURCE_DIR> ${CMAKE_COMMAND} -DHEPEVT_SIZE=<pythia6_<NATIVE_VERSION>_hepevt> -P preparePythia6.cmake
   CMAKE_ARGS -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
 )
-LCG_add_test(pythia6-test1 COMMAND pytyia6/tests/pythia6_test1
-                          BINARY_DIR pythia6/tests
-                          SOURCE_DIR pythia6/tests
-                          BUILD pythia6_test1
-                          BUILD_OPTIONS -DPYTHIA6_ROOT_DIR=${pythia6_home} -DHEPMC_ROOT_DIR=${HepMC_home}
-                          ENVIRONMENT ${library_path}=${pythia6_home}/lib:${HepMC_home}:$ENV{${library_path}})
+LCG_add_test(pythia6-test1 COMMAND pythia6/tests/pythia6_test1
+                           BINARY_DIR pythia6/tests
+                           SOURCE_DIR pythia6/tests
+                           BUILD pythia6_test1
+                           BUILD_OPTIONS -DCMAKE_MODULE_PATH=${cmaketools_home}/modules 
+                                         -DPYTHIA6_ROOT_DIR=${pythia6_home} -DHEPMC_ROOT_DIR=${HepMC_home}
+                           ENVIRONMENT ${library_path}=${pythia6_home}/lib:${HepMC_home}/lib:$ENV{${library_path}})
 
 #---agile------------------------------------------------------------------------------------------  
 LCGPackage_Add(
@@ -277,18 +283,19 @@ LCGPackage_Add(
           COMMAND  ${CMAKE_COMMAND} -E create_symlink photos++ <INSTALL_DIR>/../../../photospp
   DEPENDS HepMC
 )
+
+LCG_add_test(photospp-build BINARY_DIR photospp/tests
+                            SOURCE_DIR photospp/tests
+                            BUILD all
+                            BUILD_OPTIONS  -DCMAKE_MODULE_PATH=${cmaketools_home}/modules 
+                                           -DPHOTOSPP_ROOT_DIR=${photos++_home} -DPYTHIA8_ROOT_DIR=${pythia8_home} 
+                                           -DHEPMC_ROOT_DIR=${HepMC_home})
 LCG_add_test(photospp_orig_test1 COMMAND photospp/tests/photospp_orig_test1
-                          BINARY_DIR photospp/tests
-                          SOURCE_DIR photospp/tests
-                          BUILD photospp_orig_test1
-                          BUILD_OPTIONS -DPHOTOSPP_ROOT_DIR=${photos++_home} -DPYTHIA8_ROOT_DIR=${pythia8_home} -DHEPMC_ROOT_DIR=${HepMC_home}
-                          ENVIRONMENT ${library_path}=${photos++_home}/lib:$ENV{${library_path}})
+                          ENVIRONMENT ${library_path}=${photos++_home}/lib:$ENV{${library_path}}
+                          DEPENDS photospp-build)
 LCG_add_test(photospp_orig_test2 COMMAND photospp/tests/photospp_orig_test2
-                          BINARY_DIR photospp/tests
-                          SOURCE_DIR photospp/tests
-                          BUILD photospp_orig_test2
-                          BUILD_OPTIONS -DPHOTOSPP_ROOT_DIR=${photos++_home} -DPYTHIA8_ROOT_DIR=${pythia8_home} -DHEPMC_ROOT_DIR=${HepMC_home} -DMCTESTER_ROOT_DIR=${mctester_home}
-                          ENVIRONMENT ${library_path}=${photos++_home}/lib:$ENV{${library_path}})
+                          ENVIRONMENT ${library_path}=${photos++_home}/lib:$ENV{${library_path}}
+                          DEPENDS photospp-build)
 
 #---evtgen------------------------------------------------------------------------------------------
 if(LCG_TARGET MATCHES "mac")

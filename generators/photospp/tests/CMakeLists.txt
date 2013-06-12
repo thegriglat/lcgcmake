@@ -12,7 +12,7 @@ set(TEST_DIR ${PHOTOSPP_ROOT_DIR}/../share/sources/examples/)
 include_directories(${PHOTOSPP_INCLUDE_DIR} ${HEPMC_INCLUDE_DIR} ${PYTHIA8_INCLUDE_DIR})
 
 add_executable(photospp_orig_test1 ${TEST_DIR}/photos_standalone_example.cxx)
-target_link_libraries(photospp_orig_test1 ${PHOTOSPP_LIBRARIES} ${HEPMC_LIBRARIES} ${PYTHIA8_LIBRARIES})
+target_link_libraries(photospp_orig_test1 ${PHOTOSPP_LIBRARIES} ${HEPMC_LIBRARY} ${PYTHIA8_LIBRARIES})
 
 add_executable(photospp_orig_test2 ${TEST_DIR}/photos_hepevt_example.cxx)
-target_link_libraries(photospp_orig_test2 ${PHOTOSPP_LIBRARIES} ${HEPMC_LIBRARIES} ${PYTHIA8_LIBRARIES})
+target_link_libraries(photospp_orig_test2 ${PHOTOSPP_LIBRARIES} ${HEPMC_LIBRARY} ${PYTHIA8_LIBRARIES})
