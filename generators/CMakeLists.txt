@@ -26,8 +26,8 @@ find_library(FORTRAN_LIBRARY NAMES gfortran
 
 #---lhapdfsets--------------------------------------------------------------------------------------
 LCGPackage_set_home(lhapdfsets)
-
-if(NOT EXISTS ${lhapdfsets_home}/../share/lhapdf/PDFsets)
+get_filename_component(lhapdfsets_root ${lhapdfsets_home} PATH)
+if(NOT EXISTS ${lhapdfsets_root}/share/lhapdf/PDFsets)
 LCGPackage_Add(
   lhapdfsets
   URL http://www.hepforge.org/archive/lhapdf/lhapdf-<NATIVE_VERSION>.tar.gz
@@ -112,11 +112,10 @@ orig_test1
 endforeach()
 
 #---ThePEG------------------------------------------------------------------------------------------
-#todo: will autoreconf work if the patches are applied?
 LCGPackage_Add(
   thepeg
   URL http://www.hepforge.org/archive/thepeg/ThePEG-<NATIVE_VERSION>.tar.bz2
-#  UPDATE_COMMAND ${CMAKE_COMMAND} -E chdir <SOURCE_DIR> autoreconf --install --force
+# UPDATE_COMMAND ${CMAKE_COMMAND} -E chdir <SOURCE_DIR> autoreconf --install --force
   CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --with-hepmc=${HepMC_home} --with-LHAPDF=${lhapdf_home}/lib --with-gsl=${GSL_home} --without-javagui
   BUILD_COMMAND make all V=1 
   BUILD_IN_SOURCE 1
