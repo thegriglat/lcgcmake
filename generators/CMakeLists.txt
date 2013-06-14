@@ -580,7 +580,8 @@ LCGPackage_Add(
   UPDATE_COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/alpgen/files  <SOURCE_DIR>
   CMAKE_ARGS -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
   INSTALL_COMMAND make install
-          COMMAND ${CMAKE_COMMAND} -E create_symlink <INSTALL_DIR>/../share/sources <INSTALL_DIR>/../share/alpgen-author
+#          COMMAND ${CMAKE_COMMAND} -E create_symlink <INSTALL_DIR>/../share/sources <INSTALL_DIR>/../share/alpgen-author
+	 COMMAND ${CMAKE_COMMAND} -E chdir <INSTALL_DIR>/../share ${CMAKE_COMMAND} -E create_symlink  sources alpgen-author
   BUILD_IN_SOURCE 1
 )
 
