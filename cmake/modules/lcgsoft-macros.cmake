@@ -72,6 +72,7 @@ macro(LCGPackage_Add name)
     if((NOT ARG_BUNDLE_PACKAGE AND ${${targetname}_version_checked}) OR
        (NOT ARG_BUNDLE_PACKAGE AND EXISTS ${LCG_INSTALL_PREFIX}/${install_path} AND NOT EXISTS ${LCG_INSTALL_PREFIX}/${install_path}/version.txt))
       set(${name}_home ${CMAKE_INSTALL_PREFIX}/${install_path})
+      set(${targetname}_home ${${name}_home})
       add_custom_target(${targetname} ALL COMMAND ${CMAKE_COMMAND} -E make_directory  ${CMAKE_INSTALL_PREFIX}/${${name}_directory_name}/${version}
                                           COMMAND ${CMAKE_COMMAND} -E create_symlink ${LCG_INSTALL_PREFIX}/${install_path} ${CMAKE_INSTALL_PREFIX}/${install_path}
                                           COMMENT "${targetname} package already existing in ${LCG_INSTALL_PREFIX}/${install_path}. Making a soft-link.")
@@ -85,6 +86,7 @@ macro(LCGPackage_Add name)
         set(_path ${_path}/root)
       endif()
       set(${name}_home ${_path})
+      set(${targetname}_home ${${name}_home})
       add_custom_target(${targetname} ALL COMMENT "${targetname} package already existing in ${_path}. Using it directly.")
       add_custom_target(clean-${targetname} COMMENT "${targetname} nothing to be done")
 
