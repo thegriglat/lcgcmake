@@ -68,9 +68,12 @@ macro(LCGPackage_Add name)
       endif()
     endif()
 
+    #---Package to be ignord from LCG_INSTALL_PREFIX
+    list(FIND LCG_IGNORE ${name} lcg_ignore)
+
     #---Check if the package is already existing in the installation area(s)
-    if((NOT ARG_BUNDLE_PACKAGE AND ${${targetname}_version_checked}) OR
-       (NOT ARG_BUNDLE_PACKAGE AND EXISTS ${LCG_INSTALL_PREFIX}/${install_path} AND NOT EXISTS ${LCG_INSTALL_PREFIX}/${install_path}/version.txt))
+    if(lcg_ignore EQUAL -1 AND NOT ARG_BUNDLE_PACKAGE AND
+       (${${targetname}_version_checked} OR (EXISTS ${LCG_INSTALL_PREFIX}/${install_path} AND NOT EXISTS ${LCG_INSTALL_PREFIX}/${install_path}/version.txt)) )
       set(${name}_home ${CMAKE_INSTALL_PREFIX}/${install_path})
       set(${targetname}_home ${${name}_home})
       add_custom_target(${targetname} ALL COMMAND ${CMAKE_COMMAND} -E make_directory  ${CMAKE_INSTALL_PREFIX}/${${name}_directory_name}/${version}
@@ -79,7 +82,7 @@ macro(LCGPackage_Add name)
       add_custom_target(clean-${targetname} COMMAND ${CMAKE_COMMAND} -E remove ${CMAKE_INSTALL_PREFIX}/${install_path}
                                             COMMENT "Deleting soft-link for package ${targetname}")
 
-    elseif(NOT ARG_BUNDLE_PACKAGE AND EXISTS ${LCG_INSTALL_PREFIX}/../app/releases/${install_path})
+    elseif(lcg_ignore EQUAL -1 AND NOT ARG_BUNDLE_PACKAGE AND EXISTS ${LCG_INSTALL_PREFIX}/../app/releases/${install_path})
       get_filename_component(_path ${LCG_INSTALL_PREFIX} PATH)
       set(_path ${_path}/app/releases/${install_path})
       if(${name} STREQUAL ROOT)  # ROOT in LCG installations is special
