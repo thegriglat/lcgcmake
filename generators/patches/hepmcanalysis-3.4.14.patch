@@ -1,5 +1,5 @@
---- config.mk.orig	2013-06-12 14:16:54.000000000 +0200
-+++ config.mk	2013-06-12 14:18:12.000000000 +0200
+--- config.mk.orig	2013-06-17 17:06:08.000000000 +0200
++++ config.mk	2013-06-17 17:06:32.000000000 +0200
 @@ -10,8 +10,8 @@
  #              -I$(HepPDTdir)/include -I$(ROOTSYS)/include
  INCLUDES    = $(INCLUDEH) $(INCLUDEF)
@@ -11,3 +11,12 @@
  
  #CLHEP = -L$(CLHEPdir)/lib -lCLHEP    # causes problems in HepMCAnalysis_i interface!
  CLHEPlib    = 
+@@ -19,7 +19,7 @@
+ # common libraries
+ HepPDTlib   = 
+ #HepPDTlib   = -L$(HepPDTdir)/lib -lHepPDT -lHepPID
+-HepMClib    = -L$(HepMCdir)/lib -lHepMC -lHepMCfio
++HepMClib    = -L$(HepMCdir)/lib -lHepMC
+ 
+ FastJetlib  = `$(FastJetdir)/bin/fastjet-config --libs --plugins=yes --rpath=no`
+ # output directories
