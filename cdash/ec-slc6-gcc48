@@ -15,7 +15,7 @@ export FC=gfortran
 THIS=$(dirname $0)
 
 if [ x$MODE = x ]; then
-  export MODE=experimental
+  export MODE=Experimental
 fi
 if [ x$WORKDIR = x ]; then 
   WORKDIR=/ec/lcg-builds
