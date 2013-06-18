@@ -35,11 +35,16 @@ add_library(alpsho_static STATIC ${alpgen_alpsho_sources})
 set_target_properties(alpsho_static PROPERTIES OUTPUT_NAME alpsho)
 
 file(GLOB alpgen_herlib_sources ${PROJECT_SOURCE_DIR}/herlib/atoher.f)
+file(GLOB alpgen_pylib_sources ${PROJECT_SOURCE_DIR}/pylib/atopyt.f)
 
 add_library(atoher_static SHARED ${alpgen_herlib_sources})
 add_library(atoher  STATIC ${alpgen_herlib_sources})
 set_target_properties(atoher_static PROPERTIES OUTPUT_NAME atoher)
 
+add_library(atopyt_static SHARED ${alpgen_pylib_sources})
+add_library(atopyt  STATIC ${alpgen_pylib_sources})
+set_target_properties(atopyt_static PROPERTIES OUTPUT_NAME atopyt)
+
 #---Install build products---------------------------------------------------
-install(TARGETS alpgen alpsho atoher DESTINATION lib)
-install(TARGETS alpgen_static alpsho_static atoher_static DESTINATION lib)
+install(TARGETS alpgen alpsho atoher atopyt DESTINATION lib)
+install(TARGETS alpgen_static alpsho_static atoher_static atopyt_static DESTINATION lib)
