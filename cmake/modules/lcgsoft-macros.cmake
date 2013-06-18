@@ -159,6 +159,14 @@ macro(LCGPackage_Add name)
         add_dependencies(${targetname} ${ARG_DEPENDS})
       endif()
 
+      #--Prioritize the update and patch command------------------------------------------------------
+      if(ARGUMENTS MATCHES UPDATE_COMMAND AND ARGUMENTS MATCHES PATCH_COMMAND)
+        ExternalProject_Get_Property(${targetname} stamp_dir)
+        add_custom_command(APPEND
+          OUTPUT ${stamp_dir}/${targetname}-patch
+          DEPENDS ${stamp_dir}/${targetname}-update)
+      endif()
+
       #---Adding extra step to copy the sources in /share/sources-------------------------------------
       if(NOT ARG_BINARY_PACKAGE) 
         ExternalProject_Add_Step(${targetname} install_sources COMMENT "Installing sources for '${targetname}' and create source tarball"
