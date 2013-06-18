@@ -34,8 +34,14 @@ LCGPackage_Add(
   CONFIGURE_COMMAND <VOID> 
   BUILD_COMMAND <VOID>
   INSTALL_COMMAND ${CMAKE_COMMAND} -E make_directory <INSTALL_DIR>
+#          for tests:
+#          COMMAND <SOURCE_DIR>/bin/lhapdf-getdata --force --dest=<INSTALL_DIR>/../share/lhapdf/PDFsets cteq6l
           COMMAND <SOURCE_DIR>/bin/lhapdf-getdata --force --dest=<INSTALL_DIR>/../share/lhapdf/PDFsets --all
+          COMMAND ${CMAKE_COMMAND} -E copy <INSTALL_DIR>/../share/sources/PDFsets.index <INSTALL_DIR>/../share/lhapdf
           COMMAND ${CMAKE_COMMAND} -E create_symlink lhapdf/PDFsets <INSTALL_DIR>/../share/PDFsets
+          COMMAND ${CMAKE_COMMAND} -E create_symlink lhapdf/PDFsets.index <INSTALL_DIR>/../share/PDFsets.index
+          COMMAND ${CMAKE_COMMAND} -E remove_directory <INSTALL_DIR>/../share/sources
+          COMMAND ${CMAKE_COMMAND} -E chdir <INSTALL_DIR>/../../.. ${CMAKE_COMMAND} -E tar czf distribution/lhapdfsets/lhapdfsets-<NATIVE_VERSION>-src.tgz lhapdfsets/<NATIVE_VERSION>/share
 )
 else()
   add_custom_target(lhapdfsets COMMENT "LHAPDF data sets already installed.")
