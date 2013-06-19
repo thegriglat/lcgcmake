@@ -115,6 +115,9 @@ macro(LCGPackage_Add name)
       #---Set home and install name-------------------------------------------------------------------
       set(${name}_home ${CMAKE_INSTALL_PREFIX}/${${name}_directory_name}/${version}/${LCG_system})
       set(${targetname}_home ${CMAKE_INSTALL_PREFIX}/${${name}_directory_name}/${version}/${LCG_system})
+      if(IS_SYMLINK ${${name}_home})  #---Remove symlink otherwise installation may happen at the wrong place
+        file(REMOVE ${${name}_home})
+      endif()
       if(ARG_DEST_NAME)
         set(dest_name ${ARG_DEST_NAME})
         set(dest_version ${${ARG_DEST_NAME}_native_version})
