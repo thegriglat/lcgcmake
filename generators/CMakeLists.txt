@@ -382,7 +382,7 @@ LCGPackage_Add(
   lhapdf6
   URL http://www.hepforge.org/archive/lhapdf/LHAPDF-<NATIVE_VERSION>.tar.gz
   CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> 
-#     --with-boost=${Boost_home}
+     --with-boost=${Boost_home}
      --with-yaml-cpp=${yaml_cpp_home}
 BUILD_COMMAND make all V=1 LD_LIBRARY_PATH=${Python_home}/lib:${yaml_cpp_home}/lib:$ENV{LD_LIBRARY_PATH}
   BUILD_IN_SOURCE 1
