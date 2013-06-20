@@ -149,7 +149,7 @@ if(NOT APPLE)    #  (installation fails on MacOSX)
             COMMAND  ${CMAKE_COMMAND} -E copy <SOURCE_DIR>/Contrib/AlpGen/AlpGenHandler.so <INSTALL_DIR>/lib/Herwig++/	    
             COMMAND  ${CMAKE_COMMAND} -E copy <SOURCE_DIR>/Contrib/AlpGen/BasicLesHouchesFileReader.so <INSTALL_DIR>/lib/Herwig++/ 
     BUILD_IN_SOURCE 1
-    DEPENDS GSL Boost thepeg fastjet HepMC
+    DEPENDS GSL Boost thepeg fastjet
   )
 
 LCG_add_test(herwigpp_orig_test1 COMMAND herwig++/tests/herwigpp_orig_test1

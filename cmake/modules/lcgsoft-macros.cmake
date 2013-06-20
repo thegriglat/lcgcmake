@@ -81,6 +81,9 @@ macro(LCGPackage_Add name)
                                           COMMENT "${targetname} package already existing in ${LCG_INSTALL_PREFIX}/${install_path}. Making a soft-link.")
       add_custom_target(clean-${targetname} COMMAND ${CMAKE_COMMAND} -E remove ${CMAKE_INSTALL_PREFIX}/${install_path}
                                             COMMENT "Deleting soft-link for package ${targetname}")
+      if(ARG_DEPENDS)
+        add_dependencies(${targetname} ${ARG_DEPENDS})
+      endif()
 
     elseif(lcg_ignore EQUAL -1 AND NOT ARG_BUNDLE_PACKAGE AND EXISTS ${LCG_INSTALL_PREFIX}/../app/releases/${install_path})
       get_filename_component(_path ${LCG_INSTALL_PREFIX} PATH)
@@ -336,9 +339,12 @@ function(LCG_get_full_version name version var)
   list(SORT _expanded_dependencies)
   foreach(p ${_expanded_dependencies})
     if(p STREQUAL ${name})
+      message("name=${name}")
+      string(REPLACE -${version} "" p ${p})     # Remove the version from the package name
       list(APPEND _full_version ${p}=${version})
     else()
-      list(APPEND _full_version ${p}=${${p}_native_version})
+      list(GET ${p}_native_version -1 vers)    # Last version in case of multi-version wins !!
+      list(APPEND _full_version ${p}=${vers})
     endif()
   endforeach()
   string(REPLACE ";" "/" _full_version "${_full_version}")
