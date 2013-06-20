@@ -188,6 +188,6 @@ LCG_external_package(hydjet++          2.1            ${MCGENPATH}/hydjet++ auth
 LCG_external_package(alpgen            2.1.4          ${MCGENPATH}/alpgen author=214 )
 LCG_external_package(pyquen            1.5.1          ${MCGENPATH}/pyquen author=1_5)
 LCG_external_package(baurmc            1.0            ${MCGENPATH}/baurmc       )
-
+LCG_external_package(lhapdf6            6.0.0b2          ${MCGENPATH}/lhapdf6       )
 # Prepare the search paths according to the versions above
 LCG_prepare_paths()
