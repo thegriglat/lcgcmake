@@ -341,7 +341,7 @@ LCG_add_test(evtgen_orig_test1 COMMAND evtgen/tests/evtgen_orig_test1
                                         -DPHOTOSPP_ROOT_DIR=${photos++_home} -DHEPMC_ROOT_DIR=${HepMC_home}
                           ENVIRONMENT ${library_path}=${evtgen_home}/lib:${photos++_home}/lib:${pythia8_home}/lib:${HepMC_home}/lib:${ROOT_home}/lib:$ENV{${library_path}})
 
-#---Cython------------------------------------------------------------------------------------------
+#---cython------------------------------------------------------------------------------------------
 LCGPackage_Add(
   cython
   URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/Cython-${cython_native_version}.tar.gz
@@ -349,7 +349,7 @@ LCGPackage_Add(
   BUILD_COMMAND ${Python_home}/bin/python setup.py build
   INSTALL_COMMAND ${Python_home}/bin/python setup.py install --prefix <INSTALL_DIR>
   BUILD_IN_SOURCE 1
-  DEPENDS Python setuptools
+  DEPENDS Python
 )
 set(cython_pythonpath ${cython_home}/lib/python${Python_config_version_twodigit}/site-packages)
 
@@ -377,18 +377,19 @@ LCGPackage_Add(
 )
 
 #---lhapdf6------------------------------------------------------------------------------------------
-
 LCGPackage_Add(
   lhapdf6
   URL http://www.hepforge.org/archive/lhapdf/LHAPDF-<NATIVE_VERSION>.tar.gz
   CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> 
      --with-boost=${Boost_home}
      --with-yaml-cpp=${yaml_cpp_home}
-BUILD_COMMAND make all V=1 LD_LIBRARY_PATH=${Python_home}/lib:${yaml_cpp_home}/lib:$ENV{LD_LIBRARY_PATH}
+     PYTHON=${Python_home}/bin/python
+     CYTHON=${cython_home}/bin/cython
+  BUILD_COMMAND make all V=1 LD_LIBRARY_PATH=${Python_home}/lib:${yaml_cpp_home}/lib:$ENV{LD_LIBRARY_PATH} PATH=${cython_home}/bin:${Python_home}/bin:$ENV{PATH} PYTHONPATH=${cython_home}/lib/python2.7/site-packages
   BUILD_IN_SOURCE 1
-  DEPENDS Boost yaml_cpp
+  INSTALL_COMMAND make install PYTHONPATH=${cython_home}/lib/python2.7/site-packages
+  DEPENDS Boost yaml_cpp cython
 )
-
 
 #---Rivet2-----------------------------------------------------------------------------------------
 LCGPackage_Add(
