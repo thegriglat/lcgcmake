@@ -451,7 +451,7 @@ LCGPackage_Add(
      --enable-pythia --enable-hepevtsize=<sherpa_<NATIVE_VERSION>_hepevt>
      --enable-lhapdf=${lhapdf_home}
      --enable-hepmc2=${HepMC_home}
-     --enable-rivet=${rivet_home}
+     --enable-rivet=${rivet_home} CXXFLAGS=-g0
   BUILD_IN_SOURCE 1
   DEPENDS lhapdf HepMC rivet
 )
