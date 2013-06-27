@@ -1,0 +1,4 @@
+export INSTALL_DIR=$1
+
+chmod a+x lcg_configure
+./lcg_configure

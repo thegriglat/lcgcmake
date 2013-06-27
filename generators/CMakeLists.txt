@@ -527,7 +527,9 @@ LCGPackage_Add(
   URL http://cern.ch/service-spi/external/MCGenerators/distribution/herwig/herwig-<NATIVE_VERSION>-src.tgz
   UPDATE_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/<NATIVE_VERSION> <SOURCE_DIR>
          COMMAND ${CMAKE_COMMAND} -E remove_directory <SOURCE_DIR>/<NATIVE_VERSION>
-  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR>
+#  This below does not work: cmake removes the quotes
+#  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> FFLAGS="-O2 -fPIC -Wuninitialized -fno-automatic"
+  CONFIGURE_COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/herwig/scripts/run_lcg_configure <INSTALL_DIR>
   INSTALL_COMMAND make install 
           COMMAND ${CMAKE_COMMAND} -E chdir <INSTALL_DIR>/include ${CMAKE_COMMAND} -E create_symlink HERWIG65.INC herwig65.inc
   BUILD_IN_SOURCE 1
