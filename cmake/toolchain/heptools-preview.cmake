@@ -175,7 +175,10 @@ LCG_external_package(hepmcanalysis     3.4.14         ${MCGENPATH}/hepmcanalysis
 LCG_external_package(mctester          1.25.0         ${MCGENPATH}/mctester     )
 LCG_external_package(hijing            1.383bs.2      ${MCGENPATH}/hijing       )
 LCG_external_package(starlight         r43            ${MCGENPATH}/starlight    )
+
 LCG_external_package(herwig            6.520.2        ${MCGENPATH}/herwig       )
+LCG_external_package(herwig            6.521.2        ${MCGENPATH}/herwig       )
+
 LCG_external_package(crmc              v3400          ${MCGENPATH}/crmc         )
 LCG_external_package(cython            0.19           ${MCGENPATH}/cython       )
 LCG_external_package(yaml_cpp          0.3.0          ${MCGENPATH}/yaml_cpp     )
