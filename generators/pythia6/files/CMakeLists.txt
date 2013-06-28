@@ -28,20 +28,23 @@ set(rootinterface_sources
 
 add_library(pythia6 SHARED ${pythia_sources})
 add_library(pythia6_static STATIC ${pythia_sources})
-set_target_properties(pythia6_static PROPERTIES OUTPUT_NAME pythia6)
+set_target_properties(pythia6 PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/src)
+set_target_properties(pythia6_static PROPERTIES OUTPUT_NAME pythia6 ARCHIVE_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/src)
 
 add_library(pythia6_dummy SHARED ${pythia_dummy_sources})
 add_library(pythia6_dummy_static STATIC ${pythia_dummy_sources})
-set_target_properties(pythia6_dummy_static PROPERTIES OUTPUT_NAME pythia6_dummy)
-
+set_target_properties(pythia6_dummy PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/dummy)
+set_target_properties(pythia6_dummy_static PROPERTIES OUTPUT_NAME pythia6_dummy ARCHIVE_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/dummy)
 
 add_library(pythia6_pdfdummy SHARED ${pythia_pdfdummy_sources})
 add_library(pythia6_pdfdummy_static STATIC ${pythia_pdfdummy_sources})
-set_target_properties(pythia6_pdfdummy_static PROPERTIES OUTPUT_NAME pythia6_pdfdummy)
+set_target_properties(pythia6_pdfdummy PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/pdfdummy)
+set_target_properties(pythia6_pdfdummy_static PROPERTIES OUTPUT_NAME pythia6_pdfdummy ARCHIVE_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/pdfdummy)
 
 add_library(rootinterface SHARED ${rootinterface_sources})
 add_library(rootinterface_static STATIC ${rootinterface_sources})
-set_target_properties(rootinterface_static PROPERTIES OUTPUT_NAME rootinterface)
+set_target_properties(rootinterface PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/rootinterface)
+set_target_properties(rootinterface_static PROPERTIES OUTPUT_NAME rootinterface ARCHIVE_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/rootinterface)
 
 #---Install build products---------------------------------------------------
 install(TARGETS pythia6  pythia6_dummy  pythia6_pdfdummy rootinterface DESTINATION lib)
@@ -50,3 +53,10 @@ install(DIRECTORY include/ DESTINATION include FILES_MATCHING PATTERN *.inc PATT
 
 #---Install pydata.o file----------------------------------------------------
 install(FILES ${CMAKE_BINARY_DIR}/CMakeFiles/pythia6.dir/src/pydata.f.o DESTINATION lib RENAME pydata.o)
+
+#---create subdirectory archive with symlinks----------------------------------
+install(CODE "file(MAKE_DIRECTORY ${CMAKE_INSTALL_PREFIX}/lib/archive)")
+install(CODE "execute_process(COMMAND cmake -E create_symlink ../libpythia6.a ${CMAKE_INSTALL_PREFIX}/lib/archive/libpythia6.a)")
+install(CODE "execute_process(COMMAND cmake -E create_symlink ../libpythia6_dummy.a ${CMAKE_INSTALL_PREFIX}/lib/archive/libpythia6_dummy.a)")
+install(CODE "execute_process(COMMAND cmake -E create_symlink ../libpythia6_pdfdummy.a ${CMAKE_INSTALL_PREFIX}/lib/archive/libpythia6_pdfdummy.a)")
+install(CODE "execute_process(COMMAND cmake -E create_symlink ../librootinterface.a ${CMAKE_INSTALL_PREFIX}/lib/archive/librootinterface.a)")
