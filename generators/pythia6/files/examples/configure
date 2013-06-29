@@ -32,7 +32,7 @@ for arg in $* ; do
     echo "Usage: ./configure [options] , where options are:"
     echo "--help            : prints this help"
     echo "--enable-optimize : turns on compiler optimizations (default)"
-    echo "--enable-debug    : turns on debugging flags"
+    echo "--enable-debug    : turns on debugging flags (not yet implem.)"
     echo "--enable-shared   : use shared library (not yet implem.) (default no)"
     echo "--lcgplatform=lcgplatformname : platform, default is x86_64-slc5-gcc43-opt"
     echo "--with-pythia6=p6path    : path to pythia6 installation dir to find libs, includes and pars (default is ..)"
@@ -76,7 +76,7 @@ if [ "x$MYCMAKE" = "x" ] ; then
   exit
 fi
 
-echo compilation mode is $COMPMODE
+echo compilation mode is $COMPMODE (note: DBG is not yet implemented)
 
 # Environment variables for building HepMC interface library. Note that
 # the HepMC interface library is used by the examples main31, main32.

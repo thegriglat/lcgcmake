@@ -2,6 +2,10 @@
 #
 # Configuration script, to be run before compilation
 #
+echo
+echo Attention!
+echo To have this system work on slc5 you must set the environment variable FC = gfortran
+echo
 export PREFIX=.
 
 # check arguments
