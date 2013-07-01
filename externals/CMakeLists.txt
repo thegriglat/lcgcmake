@@ -3,7 +3,7 @@ if(LCG_TARGET MATCHES "slc" OR LCG_TARGET MATCHES "ubuntu")
   set(Python_config_options --enable-shared "LDFLAGS=-Wl,-rpath,'$$ORIGIN/../lib'")
 elseif(LCG_TARGET MATCHES "mac")
   string(REGEX REPLACE "([0-9]+)([0-9])" \\1.\\2 macvers ${LCG_HOST_OSVERS})
-  set(Python_config_options --enable-shared MACOSX_DEPLOYMENT_TARGET=${macvers} LDFLAGS=-L/opt/local/lib)
+  set(Python_config_options --enable-shared MACOSX_DEPLOYMENT_TARGET=${macvers} LDFLAGS=-L/usr/local/lib)
 else()
   set(Python_config_options --enable-shared)
 endif()
@@ -12,7 +12,7 @@ if(LCG_TARGET MATCHES "slc6")
 endif()
 LCGPackage_Add(
   Python
-  URL http://python.org/ftp/python/${Python_native_version}/Python-${Python_native_version}.tgz
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/Python-${Python_native_version}.tgz
   CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix=<INSTALL_DIR> --enable-unicode=ucs4 ${Python_config_options}
 )
 
@@ -59,7 +59,7 @@ endif()
 
 LCGPackage_Add(
   GSL
-  URL http://mirror.switch.ch/ftp/mirror/gnu/gsl/gsl-${GSL_native_version}.tar.gz
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/gsl-${GSL_native_version}.tar.gz
   CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix <INSTALL_DIR> ${GSL_config_options} CC=${CMAKE_C_COMPILER} CFLAGS=-O2
   BUILD_IN_SOURCE 1 )
 
@@ -69,7 +69,7 @@ if(LCG_TARGET MATCHES "slc")
 endif()
 LCGPackage_Add(
   CLHEP
-  URL http://proj-clhep.web.cern.ch/proj-clhep/DISTRIBUTION/tarFiles/clhep-<NATIVE_VERSION>.tgz
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/clhep-<NATIVE_VERSION>.tgz
   CONFIGURE_COMMAND <SOURCE_DIR>/CLHEP/configure --prefix <INSTALL_DIR> ${CLHEP_config_options}
 )
 
