@@ -76,7 +76,7 @@ LCGPackage_Add(
 #---CLHEP2--------------------------------------------------------------------------------------------
 LCGPackage_Add(
   CLHEP2
-  URL http://proj-clhep.web.cern.ch/proj-clhep/DISTRIBUTION/tarFiles/clhep-<NATIVE_VERSION>.tgz
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/clhep-<NATIVE_VERSION>.tgz
   CONFIGURE_COMMAND ${CMAKE_COMMAND} -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR> -DCMAKE_BUILD_TYPE=Release <SOURCE_DIR>/CLHEP
 )
 
@@ -86,7 +86,7 @@ if(LCG_TARGET MATCHES i686)
 endif()
 LCGPackage_Add(
   HepMC
-  URL http://lcgapp.cern.ch/project/simu/HepMC/download/HepMC-${HepMC_native_version}.tar.gz
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/HepMC-${HepMC_native_version}.tar.gz
   CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
              -Dmomentum:STRING=MEV
              -Dlength:STRING=MM
@@ -95,14 +95,14 @@ LCGPackage_Add(
 #---HepPDT-------------------------------------------------------------------------------------------
 LCGPackage_Add(
   HepPDT
-  URL http://lcgapp.cern.ch/project/simu/HepPDT/download/HepPDT-${HepPDT_native_version}.tar.gz
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/HepPDT-${HepPDT_native_version}.tar.gz
   CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix <INSTALL_DIR>  CXX=${CMAKE_CXX_COMPILER}
 )
 
 #---Swig--------------------------------------------------------------------------------------------
 LCGPackage_Add(
   swig
-  URL http://prdownloads.sourceforge.net/swig/swig-${swig_native_version}.tar.gz
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/swig-${swig_native_version}.tar.gz
   CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix=<INSTALL_DIR>
 )
 
@@ -137,7 +137,7 @@ LCGPackage_Add(
 #---XercesC-------------------------------------------------------------------------------------------
 LCGPackage_Add(
   XercesC
-  URL http://mirror.switch.ch/mirror/apache/dist//xerces/c/3/sources/xerces-c-<XercesC_<NATIVE_VERSION>_author>.tar.gz
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/xerces-c-<XercesC_<NATIVE_VERSION>_author>.tar.gz
   CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix=<INSTALL_DIR>
 )
 
