@@ -53,7 +53,7 @@ LCGPackage_Add(
   URL http://www.hepforge.org/archive/lhapdf/lhapdf-<NATIVE_VERSION>.tar.gz 
   UPDATE_COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/lhapdf/files  <SOURCE_DIR>
   CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --datadir=${lhapdfsets_home}/../share/lhapdf/PDFsets 
-                                --enable-low-memory  --disable-pyext --disable-doxygen --disable-octave
+                                --enable-low-memory  --disable-pyext --disable-doxygen --disable-octave FCFLAGS=-g0 CFLAGS=-g0 CXXFLAGS=-g0
   INSTALL_COMMAND make install
           COMMAND ${CMAKE_COMMAND} -E make_directory <INSTALL_DIR>/../share
           COMMAND ${CMAKE_COMMAND} -E create_symlink ../../../lhapdfsets/${lhapdfsets_native_version}/share/PDFsets <INSTALL_DIR>/../share/PDFsets
