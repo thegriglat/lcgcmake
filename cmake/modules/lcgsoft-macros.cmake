@@ -116,8 +116,8 @@ macro(LCGPackage_Add name)
       endforeach()
 
       #---Set home and install name-------------------------------------------------------------------
-      set(${name}_home ${CMAKE_INSTALL_PREFIX}/${${name}_directory_name}/${version}/${LCG_system})
-      set(${targetname}_home ${CMAKE_INSTALL_PREFIX}/${${name}_directory_name}/${version}/${LCG_system})
+      set(${name}_home            ${CMAKE_INSTALL_PREFIX}/${${name}_directory_name}/${version}/${LCG_system})
+      set(${name}-${version}_home ${CMAKE_INSTALL_PREFIX}/${${name}_directory_name}/${version}/${LCG_system})
       if(IS_SYMLINK ${${name}_home})  #---Remove symlink otherwise installation may happen at the wrong place
         file(REMOVE ${${name}_home})
       endif()
@@ -246,7 +246,7 @@ macro(LCGPackage_Add name)
       add_dependencies(clean-${name} clean-${targetname})
     endif()
 
-    set(${targetname}_home ${${name}_home} PARENT_SCOPE)
+    set(${name}-${version}_home ${${name}_home} PARENT_SCOPE)
 
   endforeach()
   
