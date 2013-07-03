@@ -339,7 +339,6 @@ function(LCG_get_full_version name version var)
   list(SORT _expanded_dependencies)
   foreach(p ${_expanded_dependencies})
     if(p STREQUAL ${name})
-      message("name=${name}")
       string(REPLACE -${version} "" p ${p})     # Remove the version from the package name
       list(APPEND _full_version ${p}=${version})
     else()
