@@ -634,10 +634,10 @@ endif(${crmc_native_version} MATCHES "^v")
 #---powhegbox---------------------------------------------------------------------------------------
 LCGPackage_Add(
   powheg-box
-  SVN_REPOSITORY svn://powhegbox.mib.infn.it/trunk/POWHEG-BOX 
+  SVN_REPOSITORY --username anonymous --password anonymous --quiet svn://powhegbox.mib.infn.it/trunk/POWHEG-BOX 
   SVN_REVISION -r 2092
   UPDATE_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/<NATIVE_VERSION> <SOURCE_DIR>
-         COMMAND ${CMAKE_COMMAND} -E remove_directory <SOURCE_DIR>/<NATIVE_VERSION
+         COMMAND ${CMAKE_COMMAND} -E remove_directory <SOURCE_DIR>/<NATIVE_VERSION>
          COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/powheg-box/files <SOURCE_DIR>
   CONFIGURE_COMMAND ./configure  
 		--prefix=<INSTALL_DIR> 
