@@ -56,7 +56,9 @@ LCGPackage_Add(
                                 --enable-low-memory  --disable-pyext --disable-doxygen --disable-octave FCFLAGS=-g0 CFLAGS=-g0 CXXFLAGS=-g0
   INSTALL_COMMAND make install
           COMMAND ${CMAKE_COMMAND} -E make_directory <INSTALL_DIR>/../share
-          COMMAND ${CMAKE_COMMAND} -E create_symlink ../../../lhapdfsets/${lhapdfsets_native_version}/share/PDFsets <INSTALL_DIR>/../share/PDFsets
+          COMMAND ${CMAKE_COMMAND} -E make_directory <INSTALL_DIR>/../share/lhapdf
+          COMMAND ${CMAKE_COMMAND} -E create_symlink ../../../../lhapdfsets/${lhapdfsets_native_version}/share/PDFsets <INSTALL_DIR>/../share/lhapdf/PDFsets
+          COMMAND ${CMAKE_COMMAND} -E create_symlink lhapdf/PDFsets <INSTALL_DIR>/../share/PDFsets
           COMMAND ${CMAKE_COMMAND} -E make_directory  <INSTALL_DIR>/lib/archive
           COMMAND ${CMAKE_COMMAND} -E create_symlink ../libLHAPDF.a <INSTALL_DIR>/lib/archive/libLHAPDF.a
           COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/lhapdf/examples  <INSTALL_DIR>/../share/examples
@@ -647,7 +649,7 @@ LCGPackage_Add(
 		--lhapdf=${lhapdf_home}
   BUILD_COMMAND make FC=${CMAKE_Fortran_COMPILER} CC=${CMAKE_C_COMPILER} CXX=${CMAKE_CXX_COMPILER}
   BUILD_IN_SOURCE 1
-  DEPENDS lhapdf fastjet
+  DEPENDS fastjet
 )
 #---baurmc------------------------------------------------------------------------------------------
 LCGPackage_Add(
