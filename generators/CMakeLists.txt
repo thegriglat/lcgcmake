@@ -649,7 +649,7 @@ LCGPackage_Add(
 		--lhapdf=${lhapdf_home}
   BUILD_COMMAND make FC=${CMAKE_Fortran_COMPILER} CC=${CMAKE_C_COMPILER} CXX=${CMAKE_CXX_COMPILER}
   BUILD_IN_SOURCE 1
-  DEPENDS fastjet
+  DEPENDS fastjet lhapdf
 )
 #---baurmc------------------------------------------------------------------------------------------
 LCGPackage_Add(
