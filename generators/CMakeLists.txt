@@ -2,10 +2,7 @@
 
 #todo: insufficient output from the build step. set(CMAKE_VERBOSE_MAKEFILE ON) helps only partly
 
-#todo: put log file under the platform directory, no platform name is needed in the log file names
 #todo: do not split err/out
-
-#todo: tarballs
 
 # cook Boost include subpath string (used by several packages)
 #---General parameters--------------------------------------------------------------------------------------------
@@ -200,7 +197,7 @@ LCGPackage_Add(
          COMMAND ${CMAKE_COMMAND} -E remove <SOURCE_DIR>/pythia-6.4.27.f
          COMMAND ${CMAKE_COMMAND} -E remove <SOURCE_DIR>/preparePythia6.cmake
          COMMAND ${CMAKE_COMMAND} -E remove <SOURCE_DIR>/splitter.pl
-  CMAKE_ARGS -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR> "-DCMAKE_Fortran_FLAGS=-fPIC -fno-automatic"
+  CMAKE_ARGS -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
 )
 LCG_add_test(pythia6-test1 COMMAND pythia6/tests/pythia6_test1
                            BINARY_DIR pythia6/tests
