@@ -200,7 +200,7 @@ LCGPackage_Add(
          COMMAND ${CMAKE_COMMAND} -E remove <SOURCE_DIR>/pythia-6.4.27.f
          COMMAND ${CMAKE_COMMAND} -E remove <SOURCE_DIR>/preparePythia6.cmake
          COMMAND ${CMAKE_COMMAND} -E remove <SOURCE_DIR>/splitter.pl
-  CMAKE_ARGS -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR> -DCMAKE_Fortran_FLAGS=-fPIC -fno-automatic
+  CMAKE_ARGS -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR> "-DCMAKE_Fortran_FLAGS=-fPIC -fno-automatic"
 )
 LCG_add_test(pythia6-test1 COMMAND pythia6/tests/pythia6_test1
                            BINARY_DIR pythia6/tests
