@@ -1,0 +1,160 @@
+Index: hvq/Makefile
+===================================================================
+--- hvq/Makefile	(revision 2092)
++++ hvq/Makefile	(working copy)
+@@ -3,10 +3,10 @@
+ COMPILER=gfortran
+ ## Choose PDF: native,lhapdf
+ ## LHAPDF package has to be installed separately
+-PDF=native
++PDF=lhapdf
+ #Choose Analysis: none, B-or-D, top
+ ## default analysis may require FASTJET package, that has to be installed separately (see below)
+-ANALYSIS=top
++ANALYSIS=none
+ #ANALYSIS=B-or-D
+ ## For static linking uncomment the following
+ #STATIC= -static
+Index: HJ/Makefile
+===================================================================
+--- HJ/Makefile	(revision 2092)
++++ HJ/Makefile	(working copy)
+@@ -163,10 +163,10 @@
+ 
+ XFFLAGS=$(DEBUG) $(OPT)
+ libdhelas3.a:
+-	cd DHELAS ; make FC="$(F77)" F77="$(F77)" XFFLAGS="$(XFFLAGS)"
++	cd DHELAS ; $(MAKE) FC="$(F77)" F77="$(F77)" XFFLAGS="$(XFFLAGS)"
+ 
+ libmadgraph.a:
+-	cd Madlib ; make FC="$(F77)" F77="$(F77)" XFFLAGS"=$(XFFLAGS)"
++	cd Madlib ; $(MAKE) FC="$(F77)" F77="$(F77)" XFFLAGS"=$(XFFLAGS)"
+ 
+ 
+ ifeq ("$(COMPILER)","gfortran")
+@@ -176,7 +176,7 @@
+ endif
+ 
+ libmodel.a:
+-	cd MODEL ; make FC="$(F77)" F77="$(F77)" XFFLAGS="$(XFFLAGS)"
++	cd MODEL ; $(MAKE) FC="$(F77)" F77="$(F77)" XFFLAGS="$(XFFLAGS)"
+ 
+ # clean also the MadGraph libraries
+ veryclean:
+Index: HJJ/Makefile
+===================================================================
+--- HJJ/Makefile	(revision 2092)
++++ HJJ/Makefile	(working copy)
+@@ -181,10 +181,10 @@
+ 
+ XFFLAGS=$(DEBUG) $(OPT)
+ libdhelas3.a:
+-	cd DHELAS ; make FC="$(F77)" F77="$(F77)" XFFLAGS="$(XFFLAGS)"
++	cd DHELAS ; $(MAKE) FC="$(F77)" F77="$(F77)" XFFLAGS="$(XFFLAGS)"
+ 
+ libmadgraph.a:
+-	cd Madlib ; make FC="$(F77)" F77="$(F77)" XFFLAGS"=$(XFFLAGS)"
++	cd Madlib ; $(MAKE) FC="$(F77)" F77="$(F77)" XFFLAGS"=$(XFFLAGS)"
+ 
+ 
+ ifeq ("$(COMPILER)","gfortran")
+@@ -194,7 +194,7 @@
+ endif
+ 
+ libmodel.a:
+-	cd MODEL ; make FC="$(F77)" F77="$(F77)" XFFLAGS="$(XFFLAGS)"
++	cd MODEL ; $(MAKE) FC="$(F77)" F77="$(F77)" XFFLAGS="$(XFFLAGS)"
+ 
+ # clean also the MadGraph libraries
+ veryclean:
+Index: gg_H/Makefile
+===================================================================
+--- gg_H/Makefile	(revision 2092)
++++ gg_H/Makefile	(working copy)
+@@ -22,7 +22,7 @@
+ OPT=-O2
+ ## For debugging uncomment the following
+ #DEBUG= -ggdb -pg
+-MOD= -J mod
++#MOD= -J mod
+ endif
+ 
+ ifeq ("$(COMPILER)","ifort")
+Index: VBF_Z/Makefile
+===================================================================
+--- VBF_Z/Makefile	(revision 2092)
++++ VBF_Z/Makefile	(working copy)
+@@ -86,12 +86,12 @@
+ 
+ # target to generate LHEF output
+ pwhg_main:$(PWHG) nlo_files/libnlo.a 
+-	(cd nlo_files; make;)
++	(cd nlo_files; $(MAKE);)
+ 	$(FF) $(patsubst %,obj/%, $(PWHG)) $(LIBS) $(LIBSFASTJET) -o $@
+ 
+ 
+ nlo_files/libnlo.a: nlo_files/*f 
+-	cd nlo_files ; make
++	cd nlo_files ; $(MAKE)
+ 
+ LHEFANAL=lhef_analysis.o boostrot.o random.o cernroutines.o         \
+ 	 opencount.o powheginput.o pwhg_bookhist.o  \
+Index: Z/Makefile
+===================================================================
+--- Z/Makefile	(revision 2092)
++++ Z/Makefile	(working copy)
+@@ -3,12 +3,12 @@
+ COMPILER=gfortran
+ ## Choose PDF: native,lhapdf
+ ## LHAPDF package has to be installed separately
+-PDF = native
++PDF=lhapdf
+ #Choose Analysis: none, default
+ ## default analysis may require FASTJET package, that has to be installed separately (see below)
+ ANALYSIS=default
+ ## For static linking uncomment the following
+-STATIC= -static
++#STATIC= -static
+ #
+ ifeq ("$(COMPILER)","gfortran")	
+ F77= gfortran -fno-automatic 	
+Index: Wp_Wp_J_J/Makefile
+===================================================================
+--- Wp_Wp_J_J/Makefile	(revision 2092)
++++ Wp_Wp_J_J/Makefile	(working copy)
+@@ -128,13 +128,13 @@
+ 
+ 
+ F90/obj-$(FC)/libWpWp2j.a:F90/*.f* F90/$(FC)/*.f*
+-	(cd F90 ; make FC=$(FC))
++	(cd F90 ; $(MAKE) FC=$(FC))
+ 
+ $(QCDLOOP)/ql/libqcdloop.a:
+-	(cd $(QCDLOOP)/ql; make FC=$(FC))
++	(cd $(QCDLOOP)/ql; $(MAKE) FC=$(FC))
+ 
+ $(QCDLOOP)/ff/libff.a:
+-	(cd $(QCDLOOP)/ff; make FC=$(FC))
++	(cd $(QCDLOOP)/ff; $(MAKE) FC=$(FC))
+ 
+ 
+ LHEF=lhef_analysis.o boostrot.o random.o cernroutines.o		\
+Index: VBF_Wp_Wp/Makefile
+===================================================================
+--- VBF_Wp_Wp/Makefile	(revision 2092)
++++ VBF_Wp_Wp/Makefile	(working copy)
+@@ -121,12 +121,12 @@
+ 
+ # target to generate LHEF output
+ pwhg_main:$(PWHG) vbfnlo-files/libvbfnlo.a
+-	(cd vbfnlo-files; make;)
++	(cd vbfnlo-files; $(MAKE);)
+ 	$(FF) $(patsubst %,obj/%, $(PWHG)) $(LIBS) $(LIBSFASTJET) -o $@  $(STATIC)
+ 
+ 
+ vbfnlo-files/libvbfnlo.a: vbfnlo-files/*f  vbfnlo-files/*/*f
+-	cd vbfnlo-files ; make
++	cd vbfnlo-files ; $(MAKE)
+ 
+ LHEFANAL=lhef_analysis.o boostrot.o random.o cernroutines.o         \
+ 	 opencount.o powheginput.o pwhg_bookhist.o  \

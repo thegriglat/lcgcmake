@@ -14,7 +14,7 @@ mkbinaries:
 	  ( echo "=> Making $$i ..." && \
 	    cd $$i && \
 	    export PATH=${FASTJET}/bin:${LHAPDF}/bin:$${PATH} && \
-	    make pwhg_main FC=$(FC) && \
+	    $(MAKE) pwhg_main FC=$(FC) && \
 	    cp pwhg_main ../$(BINDIR)/$$i ) ; \
 	done
 

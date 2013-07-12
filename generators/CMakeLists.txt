@@ -125,7 +125,7 @@ LCGPackage_Add(
   URL http://www.hepforge.org/archive/thepeg/ThePEG-<NATIVE_VERSION>.tar.bz2
 # UPDATE_COMMAND ${CMAKE_COMMAND} -E chdir <SOURCE_DIR> autoreconf --install --force
   CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --with-hepmc=${HepMC_home} --with-LHAPDF=${lhapdf_home}/lib --with-gsl=${GSL_home} --without-javagui
-  BUILD_COMMAND make all V=1 
+  BUILD_COMMAND $(MAKE) all V=1 
   BUILD_IN_SOURCE 1
   DEPENDS HepMC GSL lhapdf
 )
@@ -140,7 +140,7 @@ if(NOT APPLE)    #  (installation fails on MacOSX)
     CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR>
 		      --with-gsl=${GSL_home} --with-thepeg=${thepeg_v_home} --with-fastjet=${fastjet_home} 
                       --with-boost=${Boost_home} LD_LIBRARY_PATH=${thepeg_v_home}/lib:${GSL_home}/lib:${Boost_home}/lib:$ENV{LD_LIBRARY_PATH}
-    BUILD_COMMAND make all V=1 LD_LIBRARY_PATH=${thepeg_v_home}/lib:${GSL_home}/lib:${Boost_home}/lib:$ENV{LD_LIBRARY_PATH}
+    BUILD_COMMAND $(MAKE) all V=1 LD_LIBRARY_PATH=${thepeg_v_home}/lib:${GSL_home}/lib:${Boost_home}/lib:$ENV{LD_LIBRARY_PATH}
           COMMAND ${CMAKE_COMMAND} -E chdir <SOURCE_DIR>/Contrib make LD_LIBRARY_PATH=${thepeg_v_home}/lib:${GSL_home}/lib:${Boost_home}/lib:$ENV{LD_LIBRARY_PATH}   
 	  COMMAND ${CMAKE_COMMAND} -E chdir <SOURCE_DIR>/Contrib/AlpGen make BasicLesHouchesFileReader.so HERWIGINCLUDE=-I<SOURCE_DIR>/include 
 			LD_LIBRARY_PATH=${thepeg_v_home}/lib:${GSL_home}/lib:${Boost_home}/lib:${herwig++_home}/lib:$ENV{LD_LIBRARY_PATH}
@@ -220,7 +220,7 @@ LCGPackage_Add(
      --with-lcgtag=${LCG_platform}
      PYTHON=${Python_home}/bin/python LD_LIBRARY_PATH=${Python_home}/lib:$ENV{LD_LIBRARY_PATH}
      SWIG=${swig_home}/bin/swig
-  BUILD_COMMAND make all LD_LIBRARY_PATH=${Python_home}/lib:$ENV{LD_LIBRARY_PATH}
+  BUILD_COMMAND $(MAKE) all LD_LIBRARY_PATH=${Python_home}/lib:$ENV{LD_LIBRARY_PATH}
   INSTALL_COMMAND make install LD_LIBRARY_PATH=${Python_home}/lib:$ENV{LD_LIBRARY_PATH}
   BUILD_IN_SOURCE 1
   DEPENDS HepMC Boost Python swig
@@ -233,7 +233,7 @@ LCGPackage_Add(
   UPDATE_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/<NATIVE_VERSION> <SOURCE_DIR>
          COMMAND ${CMAKE_COMMAND} -E remove_directory <SOURCE_DIR>/<NATIVE_VERSION>
   CONFIGURE_COMMAND ./configure --lcgplatform=${LCG_platform}  --userfflags=-fno-automatic --enable-shared
-  BUILD_COMMAND make FC=${CMAKE_Fortran_COMPILER} CC=${CMAKE_C_COMPILER} CXX=${CMAKE_CXX_COMPILER}
+  BUILD_COMMAND $(MAKE) FC=${CMAKE_Fortran_COMPILER} CC=${CMAKE_C_COMPILER} CXX=${CMAKE_CXX_COMPILER}
   BUILD_IN_SOURCE 1
   INSTALL_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/lib  <INSTALL_DIR>/lib
           COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/include  <INSTALL_DIR>/include
@@ -375,7 +375,7 @@ LCGPackage_Add(
       --with-boost=${Boost_home}
       PYTHON=${Python_home}/bin/python LD_LIBRARY_PATH=${Python_home}/lib:$ENV{LD_LIBRARY_PATH}
       PYTHONPATH=${cython_home}/lib/python2.7/site-packages:$ENV{PYTHONPATH}
-  BUILD_COMMAND make all V=1 LD_LIBRARY_PATH=${Python_home}/lib:$ENV{LD_LIBRARY_PATH} PYTHONPATH=:${cython_pythonpath}:$ENV{PYTHONPATH}
+  BUILD_COMMAND $(MAKE) all V=1 LD_LIBRARY_PATH=${Python_home}/lib:$ENV{LD_LIBRARY_PATH} PYTHONPATH=:${cython_pythonpath}:$ENV{PYTHONPATH}
   INSTALL_COMMAND make install LD_LIBRARY_PATH=${Python_home}/lib:$ENV{LD_LIBRARY_PATH} PYTHONPATH=:${cython_pythonpath}:$ENV{PYTHONPATH}
   BUILD_IN_SOURCE 1
   DEPENDS Python Boost cython
@@ -390,7 +390,7 @@ LCGPackage_Add(
      --with-yaml-cpp=${yaml_cpp_home}
      PYTHON=${Python_home}/bin/python
      CYTHON=${cython_home}/bin/cython
-  BUILD_COMMAND make all V=1 LD_LIBRARY_PATH=${yaml_cpp_home}/lib:$ENV{LD_LIBRARY_PATH} PYTHONPATH=${cython_pythonpath}
+  BUILD_COMMAND $(MAKE) all V=1 LD_LIBRARY_PATH=${yaml_cpp_home}/lib:$ENV{LD_LIBRARY_PATH} PYTHONPATH=${cython_pythonpath}
   BUILD_IN_SOURCE 1
 #  INSTALL_COMMAND make install PYTHONPATH=${cython_home}/lib/python2.7/site-packages
   INSTALL_COMMAND make install PYTHONPATH=${cython_pythonpath}
@@ -415,7 +415,7 @@ LCGPackage_Add(
      SWIG=${swig_home}/bin/swig
      CC=${CMAKE_C_COMPILER}
      CXX=${CMAKE_CXX_COMPILER}
-  BUILD_COMMAND make all V=1 LD_LIBRARY_PATH=${Python_home}/lib:${yaml_cpp_home}/lib:$ENV{LD_LIBRARY_PATH}
+  BUILD_COMMAND $(MAKE) all V=1 LD_LIBRARY_PATH=${Python_home}/lib:${yaml_cpp_home}/lib:$ENV{LD_LIBRARY_PATH}
   INSTALL_COMMAND make install LD_LIBRARY_PATH=${Python_home}/lib:${yaml_cpp_home}/lib:$ENV{LD_LIBRARY_PATH}
           COMMAND ${CMAKE_COMMAND} -E copy <SOURCE_DIR>/rivetenv.csh <INSTALL_DIR>/
           COMMAND ${CMAKE_COMMAND} -E copy <SOURCE_DIR>/rivetenv.sh <INSTALL_DIR>/
@@ -439,7 +439,7 @@ LCGPackage_Add(
      SWIG=${swig_home}/bin/swig
      CC=${CMAKE_C_COMPILER}
      CXX=${CMAKE_CXX_COMPILER}
-  BUILD_COMMAND make all V=1 LD_LIBRARY_PATH=${Python_home}/lib:$ENV{LD_LIBRARY_PATH}
+  BUILD_COMMAND $(MAKE) all V=1 LD_LIBRARY_PATH=${Python_home}/lib:$ENV{LD_LIBRARY_PATH}
   INSTALL_COMMAND make install LD_LIBRARY_PATH=${Python_home}/lib:$ENV{LD_LIBRARY_PATH}
           COMMAND ${CMAKE_COMMAND} -E copy <SOURCE_DIR>/rivetenv.csh <INSTALL_DIR>/
           COMMAND ${CMAKE_COMMAND} -E copy <SOURCE_DIR>/rivetenv.sh <INSTALL_DIR>/
@@ -467,7 +467,7 @@ LCGPackage_Add(
   URL http://hepmcanalysistool.desy.de/releases/HepMCAnalysis-<hepmcanalysis_<NATIVE_VERSION>_author>.tgz
   UPDATE_COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/hepmcanalysis/files <SOURCE_DIR>
   CONFIGURE_COMMAND <VOID>
-  BUILD_COMMAND make VERBOSE=1 HepMCdir=${HepMC_home} FastJetdir=${fastjet_home} ROOTSYS=${ROOT_home} CLHEPdir=${CLHEP_home}
+  BUILD_COMMAND $(MAKE) VERBOSE=1 HepMCdir=${HepMC_home} FastJetdir=${fastjet_home} ROOTSYS=${ROOT_home} CLHEPdir=${CLHEP_home}
   INSTALL_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/lib <INSTALL_DIR>/lib
           COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/include <INSTALL_DIR>/include
   BUILD_IN_SOURCE 1
@@ -481,7 +481,7 @@ LCGPackage_Add(
   URL http://cern.ch/MC-TESTER/MC-TESTER-${mctester_native_version}.tar.gz
   UPDATE_COMMAND ${CMAKE_COMMAND} -E touch make.inc
   CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --with-HepMC=${HepMC_home} --with-root=${ROOT_home}/bin
-  BUILD_COMMAND make LD_LIBRARY_PATH=${ROOT_home}/lib:$ENV{LD_LIBRARY_PATH}
+  BUILD_COMMAND $(MAKE) LD_LIBRARY_PATH=${ROOT_home}/lib:$ENV{LD_LIBRARY_PATH}
   BUILD_IN_SOURCE 1
   DEPENDS HepMC ROOT
 )
@@ -493,7 +493,7 @@ LCGPackage_Add(
   UPDATE_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/${hijing_native_version} <SOURCE_DIR>   
          COMMAND ${CMAKE_COMMAND} -E remove_directory <SOURCE_DIR>/${hijing_native_version}
   CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR>
-  BUILD_COMMAND make FC=${CMAKE_Fortran_COMPILER} CC=${CMAKE_C_COMPILER}
+  BUILD_COMMAND $(MAKE) FC=${CMAKE_Fortran_COMPILER} CC=${CMAKE_C_COMPILER}
   INSTALL_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/lib <INSTALL_DIR>/lib
           COMMAND ${CMAKE_COMMAND} -E copy  <SOURCE_DIR>/tmp/hidata.o <INSTALL_DIR>/lib
        	  COMMAND ${CMAKE_COMMAND} -E copy  <SOURCE_DIR>/tmp/ludata.o <INSTALL_DIR>/lib
@@ -546,7 +546,7 @@ LCGPackage_Add(
   UPDATE_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/<NATIVE_VERSION> <SOURCE_DIR>
          COMMAND ${CMAKE_COMMAND} -E remove_directory <SOURCE_DIR>/<NATIVE_VERSION>
   CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --datadir=<INSTALL_DIR>/data --with-pythia6=${pythia6_home} --with-photos=${photos_home} --with-hepevt=4000
-  BUILD_COMMAND make FC=${CMAKE_Fortran_COMPILER} CC=${CMAKE_C_COMPILER} CXX=${CMAKE_CXX_COMPILER}
+  BUILD_COMMAND $(MAKE) FC=${CMAKE_Fortran_COMPILER} CC=${CMAKE_C_COMPILER} CXX=${CMAKE_CXX_COMPILER}
   BUILD_IN_SOURCE 1
   DEPENDS photos pythia6
 )
@@ -564,7 +564,7 @@ LCGPackage_Add(
     UPDATE_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/<NATIVE_VERSION> <SOURCE_DIR>
            COMMAND ${CMAKE_COMMAND} -E remove_directory <SOURCE_DIR>/<NATIVE_VERSION>
     CONFIGURE_COMMAND ./configure --with-herwig=${herwig_home}
-    BUILD_COMMAND make FC=${CMAKE_Fortran_COMPILER}
+    BUILD_COMMAND $(MAKE) FC=${CMAKE_Fortran_COMPILER}
     INSTALL_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/lib <INSTALL_DIR>/lib
             COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/include <INSTALL_DIR>/include
 	    COMMAND ${CMAKE_COMMAND} -E chdir <INSTALL_DIR>/lib ${CMAKE_COMMAND} -E create_symlink archive/libjimmy.a libjimmy.a
@@ -607,7 +607,7 @@ LCGPackage_Add(
   URL http://sftweb.cern.ch/generators/files/generator/tarballs/crmc-${crmc_native_version}.tar.gz
   # SVN_REPOSITORY https://devel-ik.fzk.de/svn/mc/crmc/tags/${crmc_native_version}
   CONFIGURE_COMMAND <VOID>
-  BUILD_COMMAND make -f Makefile CRMCROOT=<INSTALL_DIR> HEP_ROOT=${HepMC_home}
+  BUILD_COMMAND $(MAKE) -f Makefile CRMCROOT=<INSTALL_DIR> HEP_ROOT=${HepMC_home}
   INSTALL_COMMAND make -f Makefile install CRMCROOT=<INSTALL_DIR> HEP_ROOT=${HepMC_home}
           COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/tabs  <INSTALL_DIR>/tabs
   BUILD_IN_SOURCE 1
@@ -638,16 +638,14 @@ LCGPackage_Add(
   powheg-box
   SVN_REPOSITORY --username anonymous --password anonymous --quiet svn://powhegbox.mib.infn.it/trunk/POWHEG-BOX 
   SVN_REVISION -r 2092
-  UPDATE_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/<NATIVE_VERSION> <SOURCE_DIR>
-         COMMAND ${CMAKE_COMMAND} -E remove_directory <SOURCE_DIR>/<NATIVE_VERSION>
-         COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/powheg-box/files <SOURCE_DIR>
+  UPDATE_COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/powheg-box/files <SOURCE_DIR>
          COMMAND ${CMAKE_COMMAND} -E chdir <SOURCE_DIR> ${CMAKE_CURRENT_SOURCE_DIR}/powheg-box/scripts/usesed
   CONFIGURE_COMMAND ./configure  
 		--prefix=<INSTALL_DIR> 
 		--datadir=<INSTALL_DIR>/../share
 		--fastjet=${fastjet_home} 
 		--lhapdf=${lhapdf_home}
-  BUILD_COMMAND make FC=${CMAKE_Fortran_COMPILER} CC=${CMAKE_C_COMPILER} CXX=${CMAKE_CXX_COMPILER}
+  BUILD_COMMAND $(MAKE) FC=${CMAKE_Fortran_COMPILER} CC=${CMAKE_C_COMPILER} CXX=${CMAKE_CXX_COMPILER}
   BUILD_IN_SOURCE 1
   DEPENDS fastjet lhapdf
 )
@@ -658,7 +656,7 @@ LCGPackage_Add(
   UPDATE_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/<NATIVE_VERSION> <SOURCE_DIR>
          COMMAND ${CMAKE_COMMAND} -E remove_directory <SOURCE_DIR>/<NATIVE_VERSION>
   CONFIGURE_COMMAND ./configure --lcgplatform=${LCG_platform}  --userfflags=-fno-automatic --enable-shared
-  BUILD_COMMAND make FC=${CMAKE_Fortran_COMPILER} CC=${CMAKE_C_COMPILER} CXX=${CMAKE_CXX_COMPILER}
+  BUILD_COMMAND $(MAKE) FC=${CMAKE_Fortran_COMPILER} CC=${CMAKE_C_COMPILER} CXX=${CMAKE_CXX_COMPILER}
   INSTALL_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/lib <INSTALL_DIR>/lib
   BUILD_IN_SOURCE 1
 )

@@ -10,16 +10,3 @@ rm -f herwig6510.f
 rm -f pythia-6.4.21.f
 rm -f pythia-6.4.25.f
 
-sed 's/MOD= -J mod/#MOD= -J mod/' gg_H/Makefile > gg_H/Makefile.new
-cp gg_H/Makefile gg_H/Makefile.old
-mv gg_H/Makefile.new gg_H/Makefile
-sed 's/PDF = native/PDF=lhapdf/' Z/Makefile > Z/Makefile.new
-cp Z/Makefile Z/Makefile.old
-mv Z/Makefile.new Z/Makefile
-sed 's/STATIC=/#STATIC=/' Z/Makefile > Z/Makefile.new
-mv Z/Makefile.new Z/Makefile
-sed 's/ANALYSIS=top/ANALYSIS=none/' hvq/Makefile > hvq/Makefile.new
-cp hvq/Makefile hvq/Makefile.old
-mv hvq/Makefile.new hvq/Makefile
-sed 's/PDF=native/PDF=lhapdf/' hvq/Makefile > hvq/Makefile.new
-mv hvq/Makefile.new hvq/Makefile
