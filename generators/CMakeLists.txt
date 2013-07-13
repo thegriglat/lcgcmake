@@ -642,7 +642,7 @@ LCGPackage_Add(
 		--datadir=<INSTALL_DIR>/../share
 		--fastjet=${fastjet_home} 
 		--lhapdf=${lhapdf_home}
-  BUILD_COMMAND $(MAKE) FC=${CMAKE_Fortran_COMPILER} CC=${CMAKE_C_COMPILER} CXX=${CMAKE_CXX_COMPILER}
+  BUILD_COMMAND $(MAKE)
   BUILD_IN_SOURCE 1
   DEPENDS fastjet lhapdf
 )
