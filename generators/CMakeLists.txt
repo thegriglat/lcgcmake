@@ -27,7 +27,7 @@ get_filename_component(lhapdfsets_root ${lhapdfsets_home} PATH)
 if(NOT EXISTS ${lhapdfsets_root}/share/lhapdf/PDFsets)
 LCGPackage_Add(
   lhapdfsets
-  URL http://www.hepforge.org/archive/lhapdf/lhapdf-<NATIVE_VERSION>.tar.gz
+  URL http://cern.ch/service-spi/external/tarFiles/MCGeneratorsTarFiles/lhapdf-<NATIVE_VERSION>.tar.gz
   CONFIGURE_COMMAND <VOID> 
   BUILD_COMMAND <VOID>
   INSTALL_COMMAND ${CMAKE_COMMAND} -E make_directory <INSTALL_DIR>
@@ -47,7 +47,7 @@ endif()
 #---lhapdf------------------------------------------------------------------------------------------
 LCGPackage_Add(
   lhapdf
-  URL http://www.hepforge.org/archive/lhapdf/lhapdf-<NATIVE_VERSION>.tar.gz 
+  URL http://cern.ch/service-spi/external/tarFiles/MCGeneratorsTarFiles/lhapdf-<NATIVE_VERSION>.tar.gz
   UPDATE_COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/lhapdf/files  <SOURCE_DIR>
   CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --datadir=${lhapdfsets_home}/../share/lhapdf/PDFsets 
                                 --enable-low-memory  --disable-pyext --disable-doxygen --disable-octave FCFLAGS=-g0 CFLAGS=-g0 CXXFLAGS=-g0
@@ -78,7 +78,7 @@ LCG_add_test(lhapdf_genser_test1 COMMAND lhapdf/tests/lhapdf_genser_test1
 set(HOMEPAGE http://home.thep.lu.se/~torbjorn/Pythia.html)
 LCGPackage_Add(
   pythia8
-  URL http://home.thep.lu.se/~torbjorn/pythia8/pythia8<NATIVE_VERSION>.tgz
+  URL http://cern.ch/service-spi/external/tarFiles/MCGeneratorsTarFiles/pythia8<NATIVE_VERSION>.tgz
   UPDATE_COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/pythia8/examples  <SOURCE_DIR>/examples
          COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/pythia8/files  <SOURCE_DIR>
          COMMAND REALHEPMCVERSION=${HepMC_native_version} REALGENVERSION=<NATIVE_VERSION> ./usesed
@@ -119,7 +119,7 @@ endforeach()
 #---ThePEG------------------------------------------------------------------------------------------
 LCGPackage_Add(
   thepeg
-  URL http://www.hepforge.org/archive/thepeg/ThePEG-<NATIVE_VERSION>.tar.bz2
+  URL http://cern.ch/service-spi/external/tarFiles/MCGeneratorsTarFiles/ThePEG-<NATIVE_VERSION>.tar.bz2
 # UPDATE_COMMAND ${CMAKE_COMMAND} -E chdir <SOURCE_DIR> autoreconf --install --force
   CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --with-hepmc=${HepMC_home} --with-LHAPDF=${lhapdf_home}/lib --with-gsl=${GSL_home} --without-javagui
   BUILD_COMMAND $(MAKE) all V=1 
@@ -133,7 +133,7 @@ set(thepeg_v_home <thepeg-<herwig++_<NATIVE_VERSION>_thepeg>_home>)
 if(NOT APPLE)    #  (installation fails on MacOSX)
   LCGPackage_Add(
     herwig++
-    URL http://www.hepforge.org/archive/herwig/Herwig++-<NATIVE_VERSION>.tar.bz2
+    URL http://cern.ch/service-spi/external/tarFiles/MCGeneratorsTarFiles/Herwig++-<NATIVE_VERSION>.tar.bz2
     CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR>
 		      --with-gsl=${GSL_home} --with-thepeg=${thepeg_v_home} --with-fastjet=${fastjet_home} 
                       --with-boost=${Boost_home} LD_LIBRARY_PATH=${thepeg_v_home}/lib:${GSL_home}/lib:${Boost_home}/lib:$ENV{LD_LIBRARY_PATH}
@@ -166,7 +166,7 @@ endif()
 #---tauola++------------------------------------------------------------------------------------------
 LCGPackage_Add(
   tauola++
-  URL http://annapurna.ifj.edu.pl/~tprzedzinski/resources/TAUOLA.<NATIVE_VERSION>/TAUOLA.<NATIVE_VERSION>-LHC.tar.gz
+  URL http://cern.ch/service-spi/external/tarFiles/MCGeneratorsTarFiles/TAUOLA.<NATIVE_VERSION>-LHC.tar.gz
   CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --with-pic --with-hepmc=${HepMC_home} --with-lhapdf=${lhapdf_home}
   INSTALL_COMMAND  make install
           COMMAND  ${CMAKE_COMMAND} -E create_symlink tauola++ <INSTALL_DIR>/../../../tauolapp
@@ -189,7 +189,7 @@ endforeach()
 #---pythia6-------------------------------------------------------------------------------------------
 LCGPackage_Add(
   pythia6
-  DOWNLOAD_COMMAND ${CMAKE_COMMAND} -Durl=http://www.hepforge.org/archive/pythia6/pythia-<pythia6_<NATIVE_VERSION>_author>.f.gz
+  DOWNLOAD_COMMAND ${CMAKE_COMMAND} -Durl=http://cern.ch/service-spi/external/tarFiles/MCGeneratorsTarFiles/pythia-<pythia6_<NATIVE_VERSION>_author>.f.gz
                                     -Dsource_dir=<SOURCE_DIR>
                                     -P ${CMAKE_SOURCE_DIR}/cmake/scripts/DownloadURL.cmake
   UPDATE_COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/pythia6/files  <SOURCE_DIR>
@@ -210,7 +210,7 @@ LCG_add_test(pythia6-test1 COMMAND pythia6/tests/pythia6_test1
 #---agile------------------------------------------------------------------------------------------  
 LCGPackage_Add(
   agile
-  URL http://www.hepforge.org/archive/agile/AGILe-${agile_native_version}.tar.bz2
+  URL http://cern.ch/service-spi/external/tarFiles/MCGeneratorsTarFiles/AGILe-${agile_native_version}.tar.bz2
   CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> 
      --with-hepmc=${HepMC_home} 
      --with-boost-incpath=${Boost_home_include}
@@ -226,7 +226,7 @@ LCGPackage_Add(
 #---photos------------------------------------------------------------------------------------------
 LCGPackage_Add(
   photos
-  URL http://sftweb.cern.ch/generators/files/generator/tarballs/photos-<NATIVE_VERSION>-src.tgz
+  URL http://cern.ch/service-spi/external/tarFiles/MCGeneratorsTarFiles/photos-<NATIVE_VERSION>-src.tgz
   UPDATE_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/<NATIVE_VERSION> <SOURCE_DIR>
          COMMAND ${CMAKE_COMMAND} -E remove_directory <SOURCE_DIR>/<NATIVE_VERSION>
   CONFIGURE_COMMAND ./configure --lcgplatform=${LCG_platform}  --userfflags=-fno-automatic --enable-shared
@@ -249,7 +249,7 @@ LCG_add_test(photos-test1 COMMAND photos/tests/photos_test1
 
 LCGPackage_Add(
   pyquen
-  DOWNLOAD_COMMAND ${CMAKE_COMMAND} -Durl=http://lokhtin.web.cern.ch/lokhtin/pyquen/pyquen<pyquen_<NATIVE_VERSION>_author>.f
+  DOWNLOAD_COMMAND ${CMAKE_COMMAND} -Durl=http://cern.ch/service-spi/external/tarFiles/MCGeneratorsTarFiles/pyquen<pyquen_<NATIVE_VERSION>_author>.f
                                     -Dsource_dir=<SOURCE_DIR>/src
                                     -P  ${CMAKE_SOURCE_DIR}/cmake/scripts/DownloadURL.cmake
   UPDATE_COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/pyquen/files  <SOURCE_DIR>
@@ -269,10 +269,10 @@ LCG_add_test(pyquen-test1 COMMAND pyquen/tests/pyquen_test1
 #---hydjet--------------------------------------------------------------------------------------
 LCGPackage_Add(
   hydjet
-  DOWNLOAD_COMMAND ${CMAKE_COMMAND} -Durl=http://lokhtin.web.cern.ch/lokhtin/hydro/hydjet<hydjet_<NATIVE_VERSION>_author>.f
+  DOWNLOAD_COMMAND ${CMAKE_COMMAND} -Durl=http://cern.ch/service-spi/external/tarFiles/MCGeneratorsTarFiles/hydjet<hydjet_<NATIVE_VERSION>_author>.f
                                     -Dsource_dir=<SOURCE_DIR>/src
                                     -P  ${CMAKE_SOURCE_DIR}/cmake/scripts/DownloadURL.cmake
-  DOWNLOAD_COMMAND ${CMAKE_COMMAND} -Durl=http://lokhtin.web.cern.ch/lokhtin/hydro/jetset_73.f
+  DOWNLOAD_COMMAND ${CMAKE_COMMAND} -Durl=http://cern.ch/service-spi/external/tarFiles/MCGeneratorsTarFiles/jetset_73.f
                                     -Dsource_dir=<SOURCE_DIR>/jetset
                                     -P ${CMAKE_SOURCE_DIR}/cmake/scripts/DownloadURL.cmake
   UPDATE_COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/hydjet/files  <SOURCE_DIR>
@@ -291,7 +291,7 @@ LCG_add_test(hydjet-test COMMAND hydjet/tests/hydjet_test
 #---photos++------------------------------------------------------------------------------------------
 LCGPackage_Add(
   photos++
-  URL http://annapurna.ifj.edu.pl/~tprzedzinski/resources/PHOTOS.${photos++_native_version}/PHOTOS.${photos++_native_version}-LHC.tar.gz
+  URL http://cern.ch/service-spi/external/tarFiles/MCGeneratorsTarFiles/PHOTOS.${photos++_native_version}-LHC.tar.gz
   CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --with-hepmc=${HepMC_home}
   BUILD_IN_SOURCE 1
   INSTALL_COMMAND  make install
@@ -318,7 +318,7 @@ if(LCG_TARGET MATCHES "mac")
 endif()
 LCGPackage_Add(
   evtgen
-  SVN_REPOSITORY http://svnweb.cern.ch/guest/evtgen/tags/<evtgen_<NATIVE_VERSION>_tag>
+  URL http://cern.ch/service-spi/external/tarFiles/MCGeneratorsTarFiles/evtgen-<NATIVE_VERSION>.tar.gz
   UPDATE_COMMAND <VOID>
   CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> 
                                 --hepmcdir=${HepMC_home}
@@ -346,7 +346,7 @@ LCG_add_test(evtgen_orig_test1 COMMAND evtgen/tests/evtgen_orig_test1
 #---cython------------------------------------------------------------------------------------------
 LCGPackage_Add(
   cython
-  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/Cython-${cython_native_version}.tar.gz
+  URL http://cern.ch/service-spi/external/tarFiles/MCGeneratorsTarFiles/Cython-${cython_native_version}.tar.gz
   CONFIGURE_COMMAND <VOID>
   BUILD_COMMAND ${Python_home}/bin/python setup.py build
   INSTALL_COMMAND ${Python_home}/bin/python setup.py install --prefix <INSTALL_DIR>
@@ -358,7 +358,7 @@ set(cython_pythonpath ${cython_home}/lib/python${Python_config_version_twodigit}
 #---yaml-cpp----------------------------------------------------------------------------------------
 LCGPackage_Add(
   yaml_cpp
-  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/yaml-cpp-${yaml_cpp_native_version}.tar.gz
+  URL http://cern.ch/service-spi/external/tarFiles/MCGeneratorsTarFiles/yaml-cpp-${yaml_cpp_native_version}.tar.gz
   CMAKE_ARGS -DBOOST_ROOT=${Boost_home} -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR> -DBUILD_SHARED_LIBS=ON
   BUILD_IN_SOURCE 1
 )
@@ -367,7 +367,7 @@ LCGPackage_Add(
 #---Yoda-------------------------------------------------------------------------------------------
 LCGPackage_Add(
   yoda
-  URL http://www.hepforge.org/archive/yoda/YODA-${yoda_native_version}.tar.gz
+  URL http://cern.ch/service-spi/external/tarFiles/MCGeneratorsTarFiles/YODA-${yoda_native_version}.tar.gz
   CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix=<INSTALL_DIR>
       --with-boost=${Boost_home}
       PYTHON=${Python_home}/bin/python LD_LIBRARY_PATH=${Python_home}/lib:$ENV{LD_LIBRARY_PATH}
@@ -397,7 +397,7 @@ LCGPackage_Add(
 #---Rivet2-----------------------------------------------------------------------------------------
 LCGPackage_Add(
   rivet2
-  URL http://www.hepforge.org/archive/rivet/Rivet-${rivet2_native_version}.tar.bz2
+  URL http://cern.ch/service-spi/external/tarFiles/MCGeneratorsTarFiles/Rivet-${rivet2_native_version}.tar.bz2
   CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR>
      --with-hepmc=${HepMC_home} 
      --with-boost=${Boost_home_include}
@@ -423,7 +423,7 @@ LCGPackage_Add(
 #---Rivet------------------------------------------------------------------------------------------
 LCGPackage_Add(
   rivet
-  URL http://www.hepforge.org/archive/rivet/Rivet-<NATIVE_VERSION>.tar.bz2
+  URL http://cern.ch/service-spi/external/tarFiles/MCGeneratorsTarFiles/Rivet-<NATIVE_VERSION>.tar.bz2
   CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR>
      --with-hepmc=${HepMC_home} 
      --with-boost-incpath=${Boost_home_include}
@@ -447,7 +447,7 @@ LCGPackage_Add(
 #---Sherpa------------------------------------------------------------------------------------------
 LCGPackage_Add(
   sherpa
-  URL http://www.hepforge.org/archive/sherpa/SHERPA-MC-<sherpa_<NATIVE_VERSION>_author>.tar.gz
+  URL http://cern.ch/service-spi/external/tarFiles/MCGeneratorsTarFiles/SHERPA-MC-<sherpa_<NATIVE_VERSION>_author>.tar.gz
   CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR>
      --enable-shared --enable-static --enable-binreloc --enable-analysis
      --enable-pythia --enable-hepevtsize=<sherpa_<NATIVE_VERSION>_hepevt>
@@ -461,7 +461,7 @@ LCGPackage_Add(
 #---HepMCAnalysis------------------------------------------------------------------------------------
 LCGPackage_Add(
   hepmcanalysis
-  URL http://hepmcanalysistool.desy.de/releases/HepMCAnalysis-<hepmcanalysis_<NATIVE_VERSION>_author>.tgz
+  URL http://cern.ch/service-spi/external/tarFiles/MCGeneratorsTarFiles/HepMCAnalysis-<hepmcanalysis_<NATIVE_VERSION>_author>.tgz
   UPDATE_COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/hepmcanalysis/files <SOURCE_DIR>
   CONFIGURE_COMMAND <VOID>
   BUILD_COMMAND $(MAKE) VERBOSE=1 HepMCdir=${HepMC_home} FastJetdir=${fastjet_home} ROOTSYS=${ROOT_home} CLHEPdir=${CLHEP_home}
@@ -475,8 +475,7 @@ LCGPackage_Add(
 #---MC-TESTER----------------------------------------------------------------------------------------
 LCGPackage_Add(
   mctester
-  URL http://cern.ch/MC-TESTER/MC-TESTER-${mctester_native_version}.tar.gz
-  UPDATE_COMMAND ${CMAKE_COMMAND} -E touch make.inc
+  URL http://cern.ch/service-spi/external/tarFiles/MCGeneratorsTarFiles/MC-TESTER-${mctester_native_version}.tar.gz
   CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --with-HepMC=${HepMC_home} --with-root=${ROOT_home}/bin
   BUILD_COMMAND $(MAKE) LD_LIBRARY_PATH=${ROOT_home}/lib:$ENV{LD_LIBRARY_PATH}
   BUILD_IN_SOURCE 1
@@ -486,7 +485,7 @@ LCGPackage_Add(
 #---HIJING----------------------------------------------------------------------------------------
 LCGPackage_Add(
   hijing
-  URL http://cern.ch/service-spi/external/MCGenerators/distribution/hijing/hijing-${hijing_native_version}-src.tgz
+  URL http://cern.ch/service-spi/external/tarFiles/MCGeneratorsTarFiles/hijing-${hijing_native_version}-src.tgz
   UPDATE_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/${hijing_native_version} <SOURCE_DIR>   
          COMMAND ${CMAKE_COMMAND} -E remove_directory <SOURCE_DIR>/${hijing_native_version}
   CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR>
@@ -526,7 +525,7 @@ LCG_add_test(starlight_genser_test1 COMMAND starlight/tests/starlight_genser_tes
 #---HERWIG----------------------------------------------------------------------------------------
 LCGPackage_Add(
   herwig
-  URL http://cern.ch/service-spi/external/MCGenerators/distribution/herwig/herwig-<NATIVE_VERSION>-src.tgz
+  URL http://cern.ch/service-spi/external/tarFiles/MCGeneratorsTarFiles/herwig-<NATIVE_VERSION>-src.tgz
   UPDATE_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/<NATIVE_VERSION> <SOURCE_DIR>
          COMMAND ${CMAKE_COMMAND} -E remove_directory <SOURCE_DIR>/<NATIVE_VERSION>
   CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> "FFLAGS=-O2 -fPIC -Wuninitialized -fno-automatic"
@@ -539,7 +538,7 @@ LCGPackage_Add(
 #---tauola------------------------------------------------------------------------------------------
 LCGPackage_Add(
   tauola
-    URL http://sftweb.cern.ch/generators/files/generator/tarballs/tauola-${tauola_native_version}-src.tgz
+  URL http://cern.ch/service-spi/external/tarFiles/MCGeneratorsTarFiles/tauola-${tauola_native_version}-src.tgz
   UPDATE_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/<NATIVE_VERSION> <SOURCE_DIR>
          COMMAND ${CMAKE_COMMAND} -E remove_directory <SOURCE_DIR>/<NATIVE_VERSION>
   CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --datadir=<INSTALL_DIR>/data --with-pythia6=${pythia6_home} --with-photos=${photos_home} --with-hepevt=4000
@@ -557,12 +556,12 @@ LCG_add_test(tauola-test1 COMMAND tauola/tests/tauola_test1
 #---jimmy------------------------------------------------------------------------------------------
 LCGPackage_Add(
   jimmy
-    URL http://sftweb.cern.ch/generators/files/generator/tarballs/jimmy-${jimmy_native_version}-src.tgz
-    UPDATE_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/<NATIVE_VERSION> <SOURCE_DIR>
+  URL http://cern.ch/service-spi/external/tarFiles/MCGeneratorsTarFiles/jimmy-${jimmy_native_version}-src.tgz
+  UPDATE_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/<NATIVE_VERSION> <SOURCE_DIR>
            COMMAND ${CMAKE_COMMAND} -E remove_directory <SOURCE_DIR>/<NATIVE_VERSION>
-    CONFIGURE_COMMAND ./configure --with-herwig=${herwig_home}
-    BUILD_COMMAND $(MAKE) FC=${CMAKE_Fortran_COMPILER}
-    INSTALL_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/lib <INSTALL_DIR>/lib
+  CONFIGURE_COMMAND ./configure --with-herwig=${herwig_home}
+  BUILD_COMMAND $(MAKE) FC=${CMAKE_Fortran_COMPILER}
+  INSTALL_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/lib <INSTALL_DIR>/lib
             COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/include <INSTALL_DIR>/include
 	    COMMAND ${CMAKE_COMMAND} -E chdir <INSTALL_DIR>/lib ${CMAKE_COMMAND} -E create_symlink archive/libjimmy.a libjimmy.a
     BUILD_IN_SOURCE 1
@@ -572,7 +571,7 @@ LCGPackage_Add(
 #---hydjet++---------------------------------------------------------------------------------------
 LCGPackage_Add(
   hydjet++
-  DOWNLOAD_COMMAND ${CMAKE_COMMAND} -Durl=http://lokhtin.web.cern.ch/lokhtin/hydjet++/HYDJET++<hydjet++_<NATIVE_VERSION>_author>.ZIP
+  DOWNLOAD_COMMAND ${CMAKE_COMMAND} -Durl=http://cern.ch/service-spi/external/tarFiles/MCGeneratorsTarFiles/HYDJET++<hydjet++_<NATIVE_VERSION>_author>.ZIP
                                     -Dsource_dir=<SOURCE_DIR>
                                     -P ${CMAKE_SOURCE_DIR}/cmake/scripts/DownloadURL.cmake
            COMMAND unzip <SOURCE_DIR>/HYDJET++<hydjet++_<NATIVE_VERSION>_author>.ZIP -d <SOURCE_DIR>
@@ -649,7 +648,7 @@ LCGPackage_Add(
 #---baurmc------------------------------------------------------------------------------------------
 LCGPackage_Add(
   baurmc
-  URL http://service-spi.web.cern.ch/service-spi/external/MCGenerators/distribution/baurmc/baurmc-<NATIVE_VERSION>-src.tgz
+  URL http://cern.ch/service-spi/external/tarFiles/MCGeneratorsTarFiles/baurmc-<NATIVE_VERSION>-src.tgz
   UPDATE_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/<NATIVE_VERSION> <SOURCE_DIR>
          COMMAND ${CMAKE_COMMAND} -E remove_directory <SOURCE_DIR>/<NATIVE_VERSION>
   CONFIGURE_COMMAND ./configure --lcgplatform=${LCG_platform}  --userfflags=-fno-automatic --enable-shared
