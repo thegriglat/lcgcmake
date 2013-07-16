@@ -600,7 +600,7 @@ LCGPackage_Add(
 if ( ${crmc_native_version} MATCHES "^v")
 LCGPackage_Add(
   crmc
-  URL http://sftweb.cern.ch/generators/files/generator/tarballs/crmc-${crmc_native_version}.tar.gz
+  URL http://cern.ch/service-spi/external/tarFiles/MCGeneratorsTarFiles/crmc-${crmc_native_version}.tar.gz
   # SVN_REPOSITORY https://devel-ik.fzk.de/svn/mc/crmc/tags/${crmc_native_version}
   CONFIGURE_COMMAND <VOID>
   BUILD_COMMAND $(MAKE) -f Makefile CRMCROOT=<INSTALL_DIR> HEP_ROOT=${HepMC_home}
