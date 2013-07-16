@@ -381,7 +381,7 @@ LCGPackage_Add(
 #---lhapdf6------------------------------------------------------------------------------------------
 LCGPackage_Add(
   lhapdf6
-  URL http://www.hepforge.org/archive/lhapdf/LHAPDF-<NATIVE_VERSION>.tar.gz
+  URL http://cern.ch/service-spi/external/tarFiles/MCGeneratorsTarFiles/LHAPDF-<NATIVE_VERSION>.tar.gz
   CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> 
      --with-boost=${Boost_home}
      --with-yaml-cpp=${yaml_cpp_home}
@@ -476,6 +476,7 @@ LCGPackage_Add(
 LCGPackage_Add(
   mctester
   URL http://cern.ch/service-spi/external/tarFiles/MCGeneratorsTarFiles/MC-TESTER-${mctester_native_version}.tar.gz
+  UPDATE_COMMAND $s{CMAKE_COMMAND} -E touch make.inc 
   CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --with-HepMC=${HepMC_home} --with-root=${ROOT_home}/bin
   BUILD_COMMAND $(MAKE) LD_LIBRARY_PATH=${ROOT_home}/lib:$ENV{LD_LIBRARY_PATH}
   BUILD_IN_SOURCE 1
@@ -574,7 +575,7 @@ LCGPackage_Add(
   DOWNLOAD_COMMAND ${CMAKE_COMMAND} -Durl=http://cern.ch/service-spi/external/tarFiles/MCGeneratorsTarFiles/HYDJET++<hydjet++_<NATIVE_VERSION>_author>.ZIP
                                     -Dsource_dir=<SOURCE_DIR>
                                     -P ${CMAKE_SOURCE_DIR}/cmake/scripts/DownloadURL.cmake
-           COMMAND unzip <SOURCE_DIR>/HYDJET++<hydjet++_<NATIVE_VERSION>_author>.ZIP -d <SOURCE_DIR>
+  COMMAND unzip <SOURCE_DIR>/HYDJET++<hydjet++_<NATIVE_VERSION>_author>.ZIP -d <SOURCE_DIR>
   CONFIGURE_COMMAND <VOID>
   BUILD_COMMAND ${Exec_cmd} PATH=${ROOT_home}/bin:$ENV{PATH} make -j2 F77LIBSO=${FORTRAN_LIBRARY}
   INSTALL_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/lib <INSTALL_DIR>/lib
