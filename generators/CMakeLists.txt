@@ -245,6 +245,22 @@ LCG_add_test(photos-test1 COMMAND photos/tests/photos_test1
                           FAILREGEX "Fatal error"
                           ENVIRONMENT ${library_path}=${photos_home}/lib:${pythia6_home}/lib:$ENV{${library_path}})
 
+#---professor------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  professor
+  URL http://www.hepforge.org/archive/professor/professor-<NATIVE_VERSION>.tar.bz2
+  UPDATE_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/<NATIVE_VERSION> <SOURCE_DIR>
+         COMMAND ${CMAKE_COMMAND} -E remove_directory <SOURCE_DIR>/<NATIVE_VERSION>
+  CONFIGURE_COMMAND <VOID>
+  BUILD_COMMAND <VOID>
+  INSTALL_COMMAND ${CMAKE_COMMAND} -E chdir <SOURCE_DIR> ${Python_cmd} setup.py install --prefix <INSTALL_DIR>
+  DEPENDS Python 
+)
+                            
+                                    
+#---pyquen--------------------------------------------------------------------------------------
+
+
 #---pyquen--------------------------------------------------------------------------------------
 
 LCGPackage_Add(
