@@ -318,7 +318,7 @@ if(LCG_TARGET MATCHES "mac")
 endif()
 LCGPackage_Add(
   evtgen
-  URL http://cern.ch/service-spi/external/tarFiles/MCGeneratorsTarFiles/evtgen-<NATIVE_VERSION>.tar.gz
+  URL http://cern.ch/service-spi/external/tarFiles/MCGeneratorsTarFiles/evtgen-<evtgen_<NATIVE_VERSION>_tag>.tar.gz
   UPDATE_COMMAND <VOID>
   CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> 
                                 --hepmcdir=${HepMC_home}
