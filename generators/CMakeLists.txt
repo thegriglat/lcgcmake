@@ -257,7 +257,7 @@ LCGPackage_Add(
   CONFIGURE_COMMAND <VOID>
   BUILD_COMMAND <VOID>
   INSTALL_COMMAND ${CMAKE_COMMAND} -E chdir <SOURCE_DIR> ${Python_cmd} setup.py install --prefix <INSTALL_DIR>
-  DEPENDS Python 
+  DEPENDS Python matplotlib pyminuit scipy 
 )
                             
                                     
