@@ -1,0 +1,19 @@
+--- src/Makefile.am.orig	2013-07-19 19:47:33.000000000 +0200
++++ src/Makefile.am	2013-07-19 19:50:00.000000000 +0200
+@@ -49,4 +49,4 @@
+            -I$(top_srcdir)/src/utilities \
+            -I$(HEPMC_DIR)/include
+ 
+-libTauolaCxxInterface_la_FFLAGS = -g -O2 -fPIC -fno-automatic -fno-backslash -ffixed-line-length-132
++libTauolaCxxInterface_la_FFLAGS = -O2 -fPIC -fno-automatic -fno-backslash -ffixed-line-length-132
+--- src/Makefile.in.orig	2013-07-19 19:47:18.000000000 +0200
++++ src/Makefile.in	2013-07-19 19:49:23.000000000 +0200
+@@ -267,7 +267,7 @@
+            -I$(top_srcdir)/src/utilities \
+            -I$(HEPMC_DIR)/include
+ 
+-libTauolaCxxInterface_la_FFLAGS = -g -O2 -fPIC -fno-automatic -fno-backslash -ffixed-line-length-132
++libTauolaCxxInterface_la_FFLAGS = -O2 -fPIC -fno-automatic -fno-backslash -ffixed-line-length-132
+ all: all-am
+ 
+ .SUFFIXES:
