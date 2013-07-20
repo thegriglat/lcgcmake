@@ -140,7 +140,7 @@ LCG_external_package(xqilla            2.2.4p1                                  
 LCG_external_package(xrootd            3.2.7                                    )
 
 set(MCGENPATH  MCGenerators_lcgcmt${heptools_version})
-
+#set(MCGENPATH  MCGenerators_test)
 #---Additional External packages------(Generators)-----------------
 LCG_external_package(powheg-box         r2092         ${MCGENPATH}/powheg-box   )
 LCG_external_package(lhapdf            5.8.8          ${MCGENPATH}/lhapdf       )

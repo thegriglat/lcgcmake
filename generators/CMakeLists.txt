@@ -126,7 +126,7 @@ LCGPackage_Add(
                                 --with-gsl=${GSL_home} --without-javagui CFLAGS=-O2 CXXFLAGS=-O2 FFLAGS=-O2
   BUILD_COMMAND $(MAKE) all V=1 
   INSTALL_COMMAND make install
-          COMMAND ${CMAKE_COMMAND} -DINSTALL_DIR=<INSTALL_DIR> -P ${CMAKE_SOURCE_DIR}/cmake/scripts/StripLib.cmake
+#          COMMAND ${CMAKE_COMMAND} -DINSTALL_DIR=<INSTALL_DIR> -P ${CMAKE_SOURCE_DIR}/cmake/scripts/StripLib.cmake
   BUILD_IN_SOURCE 1
   DEPENDS HepMC GSL lhapdf
 )
@@ -503,7 +503,7 @@ LCGPackage_Add(
   mctester
   URL http://cern.ch/service-spi/external/tarFiles/MCGeneratorsTarFiles/MC-TESTER-${mctester_native_version}.tar.gz
   UPDATE_COMMAND ${CMAKE_COMMAND} -E touch make.inc 
-  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --with-HepMC=${HepMC_home} --with-root=${ROOT_home}/bin
+  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --with-HepMC=${HepMC_home} --with-root=${ROOT_home}/bin "CFLAGS=-O2 -g0" "CXXFLAGS=-O2 -g0" "FFLAGS=-O2 -g0"
   BUILD_COMMAND $(MAKE) LD_LIBRARY_PATH=${ROOT_home}/lib:$ENV{LD_LIBRARY_PATH}
   INSTALL_COMMAND make install 
           COMMAND ${CMAKE_COMMAND} -DINSTALL_DIR=<INSTALL_DIR> -P ${CMAKE_SOURCE_DIR}/cmake/scripts/StripLib.cmake
