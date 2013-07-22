@@ -328,18 +328,20 @@ LCGPackage_Add(
 )
 
 #---lcov-------------------------------------------------------------------------------------------------
-LCGPackage_Add(
-  lcov
-  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/lcov-${lcov_native_version}.tar.gz
-  CONFIGURE_COMMAND <VOID>
-  BUILD_COMMAND  <VOID>
-  INSTALL_COMMAND make install PREFIX=<INSTALL_DIR>
+if(NOT APPLE) # There are problems building on MacOSX
+  LCGPackage_Add(
+    lcov
+    URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/lcov-${lcov_native_version}.tar.gz
+    CONFIGURE_COMMAND <VOID>
+    BUILD_COMMAND  <VOID>
+    INSTALL_COMMAND make install PREFIX=<INSTALL_DIR>
           COMMAND ${CMAKE_COMMAND} -E rename <INSTALL_DIR>/usr/bin <INSTALL_DIR>/bin
           COMMAND ${CMAKE_COMMAND} -E rename <INSTALL_DIR>/usr/share/man <INSTALL_DIR>/man 
           COMMAND ${CMAKE_COMMAND} -E remove_directory <INSTALL_DIR>/usr/share
           COMMAND ${CMAKE_COMMAND} -E remove_directory <INSTALL_DIR>/usr/
-  BUILD_IN_SOURCE 1
-)
+    BUILD_IN_SOURCE 1
+  ) 
+endif()
 
 #---soqt-------------------------------------------------------------------------------------------------
 LCGPackage_Add(
