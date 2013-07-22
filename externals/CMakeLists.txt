@@ -90,6 +90,7 @@ LCGPackage_Add(
   CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
              -Dmomentum:STRING=MEV
              -Dlength:STRING=MM
+	     -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
 )
 
 #---HepPDT-------------------------------------------------------------------------------------------
