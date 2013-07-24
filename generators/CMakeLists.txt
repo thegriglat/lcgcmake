@@ -95,12 +95,13 @@ LCGPackage_Add(
   CONFIGURE_EXAMPLES_COMMAND <SOURCE_DIR>/examples/configure
                              --with-pythia8=<INSTALL_DIR>
                              --with-lhapdf=${lhapdf_home}/lib
+                             --with-fastjet=${fastjet_home}
   BUILD_EXAMPLES_COMMAND $(MAKE) -C <SOURCE_DIR>/examples main01 main03
   INSTALL_EXAMPLES_COMMAND ${CMAKE_COMMAND} -E make_directory <INSTALL_DIR>/bin
                    COMMAND ${CMAKE_COMMAND} -E chdir <SOURCE_DIR>/examples cp bin/main01.exe bin/main03.exe main03.cmnd test <INSTALL_DIR>/bin
 #  TEST_COMMAND ${CMAKE_COMMAND} -E chdir  <INSTALL_DIR>/bin ./main01.exe
   TEST_COMMAND ${CMAKE_COMMAND} -E chdir  <INSTALL_DIR>/bin ./test
-  DEPENDS HepMC lhapdf
+  DEPENDS HepMC lhapdf fastjet
 )
 
 LCG_add_test(pythia8-build  BINARY_DIR pythia8/tests SOURCE_DIR pythia8/tests

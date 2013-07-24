@@ -215,22 +215,25 @@ macro(LCGPackage_Add name)
         set(testdepender DEPENDERS test)
       endif()
       if(ARG_CONFIGURE_EXAMPLES_COMMAND)
+        string(REPLACE <INSTALL_DIR> ${${dest_name}_home} ARG_CONFIGURE_EXAMPLES_COMMAND_BIS "${ARG_CONFIGURE_EXAMPLES_COMMAND}")
         ExternalProject_Add_Step(${targetname} configure_examples COMMENT "Configure examples for '${targetname}'"
-          COMMAND  ${ARG_CONFIGURE_EXAMPLES_COMMAND}
+          COMMAND  ${ARG_CONFIGURE_EXAMPLES_COMMAND_BIS}
           ${testdepender}
           DEPENDEES ${current_dependee})
         set(current_dependee configure_examples)
       endif()
       if(ARG_BUILD_EXAMPLES_COMMAND)
+        string(REPLACE <INSTALL_DIR> ${${dest_name}_home} ARG_BUILD_EXAMPLES_COMMAND_BIS "${ARG_BUILD_EXAMPLES_COMMAND}")
         ExternalProject_Add_Step(${targetname} build_examples COMMENT "Build examples for '${targetname}'"
-          COMMAND  ${ARG_BUILD_EXAMPLES_COMMAND}
+          COMMAND  ${ARG_BUILD_EXAMPLES_COMMAND_BIS}
           ${testdepender}
           DEPENDEES ${current_dependee})
         set(current_dependee build_examples)
       endif()
       if(ARG_INSTALL_EXAMPLES_COMMAND)
+        string(REPLACE <INSTALL_DIR> ${${dest_name}_home} ARG_INSTALL_EXAMPLES_COMMAND_BIS "${ARG_INSTALL_EXAMPLES_COMMAND}")
         ExternalProject_Add_Step(${targetname} install_examples COMMENT "Install examples for '${targetname}'"
-          COMMAND  ${ARG_INSTALL_EXAMPLES_COMMAND}
+          COMMAND  ${ARG_INSTALL_EXAMPLES_COMMAND_BIS}
           ${testdepender}
           DEPENDEES ${current_dependee})
         set(current_dependee install_examples)
