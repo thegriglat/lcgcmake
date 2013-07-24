@@ -94,7 +94,7 @@ LCGPackage_Add(
           COMMAND ${CMAKE_COMMAND} -E chdir <INSTALL_DIR>/../share ${CMAKE_COMMAND} -E create_symlink sources/lcg_readme README
   CONFIGURE_EXAMPLES_COMMAND <SOURCE_DIR>/examples/configure
                              --with-pythia8=<INSTALL_DIR>
-                             --with-lhapdf=${lhapdf_home}/lib
+                             --with-lhapdf=${lhapdf_home}/lib/archive
                              --with-fastjet=${fastjet_home}
   BUILD_EXAMPLES_COMMAND $(MAKE) -C <SOURCE_DIR>/examples main01 main03
   INSTALL_EXAMPLES_COMMAND ${CMAKE_COMMAND} -E make_directory <INSTALL_DIR>/bin
