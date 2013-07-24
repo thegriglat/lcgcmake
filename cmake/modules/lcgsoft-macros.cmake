@@ -151,6 +151,7 @@ macro(LCGPackage_Add name)
       #   unconditionaly before make is executed. So, we replace <INSTALL_DIR> before passing the
       #   arguments to ExternalPreject_Add().
       string(REPLACE <INSTALL_DIR> ${${dest_name}_home} ARGUMENTS "${ARGUMENTS}")
+      string(REPLACE <INSTALL_DIR> ${${dest_name}_home} ARG_TEST_COMMAND_BIS "${ARG_TEST_COMMAND}")
 
       #---Add the external project -------------------------------------------------------------------
       ExternalProject_Add(
@@ -158,7 +159,7 @@ macro(LCGPackage_Add name)
         PREFIX ${targetname}
         SOURCE_DIR ${targetname}/src/${name}/${version}
         "${ARGUMENTS}"
-        TEST_COMMAND ${ARG_TEST_COMMAND}
+        TEST_COMMAND ${ARG_TEST_COMMAND_BIS}
         LOG_CONFIGURE 1 LOG_BUILD 1 LOG_INSTALL 1 )
         
       if(ARG_DEPENDS)
