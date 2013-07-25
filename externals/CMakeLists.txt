@@ -210,7 +210,11 @@ else()
 endif()
 
 #---graphviz--------------------------------------------------------------------------------------------
-set(graphviz_config_opts -with-pic -enable-swig=no --with-qt=no)
+if(LCG_TARGET MATCHES mac108)
+  set (graphviz_config_opts -with-pic -enable-swig=no --with-qt=no --with-included-ltdl)
+else ()
+  set(graphviz_config_opts -with-pic -enable-swig=no --with-qt=no )
+endif()
 if(LCG_TARGET MATCHES "i686")
   list(APPEND graphviz_config_opts --build=i686-unknown-linux-gnu)
 endif()
