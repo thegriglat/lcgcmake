@@ -193,7 +193,7 @@ macro(LCGPackage_Add name)
         ExternalProject_Add_Step(${targetname} package COMMENT "Creating binary tarball and version.txt file for '${targetname}'"
                   COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_INSTALL_PREFIX}/${${name}_directory_name}/../distribution/${name}
                   COMMAND ${CMAKE_COMMAND} -E chdir ${${dest_name}_home}/../../..
-                  ${CMAKE_TAR} -czhf ${CMAKE_INSTALL_PREFIX}/${${name}_directory_name}/../distribution/${name}/${name}-${version}-${LCG_system}-${targethash}.tgz ${n_name}/${version}/${LCG_system}
+                  ${CMAKE_TAR} -czhf ${CMAKE_INSTALL_PREFIX}/${${name}_directory_name}/../distribution/${name}/${name}-${version}-${LCG_system}.tgz ${n_name}/${version}/${LCG_system}
                   COMMAND ${CMAKE_COMMAND} -DINSTALL_DIR=${${dest_name}_home} -DFULL_VERSION=${${name}_full_version} -P ${CMAKE_SOURCE_DIR}/cmake/scripts/InstallVersionFile.cmake
           DEPENDEES strip_rpath)
       endif()
