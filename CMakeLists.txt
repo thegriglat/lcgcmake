@@ -19,7 +19,11 @@ message(STATUS "Existing LCG installations: ${LCG_INSTALL_PREFIX}")
 include(${CMAKE_SOURCE_DIR}/toolchain.cmake)
 include(lcgsoft-macros)
 
-#---Enable (the defintion) of tests by default
+#---Define Global variables--------------------------------------------------------------------------------------------
+set(EXEC ${CMAKE_SOURCE_DIR}/cmake/scripts/exec-with-env)
+set(MAKE ${CMAKE_SOURCE_DIR}/cmake/scripts/make_verbose)
+
+#---Enable (the defintion) of tests by default-------------------------------------------------------------------------
 enable_testing()
 include(CTest)
 
