@@ -358,10 +358,10 @@ LCGPackage_Add(
   DEPENDS HepMC pythia8 photos++ tauola++
 )
 
-LCG_add_test(evtgen_orig_test1 COMMAND evtgen/tests/evtgen_orig_test1
+LCG_add_test(evtgen_test1 COMMAND evtgen/tests/evtgen_test1 ddalitz 1000
                           BINARY_DIR evtgen/tests
                           SOURCE_DIR evtgen/tests
-                          BUILD evtgen_orig_test1
+                          BUILD evtgen_test1
                           BUILD_OPTIONS -DCMAKE_MODULE_PATH=${cmaketools_home}/modules
                                         -DROOTSYS=${ROOT_home}
                                         -DEVTGEN_ROOT_DIR=${evtgen_home} -DPYTHIA8_ROOT_DIR=${pythia8_home}

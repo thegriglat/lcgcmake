@@ -18,6 +18,6 @@ include_directories(${EVTGEN_INCLUDE_DIR}
                     ${PYTHIA8_INCLUDE_DIR}
                     ${ROOT_INCLUDE_DIR})
 
-add_executable(evtgen_orig_test1 ${TEST_DIR}/evtgenlhc_test1.cc)
-target_link_libraries(evtgen_orig_test1 ${EVTGEN_LIBRARIES} ${PHOTOSPP_LIBRARIES} ${HEPMC_LIBRARIES} ${PYTHIA8_LIBRARIES} ${ROOT_LIBRARIES})
+add_executable(evtgen_test1 evtgen_test1.cc)
+target_link_libraries(evtgen_test1 ${EVTGEN_LIBRARIES} ${PHOTOSPP_LIBRARIES} ${HEPMC_LIBRARIES} ${PYTHIA8_LIBRARIES} ${ROOT_LIBRARIES})
 
