@@ -358,7 +358,7 @@ LCGPackage_Add(
   DEPENDS HepMC pythia8 photos++ tauola++
 )
 
-LCG_add_test(evtgen_test1 COMMAND evtgen/tests/evtgen_test1 ddalitz 1000
+LCG_add_test(evtgen_test1 COMMAND evtgen/tests/evtgen_test1 ${evtgen_home}/share/DECAY_2010.DEC ${evtgen_home}/share/evt.pdl ${CMAKE_CURRENT_SOURCE_DIR}/evtgen/tests/DDALITZ.DEC 10000
                           BINARY_DIR evtgen/tests
                           SOURCE_DIR evtgen/tests
                           BUILD evtgen_test1
@@ -367,7 +367,8 @@ LCG_add_test(evtgen_test1 COMMAND evtgen/tests/evtgen_test1 ddalitz 1000
                                         -DEVTGEN_ROOT_DIR=${evtgen_home} -DPYTHIA8_ROOT_DIR=${pythia8_home}
                                         -DPHOTOSPP_ROOT_DIR=${photos++_home} -DTAUOLAPP_ROOT_DIR=${tauola++_home}
                                         -DHEPMC_ROOT_DIR=${HepMC_home}
-                          ENVIRONMENT ${library_path}=${evtgen_home}/lib:${photos++_home}/lib:${pythia8_home}/lib:${HepMC_home}/lib:${ROOT_home}/lib:$ENV{${library_path}})
+                          ENVIRONMENT ${library_path}=${evtgen_home}/lib:${photos++_home}/lib:${pythia8_home}/lib:${HepMC_home}/lib:${ROOT_home}/lib:$ENV{${library_path}} 
+                                      PYTHIA8DATA=${pythia8_home}/xmldoc)
 
 #---cython------------------------------------------------------------------------------------------
 LCGPackage_Add(

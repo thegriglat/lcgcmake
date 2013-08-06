@@ -94,7 +94,7 @@ void runChi1Kstar(int nevent,EvtGen& myGenerator);
 void runPi0Dalitz(int nevent,EvtGen& myGenerator);
 void runMix(int nevent,EvtGen& myGenerator);
 void runBMix(int nevent,EvtGen& myGenerator,std::string userFile,std::string rootFile);
-void runDDalitz(int nevent,EvtGen& myGenerator);
+void runDDalitz(int nevent,EvtGen& myGenerator, char*);
 void runPiPiCPT(int nevent,EvtGen& myGenerator);
 void runPiPiPiPi(int nevent,EvtGen& myGenerator);
 void runD2Pi(int nevent,EvtGen& myGenerator);
@@ -170,19 +170,6 @@ int main(int argc, char* argv[]){
   if (!TROOT::Initialized()) {
     static TROOT root("RooTuple", "RooTuple ROOT God in EvtGen");
   }
-  if (argc==1){
-
-    EvtVector4R p(0.0,1.0,0.0,0.0);
-    EvtVector4R k(0.0,0.0,1.0,0.0);
-
-    EvtTensor4C T=dual(EvtGenFunctions::directProd(p,k));
-
-    report(INFO,"EvtGen") << "p:"<<p<<std::endl;
-    report(INFO,"EvtGen") << "k:"<<k<<std::endl;
-    report(INFO,"EvtGen") << "T=dual(directProd(p,k)):"<<T<<std::endl;
-    report(INFO,"EvtGen") << "T03:"<<T.get(0,3)<<std::endl;
-    return 1;
-  }
 
   EvtAbsRadCorr* radCorrEngine = 0;
   std::list<EvtDecayBase*> extraModels;
@@ -190,353 +177,11 @@ int main(int argc, char* argv[]){
   radCorrEngine = genList.getPhotosModel();
   extraModels = genList.getListOfModels();
 
-  EvtGen myGenerator("./DECAY.DEC","./evt.pdl",myRandomEngine,radCorrEngine,&extraModels);
-
-  if (!strcmp(argv[1],"file")) {
-    int nevent=atoi(argv[2]);
-    runFile(nevent,argv[3],myGenerator);
-  }
-
-  if (!strcmp(argv[1],"print")) {
-    int nevent=atoi(argv[2]);
-    runPrint(nevent,argv[3],myGenerator);
-  }
-
-  if (!strcmp(argv[1],"filevpho")) {
-    int nevent=atoi(argv[2]);
-    runFileVpho(nevent,argv[3],myGenerator);
-  }
-
-  if (!strcmp(argv[1],"test1")) {
-    int nevent=atoi(argv[2]);
-    runTest1(nevent,myGenerator);
-  }
-
-  if (!strcmp(argv[1],"chi1kstar")) {
-    int nevent=atoi(argv[2]);
-    runChi1Kstar(nevent,myGenerator);
-  }
-
-  if (!strcmp(argv[1],"test2")) {
-    int nevent=atoi(argv[2]);
-    runTest2(nevent,myGenerator);
-  }
-
-  if (!strcmp(argv[1],"omega")) {
-    int nevent=atoi(argv[2]);
-    runOmega(nevent,myGenerator);
-  }
-
-  if (!strcmp(argv[1],"alias")) {
-    runAlias();
-  }
-
-  if (!strcmp(argv[1],"repeat")) {
-    int nevent=atoi(argv[2]);
-      runRepeat(nevent);
-  }
-
-  if (!strcmp(argv[1],"photos")) {
-    int nevent=atoi(argv[2]);
-    runPhotos(nevent,myGenerator);
-  }
-
-  if (!strcmp(argv[1],"trackmult")) {
-    int nevent=atoi(argv[2]);
-    runTrackMult(nevent,myGenerator);
-  }
-
-  if (!strcmp(argv[1],"generic")) {
-    int nevent=atoi(argv[2]);
-    std::string listfile("");
-    if ( argc==4) listfile=argv[3];
-    runGeneric(nevent,myGenerator,listfile);
-  }
-
-  if (!strcmp(argv[1],"finalstates")) {
-    int nevent=atoi(argv[2]);
-    runFinalStates(nevent,myGenerator);
-  }
-
-  if (!strcmp(argv[1],"kstarnunu")) {
-    int nevent=atoi(argv[2]);
-    runKstarnunu(nevent,myGenerator);
-  }
-
-  if (!strcmp(argv[1],"bsmix")) {
-    int nevent=atoi(argv[2]);
-    runBsmix(nevent,myGenerator);
-  }
-
-  if (!strcmp(argv[1],"BtoXsgamma")) {
-    int nevent=atoi(argv[2]);
-    runBtoXsgamma(nevent,myGenerator);
-  }
-
-  if (!strcmp(argv[1],"BtoK1273gamma")) {
-    int nevent=atoi(argv[2]);
-    runBtoK1273gamma(nevent,myGenerator);
-  }
-
-  if (!strcmp(argv[1],"pi0dalitz")) {
-    int nevent=atoi(argv[2]);
-    runPi0Dalitz(nevent,myGenerator);
-  }
-
-  if (!strcmp(argv[1],"ddalitz")) {
-    int nevent=atoi(argv[2]);
-    runDDalitz(nevent,myGenerator);
-  }
-
-
-  if (!strcmp(argv[1],"kstarll")) {
-    int nevent=atoi(argv[2]);
-    runKstarll(nevent, myGenerator);
-  }
-  if (!strcmp(argv[1],"kll")) {
-    int nevent=atoi(argv[2]);
-    runKll(nevent, myGenerator);
-  }
-  if (!strcmp(argv[1],"hll")) {
-    int nevent=atoi(argv[2]);
-    runHll(nevent, myGenerator, argv[3]);
-  }
-
-  if (!strcmp(argv[1],"vectorisr")) {
-    int nevent=atoi(argv[2]);
-    runVectorIsr(nevent, myGenerator);
-  }
-
-
-  if (!strcmp(argv[1],"bsquark")) {
-    int nevent=atoi(argv[2]);
-    runBsquark(nevent, myGenerator);
-  }
-
-
-  if (!strcmp(argv[1],"k3gamma")) {
-    int nevent=atoi(argv[2]);
-    runK3gamma(nevent, myGenerator);
-  }
-
-  if (!strcmp(argv[1],"lambda")) {
-    int nevent=atoi(argv[2]);
-    runLambda(nevent, myGenerator);
-  }
-
-
-  if (!strcmp(argv[1],"tautaupipi")) {
-    int nevent=atoi(argv[2]);
-    runTauTauPiPi(nevent, myGenerator);
-  }
-
-  if (!strcmp(argv[1],"tautauee")) {
-    int nevent=atoi(argv[2]);
-    runTauTauEE(nevent, myGenerator);
-  }
-
-  if (!strcmp(argv[1],"tautau2pi2pi")) {
-    int nevent=atoi(argv[2]);
-    runTauTau2Pi2Pi(nevent, myGenerator);
-  }
-  if (!strcmp(argv[1],"tautau3pi3pi")) {
-    int nevent=atoi(argv[2]);
-    runTauTau3Pi3Pi(nevent, myGenerator);
-  }
-
-  if (!strcmp(argv[1],"jpsikstar")) {
-    int nevent=atoi(argv[2]);
-    int modeInt=atoi(argv[3]);
-    runJPsiKstar(nevent, myGenerator,modeInt);
-  }
-
-
-  if (!strcmp(argv[1],"svvcplh")) {
-    int nevent=atoi(argv[2]);
-    runSVVCPLH(nevent, myGenerator);
-  }
-
-
-  if (!strcmp(argv[1],"svscplh")) {
-    int nevent=atoi(argv[2]);
-    runSVSCPLH(nevent, myGenerator);
-  }
-
-
-  if (!strcmp(argv[1],"ssdcp")) {
-    int nevent=atoi(argv[2]);
-    runSSDCP(nevent, myGenerator);
-  }
-
-
-  if (!strcmp(argv[1],"kstarstargamma")) {
-    int nevent=atoi(argv[2]);
-    runKstarstargamma(nevent, myGenerator);
-  }
-
-
-  if (!strcmp(argv[1],"dstarpi")) {
-    int nevent=atoi(argv[2]);
-    runDSTARPI(nevent, myGenerator);
-  }
-
-
-  if (!strcmp(argv[1],"etacphiphi")) {
-    int nevent=atoi(argv[2]);
-    runETACPHIPHI(nevent, myGenerator);
-  }
-
-  if (!strcmp(argv[1],"vvpipi")) {
-    int nevent=atoi(argv[2]);
-    runVVPiPi(nevent, myGenerator);
-  }
-
-  if (!strcmp(argv[1],"svvhelamp")) {
-    int nevent=atoi(argv[2]);
-    runSVVHelAmp(nevent, myGenerator);
-  }
-
-  if (!strcmp(argv[1],"partwave")) {
-    int nevent=atoi(argv[2]);
-    runPartWave(nevent, myGenerator);
-  }
-
-  if (!strcmp(argv[1],"partwave2")) {
-    int nevent=atoi(argv[2]);
-    runPartWave2(nevent, myGenerator);
-  }
-
-  if (!strcmp(argv[1],"twobody")) {
-    int nevent=atoi(argv[2]);
-    runTwoBody(nevent, myGenerator, argv[3], argv[4]);
-  }
-
-  if (!strcmp(argv[1],"pipipi")) {
-    int nevent=atoi(argv[2]);
-    runPiPiPi(nevent, myGenerator);
-  }
-
-  if (!strcmp(argv[1],"bhadronic")) {
-    int nevent=atoi(argv[2]);
-    runBHadronic(nevent, myGenerator);
-  }
-
-  if (!strcmp(argv[1],"singleb")) {
-    int nevent=atoi(argv[2]);
-    runSingleB(nevent, myGenerator);
-  }
-
-  if (!strcmp(argv[1],"pipi")) {
-    int nevent=atoi(argv[2]);
-    runPiPi(nevent, myGenerator);
-  }
-
-  if (!strcmp(argv[1],"pipipipi")) {
-    int nevent=atoi(argv[2]);
-    runPiPiPiPi(nevent, myGenerator);
-  }
-     
-  if (!strcmp(argv[1],"a2pi")) {
-    int nevent=atoi(argv[2]);
-    runA2Pi(nevent, myGenerator);
-  }
-
-  if (!strcmp(argv[1],"helamp")) {
-    int nevent=atoi(argv[2]);
-    runHelAmp(nevent, myGenerator, argv[3], argv[4]);
-  }
-
-
-  if (!strcmp(argv[1],"helamp2")) {
-    int nevent=atoi(argv[2]);
-    runHelAmp2(nevent, myGenerator);
-  }
-
-  if (!strcmp(argv[1],"d2pi")) {
-    int nevent=atoi(argv[2]);
-    runD2Pi(nevent, myGenerator);
-  }
-
-  if (!strcmp(argv[1],"a1pi")) {
-    int nevent=atoi(argv[2]);
-    runA1Pi(nevent, myGenerator);
-  }
-
-  if (!strcmp(argv[1],"cptest")) {
-    int nevent=atoi(argv[2]);
-    runCPTest(nevent, myGenerator);
-  }
-
-  if (!strcmp(argv[1],"pipicpt")) {
-    int nevent=atoi(argv[2]);
-    runPiPiCPT(nevent, myGenerator);
-  }
-
-  if (!strcmp(argv[1],"jpsiks")) {
-    int nevent=atoi(argv[2]);
-    runJpsiKs(nevent, myGenerator);
-  }
-  
-  if (!strcmp(argv[1],"dump")) {
-    int nevent=atoi(argv[2]);
-    runDump(nevent, myGenerator);
-  }
-
-  if (!strcmp(argv[1],"genericcont")) {
-    int nevent=atoi(argv[2]);
-    runGenericCont(nevent, myGenerator);
-  }
-
-
-  if (!strcmp(argv[1],"d1")) {
-    int nevent=atoi(argv[2]);
-    runD1(nevent, myGenerator);
-  }
-  
-  if (!strcmp(argv[1],"mix")) {
-    int nevent=atoi(argv[2]);
-    runMix(nevent, myGenerator);
-  }
-
-  if (!strcmp(argv[1],"bmix")) {
-    int nevent=atoi(argv[2]);
-    runBMix(nevent, myGenerator, argv[3], argv[4]);
-  }
-  
-  if (!strcmp(argv[1],"semic")) {
-    int nevent=atoi(argv[2]);
-    runSemic(nevent,myGenerator);
-  }
-
-  if (!strcmp(argv[1],"ddk")) {
-     int nevent=atoi(argv[2]);
-     runDDK(nevent,myGenerator);
-   }
-
-  if (!strcmp(argv[1],"checkmass")) {
-     int nevent=atoi(argv[2]);
-     int partnum=atoi(argv[3]);
-     runMassCheck(nevent,myGenerator,partnum);
-   }
-                                                                             
-  if (!strcmp(argv[1],"jpsipolarization")) {
-     int nevent=atoi(argv[2]);
-     runJpsiPolarization(nevent,myGenerator);
-   }
-
-  //*******************************************************
-  //test of the rotations and boosts performed in EvtGen.
-  // Added by Lange and Ryd Jan 5,2000.
-  //*******************************************************
-
-  if (!strcmp(argv[1],"checkrotboost")) {
-    runCheckRotBoost();
-  }
-  
-  if ( !strcmp(argv[1], "baryonic") )
-  {
-      runBaryonic( atoi(argv[2]), myGenerator );
-  }
+  //EvtGen myGenerator("./DECAY.DEC","./evt.pdl",myRandomEngine,radCorrEngine,&extraModels);
+  EvtGen myGenerator(argv[1],argv[2],myRandomEngine,radCorrEngine,&extraModels);
+
+  int nevent=atoi(argv[4]);
+  runDDalitz(nevent,myGenerator,argv[3]);
 
   delete myRandomEngine;
   return 0;
@@ -4805,7 +4450,7 @@ void runBMix(int nevent,EvtGen &myGenerator,std::string userFile,std::string roo
 
 
 
-void runDDalitz(int nevent, EvtGen &myGenerator) {
+void runDDalitz(int nevent, EvtGen &myGenerator, char* udec) {
 
     TFile *file=new TFile("ddalitz.root", "RECREATE");
 
@@ -4821,7 +4466,7 @@ void runDDalitz(int nevent, EvtGen &myGenerator) {
 
     int count;
   
-    myGenerator.readUDecay("./DDALITZ.DEC");
+    myGenerator.readUDecay(udec);
     count=1;
 
     static EvtId D0=EvtPDL::getId(std::string("D0"));
