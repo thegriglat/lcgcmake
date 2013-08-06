@@ -6,6 +6,7 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/../../../cmake/modules)
 
 find_package(EvtGen REQUIRED)
 find_package(Photospp REQUIRED)
+find_package(Tauolapp REQUIRED)
 find_package(Pythia8 REQUIRED)
 find_package(HepMC REQUIRED)
 find_package(ROOT COMPONENTS Hist RIO)
@@ -19,5 +20,5 @@ include_directories(${EVTGEN_INCLUDE_DIR}
                     ${ROOT_INCLUDE_DIR})
 
 add_executable(evtgen_test1 evtgen_test1.cc)
-target_link_libraries(evtgen_test1 ${EVTGEN_LIBRARIES} ${PHOTOSPP_LIBRARIES} ${HEPMC_LIBRARIES} ${PYTHIA8_LIBRARIES} ${ROOT_LIBRARIES})
+target_link_libraries(evtgen_test1 ${EVTGEN_LIBRARIES} ${PHOTOSPP_LIBRARIES} ${TAUOLAPP_LIBRARIES} ${HEPMC_LIBRARIES} ${PYTHIA8_LIBRARIES} ${ROOT_LIBRARIES})
 

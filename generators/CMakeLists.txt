@@ -365,7 +365,8 @@ LCG_add_test(evtgen_test1 COMMAND evtgen/tests/evtgen_test1 ddalitz 1000
                           BUILD_OPTIONS -DCMAKE_MODULE_PATH=${cmaketools_home}/modules
                                         -DROOTSYS=${ROOT_home}
                                         -DEVTGEN_ROOT_DIR=${evtgen_home} -DPYTHIA8_ROOT_DIR=${pythia8_home}
-                                        -DPHOTOSPP_ROOT_DIR=${photos++_home} -DHEPMC_ROOT_DIR=${HepMC_home}
+                                        -DPHOTOSPP_ROOT_DIR=${photos++_home} -DTAUOLAPP_ROOT_DIR=${tauola++_home}
+                                        -DHEPMC_ROOT_DIR=${HepMC_home}
                           ENVIRONMENT ${library_path}=${evtgen_home}/lib:${photos++_home}/lib:${pythia8_home}/lib:${HepMC_home}/lib:${ROOT_home}/lib:$ENV{${library_path}})
 
 #---cython------------------------------------------------------------------------------------------
