@@ -17,7 +17,7 @@
 #include "Herwig++/Utilities/Statistic.h"
 
 #include "HepMC/GenEvent.h"
-#include "IO_Ascii.h"
+#include "HepMC/IO_GenEvent.h"
 
 //#include "ANHEPMC/JetableInputFromHepMC.h"
 //#include "ANHEPMC/JetFinderUA.h"
@@ -165,7 +165,7 @@ private:
 //  LeptonAnalyserHepMC* LA;
 //  int nevtype[4];
 
-  HepMC::IO_Ascii* fhepmc;
+  HepMC::IO_GenEvent* fhepmc;
 
 };
 

@@ -157,17 +157,17 @@ if(NOT APPLE)    #  (installation fails on MacOSX)
     DEPENDS GSL Boost thepeg fastjet
   )
 
-LCG_add_test(herwigpp_orig_test1 COMMAND herwig++/tests/herwigpp_orig_test1
+LCG_add_test(herwigpp_orig_test1 COMMAND ${herwig++_home}/bin/Herwig++ read --repo ${herwig++_home}/share/Herwig++/HerwigDefaults.rpo ${herwig++_home}/../share/sources/src/LHC.in
                           BINARY_DIR herwig++/tests
                           SOURCE_DIR herwig++/tests
-                          BUILD herwigpp_orig_test1
-                          BUILD_OPTIONS -DCMAKE_MODULE_PATH=${cmaketools_home}/modules
-                                        -DHERWIGPP_ROOT_DIR=${herwig++_home} -DTHEPEG_ROOT_DIR=${thepeg_home} 
-                                        -DHEPMC_ROOT_DIR=${HepMC_home} -DGSL_ROOT_DIR=${GSL_home}
-                          ENVIRONMENT ${library_path}=${herwig++_home}/lib:${GSL_home}/lib:$ENV{${library_path}})
+                          ENVIRONMENT ${library_path}=${herwig++_home}/lib:${thepeg_home}/lib:${HepMC_home}/lib:${lhapdf_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:$ENV{${library_path}})
+
+LCG_add_test(herwigpp_orig_test2 COMMAND ${herwig++_home}/bin/Herwig++ run --repo  ${herwig++_home}/share/Herwig++/HerwigDefaults.rpo -N100 LHC.run
+                          BINARY_DIR herwig++/tests
+                          SOURCE_DIR herwig++/tests
+                          ENVIRONMENT ${library_path}=${herwig++_home}/lib:${thepeg_home}/lib:${HepMC_home}/lib:${lhapdf_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:$ENV{${library_path}})
+
 endif()
-
-
 
 #---tauola++------------------------------------------------------------------------------------------
 LCGPackage_Add(

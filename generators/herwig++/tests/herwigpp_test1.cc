@@ -34,10 +34,8 @@ struct HepMCTraits<HepMC::GenEvent>
   : public HepMCTraitsBase<     HepMC::GenEvent,
 				HepMC::GenParticle,
 				HepMC::GenVertex,
-				HepMC::Polarization 
-#if HERWIGPP_VERSION >= 230
-				, HepMC::PdfInfo      
-#endif
+				HepMC::Polarization, 
+				HepMC::PdfInfo      
 			  >
 {};
 }
@@ -60,7 +58,7 @@ GTestAnalysis::GTestAnalysis() : fhepmc(0)
 //  LA = new LeptonAnalyserHepMC;
 }
 
-
+#if 0
 namespace {
   bool isLastCluster(tcPPtr p) {
     if ( p->id() != ExtraParticleID::Cluster ) 
@@ -101,11 +99,11 @@ namespace {
     return true;
   }
 }
-
+#endif
 
 void GTestAnalysis::analyze(tEventPtr event, long, int, int) {
 
-  if(!fhepmc) fhepmc = new HepMC::IO_Ascii("hepmcout.dat",std::ios::out);
+  if(!fhepmc) fhepmc = new HepMC::IO_GenEvent("hepmcout.dat",std::ios::out);
 
   HepMC::GenEvent* hepmcevt = HepMCConverter<HepMC::GenEvent>::convert(*event);
 
