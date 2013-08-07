@@ -18,6 +18,8 @@ endif()
 find_library(FORTRAN_LIBRARY NAMES gfortran
              HINTS /usr/local/gfortran/lib ENV LD_LIBRARY_PATH)
 
+string(REPLACE "opt" "dbg" LCG_platform_dbg ${LCG_platform})
+
 
 #---lhapdfsets--------------------------------------------------------------------------------------
 LCGPackage_set_home(lhapdfsets)
@@ -469,6 +471,7 @@ LCGPackage_Add(
           COMMAND ${CMAKE_COMMAND} -E copy <SOURCE_DIR>/rivetenv.csh <INSTALL_DIR>/
           COMMAND ${CMAKE_COMMAND} -E copy <SOURCE_DIR>/rivetenv.sh <INSTALL_DIR>/
           COMMAND ${CMAKE_COMMAND} -DINSTALL_DIR=<INSTALL_DIR> -P ${CMAKE_SOURCE_DIR}/cmake/scripts/StripLib.cmake
+          COMMAND ${CMAKE_COMMAND} -E create_symlink ${LCG_platform} <INSTALL_DIR>/../${LCG_platform_dbg}
   BUILD_IN_SOURCE 1
   DEPENDS HepMC Boost fastjet GSL Python swig
 )
