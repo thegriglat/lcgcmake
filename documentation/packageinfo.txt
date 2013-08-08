@@ -7,6 +7,7 @@
     "project" : "None",
     "category" : "XML",
     "language" : "Python",
+    "license" : "4SUITE",
   },
   {
     "name" : "COOL",
@@ -16,6 +17,7 @@
     "project" : "true",
     "category" : "IO",
     "language" : "Cpp",
+    "license" : "LCGAA",
   },
   {
     "name" : "CORAL",
@@ -25,6 +27,7 @@
     "project" : "true",
     "category" : "IO",
     "language" : "Cpp",
+    "license" : "LCGAA",
   },
   {
     "name" : "LCGCMT",
@@ -34,6 +37,7 @@
     "project" : "true",
     "category" : "Tool",
     "language" : "Other",
+    "license" : "LGPL",
   },
   {
     "name" : "LCGTEST",
@@ -43,6 +47,7 @@
     "project" : "true",
     "category" : "Tool",
     "language" : "Other",
+    "license" : "LCGAA",
   },
   {
     "name" : "RELAX",
@@ -52,6 +57,7 @@
     "project" : "true",
     "category" : "Tool",
     "language" : "Cpp",
+    "license" : "LCGAA",
   },
   {
     "name" : "ROOT",
@@ -61,15 +67,17 @@
     "project" : "true",
     "category" : "Tool",
     "language" : "Cpp",
+    "license" : "LGPL",
   },
   {
-    "name" : "aida",
+    "name" : "AIDA",
     "description" : "Abstract interfaces for common physics analysis objects, such as histograms, ntuples, fitters, IO",
     "homepage" : "http://aida.freehep.org",
     "contact" : "Lorenzo Moneta Lorenzo.Moneta@cern.ch",
     "project" : "None",
     "category" : "Math",
     "language" : "Cpp",
+    "license" : "LGPL",
   },
   {
     "name" : "apr-util",
@@ -79,6 +87,7 @@
     "project" : "None",
     "category" : "Tool",
     "language" : "C",
+    "license" : "APACHE",
   },
   {
     "name" : "apr",
@@ -88,6 +97,7 @@
     "project" : "None",
     "category" : "Tool",
     "language" : "C",
+    "license" : "APACHE",
   },
   {
     "name" : "blas",
@@ -97,24 +107,27 @@
     "project" : "None",
     "category" : "Math",
     "language" : "Fortran",
+    "license" : "BLAS",
   },
   {
-    "name" : "boost",
+    "name" : "Boost",
     "description" : "A collection of libraries for different purposes such as I/O, Math, meta programming, etc.",
     "homepage" : "http://www.boost.org",
     "contact" : "Stefan Roiser stefan.roiser@cern.ch",
     "project" : "None",
     "category" : "Tool",
     "language" : "Cpp",
+    "license" : "BOOST",
   },
   {
-    "name" : "castor",
+    "name" : "CASTOR",
     "description" : "A hierarchical storage management system",
     "homepage" : "http://castor.web.cern.ch/castor",
     "contact" : "Sebastien Ponce sebastien.ponce@cern.ch",
     "project" : "None",
     "category" : "IO",
     "language" : "Cpp",
+    "license" : "UNKNOWN",
   },
   {
     "name" : "cgsigsoap",
@@ -124,6 +137,7 @@
     "project" : "None",
     "category" : "Grid",
     "language" : "Cpp",
+    "license" : "UNKNOWN",
   },
   {
     "name" : "clhep",
@@ -133,6 +147,7 @@
     "project" : "None",
     "category" : "Math",
     "language" : "Cpp",
+    "license" : "UNKNOWN",
   },
   {
     "name" : "cloog-ppl",
@@ -142,6 +157,7 @@
     "project" : "None",
     "category" : "Tool",
     "language" : "C",
+    "license" : "LGPL",
   },
   {
     "name" : "cloog",
@@ -151,6 +167,7 @@
     "project" : "None",
     "category" : "Tool",
     "language" : "C",
+    "license" : "LGPL",
   },
   {
     "name" : "cmake",
@@ -160,6 +177,7 @@
     "project" : "false",
     "category" : "Tool",
     "language" : "C",
+    "license" : "CMAKE",
   },
   {
     "name" : "cmt_itself",
@@ -169,6 +187,7 @@
     "project" : "None",
     "category" : "Tool",
     "language" : "C",
+    "license" : "CMT",
   },
   {
     "name" : "coin3d",
@@ -178,6 +197,7 @@
     "project" : "None",
     "category" : "Graphics",
     "language" : "Cpp",
+    "license" : "GPL",
   },
   {
     "name" : "coverage",
@@ -187,6 +207,7 @@
     "project" : "None",
     "category" : "Tool",
     "language" : "Python",
+    "license" : "BSD",
   },
   {
     "name" : "cppunit",
@@ -196,6 +217,7 @@
     "project" : "None",
     "category" : "Tool",
     "language" : "Cpp",
+    "license" : "GPL",
   },
   {
     "name" : "cx_oracle",
@@ -205,6 +227,7 @@
     "project" : "false",
     "category" : "Database",
     "language" : "Python",
+    "license" : "CXORACLE",
   },
   {
     "name" : "david",
@@ -214,6 +237,7 @@
     "project" : "None",
     "category" : "Simulation",
     "language" : "Cpp",
+    "license" : "UNKNOWN",
   },
   {
     "name" : "dawn",
@@ -223,6 +247,7 @@
     "project" : "None",
     "category" : "Simulation",
     "language" : "Cpp",
+    "license" : "UNKNOWN",
   },
   {
     "name" : "dcache_client",
@@ -232,6 +257,7 @@
     "project" : "false",
     "category" : "Other",
     "language" : "Cpp",
+    "license" : "UNKNOWN",
   },
   {
     "name" : "doxygen",
@@ -241,6 +267,7 @@
     "project" : "None",
     "category" : "Tool",
     "language" : "Cpp",
+    "license" : "GPL",
   },
   {
     "name" : "dpm",
@@ -250,6 +277,7 @@
     "project" : "false",
     "category" : "Grid",
     "language" : "Cpp",
+    "license" : "UNKNOWN",
   },
   {
     "name" : "expat",
@@ -259,6 +287,7 @@
     "project" : "None",
     "category" : "XML",
     "language" : "C",
+    "license" : "MIT",
   },
   {
     "name" : "fastjet",
@@ -268,6 +297,7 @@
     "project" : "false",
     "category" : "Math",
     "language" : "Cpp",
+    "license" : "UNKNOWN",
   },
   {
     "name" : "fftw",
@@ -277,15 +307,17 @@
     "project" : "None",
     "category" : "Math",
     "language" : "C",
+    "license" : "GPL",
   },
   {
-    "name" : "frontier_client",
+    "name" : "Frontier_Client",
     "description" : "a database access toolkit comprising web technologies",
     "homepage" : "http://frontier.cern.ch",
     "contact" : "Andreas Pfeiffer andreas.pfeiffer@cern.ch",
     "project" : "None",
     "category" : "IO",
     "language" : "Other",
+    "license" : "UNKNOWN",
   },
   {
     "name" : "gcc",
@@ -295,15 +327,17 @@
     "project" : "None",
     "category" : "Tool",
     "language" : "C",
+    "license" : "GPL",
   },
   {
-    "name" : "gccxml",
+    "name" : "GCCXML",
     "description" : "Generates an XML description of a C++ program from GCC's internal representation",
     "homepage" : "http://www.gccxml.org/HTML/Index.html",
     "contact" : "Stefan Roiser stefan.roiser@cern.ch",
     "project" : "None",
     "category" : "XML",
     "language" : "C",
+    "license" : "GCCXML",
   },
   {
     "name" : "genshi",
@@ -313,6 +347,7 @@
     "project" : "None",
     "category" : "Database",
     "language" : "Python",
+    "license" : "custom",
   },
   {
     "name" : "gfal",
@@ -322,6 +357,7 @@
     "project" : "false",
     "category" : "Grid",
     "language" : "Cpp",
+    "license" : "UNKNOWN",
   },
   {
     "name" : "globus",
@@ -331,6 +367,7 @@
     "project" : "false",
     "category" : "Grid",
     "language" : "Cpp",
+    "license" : "APACHE",
   },
   {
     "name" : "gmp",
@@ -340,6 +377,7 @@
     "project" : "None",
     "category" : "Math",
     "language" : "C",
+    "license" : "GPL",
   },
   {
     "name" : "graphviz",
@@ -349,6 +387,7 @@
     "project" : "None",
     "category" : "Graphics",
     "language" : "C",
+    "license" : "GPL",
   },
   {
     "name" : "gsl",
@@ -358,24 +397,27 @@
     "project" : "None",
     "category" : "Math",
     "language" : "C",
+    "license" : "GPL",
   },
   {
-    "name" : "hepmc",
+    "name" : "HepMC",
     "description" : "An object oriented event record written in C++ for High Energy Physics Monte Carlo Generators",
     "homepage" : "http://lcgapp.cern.ch/project/simu/HepMC/",
     "contact" : "Stefan Roiser stefan.roiser@cern.ch",
     "project" : "None",
     "category" : "Simulation",
     "language" : "Cpp",
+    "license" : "UNKNOWN",
   },
   {
-    "name" : "heppdt",
+    "name" : "HepPDT",
     "description" : "Contains the fixed data about each particle type",
     "homepage" : "http://cepa.fnal.gov/psm/heppdt/",
     "contact" : "Stefan Roiser stefan.roiser@cern.ch",
     "project" : "None",
     "category" : "Simulation",
     "language" : "Cpp",
+    "license" : "UNKNOWN",
   },
   {
     "name" : "igprof",
@@ -385,6 +427,7 @@
     "project" : "false",
     "category" : "Tool",
     "language" : "C++",
+    "license" : "GPL",
   },
   {
     "name" : "ipython",
@@ -394,6 +437,7 @@
     "project" : "None",
     "category" : "Tool",
     "language" : "Python",
+    "license" : "BSD",
   },
   {
     "name" : "isl",
@@ -403,6 +447,7 @@
     "project" : "None",
     "category" : "Math",
     "language" : "C",
+    "license" : "MIT",
   },
   {
     "name" : "json",
@@ -412,6 +457,7 @@
     "project" : "None",
     "category" : "Tool",
     "language" : "Python",
+    "license" : "MIT",
   },
   {
     "name" : "kcachegrind",
@@ -421,6 +467,7 @@
     "project" : "None",
     "category" : "Tool",
     "language" : "Cpp",
+    "license" : "UNKNOWN",
   },
   {
     "name" : "ktjet",
@@ -430,6 +477,7 @@
     "project" : "false",
     "category" : "Math",
     "language" : "Cpp",
+    "license" : "UNKNOWN",
   },
   {
     "name" : "lapack",
@@ -439,6 +487,7 @@
     "project" : "None",
     "category" : "Math",
     "language" : "Fortran",
+    "license" : "LAPACK",
   },
   {
     "name" : "lcgdmcommon",
@@ -448,6 +497,7 @@
     "project" : "false",
     "category" : "Grid",
     "language" : "Cpp",
+    "license" : "UNKNOWN",
   },
   {
     "name" : "lcginfosites",
@@ -457,6 +507,7 @@
     "project" : "false",
     "category" : "Grid",
     "language" : "Cpp",
+    "license" : "UNKNOWN",
   },
   {
     "name" : "lcgutils",
@@ -466,6 +517,7 @@
     "project" : "false",
     "category" : "Grid",
     "language" : "Cpp",
+    "license" : "UNKNOWN",
   },
   {
     "name" : "lcov",
@@ -475,6 +527,7 @@
     "project" : "None",
     "category" : "Tool",
     "language" : "Perl",
+    "license" : "GPL",
   },
   {
     "name" : "lfc",
@@ -484,6 +537,7 @@
     "project" : "false",
     "category" : "Other",
     "language" : "Other",
+    "license" : "UNKNOWN",
   },
   {
     "name" : "libelf",
@@ -493,6 +547,7 @@
     "project" : "None",
     "category" : "Math",
     "language" : "C",
+    "license" : "LGPL",
   },
   {
     "name" : "libpfm",
@@ -502,6 +557,7 @@
     "project" : "None",
     "category" : "Tool",
     "language" : "C",
+    "license" : "UNKNOWN",
   },
   {
     "name" : "libpng",
@@ -511,6 +567,7 @@
     "project" : "None",
     "category" : "Tool",
     "language" : "C",
+    "license" : "LIBPNG",
   },
   {
     "name" : "libsvm",
@@ -520,6 +577,7 @@
     "project" : "None",
     "category" : "Math",
     "language" : "C",
+    "license" : "GPL",
   },
   {
     "name" : "libtool",
@@ -529,6 +587,7 @@
     "project" : "None",
     "category" : "Tool",
     "language" : "C",
+    "license" : "GPL",
   },
   {
     "name" : "libunwind",
@@ -538,6 +597,7 @@
     "project" : "None",
     "category" : "Tool",
     "language" : "C",
+    "license" : "X11",
   },
   {
     "name" : "llvm",
@@ -547,6 +607,7 @@
     "project" : "None",
     "category" : "Tool",
     "language" : "C",
+    "license" : "LLVM",
   },
   {
     "name" : "llvm_gcc",
@@ -556,15 +617,17 @@
     "project" : "None",
     "category" : "Tool",
     "language" : "C",
+    "license" : "LLVM",
   },
   {
     "name" : "lxml",
     "description" : "Pythonic binding for the libxml2 and libxslt libraries",
     "homepage" : "http://codespeak.net/lxml/",
-    "contact" : "None",
+    "contact" : "Benedikt Hegner benedikt.hegner@cern.ch",
     "project" : "None",
     "category" : "SQL",
     "language" : "Python",
+    "license" : "UNKNOWN",
   },
   {
     "name" : "matplotlib",
@@ -574,6 +637,7 @@
     "project" : "None",
     "category" : "Tool",
     "language" : "Python",
+    "license" : "MATPLOTLIB",
   },
   {
     "name" : "minuit",
@@ -583,6 +647,7 @@
     "project" : "None",
     "category" : "Tool",
     "language" : "Python",
+    "license" : "UNKNOWN",
   },
   {
     "name" : "mock",
@@ -592,6 +657,7 @@
     "project" : "None",
     "category" : "Tool",
     "language" : "Python",
+    "license" : "BSD",
   },
   {
     "name" : "mpc",
@@ -601,6 +667,7 @@
     "project" : "None",
     "category" : "Math",
     "language" : "C",
+    "license" : "LGPL",
   },
   {
     "name" : "mpfr",
@@ -610,6 +677,7 @@
     "project" : "None",
     "category" : "Math",
     "language" : "C",
+    "license" : "LGPL",
   },
   {
     "name" : "multiprocessing",
@@ -619,6 +687,7 @@
     "project" : "None",
     "category" : "Tool",
     "language" : "Python",
+    "license" : "BSD",
   },
   {
     "name" : "mysql",
@@ -628,6 +697,7 @@
     "project" : "false",
     "category" : "Database",
     "language" : "C",
+    "license" : "MYSQL",
   },
   {
     "name" : "mysql_python",
@@ -637,6 +707,7 @@
     "project" : "false",
     "category" : "Database",
     "language" : "Python",
+    "license" : "UNKNOWN",
   },
   {
     "name" : "neon",
@@ -646,6 +717,7 @@
     "project" : "None",
     "category" : "Tool",
     "language" : "C",
+    "license" : "GPL",
   },
   {
     "name" : "nose",
@@ -655,6 +727,7 @@
     "project" : "None",
     "category" : "Tool",
     "language" : "Python",
+    "license" : "LGPL",
   },
   {
     "name" : "numpy",
@@ -664,6 +737,7 @@
     "project" : "None",
     "category" : "Tool",
     "language" : "Python",
+    "license" : "BSD",
   },
   {
     "name" : "oracle",
@@ -673,6 +747,7 @@
     "project" : "false",
     "category" : "Database",
     "language" : "C",
+    "license" : "ORACLE",
   },
   {
     "name" : "ppl",
@@ -682,6 +757,7 @@
     "project" : "None",
     "category" : "Tool",
     "language" : "C",
+    "license" : "LGPL",
   },
   {
     "name" : "processing",
@@ -691,6 +767,7 @@
     "project" : "None",
     "category" : "Tool",
     "language" : "Python",
+    "license" : "BSD",
   },
   {
     "name" : "py",
@@ -700,15 +777,27 @@
     "project" : "None",
     "category" : "Tool",
     "language" : "Python",
+    "license" : "MIT",
   },
   {
-    "name" : "py2neo",
-    "description" : "access to the graph database Neo4j via REST",
-    "homepage" : "http://py2neo.org/",
-    "contact" : "Nigel Small nasmall@gmail.com",
+    "name" : "py",
+    "description" : "tools which help with automated testing",
+    "homepage" : "http://codespeak.net/py/dist/",
+    "contact" : "Juan Palacios juan.palacios@cern.ch",
     "project" : "None",
     "category" : "Tool",
     "language" : "Python",
+    "license" : "MIT",
+  },
+  {
+    "name" : "pyanalysis",
+    "description" : "Meta-package containing analysis packages",
+    "homepage" : "none",
+    "contact" : "Benedikt Hegner benedikt.hegner@cern.ch",
+    "project" : "metapackage",
+    "category" : "Tool",
+    "language" : "Python",
+    "license" : "UNKNOWN",
   },
   {
     "name" : "pydot",
@@ -718,6 +807,7 @@
     "project" : "None",
     "category" : "Graphics",
     "language" : "Python",
+    "license" : "MIT",
   },
   {
     "name" : "pylint",
@@ -727,6 +817,7 @@
     "project" : "None",
     "category" : "Tool",
     "language" : "Python",
+    "license" : "GPL",
   },
   {
     "name" : "pyminuit",
@@ -736,6 +827,7 @@
     "project" : "None",
     "category" : "Tool",
     "language" : "Python",
+    "license" : "UNKNOWN",
   },
   {
     "name" : "pyparsing",
@@ -745,6 +837,7 @@
     "project" : "None",
     "category" : "Tool",
     "language" : "Python",
+    "license" : "MIT",
   },
   {
     "name" : "pyqt",
@@ -754,6 +847,7 @@
     "project" : "false",
     "category" : "Graphics",
     "language" : "Python",
+    "license" : "GPL",
   },
   {
     "name" : "pytest",
@@ -763,6 +857,7 @@
     "project" : "None",
     "category" : "Tool",
     "language" : "Python",
+    "license" : "MIT",
   },
   {
     "name" : "pythia8",
@@ -772,24 +867,17 @@
     "project" : "None",
     "category" : "Simulation",
     "language" : "Cpp",
+    "license" : "UNKNOWN",
   },
   {
-    "name" : "python",
+    "name" : "Python",
     "description" : "A dynamic, object oriented multi platform scripting language.",
     "homepage" : "http://www.python.org/",
     "contact" : "Stefan Roiser stefan.roiser@cern.ch",
     "project" : "None",
     "category" : "Tool",
     "language" : "Python",
-  },
-  {
-    "name" : "python_static",
-    "description" : "A dynamic, object oriented multi platform scripting language.",
-    "homepage" : "http://www.python.org/",
-    "contact" : "Stefan Roiser stefan.roiser@cern.ch",
-    "project" : "None",
-    "category" : "Tool",
-    "language" : "Python",
+    "license" : "PYTHON",
   },
   {
     "name" : "pyxml",
@@ -799,6 +887,7 @@
     "project" : "None",
     "category" : "XML",
     "language" : "Python",
+    "license" : "CNRI",
   },
   {
     "name" : "qmtest",
@@ -808,15 +897,17 @@
     "project" : "None",
     "category" : "Tool",
     "language" : "Cpp",
+    "license" : "GPL",
   },
   {
-    "name" : "qt",
+    "name" : "Qt",
     "description" : "A graphical widget tool kit for GUI development",
     "homepage" : "http://www.trolltech.com/products/qt",
     "contact" : "Thomas Kittelmann thomas.kittelmann@cern.ch",
     "project" : "None",
     "category" : "Graphics",
     "language" : "Cpp",
+    "license" : "GPL",
   },
   {
     "name" : "qwt",
@@ -826,6 +917,7 @@
     "project" : "None",
     "category" : "Graphics",
     "language" : "Cpp",
+    "license" : "LGPL",
   },
   {
     "name" : "readline",
@@ -835,6 +927,7 @@
     "project" : "None",
     "category" : "Tool",
     "language" : "Python",
+    "license" : "GPL",
   },
   {
     "name" : "roofit",
@@ -844,6 +937,7 @@
     "project" : "None",
     "category" : "Math",
     "language" : "Cpp",
+    "license" : "LGPL",
   },
   {
     "name" : "rx",
@@ -853,6 +947,7 @@
     "project" : "false",
     "category" : "Other",
     "language" : "Cpp",
+    "license" : "UNKNOWN",
   },
   {
     "name" : "scipy",
@@ -862,6 +957,7 @@
     "project" : "None",
     "category" : "Tool",
     "language" : "Python",
+    "license" : "BSD",
   },
   {
     "name" : "sdl",
@@ -871,6 +967,7 @@
     "project" : "None",
     "category" : "Graphics",
     "language" : "C",
+    "license" : "LGPL",
   },
   {
     "name" : "sdl_ttf",
@@ -880,6 +977,7 @@
     "project" : "None",
     "category" : "Graphics",
     "language" : "C",
+    "license" : "LGPL",
   },
   {
     "name" : "setuptools",
@@ -889,6 +987,7 @@
     "project" : "None",
     "category" : "Tool",
     "language" : "Python",
+    "license" : "PYTHON",
   },
   {
     "name" : "sip",
@@ -898,6 +997,7 @@
     "project" : "false",
     "category" : "Tool",
     "language" : "Python",
+    "license" : "UNKNOWN",
   },
   {
     "name" : "soqt",
@@ -907,6 +1007,7 @@
     "project" : "None",
     "category" : "Graphics",
     "language" : "Cpp",
+    "license" : "GPL",
   },
   {
     "name" : "sqlalchemy",
@@ -916,6 +1017,7 @@
     "project" : "None",
     "category" : "SQL",
     "language" : "Python",
+    "license" : "MIT",
   },
   {
     "name" : "sqlite",
@@ -925,6 +1027,7 @@
     "project" : "false",
     "category" : "Database",
     "language" : "C",
+    "license" : "SQLITE",
   },
   {
     "name" : "stomp.py",
@@ -934,6 +1037,7 @@
     "project" : "None",
     "category" : "Tool",
     "language" : "Python",
+    "license" : "APACHE",
   },
   {
     "name" : "storm",
@@ -943,6 +1047,7 @@
     "project" : "None",
     "category" : "Tool",
     "language" : "Python",
+    "license" : "LGPL",
   },
   {
     "name" : "swig",
@@ -952,6 +1057,7 @@
     "project" : "None",
     "category" : "Tool",
     "language" : "C",
+    "license" : "APACHE",
   },
   {
     "name" : "sympy",
@@ -961,6 +1067,7 @@
     "project" : "None",
     "category" : "Math",
     "language" : "Python",
+    "license" : "BSD",
   },
   {
     "name" : "tbb",
@@ -970,6 +1077,7 @@
     "project" : "false",
     "category" : "Tool",
     "language" : "Cpp",
+    "license" : "GPL",
   },
   {
     "name" : "tcmalloc",
@@ -979,6 +1087,7 @@
     "project" : "None",
     "category" : "Tool",
     "language" : "C",
+    "license" : "BSD",
   },
   {
     "name" : "tcsh",
@@ -988,6 +1097,7 @@
     "project" : "None",
     "category" : "Tool",
     "language" : "C",
+    "license" : "BSD",
   },
   {
     "name" : "uuid",
@@ -997,6 +1107,7 @@
     "project" : "false",
     "category" : "Other",
     "language" : "Cpp",
+    "license" : "BSD",
   },
   {
     "name" : "valgrind",
@@ -1006,6 +1117,7 @@
     "project" : "None",
     "category" : "Tool",
     "language" : "C",
+    "license" : "GPL",
   },
   {
     "name" : "vomsapic",
@@ -1015,6 +1127,7 @@
     "project" : "false",
     "category" : "Grid",
     "language" : "Cpp",
+    "license" : "UNKNOWN",
   },
   {
     "name" : "xercesc",
@@ -1024,6 +1137,7 @@
     "project" : "None",
     "category" : "XML",
     "language" : "Cpp",
+    "license" : "APACHE",
   },
   {
     "name" : "xqilla",
@@ -1033,6 +1147,7 @@
     "project" : "None",
     "category" : "XML",
     "language" : "Cpp",
+    "license" : "APACHE",
   },
   {
     "name" : "xrootd",
@@ -1042,5 +1157,6 @@
     "project" : "false",
     "category" : "IO",
     "language" : "C++",
+    "license" : "custom",
   },
 ]
