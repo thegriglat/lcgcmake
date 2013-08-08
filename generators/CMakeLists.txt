@@ -127,8 +127,7 @@ LCGPackage_Add(
                                 --with-hepmc=${HepMC_home} --with-LHAPDF=${lhapdf_home}/lib
                                 --with-gsl=${GSL_home} --without-javagui CFLAGS=-O2 CXXFLAGS=-O2 FFLAGS=-O2
   BUILD_COMMAND ${MAKE} all
-  INSTALL_COMMAND make install
-          COMMAND ${CMAKE_COMMAND} -DINSTALL_DIR=<INSTALL_DIR> -P ${CMAKE_SOURCE_DIR}/cmake/scripts/StripLib.cmake
+  INSTALL_COMMAND make install-strip
   BUILD_IN_SOURCE 1
   DEPENDS HepMC GSL lhapdf
 )
