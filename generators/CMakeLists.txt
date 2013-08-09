@@ -161,10 +161,10 @@ LCG_add_test(herwigpp_orig_test1 COMMAND ${herwig++_home}/bin/Herwig++ read --re
                           SOURCE_DIR herwig++/tests
                           ENVIRONMENT ${library_path}=${herwig++_home}/lib:${thepeg_home}/lib:${HepMC_home}/lib:${lhapdf_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:$ENV{${library_path}})
 
-LCG_add_test(herwigpp_orig_test2 COMMAND ${herwig++_home}/bin/Herwig++ run --repo  ${herwig++_home}/share/Herwig++/HerwigDefaults.rpo -N100 LHC.run
-                          BINARY_DIR herwig++/tests
-                          SOURCE_DIR herwig++/tests
-                          ENVIRONMENT ${library_path}=${herwig++_home}/lib:${thepeg_home}/lib:${HepMC_home}/lib:${lhapdf_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:$ENV{${library_path}})
+#LCG_add_test(herwigpp_orig_test2 COMMAND ${herwig++_home}/bin/Herwig++ run --repo  ${herwig++_home}/share/Herwig++/HerwigDefaults.rpo -N100 LHC.run
+#                          BINARY_DIR herwig++/tests
+#                          SOURCE_DIR herwig++/tests
+#                          ENVIRONMENT ${library_path}=${herwig++_home}/lib:${thepeg_home}/lib:${HepMC_home}/lib:${lhapdf_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:$ENV{${library_path}})
 
 endif()
 
