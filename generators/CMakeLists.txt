@@ -364,7 +364,8 @@ LCG_add_test(evtgen_test1 COMMAND evtgen/tests/evtgen_test1 ${evtgen_home}/share
                           BINARY_DIR evtgen/tests
                           SOURCE_DIR evtgen/tests
                           BUILD evtgen_test1
-                          BUILD_OPTIONS -DCMAKE_MODULE_PATH=${cmaketools_home}/modules
+                          BUILD_OPTIONS -DCMAKE_MODULE_PATH=${CMAKE_SOURCE_DIR}/cmake/modules
+                                        -DMYADDMODULEPATH=${cmaketools_home}/modules
                                         -DROOTSYS=${ROOT_home}
                                         -DEVTGEN_ROOT_DIR=${evtgen_home} -DPYTHIA8_ROOT_DIR=${pythia8_home}
                                         -DPHOTOSPP_ROOT_DIR=${photos++_home} -DTAUOLAPP_ROOT_DIR=${tauola++_home}
