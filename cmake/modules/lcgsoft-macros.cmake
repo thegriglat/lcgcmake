@@ -197,18 +197,12 @@ macro(LCGPackage_Add name)
                   COMMAND ${CMAKE_COMMAND} -DINSTALL_DIR=${${dest_name}_home} -DFULL_VERSION=${${name}_full_version} -P ${CMAKE_SOURCE_DIR}/cmake/scripts/InstallVersionFile.cmake
           DEPENDEES strip_rpath)
       endif()
+
       #---Adding extra step to copy the log files and version file--------------------------------------
       ExternalProject_Add_Step(${targetname} install_logs COMMENT "Installing log and version files for '${targetname}'"
           COMMAND ${CMAKE_COMMAND} -DINSTALL_DIR=${${dest_name}_home}/logs -DLOGS_DIR=${CMAKE_CURRENT_BINARY_DIR}/${targetname}/src/${targetname}-stamp
                                    -P ${CMAKE_SOURCE_DIR}/cmake/scripts/InstallLogFiles.cmake
           DEPENDEES install)
-
-      #---Remove the rpath from all shared objects----------------------------------------------------
-      ExternalProject_Add_Step(${targetname} strip_rpath COMMENT "Removing rpath from '${targetname}'"
-        COMMAND ${CMAKE_COMMAND} -DINSTALL_DIR=${${dest_name}_home}
-                                 -P ${CMAKE_SOURCE_DIR}/cmake/scripts/RemoveRPath.cmake
-        DEPENDEES install)
-
 
       #---Add extra steps eventually------------------------------------------------------------------
       set(current_dependee install)
@@ -239,6 +233,13 @@ macro(LCGPackage_Add name)
           DEPENDEES ${current_dependee})
         set(current_dependee install_examples)
       endif()
+      
+      #---Remove the rpath from all shared objects----------------------------------------------------
+      ExternalProject_Add_Step(${targetname} strip_rpath COMMENT "Removing rpath from '${targetname}'"
+        COMMAND ${CMAKE_COMMAND} -DINSTALL_DIR=${${dest_name}_home}
+                                 -P ${CMAKE_SOURCE_DIR}/cmake/scripts/RemoveRPath.cmake
+        DEPENDEES ${current_dependee})
+
 
       #---Adding clean targets--------------------------------------------------------------------------
       add_custom_target(clean-${targetname} COMMAND ${CMAKE_COMMAND} -E remove_directory ${CMAKE_CURRENT_BINARY_DIR}/${targetname}
