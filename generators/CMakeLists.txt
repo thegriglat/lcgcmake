@@ -161,10 +161,11 @@ LCG_add_test(herwigpp_orig_test1 COMMAND ${herwig++_home}/bin/Herwig++ read --re
                           SOURCE_DIR herwig++/tests
                           ENVIRONMENT ${library_path}=${herwig++_home}/lib:${thepeg_home}/lib:${HepMC_home}/lib:${lhapdf_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:$ENV{${library_path}})
 
-#LCG_add_test(herwigpp_orig_test2 COMMAND ${herwig++_home}/bin/Herwig++ run --repo  ${herwig++_home}/share/Herwig++/HerwigDefaults.rpo -N100 LHC.run
-#                          BINARY_DIR herwig++/tests
-#                          SOURCE_DIR herwig++/tests
-#                          ENVIRONMENT ${library_path}=${herwig++_home}/lib:${thepeg_home}/lib:${HepMC_home}/lib:${lhapdf_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:$ENV{${library_path}})
+LCG_add_test(herwigpp_orig_test2 COMMAND ${herwig++_home}/bin/Herwig++ run --repo  ${herwig++_home}/share/Herwig++/HerwigDefaults.rpo -N100 LHC.run
+                          BINARY_DIR herwig++/tests
+                          SOURCE_DIR herwig++/tests
+                          ENVIRONMENT ${library_path}=${herwig++_home}/lib:${thepeg_home}/lib:${HepMC_home}/lib:${lhapdf_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:$ENV{${library_path}}
+                          DEPENDS herwigpp_orig_test1)
 
 endif()
 
@@ -490,6 +491,11 @@ LCGPackage_Add(
   BUILD_IN_SOURCE 1
   DEPENDS lhapdf HepMC rivet
 )
+
+LCG_add_test(sherpa_orig_test1 COMMAND ${sherpa_home}/bin/Sherpa PATH=${CMAKE_SOURCE_DIR}/generators/sherpa/tests/LHC_ZJets
+                          BINARY_DIR sherpa/tests
+                          SOURCE_DIR sherpa/tests
+                          ENVIRONMENT ${library_path}=${sherpa_home}/lib:${HepMC_home}/lib:${lhapdf_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:$ENV{${library_path}})
 
 #---HepMCAnalysis------------------------------------------------------------------------------------
 LCGPackage_Add(
