@@ -1,6 +1,5 @@
-LCGPackage_set_home(PythonFWK)
-
 #---PythonFWK (only for MAC) --------------------------------------------------------------------------------------------
+LCGPackage_set_home(PythonFWK)
 if (APPLE)
   string(REGEX REPLACE "([0-9]+)([0-9])" \\1.\\2 macvers ${LCG_HOST_OSVERS})
   set(Python_config_options MACOSX_DEPLOYMENT_TARGET=${macvers})
@@ -22,6 +21,7 @@ if(LCG_TARGET MATCHES "slc" OR LCG_TARGET MATCHES "ubuntu")
 elseif(LCG_TARGET MATCHES "mac")
   string(REGEX REPLACE "([0-9]+)([0-9])" \\1.\\2 macvers ${LCG_HOST_OSVERS})
   set(Python_config_options --enable-shared MACOSX_DEPLOYMENT_TARGET=${macvers} LDFLAGS=-L/usr/local/lib)
+  set(Python_deps PythonFWK)
 else()
   set(Python_config_options --enable-shared)
 endif()
@@ -32,7 +32,7 @@ LCGPackage_Add(
   Python
   URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/Python-${Python_native_version}.tgz
   CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix=<INSTALL_DIR> --enable-unicode=ucs4 ${Python_config_options}
-  DEPENDS PythonFWK 
+  DEPENDS ${Python_deps}
 )
 
 #---Boost--------------------------------------------------------------------------------------------
