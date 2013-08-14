@@ -1,3 +1,5 @@
+LCGPackage_set_home(PythonFWK)
+
 #---PythonFWK (only for MAC) --------------------------------------------------------------------------------------------
 if (APPLE)
   string(REGEX REPLACE "([0-9]+)([0-9])" \\1.\\2 macvers ${LCG_HOST_OSVERS})
