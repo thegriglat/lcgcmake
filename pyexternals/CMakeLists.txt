@@ -1,5 +1,6 @@
 #---General parameters--------------------------------------------------------------------------------------------
 set(Python_cmd ${Python_home}/bin/python)
+set(PythonFW_cmd ${Python_home}/Python.framework/Versions/Current/bin/python)
 set(Exec_cmd ${CMAKE_SOURCE_DIR}/cmake/scripts/exec-with-env)
 
 #=================================================================================================================
@@ -402,19 +403,24 @@ LCGPackage_Add(
 )
 
 #---sip------------------------------------------------------------------------------------------------------
-if(LCG_TARGET MATCHES i386_mac106)
+if(LCG_TARGET MATCHES i386-mac)
   set(sip_compile_options -p darwin-g++ CFLAGS=-m32 CXXFLAGS=-m32 CC=gcc CXX=g++ LINK=g++)
-elseif(LCG_TARGET MATCHES x86_64_mac106)
+elseif(LCG_TARGET MATCHES x86_64-mac)
   set(sip_compile_options --arch=x86_64)
 elseif(LCG_TARGET MATCHES slc|ubuntu AND LCG_TARGET MATCHES x86_64)
   set(sip_compile_options -p linux-g++-64)
 elseif(LCG_TARGET MATCHES slc|ubuntu AND LCG_TARGET MATCHES i686)
   set(sip_compile_options -p linux-g++-64)
 endif()
+if (APPLE) 
+  set (Python_cmd_sip ${PythonFW_cmd})
+else()
+  set (Python_cmd_sip ${Python_cmd})
+endif()
 LCGPackage_Add(
   sip
   URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/sip-${sip_native_version}.tar.gz
-  CONFIGURE_COMMAND ${Python_cmd} configure.py -b <INSTALL_DIR>/bin 
+  CONFIGURE_COMMAND ${Python_cmd_sip} configure.py -b <INSTALL_DIR>/bin 
                                                -d <INSTALL_DIR>/lib/python${Python_config_version_twodigit}/site-packages 
                                                -e <INSTALL_DIR>/include/python${Python_config_version_twodigit} 
                                                -v ${sip_home}/share/sip ${sip_compile_options}
