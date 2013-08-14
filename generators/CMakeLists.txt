@@ -233,18 +233,19 @@ LCGPackage_Add(
 )
 
 #---photos------------------------------------------------------------------------------------------
-LCGPackage_Add(
-  photos
-  URL http://cern.ch/service-spi/external/tarFiles/MCGeneratorsTarFiles/photos-<NATIVE_VERSION>-src.tgz
-  UPDATE_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/<NATIVE_VERSION> <SOURCE_DIR>
-         COMMAND ${CMAKE_COMMAND} -E remove_directory <SOURCE_DIR>/<NATIVE_VERSION>
-  CONFIGURE_COMMAND ./configure --lcgplatform=${LCG_platform}  --userfflags=-fno-automatic --enable-shared
-  BUILD_COMMAND ${MAKE} FC=${CMAKE_Fortran_COMPILER} CC=${CMAKE_C_COMPILER} CXX=${CMAKE_CXX_COMPILER}
-  BUILD_IN_SOURCE 1
-  INSTALL_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/lib  <INSTALL_DIR>/lib
-          COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/include  <INSTALL_DIR>/include
-          COMMAND ${CMAKE_COMMAND} -E chdir <INSTALL_DIR>/lib ${CMAKE_COMMAND} -E create_symlink archive/libphotos.a libphotos.a
-)
+if(NOT APPLE)    #  (installation fails on MacOSX)
+  LCGPackage_Add(
+    photos
+    URL http://cern.ch/service-spi/external/tarFiles/MCGeneratorsTarFiles/photos-<NATIVE_VERSION>-src.tgz
+    UPDATE_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/<NATIVE_VERSION> <SOURCE_DIR>
+           COMMAND ${CMAKE_COMMAND} -E remove_directory <SOURCE_DIR>/<NATIVE_VERSION>
+    CONFIGURE_COMMAND ./configure --lcgplatform=${LCG_platform}  --userfflags=-fno-automatic --enable-shared
+    BUILD_COMMAND ${MAKE} FC=${CMAKE_Fortran_COMPILER} CC=${CMAKE_C_COMPILER} CXX=${CMAKE_CXX_COMPILER}
+    BUILD_IN_SOURCE 1
+    INSTALL_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/lib  <INSTALL_DIR>/lib
+            COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/include  <INSTALL_DIR>/include
+            COMMAND ${CMAKE_COMMAND} -E chdir <INSTALL_DIR>/lib ${CMAKE_COMMAND} -E create_symlink archive/libphotos.a libphotos.a
+  )
 
 LCG_add_test(photos-test1 COMMAND photos/tests/photos_test1
                           BINARY_DIR photos/tests
@@ -253,6 +254,8 @@ LCG_add_test(photos-test1 COMMAND photos/tests/photos_test1
                           BUILD_OPTIONS -DPHOTOS_ROOT_DIR=${photos_home} -DPYTHIA6_ROOT_DIR=${pythia6_home}
                           FAILREGEX "Fatal error"
                           ENVIRONMENT ${library_path}=${photos_home}/lib:${pythia6_home}/lib:$ENV{${library_path}})
+
+endif()
 
 #---professor------------------------------------------------------------------------------------------
 LCGPackage_Add(
@@ -689,17 +692,20 @@ LCGPackage_Add(
   DEPENDS fastjet lhapdf
 )
 #---baurmc------------------------------------------------------------------------------------------
-LCGPackage_Add(
-  baurmc
-  URL http://cern.ch/service-spi/external/tarFiles/MCGeneratorsTarFiles/baurmc-<NATIVE_VERSION>-src.tgz
-  UPDATE_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/<NATIVE_VERSION> <SOURCE_DIR>
-         COMMAND ${CMAKE_COMMAND} -E remove_directory <SOURCE_DIR>/<NATIVE_VERSION>
-  CONFIGURE_COMMAND ./configure --lcgplatform=${LCG_platform}  --userfflags=-fno-automatic --enable-shared
-  BUILD_COMMAND ${MAKE} FC=${CMAKE_Fortran_COMPILER} CC=${CMAKE_C_COMPILER} CXX=${CMAKE_CXX_COMPILER}
-  INSTALL_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/lib <INSTALL_DIR>/lib
-  BUILD_IN_SOURCE 1
-)
 
+if(NOT APPLE)    #  (installation fails on MacOSX)
+  LCGPackage_Add(
+    baurmc
+    URL http://cern.ch/service-spi/external/tarFiles/MCGeneratorsTarFiles/baurmc-<NATIVE_VERSION>-src.tgz
+    UPDATE_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/<NATIVE_VERSION> <SOURCE_DIR>
+           COMMAND ${CMAKE_COMMAND} -E remove_directory <SOURCE_DIR>/<NATIVE_VERSION>
+    CONFIGURE_COMMAND ./configure --lcgplatform=${LCG_platform}  --userfflags=-fno-automatic --enable-shared
+    BUILD_COMMAND ${MAKE} FC=${CMAKE_Fortran_COMPILER} CC=${CMAKE_C_COMPILER} CXX=${CMAKE_CXX_COMPILER}
+    INSTALL_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/lib <INSTALL_DIR>/lib
+    BUILD_IN_SOURCE 1
+  )
+
+endif()
 
 
 
