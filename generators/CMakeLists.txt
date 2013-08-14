@@ -582,22 +582,25 @@ LCGPackage_Add(
 )
 
 #---tauola------------------------------------------------------------------------------------------
-LCGPackage_Add(
-  tauola
-  URL http://cern.ch/service-spi/external/tarFiles/MCGeneratorsTarFiles/tauola-${tauola_native_version}-src.tgz
-  UPDATE_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/<NATIVE_VERSION> <SOURCE_DIR>
-         COMMAND ${CMAKE_COMMAND} -E remove_directory <SOURCE_DIR>/<NATIVE_VERSION>
-  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --datadir=<INSTALL_DIR>/data --with-pythia6=${pythia6_home} --with-photos=${photos_home} --with-hepevt=4000
-  BUILD_COMMAND ${MAKE} FC=${CMAKE_Fortran_COMPILER} CC=${CMAKE_C_COMPILER} CXX=${CMAKE_CXX_COMPILER}
-  BUILD_IN_SOURCE 1
-  DEPENDS photos pythia6
-)
-LCG_add_test(tauola-test1 COMMAND tauola/tests/tauola_test1
+if(NOT APPLE)    #  (installation fails on MacOSX)
+  LCGPackage_Add(
+    tauola
+    URL http://cern.ch/service-spi/external/tarFiles/MCGeneratorsTarFiles/tauola-${tauola_native_version}-src.tgz
+    UPDATE_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/<NATIVE_VERSION> <SOURCE_DIR>
+           COMMAND ${CMAKE_COMMAND} -E remove_directory <SOURCE_DIR>/<NATIVE_VERSION>
+    CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --datadir=<INSTALL_DIR>/data --with-pythia6=${pythia6_home} --with-photos=${photos_home} --with-hepevt=4000
+    BUILD_COMMAND ${MAKE} FC=${CMAKE_Fortran_COMPILER} CC=${CMAKE_C_COMPILER} CXX=${CMAKE_CXX_COMPILER}
+    BUILD_IN_SOURCE 1
+    DEPENDS photos pythia6
+  )
+  LCG_add_test(tauola-test1 COMMAND tauola/tests/tauola_test1
                           BINARY_DIR tauola/tests
                           SOURCE_DIR tauola/tests
                           BUILD tauola_test1
                           BUILD_OPTIONS -DTAUOLA_ROOT_DIR=${tauola_home} -DPHOTOS_ROOT_DIR=${photos_home} -DPYTHIA6_ROOT_DIR=${pythia6_home}
                           ENVIRONMENT ${library_path}=${tauola_home}/lib:${photos_home}/lib:${pythia6_home}/lib:$ENV{${library_path}})
+
+endif()
 
 #---jimmy------------------------------------------------------------------------------------------
 LCGPackage_Add(
