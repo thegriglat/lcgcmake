@@ -30,7 +30,7 @@ LCGPackage_Add(
   Python
   URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/Python-${Python_native_version}.tgz
   CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix=<INSTALL_DIR> --enable-unicode=ucs4 ${Python_config_options}
-  DEPEND PythonFWK 
+  DEPENDS PythonFWK 
 )
 
 #---Boost--------------------------------------------------------------------------------------------
