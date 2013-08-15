@@ -484,6 +484,9 @@ LCGPackage_Add(
   DEPENDS HepMC Boost fastjet GSL Python swig
 )
 
+LCG_add_test(rivet_orig_test1 COMMAND ${CMAKE_SOURCE_DIR}/generators/rivet/tests/runtest ${rivet_home} ${Python_home}/bin
+                          DEPENDS agile_orig_test1)
+
 #---Sherpa------------------------------------------------------------------------------------------
 LCGPackage_Add(
   sherpa
