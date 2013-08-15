@@ -140,9 +140,11 @@ LCG_external_package(XercesC           3.1.1p1        author=3.1.1              
 LCG_external_package(xqilla            2.2.4p1                                  )
 LCG_external_package(xrootd            3.2.7                                    )
 
+#---Additional External packages------(Generators)-----------------
+
 set(MCGENPATH  MCGenerators_lcgcmt${heptools_version})
 #set(MCGENPATH  MCGenerators_test)
-#---Additional External packages------(Generators)-----------------
+
 LCG_external_package(powheg-box         r2092         ${MCGENPATH}/powheg-box   )
 LCG_external_package(lhapdf            5.8.8          ${MCGENPATH}/lhapdf       )
 LCG_external_package(lhapdf            5.8.9          ${MCGENPATH}/lhapdf       )
@@ -180,7 +182,8 @@ LCG_external_package(mctester          1.25.0         ${MCGENPATH}/mctester     
 LCG_external_package(hijing            1.383bs.2      ${MCGENPATH}/hijing       )
 LCG_external_package(starlight         r43            ${MCGENPATH}/starlight    )
 LCG_external_package(herwig            6.520.2        ${MCGENPATH}/herwig       )
-LCG_external_package(crmc              v3400          ${MCGENPATH}/crmc         )
+LCG_external_package(crmc-old          v3400          ${MCGENPATH}/crmc         )
+LCG_external_package(crmc              1.0            ${MCGENPATH}/crmc         )
 #LCG_external_package(cython            0.19           ${MCGENPATH}/cython       )
 #LCG_external_package(yaml_cpp          0.3.0          ${MCGENPATH}/yaml_cpp     )
 #LCG_external_package(yoda              1.0.0          ${MCGENPATH}/yoda         )
