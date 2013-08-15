@@ -227,10 +227,14 @@ LCGPackage_Add(
      "CFLAGS=-g0 -O2" "CXXFLAGS=-g0 -O2" "FFLAGS=-g0 -O2"
   BUILD_COMMAND ${MAKE} all LD_LIBRARY_PATH=${Python_home}/lib:$ENV{LD_LIBRARY_PATH}
   INSTALL_COMMAND make install LD_LIBRARY_PATH=${Python_home}/lib:$ENV{LD_LIBRARY_PATH}
+          COMMAND ${CMAKE_COMMAND} -E copy <SOURCE_DIR>/agileenv.csh <INSTALL_DIR>/.
+          COMMAND ${CMAKE_COMMAND} -E copy <SOURCE_DIR>/agileenv.sh <INSTALL_DIR>/.
           COMMAND ${CMAKE_COMMAND} -DINSTALL_DIR=<INSTALL_DIR> -P ${CMAKE_SOURCE_DIR}/cmake/scripts/StripLib.cmake
   BUILD_IN_SOURCE 1
   DEPENDS HepMC Boost Python swig
 )
+
+LCG_add_test(agile_orig_test1 COMMAND ${CMAKE_SOURCE_DIR}/generators/agile/tests/runtest ${agile_home} ${Python_home}/bin)
 
 #---photos------------------------------------------------------------------------------------------
 if(NOT APPLE)    #  (installation fails on MacOSX)
