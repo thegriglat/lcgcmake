@@ -148,7 +148,7 @@ LCGPackage_Add(
              -DCLHEP_ROOT_DIR=${CLHEP_home}
              -DHEPMC_ROOT_DIR=${HepMC_home}
              -DHEPPDT_ROOT_DIR=${HepPDT_home}
-  BUILD_COMMAND make ROOTSYS=${ROOT_home}
+  BUILD_COMMAND ${MAKE} ROOTSYS=${ROOT_home}
   DEPENDS cmaketools ROOT GCCXML CLHEP HepMC HepPDT
 )
 
