@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 2.8 FATAL_ERROR)
 project(LCGSoft C CXX Fortran)
 
-list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake/modules)
+list(INSERT CMAKE_MODULE_PATH 0 ${CMAKE_SOURCE_DIR}/cmake/modules)
 if(NOT CMAKE_CONFIGURATION_TYPES AND NOT CMAKE_BUILD_TYPE) # Default to a Release build
   set(CMAKE_BUILD_TYPE Release CACHE STRING "Choose the type of build [Release MinSizeRel Debug RelWithDebInfo]" FORCE)
 endif()
@@ -21,7 +21,7 @@ include(lcgsoft-macros)
 
 #---Define Global variables--------------------------------------------------------------------------------------------
 set(EXEC ${CMAKE_SOURCE_DIR}/cmake/scripts/exec-with-env)
-set(MAKE ${CMAKE_SOURCE_DIR}/cmake/scripts/make_verbose)
+set(MAKE ${CMAKE_SOURCE_DIR}/cmake/scripts/make_verbose $(MAKE))
 
 #---Enable (the defintion) of tests by default-------------------------------------------------------------------------
 enable_testing()
