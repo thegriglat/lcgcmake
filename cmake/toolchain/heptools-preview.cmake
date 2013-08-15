@@ -138,9 +138,11 @@ if(NOT ${LCG_OS} STREQUAL mac)
   LCG_external_package(neurobayes_expert 3.7.0                                    )
 endif()
 
-set(MCGENPATH  MCGenerators_lcgcmt${heptools_version})
-
 #---Additional External packages------(Generators)-----------------
+
+set(MCGENPATH  MCGenerators_lcgcmt${heptools_version})
+#set(MCGENPATH  MCGenerators_test)
+
 LCG_external_package(powheg-box         r2092         ${MCGENPATH}/powheg-box       )
 LCG_external_package(lhapdf            5.8.8          ${MCGENPATH}/lhapdf       )
 LCG_external_package(lhapdf            5.8.9          ${MCGENPATH}/lhapdf       )
