@@ -646,10 +646,10 @@ LCGPackage_Add(
 
 #---CRMC (FORMER EPOS)-----------------------------------------------------------------------------
 
-if ( ${crmc_native_version} MATCHES "^v")
+if ( ${crmc-old_native_version} MATCHES "^v")
 LCGPackage_Add(
-  crmc
-  URL http://cern.ch/service-spi/external/tarFiles/MCGeneratorsTarFiles/crmc-${crmc_native_version}.tar.gz
+  crmc-old
+  URL http://cern.ch/service-spi/external/tarFiles/MCGeneratorsTarFiles/crmc-${crmc-old_native_version}.tar.gz
   # SVN_REPOSITORY https://devel-ik.fzk.de/svn/mc/crmc/tags/${crmc_native_version}
   CONFIGURE_COMMAND <VOID>
   BUILD_COMMAND ${MAKE} -f Makefile CRMCROOT=<INSTALL_DIR> HEP_ROOT=${HepMC_home}
@@ -658,7 +658,7 @@ LCGPackage_Add(
   BUILD_IN_SOURCE 1
   DEPENDS HepMC
 )
-else(${crmc_native_version} MATCHES "^v")
+endif(${crmc-old_native_version} MATCHES "^v")
 LCGPackage_Add(
   crmc
   URL http://sftweb.cern.ch/generators/files/generator/tarballs/crmc-${crmc_native_version}.tar.gz
@@ -677,7 +677,6 @@ LCGPackage_Add(
 #         COMMAND ${CMAKE_COMMAND} -E chdir <INSTALL_DIR>  ${CMAKE_COMMAND} -E create_symlink  ../share/tabs tabs
   DEPENDS HepMC Boost ROOT
 )
-endif(${crmc_native_version} MATCHES "^v")
 #---powhegbox---------------------------------------------------------------------------------------
 LCGPackage_Add(
   powheg-box
