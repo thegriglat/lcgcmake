@@ -7,8 +7,8 @@ if (APPLE)
     PythonFWK
     URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/Python-${Python_native_version}.tgz
     CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix=<INSTALL_DIR> DYNLOADFILE=dynload_shlib.o --enable-framework=<INSTALL_DIR> --exec-prefix=<INSTALL_DIR>/Python.framework/Versions/Current --enable-unicode=ucs4 ${Python_config_options}
-   BUILD_COMMAND make
-   INSTALL_COMMAND make install
+   BUILD_COMMAND ${MAKE}
+   INSTALL_COMMAND ${MAKE} install
 	   COMMAND rm -rf <INSTALL_DIR>/bin
   )
 endif()
@@ -110,6 +110,7 @@ LCGPackage_Add(
              -Dmomentum:STRING=MEV
              -Dlength:STRING=MM
 	     -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+  BUILD_COMMAND ${MAKE}
 )
 
 #---HepPDT-------------------------------------------------------------------------------------------
