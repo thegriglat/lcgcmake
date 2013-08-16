@@ -182,7 +182,7 @@ LCG_external_package(starlight         r43            ${MCGENPATH}/starlight    
 LCG_external_package(herwig            6.520.2        ${MCGENPATH}/herwig       )
 LCG_external_package(herwig            6.521.2        ${MCGENPATH}/herwig       )
 
-LCG_external_package(crmc              v3400          ${MCGENPATH}/crmc         )
+LCG_external_package(crmc              1.0            ${MCGENPATH}/crmc         )
 LCG_external_package(cython            0.19           ${MCGENPATH}/cython       )
 LCG_external_package(yaml_cpp          0.3.0          ${MCGENPATH}/yaml_cpp     )
 LCG_external_package(yoda              1.0.0          ${MCGENPATH}/yoda         )
