@@ -44,7 +44,8 @@ macro(LCGPackage_Add name)
     #---Handle dependencies--------------------------------------------------------------------------
     set(${targetname}_dependencies "")
     if(ARG_DEPENDS)
-      foreach(dep ${ARG_DEPENDS})
+      LCG_expand_version_patterns(${version} DEPENDS "${ARG_DEPENDS}")
+      foreach(dep ${DEPENDS})
         if(NOT TARGET ${dep} AND NOT DEFINED ${dep}_home)
           message(SEND_ERROR "Package' ${name}' has declared a dependency to the package '${dep}' that has not yet been defined. "
                              "Add a call to 'LCGPackage_set_home(${dep})' to forward declare it.")
@@ -62,7 +63,7 @@ macro(LCGPackage_Add name)
     set(${targetname}_version_checked 0)
     set(${targetname}_version_file ${LCG_INSTALL_PREFIX}/${install_path}/version.txt)
     if(EXISTS ${${targetname}_version_file})
-      file(READ ${${targetname}_version_file} full_version)
+      file(STRINGS ${${targetname}_version_file} full_version)
       if(full_version STREQUAL ${${name}_full_version})
         set(${targetname}_version_checked 1)
       endif()
@@ -82,7 +83,7 @@ macro(LCGPackage_Add name)
       add_custom_target(clean-${targetname} COMMAND ${CMAKE_COMMAND} -E remove ${CMAKE_INSTALL_PREFIX}/${install_path}
                                             COMMENT "Deleting soft-link for package ${targetname}")
       if(ARG_DEPENDS)
-        add_dependencies(${targetname} ${ARG_DEPENDS})
+        add_dependencies(${targetname} ${DEPENDS})
       endif()
 
     elseif(lcg_ignore EQUAL -1 AND NOT ARG_BUNDLE_PACKAGE AND EXISTS ${LCG_INSTALL_PREFIX}/../app/releases/${install_path})
@@ -97,23 +98,7 @@ macro(LCGPackage_Add name)
       add_custom_target(clean-${targetname} COMMENT "${targetname} nothing to be done")
 
     else()
-      #---Replace patterns for multiversion cases-----------------------------------------------------
-      string(REPLACE <NATIVE_VERSION> ${version} ARGUMENTS "${ARG_UNPARSED_ARGUMENTS}")
-      string(REPLACE <VOID> "" ARGUMENTS "${ARGUMENTS}")
-      set(knownvars SOURCE_DIR INSTALL_DIR)
-      foreach(iter 1 2 3)  # 3 nested replacements
-        string(REGEX MATCHALL "<[^ <>(){}]+>" vars ${ARGUMENTS})
-        foreach(var ${vars})
-          string(REPLACE "<" "" v ${var})
-          string(REPLACE ">" "" v ${v})
-          list(FIND knownvars ${v} index)
-          if(DEFINED ${v})
-             string(REPLACE ${var} ${${v}} ARGUMENTS "${ARGUMENTS}")
-          elseif(iter EQUAL 3 AND index EQUAL -1)
-             message(FATAL_ERROR " Could not resolve variable '<${v}>' in 'LCGPackage_Add':\n ${ARGUMENTS}")
-          endif()
-        endforeach()
-      endforeach()
+      LCG_expand_version_patterns(${version} ARGUMENTS "${ARG_UNPARSED_ARGUMENTS}")
 
       #---Set home and install name-------------------------------------------------------------------
       set(${name}_home            ${CMAKE_INSTALL_PREFIX}/${${name}_directory_name}/${version}/${LCG_system})
@@ -163,7 +148,7 @@ macro(LCGPackage_Add name)
         LOG_CONFIGURE 1 LOG_BUILD 1 LOG_INSTALL 1 )
         
       if(ARG_DEPENDS)
-        add_dependencies(${targetname} ${ARG_DEPENDS})
+        add_dependencies(${targetname} ${DEPENDS})
       endif()
 
       #--Prioritize the update and patch command------------------------------------------------------
@@ -347,13 +332,18 @@ function(LCG_get_full_version name version var)
       string(REPLACE -${version} "" p ${p})     # Remove the version from the package name
       list(APPEND _full_version ${p}=${version})
     else()
-      list(GET ${p}_native_version -1 vers)    # Last version in case of multi-version wins !!
-      list(APPEND _full_version ${p}=${vers})
+      if(p MATCHES "(.+)-(.+)")
+        list(APPEND _full_version ${CMAKE_MATCH_1}=${CMAKE_MATCH_2})
+      else()
+        list(GET ${p}_native_version -1 vers)    # Last version in case of multi-version wins !!
+        list(APPEND _full_version ${p}=${vers})
+      endif()
     endif()
   endforeach()
   string(REPLACE ";" "/" _full_version "${_full_version}")
   set(${var} ${_full_version} PARENT_SCOPE)
 endfunction()
+
 
 #---------------------------------------------------------------------------------------------------
 # Helper macro to define the home of a package
@@ -379,10 +369,36 @@ macro( LCGPackage_set_install_path name)
   endforeach()
 endmacro()
 
+#---------------------------------------------------------------------------------------------------
+# Helper function to expand patterns that depend of the package version 
+#   o First standard patterns like <VOID> <VERSION> are tried
+#   o Then any available variable is also tried for max of 3 iterations
+#---------------------------------------------------------------------------------------------------
+function(LCG_expand_version_patterns version outvar input)
+  string(REPLACE <NATIVE_VERSION> ${version} result "${input}")
+  string(REPLACE <VERSION> ${version} result "${result}")
+  string(REPLACE <VOID> "" result "${result}")
+  set(knownvars SOURCE_DIR INSTALL_DIR)
+  foreach(iter 1 2 3)  # 3 nested replacements
+    string(REGEX MATCHALL "<[^ <>(){}]+>" vars ${result})
+    foreach(var ${vars})
+      string(REPLACE "<" "" v ${var})
+      string(REPLACE ">" "" v ${v})
+      list(FIND knownvars ${v} index)
+      if(DEFINED ${v})
+        string(REPLACE ${var} ${${v}} result "${result}")
+      elseif(iter EQUAL 3 AND index EQUAL -1)
+        message(FATAL_ERROR " Could not resolve variable '<${v}>' in 'LCGPackage_Add':\n ${result}")
+      endif()
+    endforeach()
+  endforeach()
+  set(${outvar} "${result}" PARENT_SCOPE)
+endfunction()
+
 #-----------------------------------------------------------------------
 # function LCG_add_test(<name> COMMAND cmd [arg1... ] 
 #                           [PRECMD cmd [arg1...]] [POSTCMD cmd [arg1...]]
-#                           OUTPUT outfile] [ERROR errfile]
+#                           [OUTPUT outfile] [ERROR errfile]
 #                           [WORKING_DIRECTORY directory]
 #                           [ENVIRONMENT var1=val1 var2=val2 ...
 #                           [DEPENDS test1 ...]

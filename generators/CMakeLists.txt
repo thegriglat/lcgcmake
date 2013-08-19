@@ -140,20 +140,25 @@ if(NOT APPLE)    #  (installation fails on MacOSX)
     herwig++
     URL http://cern.ch/service-spi/external/tarFiles/MCGeneratorsTarFiles/Herwig++-<NATIVE_VERSION>.tar.bz2
     CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR>
-		      --with-gsl=${GSL_home} --with-thepeg=${thepeg_v_home} --with-fastjet=${fastjet_home} 
-                      --with-boost=${Boost_home} LD_LIBRARY_PATH=${thepeg_v_home}/lib:${GSL_home}/lib:${Boost_home}/lib:$ENV{LD_LIBRARY_PATH}
+		                              --with-gsl=${GSL_home}
+                                  --with-thepeg=${thepeg_v_home}
+                                  --with-fastjet=${fastjet_home}
+                                  --with-boost=${Boost_home}
+                                  LD_LIBRARY_PATH=${thepeg_v_home}/lib:${GSL_home}/lib:${Boost_home}/lib:$ENV{LD_LIBRARY_PATH}
     BUILD_COMMAND ${MAKE} all LD_LIBRARY_PATH=${thepeg_v_home}/lib:${GSL_home}/lib:${Boost_home}/lib:$ENV{LD_LIBRARY_PATH}
           COMMAND ${CMAKE_COMMAND} -E chdir <SOURCE_DIR>/Contrib make LD_LIBRARY_PATH=${thepeg_v_home}/lib:${GSL_home}/lib:${Boost_home}/lib:$ENV{LD_LIBRARY_PATH}   
-	  COMMAND ${CMAKE_COMMAND} -E chdir <SOURCE_DIR>/Contrib/AlpGen make BasicLesHouchesFileReader.so HERWIGINCLUDE=-I<SOURCE_DIR>/include 
-			LD_LIBRARY_PATH=${thepeg_v_home}/lib:${GSL_home}/lib:${Boost_home}/lib:${herwig++_home}/lib:$ENV{LD_LIBRARY_PATH}
-          COMMAND ${CMAKE_COMMAND} -E chdir <SOURCE_DIR>/Contrib/AlpGen make AlpGenHandler.so HERWIGINCLUDE=-I<SOURCE_DIR>/include 
-                        LD_LIBRARY_PATH=${thepeg_v_home}/lib:${GSL_home}/lib:${Boost_home}/lib:${herwig++_home}/lib:$ENV{LD_LIBRARY_PATH}
+	        COMMAND ${CMAKE_COMMAND} -E chdir <SOURCE_DIR>/Contrib/AlpGen 
+                                   make BasicLesHouchesFileReader.so HERWIGINCLUDE=-I<SOURCE_DIR>/include 
+                                                                     LD_LIBRARY_PATH=${thepeg_v_home}/lib:${GSL_home}/lib:${Boost_home}/lib:${herwig++_home}/lib:$ENV{LD_LIBRARY_PATH}
+          COMMAND ${CMAKE_COMMAND} -E chdir <SOURCE_DIR>/Contrib/AlpGen 
+                                   make AlpGenHandler.so HERWIGINCLUDE=-I<SOURCE_DIR>/include
+                                   LD_LIBRARY_PATH=${thepeg_v_home}/lib:${GSL_home}/lib:${Boost_home}/lib:${herwig++_home}/lib:$ENV{LD_LIBRARY_PATH}
     INSTALL_COMMAND make install  LD_LIBRARY_PATH=${thepeg_v_home}/lib:${GSL_home}/lib:${Boost_home}/lib:${HepMC_home}/lib:$ENV{LD_LIBRARY_PATH}
             COMMAND  ${CMAKE_COMMAND} -E create_symlink herwig++ <INSTALL_DIR>/../../../herwigpp
             COMMAND  ${CMAKE_COMMAND} -E copy <SOURCE_DIR>/Contrib/AlpGen/AlpGenHandler.so <INSTALL_DIR>/lib/Herwig++/	    
             COMMAND  ${CMAKE_COMMAND} -E copy <SOURCE_DIR>/Contrib/AlpGen/BasicLesHouchesFileReader.so <INSTALL_DIR>/lib/Herwig++/ 
     BUILD_IN_SOURCE 1
-    DEPENDS GSL Boost thepeg fastjet
+    DEPENDS GSL Boost thepeg-<herwig++_<VERSION>_thepeg> fastjet
   )
 
 LCG_add_test(herwigpp_orig_test1 COMMAND ${herwig++_home}/bin/Herwig++ read --repo ${herwig++_home}/share/Herwig++/HerwigDefaults.rpo ${herwig++_home}/../share/sources/src/LHC.in
@@ -348,7 +353,7 @@ LCG_add_test(photospp_orig_test2 COMMAND photospp/tests/photospp_orig_test2
 
 #---evtgen------------------------------------------------------------------------------------------
 if(LCG_TARGET MATCHES "mac")
-  set(evtgen-build-options "FLIBS=-L/usr/local/gfortran/lib\ -lgfortran")
+  set(evtgen-build-options FLIBS=-L/usr/local/gfortran/lib\ -lgfortran)
 endif()
 LCGPackage_Add(
   evtgen
@@ -356,15 +361,15 @@ LCGPackage_Add(
   UPDATE_COMMAND <VOID>
   CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> 
                                 --hepmcdir=${HepMC_home}
-                                --pythiadir=<pythia8-<evtgen_<NATIVE_VERSION>_pythia8>_home> 
+                                --pythiadir=<pythia8-<evtgen_<VERSION>_pythia8>_home>
                                 --photosdir=${photos++_home} 
-                                --tauoladir=<tauola++-<evtgen_<NATIVE_VERSION>_tauola++>_home>
-  BUILD_COMMAND ${MAKE} -j1 "${evtgen-build-options}"
+                                --tauoladir=<tauola++-<evtgen_<VERSION>_tauola++>_home>
+  BUILD_COMMAND make -j1 "${evtgen-build-options}"
   INSTALL_COMMAND make install
           COMMAND ${CMAKE_COMMAND} -E chdir <INSTALL_DIR>/../share ${CMAKE_COMMAND} -E create_symlink  sources/evt.pdl evt.pdl
           COMMAND ${CMAKE_COMMAND} -E chdir <INSTALL_DIR>/../share ${CMAKE_COMMAND} -E create_symlink  sources/DECAY_2010.DEC DECAY.DEC
   BUILD_IN_SOURCE 1  
-  DEPENDS HepMC pythia8 photos++ tauola++
+  DEPENDS HepMC pythia8-<evtgen_<VERSION>_pythia8> photos++ tauola++-<evtgen_<VERSION>_tauola++>
 )
 
 LCG_add_test(evtgen_test1 COMMAND evtgen/tests/evtgen_test1 ${evtgen_home}/share/DECAY_2010.DEC ${evtgen_home}/share/evt.pdl ${CMAKE_CURRENT_SOURCE_DIR}/evtgen/tests/DDALITZ.DEC 10000

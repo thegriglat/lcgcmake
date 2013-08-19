@@ -3,6 +3,6 @@
 #    INSTALL_DIR Installation prefix
 #   FULL_VERSION    Full version string
 
-file(WRITE ${INSTALL_DIR}/version.txt ${FULL_VERSION})
+file(WRITE ${INSTALL_DIR}/version.txt ${FULL_VERSION} "\n")
 
 
