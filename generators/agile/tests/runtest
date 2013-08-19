@@ -1,3 +1,4 @@
 source $1/agileenv.sh
 export PATH=$2:${PATH}
+export AGILE_GEN_PATH=$1/../../..
 agile-runmc Pythia6:427 -o hepmcfile.dat
