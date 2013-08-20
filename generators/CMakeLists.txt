@@ -425,6 +425,9 @@ LCGPackage_Add(
 #---lhapdf6------------------------------------------------------------------------------------------
 LCGPackage_Add(
   lhapdf6
+#  tested with version 6.0.1
+#  URL http://www.hepforge.org/archive/lhapdf/LHAPDF-<NATIVE_VERSION>.tar.gz
+#  to be put in /afs/cern.ch/sw/lcg/external/tarFiles/MCGeneratorsTarFiles/
   URL http://cern.ch/service-spi/external/tarFiles/MCGeneratorsTarFiles/LHAPDF-<NATIVE_VERSION>.tar.gz
   CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> 
      --with-boost=${Boost_home}
