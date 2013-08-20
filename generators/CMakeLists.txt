@@ -1,11 +1,7 @@
-#todo for all: install README, lcg_configure
+#---Options-----------------------------------------------------------------------------------------
+set(PDFsets "--all" CACHE STRING "The PDFsets to be downloaded for the 'lhspdfsets' package (default --all)")
 
-#todo: insufficient output from the build step. set(CMAKE_VERBOSE_MAKEFILE ON) helps only partly
-
-#todo: do not split err/out
-
-# cook Boost include subpath string (used by several packages)
-#---General parameters--------------------------------------------------------------------------------------------
+#---General parameters------------------------------------------------------------------------------
 set(Python_cmd ${Python_home}/bin/python)
 
 string(REPLACE "." "_" Boost_underscore_twodigit ${Boost_config_version_twodigit})
@@ -23,6 +19,7 @@ string(REPLACE "opt" "dbg" LCG_platform_dbg ${LCG_platform})
 
 #---lhapdfsets--------------------------------------------------------------------------------------
 LCGPackage_set_home(lhapdfsets)
+message(STATUS "PDFsets to download: ${PDFsets}")
 get_filename_component(lhapdfsets_root ${lhapdfsets_home} PATH)
 if(NOT EXISTS ${lhapdfsets_root}/share/lhapdf/PDFsets)
 LCGPackage_Add(
@@ -31,9 +28,7 @@ LCGPackage_Add(
   CONFIGURE_COMMAND <VOID> 
   BUILD_COMMAND <VOID>
   INSTALL_COMMAND ${CMAKE_COMMAND} -E make_directory <INSTALL_DIR>
-#          for tests:
-#          COMMAND <SOURCE_DIR>/bin/lhapdf-getdata --force --dest=<INSTALL_DIR>/../share/lhapdf/PDFsets cteq6l
-          COMMAND <SOURCE_DIR>/bin/lhapdf-getdata --force --dest=<INSTALL_DIR>/../share/lhapdf/PDFsets --all
+          COMMAND <SOURCE_DIR>/bin/lhapdf-getdata --force --dest=<INSTALL_DIR>/../share/lhapdf/PDFsets ${PDFsets}
           COMMAND ${CMAKE_COMMAND} -E copy <INSTALL_DIR>/../share/sources/PDFsets.index <INSTALL_DIR>/../share/lhapdf
           COMMAND ${CMAKE_COMMAND} -E create_symlink lhapdf/PDFsets <INSTALL_DIR>/../share/PDFsets
           COMMAND ${CMAKE_COMMAND} -E create_symlink lhapdf/PDFsets.index <INSTALL_DIR>/../share/PDFsets.index
@@ -78,7 +73,7 @@ LCG_add_test(lhapdf_genser_test1 COMMAND lhapdf/tests/lhapdf_genser_test1
 set(HOMEPAGE http://home.thep.lu.se/~torbjorn/Pythia.html)
 LCGPackage_Add(
   pythia8
-  URL http://cern.ch/service-spi/external/tarFiles/MCGeneratorsTarFiles/pythia8<NATIVE_VERSION>.tgz
+  URL http://cern.ch/service-spi/external/tarFiles/MCGeneratorsTarFiles/pythia8-<NATIVE_VERSION>.tgz
   UPDATE_COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/pythia8/examples  <SOURCE_DIR>/examples
          COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/pythia8/files  <SOURCE_DIR>
          COMMAND REALHEPMCVERSION=${HepMC_native_version} REALGENVERSION=<NATIVE_VERSION> ./usesed
