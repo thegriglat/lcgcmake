@@ -431,9 +431,9 @@ LCGPackage_Add(
      --with-yaml-cpp=${yaml_cpp_home}
      PYTHON=${Python_home}/bin/python
      CYTHON=${cython_home}/bin/cython
+     PYTHONPATH=${cython_pythonpath}
   BUILD_COMMAND ${MAKE} all LD_LIBRARY_PATH=${yaml_cpp_home}/lib:$ENV{LD_LIBRARY_PATH} PYTHONPATH=${cython_pythonpath}
   BUILD_IN_SOURCE 1
-#  INSTALL_COMMAND make install PYTHONPATH=${cython_home}/lib/python2.7/site-packages
   INSTALL_COMMAND make install PYTHONPATH=${cython_pythonpath}
   DEPENDS Boost yaml_cpp Python cython
 )
