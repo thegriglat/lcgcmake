@@ -545,18 +545,21 @@ LCGPackage_Add(
 )
 
 #---HIJING----------------------------------------------------------------------------------------
-LCGPackage_Add(
-  hijing
-  URL http://cern.ch/service-spi/external/tarFiles/MCGeneratorsTarFiles/hijing-${hijing_native_version}-src.tgz
-  UPDATE_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/${hijing_native_version} <SOURCE_DIR>   
+
+if(NOT APPLE)    #  (installation fails on MacOSX, can be fixed on macos)
+ 
+  LCGPackage_Add(
+    hijing
+    URL http://cern.ch/service-spi/external/tarFiles/MCGeneratorsTarFiles/hijing-${hijing_native_version}-src.tgz
+    UPDATE_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/${hijing_native_version} <SOURCE_DIR>   
          COMMAND ${CMAKE_COMMAND} -E remove_directory <SOURCE_DIR>/${hijing_native_version}
-  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR>
-  BUILD_COMMAND ${MAKE} FC=${CMAKE_Fortran_COMPILER} CC=${CMAKE_C_COMPILER}
-  INSTALL_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/lib <INSTALL_DIR>/lib
+    CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR>
+    BUILD_COMMAND ${MAKE} FC=${CMAKE_Fortran_COMPILER} CC=${CMAKE_C_COMPILER}
+    INSTALL_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/lib <INSTALL_DIR>/lib
           COMMAND ${CMAKE_COMMAND} -E copy  <SOURCE_DIR>/tmp/hidata.o <INSTALL_DIR>/lib
        	  COMMAND ${CMAKE_COMMAND} -E copy  <SOURCE_DIR>/tmp/ludata.o <INSTALL_DIR>/lib
        	  COMMAND ${CMAKE_COMMAND} -E copy  <SOURCE_DIR>/tmp/pyhidata.o <INSTALL_DIR>/lib
-  BUILD_IN_SOURCE 1
+    BUILD_IN_SOURCE 1
 )
 LCG_add_test(hijing_orig_test1 COMMAND hijing/tests/hijing_orig_test1
                           BINARY_DIR hijing/tests
@@ -564,6 +567,8 @@ LCG_add_test(hijing_orig_test1 COMMAND hijing/tests/hijing_orig_test1
                           BUILD hijing_orig_test1
                           BUILD_OPTIONS -DHIJING_ROOT_DIR=${hijing_home}
                           ENVIRONMENT ${library_path}=${hijing_home}/lib:$ENV{${library_path}})
+
+endif()
 
 #---Starlight---------------------------------------------------------------------------------------
 string(SUBSTRING ${starlight_native_version} 1 -1 STARLIGHT_REV)
@@ -661,39 +666,42 @@ LCGPackage_Add(
 
 #---CRMC (FORMER EPOS)-----------------------------------------------------------------------------
 
-if ( ${crmc-old_native_version} MATCHES "^v")
-LCGPackage_Add(
-  crmc-old
-  URL http://cern.ch/service-spi/external/tarFiles/MCGeneratorsTarFiles/crmc-${crmc-old_native_version}.tar.gz
-  # SVN_REPOSITORY https://devel-ik.fzk.de/svn/mc/crmc/tags/${crmc_native_version}
-  CONFIGURE_COMMAND <VOID>
-  BUILD_COMMAND ${MAKE} -f Makefile CRMCROOT=<INSTALL_DIR> HEP_ROOT=${HepMC_home}
-  INSTALL_COMMAND make -f Makefile install CRMCROOT=<INSTALL_DIR> HEP_ROOT=${HepMC_home}
+if(NOT APPLE)    #  (installation fails on MacOSX)
+ if ( ${crmc-old_native_version} MATCHES "^v")
+ LCGPackage_Add(
+    crmc-old
+    URL http://cern.ch/service-spi/external/tarFiles/MCGeneratorsTarFiles/crmc-${crmc-old_native_version}.tar.gz
+    # SVN_REPOSITORY https://devel-ik.fzk.de/svn/mc/crmc/tags/${crmc_native_version}
+    CONFIGURE_COMMAND <VOID>
+    BUILD_COMMAND ${MAKE} -f Makefile CRMCROOT=<INSTALL_DIR> HEP_ROOT=${HepMC_home}
+    INSTALL_COMMAND make -f Makefile install CRMCROOT=<INSTALL_DIR> HEP_ROOT=${HepMC_home}
           COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/tabs  <INSTALL_DIR>/tabs
-  BUILD_IN_SOURCE 1
-  DEPENDS HepMC
-)
-endif(${crmc-old_native_version} MATCHES "^v")
-LCGPackage_Add(
-  crmc
-  URL http://cern.ch/service-spi/external/tarFiles/MCGeneratorsTarFiles/crmc-${crmc_native_version}.tar.gz
-  UPDATE_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/<NATIVE_VERSION> <SOURCE_DIR>
+    BUILD_IN_SOURCE 1
+    DEPENDS HepMC
+  )
+ endif(${crmc-old_native_version} MATCHES "^v")
+endif()
+
+if(NOT APPLE)    #  (installation fails on MacOSX)
+  LCGPackage_Add(
+    crmc
+    URL http://cern.ch/service-spi/external/tarFiles/MCGeneratorsTarFiles/crmc-${crmc_native_version}.tar.gz
+    UPDATE_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/<NATIVE_VERSION> <SOURCE_DIR>
          COMMAND ${CMAKE_COMMAND} -E remove_directory <SOURCE_DIR>/<NATIVE_VERSION
-  CMAKE_ARGS -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+    CMAKE_ARGS -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
              -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
              -DROOTSYS=${ROOT_home}
              -DHEPMC_PREFIX=${HepMC_home} -DBOOST_ROOT=${Boost_home}
              -DBOOST_INCLUDE_DIR=${Boost_home_include}
              #-DBoost_LIBRARYDIR=
-  BUILD_IN_SOURCE 1
-# INSTALL_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/lib  <INSTALL_DIR>/lib
-#         COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/bin  <INSTALL_DIR>/bin
-#         COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/tabs <INSTALL_DIR>/../share/tabs
-#         COMMAND ${CMAKE_COMMAND} -E chdir <INSTALL_DIR>  ${CMAKE_COMMAND} -E create_symlink  ../share/tabs tabs
-  DEPENDS HepMC Boost ROOT
-)
+    BUILD_IN_SOURCE 1
+    DEPENDS HepMC Boost ROOT
+ )
+endif()
+
 #---powhegbox---------------------------------------------------------------------------------------
-LCGPackage_Add(
+if(NOT APPLE)    #  (installation fails on MacOSX)
+ LCGPackage_Add(
   powheg-box
   URL http://cern.ch/service-spi/external/tarFiles/MCGeneratorsTarFiles/powheg-box-<NATIVE_VERSION>.tgz
   UPDATE_COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/powheg-box/files <SOURCE_DIR>
@@ -706,7 +714,8 @@ LCGPackage_Add(
   BUILD_COMMAND ${MAKE}
   BUILD_IN_SOURCE 1
   DEPENDS fastjet lhapdf
-)
+ )
+endif()
 #---baurmc------------------------------------------------------------------------------------------
 
 if(NOT APPLE)    #  (installation fails on MacOSX)
