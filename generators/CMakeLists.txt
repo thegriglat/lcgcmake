@@ -650,7 +650,7 @@ LCGPackage_Add(
 #---alpgen-----------------------------------------------------------------------------
 LCGPackage_Add(
   alpgen
-  URL http://cern.ch/service-spi/external/tarFiles/MCGeneratorsTarFiles/alpgen_v<alpgen_<NATIVE_VERSION>_au/thor>.tgz 
+  URL http://cern.ch/service-spi/external/tarFiles/MCGeneratorsTarFiles/alpgen_v<alpgen_<NATIVE_VERSION>_author>.tgz 
   UPDATE_COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/alpgen/files  <SOURCE_DIR>
   CMAKE_ARGS -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR> 
   BUILD_COMMAND ${MAKE} all
