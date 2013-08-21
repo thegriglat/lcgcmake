@@ -13,4 +13,3 @@ index c3cc787..6193481 100644
    LINK_LIBRARIES(${CMAKE_THREAD_LIBS_INIT})
    
    OPTION(WITH_LIBWRAP "Compile with tcp wrappers support" OFF)
-   
