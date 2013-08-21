@@ -171,7 +171,7 @@ LCG_external_package(evtgen            1.1.0          ${MCGENPATH}/evtgen     ta
 LCG_external_package(evtgen            1.2.0          ${MCGENPATH}/evtgen     tag=R01-02-00 pythia8=176 tauola++=1.1.1)
 
 LCG_external_package(rivet             1.8.3          ${MCGENPATH}/rivet        )
-LCG_external_package(rivet2            2.0.0b1        ${MCGENPATH}/rivet2       )
+LCG_external_package(rivet2            2.0.0b3        ${MCGENPATH}/rivet2       )
 LCG_external_package(sherpa            1.4.3          ${MCGENPATH}/sherpa         author=1.4.3 hepevt=4000  )
 LCG_external_package(sherpa            1.4.3.2        ${MCGENPATH}/sherpa         author=1.4.3 hepevt=10000 )
 LCG_external_package(hepmcanalysis     3.4.14         ${MCGENPATH}/hepmcanalysis  author=00-03-04-14        )
