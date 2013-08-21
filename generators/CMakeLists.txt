@@ -569,8 +569,7 @@ LCG_add_test(hijing_orig_test1 COMMAND hijing/tests/hijing_orig_test1
 string(SUBSTRING ${starlight_native_version} 1 -1 STARLIGHT_REV)
 LCGPackage_Add(
   starlight
-  SVN_REPOSITORY http://starlight.hepforge.org/svn/trunk
-  SVN_REVISION -r ${STARLIGHT_REV}
+  URL http://cern.ch/service-spi/external/tarFiles/MCGeneratorsTarFiles/starlight-r${STARLIGHT_REV}.tgz
   UPDATE_COMMAND <VOID>
   PATCH_COMMAND patch -p0 < ${CMAKE_CURRENT_SOURCE_DIR}/starlight/patches/patch-${starlight_native_version}
   CMAKE_ARGS -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
@@ -651,7 +650,7 @@ LCGPackage_Add(
 #---alpgen-----------------------------------------------------------------------------
 LCGPackage_Add(
   alpgen
-  URL http://mlm.web.cern.ch/mlm/alpgen/V2.1/v<alpgen_<NATIVE_VERSION>_author>.tgz 
+  URL http://cern.ch/service-spi/external/tarFiles/MCGeneratorsTarFiles/alpgen_v<alpgen_<NATIVE_VERSION>_au/thor>.tgz 
   UPDATE_COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/alpgen/files  <SOURCE_DIR>
   CMAKE_ARGS -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR> 
   BUILD_COMMAND ${MAKE} all
@@ -677,7 +676,7 @@ LCGPackage_Add(
 endif(${crmc-old_native_version} MATCHES "^v")
 LCGPackage_Add(
   crmc
-  URL http://sftweb.cern.ch/generators/files/generator/tarballs/crmc-${crmc_native_version}.tar.gz
+  URL http://cern.ch/service-spi/external/tarFiles/MCGeneratorsTarFiles/crmc-${crmc_native_version}.tar.gz
   UPDATE_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/<NATIVE_VERSION> <SOURCE_DIR>
          COMMAND ${CMAKE_COMMAND} -E remove_directory <SOURCE_DIR>/<NATIVE_VERSION
   CMAKE_ARGS -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
@@ -696,8 +695,7 @@ LCGPackage_Add(
 #---powhegbox---------------------------------------------------------------------------------------
 LCGPackage_Add(
   powheg-box
-  SVN_REPOSITORY --username anonymous --password anonymous --quiet svn://powhegbox.mib.infn.it/trunk/POWHEG-BOX 
-  SVN_REVISION -r 2092
+  URL http://cern.ch/service-spi/external/tarFiles/MCGeneratorsTarFiles/powheg-box-<NATIVE_VERSION>.tgz
   UPDATE_COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/powheg-box/files <SOURCE_DIR>
          COMMAND ${CMAKE_COMMAND} -E chdir <SOURCE_DIR> ${CMAKE_CURRENT_SOURCE_DIR}/powheg-box/scripts/usesed
   CONFIGURE_COMMAND ./configure  
