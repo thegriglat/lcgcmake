@@ -3,6 +3,7 @@ set(PDFsets "--all" CACHE STRING "The PDFsets to be downloaded for the 'lhspdfse
 
 #---General parameters------------------------------------------------------------------------------
 set(Python_cmd ${Python_home}/bin/python)
+set(Exec_cmd ${CMAKE_SOURCE_DIR}/cmake/scripts/exec-with-env)
 
 string(REPLACE "." "_" Boost_underscore_twodigit ${Boost_config_version_twodigit})
 set(Boost_home_include ${Boost_home}/include/boost-${Boost_underscore_twodigit})
@@ -262,20 +263,22 @@ LCG_add_test(photos-test1 COMMAND photos/tests/photos_test1
 endif()
 
 #---professor------------------------------------------------------------------------------------------
+
 LCGPackage_Add(
   professor
-  URL http://www.hepforge.org/archive/professor/professor-<NATIVE_VERSION>.tar.bz2
-  UPDATE_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/<NATIVE_VERSION> <SOURCE_DIR>
-         COMMAND ${CMAKE_COMMAND} -E remove_directory <SOURCE_DIR>/<NATIVE_VERSION>
+  URL http://cern.ch/service-spi/external/tarFiles/MCGeneratorsTarFiles/professor-<NATIVE_VERSION>.tar.bz2
   CONFIGURE_COMMAND <VOID>
-  BUILD_COMMAND <VOID>
-  INSTALL_COMMAND ${CMAKE_COMMAND} -E chdir <SOURCE_DIR> ${Python_cmd} setup.py install --prefix <INSTALL_DIR>
+  BUILD_COMMAND ${Exec_cmd} PYTHONPATH=${pyanalysis_home}/lib/python${Python_config_version_twodigit}/site-packages 
+		${Exec_cmd} LD_LIBRARY_PATH=${ROOT_home}/lib:$ENV{LD_LIBRARY_PATH}
+		${Python_cmd} setup.py build
+
+  INSTALL_COMMAND ${Exec_cmd} PYTHONPATH=${pyanalysis_home}/lib/python${Python_config_version_twodigit}/site-packages 
+		${Exec_cmd} LD_LIBRARY_PATH=${ROOT_home}/lib:$ENV{LD_LIBRARY_PATH}
+                ${Python_cmd} setup.py install --prefix <INSTALL_DIR> 
+
+  BUILD_IN_SOURCE 1
   DEPENDS Python matplotlib pyminuit scipy 
 )
-                            
-                                    
-#---pyquen--------------------------------------------------------------------------------------
-
 
 #---pyquen--------------------------------------------------------------------------------------
 
