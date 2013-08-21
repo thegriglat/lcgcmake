@@ -490,7 +490,8 @@ LCGPackage_Add(
 )
 
 LCG_add_test(rivet_orig_test1 COMMAND ${CMAKE_SOURCE_DIR}/generators/rivet/tests/runtest ${rivet_home} ${Python_home}/bin
-                          DEPENDS agile_orig_test1)
+                              ENVIRONMENT ${library_path}=${GSL_home}/lib:$ENV{${library_path}}
+                              DEPENDS agile_orig_test1)
 
 #---Sherpa------------------------------------------------------------------------------------------
 LCGPackage_Add(
