@@ -425,6 +425,24 @@ LCGPackage_Add(
   DEPENDS Python Boost cython
 )
 
+#---lhapdf6sets--------------------------------------------------------------------------------------
+LCGPackage_set_home(lhapdf6sets)
+get_filename_component(lhapdf6sets_root ${lhapdf6sets_home} PATH)
+if(NOT EXISTS ${lhapdf6sets_root}/share/lhapdf6/PDFsets)
+LCGPackage_Add(
+  lhapdf6sets
+  URL http://www.hepforge.org/archive/lhapdf/pdfsets/6.0/CT10.tar.gz
+  CONFIGURE_COMMAND <VOID>
+  BUILD_COMMAND <VOID>
+  INSTALL_COMMAND ${CMAKE_COMMAND} -E make_directory <INSTALL_DIR>/../share/lhapdf6/PDFsets
+          COMMAND ${CMAKE_COMMAND} -E rename <INSTALL_DIR>/../share/sources <INSTALL_DIR>/../share/lhapdf6/PDFsets/CT10
+          COMMAND ${CMAKE_COMMAND} -E create_symlink lhapdf6/PDFsets <INSTALL_DIR>/../share/PDFsets
+          COMMAND ${CMAKE_COMMAND} -E chdir <INSTALL_DIR>/../../.. ${CMAKE_TAR} czf distribution/lhapdf6sets/lhapdf6sets-<NATIVE_VERSION>-src.tgz lhapdf6sets/<NATIVE_VERSION>/share
+)
+else()
+  add_custom_target(lhapdf6sets COMMENT "LHAPDF6 data sets already installed in ${lhapdf6sets_root}/share/lhapdf/PDFsets")
+endif()
+
 #---lhapdf6------------------------------------------------------------------------------------------
 LCGPackage_Add(
   lhapdf6
