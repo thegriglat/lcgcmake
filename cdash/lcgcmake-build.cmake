@@ -10,6 +10,10 @@ endif()
 set(CTEST_CMAKE_GENERATOR "Unix Makefiles")
 set(CTEST_BUILD_COMMAND "make -k -j${ncpu} $ENV{TARGET}")
 
+#---Notes to be attached to the build---------------------------------------
+set(CTEST_NOTES_FILES ${CTEST_NOTES_FILES} ${CTEST_SOURCE_DIRECTORY}/cmake/toolchain/heptools-$ENV{LCG_VERSION}.cmake)
+set(CTEST_NOTES_FILES ${CTEST_NOTES_FILES} ${CTEST_BINARY_DIRECTORY}/dependencies.json)
+
 #---CTest commands----------------------------------------------------------
 #ctest_empty_binary_directory(${CTEST_BINARY_DIRECTORY})
 file(REMOVE_RECURSE ${CTEST_BINARY_DIRECTORY})
