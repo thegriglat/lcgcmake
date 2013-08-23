@@ -461,7 +461,7 @@ LCGPackage_Add(
   BUILD_COMMAND ${MAKE} all LD_LIBRARY_PATH=${yaml_cpp_home}/lib:$ENV{LD_LIBRARY_PATH} PYTHONPATH=${cython_pythonpath}
   BUILD_IN_SOURCE 1
   INSTALL_COMMAND make install PYTHONPATH=${cython_pythonpath}
-  DEPENDS Boost yaml_cpp Python cython
+  DEPENDS lhapdf6sets Boost yaml_cpp Python cython
 )
 
 #---Rivet2-----------------------------------------------------------------------------------------
