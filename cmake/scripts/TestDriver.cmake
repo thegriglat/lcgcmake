@@ -12,6 +12,40 @@
 #     TIM timeout 
 #     DBG debug flag
 
+#-----------------------------------------------------------------------
+# Helper functions
+#-----------------------------------------------------------------------
+function(multi_execute_process command options)
+  set(cmd "")
+  set(sep "")
+  foreach(arg IN LISTS command)
+    if("x${arg}" STREQUAL "xCOMMAND")
+      execute_process(COMMAND ${cmd} ${options} RESULT_VARIABLE result)
+      if(result)
+        set(msg "Command failed (${result}):\n")
+        foreach(a IN LISTS cmd)
+          set(msg "${msg} '${a}'")
+        endforeach()
+        message(FATAL_ERROR "${msg}")
+      endif()
+      set(cmd "")
+      set(sep "")
+    else()
+      set(cmd "${cmd}${sep}${arg}")
+      set(sep ";")
+    endif()
+  endforeach()
+  execute_process(COMMAND ${cmd} ${options} RESULT_VARIABLE result)
+  if(result)
+    set(msg "Command failed (${result}):\n")
+    foreach(a IN LISTS cmd)
+      set(msg "${msg} '${a}'")
+    endforeach()
+    message(FATAL_ERROR "${msg}")
+  endif()
+endfunction()
+
+#-----------------------------------------------------------------------
 if(DBG)
   message(STATUS "ENV=${ENV}")
 endif()
@@ -73,30 +107,19 @@ endif()
 # Execute pre command
 #
 if(PRE)
-  execute_process(COMMAND ${_pre} ${_cwd} RESULT_VARIABLE _rc)
-  if(_rc)
-    message(FATAL_ERROR "pre-command error code : ${_rc}")
-  endif()
+  multi_execute_process("${_pre}" "${_cwd}")
 endif()
 
 #-----------------------------------------------------------------------
 # Execute test
 #
 if(CMD)
-  execute_process(COMMAND ${_cmd} ${_out} ${_err} ${_cwd} TIMEOUT ${_timeout} RESULT_VARIABLE _rc)
-  message("LCGTest rc: ${_rc}")
-  if(_rc)
-    message(FATAL_ERROR "Test failed!!!")
-  endif()
+  multi_execute_process("${_cmd}" "${_out};${_err};${_cwd};TIMEOUT;${_timeout}")
 endif()
 
 #-----------------------------------------------------------------------
 # Execute post test command
 #
 if(POST)
-  execute_process(COMMAND ${_post} ${_cwd} RESULT_VARIABLE _rc)
-  if(_rc)
-    message(FATAL_ERROR "post-command error code : ${_rc}")
-  endif()
+  multi_execute_process("${_post}" "${_cwd}")
 endif()
-

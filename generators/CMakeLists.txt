@@ -60,7 +60,7 @@ LCGPackage_Add(
   BUILD_IN_SOURCE 1
   DEPENDS lhapdfsets
 )
-LCG_add_test(lhapdf_genser_test1 COMMAND lhapdf/tests/lhapdf_genser_test1
+LCG_add_test(lhapdf_genser_test1 TEST_COMMAND lhapdf/tests/lhapdf_genser_test1
                           BINARY_DIR lhapdf/tests
                           SOURCE_DIR lhapdf/tests
                           BUILD lhapdf_genser_test1
@@ -108,7 +108,7 @@ LCG_add_test(pythia8-build  BINARY_DIR pythia8/tests SOURCE_DIR pythia8/tests
 foreach(t genser_test3 genser_test4 
 orig_test1 
 )
-  LCG_add_test(pythia8-${t} COMMAND pythia8/tests/pythia8_${t}
+  LCG_add_test(pythia8-${t} TEST_COMMAND pythia8/tests/pythia8_${t}
                             ENVIRONMENT ${library_path}=${pythia8_home}/lib:${HepMC_home}/lib:$ENV{${library_path}}
                                         PYTHIA8DATA=${pythia8_home}/xmldoc
                             DEPENDS pythia8-build)
@@ -157,12 +157,12 @@ if(NOT APPLE)    #  (installation fails on MacOSX)
     DEPENDS GSL Boost thepeg-<herwig++_<VERSION>_thepeg> fastjet
   )
 
-LCG_add_test(herwigpp_orig_test1 COMMAND ${herwig++_home}/bin/Herwig++ read --repo ${herwig++_home}/share/Herwig++/HerwigDefaults.rpo ${herwig++_home}/../share/sources/src/LHC.in
+LCG_add_test(herwigpp_orig_test1 TEST_COMMAND ${herwig++_home}/bin/Herwig++ read --repo ${herwig++_home}/share/Herwig++/HerwigDefaults.rpo ${herwig++_home}/../share/sources/src/LHC.in
                           BINARY_DIR herwig++/tests
                           SOURCE_DIR herwig++/tests
                           ENVIRONMENT ${library_path}=${herwig++_home}/lib:${thepeg_home}/lib:${HepMC_home}/lib:${lhapdf_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:$ENV{${library_path}})
 
-LCG_add_test(herwigpp_orig_test2 COMMAND ${herwig++_home}/bin/Herwig++ run --repo  ${herwig++_home}/share/Herwig++/HerwigDefaults.rpo -N100 LHC.run
+LCG_add_test(herwigpp_orig_test2 TEST_COMMAND ${herwig++_home}/bin/Herwig++ run --repo  ${herwig++_home}/share/Herwig++/HerwigDefaults.rpo -N100 LHC.run
                           BINARY_DIR herwig++/tests
                           SOURCE_DIR herwig++/tests
                           ENVIRONMENT ${library_path}=${herwig++_home}/lib:${thepeg_home}/lib:${HepMC_home}/lib:${lhapdf_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:$ENV{${library_path}}
@@ -189,7 +189,7 @@ LCG_add_test(tauolapp-build BINARY_DIR tauolapp/tests SOURCE_DIR tauolapp/tests
                                            -DPYTHIA8_ROOT_DIR=${pythia8_home} -DHEPMC_ROOT_DIR=${HepMC_home})
 
 foreach(t 1 2 3)
-  LCG_add_test(tauolapp_orig_test${t} COMMAND tauolapp/tests/tauolapp_orig_test${t}
+  LCG_add_test(tauolapp_orig_test${t} TEST_COMMAND tauolapp/tests/tauolapp_orig_test${t}
                             ENVIRONMENT ${library_path}=${tauola++_home}/lib:$ENV{${library_path}}
                             DEPENDS pythia8-build)
 endforeach()
@@ -207,7 +207,7 @@ LCGPackage_Add(
          COMMAND ${CMAKE_COMMAND} -E remove <SOURCE_DIR>/splitter.pl
   CMAKE_ARGS -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
 )
-LCG_add_test(pythia6-test1 COMMAND pythia6/tests/pythia6_test1
+LCG_add_test(pythia6-test1 TEST_COMMAND pythia6/tests/pythia6_test1
                            BINARY_DIR pythia6/tests
                            SOURCE_DIR pythia6/tests
                            BUILD pythia6_test1
@@ -235,7 +235,12 @@ LCGPackage_Add(
   DEPENDS HepMC Boost Python swig
 )
 
-LCG_add_test(agile_orig_test1 COMMAND ${CMAKE_SOURCE_DIR}/generators/agile/tests/runtest ${agile_home} ${Python_home}/bin)
+LCG_add_test(agile_orig_test1 TEST_COMMAND ${agile_home}/bin/agile-runmc Pythia6:427 -o hepmcfile.dat
+                              ENVIRONMENT PATH=${agile_home}/bin:${Python_home}/bin:$ENV{PATH}
+                                          ${library_path}=${agile_home}/lib:${HepMC_home}/lib:$ENV{${library_path}}
+                                          PYTHONPATH=${agile_home}/lib/python${Python_config_version_twodigit}/site-packages:$ENV{PYTHONPATH}
+                                          AGILE_GEN_PATH=${agile_home}/../../..
+                              )
 
 #---photos------------------------------------------------------------------------------------------
 if(NOT APPLE)    #  (installation fails on MacOSX)
@@ -252,7 +257,7 @@ if(NOT APPLE)    #  (installation fails on MacOSX)
             COMMAND ${CMAKE_COMMAND} -E chdir <INSTALL_DIR>/lib ${CMAKE_COMMAND} -E create_symlink archive/libphotos.a libphotos.a
   )
 
-LCG_add_test(photos-test1 COMMAND photos/tests/photos_test1
+LCG_add_test(photos-test1 TEST_COMMAND photos/tests/photos_test1
                           BINARY_DIR photos/tests
                           SOURCE_DIR photos/tests
                           BUILD photos_test1
@@ -294,7 +299,7 @@ LCGPackage_Add(
   BUILD_IN_SOURCE 1
 )
 
-LCG_add_test(pyquen-test1 COMMAND pyquen/tests/pyquen_test1
+LCG_add_test(pyquen-test1 TEST_COMMAND pyquen/tests/pyquen_test1
                           BINARY_DIR pyquen/tests
                           SOURCE_DIR pyquen/tests
                           BUILD pyquen_test1
@@ -316,7 +321,7 @@ LCGPackage_Add(
   BUILD_COMMAND ${MAKE} all
   BUILD_IN_SOURCE 1
 )
-LCG_add_test(hydjet-test COMMAND hydjet/tests/hydjet_test
+LCG_add_test(hydjet-test  TEST_COMMAND hydjet/tests/hydjet_test
                           BINARY_DIR hydjet/tests
                           SOURCE_DIR hydjet/tests
                           BUILD hydjet_test
@@ -342,10 +347,10 @@ LCG_add_test(photospp-build BINARY_DIR photospp/tests
                             BUILD_OPTIONS  -DCMAKE_MODULE_PATH=${cmaketools_home}/modules 
                                            -DPHOTOSPP_ROOT_DIR=${photos++_home} -DPYTHIA8_ROOT_DIR=${pythia8_home} 
                                            -DHEPMC_ROOT_DIR=${HepMC_home})
-LCG_add_test(photospp_orig_test1 COMMAND photospp/tests/photospp_orig_test1
+LCG_add_test(photospp_orig_test1 TEST_COMMAND photospp/tests/photospp_orig_test1
                           ENVIRONMENT ${library_path}=${photos++_home}/lib:$ENV{${library_path}}
                           DEPENDS photospp-build)
-LCG_add_test(photospp_orig_test2 COMMAND photospp/tests/photospp_orig_test2
+LCG_add_test(photospp_orig_test2 TEST_COMMAND photospp/tests/photospp_orig_test2
                           ENVIRONMENT ${library_path}=${photos++_home}/lib:$ENV{${library_path}}
                           DEPENDS photospp-build)
 
@@ -371,7 +376,7 @@ LCGPackage_Add(
 )
 
 foreach(version ${evtgen_native_version})
-LCG_add_test(evtgen-${version}_test1 COMMAND evtgen-${version}/tests/evtgen_test1 ${evtgen-${version}_home}/share/DECAY_2010.DEC ${evtgen-${version}_home}/share/evt.pdl ${CMAKE_CURRENT_SOURCE_DIR}/evtgen/tests/DDALITZ.DEC 10000
+LCG_add_test(evtgen-${version}_test1 TEST_COMMAND evtgen-${version}/tests/evtgen_test1 ${evtgen-${version}_home}/share/DECAY_2010.DEC ${evtgen-${version}_home}/share/evt.pdl ${CMAKE_CURRENT_SOURCE_DIR}/evtgen/tests/DDALITZ.DEC 10000
                           BINARY_DIR evtgen-${version}/tests
                           SOURCE_DIR evtgen/tests
                           BUILD evtgen_test1
@@ -492,7 +497,7 @@ LCGPackage_Add(
   DEPENDS HepMC Boost fastjet GSL Python swig
 )
 
-LCG_add_test(rivet_orig_test1 COMMAND ${CMAKE_SOURCE_DIR}/generators/rivet/tests/runtest ${rivet_home} ${Python_home}/bin
+LCG_add_test(rivet_orig_test1 TEST_COMMAND ${CMAKE_SOURCE_DIR}/generators/rivet/tests/runtest ${rivet_home} ${Python_home}/bin
                               ENVIRONMENT ${library_path}=${GSL_home}/lib:$ENV{${library_path}}
                               DEPENDS agile_orig_test1)
 
@@ -512,7 +517,7 @@ LCGPackage_Add(
   DEPENDS lhapdf HepMC rivet
 )
 
-LCG_add_test(sherpa_orig_test1 COMMAND ${CMAKE_SOURCE_DIR}/generators/sherpa/tests/runtest ${sherpa_home}  ${CMAKE_SOURCE_DIR}/generators/sherpa/tests
+LCG_add_test(sherpa_orig_test1 TEST_COMMAND ${CMAKE_SOURCE_DIR}/generators/sherpa/tests/runtest ${sherpa_home}  ${CMAKE_SOURCE_DIR}/generators/sherpa/tests
                           BINARY_DIR sherpa/tests
                           SOURCE_DIR sherpa/tests
                           ENVIRONMENT ${library_path}=${sherpa_home}/lib:${HepMC_home}/lib:${lhapdf_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:$ENV{${library_path}})
@@ -561,7 +566,7 @@ if(NOT APPLE)    #  (installation fails on MacOSX, can be fixed on macos)
        	  COMMAND ${CMAKE_COMMAND} -E copy  <SOURCE_DIR>/tmp/pyhidata.o <INSTALL_DIR>/lib
     BUILD_IN_SOURCE 1
 )
-LCG_add_test(hijing_orig_test1 COMMAND hijing/tests/hijing_orig_test1
+LCG_add_test(hijing_orig_test1 TEST_COMMAND hijing/tests/hijing_orig_test1
                           BINARY_DIR hijing/tests
                           SOURCE_DIR hijing/tests
                           BUILD hijing_orig_test1
@@ -579,7 +584,7 @@ LCGPackage_Add(
   PATCH_COMMAND patch -p0 < ${CMAKE_CURRENT_SOURCE_DIR}/starlight/patches/patch-${starlight_native_version}
   CMAKE_ARGS -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
 )
-LCG_add_test(starlight_genser_test1 COMMAND starlight/tests/starlight_genser_test1
+LCG_add_test(starlight_genser_test1 TEST_COMMAND starlight/tests/starlight_genser_test1
                           BINARY_DIR starlight/tests
                           SOURCE_DIR starlight/tests
                           BUILD starlight_genser_test1
@@ -613,7 +618,7 @@ if(NOT APPLE)    #  (installation fails on MacOSX)
     BUILD_IN_SOURCE 1
     DEPENDS photos pythia6
   )
-  LCG_add_test(tauola-test1 COMMAND tauola/tests/tauola_test1
+  LCG_add_test(tauola-test1 TEST_COMMAND tauola/tests/tauola_test1
                           BINARY_DIR tauola/tests
                           SOURCE_DIR tauola/tests
                           BUILD tauola_test1
@@ -732,6 +737,17 @@ if(NOT APPLE)    #  (installation fails on MacOSX)
 
 endif()
 
+#---test of the test infrasgtructure---------------------------------------------------------------
+LCG_add_test(test-test PRE_COMMAND /bin/echo pre-comand 1
+                           COMMAND /bin/echo pre-comand 2
+                           COMMAND /bin/echo pre-comand 3
+                           COMMAND /bin/echo pre-comand 4
+                           COMMAND /bin/echo pre-comand 5
+                      TEST_COMMAND /bin/echo test-command 1
+                           COMMAND /bin/echo test-command 2 
+                           COMMAND /bin/echo test-command 3
+                      POST_COMMAND /bin/echo post-command 1
+                           COMMAND date )
 
 
 

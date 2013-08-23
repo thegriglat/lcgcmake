@@ -396,8 +396,9 @@ function(LCG_expand_version_patterns version outvar input)
 endfunction()
 
 #-----------------------------------------------------------------------
-# function LCG_add_test(<name> COMMAND cmd [arg1... ] 
-#                           [PRECMD cmd [arg1...]] [POSTCMD cmd [arg1...]]
+# function LCG_add_test(<name> TEST_COMMAND cmd [arg1... ]
+#                           [PRE_COMMAND cmd [arg1...]] 
+#                           [POST_COMMAND cmd [arg1...]]
 #                           [OUTPUT outfile] [ERROR errfile]
 #                           [WORKING_DIRECTORY directory]
 #                           [ENVIRONMENT var1=val1 var2=val2 ...
@@ -414,22 +415,22 @@ function(LCG_add_test test)
   cmake_parse_arguments(ARG
     "DEBUG" 
     "TIMEOUT;BUILD;OUTPUT;ERROR;SOURCE_DIR;BINARY_DIR;PROJECT;PASSREGEX;FAILREGEX;WORKING_DIRECTORY" 
-    "COMMAND;PRECMD;POSTCMD;ENVIRONMENT;DEPENDS;LABELS;BUILD_OPTIONS"
+    "TEST_COMMAND;PRE_COMMAND;POST_COMMAND;ENVIRONMENT;DEPENDS;LABELS;BUILD_OPTIONS"
     ${ARGN})
 
   if(NOT CMAKE_GENERATOR MATCHES Makefiles)
     set(_cfg $<CONFIGURATION>/)
   endif()
   
-  #- Handle COMMAND argument
-  list(LENGTH ARG_COMMAND _len)
+  #- Handle TEST_COMMAND argument
+  list(LENGTH ARG_TEST_COMMAND _len)
   if(_len LESS 1)
     if(NOT ARG_BUILD)
       message(FATAL_ERROR "LCG_ADD_TEST: command is mandatory (without build)")
     endif()
   else()
-    list(GET ARG_COMMAND 0 _prg)
-    list(REMOVE_AT ARG_COMMAND 0)
+    list(GET ARG_TEST_COMMAND 0 _prg)
+    list(REMOVE_AT ARG_TEST_COMMAND 0)
     if(NOT IS_ABSOLUTE ${_prg})
       set(_prg ${CMAKE_CURRENT_BINARY_DIR}/${_cfg}${_prg})
     elseif(EXISTS ${_prg})
@@ -438,20 +439,20 @@ function(LCG_add_test test)
       get_filename_component(_file ${_prg} NAME)
       set(_prg ${_path}/${_cfg}${_file})
     endif()
-    set(_cmd ${_prg} ${ARG_COMMAND})
+    set(_cmd ${_prg} ${ARG_TEST_COMMAND})
     string(REPLACE ";" "#" _cmd "${_cmd}")
   endif()
 
   set(_command ${CMAKE_COMMAND} -DTST=${test} -DCMD=${_cmd})
 
   #- Handle PRE and POST commands
-  if(ARG_PRECMD)
-    set(_pre ${ARG_PRECMD})
+  if(ARG_PRE_COMMAND)
+    set(_pre ${ARG_PRE_COMMAND})
     string(REPLACE ";" "#" _pre "${_pre}")
     set(_command ${_command} -DPRE=${_pre})
   endif()
-  if(ARG_POSTCMD)
-    set(_post ${ARG_POSTCMD})
+  if(ARG_POST_COMMAND)
+    set(_post ${ARG_POST_COMMAND})
     string(REPLACE ";" "#" _post "${_post}")
     set(_command ${_command} -DPOST=${_post})
   endif()

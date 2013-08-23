@@ -6,7 +6,10 @@ if (APPLE)
   LCGPackage_Add(
     PythonFWK
     URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/Python-${Python_native_version}.tgz
-    CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix=<INSTALL_DIR> DYNLOADFILE=dynload_shlib.o --enable-framework=<INSTALL_DIR> --exec-prefix=<INSTALL_DIR>/Python.framework/Versions/Current --enable-unicode=ucs4 ${Python_config_options}
+    CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix=<INSTALL_DIR> DYNLOADFILE=dynload_shlib.o 
+                                             --enable-framework=<INSTALL_DIR>/Library/Frameworks 
+                                             --exec-prefix=<INSTALL_DIR>/Library/Frameworks/Python.framework/Versions/Current 
+                                             --enable-unicode=ucs4 ${Python_config_options}
    BUILD_COMMAND ${MAKE} -j1
    INSTALL_COMMAND ${MAKE} -j1 install
 	   COMMAND rm -rf <INSTALL_DIR>/bin
