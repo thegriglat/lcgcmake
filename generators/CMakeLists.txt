@@ -427,7 +427,9 @@ LCGPackage_Add(
 
 #---lhapdf6sets--------------------------------------------------------------------------------------
 LCGPackage_set_home(lhapdf6sets)
+if(DEFINED lhapdf6sets_home)
 get_filename_component(lhapdf6sets_root ${lhapdf6sets_home} PATH)
+endif()
 if(NOT EXISTS ${lhapdf6sets_root}/share/lhapdf6/PDFsets)
 LCGPackage_Add(
   lhapdf6sets
