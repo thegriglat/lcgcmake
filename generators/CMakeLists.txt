@@ -458,7 +458,9 @@ LCGPackage_Add(
      --with-lcgtag=${LCG_platform}
      --disable-pdfmanual
      --enable-unvalidated
-     PYTHON=${Python_home}/bin/python LD_LIBRARY_PATH=${Python_home}/lib:$ENV{LD_LIBRARY_PATH}
+     PYTHON=${Python_home}/bin/python
+     PYTHONPATH=${cython_home}/lib/python2.7/site-packages:$ENV{PYTHONPATH}
+     LD_LIBRARY_PATH=${Python_home}/lib:$ENV{LD_LIBRARY_PATH}
      SWIG=${swig_home}/bin/swig
      CC=${CMAKE_C_COMPILER}
      CXX=${CMAKE_CXX_COMPILER}
