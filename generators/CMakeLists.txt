@@ -484,8 +484,11 @@ LCGPackage_Add(
      SWIG=${swig_home}/bin/swig
      CC=${CMAKE_C_COMPILER}
      CXX=${CMAKE_CXX_COMPILER}
-  BUILD_COMMAND ${MAKE} all LD_LIBRARY_PATH=${Python_home}/lib:${yaml_cpp_home}/lib:$ENV{LD_LIBRARY_PATH}
+  BUILD_COMMAND ${MAKE} all
+                LD_LIBRARY_PATH=${Python_home}/lib:${yaml_cpp_home}/lib:$ENV{LD_LIBRARY_PATH}
+                PYTHONPATH=${cython_home}/lib/python2.7/site-packages:$ENV{PYTHONPATH}
   INSTALL_COMMAND make install LD_LIBRARY_PATH=${Python_home}/lib:${yaml_cpp_home}/lib:$ENV{LD_LIBRARY_PATH}
+                PYTHONPATH=${cython_home}/lib/python2.7/site-packages:$ENV{PYTHONPATH}
           COMMAND ${CMAKE_COMMAND} -E copy <SOURCE_DIR>/rivetenv.csh <INSTALL_DIR>/
           COMMAND ${CMAKE_COMMAND} -E copy <SOURCE_DIR>/rivetenv.sh <INSTALL_DIR>/
   BUILD_IN_SOURCE 1
