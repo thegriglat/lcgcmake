@@ -13,3 +13,101 @@ index c3cc787..6193481 100644
    LINK_LIBRARIES(${CMAKE_THREAD_LIBS_INIT})
    
    OPTION(WITH_LIBWRAP "Compile with tcp wrappers support" OFF)
+--- unittest/mysys/my_atomic-t.c   2011-10-12 14:10:24.000000000 +0200
++++ unittest/mysys/my_atomic-t.c   2011-11-14 00:47:09.000000000 +0100
+@@ -164,7 +164,14 @@
+   test_concurrently("my_atomic_cas32", test_atomic_cas, THREADS, CYCLES);
+ 
+   {
+-    int64 b=0x1000200030004000LL;
++    /*
++      If b is not volatile, the wrong assembly code is generated on OSX Lion
++      as the variable is optimized away as a constant.
++      See Bug#62533 / Bug#13030056.
++      Another workaround is to specify architecture explicitly using e.g.
++      CFLAGS/CXXFLAGS= "-m64".
++    */
++    volatile int64 b=0x1000200030004000LL;
+     a64=0;
+     my_atomic_add64(&a64, b);
+     ok(a64==b, "add64");
+=== modified file 'config.h.cmake'
+--- config.h.cmake	2011-04-30 05:24:38 +0000
++++ config.h.cmake	2011-07-21 15:45:38 +0000
+@@ -219,7 +219,6 @@
+ #cmakedefine HAVE_PTHREAD_ATTR_SETSTACKSIZE 1
+ #cmakedefine HAVE_PTHREAD_CONDATTR_CREATE 1
+ #cmakedefine HAVE_PTHREAD_CONDATTR_SETCLOCK 1
+-#cmakedefine HAVE_PTHREAD_INIT 1
+ #cmakedefine HAVE_PTHREAD_KEY_DELETE 1
+ #cmakedefine HAVE_PTHREAD_KEY_DELETE 1
+ #cmakedefine HAVE_PTHREAD_KILL 1
+
+=== modified file 'configure.cmake'
+--- configure.cmake	2011-06-30 15:46:53 +0000
++++ configure.cmake	2011-07-21 15:45:38 +0000
+@@ -391,7 +391,6 @@ CHECK_FUNCTION_EXISTS (pthread_attr_sets
+ CHECK_FUNCTION_EXISTS (pthread_attr_setstacksize HAVE_PTHREAD_ATTR_SETSTACKSIZE)
+ CHECK_FUNCTION_EXISTS (pthread_condattr_create HAVE_PTHREAD_CONDATTR_CREATE)
+ CHECK_FUNCTION_EXISTS (pthread_condattr_setclock HAVE_PTHREAD_CONDATTR_SETCLOCK)
+-CHECK_FUNCTION_EXISTS (pthread_init HAVE_PTHREAD_INIT)
+ CHECK_FUNCTION_EXISTS (pthread_key_delete HAVE_PTHREAD_KEY_DELETE)
+ CHECK_FUNCTION_EXISTS (pthread_rwlock_rdlock HAVE_PTHREAD_RWLOCK_RDLOCK)
+ CHECK_FUNCTION_EXISTS (pthread_sigmask HAVE_PTHREAD_SIGMASK)
+
+=== modified file 'dbug/dbug_analyze.c'
+--- dbug/dbug_analyze.c	2011-01-11 09:07:37 +0000
++++ dbug/dbug_analyze.c	2011-07-21 15:45:38 +0000
+@@ -571,9 +571,6 @@ int main (int argc, char **argv)
+     FILE *infile;
+     FILE *outfile = {stdout};
+ 
+-#if defined(HAVE_PTHREAD_INIT)
+-  pthread_init();                       /* Must be called before DBUG_ENTER */
+-#endif
+   my_thread_global_init(); 
+   {
+     DBUG_ENTER ("main");
+
+=== modified file 'dbug/my_main.c'
+--- dbug/my_main.c	2011-01-11 09:07:37 +0000
++++ dbug/my_main.c	2011-07-21 15:45:38 +0000
+@@ -16,9 +16,6 @@ char *argv[];
+ {
+   register int result, ix;
+   extern int factorial(int);
+-#if defined(HAVE_PTHREAD_INIT)
+-  pthread_init();			/* Must be called before DBUG_ENTER */
+-#endif
+   my_thread_global_init();
+ 
+   {
+
+=== modified file 'dbug/tests.c'
+--- dbug/tests.c	2011-01-11 09:07:37 +0000
++++ dbug/tests.c	2011-07-21 15:45:38 +0000
+@@ -44,9 +44,6 @@ int main (int argc, char *argv[])
+   if (argc == 1)
+     return 0;
+ 
+-#if defined(HAVE_PTHREAD_INIT)
+-  pthread_init();                       /* Must be called before DBUG_ENTER */
+-#endif
+   my_thread_global_init();
+ 
+   dup2(1, 2);
+
+=== modified file 'mysys/my_init.c'
+--- mysys/my_init.c	2011-06-30 15:46:53 +0000
++++ mysys/my_init.c	2011-07-21 15:45:38 +0000
+@@ -99,10 +99,6 @@ my_bool my_init(void)
+   fastmutex_global_init();              /* Must be called early */
+ #endif
+ 
+-#if defined(HAVE_PTHREAD_INIT)
+-  pthread_init();			/* Must be called before DBUG_ENTER */
+-#endif
+-
+   /* $HOME is needed early to parse configuration files located in ~/ */
+   if ((home_dir= getenv("HOME")) != 0)
+     home_dir= intern_filename(home_dir_buff, home_dir);
