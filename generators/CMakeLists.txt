@@ -663,7 +663,7 @@ LCGPackage_Add(
   UPDATE_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/<NATIVE_VERSION> <SOURCE_DIR>
            COMMAND ${CMAKE_COMMAND} -E remove_directory <SOURCE_DIR>/<NATIVE_VERSION>
   CONFIGURE_COMMAND ./configure --with-herwig=${herwig_home}
-  BUILD_COMMAND ${MAKE} FC=${CMAKE_Fortran_COMPILER}
+  BUILD_COMMAND ${MAKE} -j1 FC=${CMAKE_Fortran_COMPILER}
   INSTALL_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/lib <INSTALL_DIR>/lib
             COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/include <INSTALL_DIR>/include
 	    COMMAND ${CMAKE_COMMAND} -E chdir <INSTALL_DIR>/lib ${CMAKE_COMMAND} -E create_symlink archive/libjimmy.a libjimmy.a
