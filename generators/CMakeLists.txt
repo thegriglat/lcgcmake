@@ -174,7 +174,7 @@ endif()
 LCGPackage_Add(
   tauola++
   URL http://cern.ch/service-spi/external/tarFiles/MCGeneratorsTarFiles/TAUOLA.<NATIVE_VERSION>-LHC.tar.gz
-  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --with-pic --with-hepmc=${HepMC_home} --with-lhapdf=${lhapdf_home} CFLAGS=-O2 CXXFLAGS=-O2 FFLAGS=-O2
+  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --with-pic --with-hepmc=${HepMC_home} --with-lhapdf=${lhapdf_home} CFLAGS=-O2 CXXFLAGS=-O2 FFLAGS=-O2  F77=${CMAKE_Fortran_COMPILER}    
   INSTALL_COMMAND  make install
           COMMAND  ${CMAKE_COMMAND} -E create_symlink tauola++ <INSTALL_DIR>/../../../tauolapp
 #          COMMAND ${CMAKE_COMMAND} -DINSTALL_DIR=<INSTALL_DIR> -P ${CMAKE_SOURCE_DIR}/cmake/scripts/StripLib.cmake
@@ -333,7 +333,7 @@ LCG_add_test(hydjet-test  TEST_COMMAND hydjet/tests/hydjet_test
 LCGPackage_Add(
   photos++
   URL http://cern.ch/service-spi/external/tarFiles/MCGeneratorsTarFiles/PHOTOS.${photos++_native_version}-LHC.tar.gz
-  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --with-hepmc=${HepMC_home} CFLAGS=-O2 CXXFLAGS=-O2 FFLAGS=-O2 FC=${CMAKE_Fortran_COMPILER} CC=${CMAKE_C_COMPILER} CXX=${CMAKE_CXX_COMPILER}
+  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --with-hepmc=${HepMC_home} CFLAGS=-O2 CXXFLAGS=-O2 FFLAGS=-O2 F77=${CMAKE_Fortran_COMPILER} 
   BUILD_IN_SOURCE 1
   INSTALL_COMMAND  make install
           COMMAND  ${CMAKE_COMMAND} -E create_symlink photos++ <INSTALL_DIR>/../../../photospp
