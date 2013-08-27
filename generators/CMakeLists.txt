@@ -356,7 +356,9 @@ LCG_add_test(photospp_orig_test2 TEST_COMMAND photospp/tests/photospp_orig_test2
 
 #---evtgen------------------------------------------------------------------------------------------
 if(LCG_TARGET MATCHES "mac")
-  set(evtgen-build-options FLIBS=-L/usr/local/gfortran/lib\ -lgfortran)
+  find_library(gfortran_LIBRARY gfortran 
+    PATH_SUFFIXES lib PATHS /usr/local /usr/local/gfortran)
+  set(evtgen-build-options FLIBS=${gfortran_LIBRARY})
 endif()
 LCGPackage_Add(
   evtgen
@@ -367,7 +369,7 @@ LCGPackage_Add(
                                 --pythiadir=<pythia8-<evtgen_<VERSION>_pythia8>_home>
                                 --photosdir=${photos++_home} 
                                 --tauoladir=<tauola++-<evtgen_<VERSION>_tauola++>_home>
-  BUILD_COMMAND make -j1 V=1 "${evtgen-build-options}"
+  BUILD_COMMAND ${MAKE} -j1 ${evtgen-build-options}
   INSTALL_COMMAND make install
           COMMAND ${CMAKE_COMMAND} -E chdir <INSTALL_DIR>/../share ${CMAKE_COMMAND} -E create_symlink  sources/evt.pdl evt.pdl
           COMMAND ${CMAKE_COMMAND} -E chdir <INSTALL_DIR>/../share ${CMAKE_COMMAND} -E create_symlink  sources/DECAY_2010.DEC DECAY.DEC
