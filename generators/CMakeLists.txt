@@ -13,8 +13,8 @@ else()
   set(library_path LD_LIBRARY_PATH)
 endif()
 find_library(FORTRAN_LIBRARY NAMES gfortran
-             HINTS /usr/local/gfortran/lib ENV LD_LIBRARY_PATH)
-
+             PATH_SUFFIXES lib 
+             PATHS /usr/local /usr/local/gfortran ENV ${library_path})
 string(REPLACE "opt" "dbg" LCG_platform_dbg ${LCG_platform})
 
 
@@ -140,16 +140,16 @@ if(NOT APPLE)    #  (installation fails on MacOSX)
                                   --with-thepeg=${thepeg_v_home}
                                   --with-fastjet=${fastjet_home}
                                   --with-boost=${Boost_home}
-                                  LD_LIBRARY_PATH=${thepeg_v_home}/lib:${GSL_home}/lib:${Boost_home}/lib:$ENV{LD_LIBRARY_PATH}
-    BUILD_COMMAND ${MAKE} all LD_LIBRARY_PATH=${thepeg_v_home}/lib:${GSL_home}/lib:${Boost_home}/lib:$ENV{LD_LIBRARY_PATH}
-          COMMAND ${CMAKE_COMMAND} -E chdir <SOURCE_DIR>/Contrib make LD_LIBRARY_PATH=${thepeg_v_home}/lib:${GSL_home}/lib:${Boost_home}/lib:$ENV{LD_LIBRARY_PATH}   
+                                  ${library_path}=${thepeg_v_home}/lib:${GSL_home}/lib:${Boost_home}/lib:$ENV{${library_path}}
+    BUILD_COMMAND ${MAKE} all ${library_path}=${thepeg_v_home}/lib:${GSL_home}/lib:${Boost_home}/lib:$ENV{${library_path}}
+          COMMAND ${CMAKE_COMMAND} -E chdir <SOURCE_DIR>/Contrib make ${library_path}=${thepeg_v_home}/lib:${GSL_home}/lib:${Boost_home}/lib:$ENV{${library_path}}   
 	        COMMAND ${CMAKE_COMMAND} -E chdir <SOURCE_DIR>/Contrib/AlpGen 
                                    make BasicLesHouchesFileReader.so HERWIGINCLUDE=-I<SOURCE_DIR>/include 
-                                                                     LD_LIBRARY_PATH=${thepeg_v_home}/lib:${GSL_home}/lib:${Boost_home}/lib:${herwig++_home}/lib:$ENV{LD_LIBRARY_PATH}
+                                                                     ${library_path}=${thepeg_v_home}/lib:${GSL_home}/lib:${Boost_home}/lib:${herwig++_home}/lib:$ENV{${library_path}}
           COMMAND ${CMAKE_COMMAND} -E chdir <SOURCE_DIR>/Contrib/AlpGen 
                                    make AlpGenHandler.so HERWIGINCLUDE=-I<SOURCE_DIR>/include
-                                   LD_LIBRARY_PATH=${thepeg_v_home}/lib:${GSL_home}/lib:${Boost_home}/lib:${herwig++_home}/lib:$ENV{LD_LIBRARY_PATH}
-    INSTALL_COMMAND make install  LD_LIBRARY_PATH=${thepeg_v_home}/lib:${GSL_home}/lib:${Boost_home}/lib:${HepMC_home}/lib:$ENV{LD_LIBRARY_PATH}
+                                   ${library_path}=${thepeg_v_home}/lib:${GSL_home}/lib:${Boost_home}/lib:${herwig++_home}/lib:$ENV{${library_path}}
+    INSTALL_COMMAND make install  ${library_path}=${thepeg_v_home}/lib:${GSL_home}/lib:${Boost_home}/lib:${HepMC_home}/lib:$ENV{${library_path}}
             COMMAND  ${CMAKE_COMMAND} -E create_symlink herwig++ <INSTALL_DIR>/../../../herwigpp
             COMMAND  ${CMAKE_COMMAND} -E copy <SOURCE_DIR>/Contrib/AlpGen/AlpGenHandler.so <INSTALL_DIR>/lib/Herwig++/	    
             COMMAND  ${CMAKE_COMMAND} -E copy <SOURCE_DIR>/Contrib/AlpGen/BasicLesHouchesFileReader.so <INSTALL_DIR>/lib/Herwig++/ 
@@ -223,11 +223,11 @@ LCGPackage_Add(
      --with-hepmc=${HepMC_home} 
      --with-boost-incpath=${Boost_home_include}
      --with-lcgtag=${LCG_platform}
-     PYTHON=${Python_home}/bin/python LD_LIBRARY_PATH=${Python_home}/lib:$ENV{LD_LIBRARY_PATH}
+     PYTHON=${Python_home}/bin/python ${library_path}=${Python_home}/lib:$ENV{${library_path}}
      SWIG=${swig_home}/bin/swig
      "CFLAGS=-g0 -O2" "CXXFLAGS=-g0 -O2" "FFLAGS=-g0 -O2"
-  BUILD_COMMAND ${MAKE} all LD_LIBRARY_PATH=${Python_home}/lib:$ENV{LD_LIBRARY_PATH}
-  INSTALL_COMMAND make install LD_LIBRARY_PATH=${Python_home}/lib:$ENV{LD_LIBRARY_PATH}
+  BUILD_COMMAND ${MAKE} all ${library_path}=${Python_home}/lib:$ENV{${library_path}}
+  INSTALL_COMMAND make install ${library_path}=${Python_home}/lib:$ENV{${library_path}}
           COMMAND ${CMAKE_COMMAND} -E copy <SOURCE_DIR>/agileenv.csh <INSTALL_DIR>/.
           COMMAND ${CMAKE_COMMAND} -E copy <SOURCE_DIR>/agileenv.sh <INSTALL_DIR>/.
           COMMAND ${CMAKE_COMMAND} -DINSTALL_DIR=<INSTALL_DIR> -P ${CMAKE_SOURCE_DIR}/cmake/scripts/StripLib.cmake
@@ -274,11 +274,11 @@ LCGPackage_Add(
   URL http://cern.ch/service-spi/external/tarFiles/MCGeneratorsTarFiles/professor-<NATIVE_VERSION>.tar.bz2
   CONFIGURE_COMMAND <VOID>
   BUILD_COMMAND ${Exec_cmd} PYTHONPATH=${pyanalysis_home}/lib/python${Python_config_version_twodigit}/site-packages 
-		${Exec_cmd} LD_LIBRARY_PATH=${ROOT_home}/lib:$ENV{LD_LIBRARY_PATH}
+		${Exec_cmd} ${library_path}=${ROOT_home}/lib:$ENV{${library_path}}
 		${Python_cmd} setup.py build
 
   INSTALL_COMMAND ${Exec_cmd} PYTHONPATH=${pyanalysis_home}/lib/python${Python_config_version_twodigit}/site-packages 
-		${Exec_cmd} LD_LIBRARY_PATH=${ROOT_home}/lib:$ENV{LD_LIBRARY_PATH}
+		${Exec_cmd} ${library_path}=${ROOT_home}/lib:$ENV{${library_path}}
                 ${Python_cmd} setup.py install --prefix <INSTALL_DIR> 
 
   BUILD_IN_SOURCE 1
@@ -356,9 +356,7 @@ LCG_add_test(photospp_orig_test2 TEST_COMMAND photospp/tests/photospp_orig_test2
 
 #---evtgen------------------------------------------------------------------------------------------
 if(LCG_TARGET MATCHES "mac")
-  find_library(gfortran_LIBRARY gfortran 
-    PATH_SUFFIXES lib PATHS /usr/local /usr/local/gfortran)
-  set(evtgen-build-options FLIBS=${gfortran_LIBRARY})
+  set(evtgen-build-options FLIBS=${FORTRAN_LIBRARY})
 endif()
 LCGPackage_Add(
   evtgen
@@ -419,10 +417,10 @@ LCGPackage_Add(
   URL http://cern.ch/service-spi/external/tarFiles/MCGeneratorsTarFiles/YODA-${yoda_native_version}.tar.gz
   CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix=<INSTALL_DIR>
       --with-boost=${Boost_home}
-      PYTHON=${Python_home}/bin/python LD_LIBRARY_PATH=${Python_home}/lib:$ENV{LD_LIBRARY_PATH}
+      PYTHON=${Python_home}/bin/python ${library_path}=${Python_home}/lib:$ENV{${library_path}}
       PYTHONPATH=${cython_home}/lib/python2.7/site-packages:$ENV{PYTHONPATH}
-  BUILD_COMMAND ${MAKE} all LD_LIBRARY_PATH=${Python_home}/lib:$ENV{LD_LIBRARY_PATH} PYTHONPATH=:${cython_pythonpath}:$ENV{PYTHONPATH}
-  INSTALL_COMMAND make install LD_LIBRARY_PATH=${Python_home}/lib:$ENV{LD_LIBRARY_PATH} PYTHONPATH=:${cython_pythonpath}:$ENV{PYTHONPATH}
+  BUILD_COMMAND ${MAKE} all ${library_path}=${Python_home}/lib:$ENV{${library_path}} PYTHONPATH=:${cython_pythonpath}:$ENV{PYTHONPATH}
+  INSTALL_COMMAND make install ${library_path}=${Python_home}/lib:$ENV{${library_path}} PYTHONPATH=:${cython_pythonpath}:$ENV{PYTHONPATH}
   BUILD_IN_SOURCE 1
   DEPENDS Python Boost cython
 )
@@ -460,7 +458,7 @@ LCGPackage_Add(
      PYTHON=${Python_home}/bin/python
      CYTHON=${cython_home}/bin/cython
      PYTHONPATH=${cython_pythonpath}
-  BUILD_COMMAND ${MAKE} all LD_LIBRARY_PATH=${yaml_cpp_home}/lib:$ENV{LD_LIBRARY_PATH} PYTHONPATH=${cython_pythonpath}
+  BUILD_COMMAND ${MAKE} all ${library_path}=${yaml_cpp_home}/lib:$ENV{${library_path}} PYTHONPATH=${cython_pythonpath}
   BUILD_IN_SOURCE 1
   INSTALL_COMMAND make install PYTHONPATH=${cython_pythonpath}
   DEPENDS lhapdf6sets Boost yaml_cpp Python cython
@@ -482,14 +480,14 @@ LCGPackage_Add(
      --enable-unvalidated
      PYTHON=${Python_home}/bin/python
      PYTHONPATH=${cython_home}/lib/python2.7/site-packages:$ENV{PYTHONPATH}
-     LD_LIBRARY_PATH=${Python_home}/lib:$ENV{LD_LIBRARY_PATH}
+     ${library_path}=${Python_home}/lib:$ENV{${library_path}}
      SWIG=${swig_home}/bin/swig
      CC=${CMAKE_C_COMPILER}
      CXX=${CMAKE_CXX_COMPILER}
   BUILD_COMMAND ${MAKE} all
-                LD_LIBRARY_PATH=${Python_home}/lib:${yaml_cpp_home}/lib:$ENV{LD_LIBRARY_PATH}
+                ${library_path}=${Python_home}/lib:${yaml_cpp_home}/lib:$ENV{${library_path}}
                 PYTHONPATH=${cython_home}/lib/python2.7/site-packages:$ENV{PYTHONPATH}
-  INSTALL_COMMAND make install LD_LIBRARY_PATH=${Python_home}/lib:${yaml_cpp_home}/lib:$ENV{LD_LIBRARY_PATH}
+  INSTALL_COMMAND make install ${library_path}=${Python_home}/lib:${yaml_cpp_home}/lib:$ENV{${library_path}}
                 PYTHONPATH=${cython_home}/lib/python2.7/site-packages:$ENV{PYTHONPATH}
           COMMAND ${CMAKE_COMMAND} -E copy <SOURCE_DIR>/rivetenv.csh <INSTALL_DIR>/
           COMMAND ${CMAKE_COMMAND} -E copy <SOURCE_DIR>/rivetenv.sh <INSTALL_DIR>/
@@ -509,13 +507,13 @@ LCGPackage_Add(
      --with-lcgtag=${LCG_platform}
      --disable-pdfmanual
      --enable-unvalidated
-     PYTHON=${Python_home}/bin/python LD_LIBRARY_PATH=${Python_home}/lib:$ENV{LD_LIBRARY_PATH}
+     PYTHON=${Python_home}/bin/python ${library_path}=${Python_home}/lib:$ENV{${library_path}}
      SWIG=${swig_home}/bin/swig
      CC=${CMAKE_C_COMPILER}
      CXX=${CMAKE_CXX_COMPILER}
      CFLAGS=-O2
-  BUILD_COMMAND ${MAKE} all LD_LIBRARY_PATH=${Python_home}/lib:$ENV{LD_LIBRARY_PATH}
-  INSTALL_COMMAND make install LD_LIBRARY_PATH=${Python_home}/lib:$ENV{LD_LIBRARY_PATH}
+  BUILD_COMMAND ${MAKE} all ${library_path}=${Python_home}/lib:$ENV{${library_path}}
+  INSTALL_COMMAND make install ${library_path}=${Python_home}/lib:$ENV{${library_path}}
           COMMAND ${CMAKE_COMMAND} -E copy <SOURCE_DIR>/rivetenv.csh <INSTALL_DIR>/
           COMMAND ${CMAKE_COMMAND} -E copy <SOURCE_DIR>/rivetenv.sh <INSTALL_DIR>/
           COMMAND ${CMAKE_COMMAND} -DINSTALL_DIR=<INSTALL_DIR> -P ${CMAKE_SOURCE_DIR}/cmake/scripts/StripLib.cmake
@@ -559,7 +557,7 @@ LCGPackage_Add(
   UPDATE_COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/hepmcanalysis/files <SOURCE_DIR>
   CONFIGURE_COMMAND <VOID>
   BUILD_COMMAND ${MAKE} VERBOSE=1 HepMCdir=${HepMC_home} FastJetdir=${fastjet_home} ROOTSYS=${ROOT_home} CLHEPdir=${CLHEP_home} 
-			LD_LIBRARY_PATH=${CLHEP_home}/lib:$ENV{LD_LIBRARY_PATH}
+			${library_path}=${CLHEP_home}/lib:$ENV{${library_path}}
   INSTALL_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/lib <INSTALL_DIR>/lib
           COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/include <INSTALL_DIR>/include
   BUILD_IN_SOURCE 1
@@ -573,7 +571,7 @@ LCGPackage_Add(
   URL http://cern.ch/service-spi/external/tarFiles/MCGeneratorsTarFiles/MC-TESTER-${mctester_native_version}.tar.gz
   UPDATE_COMMAND ${CMAKE_COMMAND} -E touch make.inc 
   CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --with-HepMC=${HepMC_home} --with-root=${ROOT_home}/bin "CFLAGS=-O2 -g0" "CXXFLAGS=-O2 -g0" "FFLAGS=-O2 -g0"
-  BUILD_COMMAND ${MAKE} LD_LIBRARY_PATH=${ROOT_home}/lib:$ENV{LD_LIBRARY_PATH}
+  BUILD_COMMAND ${MAKE} ${library_path}=${ROOT_home}/lib:$ENV{${library_path}}
   INSTALL_COMMAND make install 
 #          COMMAND ${CMAKE_COMMAND} -DINSTALL_DIR=<INSTALL_DIR> -P ${CMAKE_SOURCE_DIR}/cmake/scripts/StripLib.cmake
   BUILD_IN_SOURCE 1
