@@ -367,7 +367,7 @@ LCGPackage_Add(
                                 --pythiadir=<pythia8-<evtgen_<VERSION>_pythia8>_home>
                                 --photosdir=${photos++_home} 
                                 --tauoladir=<tauola++-<evtgen_<VERSION>_tauola++>_home>
-  BUILD_COMMAND make -j1 "${evtgen-build-options}"
+  BUILD_COMMAND make -j1 V=1 "${evtgen-build-options}"
   INSTALL_COMMAND make install
           COMMAND ${CMAKE_COMMAND} -E chdir <INSTALL_DIR>/../share ${CMAKE_COMMAND} -E create_symlink  sources/evt.pdl evt.pdl
           COMMAND ${CMAKE_COMMAND} -E chdir <INSTALL_DIR>/../share ${CMAKE_COMMAND} -E create_symlink  sources/DECAY_2010.DEC DECAY.DEC
