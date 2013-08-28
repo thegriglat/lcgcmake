@@ -356,7 +356,7 @@ LCG_add_test(photospp_orig_test2 TEST_COMMAND photospp/tests/photospp_orig_test2
 
 #---evtgen------------------------------------------------------------------------------------------
 if(LCG_TARGET MATCHES "mac")
-  set(evtgen-build-options FLIBS=${FORTRAN_LIBRARY})
+  set(evtgen-build-options FLIBS=${FORTRAN_LIBRARY} FC=${CMAKE_Fortran_COMPILER})
 endif()
 LCGPackage_Add(
   evtgen
