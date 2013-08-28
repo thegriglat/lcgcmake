@@ -8,7 +8,7 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/../../../cmake/modules)
 find_package(Lhapdf6 REQUIRED)
 find_package(Boost REQUIRED)
 
-message(STATUS "compiling executable, include dirs obtained as ${LHAPDF6_INCLUDE_DIRS}")
+#message(STATUS "compiling executable, include dirs obtained as ${LHAPDF6_INCLUDE_DIRS}")
 
 set(TEST_DIR ${LHAPDF6_ROOT_DIR}/../share/sources/examples/)
 include_directories(${LHAPDF6_INCLUDE_DIRS}
