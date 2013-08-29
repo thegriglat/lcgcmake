@@ -464,7 +464,8 @@ LCGPackage_Add(
   DEPENDS lhapdf6sets Boost yaml_cpp Python cython
 )
 
-LCG_add_test(lhapdf6_orig_test1 TEST_COMMAND lhapdf6/tests/lhapdf6_orig_test1 CT10 1
+if(DEFINED lhapdf6_native_version)
+  LCG_add_test(lhapdf6_orig_test1 TEST_COMMAND lhapdf6/tests/lhapdf6_orig_test1 CT10 1
                           BINARY_DIR lhapdf6/tests
                           SOURCE_DIR lhapdf6/tests
                           BUILD lhapdf6_orig_test1
@@ -473,6 +474,7 @@ LCG_add_test(lhapdf6_orig_test1 TEST_COMMAND lhapdf6/tests/lhapdf6_orig_test1 CT
                                         -DYAMLLIB=${yaml_cpp_home}/lib/libyaml-cpp.so
                           ENVIRONMENT ${library_path}=${lhapdf6_home}/lib:${Boost_home}/lib:${yaml_cpp_home}/lib:$ENV{${library_path}}
                                       LHAPDF_DATA_PATH=${lhapdf6sets_home}/../share/PDFsets)
+endif()
 
 #---Rivet2-----------------------------------------------------------------------------------------
 LCGPackage_Add(
