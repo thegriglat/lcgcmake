@@ -174,7 +174,7 @@ LCG_external_package(rivet             1.8.3          ${MCGENPATH}/rivet        
 LCG_external_package(rivet2            2.0.0b3        ${MCGENPATH}/rivet2       )
 LCG_external_package(sherpa            1.4.3          ${MCGENPATH}/sherpa         author=1.4.3 hepevt=4000  )
 LCG_external_package(sherpa            1.4.3.2        ${MCGENPATH}/sherpa         author=1.4.3 hepevt=10000 )
-#LCG_external_package(sherpa            2.0.beta2      ${MCGENPATH}/sherpa         author=2.0.beta2        )
+LCG_external_package(sherpa            2.0.beta2      ${MCGENPATH}/sherpa         author=2.0.beta2 hepevt=10000)
 LCG_external_package(hepmcanalysis     3.4.14         ${MCGENPATH}/hepmcanalysis  author=00-03-04-14        )
 LCG_external_package(mctester          1.25.0         ${MCGENPATH}/mctester     )
 LCG_external_package(hijing            1.383bs.2      ${MCGENPATH}/hijing       )
