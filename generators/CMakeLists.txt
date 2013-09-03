@@ -190,7 +190,7 @@ LCG_add_test(tauolapp-build BINARY_DIR tauolapp/tests SOURCE_DIR tauolapp/tests
 
 foreach(t 1 2 3)
   LCG_add_test(tauolapp_orig_test${t} TEST_COMMAND tauolapp/tests/tauolapp_orig_test${t}
-                            ENVIRONMENT ${library_path}=${tauola++_home}/lib:$ENV{${library_path}}
+                            ENVIRONMENT ${library_path}=${tauola++_home}/lib:${HepMC_home}/lib:${pythia8_home}/lib:$ENV{${library_path}}
                             DEPENDS pythia8-build)
 endforeach()
 
