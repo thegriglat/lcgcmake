@@ -169,19 +169,6 @@ macro(LCGPackage_Add name)
           DEPENDEES update patch)
       endif()
 
-      #---Adding extra step to build the binary tarball-----------------------------------------------
-      if(NOT ARG_DEST_NAME)  # Only if is not installed grouped with other packages
-        get_filename_component(n_name ${${name}_directory_name} NAME)
-        string(SHA1 longtargethash "${${name}_full_version}" )
-        string(SUBSTRING "${longtargethash}" 0 5 targethash ) 
-        set( ${targetname}_hash ${targethash} PARENT_SCOPE)
-        ExternalProject_Add_Step(${targetname} package COMMENT "Creating binary tarball and version.txt file for '${targetname}'"
-                  COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_INSTALL_PREFIX}/${${name}_directory_name}/../distribution/${name}
-                  COMMAND ${CMAKE_COMMAND} -E chdir ${${dest_name}_home}/../../..
-                  ${CMAKE_TAR} -czhf ${CMAKE_INSTALL_PREFIX}/${${name}_directory_name}/../distribution/${name}/${name}-${version}-${LCG_system}.tgz ${n_name}/${version}/${LCG_system}
-                  COMMAND ${CMAKE_COMMAND} -DINSTALL_DIR=${${dest_name}_home} -DFULL_VERSION=${${name}_full_version} -P ${CMAKE_SOURCE_DIR}/cmake/scripts/InstallVersionFile.cmake
-          DEPENDEES strip_rpath)
-      endif()
 
       #---Adding extra step to copy the log files and version file--------------------------------------
       ExternalProject_Add_Step(${targetname} install_logs COMMENT "Installing log and version files for '${targetname}'"
@@ -224,6 +211,21 @@ macro(LCGPackage_Add name)
         COMMAND ${CMAKE_COMMAND} -DINSTALL_DIR=${${dest_name}_home}
                                  -P ${CMAKE_SOURCE_DIR}/cmake/scripts/RemoveRPath.cmake
         DEPENDEES ${current_dependee})
+
+
+      #---Adding extra step to build the binary tarball-----------------------------------------------
+      if(NOT ARG_DEST_NAME)  # Only if is not installed grouped with other packages
+        get_filename_component(n_name ${${name}_directory_name} NAME)
+        string(SHA1 longtargethash "${${name}_full_version}" )
+        string(SUBSTRING "${longtargethash}" 0 5 targethash ) 
+        set( ${targetname}_hash ${targethash} PARENT_SCOPE)
+        ExternalProject_Add_Step(${targetname} package COMMENT "Creating binary tarball and version.txt file for '${targetname}'"
+                  COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_INSTALL_PREFIX}/${${name}_directory_name}/../distribution/${name}
+                  COMMAND ${CMAKE_COMMAND} -E chdir ${${dest_name}_home}/../../..
+                  ${CMAKE_TAR} -czhf ${CMAKE_INSTALL_PREFIX}/${${name}_directory_name}/../distribution/${name}/${name}-${version}-${LCG_system}.tgz ${n_name}/${version}/${LCG_system}
+                  COMMAND ${CMAKE_COMMAND} -DINSTALL_DIR=${${dest_name}_home} -DFULL_VERSION=${${name}_full_version} -P ${CMAKE_SOURCE_DIR}/cmake/scripts/InstallVersionFile.cmake
+          DEPENDEES strip_rpath install_logs)
+      endif()
 
 
       #---Adding clean targets--------------------------------------------------------------------------
