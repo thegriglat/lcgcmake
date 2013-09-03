@@ -348,10 +348,10 @@ LCG_add_test(photospp-build BINARY_DIR photospp/tests
                                            -DPHOTOSPP_ROOT_DIR=${photos++_home} -DPYTHIA8_ROOT_DIR=${pythia8_home} 
                                            -DHEPMC_ROOT_DIR=${HepMC_home})
 LCG_add_test(photospp_orig_test1 TEST_COMMAND photospp/tests/photospp_orig_test1
-                          ENVIRONMENT ${library_path}=${photos++_home}/lib:$ENV{${library_path}}
+                          ENVIRONMENT ${library_path}=${photos++_home}/lib:${HepMC_home}/lib:${pythia8_home}/lib:$ENV{${library_path}}
                           DEPENDS photospp-build)
 LCG_add_test(photospp_orig_test2 TEST_COMMAND photospp/tests/photospp_orig_test2
-                          ENVIRONMENT ${library_path}=${photos++_home}/lib:$ENV{${library_path}}
+                          ENVIRONMENT ${library_path}=${photos++_home}/lib:${HepMC_home}/lib:${pythia8_home}/lib:$ENV{${library_path}}
                           DEPENDS photospp-build)
 
 #---evtgen------------------------------------------------------------------------------------------
