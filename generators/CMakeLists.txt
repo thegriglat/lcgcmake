@@ -778,6 +778,29 @@ if(NOT APPLE)    #  (installation fails on MacOSX)
 
 endif()
 
+
+#--- MadGraph5 -------------------------------------------------------------------------------------
+LCGPackage_Add(
+  madgraph5
+  URL http://cern.ch/service-spi/external/tarFiles/MCGeneratorsTarFiles/MadGraph5_v<NATIVE_VERSION>.tar.gz
+  CONFIGURE_COMMAND <VOID>
+  BUILD_COMMAND <VOID>
+  INSTALL_COMMAND ${CMAKE_COMMAND} -DSRC=<SOURCE_DIR> -DDST=<INSTALL_DIR> -P ${CMAKE_SOURCE_DIR}/cmake/scripts/copy.cmake
+  BUILD_IN_SOURCE 1
+  DEPENDS Python
+)
+
+LCGPackage_Add(
+  madgraph5v2
+  URL http://cern.ch/service-spi/external/tarFiles/MCGeneratorsTarFiles/MadGraph5_v<NATIVE_VERSION>.tar.gz
+  CONFIGURE_COMMAND <VOID>
+  BUILD_COMMAND ${MAKE} -C vendor/CutTools
+  INSTALL_COMMAND ${CMAKE_COMMAND} -DSRC=<SOURCE_DIR> -DDST=<INSTALL_DIR> -P ${CMAKE_SOURCE_DIR}/cmake/scripts/copy.cmake
+  BUILD_IN_SOURCE 1
+  DEPENDS Python
+)
+
+
 #---test of the test infrasgtructure---------------------------------------------------------------
 LCG_add_test(test-test PRE_COMMAND /bin/echo pre-comand 1
                            COMMAND /bin/echo pre-comand 2

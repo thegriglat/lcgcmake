@@ -670,6 +670,16 @@
     "license" : "UNKNOWN",
   },
   {
+    "name" : "madgraph5",
+    "description" : "Matrix Element Generator",
+    "homepage" : "https://launchpad.net/madgraph5",
+    "contact" : "",
+    "project" : "None",
+    "category" : "Generator",
+    "language" : "Python",
+    "license" : "",
+  },
+  {
     "name" : "matplotlib",
     "description" : "a python 2D plotting library",
     "homepage" : "http://matplotlib.sourceforge.net/",
