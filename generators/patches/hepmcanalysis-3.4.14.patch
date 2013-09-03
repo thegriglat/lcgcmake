@@ -1,6 +1,6 @@
---- config.mk.orig	2013-06-17 17:06:08.000000000 +0200
-+++ config.mk	2013-06-17 17:06:32.000000000 +0200
-@@ -10,8 +10,8 @@
+--- config.mk.orig	2013-09-03 16:47:11.000000000 +0200
++++ config.mk	2013-09-03 16:53:26.000000000 +0200
+@@ -10,16 +10,16 @@
  #              -I$(HepPDTdir)/include -I$(ROOTSYS)/include
  INCLUDES    = $(INCLUDEH) $(INCLUDEF)
  
@@ -10,8 +10,9 @@
 +ROOTCFLAGS  = `$(ROOTSYS)/bin/root-config --cflags` -Wno-long-long
  
  #CLHEP = -L$(CLHEPdir)/lib -lCLHEP    # causes problems in HepMCAnalysis_i interface!
- CLHEPlib    = 
-@@ -19,7 +19,7 @@
+-CLHEPlib    = 
++CLHEPlib    = -L$(CLHEPdir)/lib -lCLHEP
+ 
  # common libraries
  HepPDTlib   = 
  #HepPDTlib   = -L$(HepPDTdir)/lib -lHepPDT -lHepPID
@@ -20,3 +21,14 @@
  
  FastJetlib  = `$(FastJetdir)/bin/fastjet-config --libs --plugins=yes --rpath=no`
  # output directories
+--- Makefile.orig	2013-09-03 16:52:14.000000000 +0200
++++ Makefile	2013-09-03 16:54:04.000000000 +0200
+@@ -28,7 +28,7 @@
+ 	@mkdir -p $(LIBDIR) 
+ 	$(CXX) $(CXXFLAGS) $(INCLUDES) \
+ 	-shared -o $(LIBDIR)/libHepMCAnalysis.so $(OBJECTS) \
+-	$(HepMClib) $(HepPDTlib) $(FastJetlib) \
++	$(HepMClib) $(HepPDTlib) $(FastJetlib) $(CLHEPlib) \
+ 	$(ROOTGLIBS) $(LINK_LIBS)
+ 
+ # clean up
