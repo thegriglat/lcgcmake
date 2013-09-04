@@ -801,6 +801,20 @@ LCGPackage_Add(
 )
 
 
+#--- JHU -------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  jhu
+  URL http://cern.ch/service-spi/external/tarFiles/MCGeneratorsTarFiles/JHUGenerator.v<NATIVE_VERSION>.tar.gz
+  CONFIGURE_COMMAND <VOID>
+  BUILD_COMMAND ${MAKE} -C JHUGenerator Comp=gfortran
+  INSTALL_COMMAND ${CMAKE_COMMAND} -E make_directory <INSTALL_DIR>/bin
+          COMMAND ${CMAKE_COMMAND} -E copy JHUGenerator/JHUGen <INSTALL_DIR>/bin/
+          COMMAND ${CMAKE_COMMAND} -E copy_directory JHUGenerator/pdfs <INSTALL_DIR>/pdfs
+          COMMAND ${CMAKE_COMMAND} -E remove -f <INSTALL_DIR>/pdfs/Cteq61Pdf.f <INSTALL_DIR>/pdfs/Cteq61Pdf.o <INSTALL_DIR>/pdfs/mstwpdf.f <INSTALL_DIR>/pdfs/mstwpdf.o
+  BUILD_IN_SOURCE 1
+)
+
+
 #---test of the test infrasgtructure---------------------------------------------------------------
 LCG_add_test(test-test PRE_COMMAND /bin/echo pre-comand 1
                            COMMAND /bin/echo pre-comand 2

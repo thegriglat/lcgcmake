@@ -202,6 +202,7 @@ LCG_external_package(professor         1.3.3          ${MCGENPATH}/professor    
 LCG_external_package(madgraph5         1.5.12         ${MCGENPATH}/madgraph5       )
 LCG_external_package(madgraph5v2       2.0.0.beta3    ${MCGENPATH}/madgraph5       )
 
+LCG_external_package(jhu               3.1.8          ${MCGENPATH}/jhu       )
 
 # Prepare the search paths according to the versions above
 LCG_prepare_paths()

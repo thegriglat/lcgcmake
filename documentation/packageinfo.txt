@@ -480,6 +480,16 @@
     "license" : "MIT",
   },
   {
+    "name" : "jhu",
+    "description" : "For simulation of a single-produced resonance at hadron colliders",
+    "homepage" : "http://www.pha.jhu.edu/spin/",
+    "contact" : "Nhan Tran ntran@fnal.gov",
+    "project" : "None",
+    "category" : "Generator",
+    "language" : "Fortran",
+    "license" : "",
+  },
+  {
     "name" : "json",
     "description" : "Extensible JSON encoder/decoder for Python",
     "homepage" : "http://pypi.python.org/pypi/simplejson/",
