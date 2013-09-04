@@ -430,15 +430,17 @@ LCGPackage_Add(
 )
 #---pyqt------------------------------------------------------------------------------------------------------
 if(APPLE)
-  set(pyqt_platform x11)
-else()
   set(pyqt_platform mac)
+  set(Python_cmd_pyqt ${PythonFW_cmd})
+else()
+  set(pyqt_platform x11)
+  set(Python_cmd_pyqt ${Python_cmd})
 endif()
 LCGPackage_Add(
   pyqt
   URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/PyQt-${pyqt_platform}-gpl-${pyqt_native_version}.tar.gz
   CONFIGURE_COMMAND ${Exec_cmd} PYTHONPATH=${pygraphics_home}/lib/python${Python_config_version_twodigit}/site-packages
-                    ${PythonFW_cmd} configure.py -b <INSTALL_DIR>/bin
+                    ${Python_cmd_pyqt} configure.py -b <INSTALL_DIR>/bin
                                                -d <INSTALL_DIR>/lib/python${Python_config_version_twodigit}/site-packages
                                                -l ${Python_home}/include/python${Python_config_version_twodigit} 
                                                -m ${Python_home}/lib/python${Python_config_version_twodigit}/config
