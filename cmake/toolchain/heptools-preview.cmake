@@ -200,7 +200,10 @@ LCG_external_package(lhapdf6           6.0.1          ${MCGENPATH}/lhapdf6      
 LCG_external_package(professor         1.3.3          ${MCGENPATH}/professor       )
 
 LCG_external_package(madgraph5         1.5.12         ${MCGENPATH}/madgraph5       )
-LCG_external_package(madgraph5v2       2.0.0.beta3    ${MCGENPATH}/madgraph5       )
+
+if(${LCG_COMP}${LCG_COMPVERS} STRGREATER gcc45)
+  LCG_external_package(madgraph5v2       2.0.0.beta3    ${MCGENPATH}/madgraph5       )
+endif()
 
 LCG_external_package(jhu               3.1.8          ${MCGENPATH}/jhu       )
 
