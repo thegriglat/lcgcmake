@@ -74,7 +74,7 @@ LCG_add_test(lhapdf_genser_test1 TEST_COMMAND lhapdf/tests/lhapdf_genser_test1
 set(HOMEPAGE http://home.thep.lu.se/~torbjorn/Pythia.html)
 LCGPackage_Add(
   pythia8
-  URL http://cern.ch/service-spi/external/tarFiles/MCGeneratorsTarFiles/pythia8-<NATIVE_VERSION>.tgz
+  URL http://cern.ch/service-spi/external/tarFiles/MCGeneratorsTarFiles/pythia8<NATIVE_VERSION>.tgz
   UPDATE_COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/pythia8/examples  <SOURCE_DIR>/examples
          COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/pythia8/files  <SOURCE_DIR>
          COMMAND REALHEPMCVERSION=${HepMC_native_version} REALGENVERSION=<NATIVE_VERSION> ./usesed
