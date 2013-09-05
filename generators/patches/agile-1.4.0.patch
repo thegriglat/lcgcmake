@@ -1,0 +1,13 @@
+--- src/Core/Loader.cc.orig	2013-09-04 18:32:56.000000000 +0200
++++ src/Core/Loader.cc	2013-09-04 18:30:59.000000000 +0200
+@@ -91,6 +91,10 @@
+         const char* envld = getenv("LD_LIBRARY_PATH");
+         if (envld) dirs += split(envld);
+ 
++        const char* envdyld = getenv("DYLD_LIBRARY_PATH");
++        if (envdyld) dirs += split(envdyld);
++
++
+       } else {
+         // If we're loading a real generator library...
+         dirs += getGenPaths();
