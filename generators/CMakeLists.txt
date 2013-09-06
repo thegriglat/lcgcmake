@@ -608,7 +608,6 @@ LCGPackage_Add(
   starlight
   URL http://cern.ch/service-spi/external/tarFiles/MCGeneratorsTarFiles/starlight-r${STARLIGHT_REV}.tgz
   UPDATE_COMMAND <VOID>
-  PATCH_COMMAND patch -p0 < ${CMAKE_CURRENT_SOURCE_DIR}/starlight/patches/patch-${starlight_native_version}
   CMAKE_ARGS -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
 )
 LCG_add_test(starlight_genser_test1 TEST_COMMAND starlight/tests/starlight_genser_test1
