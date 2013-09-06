@@ -124,5 +124,55 @@ LCG_external_package(XercesC           3.1.1p1                                  
 LCG_external_package(xqilla            2.2.4                                    )
 LCG_external_package(zlib              1.2.3p1                                  )
 
+
+set(MCGENPATH  MCGenerators_lcgcmt${heptools_version})
+
+#---Additional External packages------(Generators)-----------------
+LCG_external_package(powheg-box         r2092         ${MCGENPATH}/powheg-box       )
+LCG_external_package(lhapdf            5.8.9          ${MCGENPATH}/lhapdf       )
+LCG_external_package(lhapdfsets        5.8.9          ${MCGENPATH}/lhapdfsets   )
+
+LCG_external_package(pythia8           175.lhetau     ${MCGENPATH}/pythia8      author=175  )
+LCG_external_package(pythia8           175            ${MCGENPATH}/pythia8      author=175  )
+LCG_external_package(pythia8           176            ${MCGENPATH}/pythia8      author=176  )
+
+LCG_external_package(thepeg            1.8.2          ${MCGENPATH}/thepeg       )
+LCG_external_package(herwig++          2.6.3          ${MCGENPATH}/herwig++     )
+LCG_external_package(tauola++          1.1.1a         ${MCGENPATH}/tauola++     )
+LCG_external_package(pythia6           427            ${MCGENPATH}/pythia6        author=6.4.27 hepevt=4000   )
+LCG_external_package(pythia6           427.2          ${MCGENPATH}/pythia6        author=6.4.27 hepevt=10000  )
+LCG_external_package(agile             1.4.0          ${MCGENPATH}/agile        )
+LCG_external_package(photos++          3.52           ${MCGENPATH}/photos++     )
+#LCG_external_package(photos            215.5         ${MCGENPATH}/photos     )
+LCG_external_package(photos            215.4          ${MCGENPATH}/photos     ) 
+#LCG_external_package(photos            215.3         ${MCGENPATH}/photos     ) 
+
+LCG_external_package(evtgen            1.1.0          ${MCGENPATH}/evtgen         tag=R01-01-00 p8vers=175 )
+LCG_external_package(evtgen            1.1.0-176      ${MCGENPATH}/evtgen         tag=R01-01-00 p8vers=176 )
+LCG_external_package(evtgen            1.2.0          ${MCGENPATH}/evtgen         tag=R01-02-00 p8vers=176 )
+LCG_external_package(evtgen            1.2.0-175      ${MCGENPATH}/evtgen         tag=R01-02-00 p8vers=175 )
+
+LCG_external_package(rivet             1.8.3          ${MCGENPATH}/rivet        )
+LCG_external_package(rivet2            2.0.0b1        ${MCGENPATH}/rivet2       )
+LCG_external_package(sherpa            1.4.3          ${MCGENPATH}/sherpa         author=1.4.3 hepevt=4000  )
+LCG_external_package(sherpa            1.4.3.2        ${MCGENPATH}/sherpa         author=1.4.3 hepevt=10000 )
+LCG_external_package(hepmcanalysis     3.4.14         ${MCGENPATH}/hepmcanalysis  author=00-03-04-14        )
+LCG_external_package(mctester          1.25.0         ${MCGENPATH}/mctester     )
+LCG_external_package(hijing            1.383bs.2      ${MCGENPATH}/hijing       )
+LCG_external_package(starlight         r43            ${MCGENPATH}/starlight    )
+#LCG_external_package(herwig            6.520         ${MCGENPATH}/herwig       )
+LCG_external_package(herwig            6.520.2        ${MCGENPATH}/herwig       )
+LCG_external_package(crmc              v3400          ${MCGENPATH}/crmc         )
+LCG_external_package(cython            0.19           ${MCGENPATH}/cython       )
+LCG_external_package(yaml_cpp          0.3.0          ${MCGENPATH}/yaml_cpp     )
+LCG_external_package(yoda              1.0.0          ${MCGENPATH}/yoda         )
+LCG_external_package(hydjet              1.8          ${MCGENPATH}/hydjet         )  
+LCG_external_package(tauola              28.121.2     ${MCGENPATH}/tauola         )
+LCG_external_package(jimmy              4.31.3        ${MCGENPATH}/jimmy         )
+LCG_external_package(hydjet++           2_1           ${MCGENPATH}/hydjet++     )
+LCG_external_package(alpgen            2.1.4          ${MCGENPATH}/alpgen author=214 )
+LCG_external_package(pyquen           1.5             ${MCGENPATH}/pyquen     )
+
+
 # Prepare the search paths according to the versions above
 LCG_prepare_paths()
