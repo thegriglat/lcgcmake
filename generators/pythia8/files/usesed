@@ -1,8 +1,0 @@
-sed -i.orig s"/MYHEPMCVERSION/${REALHEPMCVERSION}/" lcg_configure
-rm -f lcg_configure.orig
-sed -i.orig s"/MYGENVERSION/${REALGENVERSION}/" lcg_readme
-rm -f lcg_readme.orig
-sed -i.orig s"/MYGENVERSION/${REALGENVERSION}/" lcg_readme
-rm -f lcg_readme.orig
-cat lcg_configure >> lcg_readme
-cat README >> lcg_readme

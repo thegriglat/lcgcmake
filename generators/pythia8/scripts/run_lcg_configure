@@ -1,7 +1,0 @@
-export INSTALL_DIR=$1
-export SHARE_DIR=$2
-#export HEPMC_VERSION=$3
-export HEPMC_INSTALL_DIR=$3
-export LCG_PLATFORM=$4
-
-./lcg_configure
