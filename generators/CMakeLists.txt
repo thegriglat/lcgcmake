@@ -72,7 +72,7 @@ LCG_add_test(lhapdf_genser_test1 TEST_COMMAND lhapdf/tests/lhapdf_genser_test1
 #---pythia8------------------------------------------------------------------------------------------
 LCGPackage_Add(
   pythia8
-  URL http://cern.ch/service-spi/external/tarFiles/MCGeneratorsTarFiles/pythia8<NATIVE_VERSION>.tgz
+  URL http://cern.ch/service-spi/external/tarFiles/MCGeneratorsTarFiles/pythia8<pythia8_<NATIVE_VERSION>_author>.tgz
   CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --with-hepmc=${HepMC_home} --enable-shared --lcgplatform=${LCG_platform}
   BUILD_COMMAND ${MAKE}
   INSTALL_COMMAND ${CMAKE_COMMAND} -E chdir <SOURCE_DIR> ${MAKE} install
