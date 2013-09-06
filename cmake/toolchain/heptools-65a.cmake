@@ -154,6 +154,7 @@ LCG_external_package(lhapdf            5.8.8          ${MCGENPATH}/lhapdf       
 LCG_external_package(lhapdf            5.8.9          ${MCGENPATH}/lhapdf       )
 LCG_external_package(lhapdfsets        5.8.9          ${MCGENPATH}/lhapdfsets   )
 
+LCG_external_package(pythia8           175.lhetau     ${MCGENPATH}/pythia8      author=175     )
 LCG_external_package(pythia8           175            ${MCGENPATH}/pythia8      author=175     )
 LCG_external_package(pythia8           176            ${MCGENPATH}/pythia8      author=176     )
 

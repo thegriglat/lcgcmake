@@ -1,0 +1,20 @@
+--- src/ProcessContainer.cc.orig	2013-07-19 10:22:19.000000000 +0200
++++ src/ProcessContainer.cc	2013-09-06 14:48:14.000000000 +0200
+@@ -516,6 +516,8 @@
+       // Check if need to store lifetime.
+       double tau = lhaUpPtr->tau(iOld);
+       if (tau > 0.) process[iNow].tau(tau);
++      if (abs(id) == 15) process[iNow].tau
++        (process[iNow].tau0() * rndmPtr->exp() );
+     }  
+   }
+ 
+@@ -743,6 +745,8 @@
+     // Check if need to store lifetime.
+     double tau = lhaUpPtr->tau(iOld);
+     if (tau > 0.) process[iNow].tau(tau);
++    if (abs(id) == 15) process[iNow].tau
++      (process[iNow].tau0() * rndmPtr->exp() );
+   } 
+ 
+   // Update four-momentum of system as a whole.
