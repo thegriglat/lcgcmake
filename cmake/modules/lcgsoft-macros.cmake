@@ -125,10 +125,8 @@ macro(LCGPackage_Add name)
       
       #---Check if a patch file exists and apply it by default---------------------------------------
       if(NOT ARGUMENTS MATCHES PATCH_COMMAND)
-        if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/${name}-${version}.patch)
-          list(APPEND ARGUMENTS PATCH_COMMAND patch -p0 -i ${CMAKE_CURRENT_SOURCE_DIR}/${name}-${version}.patch)
-        elseif(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/patches/${name}-${version}.patch)
-          list(APPEND ARGUMENTS PATCH_COMMAND patch -p0 -i ${CMAKE_CURRENT_SOURCE_DIR}/patches/${name}-${version}.patch)
+        if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/patches/${name}-${version}.patch)
+          list(APPEND ARGUMENTS PATCH_COMMAND patch -p0 -b -i ${CMAKE_CURRENT_SOURCE_DIR}/patches/${name}-${version}.patch)
         endif()
       endif()
 
