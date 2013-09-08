@@ -124,6 +124,18 @@ LCG_external_package(XercesC           3.1.1p1                                  
 LCG_external_package(xqilla            2.2.4                                    )
 LCG_external_package(zlib              1.2.3p1                                  )
 
+# dependencies/versions picked from 61c:
+LCG_external_package(expat             2.0.1                                    )
+LCG_external_package(xrootd            3.2.7                                    )
+LCG_external_package(dcap              2.47.6                                   )
+LCG_external_package(srm_ifce          1.13.0-0                                 )
+LCG_external_package(cmaketools        1.0                                      )
+LCG_external_package(py2neo            1.4.6                                    )
+LCG_external_package(pylint            0.26.0                                   )
+LCG_external_package(nose              1.1.2                                    )
+LCG_external_package(coverage          3.5.2                                    )  
+LCG_external_package(swig              1.3.40                                   )
+
 
 set(MCGENPATH  MCGenerators_lcgcmt${heptools_version})
 
@@ -137,7 +149,10 @@ LCG_external_package(pythia8           175            ${MCGENPATH}/pythia8      
 LCG_external_package(pythia8           176            ${MCGENPATH}/pythia8      author=176  )
 
 LCG_external_package(thepeg            1.8.2          ${MCGENPATH}/thepeg       )
-LCG_external_package(herwig++          2.6.3          ${MCGENPATH}/herwig++     )
+LCG_external_package(thepeg            1.8.3          ${MCGENPATH}/thepeg       )
+
+LCG_external_package(herwig++          2.6.3          ${MCGENPATH}/herwig++     thepeg=1.8.3)
+LCG_external_package(tauola++          1.1.1          ${MCGENPATH}/tauola++     )
 LCG_external_package(tauola++          1.1.1a         ${MCGENPATH}/tauola++     )
 LCG_external_package(pythia6           427            ${MCGENPATH}/pythia6        author=6.4.27 hepevt=4000   )
 LCG_external_package(pythia6           427.2          ${MCGENPATH}/pythia6        author=6.4.27 hepevt=10000  )
@@ -147,10 +162,12 @@ LCG_external_package(photos++          3.52           ${MCGENPATH}/photos++     
 LCG_external_package(photos            215.4          ${MCGENPATH}/photos     ) 
 #LCG_external_package(photos            215.3         ${MCGENPATH}/photos     ) 
 
-LCG_external_package(evtgen            1.1.0          ${MCGENPATH}/evtgen         tag=R01-01-00 p8vers=175 )
-LCG_external_package(evtgen            1.1.0-176      ${MCGENPATH}/evtgen         tag=R01-01-00 p8vers=176 )
-LCG_external_package(evtgen            1.2.0          ${MCGENPATH}/evtgen         tag=R01-02-00 p8vers=176 )
-LCG_external_package(evtgen            1.2.0-175      ${MCGENPATH}/evtgen         tag=R01-02-00 p8vers=175 )
+LCG_external_package(evtgen            1.1.0-175      ${MCGENPATH}/evtgen         tag=R01-01-00 pythia8=175 tauola++=1.1.1)
+LCG_external_package(evtgen            1.1.0-176      ${MCGENPATH}/evtgen         tag=R01-01-00 pythia8=176 tauola++=1.1.1)
+LCG_external_package(evtgen            1.2.0-175      ${MCGENPATH}/evtgen         tag=R01-02-00 pythia8=175 tauola++=1.1.1)
+LCG_external_package(evtgen            1.2.0-176      ${MCGENPATH}/evtgen         tag=R01-02-00 pythia8=176 tauola++=1.1.1)
+
+
 
 LCG_external_package(rivet             1.8.3          ${MCGENPATH}/rivet        )
 LCG_external_package(rivet2            2.0.0b1        ${MCGENPATH}/rivet2       )
@@ -166,12 +183,12 @@ LCG_external_package(crmc              v3400          ${MCGENPATH}/crmc         
 LCG_external_package(cython            0.19           ${MCGENPATH}/cython       )
 LCG_external_package(yaml_cpp          0.3.0          ${MCGENPATH}/yaml_cpp     )
 LCG_external_package(yoda              1.0.0          ${MCGENPATH}/yoda         )
-LCG_external_package(hydjet              1.8          ${MCGENPATH}/hydjet         )  
+LCG_external_package(hydjet              1.8          ${MCGENPATH}/hydjet       author=1_8 )  
 LCG_external_package(tauola              28.121.2     ${MCGENPATH}/tauola         )
 LCG_external_package(jimmy              4.31.3        ${MCGENPATH}/jimmy         )
-LCG_external_package(hydjet++           2_1           ${MCGENPATH}/hydjet++     )
+LCG_external_package(hydjet++          2.1            ${MCGENPATH}/hydjet++     author=2_1 )
 LCG_external_package(alpgen            2.1.4          ${MCGENPATH}/alpgen author=214 )
-LCG_external_package(pyquen           1.5             ${MCGENPATH}/pyquen     )
+LCG_external_package(pyquen            1.5.1          ${MCGENPATH}/pyquen       author=1_5 )
 
 
 # Prepare the search paths according to the versions above
