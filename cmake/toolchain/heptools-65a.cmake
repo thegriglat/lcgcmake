@@ -201,5 +201,7 @@ LCG_external_package(alpgen            2.1.4          ${MCGENPATH}/alpgen author
 LCG_external_package(pyquen            1.5.1          ${MCGENPATH}/pyquen author=1_5)
 LCG_external_package(baurmc            1.0            ${MCGENPATH}/baurmc       )
 
+LCG_external_package(jhu               3.1.8          ${MCGENPATH}/jhu       )
+
 # Prepare the search paths according to the versions above
 LCG_prepare_paths()
