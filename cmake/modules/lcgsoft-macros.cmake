@@ -126,7 +126,15 @@ macro(LCGPackage_Add name)
       #---Check if a patch file exists and apply it by default---------------------------------------
       if(NOT ARGUMENTS MATCHES PATCH_COMMAND)
         if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/patches/${name}-${version}.patch)
-          list(APPEND ARGUMENTS PATCH_COMMAND patch -p0 -b -i ${CMAKE_CURRENT_SOURCE_DIR}/patches/${name}-${version}.patch)
+          # old version of `patch` makes uncopyable backup files (on SLC5 and MAC)
+          # http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=558485
+          if(${LCG_OS}${LCG_OS_VERS} STRGREATER slc5)
+            set(patch_backup_opt -b)
+          else()
+            set(patch_backup_opt)
+          endif()
+          
+          list(APPEND ARGUMENTS PATCH_COMMAND patch -p0 ${patch_backup_opt} -i ${CMAKE_CURRENT_SOURCE_DIR}/patches/${name}-${version}.patch)
         endif()
       endif()
 
