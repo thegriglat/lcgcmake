@@ -148,6 +148,9 @@ LCG_external_package(lhapdf            5.8.9          ${MCGENPATH}/lhapdf       
 LCG_external_package(lhapdf            5.9.0          ${MCGENPATH}/lhapdf       )
 LCG_external_package(lhapdfsets        5.9.0          ${MCGENPATH}/lhapdfsets   )
 
+LCG_external_package(lhapdf6           6.0.2          ${MCGENPATH}/lhapdf6       )
+LCG_external_package(lhapdf6sets       6.0.0          ${MCGENPATH}/lhapdf6sets   )
+
 LCG_external_package(pythia8           175.lhetau     ${MCGENPATH}/pythia8    author=175  )
 LCG_external_package(pythia8           175            ${MCGENPATH}/pythia8    author=175  )
 LCG_external_package(pythia8           176            ${MCGENPATH}/pythia8    author=176  )
@@ -196,8 +199,6 @@ LCG_external_package(hydjet++          2.1            ${MCGENPATH}/hydjet++ auth
 LCG_external_package(alpgen            2.1.4          ${MCGENPATH}/alpgen author=214 )
 LCG_external_package(pyquen            1.5.1          ${MCGENPATH}/pyquen author=1_5)
 LCG_external_package(baurmc            1.0            ${MCGENPATH}/baurmc       )
-LCG_external_package(lhapdf6sets       6.0.1          ${MCGENPATH}/lhapdf6sets      )
-LCG_external_package(lhapdf6           6.0.1          ${MCGENPATH}/lhapdf6       )
 LCG_external_package(professor         1.3.3          ${MCGENPATH}/professor       )
 
 LCG_external_package(madgraph5         1.5.12         ${MCGENPATH}/madgraph5       )

@@ -412,33 +412,25 @@ LCGPackage_Add(
 )
 
 #---lhapdf6sets--------------------------------------------------------------------------------------
-LCGPackage_set_home(lhapdf6sets)
-if(DEFINED lhapdf6sets_home)
-get_filename_component(lhapdf6sets_root ${lhapdf6sets_home} PATH)
-endif()
-if(NOT EXISTS ${lhapdf6sets_root}/share/lhapdf6/PDFsets)
 LCGPackage_Add(
   lhapdf6sets
-  URL http://www.hepforge.org/archive/lhapdf/pdfsets/6.0/CT10.tar.gz
+  DOWNLOAD_COMMAND <VOID>
   CONFIGURE_COMMAND <VOID>
   BUILD_COMMAND <VOID>
-  INSTALL_COMMAND ${CMAKE_COMMAND} -E make_directory <INSTALL_DIR>/../share/lhapdf6/PDFsets
-          COMMAND ${CMAKE_COMMAND} -E rename <INSTALL_DIR>/../share/sources <INSTALL_DIR>/../share/lhapdf6/PDFsets/CT10
-          COMMAND ${CMAKE_COMMAND} -E create_symlink lhapdf6/PDFsets <INSTALL_DIR>/../share/PDFsets
-          COMMAND ${CMAKE_COMMAND} -E chdir <INSTALL_DIR>/../../.. ${CMAKE_TAR} czf distribution/lhapdf6sets/lhapdf6sets-<NATIVE_VERSION>-src.tgz lhapdf6sets/<NATIVE_VERSION>/share
+  INSTALL_COMMAND ${CMAKE_COMMAND} -E make_directory <INSTALL_DIR>/../share/LHAPDF
+          COMMAND ${CMAKE_COMMAND}
+           -Dbase_url=http://www.hepforge.org/archive/lhapdf/pdfsets/<NATIVE_VERSION>
+           -Dpdf_sets=CT10,CT10nlo,cteq6l1
+           -Ddst_dir=<INSTALL_DIR>/../share/LHAPDF
+           -P ${CMAKE_CURRENT_SOURCE_DIR}/lhapdf6/pdfsets.cmake
 )
-else()
-  add_custom_target(lhapdf6sets COMMENT "LHAPDF6 data sets already installed in ${lhapdf6sets_root}/share/lhapdf/PDFsets")
-endif()
 
 #---lhapdf6------------------------------------------------------------------------------------------
 LCGPackage_Add(
   lhapdf6
-#  tested with version 6.0.1
-#  URL http://www.hepforge.org/archive/lhapdf/LHAPDF-<NATIVE_VERSION>.tar.gz
-#  to be put in /afs/cern.ch/sw/lcg/external/tarFiles/MCGeneratorsTarFiles/
   URL http://cern.ch/service-spi/external/tarFiles/MCGeneratorsTarFiles/LHAPDF-<NATIVE_VERSION>.tar.gz
-  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> 
+  CONFIGURE_COMMAND ./configure
+     --prefix=<INSTALL_DIR>
      --with-boost=${Boost_home}
      --with-yaml-cpp=${yaml_cpp_home}
      PYTHON=${Python_home}/bin/python
@@ -459,7 +451,7 @@ if(DEFINED lhapdf6_native_version)
                                         -DLHAPDF6_ROOT_DIR=${lhapdf6_home} -DBOOST_ROOT_DIR=${Boost_home} 
                                         -DYAMLLIB=${yaml_cpp_home}/lib/libyaml-cpp.so
                           ENVIRONMENT ${library_path}=${lhapdf6_home}/lib:${Boost_home}/lib:${yaml_cpp_home}/lib:$ENV{${library_path}}
-                                      LHAPDF_DATA_PATH=${lhapdf6sets_home}/../share/PDFsets)
+                                      LHAPDF_DATA_PATH=${lhapdf6sets_home}/../share/LHAPDF)
 endif()
 
 #---Rivet2-----------------------------------------------------------------------------------------
