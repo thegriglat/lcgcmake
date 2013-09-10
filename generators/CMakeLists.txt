@@ -390,8 +390,8 @@ set(cython_pythonpath ${cython_home}/lib/python${Python_config_version_twodigit}
 
 #---yaml-cpp----------------------------------------------------------------------------------------
 LCGPackage_Add(
-  yaml_cpp
-  URL http://cern.ch/service-spi/external/tarFiles/MCGeneratorsTarFiles/yaml-cpp-${yaml_cpp_native_version}.tar.gz
+  yamlcpp
+  URL http://cern.ch/service-spi/external/tarFiles/MCGeneratorsTarFiles/yaml-cpp-${yamlcpp_native_version}.tar.gz
   CMAKE_ARGS -DBOOST_ROOT=${Boost_home} -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR> -DBUILD_SHARED_LIBS=ON
   BUILD_IN_SOURCE 1
 )
@@ -432,14 +432,14 @@ LCGPackage_Add(
   CONFIGURE_COMMAND ./configure
      --prefix=<INSTALL_DIR>
      --with-boost=${Boost_home}
-     --with-yaml-cpp=${yaml_cpp_home}
+     --with-yaml-cpp=${yamlcpp_home}
      PYTHON=${Python_home}/bin/python
      CYTHON=${cython_home}/bin/cython
      PYTHONPATH=${cython_pythonpath}
-  BUILD_COMMAND ${MAKE} all ${library_path}=${yaml_cpp_home}/lib:$ENV{${library_path}} PYTHONPATH=${cython_pythonpath}
+  BUILD_COMMAND ${MAKE} all ${library_path}=${yamlcpp_home}/lib:$ENV{${library_path}} PYTHONPATH=${cython_pythonpath}
   BUILD_IN_SOURCE 1
   INSTALL_COMMAND make install PYTHONPATH=${cython_pythonpath}
-  DEPENDS lhapdf6sets Boost yaml_cpp Python cython
+  DEPENDS lhapdf6sets Boost yamlcpp Python cython
 )
 
 if(DEFINED lhapdf6_native_version)
@@ -449,8 +449,8 @@ if(DEFINED lhapdf6_native_version)
                           BUILD lhapdf6_orig_test1
                           BUILD_OPTIONS -DCMAKE_MODULE_PATH=${cmaketools_home}/modules
                                         -DLHAPDF6_ROOT_DIR=${lhapdf6_home} -DBOOST_ROOT_DIR=${Boost_home} 
-                                        -DYAMLLIB=${yaml_cpp_home}/lib/libyaml-cpp.so
-                          ENVIRONMENT ${library_path}=${lhapdf6_home}/lib:${Boost_home}/lib:${yaml_cpp_home}/lib:$ENV{${library_path}}
+                                        -DYAMLLIB=${yamlcpp_home}/lib/libyaml-cpp.so
+                          ENVIRONMENT ${library_path}=${lhapdf6_home}/lib:${Boost_home}/lib:${yamlcpp_home}/lib:$ENV{${library_path}}
                                       LHAPDF_DATA_PATH=${lhapdf6sets_home}/../share/LHAPDF)
 endif()
 
@@ -463,7 +463,7 @@ LCGPackage_Add(
      --with-boost=${Boost_home_include}
      --with-fastjet=${fastjet_home}
      --with-yoda=${yoda_home}
-     --with-yaml-cpp=${yaml_cpp_home}
+     --with-yaml-cpp=${yamlcpp_home}
      --with-gsl=${GSL_home}
      --with-lcgtag=${LCG_platform}
      --disable-pdfmanual
@@ -475,14 +475,14 @@ LCGPackage_Add(
      CC=${CMAKE_C_COMPILER}
      CXX=${CMAKE_CXX_COMPILER}
   BUILD_COMMAND ${MAKE} all
-                ${library_path}=${Python_home}/lib:${yaml_cpp_home}/lib:$ENV{${library_path}}
+                ${library_path}=${Python_home}/lib:${yamlcpp_home}/lib:$ENV{${library_path}}
                 PYTHONPATH=${cython_home}/lib/python2.7/site-packages:$ENV{PYTHONPATH}
-  INSTALL_COMMAND make install ${library_path}=${Python_home}/lib:${yaml_cpp_home}/lib:$ENV{${library_path}}
+  INSTALL_COMMAND make install ${library_path}=${Python_home}/lib:${yamlcpp_home}/lib:$ENV{${library_path}}
                 PYTHONPATH=${cython_home}/lib/python2.7/site-packages:$ENV{PYTHONPATH}
           COMMAND ${CMAKE_COMMAND} -E copy <SOURCE_DIR>/rivetenv.csh <INSTALL_DIR>/
           COMMAND ${CMAKE_COMMAND} -E copy <SOURCE_DIR>/rivetenv.sh <INSTALL_DIR>/
   BUILD_IN_SOURCE 1
-  DEPENDS HepMC Boost fastjet GSL Python swig yoda yaml_cpp
+  DEPENDS HepMC Boost fastjet GSL Python swig yoda yamlcpp
 )
 
 #---Rivet------------------------------------------------------------------------------------------
