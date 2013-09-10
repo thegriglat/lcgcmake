@@ -1,0 +1,39 @@
+ ctest for a generator is defined in lcgcmake/generators/CMakeLists.txt
+beside the definition of the generator itself.
+
+ If an executable is to be compiled for the "generator", it is done by
+lcgcmake/generators/"generator"/tests/CMakeLists.txt. The test code
+(if it is not taken from the installed generator's share/sources)
+is also put in this directory.
+
+ The CMakeLists.txt for the test compilation uses the cmake system
+FindPackage. Some macros to find well known packages are defined
+in the standard cmake (see documentation). If the tested package
+depends on some other package of GENSER or external, additional
+macros FindPackage are used, e.g. FindHepMC, FindThePEG. They can
+be defined in 2 places:
+
+ 1. package cmaketools defined in lcgcmake and installed in /external
+ 2. lcgcmake/cmake/modules . In this case this additional search path is
+    added inside lcgcmake/generators/"generator"/tests/CMakeLists.txt
+
+ Usually new Find* macros are put in the second location, and after
+full testing added to cmaketools (kept in svn).
+
+ When everything is prepared, a single ctest can be run in lcgcmake-build
+by 
+
+ ctest -R genname
+
+ It is possible to increase verbosity of the test like this:
+
+ ctest -VV -R genname
+
+ Further increase of verbosity can be obtained by defining the
+corresponding variable inside lcgcmake/generators/"generator"/tests/CMakeLists.txt,
+there is an example in lhapdf6 test.
+
+ It is recommended to avoid scripts in the ctests system
+
+ Once the test is defined in lcgcmake/generators/CMakeLists, it will be run in
+the nightlies.
