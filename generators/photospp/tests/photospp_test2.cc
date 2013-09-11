@@ -16,9 +16,9 @@
 #include "HepMCInterface.h"
 
 //PHOTOS header files
-#include "Photos.h"
-#include "PhotosHepMCEvent.h"
-#include "Log.h"
+#include "Photos/Photos.h"
+#include "Photos/PhotosHepMCEvent.h"
+#include "Photos/Log.h"
 typedef Photospp::Log Log; //We're using Photos version of Log class
 
 using namespace std;
@@ -82,7 +82,9 @@ int main(int argc,char **argv)
 	pythia.readString("23:onMode = off");
 	//pythia.readString("23:onIfAny = 13");
 	pythia.readString("23:onIfAny = 11");
-	pythia.init( 11, -11, 91.187);                           //e+ e- collisions
+	
+  //e+ e- collisions
+  if (!pythia.init( 11, -11, 91.187)) return 1;
 
 	Photospp::Photos::initialize();
 
@@ -184,12 +186,6 @@ int main(int argc,char **argv)
 	cout << "********************************************************" << endl;
 
 
-        ofstream testi("testi.dat");
-
-        testi << "photospp_test2 1  " << ratio_exp << "    " << err_exp << " " << std::endl;
-        testi << "photospp_test2 2  " << ratio_alpha  << "    " << err_alpha << " " << std::endl;
-
-        testi.close();
-
-
+        cout << "photospp_test2 1  " << ratio_exp << "    " << err_exp << " " << std::endl;
+        cout << "photospp_test2 2  " << ratio_alpha  << "    " << err_alpha << " " << std::endl;
 }

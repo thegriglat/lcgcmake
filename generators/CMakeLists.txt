@@ -334,18 +334,28 @@ LCGPackage_Add(
   DEPENDS HepMC
 )
 
-LCG_add_test(photospp-build BINARY_DIR photospp/tests
-                            SOURCE_DIR photospp/tests
-                            BUILD all
-                            BUILD_OPTIONS  -DCMAKE_MODULE_PATH=${cmaketools_home}/modules 
-                                           -DPHOTOSPP_ROOT_DIR=${photos++_home} -DPYTHIA8_ROOT_DIR=${pythia8_home} 
-                                           -DHEPMC_ROOT_DIR=${HepMC_home})
-LCG_add_test(photospp_orig_test1 TEST_COMMAND photospp/tests/photospp_orig_test1
-                          ENVIRONMENT ${library_path}=${photos++_home}/lib:${HepMC_home}/lib:${pythia8_home}/lib:$ENV{${library_path}}
-                          DEPENDS photospp-build)
-LCG_add_test(photospp_orig_test2 TEST_COMMAND photospp/tests/photospp_orig_test2
-                          ENVIRONMENT ${library_path}=${photos++_home}/lib:${HepMC_home}/lib:${pythia8_home}/lib:$ENV{${library_path}}
-                          DEPENDS photospp-build)
+LCG_add_test(photospp-build
+  BINARY_DIR photospp/tests
+  SOURCE_DIR photospp/tests
+  BUILD all
+  BUILD_OPTIONS
+   -DCMAKE_MODULE_PATH=${cmaketools_home}/modules
+   -DPHOTOSPP_ROOT_DIR=${photos++_home}
+   -DPYTHIA8_ROOT_DIR=${pythia8_home}
+   -DHEPMC_ROOT_DIR=${HepMC_home})
+
+  LCG_add_test(photospp_orig_test1
+    PRE_COMMAND ${CMAKE_COMMAND} -E create_symlink ${photos++_home}/../share/sources/examples/photos_standalone_example.dat photos_standalone_example.dat
+    TEST_COMMAND photospp/tests/photospp_orig_test1
+    ENVIRONMENT ${library_path}=${photos++_home}/lib:${HepMC_home}/lib:${pythia8_home}/lib:$ENV{${library_path}}
+    DEPENDS photospp-build)
+
+foreach(i photospp_orig_test2 photospp_test1 photospp_test2)
+  LCG_add_test(${i}
+    TEST_COMMAND photospp/tests/${i}
+    ENVIRONMENT PYTHIA8DATA=${pythia8_home}/xmldoc ${library_path}=${photos++_home}/lib:${HepMC_home}/lib:${pythia8_home}/lib:$ENV{${library_path}}
+    DEPENDS photospp-build)
+endforeach()
 
 #---evtgen------------------------------------------------------------------------------------------
 if(LCG_TARGET MATCHES "mac")
