@@ -170,16 +170,21 @@ LCGPackage_Add(
   DEPENDS HepMC lhapdf
 )
 
-LCG_add_test(tauolapp-build BINARY_DIR tauolapp/tests SOURCE_DIR tauolapp/tests
-                            BUILD all
-                            BUILD_OPTIONS  -DCMAKE_MODULE_PATH=${cmaketools_home}/modules 
-                                           -DTAUOLAPP_ROOT_DIR=${tauola++_home} 
-                                           -DPYTHIA8_ROOT_DIR=${pythia8_home} -DHEPMC_ROOT_DIR=${HepMC_home})
+LCG_add_test(tauolapp-build
+  BINARY_DIR tauolapp/tests
+  SOURCE_DIR tauolapp/tests
+  BUILD all
+  BUILD_OPTIONS
+   -DCMAKE_MODULE_PATH=${cmaketools_home}/modules
+   -DTAUOLAPP_ROOT_DIR=${tauola++_home}
+   -DPYTHIA8_ROOT_DIR=${pythia8_home}
+   -DHEPMC_ROOT_DIR=${HepMC_home})
 
 foreach(t 1 2 3)
-  LCG_add_test(tauolapp_orig_test${t} TEST_COMMAND tauolapp/tests/tauolapp_orig_test${t}
-                            ENVIRONMENT ${library_path}=${tauola++_home}/lib:${HepMC_home}/lib:${pythia8_home}/lib:$ENV{${library_path}}
-                            DEPENDS pythia8-build)
+  LCG_add_test(tauolapp_orig_test${t}
+    TEST_COMMAND tauolapp/tests/tauolapp_orig_test${t}
+    ENVIRONMENT PYTHIA8DATA=${pythia8_home}/xmldoc ${library_path}=${tauola++_home}/lib:${HepMC_home}/lib:${pythia8_home}/lib:$ENV{${library_path}}
+    DEPENDS tauolapp-build)
 endforeach()
 
 #---pythia6-------------------------------------------------------------------------------------------
