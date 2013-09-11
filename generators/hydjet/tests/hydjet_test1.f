@@ -162,17 +162,10 @@ c
      > '+-  ',f5.2)    
 
 c            test output
-*      call testfileopen
-      val=dnam
-      errval=dnrms
-*      call testfile('hydjet_test1', 1, val, 2.5*errval)
-      val=etam
-      errval=etrms
-*      call testfile('hydjet_test1', 2, val, 2.5*errval)
-      val=ptam
-      errval=ptrms
-*      call testfile('hydjet_test1', 3, val, 2.5*errval)
-*      call testfileclose 
-c       
+c     output value and error
+      print *,'hydjet_test1   1   ', dnam, 2.5*dnrms
+      print *,'hydjet_test1   2   ', etam, 2.5*etrms
+      print *,'hydjet_test1   3   ', ptam, 2.5*ptrms
+      
       end
 *******************************************************************************

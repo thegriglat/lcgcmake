@@ -314,13 +314,17 @@ LCGPackage_Add(
   BUILD_COMMAND ${MAKE} all
   BUILD_IN_SOURCE 1
 )
-LCG_add_test(hydjet-test  TEST_COMMAND hydjet/tests/hydjet_test
-                          BINARY_DIR hydjet/tests
-                          SOURCE_DIR hydjet/tests
-                          BUILD hydjet_test
-                          BUILD_OPTIONS -DHYDJET_ROOT_DIR=${hydjet_home} -DPYTHIA6_ROOT_DIR=${pythia6_home} -DPYQUEN_ROOT_DIR=${pyquen_home}
-                          ENVIRONMENT ${library_path}=${hydjet_home}/lib:${pyquen_home}/lib:${pythia6_home}/lib:$ENV{${library_path}})
 
+LCG_add_test(hydjet_test1
+  TEST_COMMAND hydjet/tests/hydjet_test1
+  BINARY_DIR hydjet/tests
+  SOURCE_DIR hydjet/tests
+  BUILD all
+  BUILD_OPTIONS
+   -DHYDJET_ROOT_DIR=${hydjet_home}
+   -DPYTHIA6_ROOT_DIR=${pythia6_home}
+   -DPYQUEN_ROOT_DIR=${pyquen_home}
+  ENVIRONMENT ${library_path}=${hydjet_home}/lib:${pyquen_home}/lib:${pythia6_home}/lib:$ENV{${library_path}})
 
 #---photos++------------------------------------------------------------------------------------------
 LCGPackage_Add(
