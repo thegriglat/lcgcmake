@@ -19,3 +19,6 @@ target_link_libraries(tauolapp_orig_test2 ${TAUOLAPP_LIBRARIES} ${HEPMC_LIBRARIE
 
 add_executable(tauolapp_orig_test3 ${TEST_DIR}/taumain_hepevt_example.cxx)
 target_link_libraries(tauolapp_orig_test3 ${TAUOLAPP_LIBRARIES} ${HEPMC_LIBRARIES})
+
+add_executable(tauolapp_test1 tauolapp_test1.cc)
+target_link_libraries(tauolapp_test1 ${TAUOLAPP_LIBRARIES} ${HEPMC_LIBRARIES} ${PYTHIA8_LIBRARIES})

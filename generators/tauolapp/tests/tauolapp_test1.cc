@@ -15,10 +15,10 @@
  * @modified by Mikhail Kirsanov 22.04.2012: take all hadrons
  */
 
-#include "Log.h"
-#include "Plots.h"
-#include "Tauola.h"
-#include "TauolaHepMCEvent.h"
+#include "Tauola/Log.h"
+#include "Tauola/Plots.h"
+#include "Tauola/Tauola.h"
+#include "Tauola/TauolaHepMCEvent.h"
 
 //pythia header files
 #include "Pythia.h"
@@ -106,8 +106,10 @@ int main(int argc, char* argv[])
   pythia.readString("24:onMode = off");
   pythia.readString("24:onIfAny = 15");
   //pythia.readString("23:onIfMatch = 15 -15");
-  pythia.init( -2212, -2212, 14000.0); //proton proton collisions
-
+  
+  //proton proton collisions
+  if (! pythia.init( -2212, -2212, 14000.0)) return 1;
+  
   //Set up TAUOLA
   //   Tauola::setSameParticleDecayMode(19);     //19 and 22 contains K0
   //   Tauola::setOppositeParticleDecayMode(19); // 20 contains eta
@@ -241,12 +243,8 @@ int main(int argc, char* argv[])
        << "        *" << endl;
   cout << "******************************************************" << endl;
 
-  ofstream testi("testi.dat");
-
-  testi << "tauolapp_test1 1  " << rpyt << "    " << erpyt << " " << std::endl;
-  testi << "tauolapp_test1 2  " << rats << "    " << ertau << " " << std::endl;
-
-  testi.close();
+  cout << "tauolapp_test1 1  " << rpyt << "    " << erpyt << " " << std::endl;
+  cout << "tauolapp_test1 2  " << rats << "    " << ertau << " " << std::endl;
 
   Tauolapp::Log::RedirectOutput(Tauolapp::Log::Info());
   pythia.statistics();

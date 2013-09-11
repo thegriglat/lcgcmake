@@ -180,9 +180,9 @@ LCG_add_test(tauolapp-build
    -DPYTHIA8_ROOT_DIR=${pythia8_home}
    -DHEPMC_ROOT_DIR=${HepMC_home})
 
-foreach(t 1 2 3)
-  LCG_add_test(tauolapp_orig_test${t}
-    TEST_COMMAND tauolapp/tests/tauolapp_orig_test${t}
+foreach(i tauolapp_test1 tauolapp_orig_test1 tauolapp_orig_test2 tauolapp_orig_test3)
+  LCG_add_test(${i}
+    TEST_COMMAND tauolapp/tests/${i}
     ENVIRONMENT PYTHIA8DATA=${pythia8_home}/xmldoc ${library_path}=${tauola++_home}/lib:${HepMC_home}/lib:${pythia8_home}/lib:$ENV{${library_path}}
     DEPENDS tauolapp-build)
 endforeach()
