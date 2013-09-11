@@ -345,7 +345,8 @@ LCG_add_test(photospp-build
    -DHEPMC_ROOT_DIR=${HepMC_home})
 
   LCG_add_test(photospp_orig_test1
-    PRE_COMMAND ${CMAKE_COMMAND} -E create_symlink ${photos++_home}/../share/sources/examples/photos_standalone_example.dat photos_standalone_example.dat
+    PRE_COMMAND ${CMAKE_COMMAND} -E remove -f photos_standalone_example.dat
+        COMMAND ${CMAKE_COMMAND} -E create_symlink ${photos++_home}/../share/sources/examples/photos_standalone_example.dat photos_standalone_example.dat
     TEST_COMMAND photospp/tests/photospp_orig_test1
     ENVIRONMENT ${library_path}=${photos++_home}/lib:${HepMC_home}/lib:${pythia8_home}/lib:$ENV{${library_path}}
     DEPENDS photospp-build)
