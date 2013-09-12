@@ -309,16 +309,13 @@ LCG_add_test(pyquen_test1
 LCGPackage_Add(
   hydjet
   DOWNLOAD_COMMAND ${CMAKE_COMMAND} -Durl=http://cern.ch/service-spi/external/tarFiles/MCGeneratorsTarFiles/hydjet<hydjet_<NATIVE_VERSION>_author>.f
-                                    -Dsource_dir=<SOURCE_DIR>/src
-                                    -P  ${CMAKE_SOURCE_DIR}/cmake/scripts/DownloadURL.cmake
-  DOWNLOAD_COMMAND ${CMAKE_COMMAND} -Durl=http://cern.ch/service-spi/external/tarFiles/MCGeneratorsTarFiles/jetset_73.f
-                                    -Dsource_dir=<SOURCE_DIR>/jetset
+                                    -Dsource_dir=<SOURCE_DIR>
                                     -P ${CMAKE_SOURCE_DIR}/cmake/scripts/DownloadURL.cmake
-  UPDATE_COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/hydjet/files  <SOURCE_DIR>
-         COMMAND ${CMAKE_COMMAND} -E chdir <SOURCE_DIR> ${CMAKE_COMMAND} -P prepareHydjet.cmake
+  DOWNLOAD_COMMAND ${CMAKE_COMMAND} -Durl=http://cern.ch/service-spi/external/tarFiles/MCGeneratorsTarFiles/jetset_73.f
+                                    -Dsource_dir=<SOURCE_DIR>
+                                    -P ${CMAKE_SOURCE_DIR}/cmake/scripts/DownloadURL.cmake
+  UPDATE_COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/hydjet/files/CMakeLists.txt <SOURCE_DIR>
   CMAKE_ARGS -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
-  BUILD_COMMAND ${MAKE} all
-  BUILD_IN_SOURCE 1
 )
 
 LCG_add_test(hydjet_test1
