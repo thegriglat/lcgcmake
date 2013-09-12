@@ -286,16 +286,13 @@ LCGPackage_Add(
 )
 
 #---pyquen--------------------------------------------------------------------------------------
-
 LCGPackage_Add(
   pyquen
   DOWNLOAD_COMMAND ${CMAKE_COMMAND} -Durl=http://cern.ch/service-spi/external/tarFiles/MCGeneratorsTarFiles/pyquen<pyquen_<NATIVE_VERSION>_author>.f
-                                    -Dsource_dir=<SOURCE_DIR>/src
-                                    -P  ${CMAKE_SOURCE_DIR}/cmake/scripts/DownloadURL.cmake
-  UPDATE_COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/pyquen/files  <SOURCE_DIR>
-
+                                    -Dsource_dir=<SOURCE_DIR>
+                                    -P ${CMAKE_SOURCE_DIR}/cmake/scripts/DownloadURL.cmake
+  UPDATE_COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/pyquen/files/CMakeLists.txt <SOURCE_DIR>
   CMAKE_ARGS -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
-  BUILD_IN_SOURCE 1
 )
 
 LCG_add_test(pyquen-test1 TEST_COMMAND pyquen/tests/pyquen_test1
