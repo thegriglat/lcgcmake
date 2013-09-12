@@ -145,16 +145,23 @@ if(NOT APPLE)    #  (installation fails on MacOSX)
     DEPENDS GSL Boost thepeg-<herwig++_<VERSION>_thepeg> fastjet
   )
 
-LCG_add_test(herwigpp_orig_test1 TEST_COMMAND ${herwig++_home}/bin/Herwig++ read --repo ${herwig++_home}/share/Herwig++/HerwigDefaults.rpo ${herwig++_home}/../share/sources/src/LHC.in
+LCG_add_test(herwigpp_orig_test1 
+			  TEST_COMMAND ${herwig++_home}/bin/Herwig++ read ${herwig++_home}/../share/sources/src/LHC.in 
+			       COMMAND ${herwig++_home}/bin/Herwig++ run -N100 LHC.run -d1 
+                          POST_COMMAND cat LHC.out
+			       COMMAND cat LHC.log	
                           BINARY_DIR herwig++/tests
                           SOURCE_DIR herwig++/tests
                           ENVIRONMENT ${library_path}=${herwig++_home}/lib:${thepeg_home}/lib:${HepMC_home}/lib:${lhapdf_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:$ENV{${library_path}})
 
-LCG_add_test(herwigpp_orig_test2 TEST_COMMAND ${herwig++_home}/bin/Herwig++ run --repo  ${herwig++_home}/share/Herwig++/HerwigDefaults.rpo -N100 LHC.run
+LCG_add_test(herwigpp_orig_test2 
+			  TEST_COMMAND ${herwig++_home}/bin/Herwig++ read ${herwig++_home}/../share/sources/src/TVT.in 
+                               COMMAND ${herwig++_home}/bin/Herwig++ run -N100 TVT.run -d1 
+                          POST_COMMAND cat TVT.out
+                               COMMAND cat TVT.log  
                           BINARY_DIR herwig++/tests
                           SOURCE_DIR herwig++/tests
-                          ENVIRONMENT ${library_path}=${herwig++_home}/lib:${thepeg_home}/lib:${HepMC_home}/lib:${lhapdf_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:$ENV{${library_path}}
-                          DEPENDS herwigpp_orig_test1)
+                          ENVIRONMENT ${library_path}=${herwig++_home}/lib:${thepeg_home}/lib:${HepMC_home}/lib:${lhapdf_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:$ENV{${library_path}})
 
 endif()
 
