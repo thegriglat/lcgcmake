@@ -286,7 +286,6 @@ LCGPackage_Add(
                                     -Dsource_dir=<SOURCE_DIR>/src
                                     -P  ${CMAKE_SOURCE_DIR}/cmake/scripts/DownloadURL.cmake
   UPDATE_COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/pyquen/files  <SOURCE_DIR>
-         COMMAND ${CMAKE_COMMAND} -E chdir <SOURCE_DIR> ${CMAKE_COMMAND} -P preparePyquen.cmake
 
   CMAKE_ARGS -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
   BUILD_IN_SOURCE 1
@@ -545,6 +544,7 @@ LCGPackage_Add(
   CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR>
      --enable-shared --enable-static --enable-binreloc --enable-analysis
      --enable-pythia --enable-hepevtsize=<sherpa_<NATIVE_VERSION>_hepevt>
+     --enable-multithread
      --enable-lhapdf=${lhapdf_home}
      --enable-hepmc2=${HepMC_home}
      --enable-rivet=${rivet_home} "CFLAGS=-O2 -g0" "CXXFLAGS=-O2 -g0" "FFLAGS=-O2 -g0"
