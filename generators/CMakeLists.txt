@@ -628,14 +628,11 @@ LCGPackage_Add(
   UPDATE_COMMAND <VOID>
   CMAKE_ARGS -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
 )
-LCG_add_test(starlight_genser_test1 TEST_COMMAND starlight/tests/starlight_genser_test1
-                          BINARY_DIR starlight/tests
-                          SOURCE_DIR starlight/tests
-                          BUILD starlight_genser_test1
-                          BUILD_OPTIONS -DSTARLIGHT_ROOT_DIR=${starlight_home}
-                          ENVIRONMENT ${library_path}=${starlight_home}/lib:$ENV{${library_path}})
 
-
+LCG_add_test(starlight_orig_test1
+  PRE_COMMAND ${CMAKE_COMMAND} -E remove -f slight.in
+      COMMAND ${CMAKE_COMMAND} -E create_symlink ${starlight_home}/../share/sources/config/slight.in.new slight.in
+  TEST_COMMAND ${starlight_home}/bin/starlight)
 
 #---HERWIG----------------------------------------------------------------------------------------
 LCGPackage_Add(
