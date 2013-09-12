@@ -295,12 +295,15 @@ LCGPackage_Add(
   CMAKE_ARGS -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
 )
 
-LCG_add_test(pyquen-test1 TEST_COMMAND pyquen/tests/pyquen_test1
-                          BINARY_DIR pyquen/tests
-                          SOURCE_DIR pyquen/tests
-                          BUILD pyquen_test1
-                          BUILD_OPTIONS -DPYQUEN_ROOT_DIR=${pyquen_home} -DPYTHIA6_ROOT_DIR=${pythia6_home}
-                          ENVIRONMENT ${library_path}=${pyquen_home}/lib:${pythia6_home}/lib:$ENV{${library_path}})
+LCG_add_test(pyquen_test1
+  TEST_COMMAND pyquen/tests/pyquen_test1
+  BINARY_DIR pyquen/tests
+  SOURCE_DIR pyquen/tests
+  BUILD pyquen_test1
+  BUILD_OPTIONS
+   -DPYQUEN_ROOT_DIR=${pyquen_home}
+   -DPYTHIA6_ROOT_DIR=${pythia6_home}
+  ENVIRONMENT ${library_path}=${pyquen_home}/lib:${pythia6_home}/lib:$ENV{${library_path}})
 
 #---hydjet--------------------------------------------------------------------------------------
 LCGPackage_Add(
