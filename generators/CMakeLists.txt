@@ -826,16 +826,13 @@ LCGPackage_Add(
 LCG_add_test(jhu_orig_test_JHUGen
   PRE_COMMAND ${CMAKE_COMMAND} -E remove -f pdfs
       COMMAND ${CMAKE_COMMAND} -E create_symlink ${jhu_home}/pdfs pdfs
-  TEST_COMMAND ${jhu_home}/bin/JHUGen VegasNc0=100000 VegasNc1=500000 VegasNc2=100
-  ENVIRONMENT ${library_path}=$ENV{${library_path}})
+  TEST_COMMAND ${jhu_home}/bin/JHUGen VegasNc0=100000 VegasNc1=500000 VegasNc2=100)
 
 LCG_add_test(jhu_orig_test_F
-  TEST_COMMAND ${jhu_home}/bin/testF
-  ENVIRONMENT ${library_path}=$ENV{${library_path}})
+  TEST_COMMAND ${jhu_home}/bin/testF)
 
 LCG_add_test(jhu_orig_test_C
-  TEST_COMMAND ${jhu_home}/bin/testC
-  ENVIRONMENT ${library_path}=$ENV{${library_path}})
+  TEST_COMMAND ${jhu_home}/bin/testC)
 
 
 #---test of the test infrasgtructure---------------------------------------------------------------
