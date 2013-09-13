@@ -12,9 +12,6 @@ if(APPLE)
 else()
   set(library_path LD_LIBRARY_PATH)
 endif()
-find_library(FORTRAN_LIBRARY NAMES gfortran
-             PATH_SUFFIXES lib 
-             PATHS /usr/local /usr/local/gfortran ENV ${library_path})
 string(REPLACE "opt" "dbg" LCG_platform_dbg ${LCG_platform})
 
 
@@ -367,7 +364,7 @@ endforeach()
 
 #---evtgen------------------------------------------------------------------------------------------
 if(LCG_TARGET MATCHES "mac")
-  set(evtgen-build-options FLIBS=${FORTRAN_LIBRARY} FC=${CMAKE_Fortran_COMPILER})
+  set(evtgen-build-options FC=${CMAKE_Fortran_COMPILER})
 endif()
 LCGPackage_Add(
   evtgen
@@ -695,7 +692,7 @@ LCGPackage_Add(
                                     -P ${CMAKE_SOURCE_DIR}/cmake/scripts/DownloadURL.cmake
   COMMAND unzip <SOURCE_DIR>/HYDJET++<hydjet++_<NATIVE_VERSION>_author>.ZIP -d <SOURCE_DIR>
   CONFIGURE_COMMAND <VOID>
-  BUILD_COMMAND ${EXEC} PATH=${ROOT_home}/bin:$ENV{PATH} ${MAKE} -j2 F77LIBSO=${FORTRAN_LIBRARY}
+  BUILD_COMMAND ${EXEC} PATH=${ROOT_home}/bin:$ENV{PATH} ${MAKE} -j2
   INSTALL_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/lib <INSTALL_DIR>/lib
           COMMAND ${CMAKE_COMMAND} -E create_symlink hydjet++ <INSTALL_DIR>/../../../hydjetpp        
   BUILD_IN_SOURCE 1
