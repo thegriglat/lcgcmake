@@ -363,9 +363,6 @@ foreach(i photospp_orig_test2 photospp_test1 photospp_test2)
 endforeach()
 
 #---evtgen------------------------------------------------------------------------------------------
-if(LCG_TARGET MATCHES "mac")
-  set(evtgen-build-options FC=${CMAKE_Fortran_COMPILER})
-endif()
 LCGPackage_Add(
   evtgen
   URL http://cern.ch/service-spi/external/tarFiles/MCGeneratorsTarFiles/evtgen-<evtgen_<NATIVE_VERSION>_tag>.tar.gz
@@ -375,7 +372,7 @@ LCGPackage_Add(
                                 --pythiadir=<pythia8-<evtgen_<VERSION>_pythia8>_home>
                                 --photosdir=${photos++_home} 
                                 --tauoladir=<tauola++-<evtgen_<VERSION>_tauola++>_home>
-  BUILD_COMMAND ${MAKE} -j1 ${evtgen-build-options}
+  BUILD_COMMAND ${MAKE} -j1 FLIBS=-lgfortran
   INSTALL_COMMAND make install
           COMMAND ${CMAKE_COMMAND} -E chdir <INSTALL_DIR>/../share ${CMAKE_COMMAND} -E create_symlink  sources/evt.pdl evt.pdl
           COMMAND ${CMAKE_COMMAND} -E chdir <INSTALL_DIR>/../share ${CMAKE_COMMAND} -E create_symlink  sources/DECAY_2010.DEC DECAY.DEC
@@ -692,7 +689,7 @@ LCGPackage_Add(
                                     -P ${CMAKE_SOURCE_DIR}/cmake/scripts/DownloadURL.cmake
   COMMAND unzip <SOURCE_DIR>/HYDJET++<hydjet++_<NATIVE_VERSION>_author>.ZIP -d <SOURCE_DIR>
   CONFIGURE_COMMAND <VOID>
-  BUILD_COMMAND ${EXEC} PATH=${ROOT_home}/bin:$ENV{PATH} ${MAKE} -j2
+  BUILD_COMMAND ${EXEC} PATH=${ROOT_home}/bin:$ENV{PATH} ${MAKE} -j2 F77LIBSO=-lgfortran
   INSTALL_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/lib <INSTALL_DIR>/lib
           COMMAND ${CMAKE_COMMAND} -E create_symlink hydjet++ <INSTALL_DIR>/../../../hydjetpp        
   BUILD_IN_SOURCE 1
