@@ -8,9 +8,8 @@
 #  YAMLCPP_LIBRARIES (not cached)
 
 
-find_path(YAMLCPP_INCLUDE_DIR yaml.h
-          HINTS $ENV{YAMLCPP_ROOT_DIR}/include ${YAMLCPP_ROOT_DIR}/include
-          PATH_SUFFIXES yaml-cpp)
+find_path(YAMLCPP_INCLUDE_DIR yaml-cpp/yaml.h
+          HINTS $ENV{YAMLCPP_ROOT_DIR}/include ${YAMLCPP_ROOT_DIR}/include)
 
 find_library(YAMLCPP_LIBRARY NAMES yaml-cpp
              HINTS $ENV{YAMLCPP_ROOT_DIR}/lib ${YAMLCPP_ROOT_DIR}/lib)
