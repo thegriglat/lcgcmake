@@ -1,7 +1,0 @@
-mkdir sherpatest
-cd sherpatest
-cp -r $2/LHC_ZJets .
-cd LHC_ZJets
-$1/bin/Sherpa
-cd ../..
-rm -rf sherpatest

@@ -556,13 +556,15 @@ LCGPackage_Add(
   DEPENDS lhapdf HepMC rivet
 )
 
-LCG_add_test(sherpa_orig_test1 PRE_COMMAND ${CMAKE_COMMAND} -E make_directory sherpatest
-                                   COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/generators/sherpa/tests/LHC_ZJets sherpatest/LHC_ZJets
-                              TEST_COMMAND ${CMAKE_COMMAND} -E chdir sherpatest/LHC_ZJets ${sherpa_home}/bin/Sherpa
-                              POST_COMMAND ${CMAKE_COMMAND} -E remove_directory sherpatest
-                              ENVIRONMENT ${library_path}=${sherpa_home}/lib:${HepMC_home}/lib:${lhapdf_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:$ENV{${library_path}}
-                                          PWD=${CMAKE_CURRENT_BINARY_DIR}/sherpatest/LHC_ZJets    # Needed because Sherpa uses this variable to know current directory :-(
-            )
+# $PWD is needed because Sherpa uses this variable to know current directory
+LCG_add_test(sherpa_orig_test1
+  PRE_COMMAND ${CMAKE_COMMAND} -E make_directory sherpa/tests
+  TEST_COMMAND ${CMAKE_COMMAND} -E chdir sherpa/tests ${sherpa_home}/bin/Sherpa -f ${CMAKE_SOURCE_DIR}/generators/sherpa/tests/LHC_ZJets.dat
+  POST_COMMAND ${CMAKE_COMMAND} -E remove_directory sherpa/tests
+  ENVIRONMENT
+    ${library_path}=${sherpa_home}/lib:${HepMC_home}/lib:${lhapdf_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:$ENV{${library_path}}
+    PWD=.
+)
 
 #---HepMCAnalysis------------------------------------------------------------------------------------
 LCGPackage_Add(
