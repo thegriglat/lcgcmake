@@ -535,9 +535,12 @@ LCGPackage_Add(
   DEPENDS HepMC Boost fastjet GSL Python swig
 )
 
-LCG_add_test(rivet_orig_test1 TEST_COMMAND ${CMAKE_SOURCE_DIR}/generators/rivet/tests/runtest ${rivet_home} ${Python_home}/bin
-                              ENVIRONMENT ${library_path}=${GSL_home}/lib:$ENV{${library_path}}
-                              DEPENDS agile_orig_test1)
+LCG_add_test(rivet_orig_test1
+  TEST_COMMAND ${CMAKE_SOURCE_DIR}/generators/rivet/tests/test1.sh ${rivet_home} ${CMAKE_SOURCE_DIR}/generators/rivet/tests/data.hepmc
+  ENVIRONMENT
+    ${library_path}=${GSL_home}/lib:$ENV{${library_path}}
+    PATH=${Python_home}/bin:$ENV{PATH}
+)
 
 #---Sherpa------------------------------------------------------------------------------------------
 LCGPackage_Add(

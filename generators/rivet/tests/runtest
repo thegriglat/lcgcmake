@@ -1,3 +1,0 @@
-source $1/rivetenv.sh
-export PATH=$2:${PATH}
-rivet --analysis=MC_DIJET hepmcfile.dat
