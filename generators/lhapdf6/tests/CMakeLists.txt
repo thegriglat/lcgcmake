@@ -7,8 +7,8 @@ find_package(Lhapdf6 REQUIRED)
 find_package(Yamlcpp REQUIRED)
 
 #set(Boost_DEBUG ON)
-# "1.44" is a minimum required version
-find_package(Boost 1.44 REQUIRED COMPONENTS filesystem)
+# "1.49" is a minimum required version
+find_package(Boost 1.49 REQUIRED COMPONENTS filesystem system)
 
 set(TEST_DIR ${LHAPDF6_ROOT_DIR}/../share/sources/examples/)
 
