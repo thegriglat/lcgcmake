@@ -29,7 +29,7 @@ if [ x$TARGET = x ]; then
   export TARGET=all
 fi
 
-CONFIG=slc6-gcc46
+CONFIG=slc6-icc13
 
 export SOURCE=${WORKDIR}/${MODE}/lcgcmake-${VERSION}
 export BINARY=${WORKDIR}/${MODE}/${CONFIG}
