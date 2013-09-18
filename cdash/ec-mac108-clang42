@@ -30,6 +30,6 @@ export SOURCE=${WORKDIR}/${MODE}/lcgcmake-${VERSION}
 export BINARY=${WORKDIR}/${MODE}/${CONFIG}
 
 #---Run the CTest script-------------------------------------------
-echo "Starting CTest script for configutation ${CONFIG} at `date`" 
+echo "Starting CTest script for configuration ${CONFIG} at `date`" 
 
 ctest -V -S ${THIS}/lcgcmake-build.cmake
