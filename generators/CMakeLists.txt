@@ -764,6 +764,17 @@ if(NOT APPLE)    #  (installation fails on MacOSX)
   BUILD_IN_SOURCE 1
   DEPENDS fastjet lhapdf
  )
+
+# WZ, Wp_Wp_J_J, VBF_Wp_Wp are skiped - example steering files do not work
+foreach(i WW HJ W_ew-BW Wbb Wj HJJ ZZ W_ew-BMNNP Dijet gg_H VBF_H Z W hvq Zj ST_sch ST_tch ST_tch_4f)
+  LCG_add_test(powheg-box_orig_test${i}
+    TEST_COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/powheg-box/tests/runtest.sh ${powheg-box_home}/bin ${powheg-box_home}/../share/sources ${i}
+    ENVIRONMENT
+      ${library_path}=${lhapdf_home}/lib:${fastjet_home}/lib:$ENV{${library_path}}
+      LHAPATH=${lhapdfsets_home}/../share/PDFsets
+  )
+endforeach()
+
 endif()
 #---baurmc------------------------------------------------------------------------------------------
 
