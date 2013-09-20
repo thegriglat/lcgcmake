@@ -1,1 +1,0 @@
-./configure --prefix=${INSTALL_DIR} --datadir=${SHARE_DIR} --enable-low-memory --disable-pyext --disable-doxygen --disable-octave

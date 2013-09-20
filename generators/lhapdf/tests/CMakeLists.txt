@@ -5,9 +5,14 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/../../../cmake/modules)
 
 find_package(Lhapdf REQUIRED)
 
-set(TEST_DIR ${LHAPDF_ROOT_DIR}/../share/examples/)
-include_directories(${LHAPDF_INCLUDE_DIR} ${LHAPDF_ROOT_DIR}/include/LHAPDF/ ${LHAPDFSETS_ROOT_DIR}/include/)
+set(TEST_DIR ${LHAPDF_ROOT_DIR}/../share/sources/examples/)
+include_directories(${LHAPDF_INCLUDE_DIRS} ${LHAPDF_INCLUDE_DIR}/LHAPDF)
 
-#add_executable(lhapdf_genser_test1 lhapdf_test1.f)
-add_executable(lhapdf_genser_test1 ${TEST_DIR}/CCTest1.cc)
-target_link_libraries(lhapdf_genser_test1 ${LHAPDF_LIBRARIES})
+add_executable(lhapdf_orig_testCC1 ${TEST_DIR}/CCTest1.cc)
+target_link_libraries(lhapdf_orig_testCC1 ${LHAPDF_LIBRARIES})
+
+add_executable(lhapdf_orig_testCC3 ${TEST_DIR}/CCTest3.cc)
+target_link_libraries(lhapdf_orig_testCC3 ${LHAPDF_LIBRARIES})
+
+add_executable(lhapdf_orig_testCC4 ${TEST_DIR}/CCTest4.cc)
+target_link_libraries(lhapdf_orig_testCC4 ${LHAPDF_LIBRARIES})

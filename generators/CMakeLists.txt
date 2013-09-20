@@ -16,55 +16,60 @@ string(REPLACE "opt" "dbg" LCG_platform_dbg ${LCG_platform})
 
 
 #---lhapdfsets--------------------------------------------------------------------------------------
-LCGPackage_set_home(lhapdfsets)
 message(STATUS "PDFsets to download: ${PDFsets}")
-get_filename_component(lhapdfsets_root ${lhapdfsets_home} PATH)
-if(NOT EXISTS ${lhapdfsets_root}/share/lhapdf/PDFsets)
 LCGPackage_Add(
   lhapdfsets
   URL http://cern.ch/service-spi/external/tarFiles/MCGeneratorsTarFiles/lhapdf-<NATIVE_VERSION>.tar.gz
-  CONFIGURE_COMMAND <VOID> 
+  BINARY_PACKAGE 1
+  CONFIGURE_COMMAND <VOID>
   BUILD_COMMAND <VOID>
   INSTALL_COMMAND ${CMAKE_COMMAND} -E make_directory <INSTALL_DIR>
-          COMMAND <SOURCE_DIR>/bin/lhapdf-getdata --force --dest=<INSTALL_DIR>/../share/lhapdf/PDFsets ${PDFsets}
-          COMMAND ${CMAKE_COMMAND} -E copy <INSTALL_DIR>/../share/sources/PDFsets.index <INSTALL_DIR>/../share/lhapdf
-          COMMAND ${CMAKE_COMMAND} -E create_symlink lhapdf/PDFsets <INSTALL_DIR>/../share/PDFsets
-          COMMAND ${CMAKE_COMMAND} -E create_symlink lhapdf/PDFsets.index <INSTALL_DIR>/../share/PDFsets.index
-          COMMAND ${CMAKE_COMMAND} -E remove_directory <INSTALL_DIR>/../share/sources
-          COMMAND ${CMAKE_COMMAND} -E chdir <INSTALL_DIR>/../../.. ${CMAKE_TAR} czf distribution/lhapdfsets/lhapdfsets-<NATIVE_VERSION>-src.tgz lhapdfsets/<NATIVE_VERSION>/share
+          COMMAND ${CMAKE_COMMAND}
+           -Ddistr=<SOURCE_DIR>
+           -Drepo=http://www.hepforge.org/archive/lhapdf/pdfsets/<NATIVE_VERSION>
+           -DPDFsets=${PDFsets}
+           -Ddst_dir=<INSTALL_DIR>/../share/lhapdf
+           -P ${CMAKE_CURRENT_SOURCE_DIR}/lhapdf/pdfsets.cmake
+          COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/lhapdf/mktarball.sh <INSTALL_DIR> <NATIVE_VERSION>
 )
-else()
-  add_custom_target(lhapdfsets COMMENT "LHAPDF data sets already installed in ${lhapdfsets_root}/share/lhapdf/PDFsets")
-endif()
 
 #---lhapdf------------------------------------------------------------------------------------------
 LCGPackage_Add(
   lhapdf
   URL http://cern.ch/service-spi/external/tarFiles/MCGeneratorsTarFiles/lhapdf-<NATIVE_VERSION>.tar.gz
-  UPDATE_COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/lhapdf/files  <SOURCE_DIR>
-  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --datadir=${lhapdfsets_home}/../share/lhapdf/PDFsets 
-                                --enable-low-memory  --disable-pyext --disable-doxygen --disable-octave FCFLAGS=-g0 CFLAGS=-g0 CXXFLAGS=-g0
+  CONFIGURE_COMMAND ./configure
+    --prefix=<INSTALL_DIR>
+    --datadir=<lhapdfsets-<NATIVE_VERSION>_home>/../share
+    --enable-low-memory
+    --disable-pyext
+    --disable-doxygen
+    --disable-octave
+    FCFLAGS=-g0 CFLAGS=-g0 CXXFLAGS=-g0
   INSTALL_COMMAND make install
-          COMMAND ${CMAKE_COMMAND} -E make_directory <INSTALL_DIR>/../share
-          COMMAND ${CMAKE_COMMAND} -E make_directory <INSTALL_DIR>/../share/lhapdf
-          COMMAND ${CMAKE_COMMAND} -E create_symlink ../../../../lhapdfsets/${lhapdfsets_native_version}/share/PDFsets <INSTALL_DIR>/../share/lhapdf/PDFsets
-          COMMAND ${CMAKE_COMMAND} -E create_symlink lhapdf/PDFsets <INSTALL_DIR>/../share/PDFsets
-          COMMAND ${CMAKE_COMMAND} -E make_directory  <INSTALL_DIR>/lib/archive
-          COMMAND ${CMAKE_COMMAND} -E create_symlink ../libLHAPDF.a <INSTALL_DIR>/lib/archive/libLHAPDF.a
-          COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/lhapdf/examples  <INSTALL_DIR>/../share/examples
-          COMMAND ${CMAKE_COMMAND} -E copy <SOURCE_DIR>/examples/lhapdf-cctest1 <INSTALL_DIR>/bin
-          COMMAND ${CMAKE_COMMAND} -E copy <SOURCE_DIR>/examples/lhapdf-example1 <INSTALL_DIR>/bin
+          COMMAND ${CMAKE_COMMAND} -E remove -f <INSTALL_DIR>/../share/lhapdf
+          COMMAND ${CMAKE_COMMAND} -E create_symlink ../../../lhapdfsets/<NATIVE_VERSION>/share/lhapdf <INSTALL_DIR>/../share/lhapdf
   BUILD_IN_SOURCE 1
-  DEPENDS lhapdfsets
+  DEPENDS lhapdfsets-<NATIVE_VERSION>
 )
-LCG_add_test(lhapdf_genser_test1 TEST_COMMAND lhapdf/tests/lhapdf_genser_test1
-                          BINARY_DIR lhapdf/tests
-                          SOURCE_DIR lhapdf/tests
-                          BUILD lhapdf_genser_test1
-                          BUILD_OPTIONS -DCMAKE_MODULE_PATH=${cmaketools_home}/modules 
-                                        -DLHAPDF_ROOT_DIR=${lhapdf_home} -DLHAPDFSETS_ROOT_DIR=${lhapdfsets_home}
-                          ENVIRONMENT ${library_path}=${lhapdf_home}/lib:$ENV{${library_path}} LHAPATH=${lhapdfsets_home}/../share/PDFsets)
 
+LCG_add_test(lhapdf_build
+  BINARY_DIR lhapdf/tests
+  SOURCE_DIR lhapdf/tests
+  BUILD all
+  BUILD_OPTIONS
+   -DCMAKE_MODULE_PATH=${cmaketools_home}/modules 
+   -DLHAPDF_ROOT_DIR=${lhapdf_home}
+)
+
+foreach(i lhapdf_orig_testCC1 lhapdf_orig_testCC3 lhapdf_orig_testCC4)
+  LCG_add_test(${i}
+    TEST_COMMAND lhapdf/tests/${i}
+    ENVIRONMENT
+      ${library_path}=${lhapdf_home}/lib:$ENV{${library_path}}
+      LHAPATH=${lhapdfsets_home}/../share/lhapdf/PDFsets
+    DEPENDS lhapdf-build
+  )
+endforeach()
 
 #---pythia8------------------------------------------------------------------------------------------
 LCGPackage_Add(
