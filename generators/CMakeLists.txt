@@ -75,7 +75,7 @@ foreach(i lhapdf_orig_testCC1 lhapdf_orig_testCC3 lhapdf_orig_testCC4)
     ENVIRONMENT
       ${library_path}=${lhapdf_home}/lib:$ENV{${library_path}}
       LHAPATH=${lhapdfsets_home}/../share/lhapdf/PDFsets
-    DEPENDS lhapdf-build
+    DEPENDS lhapdf_build
   )
 endforeach()
 
