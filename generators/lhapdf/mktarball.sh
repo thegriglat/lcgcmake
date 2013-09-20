@@ -8,8 +8,8 @@ echo "Preparing PDF sets tarball ..."
 cd $instdir/../../..
 mkdir -p distribution/lhapdfsets
 
-data=lhapdfsets/$version/share/lhapdf
-marker=$data/PDFsets/.complete
+data=lhapdfsets/$version/share
+marker=$data/lhapdf/PDFsets/.complete
 tarball=distribution/lhapdfsets/lhapdfsets-$version-src.tgz
 
 echo "pwd = $(pwd)"

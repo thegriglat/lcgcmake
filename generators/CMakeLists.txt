@@ -30,6 +30,10 @@ LCGPackage_Add(
            -DPDFsets=${PDFsets}
            -Ddst_dir=<INSTALL_DIR>/../share/lhapdf
            -P ${CMAKE_CURRENT_SOURCE_DIR}/lhapdf/pdfsets.cmake
+          COMMAND ${CMAKE_COMMAND} -E remove -f <INSTALL_DIR>/../share/PDFsets
+          COMMAND ${CMAKE_COMMAND} -E create_symlink lhapdf/PDFsets <INSTALL_DIR>/../share/PDFsets
+          COMMAND ${CMAKE_COMMAND} -E remove -f <INSTALL_DIR>/../share/PDFsets.index
+          COMMAND ${CMAKE_COMMAND} -E create_symlink lhapdf/PDFsets.index <INSTALL_DIR>/../share/PDFsets.index
           COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/lhapdf/mktarball.sh <INSTALL_DIR> <NATIVE_VERSION>
 )
 
@@ -48,6 +52,10 @@ LCGPackage_Add(
   INSTALL_COMMAND make install
           COMMAND ${CMAKE_COMMAND} -E remove -f <INSTALL_DIR>/../share/lhapdf
           COMMAND ${CMAKE_COMMAND} -E create_symlink ../../../lhapdfsets/<NATIVE_VERSION>/share/lhapdf <INSTALL_DIR>/../share/lhapdf
+          COMMAND ${CMAKE_COMMAND} -E remove -f <INSTALL_DIR>/../share/PDFsets
+          COMMAND ${CMAKE_COMMAND} -E create_symlink lhapdf/PDFsets <INSTALL_DIR>/../share/PDFsets
+          COMMAND ${CMAKE_COMMAND} -E remove -f <INSTALL_DIR>/../share/PDFsets.index
+          COMMAND ${CMAKE_COMMAND} -E create_symlink lhapdf/PDFsets.index <INSTALL_DIR>/../share/PDFsets.index
   BUILD_IN_SOURCE 1
   DEPENDS lhapdfsets-<NATIVE_VERSION>
 )
