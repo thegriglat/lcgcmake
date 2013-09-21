@@ -31,7 +31,10 @@ if [ ! -e powheg.input ] ; then
   ln -s $(find *.input | head -n 1) powheg.input
 fi
 
-# reduce events number
+# reduce generated events number to 100 (numevts)
+# reduce number of grid generation iterations (ncall, itmx, nubound)
+# disable manual selection of random seed (manyseeds)
+# set PDF set to CT10 [index 10800] (lhans)
 sed -i powheg.input \
     -e 's,numevts.*,numevts 100,' \
     -e 's,ncall1.*,ncall1 1000,' \
@@ -39,7 +42,9 @@ sed -i powheg.input \
     -e 's,ncall2.*,ncall2 1000,' \
     -e 's,itmx2.*,itmx2 1,' \
     -e 's,nubound.*,nubound 1000,' \
-    -e 's,manyseeds.*,manyseeds 0,'
+    -e 's,manyseeds.*,manyseeds 0,' \
+    -e 's,lhans1.*,lhans1 10800,' \
+    -e 's,lhans2.*,lhans2 10800,'
 
 if [[ "$proc" == "W_ew-BMNNP" || "$proc" == "VBF_Wp_Wp" ]] ; then
   # add missing PDF set
@@ -57,4 +62,4 @@ if [[ "$ngen" != "100" ]] ; then
   exit 1
 fi
 
-echo "Test completed succesfully. See outout in $proc/"
+echo "Test completed succesfully. See output in $proc/"
