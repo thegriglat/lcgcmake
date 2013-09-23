@@ -14,6 +14,14 @@ GET_CONFIGURATION_TAG(tag)
 set(CTEST_SOURCE_DIRECTORY "$ENV{SOURCE}")
 set(CTEST_BINARY_DIRECTORY "$ENV{BINARY}")
 
+#---Set the install directory----------------------------------------------- 
+# if $INSTALLDIR is given, use that one, otherwise derive from binary dir
+if("$ENV{INSTALLDIR}" STREQUAL "")
+  set(CTEST_INSTALL_DIRECTORY "${CTEST_BINARY_DIRECTORY}-install")
+else()
+  set(CTEST_INSTALL_DIRECTORY "$ENV{INSTALLDIR}")
+endif()
+
 #---Set the CTEST SITE according to the environment-------------------------
 #if("$ENV{CTEST_SITE}" STREQUAL "")
   set(CTEST_SITE "${host}")

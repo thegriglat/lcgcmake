@@ -17,14 +17,16 @@ set(CTEST_NOTES_FILES ${CTEST_NOTES_FILES} ${CTEST_BINARY_DIRECTORY}/dependencie
 #---CTest commands----------------------------------------------------------
 #ctest_empty_binary_directory(${CTEST_BINARY_DIRECTORY})
 file(REMOVE_RECURSE ${CTEST_BINARY_DIRECTORY})
-file(REMOVE_RECURSE ${CTEST_BINARY_DIRECTORY}-install)
+if("$ENV{CLEAN_INSTALLDIR}" STREQUAL "true"))
+  file(REMOVE_RECURSE ${CTEST_INSTALL_DIRECTORY})
+endif()
 
 # The build mode drives the name of the slot in cdash
 ctest_start($ENV{MODE} TRACK $ENV{MODE})
 ctest_update()
 ctest_configure(BUILD   ${CTEST_BINARY_DIRECTORY} 
                 SOURCE  ${CTEST_SOURCE_DIRECTORY}
-                OPTIONS "-DLCG_VERSION=$ENV{LCG_VERSION};-DCMAKE_INSTALL_PREFIX=${CTEST_BINARY_DIRECTORY}-install;-DPDFsets=ct10"
+                OPTIONS "-DLCG_VERSION=$ENV{LCG_VERSION};-DCMAKE_INSTALL_PREFIX=${CTEST_INSTALL_DIRECTORY};-DPDFsets=ct10"
                )
 ctest_build(BUILD ${CTEST_BINARY_DIRECTORY})
 ctest_test(PARALLEL_LEVEL ${ncpu})
