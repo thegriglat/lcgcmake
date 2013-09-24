@@ -24,22 +24,15 @@ macro(LCGPackage_Add name)
   CMAKE_PARSE_ARGUMENTS(ARG "" "DEST_NAME;BUNDLE_PACKAGE;BINARY_PACKAGE"
                             "DEPENDS;CONFIGURE_EXAMPLES_COMMAND;BUILD_EXAMPLES_COMMAND;INSTALL_EXAMPLES_COMMAND;TEST_COMMAND" ${ARGN})
   
-  #---Check if this is a muli-version package or not-------------------------------------------------
-  list(LENGTH ${name}_native_version nvers)
-  if(nvers GREATER 1)
-    add_custom_target(${name} ALL COMMENT "Multi-version package ${name} global target")
-    add_custom_target(clean-${name} COMMENT "Clean a multi-version package ${name}")
-  endif()
+  #---Create ${name} global target-------------------------------------------------------------------
+  add_custom_target(${name} ALL COMMENT "Multi-version package ${name} global target")
+  add_custom_target(clean-${name} COMMENT "Clean a multi-version package ${name}")
   
   #---Loop over all versions of the package----------------------------------------------------------
   foreach( version ${${name}_native_version} )
 
     #---Handle multi-version packages----------------------------------------------------------------
-    if(nvers GREATER 1)
-      set(targetname ${name}-${version})
-    else()
-      set(targetname ${name})
-    endif()
+    set(targetname ${name}-${version})
     
     #---Handle dependencies--------------------------------------------------------------------------
     set(${targetname}_dependencies "")
@@ -240,10 +233,8 @@ macro(LCGPackage_Add name)
                                             COMMAND ${CMAKE_COMMAND} -E remove_directory ${${name}_home})
     endif()
     
-    if(nvers GREATER 1)
-      add_dependencies(${name} ${targetname})
-      add_dependencies(clean-${name} clean-${targetname})
-    endif()
+    add_dependencies(${name} ${targetname})
+    add_dependencies(clean-${name} clean-${targetname})
 
     set(${name}-${version}_home ${${name}_home} PARENT_SCOPE)
 
