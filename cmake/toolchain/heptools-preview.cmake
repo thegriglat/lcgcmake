@@ -147,12 +147,12 @@ set(MCGENPATH  MCGenerators_lcgcmt${heptools_version})
 
 LCG_external_package(powheg-box         r2092         ${MCGENPATH}/powheg-box       )
 
-LCG_external_package(lhapdf            5.8.8          ${MCGENPATH}/lhapdf       )
 LCG_external_package(lhapdf            5.8.9          ${MCGENPATH}/lhapdf       )
 LCG_external_package(lhapdf            5.9.0          ${MCGENPATH}/lhapdf       )
-LCG_external_package(lhapdfsets        5.8.8          ${MCGENPATH}/lhapdfsets   )
+LCG_external_package(lhapdf            5.9.1          ${MCGENPATH}/lhapdf       )
 LCG_external_package(lhapdfsets        5.8.9          ${MCGENPATH}/lhapdfsets   )
 LCG_external_package(lhapdfsets        5.9.0          ${MCGENPATH}/lhapdfsets   )
+LCG_external_package(lhapdfsets        5.9.1          ${MCGENPATH}/lhapdfsets   )
 
 LCG_external_package(lhapdf6           6.0.2          ${MCGENPATH}/lhapdf6       )
 LCG_external_package(lhapdf6sets       6.0.0          ${MCGENPATH}/lhapdf6sets   )
@@ -160,6 +160,7 @@ LCG_external_package(lhapdf6sets       6.0.0          ${MCGENPATH}/lhapdf6sets  
 LCG_external_package(pythia8           175.lhetau     ${MCGENPATH}/pythia8    author=175  )
 LCG_external_package(pythia8           175            ${MCGENPATH}/pythia8    author=175  )
 LCG_external_package(pythia8           176            ${MCGENPATH}/pythia8    author=176  )
+LCG_external_package(pythia8           180            ${MCGENPATH}/pythia8    author=180  )
 
 LCG_external_package(thepeg            1.8.1          ${MCGENPATH}/thepeg       )
 LCG_external_package(thepeg            1.8.3          ${MCGENPATH}/thepeg       )
@@ -172,6 +173,8 @@ LCG_external_package(tauola++          1.1.1a         ${MCGENPATH}/tauola++     
 
 LCG_external_package(pythia6           427            ${MCGENPATH}/pythia6    author=6.4.27 hepevt=4000   )
 LCG_external_package(pythia6           427.2          ${MCGENPATH}/pythia6    author=6.4.27 hepevt=10000  )
+LCG_external_package(pythia6           428            ${MCGENPATH}/pythia6    author=6.4.28 hepevt=4000   )
+LCG_external_package(pythia6           428.2          ${MCGENPATH}/pythia6    author=6.4.28 hepevt=10000  )
 
 LCG_external_package(agile             1.4.0          ${MCGENPATH}/agile        )
 LCG_external_package(photos++          3.52           ${MCGENPATH}/photos++     )
