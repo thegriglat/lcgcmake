@@ -17,7 +17,7 @@ set(CTEST_NOTES_FILES ${CTEST_NOTES_FILES} ${CTEST_BINARY_DIRECTORY}/dependencie
 #---CTest commands----------------------------------------------------------
 #ctest_empty_binary_directory(${CTEST_BINARY_DIRECTORY})
 file(REMOVE_RECURSE ${CTEST_BINARY_DIRECTORY})
-if("$ENV{CLEAN_INSTALLDIR}" STREQUAL "true"))
+if("$ENV{CLEAN_INSTALLDIR}" STREQUAL "true")
   file(REMOVE_RECURSE ${CTEST_INSTALL_DIRECTORY})
 endif()
 
