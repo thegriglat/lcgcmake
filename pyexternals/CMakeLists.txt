@@ -253,7 +253,7 @@ LCGPackage_Add(
                               ${Python_cmd} setup.py install --prefix <INSTALL_DIR>
   BUILD_IN_SOURCE 1
   DEST_NAME pytools
-  DEPENDS Python
+  DEPENDS Python setuptools 
 )
 
 #---py2neo---------------------------------------------------------------------------------------------------
