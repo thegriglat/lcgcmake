@@ -767,7 +767,7 @@ if(NOT APPLE)    #  (installation fails on MacOSX)
   powheg-box
   URL http://cern.ch/service-spi/external/tarFiles/MCGeneratorsTarFiles/powheg-box-<NATIVE_VERSION>.tgz
   UPDATE_COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/powheg-box/files <SOURCE_DIR>
-         COMMAND ${CMAKE_COMMAND} -E chdir <SOURCE_DIR> ${CMAKE_CURRENT_SOURCE_DIR}/powheg-box/scripts/usesed
+         COMMAND ${CMAKE_COMMAND} -E chdir <SOURCE_DIR> ./distr-cleanup.sh
   CONFIGURE_COMMAND ./configure  
 		--prefix=<INSTALL_DIR> 
 		--datadir=<INSTALL_DIR>/../share
