@@ -49,6 +49,10 @@ macro(LCGPackage_Add name)
     #---Get the expanded list of dependencies with their versions-------------------------------------
     LCG_get_full_version(${targetname} ${version} ${name}_full_version)
 
+    string(SHA1 longtargethash "${${name}_full_version}" )
+    string(SUBSTRING "${longtargethash}" 0 5 targethash )
+    set( ${targetname}_hash ${targethash} PARENT_SCOPE)
+
     #---Install path----------------------------------------------------------------------------------
     set(install_path ${${name}_directory_name}/${version}/${LCG_system})
 
@@ -212,13 +216,9 @@ macro(LCGPackage_Add name)
                                  -P ${CMAKE_SOURCE_DIR}/cmake/scripts/RemoveRPath.cmake
         DEPENDEES ${current_dependee})
 
-
       #---Adding extra step to build the binary tarball-----------------------------------------------
       if(NOT ARG_DEST_NAME)  # Only if is not installed grouped with other packages
         get_filename_component(n_name ${${name}_directory_name} NAME)
-        string(SHA1 longtargethash "${${name}_full_version}" )
-        string(SUBSTRING "${longtargethash}" 0 5 targethash ) 
-        set( ${targetname}_hash ${targethash} PARENT_SCOPE)
         ExternalProject_Add_Step(${targetname} package COMMENT "Creating binary tarball and version.txt file for '${targetname}'"
                   COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_INSTALL_PREFIX}/${${name}_directory_name}/../distribution/${name}
                   COMMAND ${CMAKE_COMMAND} -E chdir ${${dest_name}_home}/../../..
@@ -237,7 +237,7 @@ macro(LCGPackage_Add name)
     add_dependencies(clean-${name} clean-${targetname})
 
     set(${name}-${version}_home ${${name}_home} PARENT_SCOPE)
-
+    set(${targetname}_dependencies ${${targetname}_dependencies} PARENT_SCOPE)
   endforeach()
   
   #---Prepare 'group' targets------------------------------------------------------------------------
@@ -283,24 +283,34 @@ function(LCG_create_dependency_files)
   file(APPEND ${jsonfile} "},\n")
   #
   file(APPEND ${jsonfile} "'packages': {\n")
-  foreach(targetname  ${LCG_externals} ${LCG_projects})
-    if(NOT ${targetname}_exists)
-      MESSAGE("WARNING: ${targetname} has a version (${${targetname}_native_version}), but no target defined.")
+  foreach(name  ${LCG_externals} ${LCG_projects})
+    if(NOT ${name}_exists)
+      MESSAGE("WARNING: ${name} has a version (${${name}_native_version}), but no target defined.")
+    else()
+      # clean up things dot doesn't understand
+      # eventually replace with REGEX REPLACE
+      string(REPLACE "+" "p" cleaned_name ${name})
+      string(REPLACE "-" "_" cleaned_name ${cleaned_name})
+      string(REPLACE "-" "_" cleaned_name ${cleaned_name})
+      foreach(version ${${name}_native_version})
+        set(targetname ${name}-${version})
+        file(APPEND ${dotfile} "_${cleaned_name}_ [label=\"${cleaned_name}-${${targetname}_hash}\"];\n")
+        set(json_string "'${name}-${${targetname}_hash}' : {'name': '${name}', 'version': '${version}', 'hash': '${${targetname}_hash}','dest_name':'${${targetname}_dest_name}' ,'dependencies' : [")
+        foreach(dep ${${targetname}_dependencies})
+          string(REPLACE "+" "p" cleaned_dep ${dep})
+          # dependent package may have the form name-version
+          if(dep MATCHES "(.+)-(.+)")
+            set(json_string "${json_string} '${CMAKE_MATCH_1}-${${dep}_hash}',")
+          else()
+            list(GET ${dep}_native_version -1 vers)
+            set(json_string "${json_string} '${dep}-${${dep}-${vers}_hash}',")
+          endif()
+          file(APPEND ${dotfile} "_${cleaned_name}_ -> _${cleaned_dep}_;\n")
+        endforeach()
+        set(json_string "${json_string} ]}")
+        file(APPEND ${jsonfile} ${json_string},\n)
+      endforeach()
     endif()
-    # clean up things dot doesn't understand
-    # eventually replace with REGEX REPLACE
-    string(REPLACE "+" "p" cleaned_name ${targetname})
-    string(REPLACE "-" "_" cleaned_name ${cleaned_name})
-    string(REPLACE "-" "_" cleaned_name ${cleaned_name})
-    file(APPEND ${dotfile} "_${cleaned_name}_ [label=\"${targetname}\"];\n")
-    set(json_string "'${targetname}' : {'version': '${${targetname}_native_version}', 'hash': '${${targetname}_hash}','dest_name':'${${targetname}_dest_name}' ,'dependencies' : [")
-    foreach(dep ${${targetname}_dependencies})
-      string(REPLACE "+" "p" cleaned_dep ${dep})
-      set(json_string "${json_string} '${dep}',")
-      file(APPEND ${dotfile} "_${cleaned_name}_ -> _${cleaned_dep}_;\n")
-    endforeach()
-    set(json_string "${json_string} ]}")
-    file(APPEND ${jsonfile} ${json_string},\n)
   endforeach()
   file(APPEND ${dotfile} "}\n")
   file(APPEND ${jsonfile} "} }\n")

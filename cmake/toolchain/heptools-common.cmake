@@ -410,7 +410,9 @@ macro(LCG_external_package name version)
   if(NOT DEFINED ${name}_directory_name)
     set(${name}_directory_name ${name})
   endif()
-  list(APPEND LCG_externals ${name})
+  if(index EQUAL -1)
+    list(APPEND LCG_externals ${name})
+  endif()
 endmacro()
 
 # Define the search paths from the configured versions
