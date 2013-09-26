@@ -1,4 +1,5 @@
 #---Options-----------------------------------------------------------------------------------------
+#---Options-----------------------------------------------------------------------------------------
 set(PDFsets "--all" CACHE STRING "The PDFsets to be downloaded for the 'lhspdfsets' package (default --all)")
 
 #---General parameters------------------------------------------------------------------------------
@@ -769,10 +770,9 @@ if(NOT APPLE)    #  (installation fails on MacOSX)
   UPDATE_COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/powheg-box/files <SOURCE_DIR>
          COMMAND ${CMAKE_COMMAND} -E chdir <SOURCE_DIR> ./distr-cleanup.sh
   CONFIGURE_COMMAND ./configure  
-		--prefix=<INSTALL_DIR> 
-		--datadir=<INSTALL_DIR>/../share
-		--fastjet=${fastjet_home} 
-		--lhapdf=${lhapdf_home}
+    --prefix=<INSTALL_DIR>
+    --fastjet=${fastjet_home}
+    --lhapdf=${lhapdf_home}
   BUILD_COMMAND ${MAKE}
   BUILD_IN_SOURCE 1
   DEPENDS fastjet lhapdf

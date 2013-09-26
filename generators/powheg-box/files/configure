@@ -17,7 +17,7 @@ for arg in $* ; do
       echo ""
       echo "  --help            : prints this help"
       echo "  --prefix=<path>   : installation path, the default is current dir"
-      echo "  --datadir=<path>  : share path, the default is <prefix> dir"
+      echo "  --datadir=<path>  : share path, the default is <prefix>/share dir"
       echo "  --fastjet=<path>  : path to the root dir of FastJet package, obligatory"
       echo "  --lhapdf=<path>   : path to the root dir of LHAPDF package, obligatory"
       echo ""
@@ -50,16 +50,10 @@ if [ ! -d $LHAPDF ] ; then
 fi
 
 # check optional parameters:
-PREFIX=${PREFIX-$(pwd)}      # if $PREFIX  is empty (not defined) use current dir
-DATADIR=${DATADIR-$PREFIX}   # if $DATADIR is empty (not defined) use $PREFIX dir
+PREFIX=${PREFIX:-$(pwd)}           # if $PREFIX  is empty use current dir
+DATADIR=${DATADIR:-$PREFIX/share}  # if $DATADIR is empty use $PREFIX/share dir
 
-# select fortran compiler based on gcc major version:
-ver=$(gcc -dumpversion | cut -d . -f 1)
-if [[ "$ver" < "4" ]] ; then
-  FC="g77"
-else
-  FC="gfortran"
-fi
+FC=${FC:-gfortran}                 # if $FC is empty use gfortran
 
 # generate config.mk file:
 { echo "PREFIX = ${PREFIX}"
