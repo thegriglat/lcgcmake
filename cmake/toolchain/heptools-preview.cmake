@@ -160,7 +160,6 @@ LCG_external_package(lhapdf6sets       6.0.0          ${MCGENPATH}/lhapdf6sets  
 LCG_external_package(pythia8           175.lhetau     ${MCGENPATH}/pythia8    author=175  )
 LCG_external_package(pythia8           175            ${MCGENPATH}/pythia8    author=175  )
 LCG_external_package(pythia8           176            ${MCGENPATH}/pythia8    author=176  )
-LCG_external_package(pythia8           180            ${MCGENPATH}/pythia8    author=180  )
 
 LCG_external_package(thepeg            1.8.1          ${MCGENPATH}/thepeg       )
 LCG_external_package(thepeg            1.8.3          ${MCGENPATH}/thepeg       )

@@ -59,7 +59,7 @@ if(LCG_TARGET MATCHES "mac.*-gcc(47|48)")
                                   --with-oracle-libdir=${oracle_home}/lib
                                   --with-rfio-incdir=${CASTOR_home}/include/shift
                                   --with-rfio-libdir=${CASTOR_home}/lib${LIBSUFFIX}
-                                  --with-pythia8-incdir=${pythia8_home}/include/Pythia8
+                                  --with-pythia8-incdir=${pythia8_home}/include
                                   --with-pythia8-libdir=${pythia8_home}/lib
                                   --disable-gviz   # compilation errors (see https://sft.its.cern.ch/jira/browse/ROOT-176)
     INSTALL_COMMAND  make dist
@@ -107,7 +107,7 @@ else()
                -Dodbc=ON
                -Dopengl=ON
                -Dpythia8=ON -DPYTHIA8_LIBRARY=${pythia8_home}/lib/libpythia8${CMAKE_SHARED_LIBRARY_SUFFIX}
-                            -DPYTHIA8_INCLUDE_DIR=${pythia8_home}/include/Pythia8
+                            -DPYTHIA8_INCLUDE_DIR=${pythia8_home}/include
                -Dqt=ON -DQT_QMAKE_EXECUTABLE=${Qt_home}/bin/qmake
                -Dqtgsi=ON
                -Dreflex=ON
