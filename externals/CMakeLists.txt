@@ -434,7 +434,7 @@ LCGPackage_Add(
 #---oracle-----------------------------------------------------------------------------------------------
 LCGPackage_Add(
   oracle
-  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/oracle-${oracle_native_version}.tar.gz
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/oracle-${oracle_native_version}-${LCG_ARCH}.tar.gz
   CONFIGURE_COMMAND <VOID>
   BUILD_COMMAND <VOID>
   INSTALL_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR> <INSTALL_DIR>
