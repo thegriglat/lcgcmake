@@ -728,16 +728,16 @@ LCGPackage_Add(
 )
 
 #---CRMC (FORMER EPOS)-----------------------------------------------------------------------------
+# SVN repository:
+#   https://devel-ik.fzk.de/svn/mc/crmc/tags/{version}
 
 if(NOT APPLE)    #  (installation fails on MacOSX)
  LCGPackage_Add(
     crmcold
     URL http://cern.ch/service-spi/external/tarFiles/MCGeneratorsTarFiles/crmc-<NATIVE_VERSION>.tar.gz
-    # SVN_REPOSITORY https://devel-ik.fzk.de/svn/mc/crmc/tags/<NATIVE_VERSION>
     CONFIGURE_COMMAND <VOID>
     BUILD_COMMAND ${MAKE} -f Makefile CRMCROOT=<INSTALL_DIR> HEP_ROOT=${HepMC_home}
     INSTALL_COMMAND make -f Makefile install CRMCROOT=<INSTALL_DIR> HEP_ROOT=${HepMC_home}
-          COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/tabs  <INSTALL_DIR>/tabs
     BUILD_IN_SOURCE 1
     DEPENDS HepMC
   )
@@ -746,16 +746,13 @@ endif()
 if(NOT APPLE)    #  (installation fails on MacOSX)
   LCGPackage_Add(
     crmc
-    URL http://cern.ch/service-spi/external/tarFiles/MCGeneratorsTarFiles/crmc-${crmc_native_version}.tar.gz
-    UPDATE_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/<NATIVE_VERSION> <SOURCE_DIR>
-         COMMAND ${CMAKE_COMMAND} -E remove_directory <SOURCE_DIR>/<NATIVE_VERSION
+    URL http://cern.ch/service-spi/external/tarFiles/MCGeneratorsTarFiles/crmc.v<NATIVE_VERSION>.tar.gz
     CMAKE_ARGS -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
-             -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
-             -DROOTSYS=${ROOT_home}
-             -DHEPMC_PREFIX=${HepMC_home} -DBOOST_ROOT=${Boost_home}
-             -DBOOST_INCLUDE_DIR=${Boost_home_include}
-             #-DBoost_LIBRARYDIR=
-    BUILD_IN_SOURCE 1
+               -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
+               -DROOTSYS=${ROOT_home}
+               -DHEPMC_PREFIX=${HepMC_home}
+               -DBOOST_ROOT=${Boost_home}
+               -DBOOST_INCLUDE_DIR=${Boost_home_include}
     DEPENDS HepMC Boost ROOT
  )
 endif()
