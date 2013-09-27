@@ -122,12 +122,21 @@ Index: Wp_Wp_J_J/Makefile
 ===================================================================
 --- Wp_Wp_J_J/Makefile	(revision 2092)
 +++ Wp_Wp_J_J/Makefile	(working copy)
+@@ -99,7 +99,7 @@
+ 
+ LIBS+= -LF90/obj-$(FC) -lWpWp2j -L$(QCDLOOP)/ql -L$(QCDLOOP)/ff -lqcdloop -lff
+ 
+-%.o: %.f $(INCLUDE)
++%.o: %.f $(INCLUDE) F90/obj-$(FC)/libWpWp2j.a
+ 	$(FF) -c -o obj-$(FC)/$@ $<
+ 
+ %.o: %.c
 @@ -128,13 +128,13 @@
  
  
  F90/obj-$(FC)/libWpWp2j.a:F90/*.f* F90/$(FC)/*.f*
 -	(cd F90 ; make FC=$(FC))
-+	(cd F90 ; make -j1 FC=$(FC))
++	(cd F90 ; $(MAKE) FC=$(FC))
  
  $(QCDLOOP)/ql/libqcdloop.a:
 -	(cd $(QCDLOOP)/ql; make FC=$(FC))
@@ -139,6 +148,19 @@ Index: Wp_Wp_J_J/Makefile
  
  
  LHEF=lhef_analysis.o boostrot.o random.o cernroutines.o		\
+Index: Wp_Wp_J_J/F90/Makefile.gfortran
+===================================================================
+--- Wp_Wp_J_J/F90/Makefile.gfortran     2013-09-27 17:03:00.000000000 +0200
++++ Wp_Wp_J_J/F90/Makefile.gfortran     2013-09-27 17:07:13.000000000 +0200
+@@ -55,7 +55,7 @@
+ FFLAGS = -O
+ #FFLAGS = -ggdb
+ F90 = gfortran
+-F90FLAGS = -O3  -I obj-gfortran -J obj-gfortran
++F90FLAGS = -O3  -Iobj-gfortran -Jobj-gfortran
+ #F90FLAGS = -ggdb
+ #LDFLAGS =  -ggdb
+
 Index: VBF_Wp_Wp/Makefile
 ===================================================================
 --- VBF_Wp_Wp/Makefile	(revision 2092)
@@ -158,3 +180,16 @@ Index: VBF_Wp_Wp/Makefile
  
  LHEFANAL=lhef_analysis.o boostrot.o random.o cernroutines.o         \
  	 opencount.o powheginput.o pwhg_bookhist.o  \
+Index: W_ew-BMNNP/Makefile
+===================================================================
+--- W_ew-BMNNP/Makefile	2013-09-27 19:18:23.000000000 +0200
++++ W_ew-BMNNP/Makefile	2013-09-27 19:19:14.000000000 +0200
+@@ -11,7 +11,7 @@
+ STATIC= -static
+ #
+ ifeq ("$(COMPILER)","gfortran")	
+-F77= gfortran -fno-automatic -fno-whole-file
++F77= gfortran -fno-automatic
+ ## -fbounds-check sometimes causes a weird error due to non-lazy evaluation
+ ## of boolean in gfortran.
+ #FFLAGS= -Wall -Wimplicit-interface -fbounds-check
