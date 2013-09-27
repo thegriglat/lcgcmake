@@ -730,11 +730,10 @@ LCGPackage_Add(
 #---CRMC (FORMER EPOS)-----------------------------------------------------------------------------
 
 if(NOT APPLE)    #  (installation fails on MacOSX)
- if ( ${crmc-old_native_version} MATCHES "^v")
  LCGPackage_Add(
-    crmc-old
-    URL http://cern.ch/service-spi/external/tarFiles/MCGeneratorsTarFiles/crmc-${crmc-old_native_version}.tar.gz
-    # SVN_REPOSITORY https://devel-ik.fzk.de/svn/mc/crmc/tags/${crmc_native_version}
+    crmcold
+    URL http://cern.ch/service-spi/external/tarFiles/MCGeneratorsTarFiles/crmc-<NATIVE_VERSION>.tar.gz
+    # SVN_REPOSITORY https://devel-ik.fzk.de/svn/mc/crmc/tags/<NATIVE_VERSION>
     CONFIGURE_COMMAND <VOID>
     BUILD_COMMAND ${MAKE} -f Makefile CRMCROOT=<INSTALL_DIR> HEP_ROOT=${HepMC_home}
     INSTALL_COMMAND make -f Makefile install CRMCROOT=<INSTALL_DIR> HEP_ROOT=${HepMC_home}
@@ -742,7 +741,6 @@ if(NOT APPLE)    #  (installation fails on MacOSX)
     BUILD_IN_SOURCE 1
     DEPENDS HepMC
   )
- endif(${crmc-old_native_version} MATCHES "^v")
 endif()
 
 if(NOT APPLE)    #  (installation fails on MacOSX)
