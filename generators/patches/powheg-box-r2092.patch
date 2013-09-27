@@ -127,7 +127,7 @@ Index: Wp_Wp_J_J/Makefile
  
  F90/obj-$(FC)/libWpWp2j.a:F90/*.f* F90/$(FC)/*.f*
 -	(cd F90 ; make FC=$(FC))
-+	(cd F90 ; $(MAKE) FC=$(FC))
++	(cd F90 ; make -j1 FC=$(FC))
  
  $(QCDLOOP)/ql/libqcdloop.a:
 -	(cd $(QCDLOOP)/ql; make FC=$(FC))
