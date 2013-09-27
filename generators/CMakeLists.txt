@@ -742,10 +742,13 @@ if(NOT APPLE)    #  (installation fails on MacOSX)
     DEPENDS HepMC
   )
   
-  LCG_add_test(crmcold_orig_test
-    TEST_COMMAND ${crmcold_home}/bin/crmc -T 1 -c ${crmcold_home}/crmc.param
-    ENVIRONMENT ${library_path}=${HepMC_home}/lib:$ENV{${library_path}}
-  )
+  # add test only if version is defined in toolchain configuration
+  if(NOT ${crmcold_home} STREQUAL "")
+    LCG_add_test(crmcold_orig_test
+      TEST_COMMAND ${crmcold_home}/bin/crmc -T 1 -c ${crmcold_home}/crmc.param
+      ENVIRONMENT ${library_path}=${HepMC_home}/lib:$ENV{${library_path}}
+    )
+  endif()
 endif()
 
 if(NOT APPLE)    #  (installation fails on MacOSX)
