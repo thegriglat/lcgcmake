@@ -732,7 +732,7 @@ LCGPackage_Add(
 #   https://devel-ik.fzk.de/svn/mc/crmc/tags/{version}
 
 if(NOT APPLE)    #  (installation fails on MacOSX)
- LCGPackage_Add(
+  LCGPackage_Add(
     crmcold
     URL http://cern.ch/service-spi/external/tarFiles/MCGeneratorsTarFiles/crmc-<NATIVE_VERSION>.tar.gz
     CONFIGURE_COMMAND <VOID>
@@ -740,6 +740,11 @@ if(NOT APPLE)    #  (installation fails on MacOSX)
     INSTALL_COMMAND make -f Makefile install CRMCROOT=<INSTALL_DIR> HEP_ROOT=${HepMC_home}
     BUILD_IN_SOURCE 1
     DEPENDS HepMC
+  )
+  
+  LCG_add_test(crmcold_orig_test
+    TEST_COMMAND ${crmcold_home}/bin/crmc -T 1 -c ${crmcold_home}/crmc.param
+    ENVIRONMENT ${library_path}=${HepMC_home}/lib:$ENV{${library_path}}
   )
 endif()
 
@@ -754,7 +759,11 @@ if(NOT APPLE)    #  (installation fails on MacOSX)
                -DBOOST_ROOT=${Boost_home}
                -DBOOST_INCLUDE_DIR=${Boost_home_include}
     DEPENDS HepMC Boost ROOT
- )
+  )
+  
+  LCG_add_test(crmc_orig_test
+    TEST_COMMAND ${crmc_home}/bin/crmc -T 1 -c ${crmc_home}/crmc.param
+  )
 endif()
 
 #---powhegbox---------------------------------------------------------------------------------------
