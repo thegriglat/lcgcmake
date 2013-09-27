@@ -147,7 +147,6 @@ endif()
 #---Additional External packages------(Generators)-----------------
 
 set(MCGENPATH  MCGenerators_lcgcmt${heptools_version})
-#set(MCGENPATH  MCGenerators_test)
 
 LCG_external_package(powheg-box         r2092         ${MCGENPATH}/powheg-box   )
 
@@ -161,6 +160,7 @@ LCG_external_package(lhapdfsets        5.9.1          ${MCGENPATH}/lhapdfsets   
 LCG_external_package(lhapdf6           6.0.2          ${MCGENPATH}/lhapdf6       )
 LCG_external_package(lhapdf6sets       6.0.0          ${MCGENPATH}/lhapdf6sets   )
 
+LCG_external_package(pythia8           180            ${MCGENPATH}/pythia8      author=180     )
 LCG_external_package(pythia8           175.lhetau     ${MCGENPATH}/pythia8      author=175     )
 LCG_external_package(pythia8           175            ${MCGENPATH}/pythia8      author=175     )
 LCG_external_package(pythia8           176            ${MCGENPATH}/pythia8      author=176     )
@@ -189,11 +189,8 @@ LCG_external_package(evtgen            1.2.0-176      ${MCGENPATH}/evtgen       
 
 LCG_external_package(rivet             1.8.2          ${MCGENPATH}/rivet        )
 LCG_external_package(rivet             1.8.3          ${MCGENPATH}/rivet        )
-#LCG_external_package(rivet2            2.0.0b1        ${MCGENPATH}/rivet2       )
 
-LCG_external_package(sherpa            1.4.3          ${MCGENPATH}/sherpa         author=1.4.3 hepevt=4000  )
 LCG_external_package(sherpa            1.4.3.2        ${MCGENPATH}/sherpa         author=1.4.3 hepevt=10000 )
-LCG_external_package(sherpa            1.4.5          ${MCGENPATH}/sherpa         author=1.4.5 hepevt=4000 )
 LCG_external_package(sherpa            1.4.5.2        ${MCGENPATH}/sherpa         author=1.4.5 hepevt=10000 )
 
 LCG_external_package(hepmcanalysis     3.4.14         ${MCGENPATH}/hepmcanalysis  author=00-03-04-14        )
@@ -204,8 +201,7 @@ LCG_external_package(herwig            6.520.2        ${MCGENPATH}/herwig       
 LCG_external_package(crmcold           v3400          ${MCGENPATH}/crmc         )
 LCG_external_package(crmc              1.0            ${MCGENPATH}/crmc         )
 LCG_external_package(cython            0.19           ${MCGENPATH}/cython       )
-LCG_external_package(yamlcpp          0.3.0          ${MCGENPATH}/yamlcpp      )
-#LCG_external_package(yoda              1.0.0          ${MCGENPATH}/yoda         )
+LCG_external_package(yamlcpp           0.3.0          ${MCGENPATH}/yamlcpp      )
 LCG_external_package(hydjet            1.6            ${MCGENPATH}/hydjet author=1_6    )
 LCG_external_package(hydjet            1.8            ${MCGENPATH}/hydjet author=1_8    )
 LCG_external_package(tauola            28.121.2       ${MCGENPATH}/tauola       )
