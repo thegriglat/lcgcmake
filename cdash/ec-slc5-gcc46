@@ -31,7 +31,7 @@ fi
 CONFIG=slc5-gcc46
 
 export SOURCE=${WORKDIR}/${MODE}/lcgcmake-${VERSION}
-export BINARY=${WORKDIR}/${MODE}/${CONFIG}
+export BINARY=${WORKDIR}/${MODE}/${CONFIG}-${BUILDTYPE}
 
 #---Run the CTest script-------------------------------------------
 echo "Starting CTest script for configuration ${CONFIG} at `date`" 

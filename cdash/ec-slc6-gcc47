@@ -28,7 +28,7 @@ fi
 CONFIG=slc6-gcc47
 
 export SOURCE=${WORKDIR}/${MODE}/lcgcmake-${VERSION}
-export BINARY=${WORKDIR}/${MODE}/${CONFIG}
+export BINARY=${WORKDIR}/${MODE}/${CONFIG}-${BUILDTYPE}
 
 #if [ ! -d "${SOURCE}" ]; then
 #  svn co svn+ssh://svn.cern.ch/reps/lcgsoft/trunk/lcgcmake ${SOURCE}
