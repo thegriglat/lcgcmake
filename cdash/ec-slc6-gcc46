@@ -28,10 +28,7 @@ if [ x$TARGET = x ]; then
   export TARGET=all
 fi
 
-CONFIG=slc6-gcc46
-
-export SOURCE=${WORKDIR}/${MODE}/lcgcmake-${VERSION}
-export BINARY=${WORKDIR}/${MODE}/${CONFIG}-${BUILDTYPE}
+export BUILD_PREFIX=${WORKDIR}/${MODE}
 
 #---Run the CTest script-------------------------------------------
 echo "Starting CTest script for configuration ${CONFIG} at `date`" 

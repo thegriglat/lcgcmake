@@ -10,9 +10,22 @@ GET_HOST(host)
 GET_NCPUS(ncpu)
 GET_CONFIGURATION_TAG(tag)
 
+#---------------------------------------------------------------------------
+list(APPEND CMAKE_CONFIGURATION_TYPES Release Debug RelWithDebInfo MinSizeRel TestRelease Maintainer)
+set(TypeRelease opt)
+set(TypeDebug   dbg)
+set(TypeRelWithDebInfo o2d)
+set(TypeMinSizeRel min)
+set(TypeCoverage cov)
+
+set(CTEST_BUILD_NAME ${tag}-${Type$ENV{BUILDTYPE}})
+set(CTEST_BUILD_CONFIGURATION $ENV{BUILDTYPE})
+set(CTEST_CONFIGURATION_TYPE ${CTEST_BUILD_CONFIGURATION})
+
 #---Set the source and build directory--------------------------------------
-set(CTEST_SOURCE_DIRECTORY "$ENV{SOURCE}")
-set(CTEST_BINARY_DIRECTORY "$ENV{BINARY}")
+set(CTEST_BUILD_PREFIX "$ENV{BUILD_PREFIX}")
+set(CTEST_SOURCE_DIRECTORY "${CTEST_BUILD_PREFIX}/lcgcmake-$ENV{VERSION}")
+set(CTEST_BINARY_DIRECTORY "${CTEST_BUILD_PREFIX}/${CTEST_BUILD_NAME}")
 
 #---Set the install directory----------------------------------------------- 
 # if $INSTALLDIR is given, use that one, otherwise derive from binary dir
@@ -29,20 +42,6 @@ endif()
 #  set(CTEST_SITE "$ENV{CTEST_SITE}")
 #  message( "Running build and test on ${host}" )
 #endif()
-
-#---------------------------------------------------------------------------
-
-list(APPEND CMAKE_CONFIGURATION_TYPES Release Debug RelWithDebInfo MinSizeRel TestRelease Maintainer)
-set(TypeRelease opt)
-set(TypeDebug   dbg)
-set(TypeRelWithDebInfo o2d)
-set(TypeMinSizeRel min)
-set(TypeCoverage cov)
-
-
-set(CTEST_BUILD_NAME ${tag}-${Type$ENV{BUILDTYPE}})
-set(CTEST_BUILD_CONFIGURATION $ENV{BUILDTYPE})
-set(CTEST_CONFIGURATION_TYPE ${CTEST_BUILD_CONFIGURATION})
 
 #---CDash settings----------------------------------------------------------
 set(CTEST_PROJECT_NAME "LCGSoft")
