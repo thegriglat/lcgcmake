@@ -99,17 +99,23 @@ LCGPackage_Add(
   DEPENDS HepMC lhapdf fastjet
 )
 
-LCG_add_test(pythia8-build  BINARY_DIR pythia8/tests SOURCE_DIR pythia8/tests
-                            BUILD all
-                            BUILD_OPTIONS -DCMAKE_MODULE_PATH=${cmaketools_home}/modules -DPYTHIA8_ROOT_DIR=${pythia8_home} -DHEPMC_ROOT_DIR=${HepMC_home})
-
-foreach(t genser_test3 genser_test4 
-orig_test1 
+LCG_add_test(pythia8-build
+  BINARY_DIR pythia8/tests
+  SOURCE_DIR pythia8/tests
+  BUILD all
+  BUILD_OPTIONS
+   -DCMAKE_MODULE_PATH=${cmaketools_home}/modules
+   -DPYTHIA8_ROOT_DIR=${pythia8_home}
+   -DHEPMC_ROOT_DIR=${HepMC_home}
 )
-  LCG_add_test(pythia8-${t} TEST_COMMAND pythia8/tests/pythia8_${t}
-                            ENVIRONMENT ${library_path}=${pythia8_home}/lib:${HepMC_home}/lib:$ENV{${library_path}}
-                                        PYTHIA8DATA=${pythia8_home}/xmldoc
-                            DEPENDS pythia8-build)
+
+foreach(t genser_test3 genser_test4 orig_test1)
+  LCG_add_test(pythia8-${t}
+    TEST_COMMAND pythia8/tests/pythia8_${t}
+    ENVIRONMENT
+      ${library_path}=${pythia8_home}/lib:${HepMC_home}/lib:$ENV{${library_path}}
+      PYTHIA8DATA=${pythia8_home}/xmldoc
+    DEPENDS pythia8-build)
 endforeach()
 
 #---ThePEG------------------------------------------------------------------------------------------
