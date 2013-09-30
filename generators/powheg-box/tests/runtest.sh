@@ -35,8 +35,8 @@ fi
 # reduce number of grid generation iterations (ncall, itmx, nubound)
 # disable manual selection of random seed (manyseeds)
 # set PDF set to CT10 [index 10800] (lhans)
-sed -i powheg.input \
-    -e 's,numevts.*,numevts 100,' \
+# decrease number of integration folds (fold)
+sed -e 's,numevts.*,numevts 100,' \
     -e 's,ncall1.*,ncall1 1000,' \
     -e 's,itmx1.*,itmx1 1,' \
     -e 's,ncall2.*,ncall2 1000,' \
@@ -44,7 +44,11 @@ sed -i powheg.input \
     -e 's,nubound.*,nubound 1000,' \
     -e 's,manyseeds.*,manyseeds 0,' \
     -e 's,lhans1.*,lhans1 10800,' \
-    -e 's,lhans2.*,lhans2 10800,'
+    -e 's,lhans2.*,lhans2 10800,' \
+    -e 's,foldcsi.*,foldcsi 1,' \
+    -e 's,foldy.*,foldy 1,' \
+    -e 's,foldphi.*,foldphi 1,' \
+    -i powheg.input
 
 if [[ "$proc" == "W_ew-BMNNP" || "$proc" == "VBF_Wp_Wp" ]] ; then
   # add missing PDF set
