@@ -75,7 +75,7 @@ int main(int argc, char* argv[])
   //HepMC::IO_AsciiParticles ascii_io("example_PythiaParticle.dat",std::ios::out);
   //HepMC::IO_AsciiParticles ascii_io1("cout",std::ios::out);
   
-  int NumberOfEvents = 2000;
+  int NumberOfEvents = 500;
   if(argc>3) NumberOfEvents = atoi(argv[3]);
   
   bool ShowersOn = true;
