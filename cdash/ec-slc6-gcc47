@@ -25,10 +25,7 @@ if [ x$VERSION = x ]; then
   export VERSION=trunk
 fi
 
-CONFIG=slc6-gcc47
-
-export SOURCE=${WORKDIR}/${MODE}/lcgcmake-${VERSION}
-export BINARY=${WORKDIR}/${MODE}/${CONFIG}-${BUILDTYPE}
+export BUILD_PREFIX=${WORKDIR}/${MODE}
 
 #if [ ! -d "${SOURCE}" ]; then
 #  svn co svn+ssh://svn.cern.ch/reps/lcgsoft/trunk/lcgcmake ${SOURCE}
