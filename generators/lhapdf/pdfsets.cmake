@@ -9,15 +9,16 @@ message(STATUS "PDF repo: ${repo}")
 message(STATUS "PDF sets: ${PDFsets}")
 message(STATUS "Destination: ${dst_dir}")
 
-# check marker
+# PDF sets directory
 set(pdf_dir ${dst_dir}/PDFsets)
-set(marker ${pdf_dir}/.complete)
+message(STATUS "PDF sets directory: ${pdf_dir}")
 
-if(EXISTS ${marker})
-  message(STATUS "Detected marker ${marker}")
-  message(STATUS "PDF sets are downloaded already")
+if(EXISTS ${pdf_dir})
+  message(STATUS "PDF sets directory exists already, skip download")
   return()
 endif()
+
+file(MAKE_DIRECTORY ${pdf_dir})
 
 # download PDF sets
 execute_process(COMMAND ${distr}/bin/lhapdf-getdata --force --repo=${repo} --dest=${pdf_dir} ${PDFsets} RESULT_VARIABLE code)
@@ -29,6 +30,7 @@ endif()
 # copy index
 file(COPY ${distr}/PDFsets.index DESTINATION ${dst_dir}/)
 
-file(WRITE ${marker} "")
+# create completion marker
+file(WRITE ${pdf_dir}/.complete "")
 
 message(STATUS "PDF sets downloaded successfully")

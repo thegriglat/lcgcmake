@@ -19,8 +19,8 @@ echo "tarball = $(pwd)/$tarball"
 
 # check PDF sets installation
 if [ ! -e $marker ] ; then
-  echo "ERROR: PDF sets installation is not complete (marker is missing)"
-  exit 1
+  echo "INFO: PDF sets installation is in progress (marker is missing), skip tarball creation"
+  exit 0
 fi
 
 # check tarball
