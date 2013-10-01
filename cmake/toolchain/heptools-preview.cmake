@@ -150,9 +150,9 @@ LCG_external_package(powheg-box         r2092         ${MCGENPATH}/powheg-box   
 LCG_external_package(lhapdf            5.8.9          ${MCGENPATH}/lhapdf       )
 LCG_external_package(lhapdf            5.9.0          ${MCGENPATH}/lhapdf       )
 LCG_external_package(lhapdf            5.9.1          ${MCGENPATH}/lhapdf       )
-LCG_external_package(lhapdfsets        5.8.9          ${MCGENPATH}/lhapdfsets   )
-LCG_external_package(lhapdfsets        5.9.0          ${MCGENPATH}/lhapdfsets   )
-LCG_external_package(lhapdfsets        5.9.1          ${MCGENPATH}/lhapdfsets   )
+LCG_external_package(lhapdfsets        5.8.9          lhapdfsets   )
+LCG_external_package(lhapdfsets        5.9.0          lhapdfsets   )
+LCG_external_package(lhapdfsets        5.9.1          lhapdfsets   )
 
 LCG_external_package(lhapdf6           6.0.3          ${MCGENPATH}/lhapdf6       )
 LCG_external_package(lhapdf6sets       6.0.0          ${MCGENPATH}/lhapdf6sets   )
