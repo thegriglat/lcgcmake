@@ -145,7 +145,7 @@ endif()
 set(MCGENPATH  MCGenerators_lcgcmt${heptools_version})
 #set(MCGENPATH  MCGenerators_test)
 
-LCG_external_package(powheg-box         r2092         ${MCGENPATH}/powheg-box       )
+LCG_external_package(powheg-box         r2463         ${MCGENPATH}/powheg-box       )
 
 LCG_external_package(lhapdf            5.8.9          ${MCGENPATH}/lhapdf       )
 LCG_external_package(lhapdf            5.9.0          ${MCGENPATH}/lhapdf       )
@@ -203,7 +203,7 @@ LCG_external_package(herwig            6.521.2        ${MCGENPATH}/herwig       
 LCG_external_package(crmc              1.0            ${MCGENPATH}/crmc         )
 LCG_external_package(cython            0.19.1         ${MCGENPATH}/cython       )
 LCG_external_package(yamlcpp           0.3.0          ${MCGENPATH}/yamlcpp      )
-LCG_external_package(yoda              1.0.3          ${MCGENPATH}/yoda         )
+LCG_external_package(yoda              1.0.2          ${MCGENPATH}/yoda         )
 LCG_external_package(hydjet            1.6            ${MCGENPATH}/hydjet author=1_6 )
 LCG_external_package(hydjet            1.8            ${MCGENPATH}/hydjet author=1_8 )
 LCG_external_package(tauola            28.121.2       ${MCGENPATH}/tauola       )
