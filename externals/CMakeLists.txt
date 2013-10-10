@@ -344,15 +344,36 @@ LCGPackage_Add(
   BUILD_IN_SOURCE 1
 )
 
+#---pacparser------------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  pacparser
+  URL
+http://service-spi.web.cern.ch/service-spi/external/tarFiles/pacparser-${pacparser_native_version}.tar.gz
+  CONFIGURE_COMMAND <VOID>
+  BUILD_COMMAND  make -C src
+  INSTALL_COMMAND make PREFIX=<INSTALL_DIR> -C src install
+  BUILD_IN_SOURCE 1
+)
+
+
+
 #---Frontier_Client--------------------------------------------------------------------------------------
+# Frontier_Client depends on additional package - pacparser
+# starting on version 2.8.6
+
+set(dep_Frontier_Client expat)
+if( ${Frontier_Client_native_version} VERSION_GREATER 2.8.6 )
+      set(dep_Frontier_Client expat pacparser)
+endif()
+
 LCGPackage_Add(
   Frontier_Client
   URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/frontier_client__${Frontier_Client_native_version}__src.tar.gz
   CONFIGURE_COMMAND <VOID>
-  BUILD_COMMAND make dist EXPAT_DIR=${expat_home} LD_LIBRARY_PATH=${expat_home}/lib:$ENV{LD_LIBRARY_PATH}
+  BUILD_COMMAND make dist PACPARSER_DIR=${pacparser_home} EXPAT_DIR=${expat_home} LD_LIBRARY_PATH=${expat_home}/lib:$ENV{LD_LIBRARY_PATH}
   INSTALL_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/dist <INSTALL_DIR>
   BUILD_IN_SOURCE 1
-  DEPENDS expat
+  DEPENDS ${dep_Frontier_Client}
 )
 
 #---lcov-------------------------------------------------------------------------------------------------
