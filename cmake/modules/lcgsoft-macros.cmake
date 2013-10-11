@@ -125,7 +125,7 @@ macro(LCGPackage_Add name)
         if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/patches/${name}-${version}.patch)
           # old version of `patch` makes uncopyable backup files (on SLC5 and MAC)
           # http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=558485
-          if(${LCG_OS}${LCG_OS_VERS} STRGREATER slc5)
+          if(${LCG_OS}${LCG_OSVERS} STRGREATER slc5)
             set(patch_backup_opt -b)
           else()
             set(patch_backup_opt)

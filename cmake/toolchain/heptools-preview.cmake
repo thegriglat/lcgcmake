@@ -100,7 +100,7 @@ LCG_external_package(swig              1.3.40                                   
 LCG_external_package(sympy             0.7.1                                    )
 LCG_external_package(tbb               41_20130116                              )
 LCG_external_package(tcmalloc          1.7p3                                    )
-if(NOT ${LCG_OS}${LCG_OS_VERS} STREQUAL slc6) # uuid is not distributed with SLC6
+if(NOT ${LCG_OS}${LCG_OSVERS} STREQUAL slc6) # uuid is not distributed with SLC6
 LCG_external_package(uuid              1.42                                     )
 endif()
 LCG_external_package(valgrind          3.8.0                                    )
@@ -121,7 +121,7 @@ if(NOT ${LCG_OS} STREQUAL mac)
    LCG_external_package(dpm             1.8.5-1                Grid/DPM          )
    LCG_external_package(epel            20130408               Grid/epel         )
    LCG_external_package(FTS             2.2.8emi2              Grid/FTS          )
-   if(${LCG_OS}${LCG_OS_VERS} STREQUAL slc6)
+   if(${LCG_OS}${LCG_OSVERS} STREQUAL slc6)
     LCG_external_package(FTS3            0.0.1-88             Grid/FTS3         )
    endif()
    LCG_external_package(gfal            1.13.0-0               Grid/gfal         )
