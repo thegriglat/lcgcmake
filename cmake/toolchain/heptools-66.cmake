@@ -77,6 +77,7 @@ LCG_external_package(mysql_python      1.2.3                                    
 LCG_external_package(nose              1.1.2                                    )
 LCG_external_package(numpy             1.6.1                                    )
 LCG_external_package(oracle            11.2.0.3.0                               )
+LCG_external_package(pacparser         1.3.1                                    ) 
 LCG_external_package(processing        0.52                                     )
 LCG_external_package(py                1.4.8                                    )
 LCG_external_package(py2neo            1.4.6                                    )
