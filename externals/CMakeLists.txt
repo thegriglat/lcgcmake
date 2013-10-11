@@ -347,11 +347,10 @@ LCGPackage_Add(
 #---pacparser------------------------------------------------------------------------------------------------
 LCGPackage_Add(
   pacparser
-  URL
-http://service-spi.web.cern.ch/service-spi/external/tarFiles/pacparser-${pacparser_native_version}.tar.gz
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/pacparser-${pacparser_native_version}.tar.gz
   CONFIGURE_COMMAND <VOID>
-  BUILD_COMMAND  make -C src
-  INSTALL_COMMAND make PREFIX=<INSTALL_DIR> -C src install
+  BUILD_COMMAND  make -j1 -C src
+  INSTALL_COMMAND make -j1 PREFIX=<INSTALL_DIR> -C src install
   BUILD_IN_SOURCE 1
 )
 
