@@ -2,6 +2,17 @@ cmake_minimum_required(VERSION 2.6 FATAL_ERROR)
 project (pythia6_examples)
 enable_language (Fortran)
 
+#---Compilation and Link options----------------------------------------------
+if(CMAKE_SYSTEM_NAME MATCHES Darwin)
+  set(CMAKE_SHARED_LIBRARY_CREATE_Fortran_FLAGS "${CMAKE_SHARED_LIBRARY_CREATE_Fortran_FLAGS} -flat_namespace -single_module -undefined dynamic_lookup")
+endif()
+
+set(CMAKE_Fortran_FLAGS                "")
+set(CMAKE_Fortran_FLAGS_DEBUG          "-g")
+set(CMAKE_Fortran_FLAGS_MINSIZEREL     "-Os -DNDEBUG")
+set(CMAKE_Fortran_FLAGS_RELEASE        "-O2 -DNDEBUG")
+set(CMAKE_Fortran_FLAGS_RELWITHDEBINFO "-O2 -g")
+
 if(NOT DEFINED MYPYTHIA6PATH)
  set(MYPYTHIA6PATH ${pythia6_examples_SOURCE_DIR}/..)
 endif(NOT DEFINED MYPYTHIA6PATH)

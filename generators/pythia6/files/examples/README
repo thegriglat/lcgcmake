@@ -1,9 +1,8 @@
 There are two build systems in this directory: a simple one and an 
-autotooled one. If you don't need to use additional libraries, both
+cmake one. If you don't need to use additional libraries, both
 can be good for you. If you want to use additional libraries, you
-should modify the build system. To modify the autotooled system the
-knowledge of autotools is needed. Don't try to modify the file 
-./configure!
+should modify the build system. To modify the cmake system the
+knowledge of cmake is needed.
 
 To use the simple build system (consists of 2 files: configure-simple and 
 Makefile-simple):
@@ -21,7 +20,6 @@ Description of the usage of autotooled system follows.
 
 Start configuration of the directory /examples with:
 
-> [autoreconf --install [--force]]
 > ./configure [arguments]
 
 The first of the above commands is optional, needed if you
@@ -41,18 +39,11 @@ the file mainNN.f or mainNN.cc.
 
 The pathes to the linked libraries normally should be "rpathed" into
 the executables and found at runtime. If this is not the case
-(which happens if you work with a GENSER binary tarball, for external libraries
-built without libtool or installed in a non-standard way), you can set the
-variable LD_LIBRARY_PATH typing:
+you can set the variable LD_LIBRARY_PATH
 
-> source ld_config.csh
-
-if you have shells csh or tcsh, or
-
-> source ld_config.sh
-
-This can also help if your LHAPDF installation is non-standard and
-PDF sets are not found at runtime.
+If your LHAPDF installation is non-standard it is possible that
+PDF sets are not found at runtime. In this case the variable
+LHAPATH should be set.
 
 
 The description of examples follows.
