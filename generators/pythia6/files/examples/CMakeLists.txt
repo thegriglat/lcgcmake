@@ -52,6 +52,7 @@ target_link_libraries(main77 pythia6 pythia6_dummy pythia6_pdfdummy)
 if(DEFINED MYHEPMCPATH)
   include_directories (${MYHEPMCPATH}/include)
   link_directories (${MYHEPMCPATH}/lib)
+# a trick to compile with fortran libraries: empty file dum.f
   add_executable(main78 main78.cc dum.f)
   target_link_libraries(main78 pythia6 pythia6_dummy pythia6_pdfdummy HepMC HepMCfio)
   add_executable(main79 main79.cc dum.f)
