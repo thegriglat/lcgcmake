@@ -15,8 +15,12 @@ for arg in $* ; do
     echo "Usage: ./configure [options] , where options are:"
     echo "--help             : prints this help"
     echo "--prefix=path      : path to install, default is ."
-    echo "--enable-debug     : turns on build type Debug (debug flags, optimization off"
+    echo "--enable-debug     : turns on build type Debug (debug flags, optimization off)"
     echo "--buildtype=value  : possible types: None, Release, Debug, MinSizeRel, RelWithDebInfo, D=Release, see CMakeLists.txt"
+    echo
+    echo "Note: to obtain complete library structure do make install"
+    echo "to see the actual compilation commands add argument VERBOSE=1 to make"
+    echo
     exit
   elif [ "x$arg" = "x--enable-debug" ] ; then
     COMPMODE=Debug

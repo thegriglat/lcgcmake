@@ -13,26 +13,18 @@ if [ x$MYLCGPLATFORM = x ]; then
   export MYLCGPLATFORM=x86_64-slc5-gcc43-opt
 fi
 
-#Compilation mode. Is not changed if specified outside
-if [ x$COMPMODE = x ]; then
-  export COMPMODE=OPT
-fi
-#if [ x$COMPMODE = x ]; then
-#  export COMPMODE=DBG
-#fi
+export COMPMODE=Release
 
 # check arguments
 
 for arg in $* ; do
   if [ "x$arg" = "x--enable-debug" ] ; then
-    COMPMODE=DBG
-  elif [ "x$arg" = "x--enable-optimize" ] ; then
-    COMPMODE=OPT
+    COMPMODE=Debug
   elif [ "x$arg" = "x--help" ] ; then
     echo "Usage: ./configure [options] , where options are:"
     echo "--help            : prints this help"
-    echo "--enable-optimize : turns on compiler optimizations (default)"
-    echo "--enable-debug    : turns on debugging flags (not yet implem.)"
+    echo "--enable-debug     : turns on build type Debug (debug flags, optimization off)"
+    echo "--buildtype=value  : possible types: None, Release, Debug, MinSizeRel, RelWithDebInfo, D=Release, see CMakeLists.txt"
     echo "--enable-shared   : use shared library (not yet implem.) (default no)"
     echo "--lcgplatform=lcgplatformname : platform, default is x86_64-slc5-gcc43-opt"
     echo "--with-pythia6=p6path    : path to pythia6 installation dir to find libs, includes and pars (default is ..)"
@@ -42,12 +34,30 @@ for arg in $* ; do
     echo "--with-lhapdfversion=v   : LHAPDF version (simplified alternative when using CERN AFS MCGenerators, e.g. =5.7.0)"
     echo "--with-lhapdflibname=n   : lhapdf library name line (default is -lLHAPDF)"
     echo "--with-lhapdfsets=path   : path to LHAPDF data (default is lhapdfpath/../PDFsets, CERN AFS default is lhapdfpath/../../../share/PDFsets)"
+    echo
+    echo "to see the actual compilation commands add argument VERBOSE=1 to make"
+    echo
     exit
   elif [ x`echo x${arg} | grep "="` != x ] ; then
     option=`echo ${arg} | awk -F = '{print $1}'`
     value=`echo ${arg} | awk -F = '{print $2}'`
     if [ "x${option}" = "x--lcgplatform" ] ; then
       MYLCGPLATFORM=${value}
+    elif [ "x${option}" = "x--buildtype" ] ; then
+      if [ "${value}" = "None" ] ; then
+        COMPMODE=${value}
+      elif [ "${value}" = "Release" ] ; then
+        COMPMODE=${value}
+      elif [ "${value}" = "Debug" ] ; then   
+        COMPMODE=${value}
+      elif [ "${value}" = "MinSizeRel" ] ; then  
+        COMPMODE=${value}
+      elif [ "${value}" = "RelWithDebInfo" ] ; then
+        COMPMODE=${value}
+      else
+        echo "${value}: wrong value for buildtype. Ignored." >&2
+        echo
+      fi
     elif [ "x${option}" = "x--with-pythia6" ] ; then
       PYTHIA6LOCATION=${value}
     elif [ "x${option}" = "x--with-hepmcversion" ] ; then
@@ -76,7 +86,9 @@ if [ "x$MYCMAKE" = "x" ] ; then
   exit
 fi
 
-echo compilation mode is $COMPMODE (note: DBG is not yet implemented)
+echo
+echo "The compilation mode (see CMakeLists.txt for definitions) is:" ${COMPMODE}
+echo
 
 # Environment variables for building HepMC interface library. Note that
 # the HepMC interface library is used by the examples main31, main32.
@@ -198,7 +210,8 @@ if [ "x${LHAPDFLOCATION}" != "x" ] ; then
 fi
 
 echo cmake argument string is: ${CMAKESTRING}
+echo
 
 rm -f ./CMakeCache.txt
 
-cmake ${CMAKESTRING} .
+cmake -DCMAKE_BUILD_TYPE=${COMPMODE} ${CMAKESTRING} .
