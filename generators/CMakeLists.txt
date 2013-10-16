@@ -605,6 +605,36 @@ LCGPackage_Add(
   DEPENDS HepMC fastjet CLHEP ROOT
 
 )
+LCG_add_test(hepmcanalysis-build
+  BINARY_DIR hepmcanalysis/tests
+  SOURCE_DIR hepmcanalysis/tests  
+  BUILD all
+  BUILD_OPTIONS
+   -DCMAKE_MODULE_SEARCHPATH1=${CMAKE_SOURCE_DIR}/cmake/modules
+   -DCMAKE_MODULE_SEARCHPATH2=${cmaketools_home}/modules
+   -DHEPMCANALYSIS_ROOT_DIR=${hepmcanalysis_home}
+   -DPYTHIA6_ROOT_DIR=${pythia6_home}
+   -DHEPMC_ROOT_DIR=${HepMC_home}
+   -DFASTJET_ROOT_DIR=${fastjet_home}
+   -DROOTSYS=${ROOT_home}
+   -DLHAPDF_ROOT_DIR=${lhapdf_home}
+   -DCLHEP_ROOT_DIR=${CLHEP_home}	
+  ENVIRONMENT ${library_path}=${fastjet_home}/lib:${CLHEP_home}/lib:${HepMC_home}/lib:${pythia6_home}/lib:$ENV{${library_path}})
+ 
+
+LCG_add_test(hepmcanalysis_test_pythia6
+   TEST_COMMAND hepmcanalysis/tests/hepmcanalysis_test_pythia6 ${hepmcanalysis_home}/../share/sources/examples/pythia6/Process.config
+   DEPENDS hepmcanalysis-build)
+    
+LCG_add_test(hepmcanalysis_test_hepmcreader
+    BINARY_DIR hepmcanalysis/tests
+    PRE_COMMAND ${CMAKE_COMMAND} -E create_symlink ${hepmcanalysis_home}/../share/sources/examples/hepmcreader/Process.config Process.config
+        COMMAND ${CMAKE_COMMAND} -E create_symlink ${hepmcanalysis_home}/../share/sources/examples/hepmcreader/sample1.input sample1.input
+    TEST_COMMAND hepmcanalysis/tests/hepmcanalysis_test_hepmcreader Process.config
+    DEPENDS hepmcanalysis-build)
+
+
+
 
 #---MC-TESTER----------------------------------------------------------------------------------------
 LCGPackage_Add(
