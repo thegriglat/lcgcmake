@@ -221,7 +221,7 @@ LCGPackage_Add(
                                     -P ${CMAKE_SOURCE_DIR}/cmake/scripts/DownloadURL.cmake
   UPDATE_COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/pythia6/files  <SOURCE_DIR>
          COMMAND ${CMAKE_COMMAND} -E chdir <SOURCE_DIR> ${CMAKE_COMMAND} -DHEPEVT_SIZE=<pythia6_<NATIVE_VERSION>_hepevt> -P preparePythia6.cmake
-         COMMAND ${CMAKE_COMMAND} -E remove <SOURCE_DIR>/pythia-6.4.27.f
+         COMMAND ${CMAKE_COMMAND} -E remove <SOURCE_DIR>/pythia-<pythia6_<NATIVE_VERSION>_author>.f 
          COMMAND ${CMAKE_COMMAND} -E remove <SOURCE_DIR>/preparePythia6.cmake
          COMMAND ${CMAKE_COMMAND} -E remove <SOURCE_DIR>/splitter.pl
   CMAKE_ARGS -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
