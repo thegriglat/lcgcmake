@@ -629,7 +629,7 @@ LCG_add_test(hepmcanalysis_test_pythia6
 LCG_add_test(hepmcanalysis_test_hepmcreader
     BINARY_DIR hepmcanalysis/tests
     PRE_COMMAND ${CMAKE_COMMAND} -E create_symlink ${hepmcanalysis_home}/../share/sources/examples/hepmcreader/Process.config Process.config
-        COMMAND ${CMAKE_COMMAND} -E create_symlink ${hepmcanalysis_home}/../share/sources/examples/hepmcreader/sample1.input sample1.input
+        COMMAND ${CMAKE_COMMAND} -E create_symlink ${CMAKE_SOURCE_DIR}/generators/rivet/tests/data.hepmc sample1.input
     TEST_COMMAND hepmcanalysis/tests/hepmcanalysis_test_hepmcreader Process.config
     DEPENDS hepmcanalysis-build)
 
