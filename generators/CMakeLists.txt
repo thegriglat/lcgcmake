@@ -138,7 +138,6 @@ LCGPackage_Add(
 #---Herwig++------------------------------------------------------------------------------------------
 #Version 2.6.2 compiles on Mac, however the installation does not run :-(
 set(thepeg_v_home <thepeg-<herwig++_<NATIVE_VERSION>_thepeg>_home>)
-if(NOT APPLE)    #  (installation fails on MacOSX)
   LCGPackage_Add(
     herwig++
     URL http://cern.ch/service-spi/external/tarFiles/MCGeneratorsTarFiles/Herwig++-<NATIVE_VERSION>.tar.bz2
@@ -182,7 +181,6 @@ LCG_add_test(herwigpp_orig_test2
                           SOURCE_DIR herwig++/tests
                           ENVIRONMENT ${library_path}=${herwig++_home}/lib:${thepeg_home}/lib:${HepMC_home}/lib:${lhapdf_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:$ENV{${library_path}})
 
-endif()
 
 #---tauola++------------------------------------------------------------------------------------------
 LCGPackage_Add(
