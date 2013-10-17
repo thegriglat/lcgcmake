@@ -1,0 +1,11 @@
+--- examples-C++/pythia/pythia_test.cc.orig	2013-10-17 14:18:33.000000000 +0200
++++ examples-C++/pythia/pythia_test.cc	2013-10-17 14:20:14.000000000 +0200
+@@ -17,7 +17,7 @@
+ 
+ using namespace Pythia8; 
+ 
+-int NumberOfEvents = 10000;
++int NumberOfEvents = 2000;
+ 
+ int main() {
+ 
