@@ -221,7 +221,7 @@ LCGPackage_Add(
                                     -P ${CMAKE_SOURCE_DIR}/cmake/scripts/DownloadURL.cmake
   UPDATE_COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/pythia6/files  <SOURCE_DIR>
          COMMAND ${CMAKE_COMMAND} -E chdir <SOURCE_DIR> ${CMAKE_COMMAND} -DHEPEVT_SIZE=<pythia6_<NATIVE_VERSION>_hepevt> -P preparePythia6.cmake
-         COMMAND ${CMAKE_COMMAND} -E remove <SOURCE_DIR>/pythia-<pythia6_<NATIVE_VERSION>_author>.f
+         COMMAND ${CMAKE_COMMAND} -E remove <SOURCE_DIR>/pythia-6.4.27.f
          COMMAND ${CMAKE_COMMAND} -E remove <SOURCE_DIR>/preparePythia6.cmake
          COMMAND ${CMAKE_COMMAND} -E remove <SOURCE_DIR>/splitter.pl
   CMAKE_ARGS -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
@@ -637,8 +637,7 @@ LCG_add_test(hepmcanalysis_test_hepmcreader
 
 
 #---MC-TESTER----------------------------------------------------------------------------------------
-LCGPackage_Add(
-  mctester
+LCGPackage_Add(mctester
   URL http://cern.ch/service-spi/external/tarFiles/MCGeneratorsTarFiles/MC-TESTER-${mctester_native_version}.tar.gz
   UPDATE_COMMAND ${CMAKE_COMMAND} -E touch make.inc 
   CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --with-HepMC=${HepMC_home} --with-root=${ROOT_home}/bin "CFLAGS=-O2 -g0" "CXXFLAGS=-O2 -g0" "FFLAGS=-O2 -g0"
@@ -648,6 +647,28 @@ LCGPackage_Add(
   BUILD_IN_SOURCE 1
   DEPENDS HepMC ROOT
 )
+
+LCG_add_test(mctester-build
+  BINARY_DIR mctester/tests
+  SOURCE_DIR mctester/tests  
+  BUILD all
+  BUILD_OPTIONS
+   -DCMAKE_MODULE_SEARCHPATH1=${CMAKE_SOURCE_DIR}/cmake/modules
+   -DCMAKE_MODULE_SEARCHPATH2=${cmaketools_home}/modules
+   -DMCTESTER_ROOT_DIR=${mctester_home}
+   -DPYTHIA8_ROOT_DIR=${pythia8_home}
+   -DHEPMC_ROOT_DIR=${HepMC_home}
+   -DROOTSYS=${ROOT_home}
+   ENVIRONMENT ${library_path}=${mctester_home}/lib:${pythia8_home}/lib:${HepMC_home}/lib:$ENV{${library_path}})
+  
+LCG_add_test(mctester_test_pythia8
+    BINARY_DIR mctester/tests
+    PRE_COMMAND ${CMAKE_COMMAND} -E create_symlink ${mctester_home}/../share/sources/examples-C++/pythia/SETUP.C SETUP.C
+    TEST_COMMAND mctester/tests/mctester_test_pythia8   
+  	ENVIRONMENT PYTHIA8DATA=${pythia8_home}/xmldoc
+  	DEPENDS mctester-build
+  	)
+    
 
 #---HIJING----------------------------------------------------------------------------------------
 
