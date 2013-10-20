@@ -109,7 +109,7 @@ endif()
 
 set(HepMC_source_command URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/HepMC-${HepMC_native_version}.tar.gz)
 if( ${HepMC_native_version} VERSION_EQUAL githead)
-      set(HepMC_source_command GIT_REPOSITORY https://:@git.cern.ch/kerberos/HepMC) 
+      set(HepMC_source_command GIT_REPOSITORY http://git.cern.ch/pub/HepMC) 
 endif()
 
 LCGPackage_Add(
