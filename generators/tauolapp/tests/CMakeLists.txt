@@ -15,10 +15,10 @@ add_executable(tauolapp_orig_test1 ${TEST_DIR}/taumain_stand_alone_example.cxx)
 target_link_libraries(tauolapp_orig_test1 ${TAUOLAPP_INTERFACE_LIBRARY} ${TAUOLAPP_FORTRAN_LIBRARY} ${HEPMC_LIBRARIES})
 
 add_executable(tauolapp_orig_test2 ${TEST_DIR}/taummk_pythia_example.cxx)
-target_link_libraries(tauolapp_orig_test2 ${TAUOLAPP_INTERFACE_LIBRARY} ${HEPMC_LIBRARIES} ${PYTHIA8_LIBRARIES})
+target_link_libraries(tauolapp_orig_test2 ${TAUOLAPP_INTERFACE_LIBRARY} ${TAUOLAPP_FORTRAN_LIBRARY} ${HEPMC_LIBRARIES} ${PYTHIA8_LIBRARIES})
 
 add_executable(tauolapp_orig_test3 ${TEST_DIR}/taumain_hepevt_example.cxx)
-target_link_libraries(tauolapp_orig_test3 ${TAUOLAPP_INTERFACE_LIBRARY} ${HEPMC_LIBRARIES})
+target_link_libraries(tauolapp_orig_test3 ${TAUOLAPP_INTERFACE_LIBRARY}  ${TAUOLAPP_FORTRAN_LIBRARY} ${HEPMC_LIBRARIES})
 
 add_executable(tauolapp_test1 tauolapp_test1.cc)
-target_link_libraries(tauolapp_test1 ${TAUOLAPP_INTERFACE_LIBRARY} ${HEPMC_LIBRARIES} ${PYTHIA8_LIBRARIES})
+target_link_libraries(tauolapp_test1 ${TAUOLAPP_INTERFACE_LIBRARY}  ${TAUOLAPP_FORTRAN_LIBRARY} ${HEPMC_LIBRARIES} ${PYTHIA8_LIBRARIES})
