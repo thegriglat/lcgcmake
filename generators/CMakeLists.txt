@@ -627,19 +627,23 @@ LCG_add_test(hepmcanalysis-build
    -DROOTSYS=${ROOT_home}
    -DLHAPDF_ROOT_DIR=${lhapdf_home}
    -DCLHEP_ROOT_DIR=${CLHEP_home}	
-  ENVIRONMENT ${library_path}=${fastjet_home}/lib:${CLHEP_home}/lib:${HepMC_home}/lib:${pythia6_home}/lib:$ENV{${library_path}})
+  ENVIRONMENT ${library_path}=${ROOT_home}/lib:${fastjet_home}/lib:${CLHEP_home}/lib:${HepMC_home}/lib:${pythia6_home}/lib:$ENV{${library_path}})
  
 
 LCG_add_test(hepmcanalysis_test_pythia6
    TEST_COMMAND hepmcanalysis/tests/hepmcanalysis_test_pythia6 ${hepmcanalysis_home}/../share/sources/examples/pythia6/Process.config
-   DEPENDS hepmcanalysis-build)
+   DEPENDS hepmcanalysis-build
+   ENVIRONMENT ${library_path}=${hepmcanalysis_home}/lib:${ROOT_home}/lib:${fastjet_home}/lib:${CLHEP_home}/lib:${HepMC_home}/lib:${pythia6_home}/lib:$ENV{${library_path}}
+)
     
 LCG_add_test(hepmcanalysis_test_hepmcreader
     BINARY_DIR hepmcanalysis/tests
     PRE_COMMAND ${CMAKE_COMMAND} -E create_symlink ${hepmcanalysis_home}/../share/sources/examples/hepmcreader/Process.config Process.config
         COMMAND ${CMAKE_COMMAND} -E create_symlink ${CMAKE_SOURCE_DIR}/generators/rivet/tests/data.hepmc sample1.input
     TEST_COMMAND hepmcanalysis/tests/hepmcanalysis_test_hepmcreader Process.config
-    DEPENDS hepmcanalysis-build)
+    DEPENDS hepmcanalysis-build
+    ENVIRONMENT ${library_path}=${hepmcanalysis_home}/lib:${ROOT_home}/lib:${fastjet_home}/lib:${CLHEP_home}/lib:${HepMC_home}/lib:${pythia6_home}/lib:$ENV{${library_path}}
+)
 
 
 
