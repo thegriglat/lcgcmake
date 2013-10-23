@@ -1,0 +1,388 @@
+From 54072c22987b34349811add7316f64c4ce71d979 Mon Sep 17 00:00:00 2001
+From: Philippe Canal <pcanal@fnal.gov>
+Date: Mon, 7 Jan 2013 22:19:51 +0000
+Subject: [PATCH] Reduce the risk of the files or sockets being closed after
+ the end of 'main' (or more exactly before the library start
+ being unloaded) by calling CloseFiles and ResetGlobals in
+ the destructor of the TApplication (which is in most cases
+ on the stack of the main function)
+
+git-svn-id: http://root.cern.ch/svn/root/trunk@48219 27541ba8-7e3a-0410-8455-c3a389f83636
+(cherry picked from commit 84dfc99672b0eaa836d173dc4171dffcc19742ea)
+---
+ core/base/src/TApplication.cxx | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
+
+diff --git a/core/base/src/TApplication.cxx b/core/base/src/TApplication.cxx
+index e86b024..988661e 100644
+--- core/base/src/TApplication.cxx.orig
++++ core/base/src/TApplication.cxx
+@@ -206,6 +206,18 @@ TApplication::~TApplication()
+       ProcessLine("TMemStat::Close()");
+       fUseMemstat = kFALSE;
+    }
++
++   // Reduce the risk of the files or sockets being closed after the
++   // end of 'main' (or more exactly before the library start being
++   // unloaded).
++   if (fgApplications == 0 || fgApplications->FirstLink() == 0 ) {
++      if (gROOT) {
++         gROOT->CloseFiles();
++      }
++      if (gInterpreter) {
++         gInterpreter->ResetGlobals();
++      }
++   }
+ }
+ 
+ //______________________________________________________________________________
+-- 
+1.7.11.1
+
+From dec50c4c4d5976dd95c7fc117ae5819d481c81a3 Mon Sep 17 00:00:00 2001
+From: Philippe Canal <pcanal@fnal.gov>
+Date: Mon, 7 Jan 2013 22:21:37 +0000
+Subject: [PATCH] Extend (subvert!) TROOT::CloseFiles to also delete the other
+ active user objects held in TROOT ; for example this allow
+ the earlier deletion of outstanding TBrowsers object,
+ allowing their destructor to use a fully functional
+ interpreter ; this fixes
+ <http://savannah.cern.ch/bugs/?99193>
+
+git-svn-id: http://root.cern.ch/svn/root/trunk@48220 27541ba8-7e3a-0410-8455-c3a389f83636
+(cherry picked from commit ae57174d1b1ffba66cbbecfef77ee55365c14127)
+---
+ core/base/src/TROOT.cxx | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
+
+diff --git a/core/base/src/TROOT.cxx b/core/base/src/TROOT.cxx
+index 7ad60b6..4a956a4 100644
+--- core/base/src/TROOT.cxx.orig
++++ core/base/src/TROOT.cxx
+@@ -727,6 +727,21 @@ void TROOT::CloseFiles()
+    if (fMappedFiles && fMappedFiles->First()) {
+       R__ListSlowClose(static_cast<TList*>(fMappedFiles));
+    }
++
++   // Now a set of simpler things to delete.  See the same ordering in
++   // TROOT::~TROOT
++   fSpecials->Delete();
++   //fSecContexts->Delete();
++   fFunctions->Delete();
++   fColors->Delete();
++   fStyles->Delete();
++   fGeometries->Delete();
++   fBrowsers->Delete();
++   fCanvases->Delete();
++   fTasks->Delete();
++   fProofs->Delete();
++   fDataSets->Delete();
++   fClipboard->Delete();
+ }
+ 
+ //______________________________________________________________________________
+-- 
+1.7.11.1
+
+From ec199ca58786f3dab31a13f83b88f03689505b2b Mon Sep 17 00:00:00 2001
+From: Philippe Canal <pcanal@fnal.gov>
+Date: Tue, 8 Jan 2013 20:07:47 +0000
+Subject: [PATCH] Also call TROOT::CloseFiles as a atexit function.  This
+ reduces the risk of problem when ::exit is called
+ explicitly.  However this solution still requires at least
+ one TApplication to be created and since atexit (on
+ linux/macos) are in order, this is still technically too
+ late.  The library that are loaded dynamically
+ (gSystem->Load, dlopen) will be unloaded before the atexit
+ installed by TApplication (at the start of the main).  What
+ we really need is to call exactly after the end of the main
+ and before the first library (with a dictionary) is
+ unloaded [which we could do if (and only if) we know how to
+ cheaply know that the library is being unloaded after main
+
+git-svn-id: http://root.cern.ch/svn/root/trunk@48236 27541ba8-7e3a-0410-8455-c3a389f83636
+(cherry picked from commit 0f0289597deefab376512a9986885b1dbeecdbf5)
+---
+ core/base/src/TApplication.cxx | 11 +++++++++++
+ core/base/src/TROOT.cxx        |  1 +
+ 2 files changed, 12 insertions(+)
+
+diff --git a/core/base/src/TApplication.cxx b/core/base/src/TApplication.cxx
+index 988661e..b82a55c 100644
+--- core/base/src/TApplication.cxx.orig
++++ core/base/src/TApplication.cxx
+@@ -74,6 +74,13 @@ Bool_t TIdleTimer::Notify()
+ 
+ ClassImp(TApplication)
+ 
++static void CallCloseFiles()
++{
++  // Insure that the files, canvases and sockets are closed.
++
++  gROOT->CloseFiles();
++}
++
+ //______________________________________________________________________________
+ TApplication::TApplication() :
+    fArgc(0), fArgv(0), fAppImp(0), fIsRunning(kFALSE), fReturnFromRun(kFALSE),
+@@ -126,6 +133,10 @@ TApplication::TApplication(const char *appClassName, Int_t *argc, char **argv,
+    if (!gSystem)
+       ::Fatal("TApplication::TApplication", "gSystem not initialized");
+ 
++   if (!gApplication) {
++      // If we are the first TApplication register the atexit)
++      atexit(CallCloseFiles);
++   }
+    gApplication = this;
+    gROOT->SetApplication(this);
+    gROOT->SetName(appClassName);
+diff --git a/core/base/src/TROOT.cxx b/core/base/src/TROOT.cxx
+index 4a956a4..94c4c86 100644
+--- core/base/src/TROOT.cxx.orig
++++ core/base/src/TROOT.cxx
+@@ -173,6 +173,7 @@ static Int_t ITIMQQ(const char *time)
+    sscanf(time, "%d:%d:%d", &hh, &mm, &ss);
+    return 100*hh + mm;
+ }
++
+ //______________________________________________________________________________
+ static void CleanUpROOTAtExit()
+ {
+-- 
+1.7.11.1
+
+From 38808335e91c6dce4b139b4acf9b44ed09a67b42 Mon Sep 17 00:00:00 2001
+From: Philippe Canal <pcanal@fnal.gov>
+Date: Tue, 8 Jan 2013 20:14:37 +0000
+Subject: [PATCH] Add missing header
+
+git-svn-id: http://root.cern.ch/svn/root/trunk@48237 27541ba8-7e3a-0410-8455-c3a389f83636
+(cherry picked from commit 8fc631bf874b961a3087fa1105c57b65aafbeb0c)
+---
+ core/base/src/TApplication.cxx | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/core/base/src/TApplication.cxx b/core/base/src/TApplication.cxx
+index b82a55c..0ad0563 100644
+--- core/base/src/TApplication.cxx.orig
++++ core/base/src/TApplication.cxx
+@@ -45,6 +45,8 @@
+ #include "TBrowser.h"
+ #include "TUrl.h"
+ 
++#include <stdlib.h>
++
+ #if defined(R__MACOSX) && (TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR)
+ #include "TGIOS.h"
+ #endif
+-- 
+1.7.11.1
+
+From 3c6bc7b84b42d95033e754de4b3fe4b8537cd0ac Mon Sep 17 00:00:00 2001
+From: Philippe Canal <pcanal@fnal.gov>
+Date: Wed, 9 Jan 2013 14:54:13 +0000
+Subject: [PATCH] Remove from closeFiles the deletion that are either too
+ early or inaccurate (fSpecials does not own its content)
+
+git-svn-id: http://root.cern.ch/svn/root/trunk@48248 27541ba8-7e3a-0410-8455-c3a389f83636
+(cherry picked from commit 43ed8fa6a1a8eef87948363cfc67c4f192bfbf27)
+---
+ core/base/src/TROOT.cxx | 6 ------
+ 1 file changed, 6 deletions(-)
+
+diff --git a/core/base/src/TROOT.cxx b/core/base/src/TROOT.cxx
+index 94c4c86..ae92958 100644
+--- core/base/src/TROOT.cxx.orig
++++ core/base/src/TROOT.cxx
+@@ -731,18 +731,12 @@ void TROOT::CloseFiles()
+ 
+    // Now a set of simpler things to delete.  See the same ordering in
+    // TROOT::~TROOT
+-   fSpecials->Delete();
+-   //fSecContexts->Delete();
+    fFunctions->Delete();
+    fColors->Delete();
+    fStyles->Delete();
+    fGeometries->Delete();
+    fBrowsers->Delete();
+    fCanvases->Delete();
+-   fTasks->Delete();
+-   fProofs->Delete();
+-   fDataSets->Delete();
+-   fClipboard->Delete();
+ }
+ 
+ //______________________________________________________________________________
+-- 
+1.7.11.1
+
+From ba20713500ff54c53be414f98ae617c436a3d9df Mon Sep 17 00:00:00 2001
+From: Philippe Canal <pcanal@fnal.gov>
+Date: Tue, 22 Oct 2013 16:02:34 -0500
+Subject: [PATCH] Introduce EndOfProcessCleanups rather than subverting
+ CloseFiles.
+
+This allows to separate the end of process action from just
+closing the files (used by pyroot).
+
+See commit ae57174d1b1ffba66cbbecfef77ee55365c14127
+---
+ core/base/inc/TROOT.h          |  1 +
+ core/base/src/TApplication.cxx | 11 +++++------
+ core/base/src/TROOT.cxx        | 15 +++++++++++++++
+ core/unix/src/TUnixSystem.cxx  |  5 ++---
+ 4 files changed, 23 insertions(+), 9 deletions(-)
+
+diff --git a/core/base/inc/TROOT.h b/core/base/inc/TROOT.h
+index 9d4433d..78d3a96 100644
+--- core/base/inc/TROOT.h.orig
++++ core/base/inc/TROOT.h
+@@ -143,6 +143,7 @@ public:
+    void              Browse(TBrowser *b);
+    Bool_t            ClassSaved(TClass *cl);
+    void              CloseFiles();
++   void              EndOfProcessCleanups();
+    virtual TObject  *FindObject(const char *name) const;
+    virtual TObject  *FindObject(const TObject *obj) const;
+    virtual TObject  *FindObjectAny(const char *name) const;
+diff --git a/core/base/src/TApplication.cxx b/core/base/src/TApplication.cxx
+index 0ad0563..0977f82 100644
+--- core/base/src/TApplication.cxx.orig
++++ core/base/src/TApplication.cxx
+@@ -76,11 +76,11 @@ Bool_t TIdleTimer::Notify()
+ 
+ ClassImp(TApplication)
+ 
+-static void CallCloseFiles()
++static void CallEndOfProcessCleanups()
+ {
+   // Insure that the files, canvases and sockets are closed.
+ 
+-  gROOT->CloseFiles();
++  gROOT->EndOfProcessCleanups();
+ }
+ 
+ //______________________________________________________________________________
+@@ -137,7 +137,7 @@ TApplication::TApplication(const char *appClassName, Int_t *argc, char **argv,
+ 
+    if (!gApplication) {
+       // If we are the first TApplication register the atexit)
+-      atexit(CallCloseFiles);
++      atexit(CallEndOfProcessCleanups);
+    }
+    gApplication = this;
+    gROOT->SetApplication(this);
+@@ -225,9 +225,8 @@ TApplication::~TApplication()
+    // unloaded).
+    if (fgApplications == 0 || fgApplications->FirstLink() == 0 ) {
+       if (gROOT) {
+-         gROOT->CloseFiles();
+-      }
+-      if (gInterpreter) {
++         gROOT->EndOfProcessCleanups();
++      } else if (gInterpreter) {
+          gInterpreter->ResetGlobals();
+       }
+    }
+diff --git a/core/base/src/TROOT.cxx b/core/base/src/TROOT.cxx
+index ae92958..b7a1866 100644
+--- core/base/src/TROOT.cxx.orig
++++ core/base/src/TROOT.cxx
+@@ -729,6 +729,20 @@ void TROOT::CloseFiles()
+       R__ListSlowClose(static_cast<TList*>(fMappedFiles));
+    }
+ 
++}
++
++//______________________________________________________________________________
++void TROOT::EndOfProcessCleanups()
++{
++   // Execute the cleanups necessary at the end of the process, in particular
++   // those that must be executed before the library start being unloaded.
++
++   CloseFiles();
++   
++   if (gInterpreter) {
++      gInterpreter->ResetGlobals();
++   }
++
+    // Now a set of simpler things to delete.  See the same ordering in
+    // TROOT::~TROOT
+    fFunctions->Delete();
+@@ -739,6 +753,7 @@ void TROOT::CloseFiles()
+    fCanvases->Delete();
+ }
+ 
++
+ //______________________________________________________________________________
+ TObject *TROOT::FindObject(const TObject *) const
+ {
+diff --git a/core/unix/src/TUnixSystem.cxx b/core/unix/src/TUnixSystem.cxx
+index 5f7fae7..cc7d33f 100644
+--- core/unix/src/TUnixSystem.cxx.orig
++++ core/unix/src/TUnixSystem.cxx
+@@ -2188,9 +2188,8 @@ void TUnixSystem::Exit(int code, Bool_t mode)
+    // Insures that the files and sockets are closed before any library is unloaded
+    // and before emptying CINT.
+    if (gROOT) {
+-      gROOT->CloseFiles();
+-   }
+-   if (gInterpreter) {
++      gROOT->EndOfProcessCleanups();
++   } else if (gInterpreter) {
+       gInterpreter->ResetGlobals();
+    }
+ 
+-- 
+1.7.11.1
+
+From e4d35d67365bb119cbfaa71c6595e14cd62fc6f6 Mon Sep 17 00:00:00 2001
+From: Philippe Canal <pcanal@fnal.gov>
+Date: Tue, 22 Oct 2013 16:26:47 -0500
+Subject: [PATCH] Fix order of deletion TROOT destructor and
+ EndOfProcessCleanups.
+
+Some objects (TParallelCoord) manipulate global objects (TStyles)
+in their destructor.  Reorder the deletion of the global object
+to avoid conflicts.
+---
+ core/base/src/TROOT.cxx | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
+
+diff --git a/core/base/src/TROOT.cxx b/core/base/src/TROOT.cxx
+index b7a1866..7ef165e 100644
+--- core/base/src/TROOT.cxx.orig
++++ core/base/src/TROOT.cxx
+@@ -511,10 +511,13 @@ TROOT::~TROOT()
+       SafeDelete(fClosedObjects);
+ 
+       fFunctions->Delete();  SafeDelete(fFunctions);   // etc..
+-      fColors->Delete();     SafeDelete(fColors);
+-      fStyles->Delete();     SafeDelete(fStyles);
+       fGeometries->Delete(); SafeDelete(fGeometries);
+       fBrowsers->Delete();   SafeDelete(fBrowsers);
++#ifdef R__COMPLETE_MEM_TERMINATION
++      SafeDelete(fCanvases);
++#endif
++      fColors->Delete();     SafeDelete(fColors);
++      fStyles->Delete();     SafeDelete(fStyles);
+ 
+ #ifdef R__COMPLETE_MEM_TERMINATION
+       if (gGuiFactory != gBatchGuiFactory) SafeDelete(gGuiFactory);
+@@ -746,11 +749,11 @@ void TROOT::EndOfProcessCleanups()
+    // Now a set of simpler things to delete.  See the same ordering in
+    // TROOT::~TROOT
+    fFunctions->Delete();
+-   fColors->Delete();
+-   fStyles->Delete();
+    fGeometries->Delete();
+    fBrowsers->Delete();
+    fCanvases->Delete();
++   fColors->Delete();
++   fStyles->Delete();
+ }
+ 
+ 
+-- 
+1.7.11.1
+
