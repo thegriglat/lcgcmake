@@ -591,9 +591,9 @@ LCG_add_test(sherpa_orig_test1
 )
 
 LCG_add_test(sherpa_orig_test2
-  PRE_COMMAND ${CMAKE_COMMAND} -E make_directory sherpa/tests
-  TEST_COMMAND ${CMAKE_COMMAND} -E chdir sherpa/tests ${sherpa_home}/bin/Sherpa -j20 -f ${CMAKE_SOURCE_DIR}/generators/sherpa/tests/LHC_ZJets.dat
-  POST_COMMAND ${CMAKE_COMMAND} -E remove_directory sherpa/tests
+  PRE_COMMAND ${CMAKE_COMMAND} -E make_directory sherpa/tests2
+  TEST_COMMAND ${CMAKE_COMMAND} -E chdir sherpa/tests2 ${sherpa_home}/bin/Sherpa -j20 -f ${CMAKE_SOURCE_DIR}/generators/sherpa/tests/LHC_ZJets.dat
+  POST_COMMAND ${CMAKE_COMMAND} -E remove_directory sherpa/tests2
   ENVIRONMENT
     ${library_path}=${sherpa_home}/lib:${HepMC_home}/lib:${lhapdf_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:$ENV{${library_path}}
     PWD=.
