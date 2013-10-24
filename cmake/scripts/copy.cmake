@@ -1,1 +1,1 @@
-file(COPY "${SRC}/" DESTINATION "${DST}")
+file(COPY "${SRC}/" DESTINATION "${DST}" PATTERN .svn EXCLUDE)
