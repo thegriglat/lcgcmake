@@ -529,7 +529,7 @@ LCGPackage_Add(
   DEPENDS HepMC Boost fastjet GSL Python swig yoda yamlcpp
 )
 
-LCG_add_test(rivet2_test_cms
+LCG_add_test(rivet2_test_cms2
   TEST_COMMAND  ${rivet2_home}/bin/rivet -a CMS_2012_I1184941  ${CMAKE_SOURCE_DIR}/generators/rivet/tests/data.hepmc
   ENVIRONMENT
     ${library_path}=${rivet2_home}/lib:${yoda_home}/lib:${HepMC_home}/lib:${fastjet_home}/lib:${yamlcpp_home}/lib:$ENV{${library_path}}
@@ -537,7 +537,7 @@ LCG_add_test(rivet2_test_cms
 #    PYTHONPATH=${cython_home}/lib/python2.7/site-packages:$ENV{PYTHONPATH}
 )
 
-LCG_add_test(rivet2_test_atlas
+LCG_add_test(rivet2_test_atlas2
   TEST_COMMAND  ${rivet2_home}/bin/rivet -a ATLAS_2012_I1083318 ${CMAKE_SOURCE_DIR}/generators/rivet/tests/data.hepmc
   ENVIRONMENT
     ${library_path}=${rivet2_home}/lib:${yoda_home}/lib:${HepMC_home}/lib:${fastjet_home}/lib:${yamlcpp_home}/lib:$ENV{${library_path}}
