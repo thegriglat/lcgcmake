@@ -534,7 +534,7 @@ LCG_add_test(rivet2_test_cms
   ENVIRONMENT
     ${library_path}=${rivet2_home}/lib:${yoda_home}/lib:${HepMC_home}/lib:${fastjet_home}/lib:${yamlcpp_home}/lib:$ENV{${library_path}}
     PATH=${Python_home}/bin:$ENV{PATH}
-    PYTHONPATH=${cython_home}/lib/python2.7/site-packages:$ENV{PYTHONPATH}
+#    PYTHONPATH=${cython_home}/lib/python2.7/site-packages:$ENV{PYTHONPATH}
 )
 
 LCG_add_test(rivet2_test_atlas
@@ -542,7 +542,21 @@ LCG_add_test(rivet2_test_atlas
   ENVIRONMENT
     ${library_path}=${rivet2_home}/lib:${yoda_home}/lib:${HepMC_home}/lib:${fastjet_home}/lib:${yamlcpp_home}/lib:$ENV{${library_path}}
     PATH=${Python_home}/bin:$ENV{PATH}
-    PYTHONPATH=${cython_home}/lib/python2.7/site-packages:$ENV{PYTHONPATH}
+#    PYTHONPATH=${cython_home}/lib/python2.7/site-packages:$ENV{PYTHONPATH}
+)
+
+LCG_add_test(rivet_test_cms
+  TEST_COMMAND ${CMAKE_SOURCE_DIR}/generators/rivet/tests/testCMS.sh ${rivet_home} ${CMAKE_SOURCE_DIR}/generators/rivet/tests/data.hepmc
+  ENVIRONMENT
+    ${library_path}=$ENV{${library_path}}
+    PATH=${Python_home}/bin:$ENV{PATH}
+)
+
+LCG_add_test(rivet_test_atlas  
+  TEST_COMMAND ${CMAKE_SOURCE_DIR}/generators/rivet/tests/testATLAS.sh ${rivet_home} ${CMAKE_SOURCE_DIR}/generators/rivet/tests/data.hepmc
+  ENVIRONMENT
+    ${library_path}=$ENV{${library_path}}
+    PATH=${Python_home}/bin:$ENV{PATH}
 )
 
 
