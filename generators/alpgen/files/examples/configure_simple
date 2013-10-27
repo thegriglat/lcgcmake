@@ -1,0 +1,167 @@
+#!/bin/sh
+#
+# Configuration script, to be run before compilation
+
+for arg in $* ; do
+  if [ "$arg" = "--help" ] ; then
+    echo "Usage: ./configure [options] , where options are:"
+    echo "--help            : prints this help"
+    echo "--lcgplatform=lcgplatformname : platform, default is slc4_ia32_gcc34"
+    echo "--with-alpgeninstalled=path/to/alpgen/shared(platform-independent part)"
+    echo "--with-alpgenlibs=path/to/alpgen/libraries"
+    echo "--with-pythia6=/path/to/pythia6/libs/"
+    echo "--with-herwig=/path/to/herwig/libs"
+    echo "--with-tests=/path/to/tests/libs/"
+    echo "--with-hepmc=/path/to/hepmc/"
+    echo "--with-clhep=/path/to/clhep/"
+    exit
+  elif [ "$(echo ${arg} | grep '=')" != "" ] ; then
+    option=${arg/=*/}
+    value=${arg/*=/}
+    case "${option}" in
+      "--with-alpgeninstalled" ) ALPGENINSTALLED=${value} ;;
+      "--with-alpgenlibs"      ) ALPGENLIBS=${value} ;;
+      "--with-pythia6"         ) PYTHIA6LOCATION=${value} ;;
+      "--with-herwig"          ) HERWIGLOCATION=${value} ;;
+      "--with-tests"           ) TESTSLOCATION=${value} ;;
+      "--with-hepmc"           ) HEPMCLOCATION=${value} ;;
+      "--with-clhep"           ) CLHEPLOCATION=${value} ;;
+      * )
+          echo "${arg}: wrong option. Ignored." >&2
+          exit 1
+          ;;
+    esac
+  else
+    echo "${arg}: wrong option. Ignored." >&2
+  fi
+done
+
+# local full installation:
+if [ x$ALPGENINSTALLED = x ]; then
+  export ALPGENINSTALLED=..
+fi
+if [ x$ALPGENLIBS = x ]; then
+  export ALPGENLIBS=../lib/archive
+fi
+
+# End of the user-changeable part ---------------------------
+
+#
+# Checks
+#
+if [ $?PYTHIA6LOCATION ]; then
+  if [ x${PYTHIA6LOCATION} != x ]; then
+    if [ ! -d ${PYTHIA6LOCATION} ]; then
+      echo WARNING: PYTHIA6LOCATION is wrong: directory ${PYTHIA6LOCATION} does not exist
+      echo pythia6 hadronization examples will not work
+      PYTHIA6LOCATION=
+    fi
+  fi
+fi
+if [ $?HERWIGLOCATION ]; then
+  if [ x${HERWIGLOCATION} != x ]; then
+    if [ ! -d ${HERWIGLOCATION} ]; then
+      echo WARNING: HERWIGLOCATION is wrong: directory ${HERWIGLOCATION} does not exist
+      echo pythia6 hadronization examples will not work
+      HERWIGLOCATION=
+    fi
+  fi
+fi
+if [ $?TESTSLOCATION ]; then
+  if [ x${TESTSLOCATION} != x ]; then
+    if [ ! -d ${TESTSLOCATION} ]; then
+      echo WARNING: TESTSLOCATION is wrong: directory ${TESTSLOCATION} does not exist
+      echo examples that use the tests library will not work
+      TESTSLOCATION=
+    fi
+  fi
+fi
+if [ $?HEPMCLOCATION ]; then
+  if [ x${HEPMCLOCATION} != x ]; then
+    HEPMCERROR=
+    if [ ! -d ${HEPMCLOCATION}/include ]; then
+      echo WARNING: HEPMCLOCATION is wrong: directory ${HEPMCLOCATION}/include does not exist
+      HEPMCERROR=yes
+    fi
+    if [ ! -d ${HEPMCLOCATION}/lib ]; then
+      echo WARNING: HEPMCLOCATION is wrong: directory ${HEPMCLOCATION}/lib does not exist
+      HEPMCERROR=yes
+    fi
+    if [ x${HEPMCERROR} != x ]; then
+      echo examples that use the HEPMC will not work
+      HEPMCLOCATION=
+    fi
+  fi
+fi
+if [ $?CLHEPLOCATION ]; then
+  if [ x${CLHEPLOCATION} != x ]; then
+    CLHEPERROR=
+    if [ ! -d ${CLHEPLOCATION}/include ]; then
+      echo WARNING: CLHEPLOCATION is wrong: directory ${CLHEPLOCATION}/include does not exist
+    fi
+    if [ ! -d ${CLHEPLOCATION}/lib ]; then
+      echo WARNING: CLHEPLOCATION is wrong: directory ${CLHEPLOCATION}/lib does not exist
+    fi
+    if [ x${CLHEPERROR} != x ]; then
+      echo examples that use the CLHEP will not work
+      CLHEPLOCATION=
+    fi
+  fi
+fi
+
+rm -f config.mk
+
+echo SHELL = /bin/sh > config.mk
+echo FC = gfortran > config.mk
+
+if [ x${ALPGENINSTALLED} != x ]; then
+  echo ALPGENINSTALLED = ${ALPGENINSTALLED} >> config.mk
+  echo ALPGENLIBS = ${ALPGENLIBS} >> config.mk
+fi
+if [ x${PYTHIA6LOCATION} != x ]; then
+  echo PYTHIA6LOCATION = ${PYTHIA6LOCATION} >> config.mk
+fi
+if [ x${HERWIGLOCATION} != x ]; then
+  echo HERWIGLOCATION = ${HERWIGLOCATION} >> config.mk
+fi
+if [ x${TESTSLOCATION} != x ]; then
+  echo TESTSLOCATION = ${TESTSLOCATION} >> config.mk
+fi
+if [ x${HEPMCVERSION} != x ]; then
+  echo HEPMCVERSION = ${HEPMCVERSION} >> config.mk
+fi
+if [ x${HEPMCLOCATION} != x ]; then
+  echo HEPMCLOCATION = ${HEPMCLOCATION} >> config.mk
+fi
+if [ x${CLHEPVERSION} != x ]; then
+  echo CLHEPVERSION = ${CLHEPVERSION} >> config.mk
+fi
+if [ x${CLHEPLOCATION} != x ]; then
+  echo CLHEPLOCATION = ${CLHEPLOCATION} >> config.mk
+fi
+#
+#
+#
+rm -f config.sh config.csh
+
+if [ x${HEPMCLOCATION} != x ]; then
+  echo "#!/bin/csh" > config.csh
+  echo 'if( ! $?LD_LIBRARY_PATH ) then' >> config.csh
+  echo "  setenv LD_LIBRARY_PATH ${HEPMCLOCATION}/lib" >> config.csh
+  echo "else" >> config.csh
+  echo "  setenv LD_LIBRARY_PATH" '${LD_LIBRARY_PATH}'":${HEPMCLOCATION}/lib" >> config.csh
+  echo "endif" >> config.csh
+  if [ x${CLHEPLOCATION} != x ]; then
+    echo "setenv LD_LIBRARY_PATH" '${LD_LIBRARY_PATH}'":${CLHEPLOCATION}/lib" >> config.csh
+  fi
+  echo "#!/bin/sh" > config.sh
+  echo 'if [ x${LD_LIBRARY_PATH} = x ]; then' >> config.sh
+  echo "  export LD_LIBRARY_PATH=${HEPMCLOCATION}/lib" >> config.sh
+  echo "fi" >> config.sh
+  echo 'if [ x${LD_LIBRARY_PATH} != x ]; then' >> config.sh
+  echo "  export LD_LIBRARY_PATH="'${LD_LIBRARY_PATH}'":${HEPMCLOCATION}/lib" >> config.sh
+  echo 'fi' >> config.sh
+  if [ x${CLHEPLOCATION} != x ]; then
+    echo "export LD_LIBRARY_PATH="'${LD_LIBRARY_PATH}'":${CLHEPLOCATION}/lib" >> config.sh
+  fi
+fi

@@ -1,0 +1,60 @@
+ First of all run the script configure_simple. To see possible arguments
+type configure_simple --help
+
+ To compile generator PRC type "make -f Makefile_simple PRC". To see full list
+type "make -f Makefile_simple"
+
+ To compile fragmentation executable you should specify at least the path to
+ the corresponding program (run ./configure with appropriate argument).
+ Otherwise compilation will fail.
+
+ To compile pythia fragmentation executable type one of the following:
+
+ "make -f Makefile_simple pyuser"
+
+ "make -f Makefile_simple pyuserex1" - compiles pyuser.f from this directory, requires
+                                       package tests libraries (specify tests doing configure)
+
+ "make -f Makefile_simple pyuserex2" - compiles pyuser.cc from this directory, requires tests,
+                                       HepMC and CLHEP libraries.
+                                       Please note that in this case tests libraries should be
+                                       compiled with compatible versions of HepMC and CLHEP
+
+
+ To compile herwig fragmentation executable type "make -f Makefile_simple hwuser" or
+ "make -f Makefile_simple hwuserex1" (compiles hwuser.f from this directory)
+
+ There is a full chain example with Pythia, script fragmPythia 
+ (type command ./fragmPythia or ./fragmPythia > &fragmPythia.log).
+ In the case you do not have a compiled alpgen library go to .../alpgen/2.1.3
+ and compile library (simply type 'make').
+
+ In order to work with examples that use tests library (pyuserex2) one should
+ run the script configure (configure --help for help) before compilation
+ and type "source config.sh" or "source config.csh" before running the
+ executable.
+
+ The directory examples can be used in a standalone mode, using the central
+ alpgen installation. For this, one should specify the path to this
+ installation editing the script configure or via arguments
+
+
+RUNNING AUTHOR'S VALIDATION (ALL PROCESSES WITH ALL NUMBERS OF JETS):
+
+ 1. mkdir tmp
+ 2. cd tmp
+ 3. cp ../validate .
+ 4. ./validate        (or:  ./validate > &validate.log   (a lot of output))
+
+ The result (the differences between your output and the author's reference
+ output in the directory data/validation/REF) is in file val.summary. Since
+ this is a Monte Carlo and the compilation is made in a different from the
+ authors way, there is a lot of differences, but they should not be significant
+ in the sense of Delta/Error. Only using the script "validate" without
+ parameters is tested.
+
+===========================================
+
+NOTE: 
+pyuser_pt_W.cc is intended for dsigma(p pbar --> W + jets)/dPT(W)
+tests performed in the TESTS package (see ..../tests/examples/pt_test).

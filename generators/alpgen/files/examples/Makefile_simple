@@ -1,0 +1,15 @@
+all:
+	@echo the generators available: 2Q 2Qph 4Q hjet Njet phjet QQh top vbjet wcjet wjet wphjet wphqq wqq zjet zqq
+
+2Q 2Qph 4Q hjet Njet phjet QQh top vbjet wcjet wjet wphjet wphqq wqq \
+zjet zqq:
+	@export prc=$@; make -f gen.mk gen
+
+pyuser pyuserex1 pyuserex2 pyuserex2_pt_W:
+	make -f pyfragm.mk $@
+
+hwuser hwuserex1:
+	make -f hwfragm.mk $@
+
+clean:
+	rm -f *.exe; rm -f fort.*; rm -f cnfg.dat; rm -rf ../bin; rm -rf ../tmp/procs;

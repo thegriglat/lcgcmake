@@ -1,0 +1,74 @@
+echo
+echo ==========================================
+echo ==== Preparing input data for PYTHIA =====
+echo ==========================================
+echo
+
+GenName=zjet
+
+make -f Makefile_simple ${GenName}
+
+echo =========================================================
+echo ==== Making input file to test generator $GenName ===========
+echo =========================================================
+cat > inputalpgen << EOF1
+1         ! imode
+z2j       ! label for files
+0 ! start with: 0=new grid, 1=previous warmup grid, 2=previous generation grid
+20000 3   ! Nevents/iteration,  N(warm-up iterations)
+200000    ! Nevents generated after warm-up
+*** The above 5 lines provide mandatory inputs for all processes
+*** (Comment lines are introduced by the three asteriscs)
+*** The lines below modify existing defaults for the hard process under study
+*** For a complete list of accessible parameters and their values,
+*** input 'print 1' (to display on the screen) or 'print 2' to write to file
+ih2 1
+ebeam 7000
+irapgap 0            ! tells phase space to force one fwd/ one bkwd jets
+etagap 2             ! eta value to separate central and fwd jets
+etajmax 5            ! full rap range for jets
+njets   2            ! total number of jets
+ptjmin  20           ! ptmin for fwd jets
+drjmin  1
+EOF1
+
+cat > inputalpgen2 << EOF2
+2
+z2j
+EOF2
+
+rehash
+
+echo =========================================================
+echo ==== Preparing input file with $GenName events for PYTHIA ===
+echo =========================================================
+
+./zjetgen.exe < inputalpgen
+
+echo =========================================================
+echo ===== Unweighting generated events ======================
+echo =========================================================
+
+./zjetgen.exe < inputalpgen2
+
+echo =========================================================
+echo ======== Preparing executable file with PYTHIA ==========
+echo =========================================================
+
+
+make -f Makefile_simple pyuser
+
+cat > inputalpgen3 << EOF4
+z2j
+EOF4
+
+./pyuser.exe < inputalpgen3
+
+# clean examples area
+rm -f inputalpgen
+rm -f inputalpgen2
+rm -f inputalpgen3
+
+rm -f z2j*
+
+#end of file

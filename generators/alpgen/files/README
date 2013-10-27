@@ -1,0 +1,8 @@
+ This package has a CMake build system. For backward compatibility, on top
+of it there is a configure script. This script can take some arguments,
+in the end it initialises the CMake system for You. To see possible arguments 
+type "configure --help".
+
+ At the beginning in this directory there is a file Makefile. It is not checked.
+When CMake build system is initialised (directly or through the configure script),
+Makefile is overwritten.
