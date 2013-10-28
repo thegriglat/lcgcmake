@@ -210,8 +210,14 @@ LCG_external_package(starlight         r43            ${MCGENPATH}/starlight    
 LCG_external_package(herwig            6.520.2        ${MCGENPATH}/herwig       )
 LCG_external_package(crmcold           v3400          ${MCGENPATH}/crmc         )
 LCG_external_package(crmc              1.0            ${MCGENPATH}/crmc         )
+
 LCG_external_package(cython            0.19           ${MCGENPATH}/cython       )
-LCG_external_package(yamlcpp           0.3.0          ${MCGENPATH}/yamlcpp      )
+LCG_external_package(cython            0.19.1         ${MCGENPATH}/cython       )
+
+LCG_external_package(yamlcpp           0.3.0          ${MCGENPATH}/yamlcpp      ) 
+
+LCG_external_package(yoda              1.0.3          ${MCGENPATH}/yoda         ) 
+
 LCG_external_package(hydjet            1.6            ${MCGENPATH}/hydjet author=1_6    )
 LCG_external_package(hydjet            1.8            ${MCGENPATH}/hydjet author=1_8    )
 LCG_external_package(tauola            28.121.2       ${MCGENPATH}/tauola       )
