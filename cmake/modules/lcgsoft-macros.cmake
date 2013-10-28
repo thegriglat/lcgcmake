@@ -166,7 +166,9 @@ macro(LCGPackage_Add name)
       if(NOT ARG_BINARY_PACKAGE) 
         ExternalProject_Add_Step(${targetname} install_sources
           COMMENT "Installing sources for '${targetname}' and create source tarball"
+	  COMMAND lockfile ${CMAKE_INSTALL_PREFIX}/${${dest_name}_directory_name}/${dest_version}/lock.txt
           COMMAND ${CMAKE_COMMAND} -DSRC=<SOURCE_DIR> -DDST=${CMAKE_INSTALL_PREFIX}/${${dest_name}_directory_name}/${dest_version}/share/sources/${curr_name} -P ${CMAKE_SOURCE_DIR}/cmake/scripts/copy.cmake
+	  COMMAND ${CMAKE_COMMAND} -E remove -f ${CMAKE_INSTALL_PREFIX}/${${dest_name}_directory_name}/${dest_version}/lock.txt
           COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_INSTALL_PREFIX}/${${dest_name}_directory_name}/../distribution/${name}
           COMMAND ${CMAKE_COMMAND} -E chdir <SOURCE_DIR>/../.. ${CMAKE_COMMAND} -E tar cfz ${CMAKE_INSTALL_PREFIX}/${${dest_name}_directory_name}/../distribution/${name}/${name}-${version}-src.tgz ${name}
           DEPENDERS configure
