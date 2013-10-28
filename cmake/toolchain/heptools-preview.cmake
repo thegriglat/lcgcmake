@@ -188,7 +188,7 @@ LCG_external_package(evtgen            1.1.0          ${MCGENPATH}/evtgen     ta
 LCG_external_package(evtgen            1.2.0          ${MCGENPATH}/evtgen     tag=R01-02-00 pythia8=176 tauola++=1.1.1)
 
 LCG_external_package(rivet             1.8.3          ${MCGENPATH}/rivet        )
-LCG_external_package(rivet2            2.0.0rc        ${MCGENPATH}/rivet       )
+LCG_external_package(rivet2            2.0.0          ${MCGENPATH}/rivet       )
 
 LCG_external_package(sherpa            1.4.3          ${MCGENPATH}/sherpa         author=1.4.3 hepevt=4000  )
 LCG_external_package(sherpa            1.4.3.2        ${MCGENPATH}/sherpa         author=1.4.3 hepevt=10000 )
@@ -204,7 +204,7 @@ LCG_external_package(starlight         r43            ${MCGENPATH}/starlight    
 LCG_external_package(herwig            6.520.2        ${MCGENPATH}/herwig       )
 LCG_external_package(herwig            6.521.2        ${MCGENPATH}/herwig       )
 
-LCG_external_package(crmc              1.0            ${MCGENPATH}/crmc         )
+LCG_external_package(crmc              1.2            ${MCGENPATH}/crmc         )
 LCG_external_package(cython            0.19.1         ${MCGENPATH}/cython       )
 LCG_external_package(yamlcpp           0.3.0          ${MCGENPATH}/yamlcpp      )
 LCG_external_package(yoda              1.0.3          ${MCGENPATH}/yoda         )

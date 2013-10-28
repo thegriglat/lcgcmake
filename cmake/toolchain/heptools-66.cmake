@@ -172,9 +172,11 @@ LCG_external_package(pythia8           176            ${MCGENPATH}/pythia8      
 
 LCG_external_package(thepeg            1.8.1          ${MCGENPATH}/thepeg       )
 LCG_external_package(thepeg            1.8.3          ${MCGENPATH}/thepeg       )
+LCG_external_package(thepeg            1.9.0          ${MCGENPATH}/thepeg       )
 
 LCG_external_package(herwig++          2.6.1b         ${MCGENPATH}/herwig++     thepeg=1.8.1)
 LCG_external_package(herwig++          2.6.3          ${MCGENPATH}/herwig++     thepeg=1.8.3)
+LCG_external_package(herwig++          2.7.0          ${MCGENPATH}/herwig++     thepeg=1.9.0)
 
 LCG_external_package(tauola++          1.1.3          ${MCGENPATH}/tauola++     )
 LCG_external_package(tauola++          1.1.1          ${MCGENPATH}/tauola++     )
@@ -195,6 +197,7 @@ LCG_external_package(evtgen            1.2.0-176      ${MCGENPATH}/evtgen       
 
 LCG_external_package(rivet             1.8.2          ${MCGENPATH}/rivet        )
 LCG_external_package(rivet             1.8.3          ${MCGENPATH}/rivet        )
+LCG_external_package(rivet2            2.0.0          ${MCGENPATH}/rivet        )
 
 LCG_external_package(sherpa            2.0.0          ${MCGENPATH}/sherpa         author=2.0.0 hepevt=10000)
 LCG_external_package(sherpa            1.4.3.2        ${MCGENPATH}/sherpa         author=1.4.3 hepevt=10000 )
