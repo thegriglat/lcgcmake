@@ -205,7 +205,7 @@ LCG_external_package(cython            0.19.1         ${MCGENPATH}/cython       
 
 LCG_external_package(yamlcpp           0.3.0          ${MCGENPATH}/yamlcpp      )
 
-LCG_external_package(yoda              1.0.3          ${MCGENPATH}/yoda         )
+LCG_external_package(yoda              1.0.4          ${MCGENPATH}/yoda         )
 
 LCG_external_package(hydjet            1.6            ${MCGENPATH}/hydjet author=1_6    )
 LCG_external_package(hydjet            1.8            ${MCGENPATH}/hydjet author=1_8    )
