@@ -532,14 +532,14 @@ LCGPackage_Add(
 LCG_add_test(
        rivet2_test_cms
        TEST_COMMAND  ${rivet2_home}/bin/rivet -a CMS_2012_I1184941 ${CMAKE_SOURCE_DIR}/generators/rivet/tests/data.hepmc
-       ENVIRONMENT ${library_path}=${rivet2_home}/lib:${yoda_home}/lib:${HepMC_home}/lib:${fastjet_home}/lib:${yamlcpp_home}/lib:$ENV{${library_path}}
+       ENVIRONMENT ${library_path}=${Python_home}/lib:${GSL_home}/lib:${rivet2_home}/lib:${yoda_home}/lib:${HepMC_home}/lib:${fastjet_home}/lib:${yamlcpp_home}/lib:$ENV{${library_path}}
                    PATH=${Python_home}/bin:$ENV{PATH}   
 )
 
 LCG_add_test(
        rivet2_test_atlas
        TEST_COMMAND  ${rivet2_home}/bin/rivet -a ATLAS_2012_I1083318 ${CMAKE_SOURCE_DIR}/generators/rivet/tests/data.hepmc
-       ENVIRONMENT ${library_path}=${rivet2_home}/lib:${yoda_home}/lib:${HepMC_home}/lib:${fastjet_home}/lib:${yamlcpp_home}/lib:$ENV{${library_path}}
+       ENVIRONMENT ${library_path}=${Python_home}/lib:${GSL_home}/lib:${rivet2_home}/lib:${yoda_home}/lib:${HepMC_home}/lib:${fastjet_home}/lib:${yamlcpp_home}/lib:$ENV{${library_path}}
                    PATH=${Python_home}/bin:$ENV{PATH}
 )
 
@@ -547,12 +547,14 @@ LCG_add_test(
        rivet2_test_cms_script
        TEST_COMMAND ${CMAKE_SOURCE_DIR}/generators/rivet2/tests/testCMS.sh ${rivet2_home} ${CMAKE_SOURCE_DIR}/generators/rivet/tests/data.hepmc  
        ENVIRONMENT PATH=${Python_home}/bin:$ENV{PATH}
+		   ${library_path}=${Python_home}/lib:${GSL_home}/lib:$ENV{${library_path}}
 )   
 
 LCG_add_test(
        rivet2_test_atlas_script  
        TEST_COMMAND ${CMAKE_SOURCE_DIR}/generators/rivet2/tests/testATLAS.sh ${rivet2_home} ${CMAKE_SOURCE_DIR}/generators/rivet/tests/data.hepmc
        ENVIRONMENT PATH=${Python_home}/bin:$ENV{PATH}
+		   ${library_path}=${Python_home}/lib:${GSL_home}/lib:$ENV{${library_path}}
 )
 
 
@@ -866,6 +868,7 @@ if(NOT APPLE)    #  (installation fails on MacOSX)
                -DHEPMC_PREFIX=${HepMC_home}
                -DBOOST_ROOT=${Boost_home}
                -DBOOST_INCLUDE_DIR=${Boost_home_include}
+               -D__CRMCSTATIC__=ON
     DEPENDS HepMC Boost ROOT
   )
   
