@@ -948,7 +948,7 @@ LCGPackage_Add(
   jhu
   URL http://cern.ch/service-spi/external/tarFiles/MCGeneratorsTarFiles/JHUGenerator.v<NATIVE_VERSION>.tar.gz
   CONFIGURE_COMMAND <VOID>
-  BUILD_COMMAND ${MAKE} -C JHUGenerator Comp=gfortran
+  BUILD_COMMAND ${MAKE} -j1 -C JHUGenerator Comp=gfortran
         COMMAND ${MAKE} -C JHUGenME Comp=gfortran
   INSTALL_COMMAND ${CMAKE_COMMAND} -E make_directory <INSTALL_DIR>/bin
           COMMAND ${CMAKE_COMMAND} -E copy JHUGenerator/JHUGen <INSTALL_DIR>/bin/
