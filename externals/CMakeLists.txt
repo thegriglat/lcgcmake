@@ -16,6 +16,12 @@ if (APPLE)
   )
 endif()
 
+if(APPLE)
+  set(library_path DYLD_LIBRARY_PATH)
+else()
+  set(library_path LD_LIBRARY_PATH)
+endif()
+
 
 
 #---Python--------------------------------------------------------------------------------------------
@@ -112,6 +118,9 @@ if( ${HepMC_native_version} VERSION_EQUAL githead)
       set(HepMC_source_command GIT_REPOSITORY http://git.cern.ch/pub/HepMC) 
 endif()
 
+
+LCGPackage_set_home(cmaketools)
+
 LCGPackage_Add(
   HepMC
   ${HepMC_source_command}
@@ -122,6 +131,25 @@ LCGPackage_Add(
   BUILD_COMMAND ${MAKE}
 )
 
+LCG_add_test(hepmc_build
+  BINARY_DIR HepMC/tests
+  SOURCE_DIR HepMC/tests
+  BUILD all
+  BUILD_OPTIONS
+   -DCMAKE_MODULE_PATH=${cmaketools_home}/modules
+   -DHEPMC_ROOT_DIR=${HepMC_home}
+
+)
+
+
+foreach(i hepmc_test_units hepmc_test_flow)
+LCG_add_test(${i}
+	TEST_COMMAND HepMC/tests/${i}
+    ENVIRONMENT 
+      ${library_path}=${HepMC_home}/lib:$ENV{${library_path}}
+    DEPENDS hepmc_build
+)
+endforeach()
 #---HepPDT-------------------------------------------------------------------------------------------
 LCGPackage_Add(
   HepPDT
