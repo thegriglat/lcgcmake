@@ -936,7 +936,7 @@ LCGPackage_Add(
   madgraph5v2
   URL http://cern.ch/service-spi/external/tarFiles/MCGeneratorsTarFiles/MadGraph5_v<NATIVE_VERSION>.tar.gz
   CONFIGURE_COMMAND <VOID>
-  BUILD_COMMAND ${MAKE} -C vendor/CutTools
+  BUILD_COMMAND ${MAKE} -j1 -C vendor/CutTools
   INSTALL_COMMAND ${CMAKE_COMMAND} -DSRC=<SOURCE_DIR> -DDST=<INSTALL_DIR> -P ${CMAKE_SOURCE_DIR}/cmake/scripts/copy.cmake
   BUILD_IN_SOURCE 1
   DEPENDS Python
