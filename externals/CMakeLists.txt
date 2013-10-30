@@ -141,7 +141,7 @@ LCG_add_test(hepmc_build
 )
 
 
-foreach(i hepmc_test_units hepmc_test_flow hepmc_test_methods hepmc_test_polarization hepmc_test_printbug hepmc_test_simplevector hepmc_test_weights hepmc_test_mass)
+foreach(i hepmc_test_units hepmc_test_flow hepmc_test_polarization hepmc_test_printbug hepmc_test_simplevector)
 LCG_add_test(${i}
 	TEST_COMMAND HepMC/tests/${i}
     ENVIRONMENT 
