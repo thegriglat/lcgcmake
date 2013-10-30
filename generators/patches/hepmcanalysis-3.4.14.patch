@@ -32,11 +32,14 @@
  	$(ROOTGLIBS) $(LINK_LIBS)
  
  # clean up
---- examples/hepmcreader/reader.cc.orig       2013-10-30 12:00:07.000000000 +0100
-+++ examples/hepmcreader/reader.cc   2013-10-30 12:05:20.000000000 +0100
-@@ -173,6 +173,8 @@
+--- reader.cc.orig      2013-10-30 17:23:25.000000000 +0100
++++ reader.cc   2013-10-30 17:23:44.000000000 +0100
+@@ -174,7 +174,7 @@
+   for (vector<baseAnalysis*>::const_iterator i(analysis.begin()); i != analysis.end(); ++i) {
      (*i)->Finalize(f);
    }
- 
-+  f -> Close();
-+
+-
++f->Close();
+   // clean up analysis modules and configuration
+   for (vector<baseAnalysis*>::const_iterator i(analysis.begin()); i != analysis.end(); ++i) {
+     delete (*i);
