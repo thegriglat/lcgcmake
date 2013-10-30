@@ -1,0 +1,18 @@
+--- bin/lhapdf-getdata.orig	2013-10-30 10:39:00.000000000 +0100
++++ bin/lhapdf-getdata	2013-10-30 10:40:48.000000000 +0100
+@@ -141,6 +141,7 @@
+     ## Actually download the sets
+     if len(filenames) == 0:
+         logging.info("No sets match the arguments given")
++        sys.exit(1)
+     else:
+         logging.debug("Getting sets " + str(filenames))
+         for f in filenames:
+@@ -150,4 +151,6 @@
+                 logging.info("Forcing overwrite of %s" % setpath)
+                 getset = True
+             if getset:
+-                getPDFSetFile(opts.URL, f, opts.DEST, download=opts.DOWNLOAD)
++                successful = getPDFSetFile(opts.URL, f, opts.DEST, download=opts.DOWNLOAD)
++                if not successful: 
++                    sys.exit(1)

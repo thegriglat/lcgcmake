@@ -20,6 +20,7 @@ message(STATUS "PDFsets to download: ${PDFsets}")
 LCGPackage_Add(
   lhapdfsets
   URL http://cern.ch/service-spi/external/tarFiles/MCGeneratorsTarFiles/lhapdf-<NATIVE_VERSION>.tar.gz
+  PATCH_COMMAND patch -p0 < ${CMAKE_CURRENT_SOURCE_DIR}/patches/lhapdf-getdata.patch
   BINARY_PACKAGE 1
   CONFIGURE_COMMAND <VOID>
   BUILD_COMMAND <VOID>
@@ -44,6 +45,7 @@ LCGPackage_Add(
 LCGPackage_Add(
   lhapdf
   URL http://cern.ch/service-spi/external/tarFiles/MCGeneratorsTarFiles/lhapdf-<NATIVE_VERSION>.tar.gz
+  PATCH_COMMAND patch -p0 < ${CMAKE_CURRENT_SOURCE_DIR}/patches/lhapdf-getdata.patch
   CONFIGURE_COMMAND ./configure
     --prefix=<INSTALL_DIR>
     --datadir=<lhapdfsets-<NATIVE_VERSION>_home>/../share
