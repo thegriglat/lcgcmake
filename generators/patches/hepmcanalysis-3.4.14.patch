@@ -32,3 +32,11 @@
  	$(ROOTGLIBS) $(LINK_LIBS)
  
  # clean up
+--- examples/hepmcreader/reader.cc.orig       2013-10-30 12:00:07.000000000 +0100
++++ examples/hepmcreader/reader.cc   2013-10-30 12:05:20.000000000 +0100
+@@ -173,6 +173,8 @@
+     (*i)->Finalize(f);
+   }
+ 
++  f -> Close();
++

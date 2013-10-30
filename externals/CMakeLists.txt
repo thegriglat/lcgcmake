@@ -138,11 +138,10 @@ LCG_add_test(hepmc_build
   BUILD_OPTIONS
    -DCMAKE_MODULE_PATH=${cmaketools_home}/modules
    -DHEPMC_ROOT_DIR=${HepMC_home}
-
 )
 
 
-foreach(i hepmc_test_units hepmc_test_flow)
+foreach(i hepmc_test_units hepmc_test_flow hepmc_test_methods hepmc_test_polarization hepmc_test_printbug hepmc_test_simplevector hepmc_test_weights hepmc_test_mass)
 LCG_add_test(${i}
 	TEST_COMMAND HepMC/tests/${i}
     ENVIRONMENT 
