@@ -30,16 +30,3 @@
 -	$(HepMClib) $(HepPDTlib) $(FastJetlib) \
 +	$(HepMClib) $(HepPDTlib) $(FastJetlib) $(CLHEPlib) \
  	$(ROOTGLIBS) $(LINK_LIBS)
- 
- # clean up
---- reader.cc.orig      2013-10-30 17:23:25.000000000 +0100
-+++ reader.cc   2013-10-30 17:23:44.000000000 +0100
-@@ -174,7 +174,7 @@
-   for (vector<baseAnalysis*>::const_iterator i(analysis.begin()); i != analysis.end(); ++i) {
-     (*i)->Finalize(f);
-   }
--
-+f->Close();
-   // clean up analysis modules and configuration
-   for (vector<baseAnalysis*>::const_iterator i(analysis.begin()); i != analysis.end(); ++i) {
-     delete (*i);
