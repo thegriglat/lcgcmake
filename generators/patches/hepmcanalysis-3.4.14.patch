@@ -1,3 +1,14 @@
+--- examples/hepmcreader/reader.cc.orig 2013-10-31 11:11:16.000000000 +0100
++++ examples/hepmcreader/reader.cc      2013-10-31 11:11:59.000000000 +0100
+@@ -172,7 +172,7 @@
+   for (vector<baseAnalysis*>::const_iterator i(analysis.begin()); i != analysis.end(); ++i) {
+     (*i)->Finalize(f);
+   }
+-
++f->Close();
+   // clean up analysis modules and configuration
+   for (vector<baseAnalysis*>::const_iterator i(analysis.begin()); i != analysis.end(); ++i) {
+     delete (*i);
 --- config.mk.orig	2013-09-03 16:47:11.000000000 +0200
 +++ config.mk	2013-09-03 16:53:26.000000000 +0200
 @@ -10,16 +10,16 @@
