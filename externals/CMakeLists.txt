@@ -118,7 +118,6 @@ if( ${HepMC_native_version} VERSION_EQUAL githead)
       set(HepMC_source_command GIT_REPOSITORY http://git.cern.ch/pub/HepMC) 
 endif()
 
-
 LCGPackage_set_home(cmaketools)
 
 LCGPackage_Add(
@@ -131,24 +130,12 @@ LCGPackage_Add(
   BUILD_COMMAND ${MAKE}
 )
 
-LCG_add_test(hepmc_build
-  BINARY_DIR HepMC/tests
-  SOURCE_DIR HepMC/tests
-  BUILD all
-  BUILD_OPTIONS
-   -DCMAKE_MODULE_PATH=${cmaketools_home}/modules
-   -DHEPMC_ROOT_DIR=${HepMC_home}
+LCG_add_test(hepmc_tests
+
+  TEST_COMMAND ${CMAKE_COMMAND} -E chdir ${PROJECT_BINARY_DIR}/externals/HepMC-${HepMC_native_version}/src/HepMC-${HepMC_native_version}-build/test ctest
+
 )
 
-
-foreach(i hepmc_test_units hepmc_test_flow hepmc_test_polarization hepmc_test_printbug hepmc_test_simplevector)
-LCG_add_test(${i}
-	TEST_COMMAND HepMC/tests/${i}
-    ENVIRONMENT 
-      ${library_path}=${HepMC_home}/lib:$ENV{${library_path}}
-    DEPENDS hepmc_build
-)
-endforeach()
 #---HepPDT-------------------------------------------------------------------------------------------
 LCGPackage_Add(
   HepPDT
