@@ -109,12 +109,13 @@ LCG_add_test(pythia8-build
   SOURCE_DIR pythia8/tests
   BUILD all
   BUILD_OPTIONS
-   -DCMAKE_MODULE_PATH=${cmaketools_home}/modules
-   -DPYTHIA8_ROOT_DIR=${pythia8_home}
-   -DHEPMC_ROOT_DIR=${HepMC_home}
+   -DCMAKE_MODULE_PATH=${CMAKE_SOURCE_DIR}/cmake/modules
+   -DCMAKE_MODULE_PATH2=${cmaketools_home}/modules
+   -DPYTHIA8_ROOT_DIR=${pythia8_home} -DHEPMC_ROOT_DIR=${HepMC_home}
+   -DFASTJET_ROOT_DIR=${fastjet_home} -DCLHEP_ROOT_DIR=${CLHEP_home}
 )
 
-foreach(t genser_test3 genser_test4 orig_test1)
+foreach(t genser_test3 genser_test4 orig_test1 genser_test1)
   LCG_add_test(pythia8-${t}
     TEST_COMMAND pythia8/tests/pythia8_${t}
     ENVIRONMENT

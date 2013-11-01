@@ -1,17 +1,24 @@
 cmake_minimum_required(VERSION 2.8 FATAL_ERROR)
 project(pythia8-tests CXX)
 
-list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/../../../cmake/modules)
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH2})
+
+message("CMAKE_MODULE_PATH=${CMAKE_MODULE_PATH}")
 
 find_package(Pythia8 REQUIRED)
 find_package(HepMC REQUIRED)
 
-include_directories(${PYTHIA8_INCLUDE_DIR} ${HEPMC_INCLUDE_DIR})
+message("PYTHIA8_INCLUDE_DIR=${PYTHIA8_INCLUDE_DIRS}")
+
+find_package(FastJet REQUIRED)
+find_package(CLHEP REQUIRED)
+
+include_directories(${CMAKE_SOURCE_DIR}/analyserhepmc ${PYTHIA8_INCLUDE_DIR} ${HEPMC_INCLUDE_DIR} ${FASTJET_INCLUDE_DIR} ${CLHEP_INCLUDE_DIR})
 
 set(TESTS_DIR ${PYTHIA8_ROOT_DIR}/../share/sources/examples)
 
-#add_executable(pythia8_genser_test1 pythia8_test1.cc)
-#target_link_libraries(pythia8_genser_test1 ${PYTHIA8_LIBRARIES} ${HEPMC_LIBRARIES})
+add_executable(pythia8_genser_test1 pythia8_test1.cc analyserhepmc/AnalyserHepMC.cc analyserhepmc/LeptonAnalyserHepMC.cc analyserhepmc/JetInputHepMC.cc)
+target_link_libraries(pythia8_genser_test1 ${PYTHIA8_LIBRARIES} ${HEPMC_LIBRARIES} ${FASTJET_LIBRARIES} ${CLHEP_LIBRARIES})
 
 #add_executable(pythia8_genser_test2 pythia8_test2.cc)
 #target_link_libraries(pythia8_genser_test2 ${PYTHIA8_LIBRARIES} ${HEPMC_LIBRARIES})

@@ -8,10 +8,13 @@
 //#@# 6: Average final state charged particles multiplicity
 //#@# This test creates LHE file Zg.lhe
 //
-#include "Pythia8/Pythia.h"
-
-//#include "HepMCInterface.h"
-#include "Pythia8/Pythia8ToHepMC.h"
+#ifdef PYTHIA8NEWVERS
+  #include "Pythia8/Pythia.h"
+  #include "Pythia8/Pythia8ToHepMC.h"
+#else
+  #include "Pythia.h"
+  #include "HepMCInterface.h" 
+#endif
 
 #include "HepMC/GenEvent.h"
 // Following line to be used with HepMC 2.04 onwards.
@@ -27,8 +30,11 @@ using namespace Pythia8;
 
 int main() {
 
-//  HepMC::I_Pythia8 ToHepMC;
+#ifdef PYTHIA8NEWVERS   
   HepMC::Pythia8ToHepMC ToHepMC;
+#else
+  HepMC::I_Pythia8 ToHepMC;
+#endif
 #ifndef HEPMC_HAS_UNITS
   // To have HepMC record in GeV with HepMC 2.03.11.
   // Will work for pythia8 > 165
