@@ -142,27 +142,20 @@ set(MCGENPATH  MCGenerators_lcgcmt${heptools_version})
 #---Additional External packages------(Generators)-----------------
 LCG_external_package(powheg-box         r2092         ${MCGENPATH}/powheg-box       )
 
-LCG_external_package(lhapdf            5.9.1          ${MCGENPATH}/lhapdf       )
-LCG_external_package(lhapdfsets        5.9.1          lhapdfsets   )
-
 LCG_external_package(lhapdf            5.8.9          ${MCGENPATH}/lhapdf       )
 LCG_external_package(lhapdfsets        5.8.9          lhapdfsets   )
 
-LCG_external_package(pythia8           180            ${MCGENPATH}/pythia8      author=180  )
 LCG_external_package(pythia8           175.lhetau     ${MCGENPATH}/pythia8      author=175  )
 LCG_external_package(pythia8           175            ${MCGENPATH}/pythia8      author=175  )
 LCG_external_package(pythia8           176            ${MCGENPATH}/pythia8      author=176  )
 
-LCG_external_package(thepeg            1.9.0          ${MCGENPATH}/thepeg       )
 LCG_external_package(thepeg            1.8.2          ${MCGENPATH}/thepeg       )
 LCG_external_package(thepeg            1.8.3          ${MCGENPATH}/thepeg       )
 
-LCG_external_package(herwig++          2.7.0          ${MCGENPATH}/herwig++     thepeg=1.9.0)
 LCG_external_package(herwig++          2.6.3          ${MCGENPATH}/herwig++     thepeg=1.8.3)
 LCG_external_package(tauola++          1.1.1          ${MCGENPATH}/tauola++     )
 LCG_external_package(tauola++          1.1.1a         ${MCGENPATH}/tauola++     )
 
-LCG_external_package(pythia6           428.2          ${MCGENPATH}/pythia6        author=6.4.28 hepevt=10000  )
 LCG_external_package(pythia6           427            ${MCGENPATH}/pythia6        author=6.4.27 hepevt=4000   )
 LCG_external_package(pythia6           427.2          ${MCGENPATH}/pythia6        author=6.4.27 hepevt=10000  )
 LCG_external_package(agile             1.4.0          ${MCGENPATH}/agile        )
@@ -177,7 +170,6 @@ LCG_external_package(evtgen            1.2.0-175      ${MCGENPATH}/evtgen       
 LCG_external_package(evtgen            1.2.0-176      ${MCGENPATH}/evtgen         tag=R01-02-00 pythia8=176 tauola++=1.1.1)
 
 LCG_external_package(rivet             1.8.3          ${MCGENPATH}/rivet        )
-LCG_external_package(rivet2            2.0.0        ${MCGENPATH}/rivet       )
 
 LCG_external_package(sherpa            2.0.0          ${MCGENPATH}/sherpa         author=2.0.0 hepevt=10000  )
 
