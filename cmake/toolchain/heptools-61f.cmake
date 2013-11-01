@@ -143,10 +143,10 @@ set(MCGENPATH  MCGenerators_lcgcmt${heptools_version})
 LCG_external_package(powheg-box         r2092         ${MCGENPATH}/powheg-box       )
 
 LCG_external_package(lhapdf            5.9.1          ${MCGENPATH}/lhapdf       )
-LCG_external_package(lhapdfsets        5.9.1          ${MCGENPATH}/lhapdfsets   )
+LCG_external_package(lhapdfsets        5.9.1          lhapdfsets   )
 
 LCG_external_package(lhapdf            5.8.9          ${MCGENPATH}/lhapdf       )
-LCG_external_package(lhapdfsets        5.8.9          ${MCGENPATH}/lhapdfsets   )
+LCG_external_package(lhapdfsets        5.8.9          lhapdfsets   )
 
 LCG_external_package(pythia8           180            ${MCGENPATH}/pythia8      author=180  )
 LCG_external_package(pythia8           175.lhetau     ${MCGENPATH}/pythia8      author=175  )
