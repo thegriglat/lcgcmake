@@ -1,6 +1,4 @@
 // File: pythia8_test1.cc
-// This is a simple test program. 
-// Copyright © 2005 Torbjörn Sjöstrand
 //
 //#@# 1: p p --> (Z,gamma* -> l+ l-) + jets cross section [mb] at LHC
 //#@# 2: A fraction of events with 2 isolated leptons plus >=2 jets
@@ -10,9 +8,10 @@
 //#@# 6: Average final state charged particles multiplicity
 //#@# This test creates LHE file Zg.lhe
 //
-#include "Pythia.h"
+#include "Pythia8/Pythia.h"
 
-#include "HepMCInterface.h"
+//#include "HepMCInterface.h"
+#include "Pythia8/Pythia8ToHepMC.h"
 
 #include "HepMC/GenEvent.h"
 // Following line to be used with HepMC 2.04 onwards.
@@ -20,9 +19,7 @@
 #include "HepMC/Units.h"
 #endif
 
-#include "ANHEPMC/JetableInputFromHepMC.h"
-#include "ANHEPMC/JetFinderUA.h"
-#include "ANHEPMC/LeptonAnalyserHepMC.h"
+#include "AnalyserHepMC.h"
 
 using namespace Pythia8; 
 
@@ -30,16 +27,16 @@ using namespace Pythia8;
 
 int main() {
 
-  HepMC::I_Pythia8 ToHepMC;
+//  HepMC::I_Pythia8 ToHepMC;
+  HepMC::Pythia8ToHepMC ToHepMC;
 #ifndef HEPMC_HAS_UNITS
   // To have HepMC record in GeV with HepMC 2.03.11.
   // Will work for pythia8 > 165
   ToHepMC.set_convert_to_mev(false);
 #endif
-  JetableInputFromHepMC JI;
-  JetFinderUA JF;
-  LeptonAnalyserHepMC LA;
-  int nevtype[4] = {0,0,0,0};
+
+  AnalyserHepMC AHMC;
+  AHMC.initialize();
 
   // Generator. Process selection.
   Pythia pythia;
@@ -47,6 +44,9 @@ int main() {
   pythia.readString("WeakBosonAndParton:qqbar2gmZg = on");
   pythia.readString("WeakBosonAndParton:qg2gmZq = on");
   pythia.readString("PhaseSpace:pTHatMin = 20.");
+
+  // suppress full listing of first events in pythia8 > 160
+  pythia.readString("Next:numberShowEvent = 0");
 
   // Create an LHAup object that can access relevant information in pythia.
   LHAupFromPYTHIA8 myLHA(&pythia.process, &pythia.info);
@@ -116,8 +116,8 @@ int main() {
 
     // List first few events, both hard process and complete events.
     if (iEvent < nList) { 
-      pythia.process.list();
-      event.list();
+//      pythia.process.list();
+//      event.list();
     }
 
     // HepMC installed on CERN AFS by default have MeV as energy units
@@ -134,24 +134,7 @@ int main() {
 #endif
 
     ToHepMC.fill_next_event( event, hepmcevt );
-    vector<JetableObject> objects = JI.readFromHepMC(hepmcevt);
-    //cout << "size of jetable objects = " << objects.size() << endl;
-    vector<Jet> alljets = JF.findJets(objects);
-    //cout << "size of all jets = " << alljets.size() << endl;
-    int nisolep = LA.nIsolatedLeptons(hepmcevt);
-    //cout << "size of isolated leptons = " << nisolep << endl;
-    if (nisolep == 2) nevtype[0]++;
-    vector<Jet> jets = LA.removeLeptonsFromJets(alljets, hepmcevt);
-    //cout << "size of jets = " << jets.size() << endl;
-    if( jets.size() >= 2) nevtype[1]++;
-    if (nisolep == 2 && jets.size() >= 1) nevtype[2]++;
-    if (nisolep == 2 && jets.size() >= 2) nevtype[3]++;
-
-    //if(jets.size()) {
-    //  cout << "pT of first jet = " << jets[0].et() << endl;
-    //} else {
-    //  cout << "pT of first jet = 0" << endl;
-    //}
+    AHMC.analyse(hepmcevt);
 
     delete hepmcevt;
 
@@ -190,11 +173,6 @@ int main() {
   // Write endtag. Overwrite initialization info with new cross sections.
   myLHA.closeLHEF(true);
 
-  cout << "2 isolated leptons              " << nevtype[0] << endl;
-  cout << "2+ (2 or more) jets             " << nevtype[1] << endl;
-  cout << "2 isolated leptons and 1+ jets  " << nevtype[2] << endl;
-  cout << "2 isolated leptons and 2+ jets  " << nevtype[3] << endl;
-
   cout << endl;
   cout << " max nonconservation of pz = " << pdevmaxz << endl;
   cout << " max nonconservation of pxy = " << pdevmaxxy << endl;
@@ -213,10 +191,7 @@ int main() {
   if(nEvent > 0) errval = val/sqrt( (double)(nEvent) );
   testi << "pythia8_test1  1   " << val << " " << errval << " " << endl;
 
-  val = ((double)nevtype[3])/((double)nEvent);
-  errval = 0.;
-  if(nevtype[3] > 0) errval = val/sqrt((double)nevtype[3]);
-  testi << "pythia8_test1  2   " << val << " " << errval << " " << endl;
+  AHMC.endRun();
 
   val = 1.+pdevmaxz;
   errval = 0.0001;
