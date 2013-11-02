@@ -197,7 +197,9 @@ int main() {
   if(nEvent > 0) errval = val/sqrt( (double)(nEvent) );
   testi << "pythia8_test1  1   " << val << " " << errval << " " << endl;
 
-  AHMC.endRun();
+  AHMC.endRun(val, errval);
+
+  testi << "pythia8_test1  2   " << val << " " << errval << " " << endl;
 
   val = 1.+pdevmaxz;
   errval = 0.0001;

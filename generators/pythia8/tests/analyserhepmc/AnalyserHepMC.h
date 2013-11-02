@@ -14,7 +14,7 @@ public:
   AnalyserHepMC();
   void initialize();
   void analyse(const HepMC::GenEvent* pEv);
-  void endRun();
+  void endRun(double &, double &);
 
 private:
   LeptonAnalyserHepMC LA;

@@ -75,14 +75,10 @@ void AnalyserHepMC::analyse(const HepMC::GenEvent* Evt)
 }
 
 
-void AnalyserHepMC::endRun()
+void AnalyserHepMC::endRun(double& outval, double& outerrval)
 {
 //  ofstream testi("testi.dat");
   double val, errval;
-
-//  errval = 0.;
-//  if(icategories[0] > 0) errval = val/sqrt( (double)(icategories[0]) );
-//  testi << "pythia8_test1  1   " << val << " " << errval << " " << endl;
 
   std::cout << std::endl;
   std::cout << " Events with at least 1 isolated lepton  :                     "
@@ -95,9 +91,11 @@ void AnalyserHepMC::endRun()
             << ((double)icategories[4])/((double)icategories[0]) << std::endl;
   std::cout << std::endl;
   
-//  val = ((double)icategories[4])/((double)icategories[0]);
-//  errval = 0.;
-//  if(icategories[4] > 0) errval = val/sqrt((double)icategories[4]);
+  val = ((double)icategories[4])/((double)icategories[0]);
+  errval = 0.;
+  if(icategories[4] > 0) errval = val/sqrt((double)icategories[4]);
+  outval = val;
+  outerrval = errval;
 //  testi << "pythia8_test1  2   " << val << " " << errval << " " << std::endl;
   
 }
