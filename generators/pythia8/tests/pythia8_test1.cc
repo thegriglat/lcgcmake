@@ -127,7 +127,7 @@ int main() {
     }
 
     // HepMC installed on CERN AFS by default have MeV as energy units
-    // (damned ATLAS standard), though default HepMC units are GeV. For 
+    // , though default HepMC units are GeV. For 
     // this reason, if the first line below is used, in pythia8
     // versions > 165 HepMC record will be in MeV
     // and we will have incorrect results
