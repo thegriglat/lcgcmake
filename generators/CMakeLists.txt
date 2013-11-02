@@ -115,7 +115,7 @@ LCG_add_test(pythia8-build
    -DFASTJET_ROOT_DIR=${fastjet_home} -DCLHEP_ROOT_DIR=${CLHEP_home}
 )
 
-foreach(t genser_test3 genser_test4 orig_test1 genser_test1)
+foreach(t genser_test3 genser_test4 orig_test1)
   LCG_add_test(pythia8-${t}
     TEST_COMMAND pythia8/tests/pythia8_${t}
     ENVIRONMENT
@@ -123,6 +123,16 @@ foreach(t genser_test3 genser_test4 orig_test1 genser_test1)
       PYTHIA8DATA=${pythia8_home}/xmldoc
     DEPENDS pythia8-build)
 endforeach()
+
+LCG_add_test(pythia8-genser_test1
+  TEST_COMMAND pythia8/tests/pythia8_genser_test1
+  ENVIRONMENT
+    ${library_path}=${pythia8_home}/lib:${HepMC_home}/lib:$ENV{${library_path}}
+    PYTHIA8DATA=${pythia8_home}/xmldoc
+  DEPENDS pythia8-build CLHEP
+  LABELS PhysicsCheck
+)
+
 
 #---ThePEG------------------------------------------------------------------------------------------
 LCGPackage_Add(
