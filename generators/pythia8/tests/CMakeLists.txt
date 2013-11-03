@@ -3,12 +3,10 @@ project(pythia8-tests CXX)
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH2})
 
-message("CMAKE_MODULE_PATH=${CMAKE_MODULE_PATH}")
-
 find_package(Pythia8 REQUIRED)
 find_package(HepMC REQUIRED)
 
-message("PYTHIA8_INCLUDE_DIR=${PYTHIA8_INCLUDE_DIRS}")
+message("PYTHIA8_INCLUDE_DIR=${PYTHIA8_INCLUDE_DIR}")
 
 find_package(FastJet REQUIRED)
 find_package(CLHEP REQUIRED)
