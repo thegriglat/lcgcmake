@@ -18,9 +18,7 @@
 
 #include "HepMC/GenEvent.h"
 // Following line to be used with HepMC 2.04 onwards.
-#ifdef HEPMC_HAS_UNITS
 #include "HepMC/Units.h"
-#endif
 
 #include "AnalyserHepMC.h"
 
@@ -34,11 +32,6 @@ int main() {
   HepMC::Pythia8ToHepMC ToHepMC;
 #else
   HepMC::I_Pythia8 ToHepMC;
-#endif
-#ifndef HEPMC_HAS_UNITS
-  // To have HepMC record in GeV with HepMC 2.03.11.
-  // Will work for pythia8 > 165
-  ToHepMC.set_convert_to_mev(false);
 #endif
 
   AnalyserHepMC AHMC;
@@ -127,17 +120,14 @@ int main() {
     }
 
     // HepMC installed on CERN AFS by default have MeV as energy units
-    // , though default HepMC units are GeV. For 
+    // (ATLAS standard...), though default HepMC units are GeV. For 
     // this reason, if the first line below is used, in pythia8
     // versions > 165 HepMC record will be in MeV
     // and we will have incorrect results
-#ifdef HEPMC_HAS_UNITS    
+
     //HepMC::GenEvent* hepmcevt = new HepMC::GenEvent();
     HepMC::GenEvent* hepmcevt =
       new HepMC::GenEvent(HepMC::Units::GEV, HepMC::Units::MM);
-#else
-    HepMC::GenEvent* hepmcevt = new HepMC::GenEvent();
-#endif
 
     ToHepMC.fill_next_event( event, hepmcevt );
     AHMC.analyse(hepmcevt);
