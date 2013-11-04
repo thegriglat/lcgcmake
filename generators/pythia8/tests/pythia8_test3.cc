@@ -5,7 +5,11 @@
 //
 //#@# 1: Average charged multiplicity of QCD events at the LHC, pthat cut 20 GeV
 //
-#include "Pythia.h"
+#ifdef PYTHIA8NEWVERS
+  #include "Pythia8/Pythia.h"
+#else
+  #include "Pythia.h"
+#endif
 using namespace Pythia8; 
 int main() {
   // Generator. Process selection. LHC initialization. Histogram.

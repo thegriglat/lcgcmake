@@ -5,8 +5,13 @@
 // #@# 1: average E(hadron(s))/E(tau) as given by PYTHIA
 
 //pythia header files
-#include "Pythia.h"
-#include "HepMCInterface.h"
+#ifdef PYTHIA8NEWVERS
+  #include "Pythia8/Pythia.h"
+  #include "Pythia8/Pythia8ToHepMC.h"
+#else
+  #include "Pythia.h"
+  #include "HepMCInterface.h"
+#endif
 
 #include "HepMC/IO_AsciiParticles.h"
 
@@ -49,7 +54,11 @@ double hratio(HepMC::GenEvent* HepMCEvt, double* hratio2)
 int main(int argc, char* argv[])
 {
   // Initialisation of pythia
+#ifdef PYTHIA8NEWVERS
+  HepMC::Pythia8ToHepMC ToHepMC;
+#else
   HepMC::I_Pythia8 ToHepMC;
+#endif
   Pythia pythia;
   
   // suppress full listing of first events in pythia8 > 160
