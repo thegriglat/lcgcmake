@@ -16,7 +16,5 @@ include_directories(${HEPMC_INCLUDE_DIR} ${ROOT_INCLUDE_DIR} ${PYTHIA8_INCLUDE_D
 
 set(TEST_DIR ${MCTESTER_ROOT_DIR}/../share/sources/examples-C++)
 
-add_executable(mctester_test_pythia8 ${TEST_DIR}/pythia/pythia_test.cc)
-target_link_libraries(mctester_test_pythia8   ${HEPMC_LIBRARY} ${PYTHIA8_LIBRARIES} ${ROOT_Core_LIBRARY} ${MCTESTER_LIBRARIES} )
-
-
+add_executable(mctester_test_pyt8 ${TEST_DIR}/pythia/pythia_test.cc)
+target_link_libraries(mctester_test_pyt8 ${HEPMC_LIBRARY} ${PYTHIA8_LIBRARIES} ${ROOT_Core_LIBRARY} ${MCTESTER_LIBRARIES} )
