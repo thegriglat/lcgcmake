@@ -720,10 +720,10 @@ LCG_add_test(mctester-build
    -DROOTSYS=${ROOT_home}
    ENVIRONMENT ${library_path}=${mctester_home}/lib:${pythia8_home}/lib:${HepMC_home}/lib:$ENV{${library_path}})
   
-LCG_add_test(mctester_test_pythia8
+LCG_add_test(mctester_test_pyt8
     BINARY_DIR mctester/tests
     PRE_COMMAND ${CMAKE_COMMAND} -E create_symlink ${mctester_home}/../share/sources/examples-C++/pythia/SETUP.C SETUP.C
-    TEST_COMMAND mctester/tests/mctester_test_pythia8   
+    TEST_COMMAND mctester/tests/mctester_test_pyt8
     ENVIRONMENT ${library_path}=${ROOT_home}/lib:${mctester_home}/lib:${pythia8_home}/lib:${HepMC_home}/lib:$ENV{${library_path}} 
                 PYTHIA8DATA=${pythia8_home}/xmldoc
     DEPENDS mctester-build
