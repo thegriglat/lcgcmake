@@ -33,7 +33,7 @@ export BUILD_PREFIX=${WORKDIR}/${MODE}
 #---Run the CTest script-------------------------------------------
 echo "Starting CTest script for configuration ${CONFIG} at `date`" 
 
-ctest -V -S ${THIS}/lcgcmake-build.cmake
+ctest -LE PhysicsCheck -V -S ${THIS}/lcgcmake-build.cmake
 
 
 
