@@ -210,6 +210,8 @@ LCG_external_package(starlight         r43            ${MCGENPATH}/starlight    
 LCG_external_package(herwig            6.520.2        ${MCGENPATH}/herwig       )
 LCG_external_package(crmcold           v3400          ${MCGENPATH}/crmc         )
 LCG_external_package(crmc              1.0            ${MCGENPATH}/crmc         )
+LCG_external_package(crmc              1.2            ${MCGENPATH}/crmc         )
+
 
 LCG_external_package(cython            0.19.1         ${MCGENPATH}/cython       )
 
