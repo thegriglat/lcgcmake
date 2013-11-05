@@ -643,6 +643,7 @@ LCG_add_test(sherpa_orig_test2
   ENVIRONMENT
     ${library_path}=${sherpa_home}/lib:${HepMC_home}/lib:${lhapdf_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:$ENV{${library_path}}
     PWD=.
+  LABELS PhysicsCheck
 )
 
 

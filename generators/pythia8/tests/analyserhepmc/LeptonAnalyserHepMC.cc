@@ -43,6 +43,7 @@ std::vector<HepMC::GenParticle>
           if(fabs(phi0-phii-6.2832) < fabs(dphi)) dphi = phi0-phii-6.2832;
           if(fabs(phi0-phii+6.2832) < fabs(dphi)) dphi = phi0-phii+6.2832;
           dist = sqrt( (eta0-etai)*(eta0-etai) + dphi*dphi );
+           std::cout << " phi0 " <<phi0 <<  "  phii   " << phii << "  dphi  =    " <<  dphi  << std::endl;
           if(dist < RConeIsol && pti > MaxPtIsol ) { isol = false; break;}
         }
       }
