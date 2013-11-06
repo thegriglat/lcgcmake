@@ -18,14 +18,13 @@ endif()
 find_package(HepMC REQUIRED)
 
 find_package(FastJet REQUIRED)
-find_package(CLHEP REQUIRED)
 
-include_directories(${CMAKE_SOURCE_DIR}/analyserhepmc ${PYTHIA8_INCLUDE_DIR} ${HEPMC_INCLUDE_DIR} ${FASTJET_INCLUDE_DIR} ${CLHEP_INCLUDE_DIR})
+include_directories(${CMAKE_SOURCE_DIR}/analyserhepmc ${PYTHIA8_INCLUDE_DIR} ${HEPMC_INCLUDE_DIR} ${FASTJET_INCLUDE_DIR})
 
 set(TESTS_DIR ${PYTHIA8_ROOT_DIR}/../share/sources/examples)
 
 add_executable(pythia8_genser_test1 pythia8_test1.cc analyserhepmc/AnalyserHepMC.cc analyserhepmc/LeptonAnalyserHepMC.cc analyserhepmc/JetInputHepMC.cc)
-target_link_libraries(pythia8_genser_test1 ${PYTHIA8_LIBRARIES} ${HEPMC_LIBRARIES} ${FASTJET_LIBRARIES} ${CLHEP_LIBRARIES})
+target_link_libraries(pythia8_genser_test1 ${PYTHIA8_LIBRARIES} ${HEPMC_LIBRARIES} ${FASTJET_LIBRARIES})
 
 #add_executable(pythia8_genser_test2 pythia8_test2.cc)
 #target_link_libraries(pythia8_genser_test2 ${PYTHIA8_LIBRARIES} ${HEPMC_LIBRARIES})
