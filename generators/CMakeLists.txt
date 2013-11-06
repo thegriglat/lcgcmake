@@ -114,7 +114,7 @@ LCG_add_test(pythia8-build
    -DCMAKE_MODULE_PATH=${CMAKE_SOURCE_DIR}/cmake/modules
    -DCMAKE_MODULE_PATH2=${cmaketools_home}/modules
    -DPYTHIA8_ROOT_DIR=${pythia8_home} -DHEPMC_ROOT_DIR=${HepMC_home}
-   -DFASTJET_ROOT_DIR=${fastjet_home} -DCLHEP_ROOT_DIR=${CLHEP_home}
+   -DFASTJET_ROOT_DIR=${fastjet_home}
 )
 
 foreach(t genser_test3 genser_test4 orig_test1)
@@ -131,7 +131,7 @@ LCG_add_test(pythia8-genser_test1
   ENVIRONMENT
     ${library_path}=${pythia8_home}/lib:${HepMC_home}/lib:$ENV{${library_path}}
     PYTHIA8DATA=${pythia8_home}/xmldoc
-  DEPENDS pythia8-build CLHEP
+  DEPENDS pythia8-build
   LABELS PhysicsCheck
 )
 
