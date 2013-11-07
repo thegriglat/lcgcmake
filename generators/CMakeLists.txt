@@ -128,12 +128,25 @@ endforeach()
 
 LCG_add_test(pythia8-genser_test1
   TEST_COMMAND pythia8/tests/pythia8_genser_test1
+  POST_COMMAND ${CMAKE_COMMAND} -E copy testi.dat test.dat
   ENVIRONMENT
     ${library_path}=${pythia8_home}/lib:${HepMC_home}/lib:$ENV{${library_path}}
     PYTHIA8DATA=${pythia8_home}/xmldoc
   DEPENDS pythia8-build
   LABELS PhysicsCheck
 )
+
+LCG_add_test(pythia8-genser_test2
+  PRE_COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/pythia8_test2.cmnd .
+  TEST_COMMAND pythia8/tests/pythia8_genser_test2
+  POST_COMMAND ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/mergetest
+  ENVIRONMENT
+    ${library_path}=${pythia8_home}/lib:${HepMC_home}/lib:$ENV{${library_path}}
+    PYTHIA8DATA=${pythia8_home}/xmldoc
+  DEPENDS pythia8-build pythia8-genser_test1
+  LABELS PhysicsCheck
+)
+
 
 
 #---ThePEG------------------------------------------------------------------------------------------
