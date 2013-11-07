@@ -53,15 +53,27 @@ macro(LCGPackage_Add name)
     string(SUBSTRING "${longtargethash}" 0 5 targethash )
     set( ${targetname}_hash ${targethash} PARENT_SCOPE)
 
+    #---Deal with deatination name (bundle packages)--------------------------------------------------
+    if(ARG_DEST_NAME)
+      set(dest_name ${ARG_DEST_NAME})
+      set(dest_version ${${ARG_DEST_NAME}_native_version})
+      set(curr_name ${name})
+    else()
+      set(dest_name ${name})
+      set(dest_version ${version})
+      set(curr_name)
+    endif()
+
     #---Install path----------------------------------------------------------------------------------
-    set(install_path ${${name}_directory_name}/${version}/${LCG_system})
+    set(install_path ${${dest_name}_directory_name}/${dest_version}/${LCG_system})
 
     #---Check if the version file is already existing in the installation area(s)---------------------
+    #   The checking is different for bundled packages (i.e. ARG_DEST_NAME)
     set(${targetname}_version_checked 0)
     set(${targetname}_version_file ${LCG_INSTALL_PREFIX}/${install_path}/version.txt)
     if(EXISTS ${${targetname}_version_file})
       file(STRINGS ${${targetname}_version_file} full_version)
-      if(full_version STREQUAL ${${name}_full_version})
+      if(full_version STREQUAL ${${name}_full_version} OR  ARG_DEST_NAME)
         set(${targetname}_version_checked 1)
       endif()
     endif()
@@ -70,11 +82,11 @@ macro(LCGPackage_Add name)
     list(FIND LCG_IGNORE ${name} lcg_ignore)
 
     #---Check if the package is already existing in the installation area(s)
-    if(lcg_ignore EQUAL -1 AND NOT ARG_BUNDLE_PACKAGE AND
+    if(lcg_ignore EQUAL -1 AND
        (${${targetname}_version_checked} OR (EXISTS ${LCG_INSTALL_PREFIX}/${install_path} AND NOT EXISTS ${LCG_INSTALL_PREFIX}/${install_path}/version.txt)) )
       set(${name}_home ${CMAKE_INSTALL_PREFIX}/${install_path})
       set(${targetname}_home ${${name}_home})
-      add_custom_target(${targetname} ALL COMMAND ${CMAKE_COMMAND} -E make_directory  ${CMAKE_INSTALL_PREFIX}/${${name}_directory_name}/${version}
+      add_custom_target(${targetname} ALL COMMAND ${CMAKE_COMMAND} -E make_directory  ${CMAKE_INSTALL_PREFIX}/${${dest_name}_directory_name}/${dest_version}
                                           COMMAND ${CMAKE_COMMAND} -E create_symlink ${LCG_INSTALL_PREFIX}/${install_path} ${CMAKE_INSTALL_PREFIX}/${install_path}
                                           COMMENT "${targetname} package already existing in ${LCG_INSTALL_PREFIX}/${install_path}. Making a soft-link.")
       add_custom_target(clean-${targetname} COMMAND ${CMAKE_COMMAND} -E remove ${CMAKE_INSTALL_PREFIX}/${install_path}
@@ -83,7 +95,7 @@ macro(LCGPackage_Add name)
         add_dependencies(${targetname} ${DEPENDS})
       endif()
 
-    elseif(lcg_ignore EQUAL -1 AND NOT ARG_BUNDLE_PACKAGE AND EXISTS ${LCG_INSTALL_PREFIX}/../app/releases/${install_path})
+    elseif(lcg_ignore EQUAL -1 AND EXISTS ${LCG_INSTALL_PREFIX}/../app/releases/${install_path})
       get_filename_component(_path ${LCG_INSTALL_PREFIX} PATH)
       set(_path ${_path}/app/releases/${install_path})
       if(${name} STREQUAL ROOT)  # ROOT in LCG installations is special
@@ -100,24 +112,11 @@ macro(LCGPackage_Add name)
       #---Set home and install name-------------------------------------------------------------------
       set(${name}_home            ${CMAKE_INSTALL_PREFIX}/${${name}_directory_name}/${version}/${LCG_system})
       set(${name}-${version}_home ${CMAKE_INSTALL_PREFIX}/${${name}_directory_name}/${version}/${LCG_system})
-      if(IS_SYMLINK ${${name}_home})  #---Remove symlink otherwise installation may happen at the wrong place
-        file(REMOVE ${${name}_home})
-      endif()
-      if(ARG_DEST_NAME)
-        set(dest_name ${ARG_DEST_NAME})
-        set(dest_version ${${ARG_DEST_NAME}_native_version})
-        set(curr_name ${name})
-      else()
-        set(dest_name ${name})
-        set(dest_version ${version})
-        set(curr_name)
-      endif()
-      set(${targetname}_dest_name ${dest_name} PARENT_SCOPE)
-     
+      set(${targetname}_dest_name ${dest_name} PARENT_SCOPE)     
       
       #---Remove previous sym-links------------------------------------------------------------------
       if(IS_SYMLINK ${${name}_home})
-        file(REMOVE {${name}_home})
+        file(REMOVE ${${name}_home})
       endif()
       
       #---Check if a patch file exists and apply it by default---------------------------------------
