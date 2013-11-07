@@ -24,8 +24,10 @@ set(EXEC ${CMAKE_SOURCE_DIR}/cmake/scripts/exec-with-env)
 set(MAKE ${CMAKE_SOURCE_DIR}/cmake/scripts/make_verbose $(MAKE))
 
 #---Enable (the defintion) of tests by default-------------------------------------------------------------------------
-enable_testing()
-include(CTest)
+if(NOT $ENV{${mode}} STREQUAL "Install")
+ enable_testing()
+ include(CTest)
+endif()
 
 add_subdirectory(externals)
 add_subdirectory(gridexternals)
