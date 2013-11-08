@@ -147,6 +147,12 @@ LCG_add_test(pythia8-genser_test2
   LABELS PhysicsCheck
 )
 
+LCG_add_test(pythia8-compare
+  PRE_COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare .
+  TEST_COMMAND cmpr.sh test.dat html
+  DEPENDS pythia8-genser_test2
+  LABELS PhysicsCheck
+)
 
 
 #---ThePEG------------------------------------------------------------------------------------------
