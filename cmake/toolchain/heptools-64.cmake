@@ -155,5 +155,18 @@ endif()
 LCG_external_package(xrootd            3.1.0p2                                  )
 LCG_external_package(zlib              1.2.5                                    )
 
+
+set(MCGENPATH  MCGenerators_lcgcmt${heptools_version})
+
+#---Additional External packages------(Generators)-----------------
+
+LCG_external_package(lhapdf            5.8.9          ${MCGENPATH}/lhapdf       )
+
+LCG_external_package(lhapdfsets        5.8.9          lhapdfsets   )
+
+LCG_external_package(pythia8           175.lhetau     ${MCGENPATH}/pythia8      author=175     )
+
+
+
 # Prepare the search paths according to the versions above
 LCG_prepare_paths()
