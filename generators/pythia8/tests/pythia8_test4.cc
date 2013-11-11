@@ -67,7 +67,7 @@ int main(int argc, char* argv[])
   //HepMC::IO_AsciiParticles ascii_io("example_PythiaParticle.dat",std::ios::out);
   //HepMC::IO_AsciiParticles ascii_io1("cout",std::ios::out);
   
-  int NumberOfEvents = 500;
+  int NumberOfEvents = 2000;
   if(argc>3) NumberOfEvents = atoi(argv[3]);
   
   bool ShowersOn = true;
@@ -142,7 +142,8 @@ int main(int argc, char* argv[])
        << "        *" << endl;
   cout << "******************************************************" << endl;
 
-  cout << "pythia8_test4 1  " << rpyt << "    " << erpyt << " " << std::endl;
+  ofstream testi("testi.dat");
+  testi << "pythia8_test4 1  " << rpyt << "    " << erpyt << " " << std::endl;
 
   pythia.statistics();
 }

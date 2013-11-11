@@ -143,6 +143,7 @@ print_html () {
     export result="BAD"
   elif [[ "$end" != "${end/BADSTAT/}" ]] ; then
     color="#4aa1ff"
+    export result="BAD"
   elif [[ "$end" != "${end/DEVIATION/}" ]] ; then
     color="#ffaa00"
     export result="BAD"
@@ -224,7 +225,6 @@ process_tests () {
           result="[TEST_FAILED]"
           rm -f fresult
           echo BAD > fresult
-
         fi
         
         # NOTE: if both - reference and test is missing

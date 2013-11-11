@@ -6,3 +6,5 @@ pythia8_test1  5   366.514 3.59942
 pythia8_test1  6   175.102 1.72066
 pythia8_test2  1   2.10329e-06 2.10329e-08 
 pythia8_test2  2   0.0721 0.00268514 
+pythia8_test3  1   190.394 1.73354         ! pythia8-130-slc4_is32_gcc34
+pythia8_test4  1   0.583869    0.00275581  ! pythia8 163
