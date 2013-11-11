@@ -37,48 +37,28 @@ target_link_libraries(pythia8_genser_test4 ${PYTHIA8_LIBRARIES} ${HEPMC_LIBRARIE
 
 
 add_executable(pythia8_orig_test1 ${TESTS_DIR}/main01.cc)
-target_link_libraries(pythia8_orig_test1 ${PYTHIA8_LIBRARIES} ${HEPMC_LIBRARIES})
+target_link_libraries(pythia8_orig_test1 ${PYTHIA8_LIBRARY} ${PYTHIA8_lhapdfdummy_LIBRARY})
 
 add_executable(pythia8_orig_test2 ${TESTS_DIR}/main02.cc)
-target_link_libraries(pythia8_orig_test2 ${PYTHIA8_LIBRARIES} ${HEPMC_LIBRARIES})
+target_link_libraries(pythia8_orig_test2 ${PYTHIA8_LIBRARY} ${PYTHIA8_lhapdfdummy_LIBRARY})
 
 add_executable(pythia8_orig_test3 ${TESTS_DIR}/main03.cc)
-target_link_libraries(pythia8_orig_test3 ${PYTHIA8_LIBRARIES} ${HEPMC_LIBRARIES})
+target_link_libraries(pythia8_orig_test3 ${PYTHIA8_LIBRARY} ${PYTHIA8_lhapdfdummy_LIBRARY})
 
 add_executable(pythia8_orig_test4 ${TESTS_DIR}/main04.cc)
-target_link_libraries(pythia8_orig_test4 ${PYTHIA8_LIBRARIES} ${HEPMC_LIBRARIES})
+target_link_libraries(pythia8_orig_test4 ${PYTHIA8_LIBRARY} ${PYTHIA8_lhapdfdummy_LIBRARY})
 
 add_executable(pythia8_orig_test5 ${TESTS_DIR}/main05.cc)
-target_link_libraries(pythia8_orig_test5 ${PYTHIA8_LIBRARIES} ${HEPMC_LIBRARIES})
+target_link_libraries(pythia8_orig_test5 ${PYTHIA8_LIBRARY} ${PYTHIA8_lhapdfdummy_LIBRARY})
 
 add_executable(pythia8_orig_test6 ${TESTS_DIR}/main06.cc)
-target_link_libraries(pythia8_orig_test6 ${PYTHIA8_LIBRARIES} ${HEPMC_LIBRARIES})
+target_link_libraries(pythia8_orig_test6 ${PYTHIA8_LIBRARY} ${PYTHIA8_lhapdfdummy_LIBRARY})
 
 add_executable(pythia8_orig_test7 ${TESTS_DIR}/main07.cc)
-target_link_libraries(pythia8_orig_test7 ${PYTHIA8_LIBRARIES} ${HEPMC_LIBRARIES})
+target_link_libraries(pythia8_orig_test7 ${PYTHIA8_LIBRARY} ${PYTHIA8_lhapdfdummy_LIBRARY})
 
 add_executable(pythia8_orig_test8 ${TESTS_DIR}/main08.cc)
-target_link_libraries(pythia8_orig_test8 ${PYTHIA8_LIBRARIES} ${HEPMC_LIBRARIES})
+target_link_libraries(pythia8_orig_test8 ${PYTHIA8_LIBRARY} ${PYTHIA8_lhapdfdummy_LIBRARY})
 
 add_executable(pythia8_orig_test9 ${TESTS_DIR}/main09.cc)
-target_link_libraries(pythia8_orig_test9 ${PYTHIA8_LIBRARIES} ${HEPMC_LIBRARIES})
-
-add_executable(pythia8_orig_test10 ${TESTS_DIR}/main10.cc)
-target_link_libraries(pythia8_orig_test10 ${PYTHIA8_LIBRARIES} ${HEPMC_LIBRARIES})
-
-add_executable(pythia8_orig_test11 ${TESTS_DIR}/main11.cc)
-target_link_libraries(pythia8_orig_test11 ${PYTHIA8_LIBRARIES} ${HEPMC_LIBRARIES})
-
-add_executable(pythia8_orig_test12 ${TESTS_DIR}/main12.cc)
-target_link_libraries(pythia8_orig_test12 ${PYTHIA8_LIBRARIES} ${HEPMC_LIBRARIES})
-
-add_executable(pythia8_orig_test13 ${TESTS_DIR}/main13.cc)
-target_link_libraries(pythia8_orig_test13 ${PYTHIA8_LIBRARIES} ${HEPMC_LIBRARIES})
-
-add_executable(pythia8_orig_test14 ${TESTS_DIR}/main14.cc)
-target_link_libraries(pythia8_orig_test14 ${PYTHIA8_LIBRARIES} ${HEPMC_LIBRARIES})
-
-add_executable(pythia8_orig_test15 ${TESTS_DIR}/main15.cc)
-target_link_libraries(pythia8_orig_test15 ${PYTHIA8_LIBRARIES} ${HEPMC_LIBRARIES})
-
-
+target_link_libraries(pythia8_orig_test9 ${PYTHIA8_LIBRARY} ${PYTHIA8_lhapdfdummy_LIBRARY})
