@@ -284,13 +284,37 @@ LCGPackage_Add(
          COMMAND ${CMAKE_COMMAND} -E remove <SOURCE_DIR>/splitter.pl
   CMAKE_ARGS -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
 )
-LCG_add_test(pythia6-test1 TEST_COMMAND pythia6/tests/pythia6_test1
-                           BINARY_DIR pythia6/tests
-                           SOURCE_DIR pythia6/tests
-                           BUILD pythia6_test1
-                           BUILD_OPTIONS -DCMAKE_MODULE_PATH=${cmaketools_home}/modules 
-                                         -DPYTHIA6_ROOT_DIR=${pythia6_home} -DHEPMC_ROOT_DIR=${HepMC_home}
-                           ENVIRONMENT ${library_path}=${pythia6_home}/lib:${HepMC_home}/lib:$ENV{${library_path}})
+
+LCG_add_test(pythia6-build
+  BINARY_DIR pythia6/tests
+  SOURCE_DIR pythia6/tests
+  BUILD all
+  BUILD_OPTIONS -DCMAKE_MODULE_PATH=${CMAKE_SOURCE_DIR}/cmake/modules
+                -DCMAKE_MODULE_PATH2=${cmaketools_home}/modules
+                -DPYTHIA6_ROOT_DIR=${pythia6_home} -DHEPMC_ROOT_DIR=${HepMC_home}
+                -DFASTJET_ROOT_DIR=${fastjet_home}
+  ENVIRONMENT ${library_path}=${pythia6_home}/lib:${HepMC_home}/lib:$ENV{${library_path}})
+
+LCG_add_test(pythia6-orig_test1
+  TEST_COMMAND pythia6/tests/pythia6_orig_test1
+  ENVIRONMENT ${library_path}=${pythia6_home}/lib:${HepMC_home}/lib:$ENV{${library_path}}
+  DEPENDS pythia6-build)
+
+LCG_add_test(pythia6-genser_test1
+  TEST_COMMAND pythia6/tests/pythia6_genser_test1
+  POST_COMMAND ${CMAKE_COMMAND} -E copy testi.dat test.dat
+  ENVIRONMENT ${library_path}=${pythia6_home}/lib:${HepMC_home}/lib:$ENV{${library_path}}
+  DEPENDS pythia6-build
+  LABELS PhysicsCheck)
+
+LCG_add_test(pythia6-compare
+  PRE_COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare .
+  TEST_COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/generators/pythia6/tests/reference.dat .
+  POST_COMMAND cmpr.sh
+  DEPENDS pythia6-genser_test1
+  LABELS PhysicsCheck
+)
+
 
 #---agile------------------------------------------------------------------------------------------  
 LCGPackage_Add(
