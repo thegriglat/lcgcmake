@@ -117,14 +117,19 @@ LCG_add_test(pythia8-build
    -DFASTJET_ROOT_DIR=${fastjet_home}
 )
 
-foreach(t genser_test3 genser_test4 orig_test1)
-  LCG_add_test(pythia8-${t}
-    TEST_COMMAND pythia8/tests/pythia8_${t}
-    ENVIRONMENT
-      ${library_path}=${pythia8_home}/lib:${HepMC_home}/lib:$ENV{${library_path}}
-      PYTHIA8DATA=${pythia8_home}/xmldoc
-    DEPENDS pythia8-build)
-endforeach()
+LCG_add_test(pythia8-genser_test1_nightly
+  TEST_COMMAND pythia8/tests/pythia8_genser_test1
+  ENVIRONMENT
+    ${library_path}=${pythia8_home}/lib:${HepMC_home}/lib:$ENV{${library_path}}
+    PYTHIA8DATA=${pythia8_home}/xmldoc
+  DEPENDS pythia8-build)
+
+LCG_add_test(pythia8-orig_test1
+  TEST_COMMAND pythia8/tests/pythia8_orig_test1
+  ENVIRONMENT
+    ${library_path}=${pythia8_home}/lib:$ENV{${library_path}}
+    PYTHIA8DATA=${pythia8_home}/xmldoc
+  DEPENDS pythia8-build)
 
 LCG_add_test(pythia8-genser_test1
   TEST_COMMAND pythia8/tests/pythia8_genser_test1
@@ -139,6 +144,26 @@ LCG_add_test(pythia8-genser_test1
 LCG_add_test(pythia8-genser_test2
   PRE_COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/pythia8_test2.cmnd .
   TEST_COMMAND pythia8/tests/pythia8_genser_test2
+  POST_COMMAND ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/mergetest
+  ENVIRONMENT
+    ${library_path}=${pythia8_home}/lib:${HepMC_home}/lib:$ENV{${library_path}}
+    PYTHIA8DATA=${pythia8_home}/xmldoc
+  DEPENDS pythia8-build pythia8-genser_test1
+  LABELS PhysicsCheck
+)
+
+LCG_add_test(pythia8-genser_test3
+  TEST_COMMAND pythia8/tests/pythia8_genser_test3
+  POST_COMMAND ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/mergetest
+  ENVIRONMENT
+    ${library_path}=${pythia8_home}/lib:$ENV{${library_path}}
+    PYTHIA8DATA=${pythia8_home}/xmldoc
+  DEPENDS pythia8-build pythia8-genser_test1
+  LABELS PhysicsCheck
+)
+
+LCG_add_test(pythia8-genser_test4
+  TEST_COMMAND pythia8/tests/pythia8_genser_test4
   POST_COMMAND ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/mergetest
   ENVIRONMENT
     ${library_path}=${pythia8_home}/lib:${HepMC_home}/lib:$ENV{${library_path}}
