@@ -1,0 +1,22 @@
+#--Needed to compile fastjet 3.0.3 on Apple LLVM version 5.0 (clang-500.2.79) (based on LLVM 3.3svn)
+--- plugins/CDFCones/CDFcode/JetCluAlgorithm.cc.orig	2012-06-13 16:14:51.000000000 +0200
++++ plugins/CDFCones/CDFcode/JetCluAlgorithm.cc	2013-10-28 14:05:27.000000000 +0100
+@@ -27,6 +27,7 @@
+ #include "Centroid.hh"
+ #include <algorithm>
+ #include <cmath>
++#include  <cstdlib>
+ 
+ #include <fastjet/internal/base.hh>
+ 
+--- plugins/D0RunIICone/ConeSplitMerge.hpp.orig	2013-10-28 14:14:26.000000000 +0100
++++ plugins/D0RunIICone/ConeSplitMerge.hpp	2013-10-28 14:13:40.000000000 +0100
+@@ -74,7 +74,7 @@
+ class ProtoJet_ET_seedET_order
+ {
+ public:
+-  bool operator()(const ProtoJet<Item> & first, const ProtoJet<Item> & second)
++  bool operator()(const ProtoJet<Item> & first, const ProtoJet<Item> & second) const
+   {
+     if ( first.pT() > second.pT() ) return true;
+     else

@@ -18,3 +18,25 @@
  	$(extShLibs)
  
  $(LIBEXT_ARCHIVE) : $(extobjects)
+--- src/EvtGenBase/EvtParticle.cpp.orig	2013-11-11 14:27:57.000000000 +0100
++++ src/EvtGenBase/EvtParticle.cpp	2013-11-11 18:09:01.000000000 +0100
+@@ -1154,13 +1154,13 @@
+     return;
+   }
+ 
+-  EvtId idArray[ndaugstore];
+-  unsigned int i;
+-  for (i = 0; i < ndaugstore; i++) {
+-    idArray[i] = idVector[i];
+-  }
++  //EvtId idArray(ndaugstore);
++  //unsigned int i;
++  //for (i = 0; i < ndaugstore; i++) {
++  //  idArray[i] = idVector[i];
++  // }
+ 
+-  this->makeDaughters(ndaugstore, idArray);
++  this->makeDaughters(ndaugstore, &idVector[0]);
+ 
+ }
+ 

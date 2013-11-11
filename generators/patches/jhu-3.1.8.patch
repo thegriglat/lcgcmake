@@ -1,3 +1,29 @@
+--- JHUGenerator/genps.c.orig	2013-11-11 09:21:57.000000000 +0100
++++ JHUGenerator/genps.c	2013-11-11 09:22:37.000000000 +0100
+@@ -7,12 +7,12 @@
+ #define EMCON_PREC 1e-13
+ 
+ 
+-inline double lsp(double *Mom1, double *Mom2){
++double lsp(double *Mom1, double *Mom2){
+    return Mom1[0]*Mom2[0] - Mom1[1]*Mom2[1] - Mom1[2]*Mom2[2] - Mom1[3]*Mom2[3];
+ };
+ 
+ 
+-inline void swapmom_(double *Mom1, double *Mom2){
++void swapmom_(double *Mom1, double *Mom2){
+ double tmp[4];
+ 
+    tmp[0]=Mom1[0];
+@@ -31,7 +31,7 @@
+    Mom2[3]=tmp[3];
+ };
+ 
+-inline void swapdbl_(double *r1, double *r2){
++void swapdbl_(double *r1, double *r2){
+ double tmp;
+ 
+    tmp=(*r1);
 --- JHUGenerator/makefile.orig	2013-09-04 18:09:12.000000000 +0200
 +++ JHUGenerator/makefile	2013-09-04 18:53:38.000000000 +0200
 @@ -1,22 +1,21 @@
@@ -48,3 +74,4 @@
  endif
 
  ccomp = gcc
+ 

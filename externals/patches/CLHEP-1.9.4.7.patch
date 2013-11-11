@@ -154,3 +154,21 @@ diff -r -u ../../../../LocalInstallArea/clhep/1.9.4.7/share/sources/CLHEP/config
     case "$target" in
     *-*-linux*)
        AM_CXXFLAGS="-O -ansi -pedantic -Wall -D_GNU_SOURCE"
+--- CLHEP/Random/src/TripleRand.cc.orig	2013-10-28 14:50:27.000000000 +0100
++++ CLHEP/Random/src/TripleRand.cc	2013-10-28 15:00:25.000000000 +0100
+@@ -224,13 +224,13 @@
+ 
+ TripleRand::operator float() {
+   return (float)
+-    ( ( integerCong ^ tausworthe ^ hurd ) * twoToMinus_32 
++    ( ( integerCong ^ tausworthe ^ (unsigned int)hurd ) * twoToMinus_32 
+ 					+ nearlyTwoToMinus_54 );
+ 					// make sure non-zero!
+ }
+ 
+ TripleRand::operator unsigned int() {
+-  return integerCong ^ tausworthe ^ hurd;
++  return integerCong ^ tausworthe ^ (unsigned int)hurd;
+ }
+ 
+ Hurd288Engine & TripleRand::Hurd() 	       { return hurd; }

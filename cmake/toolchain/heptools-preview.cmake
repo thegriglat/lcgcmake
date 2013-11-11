@@ -15,7 +15,7 @@ include(${CMAKE_CURRENT_LIST_DIR}/heptools-common.cmake)
 LCG_AA_project(COOL  COOL_2_8_19)
 LCG_AA_project(CORAL CORAL_2_3_28)
 LCG_AA_project(RELAX RELAX_1_3_0o)
-LCG_AA_project(ROOT  5.34.10)
+LCG_AA_project(ROOT  5.34.99)
 LCG_AA_project(LCGCMT LCGCMT_${heptools_version})
 
 # Compilers
@@ -43,10 +43,10 @@ LCG_external_package(cx_oracle         5.1.1                                    
 #LCG_external_package(dcache_srm        1.9.5-23                                 ) deprecated due to Grid/dcap 
 LCG_external_package(doxygen           1.8.2                                    ) 
 LCG_external_package(expat             2.0.1                                    )
-LCG_external_package(fastjet           3.0.3                                    )
+LCG_external_package(fastjet           3.0.6                                    )
 LCG_external_package(fftw              3.1.2                     fftw3          )
 LCG_external_package(Frontier_Client   2.8.7                     frontier_client)
-LCG_external_package(GCCXML            0.9.0_20120309p2          gccxml         )
+LCG_external_package(GCCXML            0.9.0_20131026            gccxml         )
 LCG_external_package(genshi            0.6                                      )
 LCG_external_package(graphviz          2.28.0                                   )
 LCG_external_package(GSL               1.10                                     )
@@ -160,10 +160,10 @@ LCG_external_package(lhapdfsets        5.9.1          lhapdfsets   )
 LCG_external_package(lhapdf6           6.0.3          ${MCGENPATH}/lhapdf6       )
 LCG_external_package(lhapdf6sets       6.0.0          ${MCGENPATH}/lhapdf6sets   )
 
-LCG_external_package(pythia8           180            ${MCGENPATH}/pythia8    author=180  )
 LCG_external_package(pythia8           175.lhetau     ${MCGENPATH}/pythia8    author=175  )
 LCG_external_package(pythia8           175            ${MCGENPATH}/pythia8    author=175  )
 LCG_external_package(pythia8           176            ${MCGENPATH}/pythia8    author=176  )
+LCG_external_package(pythia8           180            ${MCGENPATH}/pythia8    author=180  )
 
 LCG_external_package(thepeg            1.8.1          ${MCGENPATH}/thepeg       )
 LCG_external_package(thepeg            1.9.0          ${MCGENPATH}/thepeg       )
