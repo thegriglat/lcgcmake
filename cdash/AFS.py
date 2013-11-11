@@ -164,7 +164,7 @@ def create(path, vol, size=5000):
         return
         
     #print "creating volume "+vol+" of size "+str(size)+" and mounting at:", path,
-    cmd = afsAdmCmd + " create -q " + str(size) + " " + path + " " + vol
+    cmd = afsAdmCmd + " create -q " + str(size) + " -u sftnight " + path + " " + vol
     # print "going to execute:'"+cmd+"'"
     sin, sout, serr = os.popen3(cmd)
     if sout:
