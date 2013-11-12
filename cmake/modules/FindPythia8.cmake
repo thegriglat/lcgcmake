@@ -14,10 +14,8 @@
 find_path(PYTHIA8_INCLUDE_DIR Pythia.h Pythia8/Pythia.h
           HINTS $ENV{PYTHIA8_ROOT_DIR}/include ${PYTHIA8_ROOT_DIR}/include)
 
-message(PYTHIA8_INCLUDE_DIR=${PYTHIA8_INCLUDE_DIR})
 file(READ ${PYTHIA8_INCLUDE_DIR}/../xmldoc/Version.xml versionstr)
 string(REGEX REPLACE ".*Pythia:versionNumber.*default.*[0-9][.]([0-9]+).*" "\\1" PYTHIA8_VERSION "${versionstr}")
-message("PYTHIA8_VERSION=${PYTHIA8_VERSION}")
 
 find_library(PYTHIA8_LIBRARY NAMES pythia8 Pythia8
              HINTS $ENV{PYTHIA8_ROOT_DIR}/lib ${PYTHIA8_ROOT_DIR}/lib)
