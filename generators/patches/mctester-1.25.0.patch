@@ -9,3 +9,34 @@
  
  int main() {
  
+--- examples-C++/pythia/pythia_test.cc.orig	2013-11-12 19:17:43.000000000 +0100
++++ examples-C++/pythia/pythia_test.cc	2013-11-12 19:19:58.000000000 +0100
+@@ -4,8 +4,13 @@
+ 
+ 
+ //pythia header files
+-#include "Pythia.h"
+-#include "HepMCInterface.h"
++#if PYTHIA8_VERSION >= 180
++  #include "Pythia8/Pythia.h"
++  #include "Pythia8ToHepMC.h"
++#else
++  #include "Pythia.h"
++  #include "HepMCInterface.h"
++#endif
+ 
+ //HepMC header files
+ #include "HepMC/GenEvent.h"
+@@ -23,8 +28,11 @@
+ 
+   //Initialize MC-TESTER
+   MC_Initialize();
+-
++#if PYTHIA8_VERSION >= 180
++  HepMC::Pythia8ToHepMC ToHepMC;
++#else
+   HepMC::I_Pythia8 ToHepMC;
++#endif
+ 
+   // Initialization of pythia
+   Pythia pythia;

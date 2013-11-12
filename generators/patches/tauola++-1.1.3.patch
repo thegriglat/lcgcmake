@@ -1,0 +1,30 @@
+--- examples/taummk_pythia_example.cxx.orig	2013-11-12 19:09:52.000000000 +0100
++++ examples/taummk_pythia_example.cxx	2013-11-12 19:12:03.000000000 +0100
+@@ -16,8 +16,13 @@
+ #include "Tauola/TauolaHepMCEvent.h"
+ 
+ //pythia header files
+-#include "Pythia.h"
+-#include "HepMCInterface.h"
++#if PYTHIA8_VERSION >= 180
++  #include "Pythia8/Pythia.h"
++  #include "Pythia8ToHepMC.h"
++#else
++  #include "Pythia.h"
++  #include "HepMCInterface.h"
++#endif
+ 
+ #include "HepMC/IO_AsciiParticles.h"
+ 
+@@ -72,7 +77,11 @@
+ {
+ 	Log::SummaryAtExit();
+ 	// Initialization of pythia
++#if PYTHIA8_VERSION >= 180
++        HepMC::Pythia8ToHepMC ToHepMC;
++#else
+ 	HepMC::I_Pythia8 ToHepMC;
++#endif
+ 	Pythia pythia;
+ 	//HepMC::IO_AsciiParticles ascii_io("example_PythiaParticle.dat",std::ios::out);
+ 	HepMC::IO_AsciiParticles ascii_io1("cout",std::ios::out);
