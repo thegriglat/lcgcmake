@@ -157,6 +157,7 @@ LCG_external_package(lhapdfsets        5.9.0          lhapdfsets   )
 LCG_external_package(lhapdf6           6.0.3          ${MCGENPATH}/lhapdf6       )
 LCG_external_package(lhapdf6sets       6.0.0          ${MCGENPATH}/lhapdf6sets   )
 
+LCG_external_package(pythia8           180            ${MCGENPATH}/pythia8      author=180     )
 LCG_external_package(pythia8           175.lhetau     ${MCGENPATH}/pythia8      author=175     )
 LCG_external_package(pythia8           175            ${MCGENPATH}/pythia8      author=175     )
 LCG_external_package(pythia8           176            ${MCGENPATH}/pythia8      author=176     )
@@ -173,6 +174,7 @@ LCG_external_package(tauola++          1.1.3          ${MCGENPATH}/tauola++     
 LCG_external_package(tauola++          1.1.1          ${MCGENPATH}/tauola++     )
 LCG_external_package(tauola++          1.1.1a         ${MCGENPATH}/tauola++     )
 
+LCG_external_package(pythia6           428.2          ${MCGENPATH}/pythia6        author=6.4.28 hepevt=10000  )
 LCG_external_package(pythia6           427.2          ${MCGENPATH}/pythia6        author=6.4.27 hepevt=10000  )
 LCG_external_package(agile             1.4.0          ${MCGENPATH}/agile        )
 LCG_external_package(photos++          3.52           ${MCGENPATH}/photos++     )
