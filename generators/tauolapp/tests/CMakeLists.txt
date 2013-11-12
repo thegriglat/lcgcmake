@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 2.8 FATAL_ERROR)
 project(tauolapp-tests CXX)
 
-list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/../../../cmake/modules)
+set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/../../../cmake/modules ${CMAKE_MODULE_PATH})
 
 find_package(Tauolapp REQUIRED)
 find_package(Pythia8 REQUIRED)
@@ -9,7 +9,8 @@ find_package(HepMC REQUIRED)
 
 set(TEST_DIR ${TAUOLAPP_ROOT_DIR}/../share/sources/examples/)
 
-include_directories(${TAUOLAPP_INCLUDE_DIR} ${HEPMC_INCLUDE_DIR} ${PYTHIA8_INCLUDE_DIR})
+include_directories(${TAUOLAPP_INCLUDE_DIR} ${HEPMC_INCLUDE_DIR} ${PYTHIA8_INCLUDE_DIRS})
+add_definitions(-DPYTHIA8_VERSION=${PYTHIA8_VERSION})
 
 add_executable(tauolapp_orig_test1 ${TEST_DIR}/taumain_stand_alone_example.cxx)
 target_link_libraries(tauolapp_orig_test1 ${TAUOLAPP_INTERFACE_LIBRARY} ${TAUOLAPP_FORTRAN_LIBRARY} ${HEPMC_LIBRARIES})

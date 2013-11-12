@@ -21,8 +21,13 @@
 #include "Tauola/TauolaHepMCEvent.h"
 
 //pythia header files
-#include "Pythia.h"
-#include "HepMCInterface.h"
+#if PYTHIA8_VERSION >= 180
+  #include "Pythia8/Pythia.h"
+  #include "Pythia8ToHepMC.h"
+#else
+  #include "Pythia.h"
+  #include "HepMCInterface.h"
+#endif
 
 #include "HepMC/IO_AsciiParticles.h"
 
@@ -66,7 +71,11 @@ int main(int argc, char* argv[])
 {
   Tauolapp::Log::SummaryAtExit();
   // Initialisation of pythia
+#if PYTHIA8_VERSION >= 180
+  HepMC::Pythia8ToHepMC ToHepMC;
+#else
   HepMC::I_Pythia8 ToHepMC;
+#endif
   Pythia pythia;
   
   // suppress full listing of first events in pythia8 > 160

@@ -12,8 +12,13 @@
  */
 
 //pythia header files
-#include "Pythia.h"
-#include "HepMCInterface.h"
+#if PYTHIA8_VERSION >= 180
+  #include "Pythia8/Pythia.h"
+  #include "Pythia8ToHepMC.h"
+#else
+  #include "Pythia.h"
+  #include "HepMCInterface.h"
+#endif
 
 //PHOTOS header files
 #include "Photos/Photos.h"
@@ -62,7 +67,11 @@ double calculate_ratio(HepMC::GenEvent *evt, double *ratio_2)
 int main(int argc,char **argv)
 {
 	// Initialization of pythia
+#if PYTHIA8_VERSION >= 180
+        HepMC::Pythia8ToHepMC ToHepMC;
+#else
 	HepMC::I_Pythia8 ToHepMC;
+#endif
 	Pythia pythia;
 	Event& event = pythia.event;
 	//pythia.settings.listAll();
