@@ -403,8 +403,8 @@ if(NOT APPLE) # There are problems building on MacOSX
     CONFIGURE_COMMAND <VOID>
     BUILD_COMMAND  <VOID>
     INSTALL_COMMAND make install PREFIX=<INSTALL_DIR>
-          COMMAND ${CMAKE_COMMAND} -E rename <INSTALL_DIR>/usr/bin <INSTALL_DIR>/bin
-          COMMAND ${CMAKE_COMMAND} -E rename <INSTALL_DIR>/usr/share/man <INSTALL_DIR>/man 
+          COMMAND ${CMAKE_COMMAND} -E copy_directory <INSTALL_DIR>/usr/bin <INSTALL_DIR>/bin
+          COMMAND ${CMAKE_COMMAND} -E copy_directory <INSTALL_DIR>/usr/share/man <INSTALL_DIR>/man 
           COMMAND ${CMAKE_COMMAND} -E remove_directory <INSTALL_DIR>/usr/share
           COMMAND ${CMAKE_COMMAND} -E remove_directory <INSTALL_DIR>/usr/
     BUILD_IN_SOURCE 1
