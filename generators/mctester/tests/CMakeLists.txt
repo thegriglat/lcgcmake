@@ -13,6 +13,7 @@ find_package(Pythia8 REQUIRED)
 
 
 include_directories(${HEPMC_INCLUDE_DIR} ${ROOT_INCLUDE_DIR} ${PYTHIA8_INCLUDE_DIRS} ${MCTESTER_INCLUDE_DIR} )
+add_definitions(-DPYTHIA8_VERSION=${PYTHIA8_VERSION})
 
 set(TEST_DIR ${MCTESTER_ROOT_DIR}/../share/sources/examples-C++)
 
