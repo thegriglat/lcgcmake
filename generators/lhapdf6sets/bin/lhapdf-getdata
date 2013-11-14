@@ -161,3 +161,10 @@ if __name__ == '__main__':
 			tar.extractall(opts.DEST)
 			tar.close()
 			os.remove(file)
+			myfile=f[:-len(".tar.gz")]
+			pdfpath = opts.DEST + "/" + myfile
+			os.chdir(opts.DEST)
+			if not os.path.exists("allsets"):
+    				os.makedirs("allsets")
+			for item in os.listdir(myfile):
+			    os.symlink( "../" + myfile + "/" + item, opts.DEST + "/allsets/" + item )	
