@@ -534,19 +534,27 @@ LCGPackage_Add(
   DEPENDS Python Boost cython
 )
 
+
 #---lhapdf6sets--------------------------------------------------------------------------------------
+
 LCGPackage_Add(
   lhapdf6sets
-  DOWNLOAD_COMMAND <VOID>
+  DOWNLOAD_COMMAND <VOID> 
+  UPDATE_COMMAND ${CMAKE_COMMAND} -DSRC=${CMAKE_CURRENT_SOURCE_DIR}/lhapdf6sets/ -DDST=<SOURCE_DIR> -P ${CMAKE_SOURCE_DIR}/cmake/scripts/copy.cmake
+  BINARY_PACKAGE 1
   CONFIGURE_COMMAND <VOID>
   BUILD_COMMAND <VOID>
-  INSTALL_COMMAND ${CMAKE_COMMAND} -E make_directory <INSTALL_DIR>/../share/LHAPDF
+  INSTALL_COMMAND ${CMAKE_COMMAND} -E make_directory <INSTALL_DIR>
           COMMAND ${CMAKE_COMMAND}
-           -Dbase_url=http://www.hepforge.org/archive/lhapdf/pdfsets/<NATIVE_VERSION>
-           -Dpdf_sets=CT10,CT10nlo,cteq6l1
+           -Ddistr=<SOURCE_DIR>
+           -Drepo=http://www.hepforge.org/archive/lhapdf/pdfsets/<NATIVE_VERSION>
+           -DPDFsets=${PDFsets}
            -Ddst_dir=<INSTALL_DIR>/../share/LHAPDF
-           -P ${CMAKE_CURRENT_SOURCE_DIR}/lhapdf6/pdfsets.cmake
+           -P ${CMAKE_CURRENT_SOURCE_DIR}/lhapdf6sets/pdfsets.cmake
+          COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/lhapdf6sets/mktarball.sh <INSTALL_DIR> <NATIVE_VERSION>
+
 )
+
 
 #---lhapdf6------------------------------------------------------------------------------------------
 LCGPackage_Add(
