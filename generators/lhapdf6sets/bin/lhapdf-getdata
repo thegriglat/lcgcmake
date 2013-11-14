@@ -130,13 +130,14 @@ if __name__ == '__main__':
     logging.info("Installing sets to %s" % opts.DEST)
     filenames = []
     if opts.ALL:
-        filenames = allpdffiles
-    else:
-        import re
-        for pattern in args:
-            patt_re = re.compile(pattern, re.I)
-            for f in allpdffiles:
-                if f in filenames:
+	args=".gz LHgrid LHpdf"
+#        filenames = allpdffiles
+#    else:
+    import re
+    for pattern in args:
+        patt_re = re.compile(pattern, re.I)
+        for f in allpdffiles:
+        	if f in filenames:
                     continue
                 if patt_re.search(f) or patt_re.match(f):
                     filenames.append(f)
