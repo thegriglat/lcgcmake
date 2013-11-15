@@ -200,8 +200,10 @@ set(MCGENPATH  MCGenerators_lcgcmt${heptools_version})
 #---Additional External packages------(Generators)-----------------
 
 LCG_external_package(lhapdf            5.8.9          ${MCGENPATH}/lhapdf       )
+LCG_external_package(lhapdf            5.8.8          ${MCGENPATH}/lhapdf       )
 
 LCG_external_package(lhapdfsets        5.8.9          lhapdfsets   )
+LCG_external_package(lhapdfsets        5.8.8          lhapdfsets   )
 
 LCG_external_package(pythia6           428.2          ${MCGENPATH}/pythia6        author=6.4.28 hepevt=10000  )
 
@@ -210,6 +212,11 @@ LCG_external_package(pythia8           175.lhetau     ${MCGENPATH}/pythia8      
 
 LCG_external_package(starlight         r43            ${MCGENPATH}/starlight    )
 
+
+LCG_external_package(rivet             1.8.2          ${MCGENPATH}/rivet)
+
+# sherpa depedencies: lhapdf HepMC rivet
+LCG_external_package(sherpa            1.4.5.2        ${MCGENPATH}/sherpa         author=1.4.5 hepevt=10000 )
 
 # Prepare the search paths according to the versions above
 LCG_prepare_paths()
