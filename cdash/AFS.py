@@ -3,7 +3,7 @@
 #TODO: migrate to a proper usage of exceptions
 #      introduce an AFSVolume class 
 
-import os, sys
+import os, sys, subprocess
 
 global fsCmd
 
@@ -24,14 +24,16 @@ def available():
 #
 def getVolumeSize(path):
     if not available() : return None
-    sin, sout, serr = os.popen3(fsCmd + " lq " + path)
+    p = subprocess.Popen(fsCmd+" lq "+path,shell=True,stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, close_fds=True)
+    (sin, sout, serr) = (p.stdin, p.stdout,p.stderr)
+    #sin, sout, serr = os.popen3(fsCmd + " lq " + path) -- obsolete (EG)
     if sout:
         for line in sout.readlines():
-            # print "got:"+line[:-1]
+            #print "got:"+line[:-1]
             words = line.split()
             volname = words[0].split('.')
             if ( words[0][:8] == "p.sw.lcg" ) : return words[2]
-            if ( words[0][:7] == "q.swlcg"  ) : return words[2]
+            #print "words:"+words[0][:8]
     if serr:
         errLines = serr.readlines()
         if errLines and len(errLines)>0 :
@@ -43,14 +45,15 @@ def getVolumeSize(path):
 #
 def getVolume(path):
     if not available() : return None
-    sin, sout, serr = os.popen3(fsCmd + " lq " + path)
+    p = subprocess.Popen(fsCmd+" lq "+path,shell=True,stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, close_fds=True)
+    (sin, sout, serr) = (p.stdin, p.stdout,p.stderr)
+    #sin, sout, serr = os.popen3(fsCmd + " lq " + path) --- obsolete (EG)
     if sout:
         for line in sout.readlines():
             # print "got:"+line[:-1]
             words = line.split()
             volname = words[0].split('.')
             if ( words[0][:8] == "p.sw.lcg" ) : return words[0]
-            if ( words[0][:7] == "q.swlcg"  ) : return words[0]
     if serr:
         errLines = serr.readlines()
         if errLines and len(errLines)>0 :
@@ -62,14 +65,15 @@ def getVolume(path):
 #
 def getQuota(path):
     if not available() : return (-1,-1,-1)
-    sin, sout, serr = os.popen3(fsCmd + " lq " + path)
+    p = subprocess.Popen(fsCmd+" lq "+path,shell=True,stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, close_fds=True)
+    (sin, sout, serr) = (p.stdin, p.stdout,p.stderr)
+    #sin, sout, serr = os.popen3(fsCmd + " lq " + path) --- obsolete (EG)
     if sout:
         for line in sout.readlines():
             # print "got:"+line[:-1]
             words = line.split()
             volname = words[0].split('.')
-            if ( (words[0][:8] == "p.sw.lcg") or
-                 (words[0][:7] == "q.swlcg" ) ) :
+            if (words[0][:8] == "p.sw.lcg") :
                 quota, used, percent = int(words[1]), int(words[2]), int(words[3].split("%")[0])
                 return quota, used, percent
     if serr:
@@ -89,7 +93,9 @@ def setQuota(path, newQuota):
     if not newQuota or int(newQuota) < 0:
         print "AFS.setQuota> ERROR: no quota (or negative) given !"
         return
-    sin, sout, serr = os.popen3(afsAdmCmd + " set_quota " + path + " " + str(int(newQuota)) )
+    p = subprocess.Popen(afsAdmCmd + " set_quota " + path + " " + str(int(newQuota)),shell=True,stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, close_fds=True)
+    (sin, sout, serr) = (p.stdin, p.stdout,p.stderr)
+    #sin, sout, serr = os.popen3(afsAdmCmd + " set_quota " + path + " " + str(int(newQuota)) ) --- obsolete (EG)
     if sout:
         for line in sout.readlines():
             # print "got:"+line[:-1]
@@ -108,7 +114,9 @@ def doVosRelease(path):
         print "AFS.doVosRelease> ERROR: no path given !"
         return
     vol = getVolume(path)
-    sin, sout, serr = os.popen3(afsAdmCmd + " vos_release " + vol )
+    p = subprocess.Popen(afsAdmCmd + " vos_release " + vol,shell=True,stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, close_fds=True)
+    (sin, sout, serr) = (p.stdin, p.stdout,p.stderr)
+    #sin, sout, serr = os.popen3(afsAdmCmd + " vos_release " + vol ) --- obsolete (EG)
     if sout:
         for line in sout.readlines():
             # print "got:"+line[:-1]
@@ -127,8 +135,10 @@ def removeVolume(path):
         print "AFS.removeVolume> ERROR: no path given !"
         return
     cmd = afsAdmCmd + " delete " + path
+    p = subprocess.Popen(cmd,shell=True,stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, close_fds=True)
+    (sin, sout, serr) = (p.stdin, p.stdout,p.stderr)
     # print "going to execute:'"+cmd+"'"
-    sin, sout, serr = os.popen3(cmd)
+    ##sin, sout, serr = os.popen3(cmd) --- obsolete (EG)
     if sout:
         for line in sout.readlines():
             # print "got:"+line[:-1]
@@ -141,8 +151,12 @@ def removeVolume(path):
 # --------------------------------------------------------------------------------
 #               
 def copy_ACL(from_path, to_path):
+    
     cmd = "%s copyacl -fromdir %s -todir %s " %(fsCmd, from_path, to_path)
-    sin, sout, serr = os.popen3(cmd)
+    p = subprocess.Popen(cmd,shell=True,stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, close_fds=True)
+    (sin, sout, serr) = (p.stdin, p.stdout,p.stderr)
+    ##sin, sout, serr = os.popen3(cmd) --- obsolete (EG)
+    print "Executed command: %s" % cmd
     if sout:
         for line in sout.readlines():
             # print "got:"+line[:-1]
@@ -153,8 +167,27 @@ def copy_ACL(from_path, to_path):
     return  
 
 # --------------------------------------------------------------------------------
+#               
+def set_default_ACL(path):
+    
+    cmd = "%s set_acl %s %s all " %(afsAdmCmd, path 'sftnight')
+    p = subprocess.Popen(cmd,shell=True,stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, close_fds=True)
+    (sin, sout, serr) = (p.stdin, p.stdout,p.stderr)
+    ##sin, sout, serr = os.popen3(cmd) --- obsolete (EG)
+    print "Executed command: %s" % cmd
+    if sout:
+        for line in sout.readlines():
+            # print "got:"+line[:-1]
+            pass
+    if serr:
+	errLines = serr.readlines()
+        if errLines and len(errLines)>0 : print "err:", errLines
+    return  
+
+
+# --------------------------------------------------------------------------------
 #
-def create(path, vol, size=5000):
+def create(path, vol, size):
     if not available() : return
     if not path :
         print "AFS.create> ERROR: no path given !"
@@ -162,11 +195,12 @@ def create(path, vol, size=5000):
     if not vol :
         print "AFS.create> ERROR: no volume given !"
         return
-        
     #print "creating volume "+vol+" of size "+str(size)+" and mounting at:", path,
     cmd = afsAdmCmd + " create -q " + str(size) + " -u sftnight " + path + " " + vol
-    # print "going to execute:'"+cmd+"'"
-    sin, sout, serr = os.popen3(cmd)
+    print "going to execute:'"+cmd+"'"
+    p = subprocess.Popen(cmd,shell=True,stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, close_fds=True)
+    (sin, sout, serr) = (p.stdin, p.stdout,p.stderr)
+    ## sin, sout, serr = os.popen3(cmd) -- obsolete (eg)
     if sout:
         err = False
         lines = sout.readlines()
@@ -189,7 +223,9 @@ def getNumberOfReplicas(path):
     if volume == None:
         print "  The path %s has a malformed volume" %(path)
         return 0
-    sin, sout, serr = os.popen3(vosCmd + " exa " + volume)
+    p = subprocess.Popen(vosCmd + " exa " + volume,shell=True,stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, close_fds=True)
+    (sin, sout, serr) = (p.stdin, p.stdout,p.stderr)
+    ##sin, sout, serr = os.popen3(vosCmd + " exa " + volume) -- obsolete (eg)
     line = sout.readline()
     while "number of sites" not in line:
         line = sout.readline()
@@ -209,7 +245,9 @@ def replicateVolume(path):
     path = path.replace("/cern.ch","/.cern.ch")
     volume = getVolume(path) 
     cmd = afsAdmCmd + " create_replica " + volume
-    sin, sout, serr = os.popen3(cmd)
+    p = subprocess.Popen(cmd,shell=True,stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, close_fds=True)
+    (sin, sout, serr) = (p.stdin, p.stdout,p.stderr)
+    ##sin, sout, serr = os.popen3(cmd) --- obsolete (eg)
     if serr:
 	errLines = serr.readlines()
         if errLines and len(errLines)>0 : print "err:", errLines
@@ -221,7 +259,9 @@ def deleteVolumeReplicas(path):
     path = path.replace("/cern.ch","/.cern.ch")
     volume = getVolume(path) 
     cmd = afsAdmCmd + " delete_replica " + volume
-    sin, sout, serr = os.popen3(cmd)
+    p = subprocess.Popen(cmd,shell=True,stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, close_fds=True)
+    (sin, sout, serr) = (p.stdin, p.stdout,p.stderr)
+    ##sin, sout, serr = os.popen3(cmd) --- obsolete (eg)
     if serr:
 	errLines = serr.readlines()
         if errLines and len(errLines)>0 : print "err:", errLines

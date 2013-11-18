@@ -30,14 +30,15 @@ class ProjectAreaManager(object):
         version = self._version
         #print "BasePATH: %s" % self._basepath
         path = os.path.join(basepath,version)
-        exts = {('',''),('MCGenerators','MC')}
+        exts = {('externals',''),('MCGenerators','MC')}
         for ext in exts:
-            if ext[0]:
-                print "=== Area for LCG release MCGenerators %s:" %(version)
-                path = os.path.join(basepath,version,ext[0])
-            else:
+            if ext[0] == 'externals':
                 print "=== Area for LCG release %s:" %(version)
                 path = os.path.join(basepath,version)
+            else:
+                print "=== Area for LCG release MCGenerators %s:" %(version)
+                path = os.path.join(basepath,version,ext[0]+'_'+version)
+            print 'PATH: %s' % path
             if os.path.exists(path):
                 print path, "already exists. Nothing to be done"
             else:
@@ -45,22 +46,28 @@ class ProjectAreaManager(object):
                 # define necessary size by the size of the previous (shrinked) installation + 30 %
                 previous_version = self.get_previous_project_version(basepath,version,releasename_pattern)
                 print "Previous version %s:" % previous_version
-                if not previous_version:
-                    quota = int("5000")
+                quota = "5000"
+                if previous_version:
+                    if ext[0] =='externals':
+                        previous_path = os.path.join(basepath,previous_version)
+                    else:
+                        previous_path = os.path.join(basepath,previous_version,ext[0])
+                    quota = max (int( int(AFS.getVolumeSize(previous_path)) * 1.3 ), int(quota))
+                    print (previous_path)
+                    print "Previous quota %s" % AFS.getVolumeSize(previous_path)
+                    print "Quota %s" % quota                    
                 elif previous_version > version:
-                    print "You are creating a release older then the last one"
-                    sys.exit(1)
-                else:
-                    previous_path = os.path.join(basepath,previous_version,ext[0])
-                    quota = int( int(AFS.getVolumeSize(previous_path)) * 1.3 )
+                    print "You are creating a release older then the last one. Nothing to be done"
+                    sys.exit(0)
                 volume_name = self.create_AFS_volume_name(version+ext[1])
                 print 'Going to create volume %s of size %s and mounting at %s\n' %(volume_name, quota, path)
                 self.create_AFS(path, volume_name, quota)
                 if previous_version:
-                    print 'Going to copy ACLs'   
+                    print 'Going to copy ACLs from %s to %s' % (previous_path, path)
                     self.copy_ACL(previous_path, path)
                 else:
-                    print "No previous release. You will need to define ACL permissions on %s" % path
+                    self.set_default_ACL(path)
+                    print "No previous release. Default premissions to account sftnight. If you need more You will need to define ACL permissions using the command afs_admin set_acl  on %s" % path
 
         
     # Find the last release installed
