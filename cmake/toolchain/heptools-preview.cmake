@@ -30,7 +30,7 @@ LCG_external_package(4suite            1.0.2p1                                  
 LCG_external_package(AIDA              3.2.1                                    )
 LCG_external_package(blas              20110419                                 )
 LCG_external_package(Boost             1.55.0                                   )
-LCG_external_package(CLHEP2            2.1.3.1                   clhep          )
+LCG_external_package(CLHEP2            2.1.4.1                   clhep          )
 LCG_external_package(CLHEP             1.9.4.7                   clhep          )
 #LCG_external_package(cmake             2.8.9                                    )
 LCG_external_package(cmaketools        1.0                                      )
