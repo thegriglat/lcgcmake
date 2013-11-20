@@ -25,8 +25,11 @@ macro(LCGPackage_Add name)
                             "DEPENDS;CONFIGURE_EXAMPLES_COMMAND;BUILD_EXAMPLES_COMMAND;INSTALL_EXAMPLES_COMMAND;TEST_COMMAND" ${ARGN})
   
   #---Create ${name} global target-------------------------------------------------------------------
-  add_custom_target(${name} ALL COMMENT "Multi-version package ${name} global target")
-  add_custom_target(clean-${name} COMMENT "Clean a multi-version package ${name}")
+  add_custom_target(${name} ALL)
+  add_custom_target(clean-${name})
+  if(LCG_SAFE_INSTALL)
+    add_custom_target(cleanmore-${name})
+  endif()
   
   #---Loop over all versions of the package----------------------------------------------------------
   foreach( version ${${name}_native_version} )
@@ -160,6 +163,14 @@ macro(LCGPackage_Add name)
           OUTPUT ${stamp_dir}/${targetname}-patch
           DEPENDS ${stamp_dir}/${targetname}-update)
       endif()
+      
+      #---Add a step to check if the <INSTALL_DIR> already exists and fail eventually-----------------
+      if(LCG_SAFE_INSTALL)
+        ExternalProject_Add_Step(${targetname} check_install_dir 
+                                 COMMAND test ! -d ${${dest_name}_home} 
+                                 COMMENT "Checking that install directory '${${dest_name}_home}' does not exists.\n"
+                                 DEPENDERS download)
+      endif()
 
       #---Adding extra step to copy the sources in /share/sources-------------------------------------
       if(NOT ARG_BINARY_PACKAGE) 
@@ -231,12 +242,24 @@ macro(LCGPackage_Add name)
 
 
       #---Adding clean targets--------------------------------------------------------------------------
-      add_custom_target(clean-${targetname} COMMAND ${CMAKE_COMMAND} -E remove_directory ${CMAKE_CURRENT_BINARY_DIR}/${targetname}
-                                            COMMAND ${CMAKE_COMMAND} -E remove_directory ${${name}_home})
+      if(LCG_SAFE_INSTALL)
+        add_custom_target(clean-${targetname} COMMAND ${CMAKE_COMMAND} -E remove_directory ${CMAKE_CURRENT_BINARY_DIR}/${targetname}
+                                              COMMENT "Removing directory '${CMAKE_CURRENT_BINARY_DIR}/${targetname}'")
+        add_custom_target(cleanmore-${targetname} COMMAND ${CMAKE_COMMAND} -E remove_directory ${${name}_home}
+                                                  COMMENT "Removing directory '${${name}_home}'")
+        add_dependencies(cleanmore-${targetname} clean-${targetname})
+      else()
+        add_custom_target(clean-${targetname} COMMAND ${CMAKE_COMMAND} -E remove_directory ${CMAKE_CURRENT_BINARY_DIR}/${targetname}
+                                              COMMAND ${CMAKE_COMMAND} -E remove_directory ${${name}_home}
+                                              COMMENT "Removing directores '${CMAKE_CURRENT_BINARY_DIR}/${targetname}' and '${${name}_home}'")
+      endif()
     endif()
     
     add_dependencies(${name} ${targetname})
     add_dependencies(clean-${name} clean-${targetname})
+    if(LCG_SAFE_INSTALL)
+      add_dependencies(cleanmore-${name} cleanmore-${targetname})
+    endif()
 
     set(${name}-${version}_home ${${name}_home} PARENT_SCOPE)
     set(${targetname}_dependencies ${${targetname}_dependencies} PARENT_SCOPE)

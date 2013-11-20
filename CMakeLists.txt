@@ -6,15 +6,16 @@ if(NOT CMAKE_CONFIGURATION_TYPES AND NOT CMAKE_BUILD_TYPE) # Default to a Releas
   set(CMAKE_BUILD_TYPE Release CACHE STRING "Choose the type of build [Release MinSizeRel Debug RelWithDebInfo]" FORCE)
 endif()
 
-if(NOT LCG_INSTALL_POLICY) # Default to separate installation of packages
-  set(LCG_INSTALL_POLICY separate)
-endif()
+#---Definition options and teir default values ------------------------------------------------------------------------
+set(LCG_INSTALL_POLICY separate CACHE STRING "'separate' or 'join' installation of packages")
+set(LCG_SAFE_INSTALL   OFF      CACHE BOOL "Ensure that no overwites occurs at the installation area of packages")
+set(LCG_IGNORE         ""       CACHE STRING "List of packages to be ignored from LCG_INSTALL_PREFIX (';' separated)")
+set(LCG_INSTALL_PREFIX ""       CACHE PATH "Existing LCG installation path prefix.")
 
-#---Installation pathes------------------------------------------------------------------------------------------------
-set(LCG_INSTALL_PREFIX "" CACHE PATH "Existing LCG installation path prefix.")
+#---Report the values of the options-----------------------------------------------------------------------------------
 message(STATUS "Target installation prefix: ${CMAKE_INSTALL_PREFIX}")
 message(STATUS "Existing LCG installations: ${LCG_INSTALL_PREFIX}")
-
+message(STATUS "Safe installation: ${LCG_SAFE_INSTALL}")
 
 include(${CMAKE_SOURCE_DIR}/toolchain.cmake)
 include(lcgsoft-macros)
