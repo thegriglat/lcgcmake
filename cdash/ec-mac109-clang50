@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+#------------------------------------------------------------------
+export LC_CTYPE=en_US.UTF-8
+export LC_ALL=en_US.UTF-8
+
+#---Compiler------------------------------------------------------
+export CC=clang
+export CXX=clang++
+export FC=gfortran
+
+#-----------------------------------------------------------------
+THIS=$(dirname $0)
+
+if [ x$MODE = x ]; then
+  export MODE=Experimental
+fi
+if [ x$WORKDIR = x ]; then 
+  WORKDIR=/ec/lcg-builds
+fi
+if [ x$VERSION = x ]; then
+  export VERSION=trunk
+fi
+if [ x$TARGET = x ]; then
+  export TARGET=all
+fi
+
+export BUILD_PREFIX=${WORKDIR}/${MODE}
+
+#---Run the CTest script-------------------------------------------
+echo "Starting CTest script for configuration ${CONFIG} at `date`" 
+
+ctest -V -S ${THIS}/lcgcmake-build.cmake
