@@ -8,7 +8,7 @@ def skip_in_dry_mode(method):
             print "...SKIPPED (dry mode)"
         else:
             method(self, *args, **argv)
-            print "...DONE"
+            #print "DONE"
     return decorated_method
 
 
@@ -30,7 +30,7 @@ class ProjectAreaManager(object):
         version = self._version
         #print "BasePATH: %s" % self._basepath
         path = os.path.join(basepath,version)
-        exts = {('externals',''),('MCGenerators','MC')}
+        exts = [('externals',''),('MCGenerators','MC')]
         for ext in exts:
             if ext[0] == 'externals':
                 print "=== Area for LCG release %s:" %(version)
@@ -51,7 +51,7 @@ class ProjectAreaManager(object):
                     if ext[0] =='externals':
                         previous_path = os.path.join(basepath,previous_version)
                     else:
-                        previous_path = os.path.join(basepath,previous_version,ext[0])
+                        previous_path = os.path.join(basepath,previous_version,ext[0]+'_'+previous_version)
                     quota = max (int( int(AFS.getVolumeSize(previous_path)) * 1.3 ), int(quota))
                     print (previous_path)
                     print "Previous quota %s" % AFS.getVolumeSize(previous_path)
@@ -59,15 +59,18 @@ class ProjectAreaManager(object):
                 elif previous_version > version:
                     print "You are creating a release older then the last one. Nothing to be done"
                     sys.exit(0)
-                volume_name = self.create_AFS_volume_name(version+ext[1])
+                if ext[0] == "externals" : 
+                    volume_name = self.create_AFS_volume_name(version)
+                else:
+                    volume_name = self.create_AFS_volume_name(version+ext[1])
                 print 'Going to create volume %s of size %s and mounting at %s\n' %(volume_name, quota, path)
                 self.create_AFS(path, volume_name, quota)
                 if previous_version:
                     print 'Going to copy ACLs from %s to %s' % (previous_path, path)
                     self.copy_ACL(previous_path, path)
                 else:
+                    print "No previous release. Going to set default premissions"
                     self.set_default_ACL(path)
-                    print "No previous release. Default premissions to account sftnight. If you need more You will need to define ACL permissions using the command afs_admin set_acl  on %s" % path
 
         
     # Find the last release installed
@@ -117,6 +120,11 @@ class ProjectAreaManager(object):
     @skip_in_dry_mode
     def copy_ACL(self, fromdir, todir):
         AFS.copy_ACL(fromdir, todir)        
+
+    #(eg)
+    @skip_in_dry_mode
+    def set_default_ACL(self, path):
+        AFS.set_default_ACL(path) 
 
     @skip_in_dry_mode
     #(eg)

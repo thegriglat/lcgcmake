@@ -170,18 +170,26 @@ def copy_ACL(from_path, to_path):
 #               
 def set_default_ACL(path):
     
-    cmd = "%s set_acl %s %s all " %(afsAdmCmd, path 'sftnight')
-    p = subprocess.Popen(cmd,shell=True,stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, close_fds=True)
-    (sin, sout, serr) = (p.stdin, p.stdout,p.stderr)
-    ##sin, sout, serr = os.popen3(cmd) --- obsolete (EG)
-    print "Executed command: %s" % cmd
+    permissions = [('_swlcg_','all'),('lcgapp:spiadm','all'),('system:administrators','all'),('system:anyuser','read'),('gianolio','all')]
+    for access_list in permissions:
+        cmd = "%s set_acl %s %s %s " %(afsAdmCmd, path, access_list[0],access_list[1])
+        p = subprocess.Popen(cmd,shell=True,stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, close_fds=True)
+        (sin, sout, serr) = (p.stdin, p.stdout,p.stderr)
+        ##sin, sout, serr = os.popen3(cmd) --- obsolete (EG)
+        print "Executed command: %s" % cmd
+        if sout:
+            for line in sout.readlines():
+                # print "got:"+line[:-1]
+                pass
+        if serr:
+            errLines = serr.readlines()
+            if errLines and len(errLines)>0 : print "err:", errLines
+    cmd = fsCmd + " la"
+    p.subprocess.Popen(cmd,shell=True,stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, close_fds=True)
     if sout:
-        for line in sout.readlines():
-            # print "got:"+line[:-1]
-            pass
-    if serr:
-	errLines = serr.readlines()
-        if errLines and len(errLines)>0 : print "err:", errLines
+        lines = sout.readlines()
+        for line in lines:
+            print line
     return  
 
 
@@ -196,7 +204,7 @@ def create(path, vol, size):
         print "AFS.create> ERROR: no volume given !"
         return
     #print "creating volume "+vol+" of size "+str(size)+" and mounting at:", path,
-    cmd = afsAdmCmd + " create -q " + str(size) + " -u sftnight " + path + " " + vol
+    cmd = afsAdmCmd + " create -q " + str(size)+ " -u gianolio "  + path + " " + vol
     print "going to execute:'"+cmd+"'"
     p = subprocess.Popen(cmd,shell=True,stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, close_fds=True)
     (sin, sout, serr) = (p.stdin, p.stdout,p.stderr)
@@ -206,10 +214,11 @@ def create(path, vol, size):
         lines = sout.readlines()
         for line in lines:
             if line.find("ERROR") != -1: err = True
-            pass
+            #pass
+            print line
         if err:
             print lines
-        else : print "...DONE"
+        else : print "...DONE."
     if serr:
         errLines = serr.readlines()
         if errLines and len(errLines)>0 : print "err:", errLines
