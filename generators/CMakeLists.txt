@@ -1075,7 +1075,7 @@ rivet-pythia6-test
 					  ${library_path}=${Python_home}/lib:${GSL_home}/lib:${rivet2_home}/lib:${yoda_home}/lib:${HepMC_home}/lib:${fastjet_home}/lib:${yamlcpp_home}/lib:$ENV{${library_path}}
                                           PYTHONPATH=${Python_home}/bin:${agile_home}/lib/python${Python_config_version_twodigit}/site-packages:$ENV{PYTHONPATH}
                                           AGILE_GEN_PATH=${agile_home}/../../..
-
+  LABELS PhysicsCheck
                               )
 
 
