@@ -61,6 +61,8 @@ macro(LCGPackage_Add name)
       set(dest_name ${ARG_DEST_NAME})
       set(dest_version ${${ARG_DEST_NAME}_native_version})
       set(curr_name ${name})
+      # Remember all used destinations to avoid checking the existance of install area
+      list(APPEND dest_all_names ${ARG_DEST_NAME})
     else()
       set(dest_name ${name})
       set(dest_version ${version})
@@ -166,10 +168,14 @@ macro(LCGPackage_Add name)
       
       #---Add a step to check if the <INSTALL_DIR> already exists and fail eventually-----------------
       if(LCG_SAFE_INSTALL)
-        ExternalProject_Add_Step(${targetname} check_install_dir 
-                                 COMMAND test ! -d ${${dest_name}_home} 
-                                 COMMENT "Checking that install directory '${${dest_name}_home}' does not exists.\n"
-                                 DEPENDERS download)
+        #--- Add the extra check step only if it is not installed somewhere else
+        list(FIND dest_all_names ${dest_name} indx)
+        if(indx EQUAL -1)
+          ExternalProject_Add_Step(${targetname} check_install_dir
+                                   COMMAND test ! -d ${${dest_name}_home}
+                                   COMMENT "Checking that install directory '${${dest_name}_home}' does not exists.\n"
+                                   DEPENDERS download)
+        endif()
       endif()
 
       #---Adding extra step to copy the sources in /share/sources-------------------------------------

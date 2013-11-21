@@ -1,5 +1,5 @@
 #---PythonFWK (only for MAC) --------------------------------------------------------------------------------------------
-LCGPackage_set_home(PythonFWK)
+LCGPackage_set_home(Python)
 if (APPLE)
   string(REGEX REPLACE "([0-9]+)([0-9])" \\1.\\2 macvers ${LCG_HOST_OSVERS})
   set(Python_config_options MACOSX_DEPLOYMENT_TARGET=${macvers})
@@ -10,9 +10,10 @@ if (APPLE)
                                              --enable-framework=<INSTALL_DIR>/Library/Frameworks 
                                              --exec-prefix=<INSTALL_DIR>/Library/Frameworks/Python.framework/Versions/Current 
                                              --enable-unicode=ucs4 ${Python_config_options}
-   BUILD_COMMAND ${MAKE} -j1
-   INSTALL_COMMAND ${MAKE} -j1 install
-	   COMMAND rm -rf <INSTALL_DIR>/bin
+    BUILD_COMMAND ${MAKE} -j1
+    INSTALL_COMMAND ${MAKE} -j1 install
+	          COMMAND rm -rf <INSTALL_DIR>/bin
+    DEST_NAME Python
   )
 endif()
 
