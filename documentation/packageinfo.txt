@@ -1,6 +1,7 @@
 [
   {
     "name" : "4suite",
+    "fullname" : "4suite",
     "description" : "a library of integrated tools for XML and RDF processing.",
     "homepage" : "http://4suite.org/index.xhtml",
     "contact" : "Thomas Doherty t.doherty@physics.gla.ac.uk",
@@ -11,6 +12,7 @@
   },
   {
     "name" : "COOL",
+    "fullname" : "COOL",
     "description" : "The conditions database project of LCG AA",
     "homepage" : "http://lcgapp.cern.ch/project/CondDB",
     "contact" : "Andrea Valassi andrea.valassi@cern.ch",
@@ -21,6 +23,7 @@
   },
   {
     "name" : "CORAL",
+    "fullname" : "CORAL",
     "description" : "Provides functionality for accessing data in relational databases using a C++ and SQL-free API",
     "homepage" : "http://pool.cern.ch/coral/",
     "contact" : "Andrea Valassi andrea.valassi@cern.ch",
@@ -31,6 +34,7 @@
   },
   {
     "name" : "LCGCMT",
+    "fullname" : "LCGCMT",
     "description" : "the configuration database for LCG/AA projects and external software.",
     "homepage" : "https://twiki.cern.ch/twiki/bin/view/SPI/LcgConfigurations",
     "contact" : "Benedikt Hegner benedikt.hegner@cern.ch",
@@ -41,6 +45,7 @@
   },
   {
     "name" : "LCGTEST",
+    "fullname" : "LCGTEST",
     "description" : "provides integration tests for LCG/AA and additional nightly build steps",
     "homepage" : "http://lcgapp.cern.ch",
     "contact" : "Stefan Roiser stefan.roiser@cern.ch",
@@ -51,6 +56,7 @@
   },
   {
     "name" : "RELAX",
+    "fullname" : "RELAX",
     "description" : "A set of Reflex libraries for the most common used general data types in LCG",
     "homepage" : "https://twiki.cern.ch/twiki/bin/view/LCG/RELAX",
     "contact" : "Benedikt Hegner benedikt.hegner@cern.ch",
@@ -61,6 +67,7 @@
   },
   {
     "name" : "ROOT",
+    "fullname" : "ROOT",
     "description" : "An object oriented data analysis framework",
     "homepage" : "http://root.cern.ch",
     "contact" : "Rene Brun rene.brun@cern.ch",
@@ -71,6 +78,7 @@
   },
   {
     "name" : "AIDA",
+    "fullname" : "AIDA",
     "description" : "Abstract interfaces for common physics analysis objects, such as histograms, ntuples, fitters, IO",
     "homepage" : "http://aida.freehep.org",
     "contact" : "Lorenzo Moneta Lorenzo.Moneta@cern.ch",
@@ -81,6 +89,7 @@
   },
   {
     "name" : "apr-util",
+    "fullname" : "apr-util",
     "description" : "provides a number of abstractions on top of APR.",
     "homepage" : "http://apr.apache.org/",
     "contact" : "Benedikt Hegner benedikt.hegner@cern.ch",
@@ -91,6 +100,7 @@
   },
   {
     "name" : "apr",
+    "fullname" : "apr",
     "description" : "provides a predictable and consistent interface to underlying platform-specific implementations.",
     "homepage" : "http://apr.apache.org/",
     "contact" : "Benedikt Hegner benedikt.hegner@cern.ch",
@@ -101,6 +111,7 @@
   },
   {
     "name" : "blas",
+    "fullname" : "blas",
     "description" : "a library to perform basic linear algebra operations",
     "homepage" : "http://www.netlib.org/blas/",
     "contact" : "Sebastien Binet binet@cern.ch",
@@ -111,6 +122,7 @@
   },
   {
     "name" : "Boost",
+    "fullname" : "Boost",
     "description" : "A collection of libraries for different purposes such as I/O, Math, meta programming, etc.",
     "homepage" : "http://www.boost.org",
     "contact" : "Stefan Roiser stefan.roiser@cern.ch",
@@ -121,6 +133,7 @@
   },
   {
     "name" : "CASTOR",
+    "fullname" : "CASTOR",
     "description" : "A hierarchical storage management system",
     "homepage" : "http://castor.web.cern.ch/castor",
     "contact" : "Sebastien Ponce sebastien.ponce@cern.ch",
@@ -131,6 +144,7 @@
   },
   {
     "name" : "cgsigsoap",
+    "fullname" : "cgsigsoap",
     "description" : ". . . . .",
     "homepage" : "http://glite.web.cern.ch/glite/",
     "contact" : "Oliver Keeble oliver.keeble@cern.ch",
@@ -141,6 +155,7 @@
   },
   {
     "name" : "clhep",
+    "fullname" : "clhep",
     "description" : "a set of HEP-specific foundation and utility classes such as random generators, physics vectors, geometry and linear algebra",
     "homepage" : "http://cern.ch/clhep",
     "contact" : "Andreas Pfeiffer andreas.pfeiffer@cern.ch",
@@ -151,6 +166,7 @@
   },
   {
     "name" : "cloog-ppl",
+    "fullname" : "cloog-ppl",
     "description" : "A loop generator for scanning Z-polyhedra",
     "homepage" : "http://www.cloog.org/",
     "contact" : "Stefan Roiser stefan.roiser@cern.ch",
@@ -161,6 +177,7 @@
   },
   {
     "name" : "cloog",
+    "fullname" : "cloog",
     "description" : "A loop generator for scanning Z-polyhedra",
     "homepage" : "http://www.cloog.org/",
     "contact" : "Stefan Roiser stefan.roiser@cern.ch",
@@ -171,6 +188,7 @@
   },
   {
     "name" : "cmake",
+    "fullname" : "cmake",
     "description" : "a cross-platform, open-source make system",
     "homepage" : "http://www.cmake.org",
     "contact" : "Stefan Roiser stefan.roiser@cern.ch",
@@ -181,6 +199,7 @@
   },
   {
     "name" : "cmt_itself",
+    "fullname" : "cmt_itself",
     "description" : "a multi platform configuration management environment",
     "homepage" : "http://www.cmtsite.org/",
     "contact" : "Grigori Rybkine Grigori.Rybkine@cern.ch",
@@ -191,6 +210,7 @@
   },
   {
     "name" : "coin3d",
+    "fullname" : "coin3d",
     "description" : "A high-level 3D graphics toolkit for OpenGL based visualization",
     "homepage" : "http://coin3d.org/",
     "contact" : "Thomas Kittelmann thomas.kittelmann@cern.ch",
@@ -201,6 +221,7 @@
   },
   {
     "name" : "coverage",
+    "fullname" : "coverage",
     "description" : "code coverage on Python",
     "homepage" : "http://nedbatchelder.com/code/coverage/",
     "contact" : "Ned Batchelder ned@nedbatchelder.com",
@@ -211,6 +232,7 @@
   },
   {
     "name" : "cppunit",
+    "fullname" : "cppunit",
     "description" : "a C++ unit testing framework",
     "homepage" : "http://cppunit.sourceforge.net/cppunit-wiki",
     "contact" : "Manuel Gallas manuel.gallas@cern.ch",
@@ -221,6 +243,7 @@
   },
   {
     "name" : "cx_oracle",
+    "fullname" : "cx_oracle",
     "description" : "a Python extension module that allows access to Oracle databases",
     "homepage" : "http://www.python.net/crew/atuining/cx_Oracle/",
     "contact" : "Andrea Valassi andrea.valassi@cern.ch",
@@ -231,6 +254,7 @@
   },
   {
     "name" : "david",
+    "fullname" : "david",
     "description" : "a visual tool to investigate polygon intersection of shapes",
     "homepage" : "http://geant4.kek.jp/~tanaka/DAWN/",
     "contact" : "Gabriele Cosmo gabriele.cosmo@cern.ch",
@@ -241,6 +265,7 @@
   },
   {
     "name" : "dawn",
+    "fullname" : "dawn",
     "description" : "a renderer, which reads 3D geometrical data and visualize them",
     "homepage" : "http://www.gnu.org/software/gsl/",
     "contact" : "Gabriele Cosmo gabriele.cosmo@cern.ch",
@@ -251,6 +276,7 @@
   },
   {
     "name" : "dcache_client",
+    "fullname" : "dcache_client",
     "description" : "a system for storing and retrieving data, distributed among heterogenous server nodes",
     "homepage" : "http://www.dcache.org",
     "contact" : "Stefan Roiser stefan.roiser@cern.ch",
@@ -261,6 +287,7 @@
   },
   {
     "name" : "doxygen",
+    "fullname" : "doxygen",
     "description" : "a documentation system for C++, C, Java, Objective-C, Python, IDL and to some extent PHP, C#, and D",
     "homepage" : "http://www.doxygen.org",
     "contact" : "Nir Amram Nir.Amran@cern.ch",
@@ -271,6 +298,7 @@
   },
   {
     "name" : "dpm",
+    "fullname" : "dpm",
     "description" : "a disk pool manager library",
     "homepage" : "http://glite.web.cern.ch/glite/",
     "contact" : "Oliver Keeble oliver.keeble@cern.ch",
@@ -280,7 +308,8 @@
     "license" : "UNKNOWN",
   },
   {
-    "name" : "EvtGen",
+    "name" : "evtgen",
+    "fullname" : "EvtGen",
     "description" : "Monte Carlo event generator",
     "homepage" : "http://evtgen.warwick.ac.uk/",
     "contact" : "dev@evtgen.warwick.ac.uk",
@@ -291,6 +320,7 @@
   },
   {
     "name" : "expat",
+    "fullname" : "expat",
     "description" : "a stream oriented XML parser",
     "homepage" : "http://www.libexpat.org/",
     "contact" : "Dirk Duellmann dirk.duellmann@cern.ch",
@@ -301,6 +331,7 @@
   },
   {
     "name" : "fastjet",
+    "fullname" : "fastjet",
     "description" : "a implementation of the longitudinally invariant jet finders",
     "homepage" : "http://www.lpthe.jussieu.fr/~salam/fastjet/",
     "contact" : "Ivan Belyaev Ivan.Belyaev@cern.ch",
@@ -311,6 +342,7 @@
   },
   {
     "name" : "fftw",
+    "fullname" : "fftw",
     "description" : "a library for computing the discrete Fourier transform",
     "homepage" : "http://www.fftw.org",
     "contact" : "Lorenzo Moneta lorenzo.moneta@cern.ch",
@@ -321,6 +353,7 @@
   },
   {
     "name" : "Frontier_Client",
+    "fullname" : "Frontier_Client",
     "description" : "a database access toolkit comprising web technologies",
     "homepage" : "http://frontier.cern.ch",
     "contact" : "Andreas Pfeiffer andreas.pfeiffer@cern.ch",
@@ -331,6 +364,7 @@
   },
   {
     "name" : "gcc",
+    "fullname" : "gcc",
     "description" : "A compiler collection for C, C++, Fortran, etc.",
     "homepage" : "http://gcc.gnu.org",
     "contact" : "Stefan Roiser stefan.roiser@cern.ch",
@@ -341,6 +375,7 @@
   },
   {
     "name" : "GCCXML",
+    "fullname" : "GCCXML",
     "description" : "Generates an XML description of a C++ program from GCC's internal representation",
     "homepage" : "http://www.gccxml.org/HTML/Index.html",
     "contact" : "Stefan Roiser stefan.roiser@cern.ch",
@@ -351,6 +386,7 @@
   },
   {
     "name" : "genshi",
+    "fullname" : "genshi",
     "description" : "Python toolkit for generation of output for the web",
     "homepage" : "http://genshi.edgewall.org/",
     "contact" : "Peter Waller peter.waller@gmail.com",
@@ -361,6 +397,7 @@
   },
   {
     "name" : "gfal",
+    "fullname" : "gfal",
     "description" : "a grid file access library",
     "homepage" : "http://grid-deployment.web.cern.ch/grid-deployment/gis/GFAL/gfal.3.html",
     "contact" : "Oliver Keeble oliver.keeble@cern.ch",
@@ -371,6 +408,7 @@
   },
   {
     "name" : "globus",
+    "fullname" : "globus",
     "description" : "a toolkit for building Grid applications",
     "homepage" : "http://www.globus.org/",
     "contact" : "Oliver Keeble oliver.keeble@cern.ch",
@@ -381,6 +419,7 @@
   },
   {
     "name" : "gmp",
+    "fullname" : "gmp",
     "description" : "the GNU multiple precision library",
     "homepage" : "http://gmplib.org",
     "contact" : "Stefan Roiser stefan.roiser@cern.ch",
@@ -391,6 +430,7 @@
   },
   {
     "name" : "graphviz",
+    "fullname" : "graphviz",
     "description" : "a package for graph visualization",
     "homepage" : "http://www.graphviz.org",
     "contact" : "Benedikt Hegner benedikt.hegner@cern.ch",
@@ -401,6 +441,7 @@
   },
   {
     "name" : "gsl",
+    "fullname" : "gsl",
     "description" : "A numerical library for C and C++",
     "homepage" : "http://www.gnu.org/software/gsl/",
     "contact" : "Lorenzo Moneta lorenzo.moneta@cern.ch",
@@ -411,6 +452,7 @@
   },
   {
     "name" : "HepMC",
+    "fullname" : "HepMC",
     "description" : "An object oriented event record written in C++ for High Energy Physics Monte Carlo Generators",
     "homepage" : "http://lcgapp.cern.ch/project/simu/HepMC/",
     "contact" : "Stefan Roiser stefan.roiser@cern.ch",
@@ -421,6 +463,7 @@
   },
   {
     "name" : "HepPDT",
+    "fullname" : "HepPDT",
     "description" : "Contains the fixed data about each particle type",
     "homepage" : "http://cepa.fnal.gov/psm/heppdt/",
     "contact" : "Stefan Roiser stefan.roiser@cern.ch",
@@ -430,7 +473,8 @@
     "license" : "UNKNOWN",
   },
   {
-    "name" : "Herwig",
+    "name" : "herwig",
+    "fullname" : "Herwig",
     "description" : "Monte Carlo event generator",
     "homepage" : "http://www.hep.phy.cam.ac.uk/theory/webber/Herwig/",
     "contact" : "webber@hep.phy.cam.ac.uk",
@@ -441,6 +485,7 @@
   },
   {
     "name" : "Herwig++",
+    "fullname" : "Herwig++",
     "description" : "Monte Carlo event generator",
     "homepage" : "http://herwig.hepforge.org/",
     "contact" : "herwig@projects.hepforge.org",
@@ -451,6 +496,7 @@
   },
   {
     "name" : "igprof",
+    "fullname" : "igprof",
     "description" : "Profiler",
     "homepage" : "http://igprof.sourceforge.net/",
     "contact" : "Lassi Tuura Lassi.Tuura@cern.ch",
@@ -461,6 +507,7 @@
   },
   {
     "name" : "ipython",
+    "fullname" : "ipython",
     "description" : "an enhanced shell for python",
     "homepage" : "http://ipython.scipy.org",
     "contact" : "Vincenzo Innocente Vincenzo.Innocente@cern.ch",
@@ -471,6 +518,7 @@
   },
   {
     "name" : "isl",
+    "fullname" : "isl",
     "description" : "library for manipulating sets and relations of integer points bounded by linear constraints",
     "homepage" : "http://garage.kotnet.org/~skimo/isl/",
     "contact" : "Benedikt Hegner Benedikt.Hegner@cern.ch",
@@ -481,6 +529,7 @@
   },
   {
     "name" : "jhu",
+    "fullname" : "jhu",
     "description" : "For simulation of a single-produced resonance at hadron colliders",
     "homepage" : "http://www.pha.jhu.edu/spin/",
     "contact" : "Nhan Tran ntran@fnal.gov",
@@ -491,6 +540,7 @@
   },
   {
     "name" : "json",
+    "fullname" : "json",
     "description" : "Extensible JSON encoder/decoder for Python",
     "homepage" : "http://pypi.python.org/pypi/simplejson/",
     "contact" : "Juan Palacios juan.palacios@cern.ch",
@@ -501,6 +551,7 @@
   },
   {
     "name" : "kcachegrind",
+    "fullname" : "kcachegrind",
     "description" : "A visualization tool for callgrind generated profiling data.",
     "homepage" : "http://kcachegrind.sourceforge.net/cgi-bin/show.cgi",
     "contact" : "Stefan Roiser stefan.roiser@cern.ch",
@@ -511,6 +562,7 @@
   },
   {
     "name" : "ktjet",
+    "fullname" : "ktjet",
     "description" : "a C++ implementation of the Kt jet algorithm",
     "homepage" : "http://projects.hepforge.org/ktjet/",
     "contact" : "Ivan Belyaev Ivan.Belyaev@cern.ch",
@@ -521,6 +573,7 @@
   },
   {
     "name" : "lapack",
+    "fullname" : "lapack",
     "description" : "a library to perform basic linear algebra operations",
     "homepage" : "http://www.netlib.org/lapack/",
     "contact" : "Sebastien Binet binet@cern.ch",
@@ -531,6 +584,7 @@
   },
   {
     "name" : "lcgdmcommon",
+    "fullname" : "lcgdmcommon",
     "description" : "common interfaces Cthread, serrno, Castor_limits",
     "homepage" : "http://glite.web.cern.ch/glite/",
     "contact" : "Oliver Keeble oliver.keeble@cern.ch",
@@ -541,6 +595,7 @@
   },
   {
     "name" : "lcginfosites",
+    "fullname" : "lcginfosites",
     "description" : "a tool to retrieve info on Grid resources",
     "homepage" : "http://glite.web.cern.ch/glite/",
     "contact" : "Oliver Keeble oliver.keeble@cern.ch",
@@ -551,6 +606,7 @@
   },
   {
     "name" : "lcgutils",
+    "fullname" : "lcgutils",
     "description" : "a set of tools interfacing Storage Elements and RLS or LFC",
     "homepage" : "http://glite.web.cern.ch/glite/",
     "contact" : "Oliver Keeble oliver.keeble@cern.ch",
@@ -561,6 +617,7 @@
   },
   {
     "name" : "lcov",
+    "fullname" : "lcov",
     "description" : "a graphical frontend for gcc's gcov coverage testing",
     "homepage" : "http://ltp.sourceforge.net/coverage/lcov.php",
     "contact" : "Benedikt Hegner benedikt.hegner@cern.ch",
@@ -571,6 +628,7 @@
   },
   {
     "name" : "lfc",
+    "fullname" : "lfc",
     "description" : "a grid catalog implementation .",
     "homepage" : "http://glite.web.cern.ch/glite/",
     "contact" : "Oliver Keeble oliver.keeble@cern.ch",
@@ -580,7 +638,8 @@
     "license" : "UNKNOWN",
   },
   {
-    "name" : "LHAPDF",
+    "name" : "lhapdf",
+    "fullname" : "LHAPDF",
     "description" : "Les Houches Accord PDF Interface",
     "homepage" : "https://lhapdf.hepforge.org/",
     "contact" : "lhapdf@projects.hepforge.org",
@@ -591,6 +650,7 @@
   },
   {
     "name" : "libelf",
+    "fullname" : "libelf",
     "description" : "A library for reading, modifying and creating elf files",
     "homepage" : "http://directory.fsf.org/project/libelf/",
     "contact" : "Stefan Roiser stefan.roiser@cern.ch",
@@ -601,6 +661,7 @@
   },
   {
     "name" : "libpfm",
+    "fullname" : "libpfm",
     "description" : "a hardware based performance monitoring tool for linux",
     "homepage" : "http://perfmon2.sourceforge.net/",
     "contact" : "Daniele Kruse Daniele.Francesco.Kruse@cern.ch",
@@ -611,6 +672,7 @@
   },
   {
     "name" : "libpng",
+    "fullname" : "libpng",
     "description" : "the official png reference library",
     "homepage" : "http://www.libpng.org/pub/png/libpng.html",
     "contact" : "Daniele Kruse Daniele.Francesco.Kruse@cern.ch",
@@ -621,6 +683,7 @@
   },
   {
     "name" : "libsvm",
+    "fullname" : "libsvm",
     "description" : "a library for support vector machines",
     "homepage" : "http://www.csie.ntu.edu.tw/~cjlin/libsvm/",
     "contact" : "Peter Somogyi peter.somogyi@cern.ch",
@@ -631,6 +694,7 @@
   },
   {
     "name" : "libtool",
+    "fullname" : "libtool",
     "description" : "GNU libtool is a generic library support script",
     "homepage" : "http://www.gnu.org/software/libtool/",
     "contact" : "Libtool Support libtool@gnu.org",
@@ -641,6 +705,7 @@
   },
   {
     "name" : "libunwind",
+    "fullname" : "libunwind",
     "description" : "C programming interface (API) to determine the call-chain of a program",
     "homepage" : "http://www.nongnu.org/libunwind/",
     "contact" : "Marco Cattaneo Marco.Cattaneo@cern.ch",
@@ -651,6 +716,7 @@
   },
   {
     "name" : "llvm",
+    "fullname" : "llvm",
     "description" : "a compiler infrastructure for c/c++",
     "homepage" : "http://llvm.org",
     "contact" : "Axel Naumann axel.naumann@cern.ch",
@@ -661,6 +727,7 @@
   },
   {
     "name" : "llvm_gcc",
+    "fullname" : "llvm_gcc",
     "description" : "a compiler infrastructure for c/c++",
     "homepage" : "http://llvm.org",
     "contact" : "Axel Naumann axel.naumann@cern.ch",
@@ -671,6 +738,7 @@
   },
   {
     "name" : "lxml",
+    "fullname" : "lxml",
     "description" : "Pythonic binding for the libxml2 and libxslt libraries",
     "homepage" : "http://codespeak.net/lxml/",
     "contact" : "Benedikt Hegner benedikt.hegner@cern.ch",
@@ -681,6 +749,7 @@
   },
   {
     "name" : "madgraph5",
+    "fullname" : "madgraph5",
     "description" : "Matrix Element Generator",
     "homepage" : "https://launchpad.net/madgraph5",
     "contact" : "",
@@ -691,6 +760,7 @@
   },
   {
     "name" : "matplotlib",
+    "fullname" : "matplotlib",
     "description" : "a python 2D plotting library",
     "homepage" : "http://matplotlib.sourceforge.net/",
     "contact" : "Juan Palacios juan.palacios@cern.ch",
@@ -701,6 +771,7 @@
   },
   {
     "name" : "minuit",
+    "fullname" : "minuit",
     "description" : "Physics analysis tool for function minimization",
     "homepage" : "http://seal.web.cern.ch/seal/snapshot/work-packages/mathlibs/minuit/release/download.html",
     "contact" : "Lorenzo Moneta Lorenzo.Moneta@cern.ch",
@@ -711,6 +782,7 @@
   },
   {
     "name" : "mock",
+    "fullname" : "mock",
     "description" : "a tool to mimic interfaces to classes",
     "homepage" : "http://python-mock.sourceforge.net/",
     "contact" : "Juan Palacios juan.palacios@cern.ch",
@@ -721,6 +793,7 @@
   },
   {
     "name" : "mpc",
+    "fullname" : "mpc",
     "description" : "A library for the arithmetic of high precision complex numbers",
     "homepage" : "http://www.multiprecision.org/",
     "contact" : "Stefan Roiser stefan.roiser@cern.ch",
@@ -731,6 +804,7 @@
   },
   {
     "name" : "mpfr",
+    "fullname" : "mpfr",
     "description" : "A library for multiple-precision floating-point computations",
     "homepage" : "http://www.mpfr.org",
     "contact" : "Stefan Roiser stefan.roiser@cern.ch",
@@ -741,6 +815,7 @@
   },
   {
     "name" : "multiprocessing",
+    "fullname" : "multiprocessing",
     "description" : "a python package which supports spawning of processes through the threading module",
     "homepage" : "http://pypi.python.org/pypi/multiprocessing",
     "contact" : "Pere Mato pere.mato@cern.ch",
@@ -751,6 +826,7 @@
   },
   {
     "name" : "mysql",
+    "fullname" : "mysql",
     "description" : "a SQL database management system",
     "homepage" : "http://www.mysql.com/",
     "contact" : "Andrea Valassi andrea.valassi@cern.ch",
@@ -761,6 +837,7 @@
   },
   {
     "name" : "mysql_python",
+    "" : "mysql_python",
     "description" : "a python binding to mysql",
     "homepage" : "http://sourceforge.net/projects/mysql-python",
     "contact" : "Stefan Roiser stefan.roiser@cern.ch",
@@ -771,6 +848,7 @@
   },
   {
     "name" : "neon",
+    "fullname" : "neon",
     "description" : "a HTTP and WebDAV client library, with a C interface",
     "homepage" : "http://www.webdav.org/neon/",
     "contact" : "Stefan Roiser stefan.roiser@cern.ch",
@@ -781,6 +859,7 @@
   },
   {
     "name" : "nose",
+    "fullname" : "nose",
     "description" : "testing for python",
     "homepage" : "http://readthedocs.org/docs/nose",
     "contact" : "Jason Pellerin jpellerin.nose@gmail.com",
@@ -791,6 +870,7 @@
   },
   {
     "name" : "numpy",
+    "fullname" : "numpy",
     "description" : "providing tools for scientific computing with Python",
     "homepage" : "http://numpy.scipy.org/",
     "contact" : "Juan Palacios juan.palacios@cern.ch",
@@ -801,6 +881,7 @@
   },
   {
     "name" : "oracle",
+    "fullname" : "oracle",
     "description" : "a database management system .",
     "homepage" : "http://www.oracle.com/index.html",
     "contact" : "Andrea Valassi andrea.valassi@cern.ch",
@@ -810,7 +891,8 @@
     "license" : "ORACLE",
   },
   {
-    "name" : "Photos++",
+    "name" : "photos++",
+    "fullname" : "Photos++",
     "description" : "Monte Carlo event generator",
     "homepage" : "http://www.ph.unimelb.edu.au/~ndavidson/photos/doxygen/",
     "contact" : "z.was@cern.ch",
@@ -821,6 +903,7 @@
   },
   {
     "name" : "ppl",
+    "fullname" : "ppl",
     "description" : "provides numerical abstractions for analysis and verification of complex systems",
     "homepage" : "http://www.cs.unipr.it/ppl/",
     "contact" : "Stefan Roiser stefan.roiser@cern.ch",
@@ -831,6 +914,7 @@
   },
   {
     "name" : "processing",
+    "fullname" : "processing",
     "description" : "a python package which supports spawning of processes through the threading module",
     "homepage" : "http://developer.berlios.de/projects/pyprocessing",
     "contact" : "Pere Mato pere.mato@cern.ch",
@@ -841,6 +925,7 @@
   },
   {
     "name" : "py",
+    "fullname" : "py",
     "description" : "tools which help with automated testing",
     "homepage" : "http://codespeak.net/py/dist/",
     "contact" : "Juan Palacios juan.palacios@cern.ch",
@@ -851,6 +936,7 @@
   },
   {
     "name" : "py",
+    "fullname" : "py",
     "description" : "tools which help with automated testing",
     "homepage" : "http://codespeak.net/py/dist/",
     "contact" : "Juan Palacios juan.palacios@cern.ch",
@@ -861,6 +947,7 @@
   },
   {
     "name" : "pyanalysis",
+    "fullname" : "pyanalysis",
     "description" : "Meta-package containing analysis packages",
     "homepage" : "none",
     "contact" : "Benedikt Hegner benedikt.hegner@cern.ch",
@@ -871,6 +958,7 @@
   },
   {
     "name" : "pydot",
+    "fullname" : "pydot",
     "description" : "An interface for creating both directed and non directed graphs from Python",
     "homepage" : "http://dkbza.org/pydot.html",
     "contact" : "Benedikt Hegner benedikt.hegner@cern.ch",
@@ -881,6 +969,7 @@
   },
   {
     "name" : "pylint",
+    "fullname" : "pylint",
     "description" : "python code static checker",
     "homepage" : "http://www.logilab.org/project/pylint",
     "contact" : "Sylvain Thenault sylvain.thenault@logilab.fr",
@@ -891,6 +980,7 @@
   },
   {
     "name" : "pyminuit",
+    "fullname" : "pyminuit",
     "description" : "Minuit numerical function minimization in Python",
     "homepage" : "http://code.google.com/p/pyminuit/",
     "contact" : "Lorenzo Moneta Lorenzo.Moneta@cern.ch",
@@ -901,6 +991,7 @@
   },
   {
     "name" : "pyparsing",
+    "fullname" : "pyparsing",
     "description" : "is a general parsing module for Python",
     "homepage" : "http://sourceforge.net/projects/pyparsing/",
     "contact" : "Benedikt Hegner benedikt.hegner@cern.ch",
@@ -911,6 +1002,7 @@
   },
   {
     "name" : "pyqt",
+    "fullname" : "pyqt",
     "description" : "a set of Python bindings for Qt",
     "homepage" : "http://www.riverbankcomputing.co.uk/pyqt",
     "contact" : "Stefan Roiser stefan.roiser@cern.ch",
@@ -921,6 +1013,7 @@
   },
   {
     "name" : "pytest",
+    "fullname" : "pytest",
     "description" : "cross-project testing tool for Python",
     "homepage" : "http://pytest.org",
     "contact" : "Holger Krekel holger@merlinux.eu",
@@ -930,7 +1023,8 @@
     "license" : "MIT",
   },
   {
-    "name" : "Pythia6",
+    "name" : "pythia6",
+    "fullname" : "Pythia6",
     "description" : "Monte Carlo event generator",
     "homepage" : "https://pythia6.hepforge.org/",
     "contact" : "pythia6@projects.hepforge.org",
@@ -940,7 +1034,8 @@
     "license" : "UKNOWN",
   },
   {
-    "name" : "Pythia8",
+    "name" : "pythia8",
+    "fullname" : "Pythia8",
     "description" : "Monte Carlo event generator",
     "homepage" : "http://home.thep.lu.se/~torbjorn/Pythia.html",
     "contact" : "Torbjorn Sjostrand torbjorn@thep.lu.se",
@@ -951,6 +1046,7 @@
   },
   {
     "name" : "Python",
+    "fullname" : "Python",
     "description" : "A dynamic, object oriented multi platform scripting language.",
     "homepage" : "http://www.python.org/",
     "contact" : "Stefan Roiser stefan.roiser@cern.ch",
@@ -961,6 +1057,7 @@
   },
   {
     "name" : "pyxml",
+    "fullname" : "pyxml",
     "description" : "a collection of libraries to process XML with Python",
     "homepage" : "http://pyxml.sourceforge.net",
     "contact" : "Thomas Doherty t.doherty@physics.gla.ac.uk",
@@ -971,6 +1068,7 @@
   },
   {
     "name" : "qmtest",
+    "fullname" : "qmtest",
     "description" : "A general purpose testing framework",
     "homepage" : "http://www.codesourcery.com/qmtest/",
     "contact" : "Manuel Gallas manuel.gallas@cern.ch",
@@ -981,6 +1079,7 @@
   },
   {
     "name" : "Qt",
+    "fullname" : "Qt",
     "description" : "A graphical widget tool kit for GUI development",
     "homepage" : "http://www.trolltech.com/products/qt",
     "contact" : "Thomas Kittelmann thomas.kittelmann@cern.ch",
@@ -991,6 +1090,7 @@
   },
   {
     "name" : "qwt",
+    "fullname" : "qwt",
     "description" : "Qt Widgets for Technical Applications",
     "homepage" : "http://qwt.sourceforge.net/",
     "contact" : "Thomas Kittelmann thomas.kittelmann@cern.ch",
@@ -1001,6 +1101,7 @@
   },
   {
     "name" : "readline",
+    "fullname" : "readline",
     "description" : "the readline implementation for Python, missing on osx",
     "homepage" : "http://pypi.python.org/pypi/readline/",
     "contact" : "Stefan Roiser stefan.roiser@cern.chk",
@@ -1011,6 +1112,7 @@
   },
   {
     "name" : "roofit",
+    "fullname" : "roofit",
     "description" : "a toolkit for modeling the expected distribution of events in a physics analysis",
     "homepage" : "http://roofit.sourceforge.net/",
     "contact" : "Wouter Verkerke verkerke@nikhef.nl",
@@ -1021,6 +1123,7 @@
   },
   {
     "name" : "rx",
+    "fullname" : "rx",
     "description" : "a regular expression library for windows",
     "homepage" : "http://prep.ai.mit.edu/old-gnu/rx/",
     "contact" : "Stefan Roiser stefan.roiser@cern.ch",
@@ -1031,6 +1134,7 @@
   },
   {
     "name" : "scipy",
+    "fullname" : "scipy",
     "description" : "library of tools for scientific computing with python",
     "homepage" : "http://www.scipy.org/",
     "contact" : "Juan Palacios juan.palacios@cern.ch",
@@ -1041,6 +1145,7 @@
   },
   {
     "name" : "sdl",
+    "fullname" : "sdl",
     "description" : "a cross platform multimedia library",
     "homepage" : "http://www.libsdl.org/",
     "contact" : "Daniele Kruse Daniele.Francesco.Kruse@cern.ch",
@@ -1051,6 +1156,7 @@
   },
   {
     "name" : "sdl_ttf",
+    "fullname" : "sdl_ttf",
     "description" : "true type fonts for sdl",
     "homepage" : "http://www.libsdl.org/",
     "contact" : "Daniele Kruse Daniele.Francesco.Kruse@cern.ch",
@@ -1061,6 +1167,7 @@
   },
   {
     "name" : "setuptools",
+    "fullname" : "setuptools",
     "description" : "Python toolkit for package handling",
     "homepage" : "http://pypi.python.org/pypi/setuptools/",
     "contact" : "Benedikt Hegner benedikt.hegner@cern.ch",
@@ -1070,7 +1177,8 @@
     "license" : "PYTHON",
   },
   {
-    "name" : "Sherpa",
+    "name" : "sherpa",
+    "fullname" : "Sherpa",
     "description" : "Monte Carlo event generator",
     "homepage" : "https://sherpa.hepforge.org/trac/wiki",
     "contact" : "info@sherpa-mc.de",
@@ -1081,6 +1189,7 @@
   },
   {
     "name" : "sip",
+    "fullname" : "sip",
     "description" : "a python binding generator for C/C++",
     "homepage" : "http://www.riverbankcomputing.co.uk/sip/",
     "contact" : "Stefan Roiser stefan.roiser@cern.ch",
@@ -1091,6 +1200,7 @@
   },
   {
     "name" : "soqt",
+    "fullname" : "soqt",
     "description" : "A library prviding glue between the Inventor 3D visualisation and Qt",
     "homepage" : "http://coin3d.org/lib/soqt/",
     "contact" : "Thomas Kittelmann thomas.kittelmann@cern.ch",
@@ -1101,6 +1211,7 @@
   },
   {
     "name" : "sqlalchemy",
+    "fullname" : "sqlalchemy",
     "description" : "SQLAlchemy is the Python SQL toolkit and Object Relational Mapper that gives application developers the full power and flexibility of SQL.",
     "homepage" : "http://www.sqlalchemy.org/",
     "contact" : "Peter Waller peter.waller@gmail.com",
@@ -1111,6 +1222,7 @@
   },
   {
     "name" : "sqlite",
+    "fullname" : "sqlite",
     "description" : "a C library that implements a SQL database engine",
     "homepage" : "http://www.sqlite.org/",
     "contact" : "Zhen Xie Zhen.Xie@cern.ch",
@@ -1121,6 +1233,7 @@
   },
   {
     "name" : "stomp.py",
+    "fullname" : "stomp.py",
     "description" : "Python client library for accessing messaging servers using the STOMP protocol",
     "homepage" : "http://code.google.com/p/stomppy/",
     "contact" : "Jason Briggs jasonrbriggs@gmail.com",
@@ -1131,6 +1244,7 @@
   },
   {
     "name" : "storm",
+    "fullname" : "storm",
     "description" : "Object-relational mapper (ORM) for Python developed at Canonical",
     "homepage" : "https://storm.canonical.com/",
     "contact" : "Juan Palacios juan.palacios@cern.ch",
@@ -1141,6 +1255,7 @@
   },
   {
     "name" : "swig",
+    "fullname" : "swig",
     "description" : "a tool that connects C/C++ programs with high-level programming languages.",
     "homepage" : "http://www.swig.org/",
     "contact" : "Stefan Roiser stefan.roiser@cern.ch",
@@ -1151,6 +1266,7 @@
   },
   {
     "name" : "sympy",
+    "fullname" : "sympy",
     "description" : "Python library for symbolic mathematics",
     "homepage" : "http://code.google.com/p/sympy/ ",
     "contact" : "Witold Pokorsky Witold.Pokorski@cern.ch",
@@ -1160,7 +1276,8 @@
     "license" : "BSD",
   },
   {
-    "name" : "Tauola++",
+    "name" : "tauola++",
+    "fullname" : "Tauola++",
     "description" : "Monte Carlo event generator",
     "homepage" : "http://www.ph.unimelb.edu.au/~ndavidson/tauola/doxygen/",
     "contact" : "z.was@cern.ch",
@@ -1171,6 +1288,7 @@
   },
   {
     "name" : "tbb",
+    "fullname" : "tbb",
     "description" : "parallelism in C++ for optimal multi-core performance",
     "homepage" : "http://threadingbuildingblocks.org/",
     "contact" : "Benedikt Hegner benedikt.hegner@cern.ch",
@@ -1181,6 +1299,7 @@
   },
   {
     "name" : "tcmalloc",
+    "fullname" : "tcmalloc",
     "description" : "Developing multi-threaded applications in C++ with templates",
     "homepage" : "http://code.google.com/p/google-perftools/",
     "contact" : "Marco Cattaneo Marco.Cattaneo@cern.ch",
@@ -1191,6 +1310,7 @@
   },
   {
     "name" : "tcsh",
+    "fullname" : "tcsh",
     "description" : "C shell with file name completion and command line editing",
     "homepage" : "http://www.tcsh.org/Home",
     "contact" : "Stefan Roiser stefan.roiser@cern.ch",
@@ -1200,7 +1320,8 @@
     "license" : "BSD",
   },
   {
-    "name" : "ThePEG",
+    "name" : "thepeg",
+    "fullname" : "ThePEG",
     "description" : "Monte Carlo event generator",
     "homepage" : "http://home.thep.lu.se/ThePEG/",
     "contact" : "leif@thep.lu.se",
@@ -1211,6 +1332,7 @@
   },
   {
     "name" : "uuid",
+    "fullname" : "uuid",
     "description" : "a universal unique identifier library",
     "homepage" : "http://sourceforge.net/projects/e2fsprogs/",
     "contact" : "Stefan Roiser stefan.roiser@cern.ch",
@@ -1221,6 +1343,7 @@
   },
   {
     "name" : "valgrind",
+    "fullname" : "valgrind",
     "description" : "a tool for building dynamic analysis tools (e.g. memory management, threading)",
     "homepage" : "http://www.valgrind.org",
     "contact" : "Stefan Roiser stefan.roiser@cern.ch",
@@ -1231,6 +1354,7 @@
   },
   {
     "name" : "vomsapic",
+    "fullname" : "vomsapic",
     "description" : "API for fetching data from a VOMS server",
     "homepage" : "http://glite.web.cern.ch/glite/",
     "contact" : "Oliver Keeble oliver.keeble@cern.ch",
@@ -1241,6 +1365,7 @@
   },
   {
     "name" : "xercesc",
+    "fullname" : "xercesc",
     "description" : "A validating XML parser written in a portable subset of C++",
     "homepage" : "http://xml.apache.org/xerces-c/",
     "contact" : "Stefan Roiser stefan.roiser@cern.ch",
@@ -1251,6 +1376,7 @@
   },
   {
     "name" : "xqilla",
+    "fullname" : "xqilla",
     "description" : "XQilla is an XQuery and XPath 2 library and command line utility ",
     "homepage" : "http://xqilla.sourceforge.net/HomePage",
     "contact" : "Stefan Roiser stefan.roiser@cern.ch",
@@ -1261,6 +1387,7 @@
   },
   {
     "name" : "xrootd",
+    "fullname" : "xrootd",
     "description" : "IO Library",
     "homepage" : "http://xrootd.slac.stanford.edu/",
     "contact" : "Gerardo Ganis gerardo.ganis@cern.ch",
@@ -1269,4 +1396,257 @@
     "language" : "C++",
     "license" : "custom",
   },
+  {
+    "name"        : "powheg-box",
+    "fullname"    : "powheg-box",
+    "description" : "The POWHEG BOX is a general computer framework for implementing NLO calculations in shower Monte Carlo programs according to the POWHEG method.",
+    "homepage"    : "http://powhegbox.mib.infn.it/",
+    "contact"     : "andrea.benaglia@cern.ch",
+    "project"     : "None",
+    "category"    : "Tool",
+    "language"    : "Fortran",
+    "license"     : "UNKNOWN",
+  },
+  {
+    "name"        : "lhapdfsets",
+    "fullname"    : "lhapdfsets",
+    "description" : "Les Houches Accord PDF Interface (PDFsets)",
+    "homepage"    : "https://lhapdf.hepforge.org/",
+    "contact"     : "lhapdf@projects.hepforge.org",
+    "project"     : "None",
+    "category"    : "generator",
+    "language"    : "Fortran",
+    "license"     : "UNKNOWN",
+  },
+  {
+    "name"        : "lhapdf6",
+    "fullname"    : "lhapdf6",
+    "description" : "Les Houches Accord PDF Interface (PDFsets)",
+    "homepage"    : "https://lhapdf.hepforge.org/",
+    "contact"     : "lhapdf@projects.hepforge.org",
+    "project"     : "None",
+    "category"    : "generator",
+    "language"    : "Fortran",
+    "license"     : "UNKNOWN",
+  },
+  {
+    "name"        : "lhapdf6sets",
+    "fullname"    : "lhapdf6sets",
+    "description" : "Les Houches Accord PDF Interface (PDFsets)",
+    "homepage"    : "https://lhapdf.hepforge.org/",
+    "contact"     : "lhapdf@projects.hepforge.org",
+    "project"     : "None",
+    "category"    : "generator",
+    "language"    : "Fortran",
+    "license"     : "UNKNOWN",
+  },
+  {
+    "name"        : "agile",
+    "fullname"    : "agile",
+    "description" : "A Generator Interface Library",
+    "homepage"    : "http://agile.hepforge.org",
+    "contact"     : "rivet@projects.hepforge.org",
+    "project"     : "None",
+    "category"    : "generator",
+    "language"    : "C++",
+    "license"     : "UNKNOWN",
+  },
+  {
+    "name"        : "evtgen",
+    "fullname"    : "evtgen",
+    "description" : "Event generator designed for the simulation of the physics of B decays",
+    "homepage"    : "http://evtgen.warwick.ac.uk",
+    "contact"     : "m.kreps@warwick.co.uk",
+    "project"     : "None",
+    "category"    : "generator",
+    "language"    : "C++",
+    "license"     : "UNKNOWN",
+  },
+  {
+    "name"        : "rivet",
+    "fullname"    : "rivet",
+    "description" : "(Robust Independent Validation of Experiment and Theory) is a toolkit for validation of Monte Carlo event generators.",
+    "homepage"    : "http://www.hepforge.org/archive/rivet/",
+    "contact"     : "rivet@projects.hepforge.org",
+    "project"     : "None",
+    "category"    : "generator",
+    "language"    : "C++",
+    "license"     : "UNKNOWN",
+  },
+  {
+    "name"        : "rivet2",
+    "fullname"    : "rivet2",
+    "description" : "(Robust Independent Validation of Experiment and Theory) is a toolkit for validation of Monte Carlo event generators.",
+    "homepage"    : "http://www.hepforge.org/archive/rivet/",
+    "contact"     : "rivet@projects.hepforge.org",
+    "project"     : "None",
+    "category"    : "generator",
+    "language"    : "C++",
+    "license"     : "UNKNOWN",
+  },
+  {
+    "name"        : "hepmcanalysis",
+    "fullname"    : "hepmcanalysis",
+    "description" : "A tool for generator validation and comparisons",
+    "homepage"    : "http://hepmcanalysistool.desy.de/",
+    "contact"     : "wolfgang.ehrenfeld@desy.de",
+    "project"     : "Tool",
+    "category"    : "generator",
+    "language"    : "C++",
+    "license"     : "UNKNOWN",
+  },
+  {
+    "name"        : "mctester",
+    "fullname"    : "mctester",
+    "description" : "An universal tool for comparisons of Monte Carlo predictions in High Energy Physics",
+    "homepage"    : "http://hibiscus.if.uj.edu.pl/~przedzinski/",
+    "contact"     : "Tomasz.Przedzinski@cern.ch",
+    "project"     : "None",
+    "category"    : "generator",
+    "language"    : "C++",
+    "license"     : "UNKNOWN",
+  },
+  {
+    "name"        : "starlight",
+    "fullname"    : "starlight",
+    "description" : "STARlight is a Monte Carlo that simulates two-photon and photon-Pomeron interactions between relativistic nuclei and protons.",
+    "homepage"    : "http://starlight.hepforge.org",
+    "contact"     : "",
+    "project"     : "None",
+    "category"    : "generator",
+    "language"    : "C++",
+    "license"     : "UNKNOWN",
+  },
+  {
+    "name"        : "crmc",
+    "fullname"    : "crmc",
+    "description" : "High energy ion collision MC",
+    "homepage"    : "https://devel-ik.fzk.de/svn/mc/crmc/trunk",
+    "contact"     : "S.Porteboeuf",
+    "project"     : "None",
+    "category"    : "generator",
+    "language"    : "C++",
+    "license"     : "UNKNOWN",
+  },
+  {
+    "name"        : "yoda",
+    "fullname"    : "yoda",
+    "description" : "Yet more Objects for Data Analysis",
+    "homepage"    : "http://yoda.hepforge.org",
+    "contact"     : "andy.buckley@cern.ch",
+    "project"     : "None",
+    "category"    : "Tool",
+    "language"    : "C++",
+    "license"     : "UNKNOWN",
+  },
+  {
+    "name"        : "hydjet",
+    "fullname"    : "hydjet",
+    "description" : "event generator to simulate jet production, jet quenching and flow effects in ultrarelativistic heavy ion AA collisions ",
+    "homepage"    : "http://cern.ch/lokhtin/hydro/hydjet.html",
+    "contact"     : "Igor.Lokhtin@cern.ch",
+    "project"     : "None",
+    "category"    : "generator",
+    "language"    : "Fortran",
+    "license"     : "UNKNOWN",
+  },
+  {
+    "name"        : "jimmy",
+    "fullname"    : "jimmy",
+    "description" : "Multiparton Interactions in HERWIG",
+    "homepage"    : "http://jimmy.hepforge.org/",
+    "contact"     : "J.Butterworth@ucl.ac.uk",
+    "project"     : "None",
+    "category"    : "generator",
+    "language"    : "Fortran",
+    "license"     : "UNKNOWN",
+  },
+  {
+    "name"        : "hydjet++",
+    "fullname"    : "hydjet++",
+    "description" : "event generator to simulate jet production, jet quenching and flow effects in ultrarelativistic heavy ion AA collisions ",
+    "homepage"    : "http://cern.ch/lokhtin/hydro/hydjet.html",
+    "contact"     : "Igor.Lokhtin@cern.ch",
+    "project"     : "None",
+    "category"    : "generator",
+    "language"    : "C++",
+    "license"     : "UNKNOWN",
+  },
+  {
+    "name"        : "alpgen",
+    "fullname"    : "alpgen",
+    "description" : "A collection of codes for the generation of multi-parton processes in hadronic collisions.",
+    "homepage"    : "http://mlm.home.cern.ch/mlm/alpgen/",
+    "contact"     : "Michelangelo.Mangano@cern.ch",
+    "project"     : "None",
+    "category"    : "generator",
+    "language"    : "Fortran",
+    "license"     : "UNKNOWN",
+  },
+  {
+    "name"        : "pyquen",
+    "fullname"    : "pyquen",
+    "description" : "PYQUEN is event generator for simulation of rescattering, radiative and collisional energy loss of hard partons in expanding quark-gluon plasma created in ultrarelativistic heavy ion AA collisions (implemented as modification of standard pythia6.4xx jet event) ",
+    "homepage"    : "http://lokhtin.web.cern.ch/lokhtin/pyquen/",
+    "contact"     : "Igor.Lokhtin@cern.ch",
+    "project"     : "None",
+    "category"    : "generator",
+    "language"    : "Fortran",
+    "license"     : "UNKNOWN",
+  },
+  {
+    "name"        : "baurmc",
+    "fullname"    : "baurmc",
+    "description" : "Baur's Monte Carlo package for simulating W+ gamma production at hadron colliders provides full electroweak calculation upto O(alpha) and contains higher order QCD corrections as well. ",
+    "homepage"    : "https://twiki.cern.ch/twiki/bin/view/Main/DevdattaMajumder",
+    "contact"     : "Devdatta.Majumder@cern.ch",
+    "project"     : "None",
+    "category"    : "generator",
+    "language"    : "Fortran",
+    "license"     : "UNKNOWN",
+  },
+  {
+    "name"        : "professor",
+    "fullname"    : "professor",
+    "description" : "tuning tool for Monte Carlo event generators",
+    "homepage"    : "http://professor.hepforge.org/",
+    "contact"     : "andy.buckley@cern.ch",
+    "project"     : "None",
+    "category"    : "generator",
+    "language"    : "Python",
+    "license"     : "UNKNOWN",
+  },
+  {
+    "name"        : "madgraph5",
+    "fullname"    : "madgraph5",
+    "description" : "matrix element generator",
+    "homepage"    : "https://launchpad.net/madgraph5",
+    "contact"     : "olivier.mattelaer@uclouvain.be",
+    "project"     : "None",
+    "category"    : "generator",
+    "language"    : "Python",
+    "license"     : "UNKNOWN",
+  },
+  {
+    "name"        : "madgraph5v2",
+    "fullname"    : "madgraph5v2",
+    "description" : "matrix element generator",
+    "homepage"    : "https://launchpad.net/madgraph5",
+    "contact"     : "olivier.mattelaer@uclouvain.be",
+    "project"     : "None",
+    "category"    : "generator",
+    "language"    : "Python",
+    "license"     : "UNKNOWN",
+  },
+  {
+    "name"        : "hijing",
+    "fullname"    : "hijing",
+    "description" : "Heavy Ion Jet Interaction Generator",
+    "homepage"    : "http://www.star.bnl.gov/public/comp/simu/evgen/hij.html",
+    "contact"     : "Ronald Longacre",
+    "project"     : "None",
+    "category"    : "generator",
+    "language"    : "Fortran",
+    "license"     : "UNKNOWN",
+  }
 ]
