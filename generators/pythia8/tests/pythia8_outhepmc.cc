@@ -99,7 +99,7 @@ int main() {
       new HepMC::GenEvent(HepMC::Units::GEV, HepMC::Units::MM);
 
     //ToHepMC.fill_next_event( event, hepmcevt );
-    ToHepMC.fill_next_event( pythia, hepmcevt );
+    ToHepMC.fill_next_event( pythia, hepmcevt ); // this fills PDF etc.
 
     ascii_io << hepmcevt;
 
