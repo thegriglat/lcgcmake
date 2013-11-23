@@ -106,6 +106,8 @@ LCGPackage_Add(
   DEPENDS HepMC lhapdf fastjet
 )
 
+LCGPackage_set_home(rivet2)
+
 LCG_add_test(pythia8-build
   BINARY_DIR pythia8/tests
   SOURCE_DIR pythia8/tests
@@ -115,6 +117,24 @@ LCG_add_test(pythia8-build
    -DCMAKE_MODULE_PATH2=${cmaketools_home}/modules
    -DPYTHIA8_ROOT_DIR=${pythia8_home} -DHEPMC_ROOT_DIR=${HepMC_home}
    -DFASTJET_ROOT_DIR=${fastjet_home}
+)
+
+LCG_add_test(pythia8_outhepmc
+  TEST_COMMAND pythia8/tests/pythia8_outhepmc
+  ENVIRONMENT
+    ${library_path}=${pythia8_home}/lib:${HepMC_home}/lib:$ENV{${library_path}}
+    PYTHIA8DATA=${pythia8_home}/xmldoc
+  DEPENDS pythia8-build
+  LABELS PhysicsCheck
+)
+
+LCG_add_test(
+  pythia8_riv2_test
+  TEST_COMMAND ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/riv2test.sh ${rivet2_home} hepmcoutzjets.dat
+  ENVIRONMENT PATH=${Python_home}/bin:$ENV{PATH}
+                   ${library_path}=${Python_home}/lib:${GSL_home}/lib:$ENV{${library_path}}
+  DEPENDS pythia8_outhepmc
+  LABELS PhysicsCheck
 )
 
 LCG_add_test(pythia8-genser_test1_nightly
