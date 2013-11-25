@@ -185,7 +185,7 @@ def set_default_ACL(path):
             errLines = serr.readlines()
             if errLines and len(errLines)>0 : print "err:", errLines
     cmd = fsCmd + " la"
-    p.subprocess.Popen(cmd,shell=True,stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, close_fds=True)
+    p = subprocess.Popen(cmd,shell=True,stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, close_fds=True)
     if sout:
         lines = sout.readlines()
         for line in lines:

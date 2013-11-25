@@ -30,7 +30,8 @@ class ProjectAreaManager(object):
         version = self._version
         #print "BasePATH: %s" % self._basepath
         path = os.path.join(basepath,version)
-        exts = [('externals',''),('MCGenerators','MC')]
+        #exts = [('externals',''),('MCGenerators','MC')]
+        exts = [('externals','')]
         for ext in exts:
             if ext[0] == 'externals':
                 print "=== Area for LCG release %s:" %(version)
