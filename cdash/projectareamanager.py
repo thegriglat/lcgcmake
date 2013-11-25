@@ -38,7 +38,12 @@ class ProjectAreaManager(object):
                 path = os.path.join(basepath,version)
             else:
                 print "=== Area for LCG release MCGenerators %s:" %(version)
-                path = os.path.join(basepath,version,ext[0]+'_'+version)
+                print "Check existence of LCG release path"
+                if os.path.exists(os.path.join(basepath,version)):
+                    path = os.path.join(basepath,version,ext[0]+'_'+version)
+                else: 
+                    print "Error : try to build MCGenerators volume without lcg volume"
+                    sys.exit(1)
             print 'PATH: %s' % path
             if os.path.exists(path):
                 print path, "already exists. Nothing to be done"
