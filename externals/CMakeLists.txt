@@ -49,7 +49,11 @@ LCGPackage_Add(
 file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/user-config.jam "# \n")  # Start with an empty config file
 if(APPLE)
   set(Boost_toolset darwin)
-  set(Boost_bootstrap_options --with-python-root=${Python_home} --without-libraries=log)
+  if(Boost_config_version VERSION_GREATER 1.54.0)
+    set(Boost_bootstrap_options --with-python-root=${Python_home} --without-libraries=log)
+  else()
+    set(Boost_bootstrap_options --with-python-root=${Python_home})
+  endif()
 else()
   set(Boost_toolset gcc)
   set(Boost_bootstrap_options --with-python=${Python_home}/bin/python)
