@@ -1298,6 +1298,17 @@
     "license" : "UKNOWN",
   },
   {
+    "name" : "tauola",
+    "fullname" : "Tauola",
+    "description" : "Monte Carlo event generator",
+    "homepage" : "http://www.ph.unimelb.edu.au/~ndavidson/tauola/doxygen/",
+    "contact" : "z.was@cern.ch",
+    "project" : "None",
+    "category" : "Generator",
+    "language" : "Fortran",
+    "license" : "UKNOWN",
+  },
+  {
     "name" : "tbb",
     "fullname" : "tbb",
     "description" : "parallelism in C++ for optimal multi-core performance",
