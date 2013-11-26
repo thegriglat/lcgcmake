@@ -115,12 +115,12 @@ LCGPackage_Add(
 
 #---HepMC--------------------------------------------------------------------------------------------
 if(LCG_TARGET MATCHES i686)
-   set(HepMC_config_options --build=i686-unknown-linux-gnu)
+  set(HepMC_config_options --build=i686-unknown-linux-gnu)
 endif()
-
-set(HepMC_source_command URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/HepMC-${HepMC_native_version}.tar.gz)
 if( ${HepMC_native_version} VERSION_EQUAL githead)
-      set(HepMC_source_command GIT_REPOSITORY http://git.cern.ch/pub/HepMC) 
+  set(HepMC_source_command GIT_REPOSITORY http://git.cern.ch/pub/HepMC UPDATE_COMMAND <VOID>) 
+else()
+  set(HepMC_source_command URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/HepMC-${HepMC_native_version}.tar.gz)
 endif()
 
 LCGPackage_set_home(cmaketools)
