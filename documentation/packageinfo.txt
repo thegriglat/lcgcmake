@@ -902,6 +902,17 @@
     "license" : "UKNOWN",
   },
   {
+    "name" : "photos",
+    "fullname" : "Photos",
+    "description" : "Monte Carlo event generator",
+    "homepage" : "http://www.ph.unimelb.edu.au/~ndavidson/photos/doxygen/",
+    "contact" : "z.was@cern.ch",
+    "project" : "None",
+    "category" : "Generator",
+    "language" : "Fortran",
+    "license" : "UKNOWN",
+  },
+  {
     "name" : "ppl",
     "fullname" : "ppl",
     "description" : "provides numerical abstractions for analysis and verification of complex systems",
