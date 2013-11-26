@@ -96,9 +96,6 @@ macro(LCGPackage_Add name)
                                           COMMENT "${targetname} package already existing in ${LCG_INSTALL_PREFIX}/${install_path}. Making a soft-link.")
       add_custom_target(clean-${targetname} COMMAND ${CMAKE_COMMAND} -E remove ${CMAKE_INSTALL_PREFIX}/${install_path}
                                             COMMENT "Deleting soft-link for package ${targetname}")
-      if(ARG_DEPENDS)
-        add_dependencies(${targetname} ${DEPENDS})
-      endif()
 
     elseif(lcg_ignore EQUAL -1 AND EXISTS ${LCG_INSTALL_PREFIX}/../app/releases/${install_path})
       get_filename_component(_path ${LCG_INSTALL_PREFIX} PATH)
