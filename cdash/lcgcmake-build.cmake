@@ -17,9 +17,17 @@ set(CTEST_NOTES_FILES ${CTEST_NOTES_FILES} ${CTEST_BINARY_DIRECTORY}/dependencie
 #---CTest commands----------------------------------------------------------
 #ctest_empty_binary_directory(${CTEST_BINARY_DIRECTORY})
 file(REMOVE_RECURSE ${CTEST_BINARY_DIRECTORY})
+
 if("$ENV{CLEAN_INSTALLDIR}" STREQUAL "true")
   file(REMOVE_RECURSE ${CTEST_INSTALL_DIRECTORY})
 endif()
+
+if("$ENV{TEST_LABELS}" STREQUAL "")
+  set(CTEST_LABELS Nightly)
+else()
+  set(CTEST_LABELS $ENV{TEST_LABELS})
+endif()
+
 
 # The build mode drives the name of the slot in cdash
 ctest_start($ENV{MODE} TRACK $ENV{MODE})
@@ -31,7 +39,7 @@ ctest_configure(BUILD   ${CTEST_BINARY_DIRECTORY}
                )
 ctest_build(BUILD ${CTEST_BINARY_DIRECTORY})
 if(NOT $ENV{MODE} STREQUAL "Install")
-  ctest_test(PARALLEL_LEVEL ${ncpu} INCLUDE_LABEL Nightly)
+  ctest_test(PARALLEL_LEVEL ${ncpu} INCLUDE_LABEL ${CTEST_LABELS})
 endif()
 ctest_submit()
 
