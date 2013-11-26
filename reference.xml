@@ -1,0 +1,44 @@
+<tests>
+
+<reference  Test="rivet-pythia6-test" Path="/MC_XS/N" Type="Histo1D" Title=""># BEGIN YODA_HISTO1D /MC_XS/N
+Path=/MC_XS/N
+Type=Histo1D
+# Mean: 5.000000e-01
+# Area: 1.000000e+02
+# xlow	 xhigh	 sumw	 sumw2	 sumwx	 sumwx2	 numEntries
+Total   	Total   	1.000000e+02	1.000000e+02	5.000000e+01	2.500000e+01	100
+Underflow	Underflow	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0
+Overflow	Overflow	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0
+0.000000e+00	1.000000e+00	1.000000e+02	1.000000e+02	5.000000e+01	2.500000e+01	100
+# END YODA_HISTO1D</reference>
+
+<reference  Test="rivet-pythia6-test" Path="/MC_XS/XS" Type="Scatter2D" Title="">83.40273</reference>
+
+<reference  Test="rivet-pythia6-test" Path="/MC_XS/pmN" Type="Histo1D" Title=""># BEGIN YODA_HISTO1D /MC_XS/pmN
+Path=/MC_XS/pmN
+Type=Histo1D
+# Mean: 5.000000e-01
+# Area: 1.000000e+02
+# xlow	 xhigh	 sumw	 sumw2	 sumwx	 sumwx2	 numEntries
+Total   	Total   	1.000000e+02	1.000000e+02	5.000000e+01	2.500000e+01	100
+Underflow	Underflow	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0
+Overflow	Overflow	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0
+-1.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0
+0.000000e+00	1.000000e+00	1.000000e+02	1.000000e+02	5.000000e+01	2.500000e+01	100
+# END YODA_HISTO1D</reference>
+
+<reference  Test="rivet-pythia6-test" Path="/MC_XS/pmXS" Title="" Type="Histo1D" ScaledBy="0.80248304543000004"># BEGIN YODA_HISTO1D /MC_XS/pmXS
+Path=/MC_XS/pmXS
+ScaledBy=0.80248304543000004
+Type=Histo1D
+# Mean: 5.000000e-01
+# Area: 8.024830e+01
+# xlow	 xhigh	 sumw	 sumw2	 sumwx	 sumwx2	 numEntries
+Total   	Total   	8.024830e+01	6.439790e+01	4.012415e+01	2.006208e+01	100
+Underflow	Underflow	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0
+Overflow	Overflow	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0
+-1.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0
+0.000000e+00	1.000000e+00	8.024830e+01	6.439790e+01	4.012415e+01	2.006208e+01	100
+# END YODA_HISTO1D</reference>
+
+</tests>

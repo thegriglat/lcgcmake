@@ -1093,11 +1093,11 @@ rivet-pythia6-test
                 TEST_COMMAND ${agile_home}/bin/agile-runmc Pythia6:428 -o hepmcfile.dat --paramfile ${CMAKE_SOURCE_DIR}/generators/rivet-testing/pythia6/pythia6-ttbar-7tev.params -n 1000
 		     COMMAND  ${rivet2_home}/bin/rivet -a MC_XS hepmcfile.dat
                 ENVIRONMENT PATH=${agile_home}/bin:${Python_home}/bin:$ENV{PATH}
-                                          ${library_path}=${agile_home}/lib:${HepMC_home}/lib:$ENV{${library_path}}
-					  ${library_path}=${Python_home}/lib:${GSL_home}/lib:${rivet2_home}/lib:${yoda_home}/lib:${HepMC_home}/lib:${fastjet_home}/lib:${yamlcpp_home}/lib:$ENV{${library_path}}
+					  ${library_path}=${Python_home}/lib:${GSL_home}/lib:${rivet2_home}/lib:${yoda_home}/lib:${HepMC_home}/lib:${fastjet_home}/lib:${yamlcpp_home}/lib:${agile_home}/lib:${HepMC_home}/lib:$ENV{${library_path}}
                                           PYTHONPATH=${Python_home}/bin:${agile_home}/lib/python${Python_config_version_twodigit}/site-packages:$ENV{PYTHONPATH}
                                           AGILE_GEN_PATH=${agile_home}/../../..
   LABELS PhysicsCheck
+  POST_COMMAND ${Python_home}/bin/python2.7 ${CMAKE_SOURCE_DIR}/reference.py  rivet-pythia6-test ${CMAKE_SOURCE_DIR}/reference.xml ${CMAKE_BINARY_DIR}/generators/Rivet.yoda check Path=/MC_XS/XS 
                               )
 
 
