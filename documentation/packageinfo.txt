@@ -1665,7 +1665,7 @@
     "fullname"    : "hijing",
     "description" : "Heavy Ion Jet Interaction Generator",
     "homepage"    : "http://www.star.bnl.gov/public/comp/simu/evgen/hij.html",
-    "contact"     : "Ronald Longacre",
+    "contact"     : "Xin-Nian Wang xnwang@lbl.gov",
     "project"     : "None",
     "category"    : "generator",
     "language"    : "Fortran",
