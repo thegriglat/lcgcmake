@@ -1,5 +1,5 @@
 
-import os,sys,re
+import os,sys,re, time
 import AFS
 
 def skip_in_dry_mode(method):
@@ -37,6 +37,7 @@ class ProjectAreaManager(object):
                 path = os.path.join(basepath,version)
             else:
                 print "=== Area for LCG release MCGenerators %s:" %(version)
+                time.sleep(60)
                 print "Check existence of LCG release path %s" % os.path.join(basepath,version)  
                 if os.path.exists(os.path.join(basepath,version)):
                     path = os.path.join(basepath,version,ext[0]+'_'+version)
