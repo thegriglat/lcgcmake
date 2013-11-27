@@ -201,6 +201,7 @@ LCG_add_test(pythia8-compare
 
 
 #---ThePEG------------------------------------------------------------------------------------------
+
 LCGPackage_Add(
   thepeg
   URL ${gen_url}/ThePEG-<NATIVE_VERSION>.tar.bz2
@@ -261,6 +262,16 @@ LCG_add_test(herwigpp_orig_test2
                           BINARY_DIR herwig++/tests
                           SOURCE_DIR herwig++/tests
                           ENVIRONMENT ${library_path}=${herwig++_home}/lib:${thepeg_home}/lib:${HepMC_home}/lib:${lhapdf_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:$ENV{${library_path}})
+
+LCG_add_test(herwigpp_thepeg_test
+                          TEST_COMMAND ${herwig++_home}/bin/Herwig++ read ${CMAKE_SOURCE_DIR}/generators/herwig++/tests/LHC-diffractive.in 
+                               COMMAND ${herwig++_home}/bin/Herwig++ run -N100 LHC-diffractive.run -d1
+                          POST_COMMAND cat LHC-diffractive.out
+                               COMMAND cat LHC-diffractive.log
+                          BINARY_DIR herwig++/tests
+                          SOURCE_DIR herwig++/tests
+                          ENVIRONMENT ${library_path}=${herwig++_home}/lib:${thepeg_home}/lib:${HepMC_home}/lib:${lhapdf_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:$ENV{${library_path}})
+
 
 
 #---tauola++------------------------------------------------------------------------------------------
