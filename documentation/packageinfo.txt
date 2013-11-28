@@ -1532,7 +1532,7 @@
     "name"        : "crmc",
     "fullname"    : "Crmc",
     "description" : "High energy ion collision MC",
-    "homepage"    : "https://devel-ik.fzk.de/svn/mc/crmc/trunk",
+    "homepage"    : "https://www.auger.de/~rulrich/crmc.html",
     "contact"     : "Tanguy Pierog Tanguy.Pierog@kit.edu",
     "project"     : "None",
     "category"    : "Generator",
