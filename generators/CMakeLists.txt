@@ -1103,16 +1103,16 @@ LCG_add_test(jhu_orig_test_C
 LCG_add_test(
 rivet-pythia6-test
                 TEST_COMMAND ${agile_home}/bin/agile-runmc Pythia6:428 -o hepmcfile.dat --paramfile ${CMAKE_SOURCE_DIR}/generators/rivet-testing/pythia6/pythia6-ttbar-7tev.params -n 1000
-                COMMAND  ${rivet2_home}/bin/rivet -a MC_XS -a MC_TTBAR hepmcfile.dat
+                     COMMAND  ${rivet2_home}/bin/rivet -a MC_XS -a MC_TTBAR hepmcfile.dat
                 ENVIRONMENT PATH=${agile_home}/bin:${Python_home}/bin:$ENV{PATH}
                             ${library_path}=${Python_home}/lib:${GSL_home}/lib:${rivet2_home}/lib:${yoda_home}/lib:${HepMC_home}/lib:${fastjet_home}/lib:${yamlcpp_home}/lib:${agile_home}/lib:${HepMC_home}/lib:${ROOT_home}/lib:$ENV{${library_path}}
                             PYTHONPATH=${Python_home}/bin:${agile_home}/lib/python${Python_config_version_twodigit}/site-packages:${yoda_home}/lib/python2.7/site-packages/:${ROOT_home}/lib:$ENV{PYTHONPATH}
                             AGILE_GEN_PATH=${agile_home}/../../..
-    LABELS PhysicsCheck
-    POST_COMMAND ${CMAKE_COMMAND} -DAIDA2ROOT=${AIDA2ROOT} -DPython_cmd=${Python_cmd} -Dyoda_home=${yoda_home} -DINPUT=${CMAKE_BINARY_DIR}/generators/Rivet.yoda -P ${CMAKE_SOURCE_DIR}/cmake/scripts/yoda2root.cmake
-    COMMAND ${Python_cmd} ${CMAKE_SOURCE_DIR}/generators/reference/reference.py ${CMAKE_SOURCE_DIR}/generators/reference/rivet-pythia6-test.yoda ${CMAKE_BINARY_DIR}/generators/Rivet.yoda "Path=XS" limit=0.90
-    COMMAND ${CMAKE_COMMAND} -DAIDA2ROOT=${AIDA2ROOT} -DPython_cmd=${Python_cmd} -Dyoda_home=${yoda_home} -DINPUT=${CMAKE_SOURCE_DIR}/generators/reference/rivet-pythia6-test.yoda -P ${CMAKE_SOURCE_DIR}/cmake/scripts/yoda2root.cmake
-    COMMAND ${Python_home}/bin/python ${CMAKE_SOURCE_DIR}/generators/reference/reference.py ${CMAKE_SOURCE_DIR}/generators/reference/rivet-pythia6-test.root ${CMAKE_BINARY_DIR}/generators/Rivet.root "Path=jet_HT" limit=0.90
+                LABELS PhysicsCheck
+                POST_COMMAND ${CMAKE_COMMAND} -DAIDA2ROOT=${AIDA2ROOT} -DPython_cmd=${Python_cmd} -Dyoda_home=${yoda_home} -DINPUT=${CMAKE_BINARY_DIR}/generators/Rivet.yoda -P ${CMAKE_SOURCE_DIR}/cmake/scripts/yoda2root.cmake
+                     COMMAND ${Python_cmd} ${CMAKE_SOURCE_DIR}/generators/reference/reference.py ${CMAKE_SOURCE_DIR}/generators/reference/rivet-pythia6-test.yoda ${CMAKE_BINARY_DIR}/generators/Rivet.yoda "Path=XS" limit=0.90
+                     COMMAND ${CMAKE_COMMAND} -DAIDA2ROOT=${AIDA2ROOT} -DPython_cmd=${Python_cmd} -Dyoda_home=${yoda_home} -DINPUT=${CMAKE_SOURCE_DIR}/generators/reference/rivet-pythia6-test.yoda -P ${CMAKE_SOURCE_DIR}/cmake/scripts/yoda2root.cmake
+                     COMMAND ${Python_cmd} ${CMAKE_SOURCE_DIR}/generators/reference/reference.py ${CMAKE_SOURCE_DIR}/generators/reference/rivet-pythia6-test.root ${CMAKE_BINARY_DIR}/generators/Rivet.root "Path=jet_HT,jet_mult" "limit=0.90,0.90"
                               )
 
 

@@ -1,15 +1,24 @@
 #!/usr/bin/env python
+
+#
+# Options are      
+# $0 RefFile TestFile "Path=XS,W_mass" "limit=0.95,0.9"
+#
+
 import sys
 from xml.dom import minidom
 import yoda
+
+def Exit(status,message):
+    print message
+    sys.exit(status)
 
 def GetXS(YodaFile):
     """ Return MC_XS/XS from Yoda file as float"""
     for i in YodaFile:
         if '/MC_XS/XS' in i.annotations['Path']:
             return float(i.points()[0].y)
-    print "Cannot found XS value in Yoda file"
-    sys.exit(1)
+    Exit(1,"Cannot found XS value in Yoda file")
 
 
 def Check_XS(RefFile,TestFile,limit = 0.95):
@@ -19,13 +28,10 @@ def Check_XS(RefFile,TestFile,limit = 0.95):
     RefValue = GetXS(yoda.read(RefFile))
     TestValue = GetXS(yoda.read(TestFile))
     print "Test value: " + str(TestValue) + " | Reference value: " + str(RefValue) + " | limit = " + str(limit)
-    print str(1 - abs(TestValue - RefValue)/RefValue)
     if (1 - abs(TestValue - RefValue)/RefValue) >= limit:
-        print "Success."
-        sys.exit(0)
+        return True
     else:
-        print "Test failed."
-        sys.exit(1)
+        return False
 
 def Check_Histos(RefFile, TestFile, component, limit = 0.9):
     """ Check Kolmogorov value between 'component' of Reference and Test file """
@@ -34,33 +40,24 @@ def Check_Histos(RefFile, TestFile, component, limit = 0.9):
     try:
         import ROOT
     except:
-        print "Cannot import ROOT"
-        sys.exit(1)
+        Exit(1,"Cannot import ROOT")
     try:
         RefF = ROOT.TFile(RefFile)
         TestF = ROOT.TFile(TestFile)
     except:
-        print "Cannot open ROOT files"
-        sys.exit(1)
+        Exit(1,"Cannot open ROOT files")
     try:
         RefHist  = RefF.Get(component)
         TestHist = TestF.Get(component)
     except:
-        print "Cannot obtain " + component + " from files"
-        sys.exit(1)
+        Exit(1,"Cannot obtain " + component + " from files")
     hi = RefHist.KolmogorovTest(TestHist)
     print "Result: " + str(hi) + " | success if >= " + str(limit)
     if hi >= limit:
-        print "Success."
-        sys.exit(0)
+        return True
     else:
-        print "Test failed."
-        sys.exit(1)
+        return False
 
-##
-# Options are      
-# $0 RefFile TestFile "Path=XS" "limit=0.05""key1=value1" "key2=value2" ...
-# key=output,input
 RefFile = sys.argv[1]
 TestFile = sys.argv[2]
 options = {}
@@ -71,16 +68,36 @@ if len(sys.argv) >= 3:
             options[key] = value
         except:
             print opt
-            print "Can't split key=value pair by symbol '='"
-            sys.exit(1)
+            Exit(1,"Can't split key=value pair by symbol '=' in \'" + opt + "\'")
 else:
-    print "No Path option specified!"
-    sys.exit(1)
-if options.has_key('limit'):
-    limit = float(options['limit'])
+    Exit(1,"No options specified!")
+if not options.has_key('Path') or not options.has_key('limit'):
+    Exit(1,"Path or limit option isn't specified.")
+
+tests = []
+if len(options['Path'].split(',')) != len(options['limit'].split(',')):
+    Exit(1,"Path and limit has different number of tests!")
 else:
-    limit = None
-if options['Path'] == 'XS':
-    Check_XS(RefFile,TestFile,limit)
-else:
-    Check_Histos(RefFile,TestFile,options['Path'],limit)
+    for i in xrange(len(options['Path'].split(','))):
+        tests.append((options['Path'].split(',')[i],float(options['limit'].split(',')[i])))
+
+status = {'success':0,'failed':0}
+for (Path,limit) in tests:  
+    if Path == 'XS' and len(tests) == 1:
+        if Check_XS(RefFile,TestFile,limit):
+            print "XS check is succeed."
+            status['success'] += 1
+        else:
+            print "XS check is failed."
+            status['failed'] += 1
+    else:
+        if Check_Histos(RefFile,TestFile,Path,limit):
+            print Path,"check is succeed."
+            status['success'] += 1
+        else:
+            print Path,"check is failed."
+            status['failed'] += 1
+
+print "Totat check: " + str(status['success'] + status['failed']) + ", success: " + str(status['success']) + ", failed: " + str(status['failed'])
+if status['failed'] > 0:
+    Exit(1,"One or more checks are failed. Test failed.")
