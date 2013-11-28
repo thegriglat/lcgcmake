@@ -480,7 +480,7 @@
     "contact" : "webber@hep.phy.cam.ac.uk",
     "project" : "None",
     "category" : "Generator",
-    "language" : "FORTRAN",
+    "language" : "Fortran",
     "license" : "UKNOWN",
   },
   {
@@ -645,7 +645,7 @@
     "contact" : "lhapdf@projects.hepforge.org",
     "project" : "None",
     "category" : "Generator",
-    "language" : "FORTRAN",
+    "language" : "Fortran",
     "license" : "UKNOWN",
   },
   {
@@ -1041,7 +1041,7 @@
     "contact" : "pythia6@projects.hepforge.org",
     "project" : "None",
     "category" : "Generator",
-    "language" : "FORTRAN",
+    "language" : "Fortran",
     "license" : "UKNOWN",
   },
   {
@@ -1064,7 +1064,7 @@
     "project" : "None",
     "category" : "Tool",
     "language" : "Python",
-    "license" : "PYTHON",
+    "license" : "Python",
   },
   {
     "name" : "pyxml",
@@ -1243,7 +1243,7 @@
     "license" : "SQLITE",
   },
   {
-    "name" : "stomp.py",
+    "name" : "stomppy",
     "fullname" : "stomp.py",
     "description" : "Python client library for accessing messaging servers using the STOMP protocol",
     "homepage" : "http://code.google.com/p/stomppy/",
@@ -1478,7 +1478,7 @@
     "fullname"    : "evtgen",
     "description" : "Event generator designed for the simulation of the physics of B decays",
     "homepage"    : "http://evtgen.warwick.ac.uk",
-    "contact"     : "Dr Michal Kreps m.kreps@warwick.co.uk",
+    "contact"     : "Dr.Michal Kreps m.kreps@warwick.co.uk",
     "project"     : "None",
     "category"    : "generator",
     "language"    : "C++",
