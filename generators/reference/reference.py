@@ -35,7 +35,7 @@ def Check_XS(RefFile,TestFile,limit = 0.95):
 
 def Check_Histos(RefFile, TestFile, component, limit = 0.9):
     """ Check Kolmogorov value between 'component' of Reference and Test file """
-    print "### Do kolmogorov test to compare two TH1F ###"
+    print "### Do kolmogorov test to compare two TH1F (" + component + ") ###"
     if limit == None: limit = 0.9
     try:
         import ROOT
@@ -51,7 +51,11 @@ def Check_Histos(RefFile, TestFile, component, limit = 0.9):
         TestHist = TestF.Get(component)
     except:
         Exit(1,"Cannot obtain " + component + " from files")
-    hi = RefHist.KolmogorovTest(TestHist)
+    try:
+        hi = RefHist.KolmogorovTest(TestHist)
+    except:
+        print "Cannot do Kolmogorov test"
+        return False
     print "Result: " + str(hi) + " | success if >= " + str(limit)
     if hi >= limit:
         return True
