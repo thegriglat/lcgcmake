@@ -1126,6 +1126,7 @@ LCG_add_test(rivet-herwigpp-ttbar-test
                           SOURCE_DIR herwig++/tests
                           ENVIRONMENT ${library_path}=${herwig++_home}/lib:${thepeg_home}/lib:${HepMC_home}/lib:${lhapdf_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:${rivet2_home}/lib:${yoda_home}/lib:${yamlcpp_home}/lib:$ENV{${library_path}}
 			  PYTHONPATH=${Python_home}/bin:${agile_home}/lib/python${Python_config_version_twodigit}/site-packages:${yoda_home}/lib/python2.7/site-packages/:$ENV{PYTHONPATH}
+			  PATH=${agile_home}/bin:${Python_home}/bin:$ENV{PATH}
     LABELS PhysicsCheck
 )
   
