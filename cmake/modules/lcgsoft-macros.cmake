@@ -323,7 +323,7 @@ function(LCG_create_dependency_files)
       foreach(version ${${name}_native_version})
         set(targetname ${name}-${version})
         file(APPEND ${dotfile} "_${cleaned_name}_ [label=\"${cleaned_name}-${${targetname}_hash}\"];\n")
-        set(json_string "'${name}-${${targetname}_hash}' : {'name': '${name}', 'version': '${version}', 'hash': '${${targetname}_hash}','dest_name':'${${targetname}_dest_name}' ,'dependencies' : [")
+        set(json_string "'${name}-${${targetname}_hash}' : {'name': '${name}', 'version': '${version}', 'hash': '${${targetname}_hash}','dest_name':'${${targetname}_dest_name}', 'dest_directory':'${${name}_directory_name}' ,'dependencies' : [")
         foreach(dep ${${targetname}_dependencies})
           string(REPLACE "+" "p" cleaned_dep ${dep})
           # dependent package may have the form name-version
