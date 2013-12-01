@@ -10,7 +10,9 @@ def handle_single_package(packageinfo):
     if "MCGenerators" in packageinfo["dest_directory"] or "lhapdfsets" == packageinfo["name"]:
       return None  
     else:
-      result = 'macro %s_config_version "%s"' %(packageinfo["name"],packageinfo["version"])
+      # we need to strip the _python2.X from the versions before printing it  
+      version = packageinfo["version"].split("_python")[0] 
+      result = 'macro %s_config_version "%s"' %(packageinfo["name"],version)
       # TODO: three special handlings we should get rid of if possible
       if packageinfo["name"] == "Boost":
         result += '\nmacro Boost_file_version "%s"' %(packageinfo["version"][0:4].replace(".","_"))
