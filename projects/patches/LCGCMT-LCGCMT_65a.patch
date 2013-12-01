@@ -1,0 +1,11 @@
+--- LCG_Settings/cmt/requirements	2013-12-01 12:47:25.000000000 +0100
++++ LCG_Settings/cmt/requirements.new	2013-12-01 16:27:49.000000000 +0100
+@@ -7,7 +7,7 @@
+       ATLAS&NIGHTLIES "/afs/cern.ch/sw/lcg/app/nightlies/$(LCG_NGT_SLT_NAME)/$(LCG_NGT_DAY_NAME)" \
+       ATLAS           "${SITEROOT}/sw/lcg/app/releases"
+ 
+-macro LCG_external       "$(LCG_Settings_root)/../../../../../external" \
++macro LCG_external       "$(LCG_Settings_root)/../../.." \
+       ATLAS              "${SITEROOT}/sw/lcg/external"
+ 
+ # ==== pattern to express optional dependencies =====

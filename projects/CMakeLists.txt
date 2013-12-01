@@ -1,4 +1,7 @@
 #--- General parameters ----------------------------------------------------------------------------
+set(cmt_exec_cmd ${CMAKE_SOURCE_DIR}/cmake/scripts/exec-cmt-with-env)
+set(Python_cmd ${Python_home}/bin/python)
+
 #--- Check for lib64 -------------------------------------------------------------------------------
 get_property(LIB64 GLOBAL PROPERTY FIND_LIBRARY_USE_LIB64_PATHS) 
 if (${LIB64} STREQUAL "TRUE") 
@@ -165,10 +168,37 @@ LCGPackage_Add(
 #---LCGCMT--------------------------------------------------------------------------------------------
 LCGPackage_Add(
   LCGCMT
-  DOWNLOAD_COMMAND <VOID>
+  SVN_REPOSITORY http://svnweb.cern.ch/guest/lcgsoft/tags/${LCGCMT_native_version}/lcgcmt
+  UPDATE_COMMAND ${Python_cmd} ${CMAKE_SOURCE_DIR}/cmake/scripts/create_LCGCMT.py ${CMAKE_BINARY_DIR}/dependencies.json <SOURCE_DIR>/LCG_Configuration/cmt/requirements
   CONFIGURE_COMMAND <VOID>
   BUILD_COMMAND <VOID>
-  INSTALL_COMMAND mkdir -p <INSTALL_DIR>)
+  INSTALL_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR> <INSTALL_DIR>/..
+  DEPENDS Python
+)
+
+# environment variables needed for CMT based builds
+#set( LCGCMT_pos "/afs/cern.ch/sw/lcg/app/releases/LCGCMT/LCGCMT_66") 
+set( LCGCMT_pos "${LCGCMT_home}/.." )
+
+#---CORAL----------------------------------------------------------------------------------------------
+LCGPackage_add(
+  CORAL
+  SVN_REPOSITORY http://svnweb.cern.ch/guest/lcgcoral/coral/tags/${CORAL_native_version}
+  CONFIGURE_COMMAND ${CMAKE_COMMAND} -E chdir <SOURCE_DIR>/config/cmt ${cmt_exec_cmd} ${LCG_SYSTEM} ${LCGCMT_pos} cmt broadcast -global -select='/${CORAL_native_version}/' cmt config
+  BUILD_COMMAND     ${CMAKE_COMMAND} -E chdir <SOURCE_DIR>/config/cmt ${cmt_exec_cmd} ${LCG_SYSTEM} ${LCGCMT_pos} cmt broadcast -global -select='/${CORAL_native_version}/' - cmt make --debug  all_groups
+  INSTALL_COMMAND <VOID>
+  DEPENDS LCGCMT Boost CppUnit sqlite XercesC oracle mysql QMtest igprof tcmalloc Frontier_Client Python
+)
+
+#---COOL-----------------------------------------------------------------------------------------------
+LCGPackage_add(
+  COOL
+  SVN_REPOSITORY http://svnweb.cern.ch/guest/lcgcool/cool/tags/${COOL_native_version}
+  CONFIGURE_COMMAND ${CMAKE_COMMAND} -E chdir <SOURCE_DIR>/config/cmt ${cmt_exec_cmd} ${LCG_SYSTEM} ${LCGCMT_pos} cmt broadcast -global -select='/${COOL_native_version}/' cmt config
+  BUILD_COMMAND     ${CMAKE_COMMAND} -E chdir <SOURCE_DIR>/config/cmt ${cmt_exec_cmd} ${LCG_SYSTEM} ${LCGCMT_pos} cmt broadcast -global -select='/${COOL_native_version}/' - cmt make --debug  all_groups
+  INSTALL_COMMAND <VOID>
+  DEPENDS LCGCMT CORAL ROOT
+)
 
 
 #---GaudiDeps------------------------------------------------------------------------------------------
