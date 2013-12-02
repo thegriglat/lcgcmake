@@ -37,8 +37,12 @@ class ProjectAreaManager(object):
                 path = os.path.join(basepath,version)
             else:
                 print "=== Area for LCG release MCGenerators %s:" %(version)
+                print "Wait ...."
                 time.sleep(60)
+                print "... now go "
                 print "Check existence of LCG release path %s" % os.path.join(basepath,version)  
+                cmd = 'ls %s |grep lcg' % os.path.join(basepath,version)
+                os.system(cmd)
                 if os.path.exists(os.path.join(basepath,version)):
                     path = os.path.join(basepath,version,ext[0]+'_'+version)
                 else: 
@@ -77,7 +81,7 @@ class ProjectAreaManager(object):
                 else:
                     print "No previous release. Going to set default premissions"
                     self.set_default_ACL(path)
-
+                self.list_ACL(path)
         
     # Find the last release installed
     # (eg)
