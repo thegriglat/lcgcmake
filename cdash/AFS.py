@@ -192,7 +192,23 @@ def set_default_ACL(path):
             print line
     return  
 
-
+# --------------------------------------------------------------------------------
+#               
+def list_ACL(path):
+    
+    cmd = "%s la %s " %(fsCmd, path)
+    p = subprocess.Popen(cmd,shell=True,stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, close_fds=True)
+    (sin, sout, serr) = (p.stdin, p.stdout,p.stderr)
+    ##sin, sout, serr = os.popen3(cmd) --- obsolete (EG)
+    print "Executed command: %s" % cmd
+    if sout:
+        for line in sout.readlines():
+            # print "got:"+line[:-1]
+            pass
+    if serr:
+	errLines = serr.readlines()
+        if errLines and len(errLines)>0 : print "err:", errLines
+    return  
 # --------------------------------------------------------------------------------
 #
 def create(path, vol, size):
