@@ -1,9 +1,11 @@
 #!/bin/sh
 export CMTSITE=CERN
 export CMTCONFIG=$1
+echo "setting CMTCONFIG to $CMTCONFIG"
 shift
 export CMTPATH=$1
 shift
 . /afs/cern.ch/sw/contrib/CMT/v1r20p20090520/mgr/setup.sh ""
 . /afs/cern.ch/sw/lcg/external/tbroadcast/v2.0.6_rc4/cmt/setup.sh ""
+cmt show uses
 $*

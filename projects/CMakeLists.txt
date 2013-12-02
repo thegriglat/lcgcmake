@@ -184,8 +184,8 @@ set( LCGCMT_pos "${LCGCMT_home}/.." )
 LCGPackage_add(
   CORAL
   SVN_REPOSITORY http://svnweb.cern.ch/guest/lcgcoral/coral/tags/${CORAL_native_version}
-  CONFIGURE_COMMAND ${CMAKE_COMMAND} -E chdir <SOURCE_DIR>/config/cmt ${cmt_exec_cmd} ${LCG_SYSTEM} ${LCGCMT_pos} cmt broadcast -global -select='/${CORAL_native_version}/' cmt config
-  BUILD_COMMAND     ${CMAKE_COMMAND} -E chdir <SOURCE_DIR>/config/cmt ${cmt_exec_cmd} ${LCG_SYSTEM} ${LCGCMT_pos} cmt broadcast -global -select='/${CORAL_native_version}/' - cmt make --debug  all_groups
+  CONFIGURE_COMMAND ${CMAKE_COMMAND} -E chdir <SOURCE_DIR>/config/cmt ${cmt_exec_cmd} ${LCG_system} ${LCGCMT_pos} cmt broadcast -global -select='/${CORAL_native_version}/' cmt config
+  BUILD_COMMAND     ${CMAKE_COMMAND} -E chdir <SOURCE_DIR>/config/cmt ${cmt_exec_cmd} ${LCG_system} ${LCGCMT_pos} cmt broadcast -global -select='/${CORAL_native_version}/' - cmt make --debug  all_groups
   INSTALL_COMMAND <VOID>
   DEPENDS LCGCMT Boost CppUnit sqlite XercesC oracle mysql QMtest tcmalloc Frontier_Client Python
 )
@@ -194,8 +194,8 @@ LCGPackage_add(
 LCGPackage_add(
   COOL
   SVN_REPOSITORY http://svnweb.cern.ch/guest/lcgcool/cool/tags/${COOL_native_version}
-  CONFIGURE_COMMAND ${CMAKE_COMMAND} -E chdir <SOURCE_DIR>/config/cmt ${cmt_exec_cmd} ${LCG_SYSTEM} ${LCGCMT_pos} cmt broadcast -global -select='/${COOL_native_version}/' cmt config
-  BUILD_COMMAND     ${CMAKE_COMMAND} -E chdir <SOURCE_DIR>/config/cmt ${cmt_exec_cmd} ${LCG_SYSTEM} ${LCGCMT_pos} cmt broadcast -global -select='/${COOL_native_version}/' - cmt make --debug  all_groups
+  CONFIGURE_COMMAND ${CMAKE_COMMAND} -E chdir <SOURCE_DIR>/config/cmt ${cmt_exec_cmd} ${LCG_system} ${LCGCMT_pos} cmt broadcast -global -select='/${COOL_native_version}/' cmt config
+  BUILD_COMMAND     ${CMAKE_COMMAND} -E chdir <SOURCE_DIR>/config/cmt ${cmt_exec_cmd} ${LCG_system} ${LCGCMT_pos} cmt broadcast -global -select='/${COOL_native_version}/' - cmt make --debug  all_groups
   INSTALL_COMMAND <VOID>
   DEPENDS LCGCMT CORAL ROOT
 )
