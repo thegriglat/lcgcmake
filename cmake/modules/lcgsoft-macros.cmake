@@ -24,6 +24,9 @@ macro(LCGPackage_Add name)
   CMAKE_PARSE_ARGUMENTS(ARG "" "DEST_NAME;BUNDLE_PACKAGE;BINARY_PACKAGE"
                             "DEPENDS;CONFIGURE_EXAMPLES_COMMAND;BUILD_EXAMPLES_COMMAND;INSTALL_EXAMPLES_COMMAND;TEST_COMMAND" ${ARGN})
   
+  #---If version is not defined (package not mentioned in toolchain) skip the whole macro------------
+  if(DEFINED ${name}_native_version)  # If version is not defined skip
+
   #---Create ${name} global target-------------------------------------------------------------------
   add_custom_target(${name} ALL)
   add_custom_target(clean-${name})
@@ -43,8 +46,13 @@ macro(LCGPackage_Add name)
       LCG_expand_version_patterns(${version} DEPENDS "${ARG_DEPENDS}")
       foreach(dep ${DEPENDS})
         if(NOT TARGET ${dep} AND NOT DEFINED ${dep}_home)
-          message(SEND_ERROR "Package' ${name}' has declared a dependency to the package '${dep}' that has not yet been defined. "
-                             "Add a call to 'LCGPackage_set_home(${dep})' to forward declare it.")
+          if(DEFINED ${dep}_native_version)
+            message(SEND_ERROR "Package '${name}' declares a dependency to the package '${dep}' that has not been defined. "
+                               "Add a call to 'LCGPackage_set_home(${dep})' to forward declare it.")
+          else()
+            message(SEND_ERROR "Package '${name}' depends on package '${dep}' that has no declared version in toolchain file. "
+                               "Add a call to 'LCG_external_package(${dep} <version>)' in ${CMAKE_TOOLCHAIN_FILE}.")
+          endif()
         endif()
         list(APPEND ${targetname}_dependencies ${dep})
       endforeach()
@@ -266,6 +274,7 @@ macro(LCGPackage_Add name)
 
     set(${name}-${version}_home ${${name}_home} PARENT_SCOPE)
     set(${targetname}_dependencies ${${targetname}_dependencies} PARENT_SCOPE)
+
   endforeach()
   
   #---Prepare 'group' targets------------------------------------------------------------------------
@@ -285,6 +294,9 @@ macro(LCGPackage_Add name)
 
   #--- export the dependencies to the outside files--------------------------------------------------
   set(${targetname}_dependencies ${${targetname}_dependencies} PARENT_SCOPE)
+
+  #---End if the main if --------------------------------------------------------------------------
+  endif(DEFINED ${name}_native_version)
 
 endmacro()
 

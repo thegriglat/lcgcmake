@@ -187,7 +187,7 @@ LCGPackage_add(
   CONFIGURE_COMMAND ${CMAKE_COMMAND} -E chdir <SOURCE_DIR>/config/cmt ${cmt_exec_cmd} ${LCG_SYSTEM} ${LCGCMT_pos} cmt broadcast -global -select='/${CORAL_native_version}/' cmt config
   BUILD_COMMAND     ${CMAKE_COMMAND} -E chdir <SOURCE_DIR>/config/cmt ${cmt_exec_cmd} ${LCG_SYSTEM} ${LCGCMT_pos} cmt broadcast -global -select='/${CORAL_native_version}/' - cmt make --debug  all_groups
   INSTALL_COMMAND <VOID>
-  DEPENDS LCGCMT Boost CppUnit sqlite XercesC oracle mysql QMtest igprof tcmalloc Frontier_Client Python
+  DEPENDS LCGCMT Boost CppUnit sqlite XercesC oracle mysql QMtest tcmalloc Frontier_Client Python
 )
 
 #---COOL-----------------------------------------------------------------------------------------------
