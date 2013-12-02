@@ -271,7 +271,9 @@ LCG_add_test(herwigpp_thepeg_test
                                COMMAND cat LHC-diffractive.log
                           BINARY_DIR herwig++/tests
                           SOURCE_DIR herwig++/tests
-                          ENVIRONMENT ${library_path}=${herwig++_home}/lib:${thepeg_home}/lib:${HepMC_home}/lib:${lhapdf_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:$ENV{${library_path}})
+                          ENVIRONMENT ${library_path}=${herwig++_home}/lib:${thepeg_home}/lib:${HepMC_home}/lib:${lhapdf_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:$ENV{${library_path}}
+                                      LHAPATH=${lhapdfsets_home}/../share/lhapdf/PDFsets
+                          )
 
 
 
