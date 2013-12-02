@@ -136,6 +136,11 @@ class ProjectAreaManager(object):
     def set_default_ACL(self, path):
         AFS.set_default_ACL(path) 
 
+    #(eg)
+    @skip_in_dry_mode
+    def set_list_ACL(self, path):
+        AFS.list_ACL(path) 
+
     @skip_in_dry_mode
     #(eg)
     def do_vos_release(self, path):
