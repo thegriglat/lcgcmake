@@ -142,7 +142,7 @@ int main(int argc, char* argv[])
        << "        *" << endl;
   cout << "******************************************************" << endl;
 
-  ofstream testi("testi.dat");
+  ofstream testi("testi_pythia8.dat");
   testi << "pythia8_test4 1  " << rpyt << "    " << erpyt << " " << std::endl;
 
   pythia.statistics();

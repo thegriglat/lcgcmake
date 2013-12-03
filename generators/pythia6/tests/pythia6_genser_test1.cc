@@ -131,7 +131,7 @@ int main() {
   double val, errval;
   AHMC.endRun(val, errval);
 
-  ofstream testi("testi.dat");
+  ofstream testi("testi_pythia6.dat");
 
   testi << "pythia6_test1  1   " << sigma   << "    " << err_sigma   << " " << std::endl;
   testi << "pythia6_test1  2   " << val << "    " << errval << std::endl;

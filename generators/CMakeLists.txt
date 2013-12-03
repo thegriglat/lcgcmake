@@ -154,7 +154,7 @@ LCG_add_test(pythia8-orig_test1
 
 LCG_add_test(pythia8-genser_test1
   TEST_COMMAND pythia8/tests/pythia8_genser_test1
-  POST_COMMAND ${CMAKE_COMMAND} -E copy testi.dat test.dat
+  POST_COMMAND ${CMAKE_COMMAND} -E copy testi_pythia8.dat test_pythia8.dat
   ENVIRONMENT
     ${library_path}=${pythia8_home}/lib:${HepMC_home}/lib:$ENV{${library_path}}
     PYTHIA8DATA=${pythia8_home}/xmldoc
@@ -194,9 +194,9 @@ LCG_add_test(pythia8-genser_test4
 )
 
 LCG_add_test(pythia8-compare
-  PRE_COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare .
-  TEST_COMMAND cmpr.sh
-  DEPENDS pythia8-genser_test2
+  PRE_COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/chi.c .
+  TEST_COMMAND ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/cmpr.sh test_pythia8.dat ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/reference.dat
+  DEPENDS pythia8-genser_test2 pythia8-genser_test3 pythia8-genser_test4
   LABELS PhysicsCheck
 )
 
@@ -338,15 +338,14 @@ LCG_add_test(pythia6-orig_test1
 
 LCG_add_test(pythia6-genser_test1
   TEST_COMMAND pythia6/tests/pythia6_genser_test1
-  POST_COMMAND ${CMAKE_COMMAND} -E copy testi.dat test.dat
+  POST_COMMAND ${CMAKE_COMMAND} -E copy testi_pythia6.dat test_pythia6.dat
   ENVIRONMENT ${library_path}=${pythia6_home}/lib:${HepMC_home}/lib:$ENV{${library_path}}
   DEPENDS pythia6-build
   LABELS PhysicsCheck)
 
 LCG_add_test(pythia6-compare
-  PRE_COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare .
-  TEST_COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/generators/pythia6/tests/reference.dat .
-  POST_COMMAND cmpr.sh
+  PRE_COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/chi.c .
+  TEST_COMMAND ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/cmpr.sh test_pythia6.dat ${CMAKE_SOURCE_DIR}/generators/pythia6/tests/reference.dat
   DEPENDS pythia6-genser_test1
   LABELS PhysicsCheck
 )

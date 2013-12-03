@@ -108,7 +108,7 @@ int main() {
   // Final statistics.
   pythia.statistics();
 
-  ofstream testi("testi.dat");
+  ofstream testi("testi_pythia8.dat");
   double val, errval;
   val = pythia.info.sigmaGen();
   errval = 0.;

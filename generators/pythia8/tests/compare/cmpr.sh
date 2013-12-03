@@ -1,8 +1,8 @@
 #!/bin/bash
 
-TEST_DAT="test.dat"
+TEST_DAT=${1}
 FORMAT="html"
-REFERENCE_DAT="reference.dat"
+REFERENCE_DAT=$2
 
 rm -f test.html
 

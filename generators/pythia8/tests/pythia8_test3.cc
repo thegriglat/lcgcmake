@@ -37,7 +37,7 @@ int main() {
   }
   pythia.statistics();
   cout << mult; 
-  ofstream testi("testi.dat");
+  ofstream testi("testi_pythia8.dat");
   double val, errval;
   val = (double)ntotCharged/(double)nEvent;
   errval = 0.;

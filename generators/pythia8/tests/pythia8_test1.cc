@@ -178,7 +178,7 @@ int main() {
   nFinSqAverage /= ((double)nEvent);
   nChSqAverage /= ((double)nEvent);
 
-  ofstream testi("testi.dat");
+  ofstream testi("testi_pythia8.dat");
   double val, errval;
 
   val = pythia.info.sigmaGen();

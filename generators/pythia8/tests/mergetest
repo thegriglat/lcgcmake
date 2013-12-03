@@ -1,2 +1,1 @@
-cat testi.dat >> test.dat
-
+cat testi_pythia8.dat >> test_pythia8.dat
