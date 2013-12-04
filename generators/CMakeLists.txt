@@ -39,9 +39,9 @@ LCGPackage_Add(
           COMMAND ${CMAKE_COMMAND} -E remove -f <INSTALL_DIR>/../share/PDFsets.index
           COMMAND ${CMAKE_COMMAND} -E create_symlink lhapdf/PDFsets.index <INSTALL_DIR>/../share/PDFsets.index
           COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/lhapdf/mktarball.sh <INSTALL_DIR> <NATIVE_VERSION>
-	  COMMAND ${CMAKE_COMMAND} -E make_directory <INSTALL_DIR>/../../../${MCGENPATH}/distribution/lhapdfsets 
+	  COMMAND ${CMAKE_COMMAND} -E make_directory <INSTALL_DIR>/../../distribution/lhapdfsets 
           COMMAND ${CMAKE_COMMAND} -E create_symlink ../../../distribution/lhapdfsets/lhapdfsets-<NATIVE_VERSION>-src.tgz 
- 				<INSTALL_DIR>/../../../${MCGENPATH}/distribution/lhapdfsets/lhapdfsets-<NATIVE_VERSION>-src.tgz
+ 				<INSTALL_DIR>/../../distribution/lhapdfsets/lhapdfsets-<NATIVE_VERSION>-src.tgz
 )
 
 #---lhapdf------------------------------------------------------------------------------------------
