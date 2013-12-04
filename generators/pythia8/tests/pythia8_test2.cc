@@ -2,7 +2,7 @@
 //
 //#@# 1: p p --> (Z,gamma* -> l+ l-) + jets cross section [mb] at LHC
 //#@# 2: A fraction of events with 2 isolated leptons plus >=2 jets
-//#@# This test reads LHE file Zg.lhe created by pythia8_test1
+//#@# This test reads LHE file Zg_pythia8.lhe created by pythia8_test1
 //#@# and hadronizes it
 //#@# The file with parameters pythia8_test2.cmnd is used
 //
@@ -52,7 +52,7 @@ int main() {
   bool showAllSettings = settings.flag("Main:showAllSettings");
   bool showAllParticleData = settings.flag("Main:showAllParticleData");
 
-  pythia.init("Zg.lhe");
+  pythia.init("Zg_pythia8.lhe");
 
   // Choose decay modes for Z0 : switch off everything but Z0 -> leptons.
   pythia.readString("23:onMode = off");

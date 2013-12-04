@@ -28,7 +28,7 @@ int main() {
 #endif
 
   // Specify file where HepMC events will be stored.
-  HepMC::IO_GenEvent ascii_io("hepmcoutzjets.dat", std::ios::out);
+  HepMC::IO_GenEvent ascii_io("hepmcoutzjets_pythia8.dat", std::ios::out);
 
   // Generator. Process selection.
   Pythia pythia;

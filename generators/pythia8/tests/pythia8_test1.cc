@@ -6,7 +6,7 @@
 //#@# 4: 0.01+(max. px, py nonconservation, GeV). The error is fixed
 //#@# 5: Average final state particles multiplicity
 //#@# 6: Average final state charged particles multiplicity
-//#@# This test creates LHE file Zg.lhe
+//#@# This test creates LHE file Zg_pythia8.lhe
 //
 #ifdef PYTHIA8NEWVERS
   #include "Pythia8/Pythia.h"
@@ -50,7 +50,7 @@ int main() {
   // Create an LHAup object that can access relevant information in pythia.
   LHAupFromPYTHIA8 myLHA(&pythia.process, &pythia.info);
   // Open a file on which LHEF events should be stored, and write header.
-  myLHA.openLHEF("Zg.lhe");
+  myLHA.openLHEF("Zg_pythia8.lhe");
 
   //LHC initialization.
   pythia.init( 2212, 2212, 14000.);

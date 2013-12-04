@@ -1,10 +1,11 @@
 #!/bin/bash
 
-TEST_DAT=${1}
+TEST_DAT=test_${1}.dat
 FORMAT="html"
 REFERENCE_DAT=$2
+RESULTS=test_${1}.html
 
-rm -f test.html
+rm -f $RESULTS
 
 if ! [ -f ${TEST_DAT} ] || ! [ -s ${TEST_DAT} ] ; then
   echo "ERROR: $0: ${TEST_DAT} doesn't exist or empty." >&2
@@ -24,7 +25,7 @@ top_text () {
 }
 
 top_html () {
-cat << EOT > test.html
+cat << EOT > $RESULTS
 <html>
 <head>
   <title>Test results</title>
@@ -116,7 +117,7 @@ EOT
 }
 
 bottom_html () {
-  echo "</table>" >> test.html
+  echo "</table>" >> $RESULTS
   return
 }
 
@@ -245,7 +246,7 @@ process_tests () {
 #  process_tests | while read line ; do print_text $line ; done
 #else
   top_html
-  process_tests | while read line ; do print_html $line >> test.html ; done
+  process_tests | while read line ; do print_html $line >> $RESULTS ; done
   bottom_html
 #fi
 
