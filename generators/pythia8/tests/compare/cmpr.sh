@@ -248,6 +248,7 @@ process_tests () {
   top_html
   process_tests | while read line ; do print_html $line >> $RESULTS ; done
   bottom_html
+  cat $RESULTS
 #fi
 
 export result=`cat fresult`
