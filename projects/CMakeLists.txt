@@ -186,7 +186,9 @@ LCGPackage_add(
   SVN_REPOSITORY http://svnweb.cern.ch/guest/lcgcoral/coral/tags/${CORAL_native_version}
   CONFIGURE_COMMAND ${CMAKE_COMMAND} -E chdir <SOURCE_DIR>/config/cmt ${cmt_exec_cmd} ${LCG_system} ${LCGCMT_pos} cmt broadcast -global -select='/${CORAL_native_version}/' cmt config
   BUILD_COMMAND     ${CMAKE_COMMAND} -E chdir <SOURCE_DIR>/config/cmt ${cmt_exec_cmd} ${LCG_system} ${LCGCMT_pos} cmt broadcast -global -select='/${CORAL_native_version}/' - cmt make --debug  all_groups
-  INSTALL_COMMAND <VOID>
+  INSTALL_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/../${LCG_system} <INSTALL_DIR>
+          COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/../interface <INSTALL_DIR>
+          COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/../src <INSTALL_DIR>
   DEPENDS LCGCMT Boost CppUnit sqlite XercesC oracle mysql QMtest tcmalloc Frontier_Client Python
 )
 
@@ -196,7 +198,9 @@ LCGPackage_add(
   SVN_REPOSITORY http://svnweb.cern.ch/guest/lcgcool/cool/tags/${COOL_native_version}
   CONFIGURE_COMMAND ${CMAKE_COMMAND} -E chdir <SOURCE_DIR>/config/cmt ${cmt_exec_cmd} ${LCG_system} ${LCGCMT_pos} cmt broadcast -global -select='/${COOL_native_version}/' cmt config
   BUILD_COMMAND     ${CMAKE_COMMAND} -E chdir <SOURCE_DIR>/config/cmt ${cmt_exec_cmd} ${LCG_system} ${LCGCMT_pos} cmt broadcast -global -select='/${COOL_native_version}/' - cmt make --debug  all_groups
-  INSTALL_COMMAND <VOID>
+  INSTALL_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/../${LCG_system} <INSTALL_DIR>
+          COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/../interface <INSTALL_DIR>
+          COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/../src <INSTALL_DIR>
   DEPENDS LCGCMT CORAL ROOT
 )
 
