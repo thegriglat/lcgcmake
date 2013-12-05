@@ -15,15 +15,16 @@ LCGPackage_set_home(pythia8)
 
 #---ROOT--------------------------------------------------------------------------------------------
 string(REGEX MATCH "[0-9]+[.][0-9]+[.][0-9]+" ROOT_author_version ${ROOT_native_version})
-if(ROOT_native_version VERSION_EQUAL 5.34.99)
-  set(ROOT_url GIT_REPOSITORY http://root.cern.ch/git/root.git GIT_TAG v5-34-00-patches UPDATE_COMMAND <VOID>)
-else()
-  set(ROOT_url URL ftp://root.cern.ch/root/root_v${ROOT_author_version}.source.tar.gz)
-endif()
+
 if(LCG_TARGET MATCHES "mac.*-gcc(47|48)")
   LCGPackage_Add(
     ROOT
-    ${ROOT_url}
+    IF <VERSION> VERSION_EQUAL 5.34.99 THEN
+      GIT_REPOSITORY http://root.cern.ch/git/root.git GIT_TAG v5-34-00-patches 
+      UPDATE_COMMAND <VOID>
+    ELSE
+      URL ftp://root.cern.ch/root/root_v${ROOT_author_version}.source.tar.gz
+    ENDIF
     CONFIGURE_COMMAND ./configure --with-cc=${CMAKE_C_COMPILER}
                                   --with-cxx=${CMAKE_CXX_COMPILER}
                                   --with-ld=${CMAKE_CXX_COMPILER}
@@ -78,23 +79,7 @@ if(LCG_TARGET MATCHES "mac.*-gcc(47|48)")
     DEPENDS Python CASTOR dcap fftw gfal graphviz GSL mysql oracle pythia8 Qt xrootd srm_ifce
   )
 else()
-  if(LCG_TARGET MATCHES "slc")
-     set(ROOT_platfom_options
-               -Dcastor=ON -DCASTOR_DIR=${CASTOR_home}
-               -Ddcache=ON -DDCAP_DIR=${dcap_home}
-               -Dgfal=ON -DGFAL_DIR=${gfal_home}
-                         -DSRM_IFCE_DIR=${srm_ifce_home} 
-               -Doracle=ON -DORACLE_HOME=${oracle_home}
-               -Dqt=ON -DQT_QMAKE_EXECUTABLE=${Qt_home}/bin/qmake )
-     set(ROOT_platform_dependencies CASTOR dcap gfal srm_ifce oracle Qt)
-
-  elseif(LCG_TARGET MATCHES "mac" AND NOT LCG_TARGET MATCHES "mac109")
-     set(ROOT_platform_options
-               -Dqt=ON -DQT_QMAKE_EXECUTABLE=${Qt_home}/bin/qmake )
-     set(ROOT_platform_dependencies Qt)
-
-  endif()
-  LCGPackage_Add(
+ LCGPackage_Add(
     ROOT
     ${ROOT_url}
     CMAKE_ARGS -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
@@ -135,8 +120,24 @@ else()
                -DCINTMAXSTRUCT=36000
                -DCINTMAXTYPEDEF=36000
                -DCINTLONGLINE=4096
-               ${ROOT_platform_options}
-    DEPENDS Python fftw graphviz GSL mysql pythia8 xrootd ${ROOT_platform_dependencies}
+               IF LCG_TARGET MATCHES slc THEN
+                   -Dcastor=ON -DCASTOR_DIR=${CASTOR_home}
+                   -Ddcache=ON -DDCAP_DIR=${dcap_home}
+                   -Dgfal=ON -DGFAL_DIR=${gfal_home}
+                             -DSRM_IFCE_DIR=${srm_ifce_home}
+                   -Doracle=ON -DORACLE_HOME=${oracle_home}
+                   -Dqt=ON -DQT_QMAKE_EXECUTABLE=${Qt_home}/bin/qmake
+               ENDIF
+               IF LCG_TARGET MATCHES "mac" AND NOT LCG_TARGET MATCHES "mac109" THEN
+                   -Dqt=ON -DQT_QMAKE_EXECUTABLE=${Qt_home}/bin/qmake
+               ENDIF
+    DEPENDS Python fftw graphviz GSL mysql pythia8 xrootd 
+            IF LCG_TARGET MATCHES slc THEN
+                CASTOR dcap gfal srm_ifce oracle Qt
+            ENDIF
+            IF LCG_TARGET MATCHES "mac" AND NOT LCG_TARGET MATCHES "mac109" THEN
+                Qt
+            ENDIF
   )
 endif()
 #---cmaketool----------------------------------------------------------------------------------------

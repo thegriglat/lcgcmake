@@ -208,9 +208,12 @@ LCGPackage_Add(
   URL ${gen_url}/ThePEG-<NATIVE_VERSION>.tar.bz2
 # UPDATE_COMMAND ${CMAKE_COMMAND} -E chdir <SOURCE_DIR> autoreconf --install --force
   CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR>
-                                --with-hepmc=${HepMC_home} 
-				--with-LHAPDF=${lhapdf_home}/lib
-				--with-lhapdf=${lhapdf_home}
+                                --with-hepmc=${HepMC_home}
+                                IF <VERSION> VERSION_LESS 1.9.0 THEN
+                                   --with-LHAPDF=${lhapdf_home}/lib
+                                ELSE
+                                   --with-lhapdf=${lhapdf_home}
+                                ENDIF
                                 --with-gsl=${GSL_home} --without-javagui CFLAGS=-O2 CXXFLAGS=-O2 FFLAGS=-O2
   BUILD_COMMAND ${MAKE} all
   INSTALL_COMMAND make install-strip
