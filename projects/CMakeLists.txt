@@ -81,7 +81,12 @@ if(LCG_TARGET MATCHES "mac.*-gcc(47|48)")
 else()
  LCGPackage_Add(
     ROOT
-    ${ROOT_url}
+    IF <VERSION> VERSION_EQUAL 5.34.99 THEN
+      GIT_REPOSITORY http://root.cern.ch/git/root.git GIT_TAG v5-34-00-patches 
+      UPDATE_COMMAND <VOID>
+    ELSE
+      URL ftp://root.cern.ch/root/root_v${ROOT_author_version}.source.tar.gz
+    ENDIF
     CMAKE_ARGS -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
                -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
                -Dpython=ON -DPYTHON_EXECUTABLE=${Python_home}/bin/python
