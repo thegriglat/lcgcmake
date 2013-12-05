@@ -232,16 +232,16 @@ set(thepeg_v_home <thepeg-<herwig++_<NATIVE_VERSION>_thepeg>_home>)
                                   --with-thepeg=${thepeg_v_home}
                                   --with-fastjet=${fastjet_home}
                                   --with-boost=${Boost_home}
-                                  ${library_path}=${thepeg_v_home}/lib:${GSL_home}/lib:${Boost_home}/lib:$ENV{${library_path}}
-    BUILD_COMMAND ${MAKE} all ${library_path}=${thepeg_v_home}/lib:${GSL_home}/lib:${Boost_home}/lib:$ENV{${library_path}}
-          COMMAND ${CMAKE_COMMAND} -E chdir <SOURCE_DIR>/Contrib make ${library_path}=${thepeg_v_home}/lib:${GSL_home}/lib:${Boost_home}/lib:$ENV{${library_path}}   
+                                  ${library_path}=${thepeg_v_home}/lib/ThePEG:${GSL_home}/lib:${Boost_home}/lib:$ENV{${library_path}}
+    BUILD_COMMAND ${MAKE} all ${library_path}=${thepeg_v_home}/lib/ThePEG:${GSL_home}/lib:${Boost_home}/lib:$ENV{${library_path}}
+          COMMAND ${CMAKE_COMMAND} -E chdir <SOURCE_DIR>/Contrib make ${library_path}=${thepeg_v_home}/lib/ThePEG:${GSL_home}/lib:${Boost_home}/lib:$ENV{${library_path}}   
 	        COMMAND ${CMAKE_COMMAND} -E chdir <SOURCE_DIR>/Contrib/AlpGen 
                                    make BasicLesHouchesFileReader.so HERWIGINCLUDE=-I<SOURCE_DIR>/include 
-                                                                     ${library_path}=${thepeg_v_home}/lib:${GSL_home}/lib:${Boost_home}/lib:${herwig++_home}/lib:$ENV{${library_path}}
+                                                                     ${library_path}=${thepeg_v_home}/lib/ThePEG:${GSL_home}/lib:${Boost_home}/lib:${herwig++_home}/lib/Herwig++:$ENV{${library_path}}
           COMMAND ${CMAKE_COMMAND} -E chdir <SOURCE_DIR>/Contrib/AlpGen 
                                    make AlpGenHandler.so HERWIGINCLUDE=-I<SOURCE_DIR>/include
-                                   ${library_path}=${thepeg_v_home}/lib:${GSL_home}/lib:${Boost_home}/lib:${herwig++_home}/lib:$ENV{${library_path}}
-    INSTALL_COMMAND make install  ${library_path}=${thepeg_v_home}/lib:${GSL_home}/lib:${Boost_home}/lib:${HepMC_home}/lib:$ENV{${library_path}}
+                                   ${library_path}=${thepeg_v_home}/lib/ThePEG:${GSL_home}/lib:${Boost_home}/lib:${herwig++_home}/lib/Herwig++:$ENV{${library_path}}
+    INSTALL_COMMAND make install  ${library_path}=${thepeg_v_home}/lib/ThePEG:${GSL_home}/lib:${Boost_home}/lib:${HepMC_home}/lib:$ENV{${library_path}}
             COMMAND  ${CMAKE_COMMAND} -E create_symlink herwig++ <INSTALL_DIR>/../../../herwigpp
             COMMAND  ${CMAKE_COMMAND} -E copy <SOURCE_DIR>/Contrib/AlpGen/AlpGenHandler.so <INSTALL_DIR>/lib/Herwig++/	    
             COMMAND  ${CMAKE_COMMAND} -E copy <SOURCE_DIR>/Contrib/AlpGen/BasicLesHouchesFileReader.so <INSTALL_DIR>/lib/Herwig++/ 
@@ -256,7 +256,7 @@ LCG_add_test(herwigpp_orig_test1
 			       COMMAND cat LHC.log	
                           BINARY_DIR herwig++/tests
                           SOURCE_DIR herwig++/tests
-                          ENVIRONMENT ${library_path}=${herwig++_home}/lib:${thepeg_home}/lib:${HepMC_home}/lib:${lhapdf_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:$ENV{${library_path}})
+                          ENVIRONMENT ${library_path}=${herwig++_home}/lib/Herwig++:${thepeg_home}/lib/ThePEG:${HepMC_home}/lib:${lhapdf_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:$ENV{${library_path}})
 
 LCG_add_test(herwigpp_orig_test2 
 			  TEST_COMMAND ${herwig++_home}/bin/Herwig++ read ${herwig++_home}/../share/sources/src/TVT.in 
@@ -265,7 +265,7 @@ LCG_add_test(herwigpp_orig_test2
                                COMMAND cat TVT.log  
                           BINARY_DIR herwig++/tests
                           SOURCE_DIR herwig++/tests
-                          ENVIRONMENT ${library_path}=${herwig++_home}/lib:${thepeg_home}/lib:${HepMC_home}/lib:${lhapdf_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:$ENV{${library_path}})
+                          ENVIRONMENT ${library_path}=${herwig++_home}/lib/Herwig++:${thepeg_home}/lib/ThePEG:${HepMC_home}/lib:${lhapdf_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:$ENV{${library_path}})
 
 LCG_add_test(herwigpp_thepeg_test
                           TEST_COMMAND ${herwig++_home}/bin/Herwig++ read ${CMAKE_SOURCE_DIR}/generators/herwig++/tests/LHC-diffractive.in 
@@ -274,7 +274,7 @@ LCG_add_test(herwigpp_thepeg_test
                                COMMAND cat LHC-diffractive.log
                           BINARY_DIR herwig++/tests
                           SOURCE_DIR herwig++/tests
-                          ENVIRONMENT ${library_path}=${herwig++_home}/lib:${thepeg_home}/lib:${HepMC_home}/lib:${lhapdf_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:$ENV{${library_path}}
+                          ENVIRONMENT ${library_path}=${herwig++_home}/lib/Herwig++:${thepeg_home}/lib/ThePEG:${HepMC_home}/lib:${lhapdf_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:$ENV{${library_path}}
                                       LHAPATH=${lhapdfsets_home}/../share/lhapdf/PDFsets
                           )
 
@@ -748,7 +748,7 @@ LCG_add_test(sherpa_orig_test1
   TEST_COMMAND ${CMAKE_COMMAND} -E chdir sherpa/tests ${sherpa_home}/bin/Sherpa -j20 -f ${CMAKE_SOURCE_DIR}/generators/sherpa/tests/LHC_Z.dat
   POST_COMMAND ${CMAKE_COMMAND} -E remove_directory sherpa/tests
   ENVIRONMENT
-    ${library_path}=${sherpa_home}/lib:${HepMC_home}/lib:${lhapdf_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:$ENV{${library_path}}
+    ${library_path}=${sherpa_home}/lib/SHERPA-MC:${HepMC_home}/lib:${lhapdf_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:$ENV{${library_path}}
     PWD=.
 )
 
@@ -757,7 +757,7 @@ LCG_add_test(sherpa_orig_test2
   TEST_COMMAND ${CMAKE_COMMAND} -E chdir sherpa/tests2 ${sherpa_home}/bin/Sherpa -j20 -f ${CMAKE_SOURCE_DIR}/generators/sherpa/tests/LHC_ZJets.dat
   POST_COMMAND ${CMAKE_COMMAND} -E remove_directory sherpa/tests2
   ENVIRONMENT
-    ${library_path}=${sherpa_home}/lib:${HepMC_home}/lib:${lhapdf_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:$ENV{${library_path}}
+    ${library_path}=${sherpa_home}/lib/SHERPA-MC:${HepMC_home}/lib:${lhapdf_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:$ENV{${library_path}}
     PWD=.
   LABELS PhysicsCheck
 )
@@ -1128,7 +1128,7 @@ LCG_add_test(rivet-herwigpp-ttbar-test
                                COMMAND cat LHC-ttbar.log
                           BINARY_DIR herwig++/tests
                           SOURCE_DIR herwig++/tests
-                          ENVIRONMENT ${library_path}=${herwig++_home}/lib:${thepeg_home}/lib:${HepMC_home}/lib:${lhapdf_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:${rivet2_home}/lib:${yoda_home}/lib:${yamlcpp_home}/lib:${ROOT_home}/lib:$ENV{${library_path}}
+                          ENVIRONMENT ${library_path}=${herwig++_home}/lib/Herwig++:${thepeg_home}/lib/ThePEG:${HepMC_home}/lib:${lhapdf_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:${rivet2_home}/lib:${yoda_home}/lib:${yamlcpp_home}/lib:${ROOT_home}/lib:$ENV{${library_path}}
                                       PYTHONPATH=${Python_home}/bin:${agile_home}/lib/python${Python_config_version_twodigit}/site-packages:${yoda_home}/lib/python2.7/site-packages/:${ROOT_home}/lib:$ENV{PYTHONPATH}
                                       PATH=${agile_home}/bin:${Python_home}/bin:$ENV{PATH}
                           LABELS PhysicsCheck
