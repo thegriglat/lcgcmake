@@ -125,11 +125,13 @@ else()
                -DCINTMAXSTRUCT=36000
                -DCINTMAXTYPEDEF=36000
                -DCINTLONGLINE=4096
-               IF LCG_TARGET MATCHES slc THEN
+               IF LCG_TARGET MATCHES x86_64-slc THEN
                    -Dcastor=ON -DCASTOR_DIR=${CASTOR_home}
                    -Ddcache=ON -DDCAP_DIR=${dcap_home}
                    -Dgfal=ON -DGFAL_DIR=${gfal_home}
                              -DSRM_IFCE_DIR=${srm_ifce_home}
+               ENDIF
+               IF LCG_TARGET MATCHES slc THEN
                    -Doracle=ON -DORACLE_HOME=${oracle_home}
                    -Dqt=ON -DQT_QMAKE_EXECUTABLE=${Qt_home}/bin/qmake
                ENDIF
@@ -137,8 +139,11 @@ else()
                    -Dqt=ON -DQT_QMAKE_EXECUTABLE=${Qt_home}/bin/qmake
                ENDIF
     DEPENDS Python fftw graphviz GSL mysql pythia8 xrootd 
+            IF LCG_TARGET MATCHES x86_64-slc THEN
+                CASTOR dcap gfal srm_ifce
+            ENDIF
             IF LCG_TARGET MATCHES slc THEN
-                CASTOR dcap gfal srm_ifce oracle Qt
+                oracle Qt
             ENDIF
             IF LCG_TARGET MATCHES "mac" AND NOT LCG_TARGET MATCHES "mac109" THEN
                 Qt
