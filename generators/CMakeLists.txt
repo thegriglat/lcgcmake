@@ -268,7 +268,7 @@ LCG_add_test(herwigpp_orig_test2
                           ENVIRONMENT ${library_path}=${herwig++_home}/lib/Herwig++:${thepeg_home}/lib/ThePEG:${HepMC_home}/lib:${lhapdf_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:$ENV{${library_path}})
 
 LCG_add_test(herwigpp_thepeg_test
-                          TEST_COMMAND ${herwig++_home}/bin/Herwig++ read ${CMAKE_SOURCE_DIR}/generators/herwig++/tests/LHC-diffractive.in 
+                          TEST_COMMAND ${herwig++_home}/bin/Herwig++ read ${CMAKE_SOURCE_DIR}/generators/herwig++/tests/LHC-diffractive.in --repo=${herwig++_home}/share/Herwig++/HerwigDefaults.rpo
                                COMMAND ${herwig++_home}/bin/Herwig++ run -N100 LHC-diffractive.run -d1
                           POST_COMMAND cat LHC-diffractive.out
                                COMMAND cat LHC-diffractive.log
