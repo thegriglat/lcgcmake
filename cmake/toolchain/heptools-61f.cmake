@@ -16,6 +16,7 @@ LCG_AA_project(COOL  COOL_2_8_15a)
 LCG_AA_project(CORAL CORAL_2_3_24a)
 LCG_AA_project(RELAX RELAX_1_3_0g)
 LCG_AA_project(ROOT  5.30.05)
+LCG_AA_project(LCGCMT  LCGCMT_61f)
 
 # Compilers
 #LCG_compiler(gcc43 gcc 4.3.5)
@@ -38,7 +39,7 @@ LCG_external_package(CLHEP             1.9.4.7                   clhep          
 LCG_external_package(cmake             2.6.4                                    )
 LCG_external_package(cmt               v1r20p20081118                           )
 LCG_external_package(coin3d            3.1.3.p1                                 )
-#LCG_external_package(CppUnit           1.12.1_p1                                )
+LCG_external_package(CppUnit           1.12.1_p1                author=1.12.1                )
 LCG_external_package(cx_oracle         5.1                                      )
 LCG_external_package(Cygwin            1.5                                      )
 LCG_external_package(david             1_36a                                    )
@@ -47,6 +48,7 @@ LCG_external_package(dcache_client     1.9.3p1                                  
 LCG_external_package(doxygen           1.7.0                                    )
 LCG_external_package(dpm               1.7.4-7sec                               )
 LCG_external_package(Expat             2.0.1                                    )
+LCG_external_package(expat             2.0.1                                    )
 LCG_external_package(fastjet           2.4.3                                    )
 LCG_external_package(fftw              3.1.2                     fftw3          )
 LCG_external_package(Frontier_Client   2.8.5                     frontier_client)
@@ -120,9 +122,19 @@ LCG_external_package(vomsapi_noglobus  1.9.17-1                                 
 LCG_external_package(vomsapic          1.9.17-1                                 )
 LCG_external_package(vomsapicpp        1.9.17-1                                 )
 LCG_external_package(vomsclients       1.9.17-1                                 )
-#LCG_external_package(XercesC           3.1.1p1                                  )
+LCG_external_package(XercesC           3.1.1p1                           author=3.1.1        )
 LCG_external_package(xqilla            2.2.4                                    )
 LCG_external_package(zlib              1.2.3p1                                  )
+LCG_external_package(xrootd            3.2.7                                    )
+LCG_external_package(dcap              2.47.6                                   )
+LCG_external_package(srm_ifce          1.13.0-0                                 )
+LCG_external_package(cmaketools        1.0                                      )
+LCG_external_package(py2neo            1.4.6                                    )
+LCG_external_package(pylint            0.26.0                                   )
+LCG_external_package(nose              1.1.2                                    )
+LCG_external_package(coverage          3.5.2                                    )  
+LCG_external_package(swig              1.3.40                                   )
+
 
 
 set(MCGENPATH  MCGenerators_lcgcmt${heptools_version})
@@ -139,8 +151,10 @@ LCG_external_package(pythia8           175            ${MCGENPATH}/pythia8      
 LCG_external_package(pythia8           176            ${MCGENPATH}/pythia8      author=176  )
 
 LCG_external_package(thepeg            1.8.2          ${MCGENPATH}/thepeg       )
+LCG_external_package(thepeg            1.8.3a         ${MCGENPATH}/thepeg       )
 LCG_external_package(thepeg            1.8.3          ${MCGENPATH}/thepeg       )
 
+LCG_external_package(herwig++          2.6.3a         ${MCGENPATH}/herwig++     thepeg=1.8.3a)
 LCG_external_package(herwig++          2.6.3          ${MCGENPATH}/herwig++     thepeg=1.8.3)
 LCG_external_package(tauola++          1.1.1          ${MCGENPATH}/tauola++     )
 LCG_external_package(tauola++          1.1.1a         ${MCGENPATH}/tauola++     )
