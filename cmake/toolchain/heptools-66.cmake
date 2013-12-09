@@ -205,6 +205,7 @@ LCG_external_package(evtgen            1.2.0-176      ${MCGENPATH}/evtgen       
 
 LCG_external_package(rivet             1.8.2          ${MCGENPATH}/rivet        )
 LCG_external_package(rivet             1.8.3          ${MCGENPATH}/rivet        )
+LCG_external_package(rivet             1.9.0          ${MCGENPATH}/rivet        )
 LCG_external_package(rivet2            2.0.0          ${MCGENPATH}/rivet        )
 
 LCG_external_package(sherpa            2.0.0          ${MCGENPATH}/sherpa         author=2.0.0 hepevt=10000)
