@@ -16,6 +16,7 @@ LCG_AA_project(COOL  COOL_2_8_16)
 LCG_AA_project(CORAL CORAL_2_3_25)
 LCG_AA_project(RELAX RELAX_1_3_0j)
 LCG_AA_project(ROOT  5.34.05)
+LCG_AA_project(LCGCMT  LCGCMT_64d)
 
 # Compilers
 #LCG_compiler(gcc43 gcc 4.3.6)
@@ -46,7 +47,7 @@ LCG_external_package(cmake             2.8.6                                    
 LCG_external_package(cmt               v1r20p20081118                           )
 LCG_external_package(coin3d            3.1.3p2                                  )
 LCG_external_package(coverage          3.5.2                                    )
-#LCG_external_package(CppUnit           1.12.1_p1                                )
+LCG_external_package(CppUnit           1.12.1_p1                                )
 LCG_external_package(cx_oracle         5.1.1                                    )
 LCG_external_package(david             1_36a                                    )
 LCG_external_package(dawn              3_88a                                    )
@@ -64,6 +65,7 @@ LCG_external_package(dpm               1.7.4-7sec                               
 endif()
 LCG_external_package(epel              20120618                  Grid/epel      )
 LCG_external_package(Expat             2.0.1                                    )
+LCG_external_package(expat             2.0.1                                    )
 LCG_external_package(fastjet           3.0.3                                    )
 if(NOT APPLE)
 LCG_external_package(fftw              3.1.2                     fftw3          )
@@ -186,13 +188,16 @@ LCG_external_package(vomsapi_noglobus  1.9.17-1                                 
 LCG_external_package(vomsapic          1.9.17-1                  Grid/voms-api-c)
 LCG_external_package(vomsapicpp        1.9.17-1                                 )
 LCG_external_package(vomsclients       1.9.17-1                                 )
-#LCG_external_package(XercesC           3.1.1p1                                  )
+LCG_external_package(XercesC           3.1.1p1                                  )
 if(NOT ${LCG_COMP}${LCG_COMPVERS} STREQUAL "gcc46")
 LCG_external_package(xqilla            2.2.4                                    )
 else()
 LCG_external_package(xqilla            2.2.4p1                                  )
 endif()
 LCG_external_package(xrootd            3.2.4                                    )
+LCG_external_package(dcap              2.47.6                                   ) # from 64b
+LCG_external_package(cmaketools        1.0                                      )
+LCG_external_package(swig              1.3.40                                   )
 
 
 set(MCGENPATH  MCGenerators_lcgcmt${heptools_version})
@@ -218,5 +223,7 @@ LCG_external_package(rivet             1.8.2          ${MCGENPATH}/rivet)
 # sherpa depedencies: lhapdf HepMC rivet
 LCG_external_package(sherpa            1.4.5.2        ${MCGENPATH}/sherpa         author=1.4.5 hepevt=10000 )
 
+LCG_external_package(thepeg            1.8.3a        ${MCGENPATH}/thepeg)
+LCG_external_package(herwig++          2.6.3a         ${MCGENPATH}/herwig++     thepeg=1.8.3a)
 # Prepare the search paths according to the versions above
 LCG_prepare_paths()
