@@ -96,7 +96,7 @@ LCG_external_package(pyminuit          0.0.1                                    
 LCG_external_package(pyparsing         1.5.1                                    )
 LCG_external_package(pyqt              4.7                                      )
 LCG_external_package(pytest            2.1.0                                    )
-LCG_external_package(Python            2.6.5                                    )
+LCG_external_package(Python            2.6.5p2                                  )
 LCG_external_package(pytools           1.6                                      )
 LCG_external_package(pyxml             0.8.4p1                                  )
 LCG_external_package(QMtest            2.4.1                                    )
@@ -173,6 +173,7 @@ LCG_external_package(evtgen            1.1.0-176      ${MCGENPATH}/evtgen       
 LCG_external_package(evtgen            1.2.0-175      ${MCGENPATH}/evtgen         tag=R01-02-00 pythia8=175 tauola++=1.1.1)
 LCG_external_package(evtgen            1.2.0-176      ${MCGENPATH}/evtgen         tag=R01-02-00 pythia8=176 tauola++=1.1.1)
 
+LCG_external_package(rivet             1.9.0          ${MCGENPATH}/rivet        )
 LCG_external_package(rivet             1.8.3          ${MCGENPATH}/rivet        )
 
 LCG_external_package(sherpa            2.0.0          ${MCGENPATH}/sherpa         author=2.0.0 hepevt=10000  )
