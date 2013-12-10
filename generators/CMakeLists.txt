@@ -19,33 +19,9 @@ string(REPLACE "opt" "dbg" LCG_platform_dbg ${LCG_platform})
 
 
 #---lhapdfsets--------------------------------------------------------------------------------------
-
-# #---Loop over all versions of the package----------------------------------------------------------
-#  foreach( version ${${name}_native_version} )
-
-
 message(STATUS "PDFsets to download: ${PDFsets}")
-LCGPackage_set_home(lhapdfsets)
-get_filename_component(lhapdfsets_root ${lhapdfsets_home} PATH)
-message(STATUS "lhapdfsets_root: ${lhapdfsets_root}")
-
-foreach( version ${lhapdfsets_native_version} )
-	message(STATUS "lhapdfsets_root version: ${version}")
-	  if(${lhapdfsets_root} MATCHES ${version})
-		set(lhapdf5_version ${version})
-		message(STATUS "MATCH: ${lhapdf5_version}")
-	  endif()
-endforeach()
-
-message(STATUS "LHAPDFversion ${lhapdf5_version} ")
-
-#set(lhapdfsetsversion lhapdfsets-<NATIVE_VERSION>)
-#message(STATUS "lhapdfsetsversion: ${lhapdfsetsversion} ")
-
-if(NOT EXISTS ${lhapdfsets_root}/share/lhapdf/PDFsets)
-
 LCGPackage_Add(
-  lhapdfsets	
+  lhapdfsets
   URL ${gen_url}/lhapdf-<NATIVE_VERSION>.tar.gz
   PATCH_COMMAND patch -p0 < ${CMAKE_CURRENT_SOURCE_DIR}/patches/lhapdf-getdata.patch
   BINARY_PACKAGE 1
@@ -67,9 +43,6 @@ LCGPackage_Add(
           COMMAND ${CMAKE_COMMAND} -E create_symlink ../../../distribution/lhapdfsets/lhapdfsets-<NATIVE_VERSION>-src.tgz 
  				<INSTALL_DIR>/../../distribution/lhapdfsets/lhapdfsets-<NATIVE_VERSION>-src.tgz
 )
-else()
-	   add_custom_target(lhapdfsets-${lhapdf5_version} COMMENT "LHAPDF data sets already installed in ${lhapdfsets_root}/share/lhapdf/PDFsets")
-endif()
 
 #---lhapdf------------------------------------------------------------------------------------------
 LCGPackage_Add(
