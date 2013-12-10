@@ -19,9 +19,33 @@ string(REPLACE "opt" "dbg" LCG_platform_dbg ${LCG_platform})
 
 
 #---lhapdfsets--------------------------------------------------------------------------------------
+
+# #---Loop over all versions of the package----------------------------------------------------------
+#  foreach( version ${${name}_native_version} )
+
+
 message(STATUS "PDFsets to download: ${PDFsets}")
+LCGPackage_set_home(lhapdfsets)
+get_filename_component(lhapdfsets_root ${lhapdfsets_home} PATH)
+message(STATUS "lhapdfsets_root: ${lhapdfsets_root}")
+
+foreach( version ${lhapdfsets_native_version} )
+	message(STATUS "lhapdfsets_root version: ${version}")
+	  if(${lhapdfsets_root} MATCHES ${version})
+		set(lhapdf5_version ${version})
+		message(STATUS "MATCH: ${lhapdf5_version}")
+	  endif()
+endforeach()
+
+message(STATUS "LHAPDFversion ${lhapdf5_version} ")
+
+#set(lhapdfsetsversion lhapdfsets-<NATIVE_VERSION>)
+#message(STATUS "lhapdfsetsversion: ${lhapdfsetsversion} ")
+
+if(NOT EXISTS ${lhapdfsets_root}/share/lhapdf/PDFsets)
+
 LCGPackage_Add(
-  lhapdfsets
+  lhapdfsets	
   URL ${gen_url}/lhapdf-<NATIVE_VERSION>.tar.gz
   PATCH_COMMAND patch -p0 < ${CMAKE_CURRENT_SOURCE_DIR}/patches/lhapdf-getdata.patch
   BINARY_PACKAGE 1
@@ -43,6 +67,9 @@ LCGPackage_Add(
           COMMAND ${CMAKE_COMMAND} -E create_symlink ../../../distribution/lhapdfsets/lhapdfsets-<NATIVE_VERSION>-src.tgz 
  				<INSTALL_DIR>/../../distribution/lhapdfsets/lhapdfsets-<NATIVE_VERSION>-src.tgz
 )
+else()
+	   add_custom_target(lhapdfsets-${lhapdf5_version} COMMENT "LHAPDF data sets already installed in ${lhapdfsets_root}/share/lhapdf/PDFsets")
+endif()
 
 #---lhapdf------------------------------------------------------------------------------------------
 LCGPackage_Add(
@@ -565,7 +592,7 @@ LCGPackage_Add(
   CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix=<INSTALL_DIR>
       --with-boost=${Boost_home}
       PYTHON=${Python_home}/bin/python ${library_path}=${Python_home}/lib:$ENV{${library_path}}
-      PYTHONPATH=${cython_home}/lib/python2.7/site-packages:$ENV{PYTHONPATH}
+      PYTHONPATH=${cython_home}/lib/python${Python_config_version_twodigit}/site-packages:$ENV{PYTHONPATH}
   BUILD_COMMAND ${MAKE} all ${library_path}=${Python_home}/lib:$ENV{${library_path}} PYTHONPATH=:${cython_pythonpath}:$ENV{PYTHONPATH}
   INSTALL_COMMAND make install ${library_path}=${Python_home}/lib:$ENV{${library_path}} PYTHONPATH=:${cython_pythonpath}:$ENV{PYTHONPATH}
   BUILD_IN_SOURCE 1
@@ -642,16 +669,16 @@ LCGPackage_Add(
      --disable-pdfmanual
      --enable-unvalidated
      PYTHON=${Python_home}/bin/python
-     PYTHONPATH=${cython_home}/lib/python2.7/site-packages:$ENV{PYTHONPATH}
+     PYTHONPATH=${cython_home}/lib/python${Python_config_version_twodigit}/site-packages:$ENV{PYTHONPATH}
      ${library_path}=${Python_home}/lib:$ENV{${library_path}}
      SWIG=${swig_home}/bin/swig
      CC=${CMAKE_C_COMPILER}
      CXX=${CMAKE_CXX_COMPILER}
   BUILD_COMMAND ${MAKE} all
                 ${library_path}=${Python_home}/lib:${yamlcpp_home}/lib:$ENV{${library_path}}
-                PYTHONPATH=${cython_home}/lib/python2.7/site-packages:$ENV{PYTHONPATH}
+                PYTHONPATH=${cython_home}/lib/python${Python_config_version_twodigit}/site-packages:$ENV{PYTHONPATH}
   INSTALL_COMMAND make install ${library_path}=${Python_home}/lib:${yamlcpp_home}/lib:$ENV{${library_path}}
-                PYTHONPATH=${cython_home}/lib/python2.7/site-packages:$ENV{PYTHONPATH}
+                PYTHONPATH=${cython_home}/lib/python${Python_config_version_twodigit}/site-packages:$ENV{PYTHONPATH}
           COMMAND ${CMAKE_COMMAND} -E copy <SOURCE_DIR>/rivetenv.csh <INSTALL_DIR>/
           COMMAND ${CMAKE_COMMAND} -E copy <SOURCE_DIR>/rivetenv.sh <INSTALL_DIR>/
   BUILD_IN_SOURCE 1
@@ -1110,7 +1137,7 @@ rivet-pythia6-test
                      COMMAND  ${rivet2_home}/bin/rivet -a MC_XS -a MC_TTBAR hepmcfile.dat
                 ENVIRONMENT PATH=${agile_home}/bin:${Python_home}/bin:$ENV{PATH}
                             ${library_path}=${Python_home}/lib:${GSL_home}/lib:${rivet2_home}/lib:${yoda_home}/lib:${HepMC_home}/lib:${fastjet_home}/lib:${yamlcpp_home}/lib:${agile_home}/lib:${HepMC_home}/lib:${ROOT_home}/lib:$ENV{${library_path}}
-                            PYTHONPATH=${Python_home}/bin:${agile_home}/lib/python${Python_config_version_twodigit}/site-packages:${yoda_home}/lib/python2.7/site-packages/:${ROOT_home}/lib:$ENV{PYTHONPATH}
+                            PYTHONPATH=${Python_home}/bin:${agile_home}/lib/python${Python_config_version_twodigit}/site-packages:${yoda_home}/lib/python${Python_config_version_twodigit}/site-packages/:${ROOT_home}/lib:$ENV{PYTHONPATH}
                             AGILE_GEN_PATH=${agile_home}/../../..
                 LABELS PhysicsCheck
                 POST_COMMAND ${Python_cmd} ${CMAKE_SOURCE_DIR}/generators/reference/reference.py ${CMAKE_SOURCE_DIR}/generators/reference/rivet-pythia6-test.yoda ${CMAKE_BINARY_DIR}/generators/Rivet.yoda "Path=XS" limit=0.90
@@ -1129,7 +1156,7 @@ LCG_add_test(rivet-herwigpp-ttbar-test
                           BINARY_DIR herwig++/tests
                           SOURCE_DIR herwig++/tests
                           ENVIRONMENT ${library_path}=${herwig++_home}/lib/Herwig++:${thepeg_home}/lib/ThePEG:${HepMC_home}/lib:${lhapdf_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:${rivet2_home}/lib:${yoda_home}/lib:${yamlcpp_home}/lib:${ROOT_home}/lib:$ENV{${library_path}}
-                                      PYTHONPATH=${Python_home}/bin:${agile_home}/lib/python${Python_config_version_twodigit}/site-packages:${yoda_home}/lib/python2.7/site-packages/:${ROOT_home}/lib:$ENV{PYTHONPATH}
+                                      PYTHONPATH=${Python_home}/bin:${agile_home}/lib/python${Python_config_version_twodigit}/site-packages:${yoda_home}/lib/python${Python_config_version_twodigit}/site-packages/:${ROOT_home}/lib:$ENV{PYTHONPATH}
                                       PATH=${agile_home}/bin:${Python_home}/bin:$ENV{PATH}
                           LABELS PhysicsCheck
                           POST_COMMAND ${Python_cmd} ${CMAKE_SOURCE_DIR}/generators/reference/reference.py ${CMAKE_SOURCE_DIR}/generators/reference/rivet-herwigpp-ttbar-test.yoda ${CMAKE_BINARY_DIR}/generators/Rivet.yoda "Path=XS" limit=0.90
