@@ -197,7 +197,6 @@ endif()
 LCG_external_package(xrootd            3.2.4                                    )
 LCG_external_package(dcap              2.47.6                                   )
 LCG_external_package(cmaketools        1.0                                      )
-LCG_external_package(rivet             1.9.0                                    )
 LCG_external_package(swig              1.3.40                                   )
 
 
@@ -213,6 +212,7 @@ LCG_external_package(pythia8           175.lhetau     ${MCGENPATH}/pythia8      
 
 LCG_external_package(starlight         r43            ${MCGENPATH}/starlight    )
 
+LCG_external_package(rivet             1.9.0          ${MCGENPATH}/rivet        )
 
 # Prepare the search paths according to the versions above
 LCG_prepare_paths()
