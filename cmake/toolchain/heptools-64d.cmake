@@ -218,6 +218,7 @@ LCG_external_package(pythia8           175.lhetau     ${MCGENPATH}/pythia8      
 LCG_external_package(starlight         r43            ${MCGENPATH}/starlight    )
 
 
+LCG_external_package(rivet             1.9.0          ${MCGENPATH}/rivet)
 LCG_external_package(rivet             1.8.2          ${MCGENPATH}/rivet)
 
 # sherpa depedencies: lhapdf HepMC rivet
