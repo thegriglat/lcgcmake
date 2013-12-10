@@ -215,8 +215,8 @@ LCGPackage_Add(
                                    --with-lhapdf=${lhapdf_home}
                                 ENDIF
                                 --with-gsl=${GSL_home} --without-javagui CFLAGS=-O2 CXXFLAGS=-O2 FFLAGS=-O2
-  BUILD_COMMAND ${MAKE} all
-  INSTALL_COMMAND make install-strip
+  BUILD_COMMAND ${MAKE} all ${library_path}=${lhapdf_home}:${lhapdf_home}/lib:$ENV{${library_path}}
+  INSTALL_COMMAND make install-strip ${library_path}=${lhapdf_home}:${lhapdf_home}/lib:$ENV{${library_path}}
   BUILD_IN_SOURCE 1
   DEPENDS HepMC GSL lhapdf
 )
