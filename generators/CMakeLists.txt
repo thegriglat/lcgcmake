@@ -256,7 +256,7 @@ LCG_add_test(herwigpp_orig_test1
 			       COMMAND cat LHC.log	
                           BINARY_DIR herwig++/tests
                           SOURCE_DIR herwig++/tests
-                          ENVIRONMENT ${library_path}=${herwig++_home}/lib/Herwig++:${thepeg_home}/lib/ThePEG:${HepMC_home}/lib:${lhapdf_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:$ENV{${library_path}})
+                          ENVIRONMENT ${library_path}=${herwig++_home}/lib:${thepeg_home}/lib/:${HepMC_home}/lib:${lhapdf_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:$ENV{${library_path}})
 
 LCG_add_test(herwigpp_orig_test2 
 			  TEST_COMMAND ${herwig++_home}/bin/Herwig++ read ${herwig++_home}/../share/sources/src/TVT.in 
@@ -265,18 +265,16 @@ LCG_add_test(herwigpp_orig_test2
                                COMMAND cat TVT.log  
                           BINARY_DIR herwig++/tests
                           SOURCE_DIR herwig++/tests
-                          ENVIRONMENT ${library_path}=${herwig++_home}/lib/Herwig++:${thepeg_home}/lib/ThePEG:${HepMC_home}/lib:${lhapdf_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:$ENV{${library_path}})
+                          ENVIRONMENT ${library_path}=${herwig++_home}/lib:${thepeg_home}/lib/ThePEG:${HepMC_home}/lib:${lhapdf_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:$ENV{${library_path}})
 
 LCG_add_test(herwigpp_thepeg_test
-                          TEST_COMMAND ${herwig++_home}/bin/Herwig++ read ${CMAKE_SOURCE_DIR}/generators/herwig++/tests/LHC-diffractive.in --repo=${herwig++_home}/share/Herwig++/HerwigDefaults.rpo
-                               COMMAND ${herwig++_home}/bin/Herwig++ run -N100 LHC-diffractive.run -d1
-                          POST_COMMAND cat LHC-diffractive.out
-                               COMMAND cat LHC-diffractive.log
+                          TEST_COMMAND ${herwig++_home}/bin/Herwig++ read ${CMAKE_SOURCE_DIR}/generators/herwig++/tests/LHC-W.in --repo=${herwig++_home}/share/Herwig++/HerwigDefaults.rpo
+                               COMMAND ${herwig++_home}/bin/Herwig++ run -N100 LHC-W.run -d1
+                          POST_COMMAND cat LHC-W.out
+                               COMMAND cat LHC-W.log
                           BINARY_DIR herwig++/tests
                           SOURCE_DIR herwig++/tests
-                          ENVIRONMENT ${library_path}=${herwig++_home}/lib/Herwig++:${thepeg_home}/lib/ThePEG:${HepMC_home}/lib:${lhapdf_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:$ENV{${library_path}}
-                                      LHAPATH=${lhapdfsets_home}/../share/lhapdf/PDFsets
-                          )
+                          ENVIRONMENT ${library_path}=${herwig++_home}/lib:${thepeg_home}/lib/ThePEG:${HepMC_home}/lib:${lhapdf_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:$ENV{${library_path}})
 
 
 
@@ -1004,6 +1002,7 @@ if(NOT APPLE)    #  (installation fails on MacOSX)
   
   LCG_add_test(crmc_orig_test
     TEST_COMMAND ${crmc_home}/bin/crmc -T 1 -c ${crmc_home}/crmc.param
+    ENVIRONMENT ${library_path}=${crmc_home}/lib:${ROOT_home}/lib:${HepMC_home}/lib:${Boost_home}/lib:$ENV{${library_path}}	
   )
 endif()
 
