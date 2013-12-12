@@ -153,7 +153,7 @@ endif()
 #---cmaketool----------------------------------------------------------------------------------------
 LCGPackage_Add(
   cmaketools
-  SVN_REPOSITORY  http://svnweb.cern.ch/guest/cmaketools/trunk
+  SVN_REPOSITORY  http://svnweb.cern.ch/guest/cmaketools/tags/${cmaketools_native_version}
   UPDATE_COMMAND <VOID>
   CONFIGURE_COMMAND <VOID>
   BUILD_COMMAND <VOID>
