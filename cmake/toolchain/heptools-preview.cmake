@@ -175,6 +175,7 @@ LCG_external_package(herwig++          2.7.0          ${MCGENPATH}/herwig++  the
 LCG_external_package(tauola++          1.1.1          ${MCGENPATH}/tauola++     )
 LCG_external_package(tauola++          1.1.1a         ${MCGENPATH}/tauola++     )
 LCG_external_package(tauola++          1.1.3         ${MCGENPATH}/tauola++     )
+LCG_external_package(tauola++          1.1.4          ${MCGENPATH}/tauola++     )
 
 LCG_external_package(pythia6           427            ${MCGENPATH}/pythia6    author=6.4.27 hepevt=4000   )
 LCG_external_package(pythia6           427.2          ${MCGENPATH}/pythia6    author=6.4.27 hepevt=10000  )
