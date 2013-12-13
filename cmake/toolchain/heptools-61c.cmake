@@ -26,7 +26,7 @@ LCG_AA_project(ROOT  5.30.05)
 
 # Externals
 
-LCG_external_package(cmaketools        1.0                                      )
+LCG_external_package(cmaketools        1.1                                      )
 LCG_external_package(py2neo            1.4.6                                    )
 LCG_external_package(pylint            0.26.0                                   )
 LCG_external_package(nose              1.1.2                                    )

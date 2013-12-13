@@ -36,7 +36,7 @@ LCG_external_package(cernlib           2006a                                    
 LCG_external_package(cgsigsoap         1.3.3-1                                  )
 LCG_external_package(CLHEP             1.9.4.7                   clhep          )
 LCG_external_package(cmake             2.8.9                                    )
-LCG_external_package(cmaketools        1.0                                      )
+LCG_external_package(cmaketools        1.1                                      )
 LCG_external_package(cmt               v1r20p20081118                           )
 LCG_external_package(coin3d            3.1.3p2                                  )
 LCG_external_package(coverage          3.5.2                                    )

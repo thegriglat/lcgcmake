@@ -128,7 +128,7 @@ LCG_external_package(zlib              1.2.3p1                                  
 LCG_external_package(xrootd            3.2.7                                    )
 LCG_external_package(dcap              2.47.6                                   )
 LCG_external_package(srm_ifce          1.13.0-0                                 )
-LCG_external_package(cmaketools        1.0                                      )
+LCG_external_package(cmaketools        1.1                                      )
 LCG_external_package(py2neo            1.4.6                                    )
 LCG_external_package(pylint            0.26.0                                   )
 LCG_external_package(nose              1.1.2                                    )

@@ -196,7 +196,7 @@ LCG_external_package(xqilla            2.2.4p1                                  
 endif()
 LCG_external_package(xrootd            3.2.4                                    )
 LCG_external_package(dcap              2.47.6                                   ) # from 64b
-LCG_external_package(cmaketools        1.0                                      )
+LCG_external_package(cmaketools        1.1                                      )
 LCG_external_package(swig              1.3.40                                   )
 
 

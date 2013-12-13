@@ -49,7 +49,7 @@ LCG_external_package(doxygen           1.7.6                                    
 LCG_external_package(dpm               1.7.4-7sec                               )
 LCG_external_package(dcap              2.47.6                                   )
 LCG_external_package(srm_ifce          1.13.0-0                                 )
-LCG_external_package(cmaketools        1.0                                      )
+LCG_external_package(cmaketools        1.1                                      )
 LCG_external_package(expat             2.0.1                                    )
 LCG_external_package(Expat             2.0.1                                    )
 LCG_external_package(fastjet           3.0.3                                    )
