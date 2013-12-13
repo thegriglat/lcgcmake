@@ -1139,6 +1139,9 @@ LCG_add_test(rivet-herwigpp-ttbar-test
 )
   
   
+LCG_add_test(debug-symbols-test 
+             TEST_COMMAND ${CMAKE_SOURCE_DIR}/cmake/scripts/check_debug_symbols.sh ${CMAKE_INSTALL_PREFIX}
+            )
 
 
 
