@@ -41,6 +41,8 @@ ctest_build(BUILD ${CTEST_BINARY_DIRECTORY})
 if(NOT $ENV{MODE} STREQUAL "Install")
   ctest_test(PARALLEL_LEVEL ${ncpu} INCLUDE_LABEL ${CTEST_LABELS})
 endif()
+file(STRINGS ${CTEST_BINARY_DIRECTORY}/fail-logs.txt logs)
+ctest_upload(FILES ${logs})
 ctest_submit()
 
 

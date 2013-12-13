@@ -19,6 +19,8 @@
 #  +  set(msg \"\${msg}\\nSee also\\n  ${logbase}.log\\n\")
 #  -  set(msg \"${name} ${step} command succeeded.  See also ${logbase}-*.log\\n\")
 #  +  set(msg \"${name} ${step} command succeeded.  See also ${logbase}.log\\n\")
+#
+#     Save the list of logfiles having a problem
 #----------------------------------------------------------------------
 #----------------------------------------------------------------------
 # - Create custom targets to build projects in external trees
@@ -924,7 +926,9 @@ if(result)
   foreach(arg IN LISTS command)
     set(msg \"\${msg} '\${arg}'\")
   endforeach()
-  set(msg \"\${msg}\\nSee also\\n  ${logbase}.log\\n\")
+  file(SHA1 \"${logbase}.log\" sha1)
+  set(msg \"\${msg}\\nSee also\\n  ${logbase}.log [\${sha1}]\\n\")
+  file(APPEND ${CMAKE_BINARY_DIR}/fail-logs.txt \"${logbase}.log\\n\")
   message(FATAL_ERROR \"\${msg}\")
 else()
   set(msg \"${name} ${step} command succeeded.  See also ${logbase}.log\\n\")

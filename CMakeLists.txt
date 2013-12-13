@@ -35,3 +35,4 @@ add_subdirectory(pyexternals)
 add_subdirectory(generators)
 
 LCG_create_dependency_files()
+file(WRITE ${CMAKE_BINARY_DIR}/fail-logs.txt "")
