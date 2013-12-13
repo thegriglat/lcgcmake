@@ -238,7 +238,7 @@ macro(LCGPackage_Add name)
       
       #---Remove the rpath from all shared objects----------------------------------------------------
       ExternalProject_Add_Step(${targetname} strip_rpath COMMENT "Removing rpath from '${targetname}'"
-        COMMAND ${CMAKE_COMMAND} -DINSTALL_DIR=${${dest_name}_home}
+        COMMAND ${CMAKE_COMMAND} -DINSTALL_DIR=${${dest_name}_home} -DCHECK_PATH=${CMAKE_SOURCE_DIR}/cmake/scripts/check_relative_rpath.sh 
                                  -P ${CMAKE_SOURCE_DIR}/cmake/scripts/RemoveRPath.cmake
         DEPENDEES ${current_dependee})
 
