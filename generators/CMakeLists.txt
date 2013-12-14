@@ -398,7 +398,9 @@ LCG_add_test(photos-test1 TEST_COMMAND photos/tests/photos_test1
                           BINARY_DIR photos/tests
                           SOURCE_DIR photos/tests
                           BUILD photos_test1
-                          BUILD_OPTIONS -DPHOTOS_ROOT_DIR=${photos_home} -DPYTHIA6_ROOT_DIR=${pythia6_home}
+                          BUILD_OPTIONS -DPHOTOS_ROOT_DIR=${photos_home} 
+                                        -DPYTHIA6_ROOT_DIR=${pythia6_home}
+                                        -DCMAKE_MODULE_PATH=${cmaketools_home}/modules
                           FAILREGEX "Fatal error"
                           ENVIRONMENT ${library_path}=${photos_home}/lib:${pythia6_home}/lib:$ENV{${library_path}})
 
@@ -440,6 +442,7 @@ LCG_add_test(pyquen_test1
   BUILD_OPTIONS
    -DPYQUEN_ROOT_DIR=${pyquen_home}
    -DPYTHIA6_ROOT_DIR=${pythia6_home}
+   -DCMAKE_MODULE_PATH=${cmaketools_home}/modules
   ENVIRONMENT ${library_path}=${pyquen_home}/lib:${pythia6_home}/lib:$ENV{${library_path}})
 
 #---hydjet--------------------------------------------------------------------------------------
@@ -464,6 +467,7 @@ LCG_add_test(hydjet_test1
    -DHYDJET_ROOT_DIR=${hydjet_home}
    -DPYTHIA6_ROOT_DIR=${pythia6_home}
    -DPYQUEN_ROOT_DIR=${pyquen_home}
+   -DCMAKE_MODULE_PATH=${cmaketools_home}/modules
   ENVIRONMENT ${library_path}=${hydjet_home}/lib:${pyquen_home}/lib:${pythia6_home}/lib:$ENV{${library_path}})
 
 #---photos++------------------------------------------------------------------------------------------
@@ -866,7 +870,8 @@ LCG_add_test(hijing_orig_test1 TEST_COMMAND hijing/tests/hijing_orig_test1
                           BINARY_DIR hijing/tests
                           SOURCE_DIR hijing/tests
                           BUILD hijing_orig_test1
-                          BUILD_OPTIONS -DHIJING_ROOT_DIR=${hijing_home}
+                          BUILD_OPTIONS -DHIJING_ROOT_DIR=${hijing_home} 
+                                        -DCMAKE_MODULE_PATH=${cmaketools_home}/modules
                           ENVIRONMENT ${library_path}=${hijing_home}/lib:$ENV{${library_path}})
 
 endif()
@@ -914,7 +919,10 @@ if(NOT APPLE)    #  (installation fails on MacOSX)
                           BINARY_DIR tauola/tests
                           SOURCE_DIR tauola/tests
                           BUILD tauola_test1
-                          BUILD_OPTIONS -DTAUOLA_ROOT_DIR=${tauola_home} -DPHOTOS_ROOT_DIR=${photos_home} -DPYTHIA6_ROOT_DIR=${pythia6_home}
+                          BUILD_OPTIONS -DTAUOLA_ROOT_DIR=${tauola_home} 
+                                        -DPHOTOS_ROOT_DIR=${photos_home} 
+                                        -DPYTHIA6_ROOT_DIR=${pythia6_home}
+                                        -DCMAKE_MODULE_PATH=${cmaketools_home}/modules
                           ENVIRONMENT ${library_path}=${tauola_home}/lib:${photos_home}/lib:${pythia6_home}/lib:$ENV{${library_path}})
 
 endif()
