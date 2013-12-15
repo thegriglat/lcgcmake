@@ -4,8 +4,12 @@ export CMTCONFIG=$1
 echo "setting CMTCONFIG to $CMTCONFIG"
 shift
 export CMTPATH=$1
+echo "setting CMTPATH to $CMTPATH"
 shift
-. /afs/cern.ch/sw/contrib/CMT/v1r20p20090520/mgr/setup.sh ""
-. /afs/cern.ch/sw/lcg/external/tbroadcast/v2.0.6_rc4/cmt/setup.sh ""
+export CMTROOT=$1
+echo "setting CMTROOT to $CMTROOT"
+shift
+. ${CMTROOT}/mgr/setup.sh ""
+#. /afs/cern.ch/sw/lcg/external/tbroadcast/v2.0.6_rc4/cmt/setup.sh ""
 cmt show uses
 $*
