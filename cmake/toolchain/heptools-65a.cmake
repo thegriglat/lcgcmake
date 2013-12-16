@@ -176,6 +176,7 @@ LCG_external_package(herwig++          2.6.1b         ${MCGENPATH}/herwig++     
 LCG_external_package(herwig++          2.6.3          ${MCGENPATH}/herwig++     thepeg=1.8.3)
 LCG_external_package(herwig++          2.7.0          ${MCGENPATH}/herwig++     thepeg=1.9.0)
 
+LCG_external_package(tauola++          1.1.4          ${MCGENPATH}/tauola++     )
 LCG_external_package(tauola++          1.1.3          ${MCGENPATH}/tauola++     )
 LCG_external_package(tauola++          1.1.1          ${MCGENPATH}/tauola++     )
 LCG_external_package(tauola++          1.1.1a         ${MCGENPATH}/tauola++     )
