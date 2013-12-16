@@ -236,7 +236,7 @@ function(lcg_get_target_platform)
   endif()
 
   #handling of C++11
-  if (comp MATCHES "([^0-9.]+)([6-9.]+|max)")
+  if (comp MATCHES "([^6-9.]+)([0-9.]+|max)")
     set(LCG_CPP11 TRUE)
   else()
     set(LCG_CPP11 FALSE)
