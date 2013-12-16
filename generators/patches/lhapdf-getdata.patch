@@ -1,5 +1,14 @@
---- bin/lhapdf-getdata.orig	2013-10-30 10:39:00.000000000 +0100
-+++ bin/lhapdf-getdata	2013-10-30 10:40:48.000000000 +0100
+--- bin/lhapdf-getdata.orig	2013-12-16 13:24:03.000000000 +0100
++++ bin/lhapdf-getdata	2013-12-16 13:25:50.000000000 +0100
+@@ -34,7 +34,7 @@
+         logging.debug(pdflistpage)
+         hreq.close()
+         import re
+-        re_anchor = re.compile(r'^\s*<tr>.*<td><a\s+href="([^"]+)">\1.*$')
++	re_anchor = re.compile(r'^\s*<.*<a\s+href="([^"]+)">\1.*$')
+         rtn = []
+         for line in pdflistpage.splitlines():
+             m = re_anchor.match(line)
 @@ -141,6 +141,7 @@
      ## Actually download the sets
      if len(filenames) == 0:

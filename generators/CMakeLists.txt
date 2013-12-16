@@ -30,7 +30,8 @@ LCGPackage_Add(
   INSTALL_COMMAND ${CMAKE_COMMAND} -E make_directory <INSTALL_DIR>
           COMMAND ${CMAKE_COMMAND}
            -Ddistr=<SOURCE_DIR>
-           -Drepo=http://www.hepforge.org/archive/lhapdf/pdfsets/<NATIVE_VERSION>
+#           -Drepo=http://www.hepforge.org/archive/lhapdf/pdfsets/<NATIVE_VERSION>
+	   -Drepo=http://cern.ch/service-spi/external/tarFiles/MCGeneratorsTarFiles/LHAPDF5SETS/<NATIVE_VERSION>
            -DPDFsets=${PDFsets}
            -Ddst_dir=<INSTALL_DIR>/../share/lhapdf
            -P ${CMAKE_CURRENT_SOURCE_DIR}/lhapdf/pdfsets.cmake
