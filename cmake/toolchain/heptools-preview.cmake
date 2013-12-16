@@ -67,7 +67,7 @@ LCG_external_package(multiprocessing   2.6.2.1                                  
 LCG_external_package(mysql             5.5.27                                   )
 LCG_external_package(mysql_python      1.2.3                                    )
 LCG_external_package(nose              1.1.2                                    )
-LCG_external_package(numpy             1.6.1                                    )
+LCG_external_package(numpy             1.8.0                                    )
 LCG_external_package(oracle            11.2.0.3.0                               )
 LCG_external_package(pacparser         1.3.1                                    ) 
 LCG_external_package(processing        0.52                                     )
@@ -104,7 +104,9 @@ LCG_external_package(tcmalloc          1.7p3                                    
 if(NOT ${LCG_OS}${LCG_OSVERS} STREQUAL slc6) # uuid is not distributed with SLC6
 LCG_external_package(uuid              1.42                                     )
 endif()
-LCG_external_package(valgrind          3.9.0                                    )
+if(NOT ${LCG_OS}${LCG_OSVERS} STREQUAL mac109) # valgrind does not work yet with mac109
+  LCG_external_package(valgrind          3.9.0                                    )
+endif()
 LCG_external_package(vdt               0.3.6                                    )
 LCG_external_package(XercesC           3.1.1p1        author=3.1.1              )
 LCG_external_package(xqilla            2.2.4p1                                  )

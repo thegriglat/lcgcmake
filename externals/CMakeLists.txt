@@ -266,7 +266,7 @@ endif()
 if(LCG_TARGET MATCHES "i686")
   list(APPEND graphviz_config_opts --build=i686-unknown-linux-gnu)
 endif()
-if(LCG_TARGET MATCHES mac108)
+if(LCG_OS STREQUAL mac AND LCG_OSVERS VERSION_GREATER 107)
   set(graphviz_build_opts CFLAGS=-I/usr/X11/include)
 endif()
 LCGPackage_Add(
