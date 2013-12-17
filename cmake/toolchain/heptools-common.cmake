@@ -236,10 +236,12 @@ function(lcg_get_target_platform)
   endif()
 
   #handling of C++11
-  if (comp MATCHES "([^6-9.]+)([0-9.]+|max)")
-    set(LCG_CPP11 TRUE PARENT_SCOPE)
-  else()
-    set(LCG_CPP11 FALSE PARENT_SCOPE)
+  # enable it only for gcc 4.6 and greater
+  set(LCG_CPP11 FALSE PARENT_SCOPE)
+  if (LCG_COMP STREQUAL "gcc")
+    if(LCG_COMPVERS STRGREATER "46")
+      set(LCG_CPP11 TRUE PARENT_SCOPE)
+    endif()
   endif()
 
   # Convert LCG_BUILD_TYPE to CMAKE_BUILD_TYPE
