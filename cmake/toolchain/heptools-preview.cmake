@@ -60,7 +60,7 @@ LCG_external_package(lcov              1.9                                      
 LCG_external_package(libsvm            2.86                                     )
 LCG_external_package(libtool           1.5.26                                   )
 LCG_external_package(lxml              2.3                                      )
-LCG_external_package(matplotlib        1.1.0                                    )
+LCG_external_package(matplotlib        1.3.1                                    )
 LCG_external_package(minuit            5.27.02                                  )
 LCG_external_package(mock              0.8.0                                    )
 LCG_external_package(multiprocessing   2.6.2.1                                  )
@@ -99,7 +99,7 @@ LCG_external_package(stomppy           3.1.3                                    
 LCG_external_package(storm             0.19                                     )
 LCG_external_package(swig              1.3.40                                   )
 LCG_external_package(sympy             0.7.1                                    )
-LCG_external_package(tbb               41_20130116                              )
+LCG_external_package(tbb               42_20131118                              )
 LCG_external_package(tcmalloc          1.7p3                                    )
 if(NOT ${LCG_OS}${LCG_OSVERS} STREQUAL slc6) # uuid is not distributed with SLC6
 LCG_external_package(uuid              1.42                                     )
@@ -176,7 +176,7 @@ LCG_external_package(herwig++          2.7.0          ${MCGENPATH}/herwig++  the
 
 LCG_external_package(tauola++          1.1.1          ${MCGENPATH}/tauola++     )
 LCG_external_package(tauola++          1.1.1a         ${MCGENPATH}/tauola++     )
-LCG_external_package(tauola++          1.1.3         ${MCGENPATH}/tauola++     )
+LCG_external_package(tauola++          1.1.3          ${MCGENPATH}/tauola++     )
 LCG_external_package(tauola++          1.1.4          ${MCGENPATH}/tauola++     )
 
 LCG_external_package(pythia6           427            ${MCGENPATH}/pythia6    author=6.4.27 hepevt=4000   )
@@ -192,7 +192,7 @@ LCG_external_package(evtgen            1.1.0          ${MCGENPATH}/evtgen     ta
 LCG_external_package(evtgen            1.2.0          ${MCGENPATH}/evtgen     tag=R01-02-00 pythia8=176 tauola++=1.1.1)
 
 LCG_external_package(rivet             1.8.3          ${MCGENPATH}/rivet        )
-LCG_external_package(rivet2            2.0.0          ${MCGENPATH}/rivet       )
+LCG_external_package(rivet2            2.0.0          ${MCGENPATH}/rivet        )
 
 LCG_external_package(sherpa            1.4.3          ${MCGENPATH}/sherpa         author=1.4.3 hepevt=4000  )
 LCG_external_package(sherpa            1.4.3.2        ${MCGENPATH}/sherpa         author=1.4.3 hepevt=10000 )
