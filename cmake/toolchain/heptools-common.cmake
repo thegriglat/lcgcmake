@@ -237,9 +237,9 @@ function(lcg_get_target_platform)
 
   #handling of C++11
   if (comp MATCHES "([^6-9.]+)([0-9.]+|max)")
-    set(LCG_CPP11 TRUE)
+    set(LCG_CPP11 TRUE PARENT_SCOPE)
   else()
-    set(LCG_CPP11 FALSE)
+    set(LCG_CPP11 FALSE PARENT_SCOPE)
   endif()
 
   # Convert LCG_BUILD_TYPE to CMAKE_BUILD_TYPE
