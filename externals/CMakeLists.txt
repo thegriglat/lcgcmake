@@ -102,14 +102,13 @@ endif()
 LCGPackage_Add(
   CLHEP
   URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/clhep-<NATIVE_VERSION>.tgz
-  CONFIGURE_COMMAND <SOURCE_DIR>/CLHEP/configure --prefix <INSTALL_DIR> ${CLHEP_config_options}
-)
-
-#---CLHEP2--------------------------------------------------------------------------------------------
-LCGPackage_Add(
-  CLHEP2
-  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/clhep-<NATIVE_VERSION>.tgz
-  CONFIGURE_COMMAND ${CMAKE_COMMAND} -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR> -DCMAKE_BUILD_TYPE=Release <SOURCE_DIR>/CLHEP
+  IF <VERSION> VERSION_LESS 2.1.0 THEN
+    CONFIGURE_COMMAND <SOURCE_DIR>/CLHEP/configure --prefix <INSTALL_DIR> ${CLHEP_config_options}
+  ELSE
+    CONFIGURE_COMMAND ${CMAKE_COMMAND} -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR> 
+                                       -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} 
+                                       <SOURCE_DIR>/CLHEP
+  ENDIF
 )
 
 #---HepMC--------------------------------------------------------------------------------------------

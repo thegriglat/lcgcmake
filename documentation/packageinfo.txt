@@ -1683,17 +1683,6 @@
     "license" : "UNKNOWN",
   },
   {
-    "name" : "CLHEP2",
-    "fullname" : "CLHEP2",
-    "description" : "A Class Library for High Energy Physics",
-    "homepage" : "http://cern.ch/clhep",
-    "contact" : "clhep-editors@cern.ch",
-    "project" : "None",
-    "category" : "Tool",
-    "language" : "None",
-    "license" : "UNKNOWN",
-  },
-  {
     "name" : "FTS",
     "fullname" : "FTS",
     "description" : "None",
