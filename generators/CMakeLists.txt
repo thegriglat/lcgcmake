@@ -1152,7 +1152,14 @@ LCG_add_test(debug-symbols-test
              TEST_COMMAND ${CMAKE_SOURCE_DIR}/cmake/scripts/check_debug_symbols.sh ${CMAKE_INSTALL_PREFIX}
             )
 
+## Uncomment after installation of MadGraph5 in MCGenerators tree
+#LCG_add_test(madgraph5_test
+#             TEST_COMMAND ${Python_cmd} ${madgraph5_home}/tests/test_manager.py
+#            )
 
+#LCG_add_test(madgraph5v2_test
+#             TEST_COMMAND ${Python_cmd} ${madgraph5v2_home}/tests/test_manager.py
+#            )
 
 
 
