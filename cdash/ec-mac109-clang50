@@ -7,6 +7,8 @@ export LC_ALL=en_US.UTF-8
 export CC=clang
 export CXX=clang++
 export FC=gfortran
+export LIBRARY_PATH=/usr/local/gfortran/lib
+export PATH=${PATH}:/usr/local/bin
 
 #-----------------------------------------------------------------
 THIS=$(dirname $0)
