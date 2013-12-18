@@ -1,0 +1,49 @@
+Management of AFS volumes
+
+All AFS management tasks have to be done under special user lcgspi or sftnight:
+
+  $ ssh lcgspi@lxplus
+  $ ssh sftnight@lxplus  
+
+To create a new dir/volume:
+
+  $ afs_admin create -q QUOTA NAME_DIR NAME_VOLUME
+
+To open the directory for the developers:
+
+  $ afs_admin set_acl -r -f NAME_DIR \
+      _swlcg_ rlidwka \
+      system:administrators rlidwka \
+      system:anyuser rl \
+      lcgapp:spiadm rlidwka \
+      lcgapp:genseradm rlidwka \
+      lcgapp:genserdev rlidwk \
+      -c
+
+To close the directory when the developers are done:
+
+  $ afs_admin set_acl -r -f NAME_DIR \
+      _swlcg_ rlidwka \
+      system:administrators rlidwka \
+      system:anyuser rl \
+      lcgapp:spiadm rlidwka \
+      -c
+
+To change the quota:
+
+  $ afs_admin set_quota NAME_DIR QUOTA
+
+To create a replica:
+
+  $ afs_admin create_replica NAME_VOLUME
+
+To update replica (push changes in /afs/.cern.ch to /afs/cern.ch):
+
+  $ afs_admin vos_release NAME_DIR
+
+Good explanation of volumes replication: ReplicateAFSVolumes.
+
+Volume recovery (this will give you a list of available backups, you choose one, it will mount the backup in a /tmp dir and you may copy from there):
+
+  $ afs_admin recover NAME_DIR
+
