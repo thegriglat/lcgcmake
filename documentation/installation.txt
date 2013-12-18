@@ -1,16 +1,19 @@
-This file describes, how to install generators to MCGenerators tree
+This file describes how to install generators to MCGenerators trees:
 
-1. Obtain sftnight AFS token;
-2. cd to /afs/cern.ch/sw/lcg/external/tarFiles/MCGeneratorsTarFiles;
-3. Download source tarball into /afs/cern.ch/sw/lcg/external/tarFiles/MCGeneratorsTarFiles;
-4. Obtain your user AFS token;
-5. Add package definition to cmake/toolchain/heptools-<release>.cmake;
-6. Try build on local node;
-   If not success, fix CMakeLists.txt/heptools-<release>.cmake if necessary;
-7. Commit changes into SVN;
-8. Go to https://ecsft.cern.ch/ and submit a jobs for all releases;
-   Don't install a number of releases at one time!
-9. If install is successfull, mail to genser-announce@cern.ch:
+1. Download new authors tarfile to local source tarrfile repository:
+	a. Obtain sftnight AFS token;
+	b. Download source tarball into /afs/cern.ch/sw/lcg/external/tarFiles/MCGeneratorsTarFiles;
+
+2. Add package definition to requested version of LCGCMT release: cmake/toolchain/heptools-<release>.cmake;
+
+3. Try build on local node and run GENSER test for given package;
+
+4. Commit changes into SVN;
+
+5. Go to https://ecsft.cern.ch/ and submit a jobs for all requested releases;
+   Don't install more then one release simultanously!
+
+6. If installation is successfull, mail to genser-announce@cern.ch:
     Dear colleagues,
     New Tauola++ version - Tauola++ 1.1.4 has been installed into MCGenerators lcgcmt trees:
 
@@ -19,4 +22,4 @@ This file describes, how to install generators to MCGenerators tree
        - MCGenerators_lcgcmt66
         ---
            Best regards,
-                       GENSE
+                       GENSER
