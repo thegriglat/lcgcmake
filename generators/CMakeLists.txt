@@ -108,7 +108,12 @@ LCGPackage_Add(
   DEPENDS HepMC lhapdf fastjet
 )
 
-LCGPackage_set_home(rivet2)
+#---LCGPackage_set_home(rivet2)-----------------------------------------------------------------------
+foreach(v ${rivet_native_version})
+  if(v VERSION_EQUAL 2.0.0 OR v VERSION_GREATER 2.0.0)
+    set(rivet2_home ${CMAKE_INSTALL_PREFIX}/${rivet_directory_name}/${v}/${LCG_system})
+  endif()
+endforeach()
 
 LCG_add_test(pythia8-build
   BINARY_DIR pythia8/tests
@@ -630,35 +635,60 @@ LCG_add_test(lhapdf6_orig_testpdf
     LHAPDF_DATA_PATH=${lhapdf6_home}/share/LHAPDF:${lhapdf6sets_home}/../share/LHAPDF
 )
 
-#---Rivet2-----------------------------------------------------------------------------------------
+#---Rivet-----------------------------------------------------------------------------------------
 LCGPackage_Add(
-  rivet2
-  URL ${gen_url}/Rivet-${rivet2_native_version}.tar.bz2
-  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR>
-     --with-hepmc=${HepMC_home} 
-     --with-boost=${Boost_home_include}
-     --with-fastjet=${fastjet_home}
-     --with-yoda=${yoda_home}
-     --with-yaml-cpp=${yamlcpp_home}
-     --with-gsl=${GSL_home}
-     --with-lcgtag=${LCG_platform}
-     --disable-pdfmanual
-     --enable-unvalidated
-     PYTHON=${Python_home}/bin/python
-     PYTHONPATH=${cython_home}/lib/python${Python_config_version_twodigit}/site-packages:$ENV{PYTHONPATH}
-     ${library_path}=${Python_home}/lib:$ENV{${library_path}}
-     SWIG=${swig_home}/bin/swig
-     CC=${CMAKE_C_COMPILER}
-     CXX=${CMAKE_CXX_COMPILER}
-  BUILD_COMMAND ${MAKE} all
-                ${library_path}=${Python_home}/lib:${yamlcpp_home}/lib:$ENV{${library_path}}
-                PYTHONPATH=${cython_home}/lib/python${Python_config_version_twodigit}/site-packages:$ENV{PYTHONPATH}
-  INSTALL_COMMAND make install ${library_path}=${Python_home}/lib:${yamlcpp_home}/lib:$ENV{${library_path}}
-                PYTHONPATH=${cython_home}/lib/python${Python_config_version_twodigit}/site-packages:$ENV{PYTHONPATH}
-          COMMAND ${CMAKE_COMMAND} -E copy <SOURCE_DIR>/rivetenv.csh <INSTALL_DIR>/
-          COMMAND ${CMAKE_COMMAND} -E copy <SOURCE_DIR>/rivetenv.sh <INSTALL_DIR>/
+  rivet
+  URL ${gen_url}/Rivet-<VERSION>.tar.bz2
+  IF <VERSION> VERSION_LESS 2.0.0 THEN
+    CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR>
+       --with-hepmc=${HepMC_home}
+       --with-boost-incpath=${Boost_home_include}
+       --with-fastjet=${fastjet_home}
+       --with-gsl=${GSL_home}
+       --with-lcgtag=${LCG_platform}
+       --disable-pdfmanual
+       --enable-unvalidated
+       PYTHON=${Python_home}/bin/python ${library_path}=${Python_home}/lib:$ENV{${library_path}}
+       SWIG=${swig_home}/bin/swig
+       CC=${CMAKE_C_COMPILER}
+       CXX=${CMAKE_CXX_COMPILER}
+       CFLAGS=-O2
+    BUILD_COMMAND ${MAKE} all ${library_path}=${Python_home}/lib:$ENV{${library_path}}
+    INSTALL_COMMAND make install ${library_path}=${Python_home}/lib:$ENV{${library_path}}
+            COMMAND ${CMAKE_COMMAND} -E copy <SOURCE_DIR>/rivetenv.csh <INSTALL_DIR>/
+            COMMAND ${CMAKE_COMMAND} -E copy <SOURCE_DIR>/rivetenv.sh <INSTALL_DIR>/
+            COMMAND ${CMAKE_COMMAND} -DINSTALL_DIR=<INSTALL_DIR> -P ${CMAKE_SOURCE_DIR}/cmake/scripts/StripLib.cmake
+            COMMAND ${CMAKE_COMMAND} -E create_symlink ${LCG_platform} <INSTALL_DIR>/../${LCG_platform_dbg}
+  ELSE
+    CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR>
+       --with-hepmc=${HepMC_home}
+       --with-boost=${Boost_home_include}
+       --with-fastjet=${fastjet_home}
+       --with-yoda=${yoda_home}
+       --with-yaml-cpp=${yamlcpp_home}
+       --with-gsl=${GSL_home}
+       --with-lcgtag=${LCG_platform}
+       --disable-pdfmanual
+       --enable-unvalidated
+       PYTHON=${Python_home}/bin/python
+       PYTHONPATH=${cython_home}/lib/python${Python_config_version_twodigit}/site-packages:$ENV{PYTHONPATH}
+       ${library_path}=${Python_home}/lib:$ENV{${library_path}}
+       SWIG=${swig_home}/bin/swig
+       CC=${CMAKE_C_COMPILER}
+       CXX=${CMAKE_CXX_COMPILER}
+    BUILD_COMMAND ${MAKE} all
+                  ${library_path}=${Python_home}/lib:${yamlcpp_home}/lib:$ENV{${library_path}}
+                  PYTHONPATH=${cython_home}/lib/python${Python_config_version_twodigit}/site-packages:$ENV{PYTHONPATH}
+    INSTALL_COMMAND make install ${library_path}=${Python_home}/lib:${yamlcpp_home}/lib:$ENV{${library_path}}
+                    PYTHONPATH=${cython_home}/lib/python${Python_config_version_twodigit}/site-packages:$ENV{PYTHONPATH}
+            COMMAND ${CMAKE_COMMAND} -E copy <SOURCE_DIR>/rivetenv.csh <INSTALL_DIR>/
+            COMMAND ${CMAKE_COMMAND} -E copy <SOURCE_DIR>/rivetenv.sh <INSTALL_DIR>/
+  ENDIF
   BUILD_IN_SOURCE 1
-  DEPENDS HepMC Boost fastjet GSL Python swig yoda yamlcpp
+  DEPENDS HepMC Boost fastjet GSL Python swig
+  IF NOT <VERSION> VERSION_LESS 2.0.0 THEN
+    yoda yamlcpp
+  ENDIF
 )
 
 LCG_add_test(
@@ -687,36 +717,6 @@ LCG_add_test(
        TEST_COMMAND ${CMAKE_SOURCE_DIR}/generators/rivet2/tests/testATLAS.sh ${rivet2_home} ${CMAKE_SOURCE_DIR}/generators/rivet/tests/data.hepmc
        ENVIRONMENT PATH=${Python_home}/bin:$ENV{PATH}
 		   ${library_path}=${Python_home}/lib:${GSL_home}/lib:$ENV{${library_path}}
-)
-
-
-
-
-#---Rivet------------------------------------------------------------------------------------------
-LCGPackage_Add(
-  rivet
-  URL ${gen_url}/Rivet-<NATIVE_VERSION>.tar.bz2
-  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR>
-     --with-hepmc=${HepMC_home} 
-     --with-boost-incpath=${Boost_home_include}
-     --with-fastjet=${fastjet_home}
-     --with-gsl=${GSL_home}
-     --with-lcgtag=${LCG_platform}
-     --disable-pdfmanual
-     --enable-unvalidated
-     PYTHON=${Python_home}/bin/python ${library_path}=${Python_home}/lib:$ENV{${library_path}}
-     SWIG=${swig_home}/bin/swig
-     CC=${CMAKE_C_COMPILER}
-     CXX=${CMAKE_CXX_COMPILER}
-     CFLAGS=-O2
-  BUILD_COMMAND ${MAKE} all ${library_path}=${Python_home}/lib:$ENV{${library_path}}
-  INSTALL_COMMAND make install ${library_path}=${Python_home}/lib:$ENV{${library_path}}
-          COMMAND ${CMAKE_COMMAND} -E copy <SOURCE_DIR>/rivetenv.csh <INSTALL_DIR>/
-          COMMAND ${CMAKE_COMMAND} -E copy <SOURCE_DIR>/rivetenv.sh <INSTALL_DIR>/
-          COMMAND ${CMAKE_COMMAND} -DINSTALL_DIR=<INSTALL_DIR> -P ${CMAKE_SOURCE_DIR}/cmake/scripts/StripLib.cmake
-          COMMAND ${CMAKE_COMMAND} -E create_symlink ${LCG_platform} <INSTALL_DIR>/../${LCG_platform_dbg}
-  BUILD_IN_SOURCE 1
-  DEPENDS HepMC Boost fastjet GSL Python swig
 )
 
 LCG_add_test(rivet_orig_test1
