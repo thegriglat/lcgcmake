@@ -129,7 +129,7 @@ LCGPackage_Add(
   CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
              -Dmomentum:STRING=MEV
              -Dlength:STRING=MM
-	     -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+             -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
   BUILD_COMMAND ${MAKE}
 )
 
@@ -146,12 +146,25 @@ LCGPackage_Add(
   CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix <INSTALL_DIR>  CXX=${CMAKE_CXX_COMPILER}
 )
 
+#---pcre----------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  pcre
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/pcre-<VERSION>.tar.gz
+  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR>
+  BUILD_IN_SOURCE 1
+)
+
 #---Swig--------------------------------------------------------------------------------------------
 LCGPackage_Add(
   swig
-  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/swig-${swig_native_version}.tar.gz
-  CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix=<INSTALL_DIR>
-)
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/swig-<VERSION>.tar.gz
+  IF <VERSION> VERSION_LESS 2.0.0 THEN
+    CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix=<INSTALL_DIR>
+  ELSE
+    CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix=<INSTALL_DIR> --with-pcre-prefix=${pcre_home}
+    DEPENDS pcre
+  ENDIF
+ )
 
 #---FastJet-----------------------------------------------------------------------------------------
 LCGPackage_Add(

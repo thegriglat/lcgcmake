@@ -21,9 +21,6 @@ include(CMakeParseArguments)
 #----------------------------------------------------------------------------------------------------
 macro(LCGPackage_Add name)
 
-  CMAKE_PARSE_ARGUMENTS(ARG "" "DEST_NAME;BUNDLE_PACKAGE;BINARY_PACKAGE"
-                            "DEPENDS;CONFIGURE_EXAMPLES_COMMAND;BUILD_EXAMPLES_COMMAND;INSTALL_EXAMPLES_COMMAND;TEST_COMMAND" ${ARGN})
-  
   #---If version is not defined (package not mentioned in toolchain) skip the whole macro------------
   if(DEFINED ${name}_native_version)  # If version is not defined skip
 
@@ -36,6 +33,13 @@ macro(LCGPackage_Add name)
   
   #---Loop over all versions of the package----------------------------------------------------------
   foreach( version ${${name}_native_version} )
+  
+    #---Replace conditional, expand macros and parse all the arguments-------------------------------
+    LCG_expand_version_patterns(${version} ARGUMENTS "${ARGN}")
+    LCG_replace_conditional_args(ARGUMENTS "${ARGUMENTS}")
+    CMAKE_PARSE_ARGUMENTS(ARG "" "DEST_NAME;BUNDLE_PACKAGE;BINARY_PACKAGE"
+    "DEPENDS;CONFIGURE_EXAMPLES_COMMAND;BUILD_EXAMPLES_COMMAND;INSTALL_EXAMPLES_COMMAND;TEST_COMMAND" "${ARGUMENTS}")
+    string(REPLACE <VOID> "" ARGUMENTS "${ARG_UNPARSED_ARGUMENTS}")
 
     #---Handle multi-version packages----------------------------------------------------------------
     set(targetname ${name}-${version})
@@ -43,9 +47,7 @@ macro(LCGPackage_Add name)
     #---Handle dependencies--------------------------------------------------------------------------
     set(${targetname}_dependencies "")
     if(ARG_DEPENDS)
-      LCG_expand_version_patterns(${version} DEPENDS "${ARG_DEPENDS}")
-      LCG_replace_conditional_args(DEPENDS "${DEPENDS}")
-      foreach(dep ${DEPENDS})
+      foreach(dep ${ARG_DEPENDS})
         if(NOT TARGET ${dep} AND NOT DEFINED ${dep}_home)
           if(DEFINED ${dep}_native_version)
             message(SEND_ERROR "Package '${name}' declares a dependency to the package '${dep}' that has not been defined. "
@@ -118,8 +120,6 @@ macro(LCGPackage_Add name)
       add_custom_target(clean-${targetname} COMMENT "${targetname} nothing to be done")
 
     else()
-      LCG_expand_version_patterns(${version} ARGUMENTS "${ARG_UNPARSED_ARGUMENTS}")
-      LCG_replace_conditional_args(ARGUMENTS "${ARGUMENTS}")
 
       #---Set home and install name-------------------------------------------------------------------
       set(${name}_home            ${CMAKE_INSTALL_PREFIX}/${${name}_directory_name}/${version}/${LCG_system})
@@ -162,7 +162,7 @@ macro(LCGPackage_Add name)
         LOG_CONFIGURE 1 LOG_BUILD 1 LOG_INSTALL 1 )
         
       if(ARG_DEPENDS)
-        add_dependencies(${targetname} ${DEPENDS})
+        add_dependencies(${targetname} ${ARG_DEPENDS})
       endif()
 
       #--Prioritize the update and patch command------------------------------------------------------
@@ -445,7 +445,7 @@ endmacro()
 function(LCG_expand_version_patterns version outvar input)
   string(REPLACE <NATIVE_VERSION> ${version} result "${input}")
   string(REPLACE <VERSION> ${version} result "${result}")
-  string(REPLACE <VOID> "" result "${result}")
+  #string(REPLACE <VOID> "" result "${result}")
   set(knownvars SOURCE_DIR INSTALL_DIR)
   foreach(iter 1 2 3)  # 3 nested replacements
     string(REGEX MATCHALL "<[^ <>(){}]+>" vars ${result})
@@ -455,7 +455,7 @@ function(LCG_expand_version_patterns version outvar input)
       list(FIND knownvars ${v} index)
       if(DEFINED ${v})
         string(REPLACE ${var} ${${v}} result "${result}")
-      elseif(iter EQUAL 3 AND index EQUAL -1)
+      elseif(iter EQUAL 3 AND index EQUAL -1 AND NOT v STREQUAL VOID)
         message(FATAL_ERROR " Could not resolve variable '<${v}>' in 'LCGPackage_Add':\n ${result}")
       endif()
     endforeach()
