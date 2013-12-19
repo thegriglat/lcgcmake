@@ -11,10 +11,21 @@
 ROOT_PATH=$1
 echo "Checking debug symbols in ${ROOT_PATH}/* ..."
 exitcode=0
-find $ROOT_PATH -type f -name *.so | while read name; do
-    debug=`readelf --debug-dump $name 2> /dev/null`
-    if [ "x$debug" != "x" ];then
-        echo "WARNING: File $name contains debug symbols."
-    fi
-done
+if echo ${ROOT_PATH} | grep -q '-opt'; then
+    echo "The following libraries have debug symbols:"
+    find $ROOT_PATH -type f -name *.so | while read name; do
+        debug=`readelf --debug-dump $name 2> /dev/null`
+        if [ "x$debug" != "x" ];then
+            echo "WARNING: File $name contains debug symbols."
+        fi
+    done
+elif echo ${ROOT_PATH} | grep -q '-dbg'; then
+    echo "The following libraries don't have debug symbols:"
+    find $ROOT_PATH -type f -name *.so  | grep '-dbg' | while read name; do
+        debug=`readelf --debug-dump $name 2> /dev/null`
+        if [ "x$debug" = "x" ];then
+            echo "File $name doesn't contains debug symbols."
+        fi
+    done
+fi
 exit $exitcode
