@@ -675,7 +675,6 @@ LCGPackage_Add(
        PYTHON=${Python_home}/bin/python
        PYTHONPATH=${cython_home}/lib/python${Python_config_version_twodigit}/site-packages:$ENV{PYTHONPATH}
        ${library_path}=${Python_home}/lib:$ENV{${library_path}}
-       SWIG=${swig_home}/bin/swig
        CC=${CMAKE_C_COMPILER}
        CXX=${CMAKE_CXX_COMPILER}
     BUILD_COMMAND ${MAKE} all
@@ -687,7 +686,7 @@ LCGPackage_Add(
             COMMAND ${CMAKE_COMMAND} -E copy <SOURCE_DIR>/rivetenv.sh <INSTALL_DIR>/
   ENDIF
   BUILD_IN_SOURCE 1
-  DEPENDS HepMC Boost fastjet GSL Python swig
+  DEPENDS HepMC Boost fastjet GSL Python
   IF NOT <VERSION> VERSION_LESS 2.0.0 THEN
     yoda yamlcpp
   ENDIF
