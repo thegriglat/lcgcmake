@@ -366,11 +366,12 @@ LCGPackage_Add(
      --with-hepmc=${HepMC_home} 
      --with-boost-incpath=${Boost_home_include}
      --with-lcgtag=${LCG_platform}
-     PYTHON=${Python_home}/bin/python ${library_path}=${Python_home}/lib:$ENV{${library_path}}
+     PYTHON=${Python_home}/bin/python 
+     ${library_path}=${Python_home}/lib:${pcre_home}/lib:$ENV{${library_path}}
      SWIG=${swig_home}/bin/swig
      "CFLAGS=-g0 -O2" "CXXFLAGS=-g0 -O2" "FFLAGS=-g0 -O2"
-  BUILD_COMMAND ${MAKE} all ${library_path}=${Python_home}/lib:$ENV{${library_path}}
-  INSTALL_COMMAND make install ${library_path}=${Python_home}/lib:$ENV{${library_path}}
+  BUILD_COMMAND ${MAKE} all ${library_path}=${Python_home}/lib:${pcre_home}/lib:$ENV{${library_path}}
+  INSTALL_COMMAND make install ${library_path}=${Python_home}/lib:${pcre_home}/lib:$ENV{${library_path}}
           COMMAND ${CMAKE_COMMAND} -E copy <SOURCE_DIR>/agileenv.csh <INSTALL_DIR>/.
           COMMAND ${CMAKE_COMMAND} -E copy <SOURCE_DIR>/agileenv.sh <INSTALL_DIR>/.
           COMMAND ${CMAKE_COMMAND} -DINSTALL_DIR=<INSTALL_DIR> -P ${CMAKE_SOURCE_DIR}/cmake/scripts/StripLib.cmake
@@ -648,13 +649,14 @@ LCGPackage_Add(
        --with-lcgtag=${LCG_platform}
        --disable-pdfmanual
        --enable-unvalidated
-       PYTHON=${Python_home}/bin/python ${library_path}=${Python_home}/lib:$ENV{${library_path}}
+       PYTHON=${Python_home}/bin/python 
+       ${library_path}=${Python_home}/lib:${pcre_home}/lib:$ENV{${library_path}}
        SWIG=${swig_home}/bin/swig
        CC=${CMAKE_C_COMPILER}
        CXX=${CMAKE_CXX_COMPILER}
        CFLAGS=-O2
-    BUILD_COMMAND ${MAKE} all ${library_path}=${Python_home}/lib:$ENV{${library_path}}
-    INSTALL_COMMAND make install ${library_path}=${Python_home}/lib:$ENV{${library_path}}
+    BUILD_COMMAND ${MAKE} all ${library_path}=${Python_home}/lib:${pcre_home}/lib:$ENV{${library_path}}
+    INSTALL_COMMAND make install ${library_path}=${Python_home}/lib:${pcre_home}/lib:$ENV{${library_path}}
             COMMAND ${CMAKE_COMMAND} -E copy <SOURCE_DIR>/rivetenv.csh <INSTALL_DIR>/
             COMMAND ${CMAKE_COMMAND} -E copy <SOURCE_DIR>/rivetenv.sh <INSTALL_DIR>/
             COMMAND ${CMAKE_COMMAND} -DINSTALL_DIR=<INSTALL_DIR> -P ${CMAKE_SOURCE_DIR}/cmake/scripts/StripLib.cmake
