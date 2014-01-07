@@ -16,7 +16,7 @@ LCG_AA_project(COOL  COOL_2_9_0)
 LCG_AA_project(CORAL CORAL_2_4_0)
 LCG_AA_project(RELAX RELAX_1_3_0p)
 LCG_AA_project(ROOT  5.34.13)
-LCG_AA_project(LCGCMT LCGCMT-${heptools_version})
+LCG_AA_project(LCGCMT LCGCMT_${heptools_version})
 
 
 # Compilers
@@ -35,7 +35,8 @@ LCG_external_package(Boost             1.53.0                                   
 LCG_external_package(cgsigsoap         1.3.3-1                                  )
 LCG_external_package(CLHEP             1.9.4.7                   clhep          )
 LCG_external_package(cmake             2.8.9                                    )
-LCG_external_package(cmt               v1r20p20081118                           )
+#LCG_external_package(cmt               v1r20p20081118                           )
+LCG_external_package(cmt               v1r20p20090520                           )
 LCG_external_package(coin3d            3.1.3p2                                  )
 LCG_external_package(coverage          3.5.2                                    )
 LCG_external_package(cx_oracle         5.1.1                                    )
@@ -117,7 +118,7 @@ LCG_external_package(vomsapi_noglobus  1.9.17-1                                 
 LCG_external_package(vomsapic          1.9.17-1                                 )
 LCG_external_package(vomsapicpp        1.9.17-1                                 )
 LCG_external_package(vomsclients       1.9.17-1                                 )
-LCG_external_package(xqilla            2.2.4                                    )
+LCG_external_package(xqilla            2.2.4p1                                  )
 LCG_external_package(xrootd            3.2.7                                    )
 
 
@@ -127,7 +128,8 @@ if(NOT ${LCG_OS} STREQUAL mac)
   LCG_external_package(igprof          5.9.6                                    )
   if (NOT ${LCG_HOST_ARCH} STREQUAL i686)
    LCG_external_package(CASTOR          2.1.13-6               castor            )
-   LCG_external_package(dcap              2.47.6               Grid/dcap         )
+#   LCG_external_package(dcap              2.47.6               Grid/dcap         )
+   LCG_external_package(dcap              2.47.7-1               Grid/dcap         )
    LCG_external_package(dpm             1.8.5-1                Grid/DPM          )
    LCG_external_package(epel            20120618                Grid/epel         )
    LCG_external_package(gfal            1.13.0-0               Grid/gfal         )
