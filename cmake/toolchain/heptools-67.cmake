@@ -90,7 +90,7 @@ LCG_external_package(pyminuit          0.0.1                                    
 LCG_external_package(pyparsing         1.5.6                                    )
 LCG_external_package(pyqt              4.9.5                                    )
 LCG_external_package(pytest            2.2.4                                    )
-LCG_external_package(Python            2.7.3                                    )
+LCG_external_package(Python            2.7.4                                    )
 LCG_external_package(PythonFWK         2.7.3                  Python            )
 LCG_external_package(pytools           1.8                                      )
 LCG_external_package(pyxml             0.8.4p1                                  )
@@ -162,7 +162,7 @@ LCG_external_package(lhapdf            5.9.1          ${MCGENPATH}/lhapdf       
 
 LCG_external_package(lhapdfsets        5.9.1          lhapdfsets   )
 
-LCG_external_package(lhapdf6           6.0.3          ${MCGENPATH}/lhapdf6       ) 
+LCG_external_package(lhapdf6           6.0.5          ${MCGENPATH}/lhapdf6       ) 
 LCG_external_package(lhapdf6sets       6.0.0          lhapdf6sets   )
 
 LCG_external_package(pythia8           180            ${MCGENPATH}/pythia8      author=180     )
