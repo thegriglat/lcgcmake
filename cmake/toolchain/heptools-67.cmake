@@ -171,8 +171,8 @@ LCG_external_package(pythia8           175.lhetau     ${MCGENPATH}/pythia8      
 LCG_external_package(pythia8           175            ${MCGENPATH}/pythia8      author=175     )
 LCG_external_package(pythia8           180            ${MCGENPATH}/pythia8      author=180     )
 
-LCG_external_package(thepeg            1.8.1a          ${MCGENPATH}/thepeg       )
-LCG_external_package(herwig++          2.6.1a          ${MCGENPATH}/herwig++     thepeg=1.8.1a)
+LCG_external_package(thepeg            1.8.1          ${MCGENPATH}/thepeg       )
+LCG_external_package(herwig++          2.6.1b          ${MCGENPATH}/herwig++     thepeg=1.8.1a)
 
 LCG_external_package(thepeg            1.8.3a          ${MCGENPATH}/thepeg       )
 LCG_external_package(herwig++          2.6.3a          ${MCGENPATH}/herwig++     thepeg=1.8.3a)
