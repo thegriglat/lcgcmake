@@ -193,11 +193,11 @@ LCG_external_package(photos++          3.52           ${MCGENPATH}/photos++     
 LCG_external_package(photos++          3.54           ${MCGENPATH}/photos++     )
 LCG_external_package(photos            215.4          ${MCGENPATH}/photos       ) 
 
-LCG_external_package(evtgen            1.2.0-180      ${MCGENPATH}/evtgen         tag=R01-02-00 pythia8=175 tauola++=1.1.1a)
-LCG_external_package(evtgen            1.3.0-180      ${MCGENPATH}/evtgen         tag=R01-03-00 pythia8=180 tauola++=1.1.4)
+LCG_external_package(evtgen            1.2.0          ${MCGENPATH}/evtgen         tag=R01-02-00 pythia8=175 tauola++=1.1.1a)
+LCG_external_package(evtgen            1.3.0          ${MCGENPATH}/evtgen         tag=R01-03-00 pythia8=180 tauola++=1.1.4)
 
 if(NOT ${LCG_OS}${LCG_OSVERS} STREQUAL mac109) # rivet 2 does not work yet with mac109
-  LCG_external_package(rivet             2.0.0          ${MCGENPATH}/rivet        )
+  LCG_external_package(rivet             2.0.0         ${MCGENPATH}/rivet        )
 endif()
 LCG_external_package(rivet             1.8.3          ${MCGENPATH}/rivet        )
 LCG_external_package(rivet             1.9.0          ${MCGENPATH}/rivet        )
