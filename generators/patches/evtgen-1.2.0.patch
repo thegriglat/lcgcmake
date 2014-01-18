@@ -1,11 +1,42 @@
---- src/Makefile.orig	2013-05-28 17:50:13.000000000 +0200
-+++ src/Makefile	2013-05-28 17:50:42.000000000 +0200
+--- configure.orig	2014-01-18 10:08:50.000000000 +0100
++++ configure	2014-01-18 10:35:11.000000000 +0100
+@@ -177,6 +177,7 @@
+ CFLAGS="${CFLAGS_OPT}"
+ CXXFLAGS="${CXXFLAGS_OPT}"
+ FLIBS="-lfrtbegin -lg2c"
++SOFLAGS="-soname"
+ 
+ if [ ${COMPMODE} = OPT ]; then
+   FFLAGS="${FFLAGS_OPT}"
+@@ -223,6 +224,12 @@
+   fi
+ fi
+ 
++# Mac OS platform with gcc4
++if [ $ARCH = Darwin-gcc4 ]; then
++  FLIBS="-lgfortran"
++  SOFLAGS="-install_name"
++fi
++
+ #Platform & opt/dbg - independent flags and variables:
+ 
+ echo -n "Creating config.mk ... "
+@@ -244,6 +251,7 @@
+ CFLAGS = ${CFLAGS}
+ CXX = ${CXX}
+ CXXFLAGS = ${CXXFLAGS}
++SOFLAGS = ${SOFLAGS}
+ 
+ EVTGENDIR = $(pwd)
+ 
+--- src/Makefile.orig	2014-01-18 10:26:23.000000000 +0100
++++ src/Makefile	2014-01-18 10:29:27.000000000 +0100
 @@ -53,7 +53,7 @@
  $(LIB_SHARED) : $(objects)
  	mkdir -p $(LIBDIR_SHARED)
  	@echo creating the shared library $@
 -	$(CXX) $(LDFLAGSSHARED) $(objects) -o $@ -shared -Wl,-soname,$(notdir $@) $(FLIBS) \
-+	$(CXX) $(LDFLAGSSHARED) $(objects) -o $@ -shared  $(FLIBS) \
++	$(CXX) $(LDFLAGSSHARED) $(objects) -o $@ -shared -Wl,$(SOFLAGS),$(notdir $@) $(FLIBS) \
  	$(coreShLibs)
  
  $(LIB_ARCHIVE) : $(objects)
@@ -14,29 +45,7 @@
  	mkdir -p $(LIBDIR_SHARED)
  	@echo creating the shared library $@
 -	$(CXX) $(LDFLAGSSHARED) $(extobjects) -o $@ -shared -Wl,-soname,$(notdir $@) $(FLIBS) \
-+	$(CXX) $(LDFLAGSSHARED) $(extobjects) -o $@ -shared  $(FLIBS) \
++	$(CXX) $(LDFLAGSSHARED) $(extobjects) -o $@ -shared -Wl,$(SOFLAGS),$(notdir $@) $(FLIBS) \
  	$(extShLibs)
  
  $(LIBEXT_ARCHIVE) : $(extobjects)
---- src/EvtGenBase/EvtParticle.cpp.orig	2013-11-11 14:27:57.000000000 +0100
-+++ src/EvtGenBase/EvtParticle.cpp	2013-11-11 18:09:01.000000000 +0100
-@@ -1154,13 +1154,13 @@
-     return;
-   }
- 
--  EvtId idArray[ndaugstore];
--  unsigned int i;
--  for (i = 0; i < ndaugstore; i++) {
--    idArray[i] = idVector[i];
--  }
-+  //EvtId idArray(ndaugstore);
-+  //unsigned int i;
-+  //for (i = 0; i < ndaugstore; i++) {
-+  //  idArray[i] = idVector[i];
-+  // }
- 
--  this->makeDaughters(ndaugstore, idArray);
-+  this->makeDaughters(ndaugstore, &idVector[0]);
- 
- }
- 
