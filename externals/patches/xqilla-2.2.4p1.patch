@@ -1,0 +1,11 @@
+--- src/items/DatatypeFactoryTemplate.hpp.orig	2014-01-20 19:00:36.000000000 +0100
++++ src/items/DatatypeFactoryTemplate.hpp	2014-01-20 19:04:05.000000000 +0100
+@@ -79,7 +79,7 @@
+   AnyAtomicType::Ptr createInstance(const XMLCh* value,
+                                     const DynamicContext* context) const
+   {
+-    return createInstanceNoCheck(DatatypeFactoryTemplate<TYPE>::getPrimitiveTypeURI(),
++    return DatatypeFactoryTemplate<TYPE>::createInstanceNoCheck(DatatypeFactoryTemplate<TYPE>::getPrimitiveTypeURI(),
+                                  DatatypeFactoryTemplate<TYPE>::getPrimitiveTypeName(), value, context);
+   }
+ 

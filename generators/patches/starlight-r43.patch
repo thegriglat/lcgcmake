@@ -1,6 +1,8 @@
---- CMakeLists.txt.orig	2013-04-28 21:45:05.000000000 +0200
-+++ CMakeLists.txt	2013-04-28 21:40:02.000000000 +0200
-@@ -65,16 +65,26 @@
+Index: CMakeLists.txt
+===================================================================
+--- CMakeLists.txt	(revision 43)
++++ CMakeLists.txt	(working copy)
+@@ -65,16 +65,27 @@
  
  # define build types
  # set a default build type for single-configuration CMake generators, if no build type is set.
@@ -15,11 +17,12 @@
 +
 +execute_process(COMMAND ${CMAKE_C_COMPILER} -dumpversion
 +                OUTPUT_VARIABLE GCC_VERSION)
-+
-+if (GCC_VERSION VERSION_GREATER 4.6 OR GCC_VERSION VERSION_EQUAL 4.6)
-+        message(STATUS "Version >= 4.6")
-+	# common compiler flags
++if (CMAKE_COMPILER_IS_GNUVXX AND GCC_VERSION VERSION_GREATER 4.6 OR GCC_VERSION VERSION_EQUAL 4.6)
++  message(STATUS "GCC Version >= 4.6")
 +	set(CMAKE_CXX_FLAGS "-Wall -Wextra -Werror -Wno-error=unused-but-set-variable")
++elseif(CMAKE_CXX_COMPILER_ID STREQUAL Clang)
++  message(STATUS "Clang Version ${GCC_VERSION}")
++	set(CMAKE_CXX_FLAGS "-Wall -Wextra -Werror -Wno-error=unused-variable -Wno-error=unused-private-field -Wno-error=sometimes-uninitialized -Wno-error=array-bounds")
 +else()
 +	set(CMAKE_CXX_FLAGS "-Wall -Wextra -Werror")
 +endif()
@@ -31,7 +34,7 @@
  set(CMAKE_CXX_LDFLAGS_DEBUG "-g")
  # report global build settings
  message(STATUS "Using CXX compiler '${CMAKE_CXX_COMPILER}'")
-@@ -208,19 +218,52 @@
+@@ -208,19 +219,52 @@
  
  
  # add Starlight library to the build system
@@ -44,11 +47,11 @@
 +add_library(Starlib STATIC ${SOURCES})
 +install(TARGETS Starlib DESTINATION "lib")
 +install(TARGETS Starlib DESTINATION "lib/archive")
-+
+ 
 +add_library(Starlib_dy SHARED ${SOURCES})
 +SET_TARGET_PROPERTIES(Starlib_dy PROPERTIES OUTPUT_NAME Starlib)
 +install(TARGETS Starlib_dy DESTINATION "lib")
-+
+ 
 +set(INCLUDES
 +  include/beambeamsystem.h
 +  include/beam.h
@@ -80,15 +83,15 @@
 +  include/upcevent.h
 +  include/vector3.h
 +)
- 
++
 +install(FILES ${INCLUDES} DESTINATION "include")
- 
++
  # add starlight executable to the build system
  add_executable(starlight src/main.cpp)
  target_link_libraries(starlight Starlib ${PYTHIA8_LIBRARY} ${LHAPDF_LIBRARIES})
 -#make_executable(starlight src/main.cpp ${THIS_LIB})
--
 +install(TARGETS starlight DESTINATION "bin")
  
+-
  message(STATUS "Cmake did not find any errors. run 'make' to build the project.")
  message(STATUS "On multi-core machines 'make -j#', where # is the number of parallel jobs, can speedup compilation considerably.")

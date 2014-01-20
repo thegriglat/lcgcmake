@@ -1,0 +1,24 @@
+--- numpy/distutils/system_info.py.orig	2014-01-20 14:10:20.000000000 +0100
++++ numpy/distutils/system_info.py	2014-01-20 14:20:01.000000000 +0100
+@@ -1284,7 +1284,9 @@
+         if sys.platform=='darwin' and not os.environ.get('ATLAS',None):
+             args = []
+             link_args = []
+-            if get_platform()[-4:] == 'i386':
++            if get_platform()[-4:] == 'i386' or 'intel' in get_platform() or \
++                'x86_64' in get_platform() or \
++                'i386' in platform.platform() :
+                 intel = 1
+             else:
+                 intel = 0
+@@ -1371,7 +1373,9 @@
+         if sys.platform=='darwin' and not os.environ.get('ATLAS',None):
+             args = []
+             link_args = []
+-            if get_platform()[-4:] == 'i386':
++            if get_platform()[-4:] == 'i386' or 'intel' in get_platform() or \
++                'x86_64' in get_platform() or \
++                'i386' in platform.platform() :
+                 intel = 1
+             else:
+                 intel = 0
