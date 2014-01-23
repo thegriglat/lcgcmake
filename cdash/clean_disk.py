@@ -24,7 +24,7 @@ def get_oldest_build(directory):
     print "Old builds: %s" %result
     return result[0]
 
-required_free_percentage = 60 
+required_free_percentage = 20 
 
 ##########################
 if __name__ == "__main__":
