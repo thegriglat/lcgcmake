@@ -1,20 +1,11 @@
---- src/Makefile.orig	2013-09-18 13:23:40.000000000 +0200
-+++ src/Makefile	2014-01-15 18:10:46.000000000 +0100
-@@ -53,7 +53,7 @@
- $(LIB_SHARED) : $(objects)
- 	mkdir -p $(LIBDIR_SHARED)
- 	@echo creating the shared library $@
--	$(CXX) $(LDFLAGSSHARED) $(objects) -o $@ -shared -Wl,$(SOFLAGS),$(notdir $@) $(FLIBS) \
-+	$(CXX) $(LDFLAGSSHARED) $(objects) -o $@ -shared  $(FLIBS) \
- 	$(coreShLibs)
+--- configure.orig	2014-01-23 11:38:36.000000000 +0100
++++ configure	2014-01-23 11:39:01.000000000 +0100
+@@ -225,7 +225,7 @@
+ fi
  
- $(LIB_ARCHIVE) : $(objects)
-@@ -63,7 +63,7 @@
- $(LIBEXT_SHARED) : $(extobjects)
- 	mkdir -p $(LIBDIR_SHARED)
- 	@echo creating the shared library $@
--	$(CXX) $(LDFLAGSSHARED) $(extobjects) -o $@ -shared -Wl,$(SOFLAGS),$(notdir $@) $(FLIBS) \
-+	$(CXX) $(LDFLAGSSHARED) $(objects) -o $@ -shared  $(FLIBS) \
- 	$(extShLibs)
- 
- $(LIBEXT_ARCHIVE) : $(extobjects)
+ # Mac OS platform with gcc4
+-if [ $ARCH = Darwin-gcc4 ]; then
++if [[ $ARCH == Darwin* ]]; then
+   FLIBS="-lgfortran"
+   SOFLAGS="-install_name"
+ fi
