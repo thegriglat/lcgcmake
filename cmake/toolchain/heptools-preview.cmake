@@ -45,7 +45,7 @@ LCG_external_package(doxygen           1.8.2                                    
 LCG_external_package(expat             2.0.1                                    )
 LCG_external_package(fastjet           3.0.6                                    )
 LCG_external_package(fftw              3.1.2                     fftw3          )
-LCG_external_package(Frontier_Client   2.8.7                     frontier_client)
+LCG_external_package(Frontier_Client   2.8.9                     frontier_client)
 LCG_external_package(GCCXML            0.9.0_20131026            gccxml         )
 LCG_external_package(genshi            0.6                                      )
 LCG_external_package(graphviz          2.28.0                                   )
