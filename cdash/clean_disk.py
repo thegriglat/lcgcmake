@@ -22,7 +22,9 @@ def get_oldest_build(directory):
       return int(name.split("-")[2])
     result.sort(key=extract_id) 
     print "Old builds: %s" %result
-    return result[0]
+    if len(result) != 0:
+      return result[0]
+    return None
 
 required_free_percentage = 20 
 
@@ -45,7 +47,9 @@ if __name__ == "__main__":
        oldest_build = get_oldest_build(path)
        print oldest_build
        if oldest_build == None:
-         raise Exception
+         print "No old build to clean left."
+         print "  Free percentage: %s" %free_percentage(path)
+         sys.exit(0)
        print "Removing %s" %oldest_build 
        os.rmdir( oldest_build )
   except Exception, e:
