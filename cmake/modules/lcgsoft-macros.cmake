@@ -199,11 +199,21 @@ macro(LCGPackage_Add name)
           DEPENDEES update patch)
       endif()
 
+      #---Compile information needed for the build description file (installed alongside version.txt)
+     set(buildinfostring " COMPILER: ${CMAKE_CXX_COMPILER_ID} ${CMAKE_CXX_COMPILER_VERSION},")
+     site_name(hostname)
+     set(buildinfostring "${buildinfostring} HOSTNAME: ${hostname},")
+     set(buildinfostring "${buildinfostring} HASH: ${targethash},")    
+     set(buildinfostring "${buildinfostring} DESTINATION: ${dest_name},")
+     set(buildinfostring "${buildinfostring} NAME: ${name},")
+     set(buildinfostring "${buildinfostring} VERSION: ${version},")
+     set(${dest_name}_buildinfo "${buildinfostring}")
 
       #---Adding extra step to copy the log files and version file--------------------------------------
       ExternalProject_Add_Step(${targetname} install_logs COMMENT "Installing log and version files for '${targetname}'"
           COMMAND ${CMAKE_COMMAND} -DINSTALL_DIR=${${dest_name}_home}/logs -DLOGS_DIR=${CMAKE_CURRENT_BINARY_DIR}/${targetname}/src/${targetname}-stamp
                                    -P ${CMAKE_SOURCE_DIR}/cmake/scripts/InstallLogFiles.cmake
+          COMMAND ${CMAKE_COMMAND} -DNAME=${name} -DINSTALL_DIR=${${dest_name}_home} -DBUILDINFO=${${dest_name}_buildinfo} -P ${CMAKE_SOURCE_DIR}/cmake/scripts/InstallBuildinfoFile.cmake
           DEPENDEES install)
 
       #---Add extra steps eventually------------------------------------------------------------------
@@ -247,9 +257,9 @@ macro(LCGPackage_Add name)
         get_filename_component(n_name ${${name}_directory_name} NAME)
         ExternalProject_Add_Step(${targetname} package COMMENT "Creating binary tarball and version.txt file for '${targetname}'"
                   COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_INSTALL_PREFIX}/${${name}_directory_name}/../distribution/${name}
+                  COMMAND ${CMAKE_COMMAND} -DINSTALL_DIR=${${dest_name}_home} -DFULL_VERSION=${${name}_full_version} -P ${CMAKE_SOURCE_DIR}/cmake/scripts/InstallVersionFile.cmake
                   COMMAND ${CMAKE_COMMAND} -E chdir ${${dest_name}_home}/../../..
                   ${CMAKE_TAR} -czf ${CMAKE_INSTALL_PREFIX}/${${name}_directory_name}/../distribution/${name}/${name}-${version}-${LCG_system}.tgz ${n_name}/${version}/${LCG_system}
-                  COMMAND ${CMAKE_COMMAND} -DINSTALL_DIR=${${dest_name}_home} -DFULL_VERSION=${${name}_full_version} -P ${CMAKE_SOURCE_DIR}/cmake/scripts/InstallVersionFile.cmake
           DEPENDEES strip_rpath install_logs)
       endif()
 
