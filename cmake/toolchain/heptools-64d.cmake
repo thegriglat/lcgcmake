@@ -188,7 +188,7 @@ LCG_external_package(vomsapi_noglobus  1.9.17-1                                 
 LCG_external_package(vomsapic          1.9.17-1                  Grid/voms-api-c)
 LCG_external_package(vomsapicpp        1.9.17-1                                 )
 LCG_external_package(vomsclients       1.9.17-1                                 )
-LCG_external_package(XercesC           3.1.1p1                                  )
+LCG_external_package(XercesC           3.1.1p1    author=3.1.1              )  
 if(NOT ${LCG_COMP}${LCG_COMPVERS} STREQUAL "gcc46")
 LCG_external_package(xqilla            2.2.4                                    )
 else()
