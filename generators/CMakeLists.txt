@@ -108,6 +108,7 @@ LCGPackage_Add(
   DEPENDS HepMC lhapdf fastjet
 )
 
+
 #---LCGPackage_set_home(rivet2)-----------------------------------------------------------------------
 foreach(v ${rivet_native_version})
   if(v VERSION_EQUAL 2.0.0 OR v VERSION_GREATER 2.0.0)
@@ -1043,6 +1044,23 @@ foreach(i WW HJ W_ew-BW Wbb Wj HJJ ZZ W_ew-BMNNP Dijet gg_H VBF_H Z W hvq Zj ST_
 endforeach()
 
 endif()
+
+#---sacrifice------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  sacrifice
+  URL ${gen_url}/Sacrifice-${sacrifice_native_version}.tar.gz
+  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR>
+		--with-HepMC=${HepMC_home} --with-pythia=${pythia8_home}
+                --with-LHAPDF=${lhapdf_home} --with-photos=${photos++_home}
+                --with-boost=${Boost_home}
+  BUILD_COMMAND {MAKE}
+  INSTALL_COMMAND {MAKE} install 
+  BUILD_IN_SOURCE 1
+  DEPENDS pythia8 Boost HepMC lhapdf photos++
+)
+
+
+
 #---baurmc------------------------------------------------------------------------------------------
 
 if(NOT APPLE)    #  (installation fails on MacOSX)
