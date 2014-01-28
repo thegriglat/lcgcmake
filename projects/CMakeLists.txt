@@ -163,7 +163,7 @@ LCGPackage_Add(
 #---RELAX---------------------------------------------------------------------------------------------
 LCGPackage_Add(
   RELAX
-  SVN_REPOSITORY http://svnweb.cern.ch/guest/relax/tags/${RELAX_native_version}/relax
+  SVN_REPOSITORY http://svn.cern.ch/guest/relax/tags/${RELAX_native_version}/relax
   UPDATE_COMMAND <VOID>
   CMAKE_ARGS -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
              -DCMAKE_MODULE_PATH=${cmaketools_home}/modules
@@ -191,7 +191,7 @@ LCGPackage_Add(
 #---LCGCMT--------------------------------------------------------------------------------------------
 LCGPackage_Add(
   LCGCMT
-  SVN_REPOSITORY http://svnweb.cern.ch/guest/lcgsoft/tags/${LCGCMT_native_version}/lcgcmt --quiet
+  SVN_REPOSITORY http://svn.cern.ch/guest/lcgsoft/tags/${LCGCMT_native_version}/lcgcmt --quiet
   UPDATE_COMMAND ${Python_cmd} ${CMAKE_SOURCE_DIR}/cmake/scripts/create_LCGCMT.py ${CMAKE_BINARY_DIR}/dependencies.json <SOURCE_DIR>/LCG_Configuration/cmt/requirements
   CONFIGURE_COMMAND <VOID>
   BUILD_COMMAND <VOID>
@@ -207,7 +207,7 @@ set(CMTROOT ${cmt_home}/CMT/${cmt_native_version})
 #---CORAL----------------------------------------------------------------------------------------------
 LCGPackage_add(
   CORAL
-  SVN_REPOSITORY http://svnweb.cern.ch/guest/lcgcoral/coral/tags/${CORAL_native_version} --quiet
+  SVN_REPOSITORY http://svn.cern.ch/guest/lcgcoral/coral/tags/${CORAL_native_version} --quiet
   UPDATE_COMMAND <VOID>
   CONFIGURE_COMMAND ${CMAKE_COMMAND} -E chdir <SOURCE_DIR>/config/cmt ${cmt_exec_cmd} ${LCG_system} ${LCGCMT_pos} ${CMTROOT} cmt broadcast -global -select='/${CORAL_native_version}/' cmt config
   BUILD_COMMAND     ${CMAKE_COMMAND} -E chdir <SOURCE_DIR>/config/cmt ${cmt_exec_cmd} ${LCG_system} ${LCGCMT_pos} ${CMTROOT} cmt broadcast -global -select='/${CORAL_native_version}/' - cmt make --debug  all_groups
@@ -219,7 +219,7 @@ LCGPackage_add(
 #---COOL-----------------------------------------------------------------------------------------------
 LCGPackage_add(
   COOL
-  SVN_REPOSITORY http://svnweb.cern.ch/guest/lcgcool/cool/tags/${COOL_native_version} --quiet
+  SVN_REPOSITORY http://svn.cern.ch/guest/lcgcool/cool/tags/${COOL_native_version} --quiet
   CONFIGURE_COMMAND ${CMAKE_COMMAND} -E chdir <SOURCE_DIR>/config/cmt ${cmt_exec_cmd} ${LCG_system} ${LCGCMT_pos} ${CMTROOT} cmt broadcast -global -select='/${COOL_native_version}/' cmt config
   BUILD_COMMAND     ${CMAKE_COMMAND} -E chdir <SOURCE_DIR>/config/cmt ${cmt_exec_cmd} ${LCG_system} ${LCGCMT_pos} ${CMTROOT} cmt broadcast -global -select='/${COOL_native_version}/' - cmt make --debug  all_groups
   INSTALL_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/../${LCG_system} <INSTALL_DIR>
