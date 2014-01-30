@@ -50,7 +50,7 @@ if __name__ == "__main__":
        if oldest_build == None:
          print "No old build to clean left."
          print "  Free percentage: %s" %free_percentage(path)
-         sys.exit(0)
+         os._exit(0)
        print "Removing %s" %oldest_build 
        shutil.rmtree( oldest_build )
   except Exception, e:
