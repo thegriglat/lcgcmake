@@ -5,6 +5,7 @@
 
 import os
 import sys
+import shutil
 
 def free_percentage(path):
   statvfs   = os.statvfs(path)
@@ -51,7 +52,7 @@ if __name__ == "__main__":
          print "  Free percentage: %s" %free_percentage(path)
          sys.exit(0)
        print "Removing %s" %oldest_build 
-       os.rmdir( oldest_build )
+       shutil.rmtree( oldest_build )
   except Exception, e:
      print "Cleanup failed. Please investigate"
      print "  Free percentage: %s" %free_percentage(path) 
