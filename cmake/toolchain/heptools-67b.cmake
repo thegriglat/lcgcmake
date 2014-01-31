@@ -197,6 +197,7 @@ LCG_external_package(pythia6           426.2          ${MCGENPATH}/pythia6      
 LCG_external_package(pythia6           427.2          ${MCGENPATH}/pythia6        author=6.4.27 hepevt=10000  )
 LCG_external_package(pythia6           428.2          ${MCGENPATH}/pythia6        author=6.4.28 hepevt=10000  )
 
+LCG_external_package(agile             1.4.1          ${MCGENPATH}/agile        )
 LCG_external_package(agile             1.4.0          ${MCGENPATH}/agile        )
 LCG_external_package(photos++          3.52           ${MCGENPATH}/photos++     )
 LCG_external_package(photos++          3.54           ${MCGENPATH}/photos++     )
