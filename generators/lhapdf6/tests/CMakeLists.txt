@@ -6,6 +6,9 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/../../../cmake/modules)
 find_package(Lhapdf6 REQUIRED)
 find_package(Yamlcpp REQUIRED)
 
+if(APPLE AND CMAKE_CXX_COMPILER_ID STREQUAL Clang)
+  set(Boost_COMPILER -xgcc42)
+endif()
 #set(Boost_DEBUG ON)
 # "1.49" is a minimum required version
 find_package(Boost 1.49 REQUIRED COMPONENTS filesystem system)
