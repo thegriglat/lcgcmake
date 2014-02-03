@@ -362,7 +362,7 @@ LCG_add_test(pythia6-compare
 #---agile------------------------------------------------------------------------------------------  
 LCGPackage_Add(
   agile
-  URL ${gen_url}/AGILe-${agile_native_version}.tar.bz2
+  URL ${gen_url}/AGILe-<NATIVE_VERSION>.tar.bz2
   CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> 
      --with-hepmc=${HepMC_home} 
      --with-boost-incpath=${Boost_home_include}
