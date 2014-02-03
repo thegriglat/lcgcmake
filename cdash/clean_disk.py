@@ -18,9 +18,9 @@ def get_oldest_build(directory):
     """get the oldest directory of the type project-slot-jobid. 
      Oldest is defined in terms of lowest id and not date."""
     result = os.listdir(directory)
-    result = [item for item in result if os.path.isdir(item) and item.count("-")==2]
+    result = [os.path.join(directory,item) for item in result if os.path.isdir( os.path.join(directory,item) ) and item.count("-")==2]
     def extract_id(name):
-      return int(name.split("-")[2])
+      return int(name.split("-")[-1])
     result.sort(key=extract_id) 
     print "Old builds: %s" %result
     if len(result) != 0:
@@ -46,7 +46,6 @@ if __name__ == "__main__":
   try:
     while free_percentage(path) < required_free_percentage:
        oldest_build = get_oldest_build(path)
-       print oldest_build
        if oldest_build == None:
          print "No old build to clean left."
          print "  Free percentage: %s" %free_percentage(path)
