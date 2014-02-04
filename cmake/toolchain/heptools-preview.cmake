@@ -169,6 +169,8 @@ LCG_external_package(pythia8           176            ${MCGENPATH}/pythia8    au
 LCG_external_package(pythia8           180            ${MCGENPATH}/pythia8    author=180  )
 LCG_external_package(pythia8           183            ${MCGENPATH}/pythia8    author=183  )
 
+#LCG_external_package(sacrifice         0.9.1          ${MCGENPATH}/sacrifice )
+
 LCG_external_package(thepeg            1.9.0          ${MCGENPATH}/thepeg       )
 
 LCG_external_package(herwig++          2.7.0          ${MCGENPATH}/herwig++  thepeg=1.9.0  )
@@ -191,6 +193,7 @@ LCG_external_package(evtgen            1.2.0          ${MCGENPATH}/evtgen       
 LCG_external_package(evtgen            1.3.0          ${MCGENPATH}/evtgen         tag=R01-03-00 pythia8=183 tauola++=1.1.4)
 
 
+LCG_external_package(rivet             2.1.0a0          ${MCGENPATH}/rivet        )
 if(NOT ${LCG_OS}${LCG_OSVERS} STREQUAL mac109) # rivet 2 does not work yet with mac109
   LCG_external_package(rivet             2.0.0          ${MCGENPATH}/rivet        )
 endif()
@@ -214,6 +217,7 @@ LCG_external_package(crmc              1.3            ${MCGENPATH}/crmc         
 LCG_external_package(cython            0.19.1         ${MCGENPATH}/cython       )
 LCG_external_package(yamlcpp           0.3.0          ${MCGENPATH}/yamlcpp      )
 LCG_external_package(yoda              1.0.4          ${MCGENPATH}/yoda         )
+LCG_external_package(yoda              1.0.5a0        ${MCGENPATH}/yoda         )
 LCG_external_package(hydjet            1.6            ${MCGENPATH}/hydjet author=1_6 )
 LCG_external_package(hydjet            1.8            ${MCGENPATH}/hydjet author=1_8 )
 LCG_external_package(tauola            28.121.2       ${MCGENPATH}/tauola       )
