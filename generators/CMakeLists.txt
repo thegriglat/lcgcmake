@@ -1052,9 +1052,9 @@ LCGPackage_Add(
   CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR>
 		--with-HepMC=${HepMC_home} --with-pythia=${pythia8_home}
                 --with-LHAPDF=${lhapdf_home} --with-photos=${photos++_home}
-                --with-boost=${Boost_home}
-  BUILD_COMMAND {MAKE}
-  INSTALL_COMMAND {MAKE} install 
+                --with-boost=${Boost_home} --with-MCUtils
+  BUILD_COMMAND ${MAKE}
+  INSTALL_COMMAND ${MAKE} install 
   BUILD_IN_SOURCE 1
   DEPENDS pythia8 Boost HepMC lhapdf photos++
 )
