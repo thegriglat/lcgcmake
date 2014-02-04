@@ -571,7 +571,7 @@ LCGPackage_Add(
 #---Yoda-------------------------------------------------------------------------------------------
 LCGPackage_Add(
   yoda
-  URL ${gen_url}/YODA-${yoda_native_version}.tar.gz
+  URL ${gen_url}/YODA-<NATIVE_VERSION>.tar.gz
   CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix=<INSTALL_DIR>
       --with-boost=${Boost_home}
       PYTHON=${Python_home}/bin/python ${library_path}=${Python_home}/lib:$ENV{${library_path}}
