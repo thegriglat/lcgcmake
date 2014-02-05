@@ -695,14 +695,14 @@ LCGPackage_Add(
 
 LCG_add_test(
        rivet2_test_cms
-       TEST_COMMAND  ${rivet2_home}/bin/rivet -a CMS_2012_I1184941 ${CMAKE_SOURCE_DIR}/generators/rivet/tests/data.hepmc
+       TEST_COMMAND  ${rivet2_home}/bin/rivet --ignore-beams -a CMS_2012_I1184941 ${CMAKE_SOURCE_DIR}/generators/rivet/tests/data.hepmc
        ENVIRONMENT ${library_path}=${Python_home}/lib:${GSL_home}/lib:${rivet2_home}/lib:${yoda_home}/lib:${HepMC_home}/lib:${fastjet_home}/lib:${yamlcpp_home}/lib:$ENV{${library_path}}
                    PATH=${Python_home}/bin:$ENV{PATH}   
 )
 
 LCG_add_test(
        rivet2_test_atlas
-       TEST_COMMAND  ${rivet2_home}/bin/rivet -a ATLAS_2012_I1083318 ${CMAKE_SOURCE_DIR}/generators/rivet/tests/data.hepmc
+       TEST_COMMAND  ${rivet2_home}/bin/rivet --ignore-beams -a ATLAS_2012_I1083318 ${CMAKE_SOURCE_DIR}/generators/rivet/tests/data.hepmc
        ENVIRONMENT ${library_path}=${Python_home}/lib:${GSL_home}/lib:${rivet2_home}/lib:${yoda_home}/lib:${HepMC_home}/lib:${fastjet_home}/lib:${yamlcpp_home}/lib:$ENV{${library_path}}
                    PATH=${Python_home}/bin:$ENV{PATH}
 )
