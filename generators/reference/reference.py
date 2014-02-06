@@ -25,8 +25,8 @@ def Check_XS(RefFile,TestFile,limit = 0.95):
     """ Compare two XS and return True if difference less than 'percent' %"""
     print "### Compare MC_XS/XS value ###"
     if limit == None: limit = 0.95
-    RefValue = GetXS(yoda.read(RefFile))
-    TestValue = GetXS(yoda.read(TestFile))
+    RefValue = GetXS(yoda.read(RefFile, asdict=False))
+    TestValue = GetXS(yoda.read(TestFile, asdict=False))
     print "Test value: " + str(TestValue) + " | Reference value: " + str(RefValue) + " | limit = " + str(limit)
     if (1 - abs(TestValue - RefValue)/RefValue) >= limit:
         return True
