@@ -51,7 +51,7 @@ if __name__ == "__main__":
          print "  Free percentage: %s" %free_percentage(path)
          os._exit(0)
        print "Removing %s" %oldest_build 
-       shutil.rmtree( oldest_build )
+       shutil.rmtree( oldest_build, ignore_errors=True )
   except Exception, e:
      print "Cleanup failed. Please investigate"
      print "  Free percentage: %s" %free_percentage(path) 
