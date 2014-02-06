@@ -178,6 +178,9 @@ LCG_external_package(pythia8           175            ${MCGENPATH}/pythia8      
 LCG_external_package(pythia8           183            ${MCGENPATH}/pythia8      author=183     )
 LCG_external_package(pythia8           180            ${MCGENPATH}/pythia8      author=180     )
 
+LCG_external_package(sacrifice         0.9.9          ${MCGENPATH}/sacrifice  pythia8=183 )
+
+
 LCG_external_package(thepeg            1.8.1          ${MCGENPATH}/thepeg       )
 LCG_external_package(herwig++          2.6.1b          ${MCGENPATH}/herwig++     thepeg=1.8.1)
 

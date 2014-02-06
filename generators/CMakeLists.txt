@@ -1046,17 +1046,20 @@ endforeach()
 endif()
 
 #---sacrifice------------------------------------------------------------------------------------------
+
+set(pythia8_sacrifice_home <pythia8-<sacrifice_<NATIVE_VERSION>_pythia8>_home>)
+
 LCGPackage_Add(
   sacrifice
   URL ${gen_url}/Sacrifice-${sacrifice_native_version}.tar.gz
   CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR>
-		--with-HepMC=${HepMC_home} --with-pythia=${pythia8_home}
+		--with-HepMC=${HepMC_home} --with-pythia=${pythia8_sacrifice_home}
                 --with-LHAPDF=${lhapdf_home} --with-photos=${photos++_home}
                 --with-boost=${Boost_home} --with-MCUtils
   BUILD_COMMAND ${MAKE}
   INSTALL_COMMAND ${MAKE} install 
   BUILD_IN_SOURCE 1
-  DEPENDS pythia8 Boost HepMC lhapdf photos++
+  DEPENDS pythia8-<sacrifice_<VERSION>_pythia8>  Boost HepMC lhapdf photos++
 )
 
 
