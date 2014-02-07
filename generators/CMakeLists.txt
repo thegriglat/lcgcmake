@@ -636,8 +636,10 @@ LCG_add_test(lhapdf6_orig_testpdf
     ${library_path}=${lhapdf6_home}/lib:${Boost_home}/lib:${yamlcpp_home}/lib:$ENV{${library_path}}
     LHAPDF_DATA_PATH=${lhapdf6_home}/share/LHAPDF:${lhapdf6sets_home}/../share/LHAPDF
 )
-
 #---Rivet-----------------------------------------------------------------------------------------
+
+set(yoda_rivet_home <yoda-<rivet_<NATIVE_VERSION>_yoda>_home>)
+
 LCGPackage_Add(
   rivet
   URL ${gen_url}/Rivet-<VERSION>.tar.bz2
@@ -667,7 +669,7 @@ LCGPackage_Add(
        --with-hepmc=${HepMC_home}
        --with-boost=${Boost_home_include}
        --with-fastjet=${fastjet_home}
-       --with-yoda=${yoda_home}
+       --with-yoda=${yoda_rivet_home}
        --with-yaml-cpp=${yamlcpp_home}
        --with-gsl=${GSL_home}
        --with-lcgtag=${LCG_platform}
@@ -687,9 +689,9 @@ LCGPackage_Add(
             COMMAND ${CMAKE_COMMAND} -E copy <SOURCE_DIR>/rivetenv.sh <INSTALL_DIR>/
   ENDIF
   BUILD_IN_SOURCE 1
-  DEPENDS HepMC Boost fastjet GSL Python
+  DEPENDS HepMC Boost fastjet GSL Python swig
   IF NOT <VERSION> VERSION_LESS 2.0.0 THEN
-    yoda yamlcpp
+    yoda-<rivet_<VERSION>_yoda> yamlcpp
   ENDIF
 )
 
