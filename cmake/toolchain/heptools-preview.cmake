@@ -194,11 +194,12 @@ LCG_external_package(evtgen            1.2.0          ${MCGENPATH}/evtgen       
 LCG_external_package(evtgen            1.3.0          ${MCGENPATH}/evtgen         tag=R01-03-00 pythia8=183 tauola++=1.1.4)
 
 
-LCG_external_package(rivet             2.1.0a0          ${MCGENPATH}/rivet        )
+
+LCG_external_package(rivet             2.1.0          ${MCGENPATH}/rivet        yoda=1.0.5      )
 if(NOT ${LCG_OS}${LCG_OSVERS} STREQUAL mac109) # rivet 2 does not work yet with mac109
-  LCG_external_package(rivet             2.0.0          ${MCGENPATH}/rivet        )
+  LCG_external_package(rivet             2.0.0          ${MCGENPATH}/rivet yoda=1.0.4        )
 endif()
-LCG_external_package(rivet             1.9.0          ${MCGENPATH}/rivet        )
+LCG_external_package(rivet             1.9.0          ${MCGENPATH}/rivet  yoda=1.0.4      )
 
 LCG_external_package(sherpa            1.4.3          ${MCGENPATH}/sherpa         author=1.4.3 hepevt=4000  )
 LCG_external_package(sherpa            1.4.3.2        ${MCGENPATH}/sherpa         author=1.4.3 hepevt=10000 )

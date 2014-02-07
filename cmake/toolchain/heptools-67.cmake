@@ -208,13 +208,13 @@ LCG_external_package(photos            215.4          ${MCGENPATH}/photos       
 LCG_external_package(evtgen            1.2.0          ${MCGENPATH}/evtgen         tag=R01-02-00 pythia8=175 tauola++=1.1.1a)
 LCG_external_package(evtgen            1.3.0          ${MCGENPATH}/evtgen         tag=R01-03-00 pythia8=180 tauola++=1.1.4)
 
-if(NOT ${LCG_OS}${LCG_OSVERS} STREQUAL mac109) # rivet 2 does not work yet with mac109
-  LCG_external_package(rivet             2.0.0         ${MCGENPATH}/rivet        )  
+if(NOT ${LCG_OS}${LCG_OSVERS} STREQUAL mac109) # rivet 2 does not work yet with mac10	
+  LCG_external_package(rivet             2.0.0         ${MCGENPATH}/rivet   	yoda=1.0.4   )  
 endif()
-LCG_external_package(rivet             2.1.0a0          ${MCGENPATH}/rivet        )
+LCG_external_package(rivet             2.1.0          ${MCGENPATH}/rivet	yoda=1.0.5      )
 
-LCG_external_package(rivet             1.8.3          ${MCGENPATH}/rivet        )
-LCG_external_package(rivet             1.9.0          ${MCGENPATH}/rivet        )
+LCG_external_package(rivet             1.8.3          ${MCGENPATH}/rivet yoda=1.0.4       )
+LCG_external_package(rivet             1.9.0          ${MCGENPATH}/rivet yoda=1.0.4      )
 
 LCG_external_package(sherpa            2.0.0          ${MCGENPATH}/sherpa         author=2.0.0 hepevt=10000)
 LCG_external_package(sherpa            1.4.5.2        ${MCGENPATH}/sherpa         author=1.4.5 hepevt=10000 )
@@ -234,7 +234,7 @@ LCG_external_package(cython            0.19.1         ${MCGENPATH}/cython       
 LCG_external_package(yamlcpp           0.3.0          ${MCGENPATH}/yamlcpp      ) 
 
 LCG_external_package(yoda              1.0.4          ${MCGENPATH}/yoda         ) 
-LCG_external_package(yoda              1.0.5a0        ${MCGENPATH}/yoda         )
+LCG_external_package(yoda              1.0.5          ${MCGENPATH}/yoda         )
 
 LCG_external_package(hydjet            1.6            ${MCGENPATH}/hydjet author=1_6    )
 LCG_external_package(hydjet            1.8            ${MCGENPATH}/hydjet author=1_8    )
