@@ -13,14 +13,17 @@ if __name__ == '__main__':
     parser = optparse.OptionParser(usage)
     parser.add_option('-d', '--dry', action='store_true', dest='dry', help='dry run, no commands will be executed',default=False )
     parser.add_option('-v', '--version', action='store', dest='version', help='name of the release')
-    parser.add_option('-p', '--prefix', action='store', dest='basepath', help='AFS prefix where to install the new volume')
+    parser.add_option('-p', '--prefix', action='store', dest='prefix', help='AFS prefix where to install the new volume')
     parser.add_option('-t', '--target', action='store', dest='target', help='all|externals|generators')
 
     (opts,args) = parser.parse_args()
-    if not opts.version or not opts.basepath or not opts.target:
-        print "You have to specify all --prefix, --version and --target"
+    if not opts.version or not opts.prefix:
+        print "You have to specify all --prefix, --version"
         raise ValueError("You have to specify both --prefix and --version")
-    if not os.path.exists(opts.basepath):
+    if not opts.target: 
+        print "No option target - all - will be used by default"
+        opts.target = 'all'
+    if not os.path.exists(opts.prefix):
         print ("You specified a non existing path in --prefix")
         raise ValueError("You have to specify an existing path")
 
@@ -35,22 +38,22 @@ if __name__ == '__main__':
         print "target : ",opts.target
         raise ValueError("target must be either all or externals or generators")
 
-    area = ProjectAreaManager( opts.version, opts.basepath, dry=opts.dry )
+    area = ProjectAreaManager( opts.version, opts.prefix, dry=opts.dry )
 
-    print "Prepare the AFS volumes in  %s" % (opts.basepath)
+    print "Prepare the AFS volumes in  %s" % (opts.prefix)
 
     if opts.target == "externals": 
-        print "create %s area"  % os.path.join(opts.basepath,opts.version) 
+        print "create %s area"  % os.path.join(opts.prefix,opts.version) 
         area.create_area(releasename_pattern, "")
     else: 
-        if os.path.exists(os.path.join(opts.basepath,opts.version)):
+        if os.path.exists(os.path.join(opts.prefix,opts.version)):
             if opts.target == 'generators':
-                print "create %s area - if %s exists" % (os.path.join(opts.basepath,opts.version,"MCGenerators_"+opts.version), os.path.join(opts.basepath,opts.version))
+                print "create %s area - if %s exists" % (os.path.join(opts.prefix,opts.version,"MCGenerators_"+opts.version), os.path.join(opts.prefix,opts.version))
                 area.create_area(releasename_pattern, "MCGenerators_"+opts.version)
         else: # opts.target == all or opts.target == generatos but lcg volume does not exist
-            print "create %s area and %s area" % (os.path.join(opts.basepath,opts.version), (os.path.join(opts.basepath,opts.version,"MCGenerators_"+opts.version)))
+            print "create %s area and %s area" % (os.path.join(opts.prefix,opts.version), (os.path.join(opts.prefix,opts.version,"MCGenerators_"+opts.version)))
             area.create_area(releasename_pattern, "")
-            cmd = '/usr/bin/fs checks; /usr/bin/fs checkv; /usr/bin/fs flushm '+os.path.join(opts.basepath,opts.version)
+            cmd = '/usr/bin/fs checks; /usr/bin/fs checkv; /usr/bin/fs flushm '+os.path.join(opts.prefix,opts.version)
             os.system(cmd)
             area.create_area(releasename_pattern, "MCGenerators_"+opts.version)
 
