@@ -14,27 +14,27 @@ def skip_in_dry_mode(method):
 
 class ProjectAreaManager(object):
     #(eg)
-    def __init__(self, project_version, basepath, dry=False ):
+    def __init__(self, project_version, prefix, dry=False ):
         self._version = project_version
         if dry:
            print "=== Running in dry mode === \n"            
         self._dryMode = dry
-        self._basepath =  basepath
+        self._prefix =  prefix
 
     # create AFS area for LCG release
     # (eg)
     def create_area(self, releasename_pattern, target):
         
         print "Start CREATE_AREA script"
-        basepath = self._basepath
+        prefix = self._prefix
         version = self._version
 
-        path = os.path.join(basepath,version,target)
+        path = os.path.join(prefix,version,target)
         print "Check existence of LCG release path" 
         print 'PATH: %s' % path
         if target:
-            if not os.path.exists(os.path.join(basepath,version)):
-                raise SystemExit(os.path.join(basepath,version), "does not exist I cannot create the MCGenerators volume")
+            if not os.path.exists(os.path.join(prefix,version)):
+                raise SystemExit(os.path.join(prefix,version), "does not exist I cannot create the MCGenerators volume")
             
         if os.path.exists(path):
             print path, "already exists. Nothing to be done"
@@ -42,15 +42,15 @@ class ProjectAreaManager(object):
             print "Going to create mount point", path
             # define necessary size by the size of the previous (shrinked) installation +30%
             print "Looking for previous version"
-            previous_version = self.get_previous_project_version(basepath,version,releasename_pattern)
+            previous_version = self.get_previous_project_version(prefix,version,releasename_pattern)
             print "Previous version %s:" % previous_version
-            quota = "5000"
+            quota = "5000000"
             if previous_version:
                 if previous_version < version:
                     if target : 
                         previous_target = "MCGenerators_"+previous_version
                     else: previous_target = ""
-                    previous_path = os.path.join(basepath,previous_version,previous_target)
+                    previous_path = os.path.join(prefix,previous_version,previous_target)
                     print "Previous path ", previous_path
                     # previous path exists 
                     if os.path.exists(previous_path):
@@ -61,9 +61,9 @@ class ProjectAreaManager(object):
                     raise SystemExit ("You are creating a release older then the last one. Nothing to be done")
 
             if target: 
-                volume_name = self.create_AFS_volume_name(version+"mc")
+                volume_name = self.create_AFS_volume_name("x"+version+"mc")
             else: 
-                volume_name = self.create_AFS_volume_name(version)
+                volume_name = self.create_AFS_volume_name("x"+version)
             print 'Going to create volume %s of size %s and mounting at %s\n' %(volume_name, quota, path)
             self.create_AFS(path, volume_name, quota)
             if previous_version:
@@ -76,10 +76,10 @@ class ProjectAreaManager(object):
         
     # Find the last release installed
     # (eg)
-    def get_previous_project_version(self, basepath, version,releasename_pattern):
+    def get_previous_project_version(self, prefix, version,releasename_pattern):
         """Return the last project version installed."""
         start_dir = os.getcwd()
-        proj_dir = basepath
+        proj_dir = prefix
         try: 
             versions = [entry for entry in os.listdir(proj_dir) if re.match(releasename_pattern,entry)] 
         except OSError:
@@ -141,11 +141,11 @@ class ProjectAreaManager(object):
     #(eg)
         print "Start FINALIZE_ARE script"
         """Finalize the area by volume shrinking, replica creation and vos_release """
-        basepath = self._basepath
+        prefix = self._prefix
         version = self._version
-        print "BasePATH: %s" % self._basepath
+        print "BasePATH: %s" % self._prefix
         print "=== Area for LCG release %s:" %(version)
-        path = os.path.join(basepath, version)
+        path = os.path.join(prefix, version)
         for path in [ path, os.path.join(path,'MCGenerators')]:
             print path
             if not os.path.exists(path):
@@ -175,9 +175,9 @@ class ProjectAreaManager(object):
     #(eg)
         print "Start DELETE_AREA script"
         # delete an afs are"
-        basepath = self._basepath
+        prefix = self._prefix
         version = self._version
-        path = os.path.join(basepath, version)
+        path = os.path.join(prefix, version)
         for path in [ os.path.join(path,'MCGenerators'), path]:
             if not os.path.exists(path):
                 print "Area does not exist!"
