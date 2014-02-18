@@ -190,6 +190,7 @@ LCGPackage_Add(
   CONFIGURE_COMMAND <VOID>
   BUILD_COMMAND ${Python_home}/bin/python setup.py build
   INSTALL_COMMAND ${Python_home}/bin/python setup.py install --prefix=<INSTALL_DIR>
+          COMMAND ${CMAKE_SOURCE_DIR}/externals/qmtest_postinstall.sh <INSTALL_DIR>
   BUILD_IN_SOURCE 1
   DEPENDS Python
 )
