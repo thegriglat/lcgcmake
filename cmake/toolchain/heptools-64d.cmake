@@ -208,8 +208,10 @@ set(MCGENPATH  MCGenerators_lcgcmt${heptools_version})
 LCG_external_package(thepeg            1.9.0a          ${MCGENPATH}/thepeg       )
 LCG_external_package(herwig++          2.7.0a          ${MCGENPATH}/herwig++     thepeg=1.9.0a)
 
-LCG_external_package(lhapdf            5.8.8          ${MCGENPATH}/lhapdf       )
 LCG_external_package(lhapdf            5.8.9          ${MCGENPATH}/lhapdf       )
+LCG_external_package(lhapdf            5.8.8          ${MCGENPATH}/lhapdf       )
+#LCG_external_package(lhapdf            5.8.9          ${MCGENPATH}/lhapdf       )
+
 
 LCG_external_package(lhapdfsets        5.8.8          lhapdfsets   )
 LCG_external_package(lhapdfsets        5.8.9          lhapdfsets   )
