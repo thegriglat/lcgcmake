@@ -741,12 +741,13 @@ LCGPackage_Add(
      --enable-lhapdf=${lhapdf_home}
      --enable-hepmc2=${HepMC_home}
      --enable-openloops=.
+     --with-sqlite3=${sqlite_home}	
      --enable-rivet=${rivet_home} "CFLAGS=-O2 -g0" "CXXFLAGS=-O2 -g0" "FFLAGS=-O2 -g0"
 
   INSTALL_COMMAND make install 
 #          COMMAND ${CMAKE_COMMAND} -DINSTALL_DIR=<INSTALL_DIR> -P ${CMAKE_SOURCE_DIR}/cmake/scripts/StripLib.cmake
   BUILD_IN_SOURCE 1
-  DEPENDS lhapdf HepMC rivet
+  DEPENDS lhapdf HepMC rivet sqlite
 )
 
 # $PWD is needed because Sherpa uses this variable to know current directory
@@ -1066,7 +1067,7 @@ LCGPackage_Add(
 
 
 LCG_add_test(sacrifice_test 
-   TEST_COMMAND ${sacrifice_home}/bin/run-pythia --collision-energy 8000 -i ${sacrifice_home}/share/Sacrifice/AU2-CTEQ6L1 -n 1000 
+   TEST_COMMAND ${sacrifice_home}/bin/run-pythia --collision-energy 8000 -i ${sacrifice_home}/share/Sacrifice/AU2-CT10.params -n 1000 
    ENVIRONMENT ${library_path}=${photos++_home}/lib:${lhapdf_home}/lib:${HepMC_home}/lib:${pythia8-${sacrifice_${sacrifice_native_version}_pythia8}_home}/lib:$ENV{${library_path}}
 	       LHAPATH=${lhapdfsets_home}/../share/lhapdf/PDFsets
    )
