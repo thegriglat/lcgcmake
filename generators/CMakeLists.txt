@@ -1067,7 +1067,7 @@ LCGPackage_Add(
 
 
 LCG_add_test(sacrifice_test 
-   TEST_COMMAND ${sacrifice_home}/bin/run-pythia --collision-energy 8000 -i ${sacrifice_home}/share/Sacrifice/AU2-CT10.params -n 1000 
+   TEST_COMMAND ${sacrifice_home}/bin/run-pythia  --collision-energy 8000 -i ${CMAKE_SOURCE_DIR}/generators/sacrifice/AU2-CT10.params -n 1000 
    ENVIRONMENT ${library_path}=${photos++_home}/lib:${lhapdf_home}/lib:${HepMC_home}/lib:${pythia8-${sacrifice_${sacrifice_native_version}_pythia8}_home}/lib:$ENV{${library_path}}
 	       LHAPATH=${lhapdfsets_home}/../share/lhapdf/PDFsets
    )
