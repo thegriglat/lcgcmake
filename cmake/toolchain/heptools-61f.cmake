@@ -178,7 +178,6 @@ LCG_external_package(evtgen            1.2.0-175      ${MCGENPATH}/evtgen       
 LCG_external_package(evtgen            1.2.0-176      ${MCGENPATH}/evtgen         tag=R01-02-00 pythia8=176 tauola++=1.1.1)
 
 LCG_external_package(yoda              1.0.5          ${MCGENPATH}/yoda       )
-LCG_external_package(rivet             2.1.0          ${MCGENPATH}/rivet        yoda=1.0.5      )
 
 LCG_external_package(rivet             1.9.0          ${MCGENPATH}/rivet        yoda=1.0.5       )
 LCG_external_package(rivet             1.8.3          ${MCGENPATH}/rivet        yoda=1.0.5       )
