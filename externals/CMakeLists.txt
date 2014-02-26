@@ -1,3 +1,13 @@
+#---sqlite-----------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  sqlite
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/sqlite-autoconf-${sqlite_native_version}.tar.gz
+  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR>
+  BUILD_COMMAND  make
+  BUILD_IN_SOURCE 1
+#  DEPENDS Python
+)
+
 #---PythonFWK (only for MAC) --------------------------------------------------------------------------------------------
 LCGPackage_set_home(Python)
 if (APPLE)
@@ -41,8 +51,8 @@ endif()
 LCGPackage_Add(
   Python
   URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/Python-${Python_native_version}.tgz
-  CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix=<INSTALL_DIR> --enable-unicode=ucs4 ${Python_config_options}
-  DEPENDS ${Python_deps}
+  CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix=<INSTALL_DIR> --enable-unicode=ucs4 ${Python_config_options} CPPFLAGS=-I${sqlite_home}/include
+  DEPENDS ${Python_deps} sqlite
 )
 
 #---Boost--------------------------------------------------------------------------------------------
@@ -434,16 +444,6 @@ LCGPackage_Add(
   BUILD_COMMAND  make CONFIG_QTLIBS='-lQt3Support -lQtCore' QTDIR=${Qt_home} COINDIR=${coin3d_home} 
   BUILD_IN_SOURCE 1
   DEPENDS coin3d Qt
-)
-
-#---sqlite-----------------------------------------------------------------------------------------------
-LCGPackage_Add(
-  sqlite
-  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/sqlite-autoconf-${sqlite_native_version}.tar.gz
-  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR>
-  BUILD_COMMAND  make 
-  BUILD_IN_SOURCE 1
-#  DEPENDS Python
 )
 
 #---libtool----------------------------------------------------------------------------------------------
