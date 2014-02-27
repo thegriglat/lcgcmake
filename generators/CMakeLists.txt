@@ -565,6 +565,9 @@ LCGPackage_Add(
   URL ${gen_url}/yaml-cpp-${yamlcpp_native_version}.tar.gz
   CMAKE_ARGS -DBOOST_ROOT=${Boost_home} -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR> -DBUILD_SHARED_LIBS=ON
   BUILD_IN_SOURCE 1
+  INSTALL_COMMAND make install	
+  COMMAND ${CMAKE_COMMAND} -E create_symlink yamlcpp <INSTALL_DIR>/../../../yaml-cpp
+
 )
 
 
@@ -1067,7 +1070,7 @@ LCGPackage_Add(
 
 
 LCG_add_test(sacrifice_test 
-   TEST_COMMAND ${sacrifice_home}/bin/run-pythia  --collision-energy 8000 -i ${CMAKE_SOURCE_DIR}/generators/sacrifice/AU2-CT10.params -n 1000 
+   TEST_COMMAND ${sacrifice_home}/bin/run-pythia  --collision-energy 8000 -i ${CMAKE_SOURCE_DIR}/generators/sacrifice/AU2-CT10.params -n 1000 --photos 
    ENVIRONMENT ${library_path}=${photos++_home}/lib:${lhapdf_home}/lib:${HepMC_home}/lib:${pythia8-${sacrifice_${sacrifice_native_version}_pythia8}_home}/lib:$ENV{${library_path}}
 	       LHAPATH=${lhapdfsets_home}/../share/lhapdf/PDFsets
    )
