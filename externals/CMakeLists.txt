@@ -238,6 +238,8 @@ LCGPackage_Add(
   GCCXML
   URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/gccxml-${GCCXML_native_version}.tar.gz
   CMAKE_ARGS -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR> ${GCCXML_config_options}
+  INSTALL_COMMAND ${MAKE} -j1 install
+          COMMAND ${CMAKE_SOURCE_DIR}/externals/GCCXML_postinstall.sh <INSTALL_DIR>
 )
 
 #---uuid--------------------------------------------------------------------------------------------
