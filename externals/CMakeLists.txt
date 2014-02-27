@@ -52,6 +52,8 @@ LCGPackage_Add(
   Python
   URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/Python-${Python_native_version}.tgz
   CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix=<INSTALL_DIR> --enable-unicode=ucs4 ${Python_config_options} CPPFLAGS=-I${sqlite_home}/include
+  INSTALL_COMMAND ${MAKE} -j1 install
+          COMMAND ${CMAKE_SOURCE_DIR}/externals/Python_postinstall.sh <INSTALL_DIR> 
   DEPENDS ${Python_deps} sqlite
 )
 
