@@ -350,6 +350,8 @@ LCGPackage_Add(
   URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/qt-everywhere-opensource-src-${Qt_native_version}.tar.gz
   CONFIGURE_COMMAND ./configure ${Qt_extra_config_opts} -no-separate-debug-info -release --prefix=<INSTALL_DIR> 
                     -nomake examples -nomake demos --opensource --confirm-license -fast
+  INSTALL_COMMAND ${MAKE} -j1 install
+          COMMAND ${CMAKE_SOURCE_DIR}/externals/Qt_postinstall.sh <INSTALL_DIR> 
   BUILD_IN_SOURCE 1
 )
 
