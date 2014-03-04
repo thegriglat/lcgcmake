@@ -38,6 +38,9 @@ there is an example in lhapdf6 test.
  Once the test is defined in lcgcmake/generators/CMakeLists, it will be run in
 the nightlies.
 
+ The comparably long tests (physics tests should contain the following line:
+   LABELS PhysicsCheck
+
 
 CTESTS NAMING CONVENTION:
 
@@ -45,3 +48,6 @@ CTESTS NAMING CONVENTION:
 2. tests of a generator using auxiliary generator2:   generator_gen2[_tname]
       (here gen2 is a shortened name of generaror2, for example "pyt6")
 3. tests of rivet: as in (3) with generator=rivet
+
+
+
