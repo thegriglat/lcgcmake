@@ -41,7 +41,7 @@ the nightlies.
 
 CTESTS NAMING CONVENTION:
 
-1. tests of a generator using rivet:                  generator-riv2[-tname]
-2. tests of a generator using auxiliary generator2:   generator-gen2[-tname]
+1. tests of a generator using rivet:                  generator_riv2[_tname]
+2. tests of a generator using auxiliary generator2:   generator_gen2[_tname]
       (here gen2 is a shortened name of generaror2, for example "pyt6")
 3. tests of rivet: as in (3) with generator=rivet
