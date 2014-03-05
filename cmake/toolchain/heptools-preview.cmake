@@ -147,8 +147,7 @@ endif()
 
 #---Additional External packages------(Generators)-----------------
 
-set(MCGENPATH  MCGenerators_lcgcmt${heptools_version})
-#set(MCGENPATH  MCGenerators_test)
+set(MCGENPATH  MCGenerators)
 
 #LCG_external_package(powheg-box         r2463         ${MCGENPATH}/powheg-box       )
 LCG_external_package(powheg-box         r2092         ${MCGENPATH}/powheg-box       )
