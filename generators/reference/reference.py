@@ -66,6 +66,35 @@ def Check_Histos(RefFile, TestFile, component, limit = 0.9):
     else:
         return False
 
+def Check_HistosN(RefFile, TestFile, component, limit = 0.9):
+    """ Check Kolmogorov value between 'component' of Reference and Test file """
+    print "### Do kolmogorov test to compare two TH1F (" + component + ") ###"
+    if limit == None: limit = 0.9
+    try:
+        import ROOT
+    except:
+        Exit(1,"Cannot import ROOT")
+    try:
+        RefF = ROOT.TFile(RefFile)
+        TestF = ROOT.TFile(TestFile)
+    except:
+        Exit(1,"Cannot open ROOT files")
+    try:
+        RefHist  = RefF.Get(component)
+        TestHist = TestF.Get(component)
+    except:
+        Exit(1,"Cannot obtain " + component + " from files")
+    try:
+        hi = RefHist.KolmogorovTest(TestHist,"N")
+    except:
+        print "Cannot do Kolmogorov test"
+        return False
+    print "Result: " + str(hi) + " | success if >= " + str(limit)
+    if hi >= limit:
+        return True
+    else:
+        return False
+
 RefFile = sys.argv[1]
 TestFile = sys.argv[2]
 options = {}
@@ -92,11 +121,11 @@ else:
 status = {'success':0,'failed':0}
 for (Path,limit) in tests:  
     if Path == 'XS' and len(tests) == 1:
-        if Check_XS(RefFile,TestFile,limit):
-            print "XS check is succeed."
+        if Check_HistosN(RefFile,TestFile,Path,limit):
+            print Path,"check is succeed."
             status['success'] += 1
         else:
-            print "XS check is failed."
+            print Path,"check is failed."
             status['failed'] += 1
     else:
         if Check_Histos(RefFile,TestFile,Path,limit):
