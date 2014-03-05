@@ -42,12 +42,32 @@ the nightlies.
    LABELS PhysicsCheck
 
 
-CTESTS NAMING CONVENTION:
+ CTESTS NAMING CONVENTION:
 
-1. tests of a generator using rivet:                  generator_riv2[_tname]
-2. tests of a generator using auxiliary generator2:   generator_gen2[_tname]
-      (here gen2 is a shortened name of generaror2, for example "pyt6")
-3. tests of rivet: as in (3) with generator=rivet
+ 1. tests of a generator using rivet:                  generator_riv2[_tname]
+ 2. tests of a generator using auxiliary generator2:   generator_gen2[_tname]
+       (here gen2 is a shortened name of generaror2, for example "pyt6")
+ 3. tests of rivet: as in (3) with generator=rivet
 
 
+ Tools available for the histograms comparison:
 
+ 1. ${CMAKE_SOURCE_DIR}/cmake/scripts/yoda2root.cmake
+      -DAIDA2ROOT=${AIDA2ROOT} , example is ${CMAKE_SOURCE_DIR}/generators/reference/aida2root.py
+      -DPython_cmd=${Python_cmd}
+      -Dyoda_home=${yoda_home}
+      -DINPUT=filepath/filename.yoda
+      
+    creates filename.root at filepath. In addition creates filename.aida
+
+ 2. ${CMAKE_SOURCE_DIR}/generators/reference/reference.py
+
+    Two modes of work:
+
+    1. reference.py file1.yoda file2.yoda "Path=XS" limit=0.90 :
+             Compare two scatter plots XS with cross section, confidence limit 0.9
+
+    2. reference.py file1.root file2.root "Path=name1" limit=0.90  or 
+       reference.py file1.root file2.root "Path=name1,name2" "limit=0.90,0.90"
+             Compare histogram name1 in the two root files, Kolmogorov test,
+             conf. limit 0.9 
