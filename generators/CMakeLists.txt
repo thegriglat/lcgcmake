@@ -136,15 +136,6 @@ LCG_add_test(pythia8_outhepmc
   LABELS PhysicsCheck
 )
 
-#LCG_add_test(
-#  pythia8_riv2_test
-#  TEST_COMMAND ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/riv2test.sh ${rivet2_home} hepmcoutzjets_pythia8.dat
-#  ENVIRONMENT PATH=${Python_home}/bin:$ENV{PATH}
-#                   ${library_path}=${Python_home}/lib:${GSL_home}/lib:$ENV{${library_path}}
-#  DEPENDS pythia8_outhepmc
-#  LABELS PhysicsCheck
-#)
-
 LCG_add_test(pythia8-genser_test1_nightly
   TEST_COMMAND pythia8/tests/pythia8_genser_test1
   ENVIRONMENT
@@ -1159,7 +1150,8 @@ LCG_add_test(
   POST_COMMAND ${CMAKE_COMMAND} -DAIDA2ROOT=${AIDA2ROOT} -DPython_cmd=${Python_cmd} -Dyoda_home=${yoda_home} -DINPUT=${CMAKE_BINARY_DIR}/generators/pythia8_riv2_i.yoda -P ${CMAKE_SOURCE_DIR}/cmake/scripts/yoda2root.cmake
        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/generators/reference/pythia8_riv2.yoda ${CMAKE_BINARY_DIR}/generators/pythia8_riv2.yoda
        COMMAND ${CMAKE_COMMAND} -DAIDA2ROOT=${AIDA2ROOT} -DPython_cmd=${Python_cmd} -Dyoda_home=${yoda_home} -DINPUT=${CMAKE_BINARY_DIR}/generators/pythia8_riv2.yoda -P ${CMAKE_SOURCE_DIR}/cmake/scripts/yoda2root.cmake
-       COMMAND ${Python_cmd} ${CMAKE_SOURCE_DIR}/generators/reference/reference.py ${CMAKE_BINARY_DIR}/generators/pythia8_riv2.root ${CMAKE_BINARY_DIR}/generators/pythia8_riv2_i.root "Path=jet_HT" limit=0.90
+       COMMAND ${Python_cmd} ${CMAKE_SOURCE_DIR}/generators/reference/reference.py ${CMAKE_BINARY_DIR}/generators/pythia8_riv2.root ${CMAKE_BINARY_DIR}/generators/pythia8_riv2_i.root "Path=jet_HT" limit=0.05
+       COMMAND ${Python_cmd} ${CMAKE_SOURCE_DIR}/generators/reference/reference.py ${CMAKE_BINARY_DIR}/generators/pythia8_riv2.root ${CMAKE_BINARY_DIR}/generators/pythia8_riv2_i.root "Path=XS" limit=0.05
 )
 
 LCG_add_test(
@@ -1171,13 +1163,15 @@ LCG_add_test(
   PYTHONPATH=${Python_home}/bin:${agile_home}/lib/python${Python_config_version_twodigit}/site-packages:${yoda_home}/lib/python${Python_config_version_twodigit}/site-packages/:${ROOT_home}/lib:$ENV{PYTHONPATH}
   AGILE_GEN_PATH=${agile_home}/../../..
   LABELS PhysicsCheck
-  POST_COMMAND ${Python_cmd} ${CMAKE_SOURCE_DIR}/generators/reference/reference.py ${CMAKE_SOURCE_DIR}/generators/reference/pythia6_riv2_ttbar.yoda ${CMAKE_BINARY_DIR}/generators/pythia6_riv2_ttbar_i.yoda "Path=XS" limit=0.90
-       COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/generators/reference/pythia6_riv2_ttbar.yoda ${CMAKE_BINARY_DIR}/generators/pythia6_riv2_ttbar.yoda
+  POST_COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/generators/reference/pythia6_riv2_ttbar.yoda ${CMAKE_BINARY_DIR}/generators/pythia6_riv2_ttbar.yoda
        COMMAND ${CMAKE_COMMAND} -DAIDA2ROOT=${AIDA2ROOT} -DPython_cmd=${Python_cmd} -Dyoda_home=${yoda_home} -DINPUT=${CMAKE_BINARY_DIR}/generators/pythia6_riv2_ttbar.yoda -P ${CMAKE_SOURCE_DIR}/cmake/scripts/yoda2root.cmake
        COMMAND ${CMAKE_COMMAND} -DAIDA2ROOT=${AIDA2ROOT} -DPython_cmd=${Python_cmd} -Dyoda_home=${yoda_home} -DINPUT=${CMAKE_BINARY_DIR}/generators/pythia6_riv2_ttbar_i.yoda -P ${CMAKE_SOURCE_DIR}/cmake/scripts/yoda2root.cmake
        COMMAND ${Python_cmd} ${CMAKE_SOURCE_DIR}/generators/reference/reference.py ${CMAKE_BINARY_DIR}/generators/pythia6_riv2_ttbar.root ${CMAKE_BINARY_DIR}/generators/pythia6_riv2_ttbar_i.root "Path=jet_HT,jet_mult" "limit=0.90,0.90"
 )
 
+#COMMAND ${Python_cmd} ${CMAKE_SOURCE_DIR}/generators/reference/reference.py
+# ${CMAKE_SOURCE_DIR}/generators/reference/pythia6_riv2_ttbar.yoda
+# ${CMAKE_BINARY_DIR}/generators/pythia6_riv2_ttbar_i.yoda "Path=XS" limit=0.90
 
 LCG_add_test(rivet-herwigpp-ttbar-test
                           TEST_COMMAND ${herwig++_home}/bin/Herwig++ read ${CMAKE_SOURCE_DIR}/generators/herwig++/tests/LHC-ttbar.in
@@ -1191,13 +1185,16 @@ LCG_add_test(rivet-herwigpp-ttbar-test
                                       PYTHONPATH=${Python_home}/bin:${agile_home}/lib/python${Python_config_version_twodigit}/site-packages:${yoda_home}/lib/python${Python_config_version_twodigit}/site-packages/:${ROOT_home}/lib:$ENV{PYTHONPATH}
                                       PATH=${agile_home}/bin:${Python_home}/bin:$ENV{PATH}
                           LABELS PhysicsCheck
-                          POST_COMMAND ${Python_cmd} ${CMAKE_SOURCE_DIR}/generators/reference/reference.py ${CMAKE_SOURCE_DIR}/generators/reference/rivet-herwigpp-ttbar-test.yoda ${CMAKE_BINARY_DIR}/generators/Rivet.yoda "Path=XS" limit=0.90
-                               COMMAND ${CMAKE_COMMAND} -DAIDA2ROOT=${AIDA2ROOT} -DPython_cmd=${Python_cmd} -Dyoda_home=${yoda_home} -DINPUT=${CMAKE_BINARY_DIR}/generators/Rivet.yoda -P ${CMAKE_SOURCE_DIR}/cmake/scripts/yoda2root.cmake
+                          POST_COMMAND ${CMAKE_COMMAND} -DAIDA2ROOT=${AIDA2ROOT} -DPython_cmd=${Python_cmd} -Dyoda_home=${yoda_home} -DINPUT=${CMAKE_BINARY_DIR}/generators/Rivet.yoda -P ${CMAKE_SOURCE_DIR}/cmake/scripts/yoda2root.cmake
                                COMMAND ${CMAKE_COMMAND} -DAIDA2ROOT=${AIDA2ROOT} -DPython_cmd=${Python_cmd} -Dyoda_home=${yoda_home} -DINPUT=${CMAKE_SOURCE_DIR}/generators/reference/rivet-herwigpp-ttbar-test.yoda -P ${CMAKE_SOURCE_DIR}/cmake/scripts/yoda2root.cmake
                                COMMAND ${Python_cmd} ${CMAKE_SOURCE_DIR}/generators/reference/reference.py ${CMAKE_SOURCE_DIR}/generators/reference/rivet-herwigpp-ttbar-test.root ${CMAKE_BINARY_DIR}/generators/Rivet.root "Path=jet_HT,jet_mult" "limit=0.90,0.90"
 
 )
   
+#COMMAND ${Python_cmd} ${CMAKE_SOURCE_DIR}/generators/reference/reference.py 
+# ${CMAKE_SOURCE_DIR}/generators/reference/rivet-herwigpp-ttbar-test.yoda 
+# ${CMAKE_BINARY_DIR}/generators/Rivet.yoda "Path=XS" limit=0.90
+
   
 LCG_add_test(debug-symbols-test 
              TEST_COMMAND ${CMAKE_SOURCE_DIR}/cmake/scripts/check_debug_symbols.sh ${CMAKE_INSTALL_PREFIX}
