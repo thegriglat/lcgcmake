@@ -207,6 +207,9 @@ macro(LCGPackage_Add name)
      set(buildinfostring "${buildinfostring} DESTINATION: ${dest_name},")
      set(buildinfostring "${buildinfostring} NAME: ${name},")
      set(buildinfostring "${buildinfostring} VERSION: ${version},")
+     foreach(dep ${ARG_DEPENDS})
+       set(buildinfostring "${buildinfostring}${dep},")
+     endforeach()  
      set(${dest_name}_buildinfo "${buildinfostring}")
 
       #---Adding extra step to copy the log files and version file--------------------------------------
