@@ -191,7 +191,7 @@ LCGPackage_Add(
 #---LCGCMT--------------------------------------------------------------------------------------------
 LCGPackage_Add(
   LCGCMT
-  SVN_REPOSITORY http://svn.cern.ch/guest/lcgsoft/tags/${LCGCMT_native_version}/lcgcmt --quiet
+  SVN_REPOSITORY http://svn.cern.ch/guest/lcgsoft/tags/LCGCMT-cmake/lcgcmt --quiet
   UPDATE_COMMAND ${Python_cmd} ${CMAKE_SOURCE_DIR}/cmake/scripts/create_LCGCMT.py ${CMAKE_BINARY_DIR}/dependencies.json <SOURCE_DIR>/LCG_Configuration/cmt/requirements
   CONFIGURE_COMMAND <VOID>
   BUILD_COMMAND <VOID>
