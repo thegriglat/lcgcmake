@@ -4,7 +4,8 @@
 # 1) replace absolute pythonpath by relative one in the executable
 location="\#\!\/usr\/bin\/env python"
 
-sed -i "1s/.*/$location/" $1/bin/qmtest
+sed -i.bak "1s/.*/$location/" $1/bin/qmtest
+rm $1/bin/qmtest.bak
 
 # 2) fix config.py to be self-relative
 cd $1/lib/python*/site-packages/qm
