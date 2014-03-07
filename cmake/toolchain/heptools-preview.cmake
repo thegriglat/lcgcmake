@@ -15,8 +15,6 @@ include(${CMAKE_CURRENT_LIST_DIR}/heptools-common.cmake)
 LCG_AA_project(COOL  COOL_2_9_1)
 LCG_AA_project(CORAL CORAL_2_4_1)
 LCG_AA_project(RELAX RELAX_1_3_0p)
-LCG_AA_project(ROOT  5.34.13)
-
 LCG_AA_project(ROOT  5.34.99)
 LCG_AA_project(LCGCMT LCGCMT-${heptools_version})
 
