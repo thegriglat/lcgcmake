@@ -212,7 +212,6 @@ if(NOT ${LCG_OS}${LCG_OSVERS} STREQUAL mac109) # rivet 2 does not work yet with 
   LCG_external_package(rivet             2.0.0         ${MCGENPATH}/rivet   	yoda=1.0.4   )  
 endif()
 LCG_external_package(rivet             2.1.0          ${MCGENPATH}/rivet	yoda=1.0.5      )
-LCG_external_package(rivet             2.1.1b1          ${MCGENPATH}/rivet        yoda=1.0.6b1      )
 
 LCG_external_package(rivet             1.8.3          ${MCGENPATH}/rivet yoda=1.0.4       )
 LCG_external_package(rivet             1.9.0          ${MCGENPATH}/rivet yoda=1.0.4      )
@@ -235,7 +234,6 @@ LCG_external_package(cython            0.19.1         ${MCGENPATH}/cython       
 
 LCG_external_package(yamlcpp           0.3.0          ${MCGENPATH}/yamlcpp      ) 
 
-LCG_external_package(yoda              1.0.6b1          ${MCGENPATH}/yoda         )
 LCG_external_package(yoda              1.0.4          ${MCGENPATH}/yoda         ) 
 LCG_external_package(yoda              1.0.5          ${MCGENPATH}/yoda         )
 
