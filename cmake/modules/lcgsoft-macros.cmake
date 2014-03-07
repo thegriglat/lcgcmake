@@ -65,7 +65,7 @@ macro(LCGPackage_Add name)
 
     string(SHA1 longtargethash "${${name}_full_version}" )
     string(SUBSTRING "${longtargethash}" 0 5 targethash )
-    set( ${targetname}_hash ${targethash} PARENT_SCOPE)
+    set(${targetname}_hash ${targethash})
 
     #---Deal with deatination name (bundle packages)--------------------------------------------------
     if(ARG_DEST_NAME)
@@ -208,7 +208,13 @@ macro(LCGPackage_Add name)
      set(buildinfostring "${buildinfostring} NAME: ${name},")
      set(buildinfostring "${buildinfostring} VERSION: ${version},")
      foreach(dep ${ARG_DEPENDS})
-       set(buildinfostring "${buildinfostring}${dep},")
+       # dependent package may have the form name-version
+       if(dep MATCHES "(.+)-(.+)")
+         set(buildinfostring "${buildinfostring}${CMAKE_MATCH_1}-${${dep}_hash},")
+       else()
+         list(GET ${dep}_native_version -1 vers)
+         set(buildinfostring "${buildinfostring}${dep}-${${dep}-${vers}_hash},")
+       endif()
      endforeach()  
      set(${dest_name}_buildinfo "${buildinfostring}")
 
@@ -289,6 +295,7 @@ macro(LCGPackage_Add name)
 
     set(${name}-${version}_home ${${name}_home} PARENT_SCOPE)
     set(${targetname}_dependencies ${${targetname}_dependencies} PARENT_SCOPE)
+    set(${targetname}_hash ${${targetname}_hash} PARENT_SCOPE)    
 
   endforeach()
   
