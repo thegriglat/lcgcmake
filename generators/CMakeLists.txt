@@ -1167,11 +1167,8 @@ LCG_add_test(
        COMMAND ${CMAKE_COMMAND} -DAIDA2ROOT=${AIDA2ROOT} -DPython_cmd=${Python_cmd} -Dyoda_home=${yoda_home} -DINPUT=${CMAKE_BINARY_DIR}/generators/pythia6_riv2_ttbar.yoda -P ${CMAKE_SOURCE_DIR}/cmake/scripts/yoda2root.cmake
        COMMAND ${CMAKE_COMMAND} -DAIDA2ROOT=${AIDA2ROOT} -DPython_cmd=${Python_cmd} -Dyoda_home=${yoda_home} -DINPUT=${CMAKE_BINARY_DIR}/generators/pythia6_riv2_ttbar_i.yoda -P ${CMAKE_SOURCE_DIR}/cmake/scripts/yoda2root.cmake
        COMMAND ${Python_cmd} ${CMAKE_SOURCE_DIR}/generators/reference/reference.py ${CMAKE_BINARY_DIR}/generators/pythia6_riv2_ttbar.root ${CMAKE_BINARY_DIR}/generators/pythia6_riv2_ttbar_i.root "Path=jet_HT,jet_mult" "limit=0.90,0.90"
+       COMMAND ${Python_cmd} ${CMAKE_SOURCE_DIR}/generators/reference/reference.py ${CMAKE_BINARY_DIR}/generators/pythia6_riv2_ttbar.root ${CMAKE_BINARY_DIR}/generators/pythia6_riv2_ttbar_i.root "Path=XS" limit=0.05
 )
-
-#COMMAND ${Python_cmd} ${CMAKE_SOURCE_DIR}/generators/reference/reference.py
-# ${CMAKE_SOURCE_DIR}/generators/reference/pythia6_riv2_ttbar.yoda
-# ${CMAKE_BINARY_DIR}/generators/pythia6_riv2_ttbar_i.yoda "Path=XS" limit=0.90
 
 LCG_add_test(rivet-herwigpp-ttbar-test
                           TEST_COMMAND ${herwig++_home}/bin/Herwig++ read ${CMAKE_SOURCE_DIR}/generators/herwig++/tests/LHC-ttbar.in
