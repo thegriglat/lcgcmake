@@ -128,19 +128,19 @@ status = {'success':0,'failed':0}
 for (Path,limit) in tests:  
     if Path == 'XS' and len(tests) == 1:
         if Check_HistosN(RefFile,TestFile,Path,limit):
-            print Path,"check is succeed."
+            print Path,"check succeeded."
             status['success'] += 1
         else:
-            print Path,"check is failed."
+            print Path,"check failed."
             status['failed'] += 1
     else:
         if Check_Histos(RefFile,TestFile,Path,limit):
-            print Path,"check is succeed."
+            print Path,"check succeeded."
             status['success'] += 1
         else:
-            print Path,"check is failed."
+            print Path,"check failed."
             status['failed'] += 1
 
-print "Totat check: " + str(status['success'] + status['failed']) + ", success: " + str(status['success']) + ", failed: " + str(status['failed'])
+print "Total check: " + str(status['success'] + status['failed']) + ", success: " + str(status['success']) + ", failed: " + str(status['failed'])
 if status['failed'] > 0:
     Exit(1,"One or more checks are failed. Test failed.")
