@@ -67,8 +67,8 @@ def Check_Histos(RefFile, TestFile, component, limit = 0.9):
         return False
 
 def Check_HistosN(RefFile, TestFile, component, limit = 0.9):
-    """ Check Kolmogorov value between 'component' of Reference and Test file """
-    print "### Do kolmogorov test to compare two TH1F (" + component + ") ###"
+    """ Check chi2 value between 'component' of Reference and Test file """
+    print "### Do chi2 test to compare two TH1F (" + component + ") ###"
     if limit == None: limit = 0.9
     try:
         import ROOT
@@ -85,9 +85,15 @@ def Check_HistosN(RefFile, TestFile, component, limit = 0.9):
     except:
         Exit(1,"Cannot obtain " + component + " from files")
     try:
-        hi = RefHist.KolmogorovTest(TestHist,"N")
+        ValueRef = RefHist.GetBinContent(1)
+        ValueTest = TestHist.GetBinContent(1)
+        ErrRef = RefHist.GetBinError(1)
+        ErrTest = TestHist.GetBinError(1)
+        chi2 = (ValueTest-ValueRef)*(ValueTest-ValueRef)/(ErrRef*ErrRef+ErrTest*ErrTest)
+        print "chi2 =  " + str(chi2)
+        hi = ROOT.TMath.Prob(chi2, 1)
     except:
-        print "Cannot do Kolmogorov test"
+        print "Cannot do chi2 test"
         return False
     print "Result: " + str(hi) + " | success if >= " + str(limit)
     if hi >= limit:
