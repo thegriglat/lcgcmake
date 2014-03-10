@@ -2,7 +2,9 @@
 
 #
 # Options are      
-# $0 RefFile TestFile "Path=XS,W_mass" "limit=0.95,0.9"
+# $0 RefFile TestFile "Path=XS,W_mass" "limit=0.05,0.1"
+# Function Check_XS is not used for the moment. It is unfinished:
+# calculation of chi2 using errors and probability is to be made.
 #
 
 import sys
