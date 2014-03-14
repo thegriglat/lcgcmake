@@ -1,8 +1,8 @@
 (run){
   # disable colorizing of text messages
   PRETTY_PRINT = Off
-  EVENTS = 100
-  HEPMC2_GENEVENT_OUTPUT= sherpa_zjets
+  EVENTS = 1000
+  EVENT_OUTPUT=HepMC_GenEvent[sherpa_zjets]
   FILE_SIZE = 100000000
 }(run)
 
