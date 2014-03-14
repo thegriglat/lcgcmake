@@ -1209,6 +1209,18 @@ LCG_add_test(sherpa_riv2_test
 )
 #COMMAND ${rivet2_home}/bin/rivet -a MC_XS -a MC_ZJETS -H sherpa_riv2_zjets_i.yoda sherpa_zjets.hepmc2g
 
+LCG_add_test(
+  herwig_riv2_zjets
+  TEST_COMMAND ${agile_home}/bin/agile-runmc --list-gens
+       COMMAND ${agile_home}/bin/agile-runmc Herwig:6.520 -o hepmcfile_herwig_zjets.dat --paramfile ${CMAKE_SOURCE_DIR}/generators/rivet-testing/herwig/herwig-zjets-7tev.params -n 2000
+       COMMAND ${rivet2_home}/bin/rivet -a MC_XS -a MC_ZJETS -H herwig_riv2_zjets_i.yoda hepmcfile_herwig_zjets.dat
+  ENVIRONMENT PATH=${agile_home}/bin:${Python_home}/bin:$ENV{PATH}
+              ${library_path}=${Python_home}/lib:${GSL_home}/lib:${rivet2_home}/lib:${yoda_home}/lib:${HepMC_home}/lib:${fastjet_home}/lib:${yamlcpp_home}/lib:${agile_home}/lib:${HepMC_home}/lib:${ROOT_home}/lib:$ENV{${library_path}}
+              PYTHONPATH=${Python_home}/bin:${agile_home}/lib/python${Python_config_version_twodigit}/site-packages:${yoda_home}/lib/python${Python_config_version_twodigit}/site-packages/:${ROOT_home}/lib:$ENV{PYTHONPATH}
+              AGILE_GEN_PATH=${agile_home}/../../..
+  LABELS PhysicsCheck
+)
+
 
 LCG_add_test(debug-symbols-test 
              TEST_COMMAND ${CMAKE_SOURCE_DIR}/cmake/scripts/check_debug_symbols.sh ${CMAKE_INSTALL_PREFIX}
