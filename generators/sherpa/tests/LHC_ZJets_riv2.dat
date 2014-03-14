@@ -4,6 +4,7 @@
   EVENTS = 1000
   EVENT_OUTPUT=HepMC_GenEvent[sherpa_zjets]
   FILE_SIZE = 100000000
+  RANDOM_SEED=1 2 3 4
 }(run)
 
 (beam){
