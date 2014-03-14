@@ -1,0 +1,10 @@
+# set beams
+RG:Beam1 = PROTON
+RG:Beam2 = PROTON
+RG:Mom1 = 3500.
+RG:Mom2 = 3500.
+RG:Seed = 47
+RG:NumEvents = 10000
+
+IPROC = 2150
+PTMIN = 20
