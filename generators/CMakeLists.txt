@@ -746,18 +746,18 @@ LCGPackage_Add(
 
 # $PWD is needed because Sherpa uses this variable to know current directory
 LCG_add_test(sherpa_orig_test1
-  PRE_COMMAND ${CMAKE_COMMAND} -E make_directory sherpa/tests
-  TEST_COMMAND ${CMAKE_COMMAND} -E chdir sherpa/tests ${sherpa_home}/bin/Sherpa -j20 -f ${CMAKE_SOURCE_DIR}/generators/sherpa/tests/LHC_Z.dat
-  POST_COMMAND ${CMAKE_COMMAND} -E remove_directory sherpa/tests
+  PRE_COMMAND ${CMAKE_COMMAND} -E remove_directory sherpa/tests_orig1
+      COMMAND ${CMAKE_COMMAND} -E make_directory sherpa/tests_orig1
+  TEST_COMMAND ${CMAKE_COMMAND} -E chdir sherpa/tests_orig1 ${sherpa_home}/bin/Sherpa -j20 -f ${CMAKE_SOURCE_DIR}/generators/sherpa/tests/LHC_Z.dat
   ENVIRONMENT
     ${library_path}=${sherpa_home}/lib/SHERPA-MC:${HepMC_home}/lib:${lhapdf_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:$ENV{${library_path}}
     PWD=.
 )
 
 LCG_add_test(sherpa_orig_test2
-  PRE_COMMAND ${CMAKE_COMMAND} -E make_directory sherpa/tests2
-  TEST_COMMAND ${CMAKE_COMMAND} -E chdir sherpa/tests2 ${sherpa_home}/bin/Sherpa -j20 -f ${CMAKE_SOURCE_DIR}/generators/sherpa/tests/LHC_ZJets.dat
-  POST_COMMAND ${CMAKE_COMMAND} -E remove_directory sherpa/tests2
+  PRE_COMMAND ${CMAKE_COMMAND} -E remove_directory sherpa/tests_orig2
+      COMMAND ${CMAKE_COMMAND} -E make_directory sherpa/tests_orig2
+  TEST_COMMAND ${CMAKE_COMMAND} -E chdir sherpa/tests_orig2 ${sherpa_home}/bin/Sherpa -j20 -f ${CMAKE_SOURCE_DIR}/generators/sherpa/tests/LHC_ZJets.dat
   ENVIRONMENT
     ${library_path}=${sherpa_home}/lib/SHERPA-MC:${HepMC_home}/lib:${lhapdf_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:$ENV{${library_path}}
     PWD=.
@@ -1192,11 +1192,16 @@ LCG_add_test(herwigpp_riv2_ttbar
             COMMAND ${Python_cmd} ${CMAKE_SOURCE_DIR}/generators/reference/reference.py ${CMAKE_BINARY_DIR}/generators/herwigpp_riv2_ttbar.root ${CMAKE_BINARY_DIR}/generators/herwigpp_riv2_ttbar_i.root "Path=XS" limit=0.05
 )
   
-#COMMAND ${Python_cmd} ${CMAKE_SOURCE_DIR}/generators/reference/reference.py 
-# ${CMAKE_SOURCE_DIR}/generators/reference/rivet-herwigpp-ttbar-test.yoda 
-# ${CMAKE_BINARY_DIR}/generators/Rivet.yoda "Path=XS" limit=0.90
+LCG_add_test(sherpa_riv2_test
+  PRE_COMMAND ${CMAKE_COMMAND} -E remove_directory sherpa/tests_riv2
+      COMMAND ${CMAKE_COMMAND} -E make_directory sherpa/tests_riv2
+  TEST_COMMAND ${CMAKE_COMMAND} -E chdir sherpa/tests_riv2 ${sherpa_home}/bin/Sherpa -j20 -f ${CMAKE_SOURCE_DIR}/generators/sherpa/tests/LHC_ZJets_riv2.dat
+  ENVIRONMENT ${library_path}=${sherpa_home}/lib/SHERPA-MC:${HepMC_home}/lib:${lhapdf_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:$ENV{${library_path}}
+              PWD=.
+  LABELS PhysicsCheck
+)
 
-  
+
 LCG_add_test(debug-symbols-test 
              TEST_COMMAND ${CMAKE_SOURCE_DIR}/cmake/scripts/check_debug_symbols.sh ${CMAKE_INSTALL_PREFIX}
             )
