@@ -1201,10 +1201,10 @@ LCG_add_test(sherpa_riv2_test
               PYTHONPATH=${Python_home}/bin:${yoda_home}/lib/python${Python_config_version_twodigit}/site-packages/:${ROOT_home}/lib:$ENV{PYTHONPATH}
               PWD=.
   POST_COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/generators/reference/sherpa_riv2.yoda ${CMAKE_BINARY_DIR}/generators/sherpa_riv2.yoda
-            COMMAND ${CMAKE_COMMAND} -DAIDA2ROOT=${AIDA2ROOT} -DPython_cmd=${Python_cmd} -Dyoda_home=${yoda_home} -DINPUT=${CMAKE_BINARY_DIR}/generators/sherpa_riv2.yoda -P ${CMAKE_SOURCE_DIR}/cmake/scripts/yoda2root.cmake
-            COMMAND ${CMAKE_COMMAND} -DAIDA2ROOT=${AIDA2ROOT} -DPython_cmd=${Python_cmd} -Dyoda_home=${yoda_home} -DINPUT=${CMAKE_BINARY_DIR}/generators/sherpa_riv2_i.yoda -P ${CMAKE_SOURCE_DIR}/cmake/scripts/yoda2root.cmake
-            COMMAND ${Python_cmd} ${CMAKE_SOURCE_DIR}/generators/reference/reference.py ${CMAKE_BINARY_DIR}/generators/sherpa_riv2.root ${CMAKE_BINARY_DIR}/generators/sherpa_riv2_i.root "Path=jet_HT" limit=0.10
-            COMMAND ${Python_cmd} ${CMAKE_SOURCE_DIR}/generators/reference/reference.py ${CMAKE_BINARY_DIR}/generators/sherpa_riv2.root ${CMAKE_BINARY_DIR}/generators/sherpa_riv2_i.root "Path=XS" limit=0.05
+       COMMAND ${CMAKE_COMMAND} -DAIDA2ROOT=${AIDA2ROOT} -DPython_cmd=${Python_cmd} -Dyoda_home=${yoda_home} -DINPUT=${CMAKE_BINARY_DIR}/generators/sherpa_riv2.yoda -P ${CMAKE_SOURCE_DIR}/cmake/scripts/yoda2root.cmake
+       COMMAND ${CMAKE_COMMAND} -DAIDA2ROOT=${AIDA2ROOT} -DPython_cmd=${Python_cmd} -Dyoda_home=${yoda_home} -DINPUT=${CMAKE_BINARY_DIR}/generators/sherpa_riv2_i.yoda -P ${CMAKE_SOURCE_DIR}/cmake/scripts/yoda2root.cmake
+       COMMAND ${Python_cmd} ${CMAKE_SOURCE_DIR}/generators/reference/reference.py ${CMAKE_BINARY_DIR}/generators/sherpa_riv2.root ${CMAKE_BINARY_DIR}/generators/sherpa_riv2_i.root "Path=jet_HT" limit=0.10
+       COMMAND ${Python_cmd} ${CMAKE_SOURCE_DIR}/generators/reference/reference.py ${CMAKE_BINARY_DIR}/generators/sherpa_riv2.root ${CMAKE_BINARY_DIR}/generators/sherpa_riv2_i.root "Path=XS" limit=0.05
   LABELS PhysicsCheck
 )
 #COMMAND ${rivet2_home}/bin/rivet -a MC_XS -a MC_ZJETS -H sherpa_riv2_zjets_i.yoda sherpa_zjets.hepmc2g
@@ -1213,11 +1213,16 @@ LCG_add_test(
   herwig_riv2_zjets
   TEST_COMMAND ${agile_home}/bin/agile-runmc --list-gens
        COMMAND ${agile_home}/bin/agile-runmc Herwig:6.520 -o hepmcfile_herwig_zjets.dat --paramfile ${CMAKE_SOURCE_DIR}/generators/rivet-testing/herwig/herwig-zjets-7tev.params -n 2000
-       COMMAND ${rivet2_home}/bin/rivet -a MC_XS -a MC_ZJETS -H herwig_riv2_zjets_i.yoda hepmcfile_herwig_zjets.dat
+       COMMAND ${rivet2_home}/bin/rivet -a MC_XS -a MC_ZJETS -H herwig_riv2_i.yoda hepmcfile_herwig_zjets.dat
   ENVIRONMENT PATH=${agile_home}/bin:${Python_home}/bin:$ENV{PATH}
               ${library_path}=${Python_home}/lib:${GSL_home}/lib:${rivet2_home}/lib:${yoda_home}/lib:${HepMC_home}/lib:${fastjet_home}/lib:${yamlcpp_home}/lib:${agile_home}/lib:${HepMC_home}/lib:${ROOT_home}/lib:$ENV{${library_path}}
               PYTHONPATH=${Python_home}/bin:${agile_home}/lib/python${Python_config_version_twodigit}/site-packages:${yoda_home}/lib/python${Python_config_version_twodigit}/site-packages/:${ROOT_home}/lib:$ENV{PYTHONPATH}
               AGILE_GEN_PATH=${agile_home}/../../..
+  POST_COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/generators/reference/herwig_riv2.yoda ${CMAKE_BINARY_DIR}/generators/herwig_riv2.yoda
+       COMMAND ${CMAKE_COMMAND} -DAIDA2ROOT=${AIDA2ROOT} -DPython_cmd=${Python_cmd} -Dyoda_home=${yoda_home} -DINPUT=${CMAKE_BINARY_DIR}/generators/herwig_riv2.yoda -P ${CMAKE_SOURCE_DIR}/cmake/scripts/yoda2root.cmake
+       COMMAND ${CMAKE_COMMAND} -DAIDA2ROOT=${AIDA2ROOT} -DPython_cmd=${Python_cmd} -Dyoda_home=${yoda_home} -DINPUT=${CMAKE_BINARY_DIR}/generators/herwig_riv2_i.yoda -P ${CMAKE_SOURCE_DIR}/cmake/scripts/yoda2root.cmake
+       COMMAND ${Python_cmd} ${CMAKE_SOURCE_DIR}/generators/reference/reference.py ${CMAKE_BINARY_DIR}/generators/herwig_riv2.root ${CMAKE_BINARY_DIR}/generators/herwig_riv2_i.root "Path=jet_HT" limit=0.10
+       COMMAND ${Python_cmd} ${CMAKE_SOURCE_DIR}/generators/reference/reference.py ${CMAKE_BINARY_DIR}/generators/herwig_riv2.root ${CMAKE_BINARY_DIR}/generators/herwig_riv2_i.root "Path=XS" limit=0.05
   LABELS PhysicsCheck
 )
 
