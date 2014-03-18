@@ -970,6 +970,17 @@ LCGPackage_Add(
   BUILD_IN_SOURCE 1
 )
 
+LCG_add_test(
+  alpgen_test1
+  PRE_COMMAND ${CMAKE_COMMAND} -E remove_directory tmpalpgen
+      COMMAND ${CMAKE_COMMAND} -E make_directory tmpalpgen/examples
+      COMMAND ${CMAKE_COMMAND} -E copy_directory ${alpgen_home}/../share/sources/examples tmpalpgen/examples
+      COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/generators/alpgen/tests/inputalpgen tmpalpgen/examples
+      COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/generators/alpgen/tests/inputalpgen2 tmpalpgen/examples
+      COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/generators/alpgen/tests/inputalpgen3 tmpalpgen/examples  
+  TEST_COMMAND ${CMAKE_COMMAND} -E chdir tmpalpgen/examples ${CMAKE_SOURCE_DIR}/generators/alpgen/tests/runalpgen ${alpgen_home}/../share/sources ${alpgen_home}/lib/archive
+)
+
 #---CRMC (FORMER EPOS)-----------------------------------------------------------------------------
 # SVN repository:
 #   https://devel-ik.fzk.de/svn/mc/crmc/tags/{version}
