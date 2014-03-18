@@ -82,7 +82,7 @@ LCGPackage_Add(
   DOWNLOAD_COMMAND <VOID>
   CONFIGURE_COMMAND <VOID>
   BUILD_COMMAND <VOID>
-  INSTALL_COMMAND <VOID>
+  INSTALL_COMMAND ${CMAKE_SOURCE_DIR}/pyexternals/Python_postinstall.sh <INSTALL_DIR>
   BUNDLE_PACKAGE 1
   DEPENDS matplotlib numpy scipy sympy pyminuit
 )
@@ -366,7 +366,7 @@ LCGPackage_Add(
   DOWNLOAD_COMMAND <VOID>
   CONFIGURE_COMMAND <VOID>
   BUILD_COMMAND <VOID>
-  INSTALL_COMMAND <VOID>
+  INSTALL_COMMAND ${CMAKE_SOURCE_DIR}/pyexternals/Python_postinstall.sh <INSTALL_DIR>
   BUNDLE_PACKAGE 1
   DEPENDS lxml sqlalchemy genshi 4suite cx_oracle ipython json mock multiprocessing setuptools mysql_python processing py py2neo pyxml storm pytest pylint nose coverage stomppy
 )
