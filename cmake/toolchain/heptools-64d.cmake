@@ -220,6 +220,7 @@ LCG_external_package(photos++          3.52           ${MCGENPATH}/photos++     
 
 LCG_external_package(pythia6           428.2          ${MCGENPATH}/pythia6        author=6.4.28 hepevt=10000  )
 
+LCG_external_package(pythia8           185            ${MCGENPATH}/pythia8      author=185     )
 LCG_external_package(pythia8           183            ${MCGENPATH}/pythia8      author=183     )
 LCG_external_package(pythia8           180            ${MCGENPATH}/pythia8      author=180     )
 LCG_external_package(pythia8           175.lhetau     ${MCGENPATH}/pythia8      author=175     )
