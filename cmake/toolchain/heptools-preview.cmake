@@ -112,6 +112,7 @@ LCG_external_package(vdt               0.3.6                                    
 LCG_external_package(XercesC           3.1.1p1        author=3.1.1              )
 LCG_external_package(xqilla            2.2.4p1                                  )
 LCG_external_package(xrootd            3.3.6                                    )
+LCG_external_package(xrootd_python     0.1.3                                    )
 
 #---EMI-2 grid externals and other binary packages---------------------
 if(NOT ${LCG_OS} STREQUAL mac)

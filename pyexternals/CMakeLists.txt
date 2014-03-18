@@ -506,6 +506,16 @@ LCGPackage_Add(
   DEPENDS Python pytools
 )
 
-
-
-
+#---xroot_python------------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  xrootd_python
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/xrootd-python-${xrootd_python_native_version}.tar.gz
+  CONFIGURE_COMMAND <VOID>
+  BUILD_COMMAND   ${Exec_cmd} XRD_LIBDIR=${xrootd_home}/lib64
+                              XRD_INCDIR=${xrootd_home}/include/xrootd
+                  ${Python_cmd} setup.py build
+  INSTALL_COMMAND mkdir -p <INSTALL_DIR>/lib/python${Python_config_version_twodigit}/site-packages/
+          COMMAND ${Python_cmd} setup.py install --prefix <INSTALL_DIR>
+  BUILD_IN_SOURCE 1
+  DEPENDS Python xrootd
+)
