@@ -1,0 +1,5 @@
+configure_simple --with-alpgeninstalled=$MCGENERATORS/../MCGenerators_lcgcmt67b/alpgen/2.1.4/share/sources 
+--with-alpgenlibs=$MCGREPLICA/../MCGenerators_lcgcmt65/alpgen/2.1.4/x86_64-slc5-gcc47-opt/lib/archive
+make -f Makefile_simple zjet
+zjetgen.exe < inputalpgen
+zjetgen.exe < inputalpgen2
