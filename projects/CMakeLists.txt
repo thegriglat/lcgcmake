@@ -68,15 +68,13 @@ if(LCG_TARGET MATCHES "mac.*-gcc(47|48)")
                                   --with-oracle-libdir=${oracle_home}/lib
                                   --with-rfio-incdir=${CASTOR_home}/include/shift
                                   --with-rfio-libdir=${CASTOR_home}/lib${LIBSUFFIX}
-                                  --with-pythia8-incdir=${pythia8_home}/include
-                                  --with-pythia8-libdir=${pythia8_home}/lib
                                   --disable-gviz   # compilation errors (see https://sft.its.cern.ch/jira/browse/ROOT-176)
     INSTALL_COMMAND  make dist
             COMMAND  $ENV{SHELL} -c "rm <SOURCE_DIR>/../root_v${ROOT_native_version}.source.tar.gz"
             COMMAND  ${CMAKE_COMMAND} -E make_directory <INSTALL_DIR>
             COMMAND  $ENV{SHELL} -c "tar -C <INSTALL_DIR> --strip=1 -xf <SOURCE_DIR>/../root_v${ROOT_native_version}*.tar.gz"
     BUILD_IN_SOURCE 1
-    DEPENDS Python CASTOR dcap fftw gfal graphviz GSL mysql oracle pythia8 Qt xrootd srm_ifce
+    DEPENDS Python CASTOR dcap fftw gfal graphviz GSL mysql oracle Qt xrootd srm_ifce
   )
 else()
  LCGPackage_Add(
@@ -110,8 +108,6 @@ else()
                -Dmysql=ON -DMYSQL_CONFIG_EXECUTABLE=${mysql_home}/bin/mysql_config
                -Dodbc=ON
                -Dopengl=ON
-               -Dpythia8=ON -DPYTHIA8_LIBRARY=${pythia8_home}/lib/libpythia8${CMAKE_SHARED_LIBRARY_SUFFIX}
-                            -DPYTHIA8_INCLUDE_DIR=${pythia8_home}/include
                -Dqtgsi=ON
                -Dreflex=ON
                -Droofit=ON
@@ -138,7 +134,7 @@ else()
                IF LCG_TARGET MATCHES "mac" AND NOT LCG_TARGET MATCHES "mac109" THEN
                    -Dqt=ON -DQT_QMAKE_EXECUTABLE=${Qt_home}/bin/qmake
                ENDIF
-    DEPENDS Python fftw graphviz GSL mysql pythia8 xrootd 
+    DEPENDS Python fftw graphviz GSL mysql xrootd 
             IF LCG_TARGET MATCHES x86_64-slc THEN
                 CASTOR dcap gfal srm_ifce
             ENDIF
