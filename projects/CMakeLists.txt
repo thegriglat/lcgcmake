@@ -19,8 +19,8 @@ string(REGEX MATCH "[0-9]+[.][0-9]+[.][0-9]+" ROOT_author_version ${ROOT_native_
 if(LCG_TARGET MATCHES "mac.*-gcc(47|48)")
   LCGPackage_Add(
     ROOT
-    IF <VERSION> VERSION_EQUAL 5.34.99 THEN
-      GIT_REPOSITORY http://root.cern.ch/git/root.git GIT_TAG v5-34-00-patches 
+    IF <VERSION> VERSION_EQUAL v5-34-00-patches THEN
+      GIT_REPOSITORY http://root.cern.ch/git/root.git GIT_TAG <VERSION>
       UPDATE_COMMAND <VOID>
     ELSE
       URL ftp://root.cern.ch/root/root_v${ROOT_author_version}.source.tar.gz
@@ -79,8 +79,8 @@ if(LCG_TARGET MATCHES "mac.*-gcc(47|48)")
 else()
  LCGPackage_Add(
     ROOT
-    IF <VERSION> VERSION_EQUAL 5.34.99 THEN
-      GIT_REPOSITORY http://root.cern.ch/git/root.git GIT_TAG v5-34-00-patches 
+    IF <VERSION> VERSION_EQUAL v5-34-00-patches THEN
+      GIT_REPOSITORY http://root.cern.ch/git/root.git GIT_TAG <VERSION>
       UPDATE_COMMAND <VOID>
     ELSE
       URL ftp://root.cern.ch/root/root_v${ROOT_author_version}.source.tar.gz
@@ -121,6 +121,9 @@ else()
                -DCINTMAXSTRUCT=36000
                -DCINTMAXTYPEDEF=36000
                -DCINTLONGLINE=4096
+               IF LCG_CPP11 THEN
+                   -Dc++11=ON
+               ENDIF   
                IF LCG_TARGET MATCHES x86_64-slc THEN
                    -Dcastor=ON -DCASTOR_DIR=${CASTOR_home}
                    -Ddcache=ON -DDCAP_DIR=${dcap_home}
