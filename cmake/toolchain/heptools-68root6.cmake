@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 2.8.5)
 # Declare the version of HEP Tools we use
 # (must be done before including heptools-common to allow evolution of the
 # structure)
-set(heptools_version  68root6)
+set(heptools_version  68_root6)
 
 include(${CMAKE_CURRENT_LIST_DIR}/heptools-common.cmake)
 
@@ -12,11 +12,11 @@ include(${CMAKE_CURRENT_LIST_DIR}/heptools-common.cmake)
 
 
 # Application Area Projects
-LCG_AA_project(COOL  COOL_3_0-preview)
-LCG_AA_project(CORAL CORAL_3_0-preview)
+LCG_AA_project(COOL  COOL_3_0_0-pre1)
+LCG_AA_project(CORAL  CORAL_3_0_0-pre1)
 LCG_AA_project(RELAX RELAX-root6)
 LCG_AA_project(ROOT  v5-99-05-lhcb)
-LCG_AA_project(LCGCMT LCGCMT-${heptools_version})
+LCG_AA_project(LCGCMT LCGCMT_${heptools_version})
 
 # Compilers
 #LCG_compiler(gcc43 gcc 4.3.5)

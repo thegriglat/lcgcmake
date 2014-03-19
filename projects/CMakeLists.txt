@@ -90,7 +90,7 @@ else()
                -Dpython=ON -DPYTHON_EXECUTABLE=${Python_home}/bin/python
                            -DPYTHON_INCLUDE_DIR=${Python_home}/include/python${Python_config_version_twodigit}
                            -DPYTHON_LIBRARY=${Python_home}/lib/libpython${Python_config_version_twodigit}${CMAKE_SHARED_LIBRARY_SUFFIX}
-               -DGRAPHVIZ_DIR=${graphviz_home}
+#               -DGRAPHVIZ_DIR=${graphviz_home}
                -Dbuiltin_pcre=ON
                -Dcintex=ON
                -Dexceptions=ON
@@ -190,7 +190,11 @@ LCGPackage_Add(
 #---LCGCMT--------------------------------------------------------------------------------------------
 LCGPackage_Add(
   LCGCMT
-  SVN_REPOSITORY http://svn.cern.ch/guest/lcgsoft/tags/LCGCMT-cmake/lcgcmt --quiet
+  IF ${heptools_version} VERSION_EQUAL 68_root6 THEN
+    SVN_REPOSITORY http://svn.cern.ch/guest/lcgsoft/tags/LCGCMT-cmake_root6/lcgcmt --quiet
+  ELSE
+    SVN_REPOSITORY http://svn.cern.ch/guest/lcgsoft/tags/LCGCMT-cmake/lcgcmt --quiet
+  ENDIF
   UPDATE_COMMAND ${Python_cmd} ${CMAKE_SOURCE_DIR}/cmake/scripts/create_LCGCMT.py ${CMAKE_BINARY_DIR}/dependencies.json <SOURCE_DIR>/LCG_Configuration/cmt/requirements
   CONFIGURE_COMMAND <VOID>
   BUILD_COMMAND <VOID>
