@@ -1,4 +1,4 @@
-configure_simple --with-alpgeninstalled=$1 --with-alpgenlibs=$2
+./configure_simple --with-alpgeninstalled=$1 --with-alpgenlibs=$2
 make -f Makefile_simple zjet
 zjetgen.exe < inputalpgen
 zjetgen.exe < inputalpgen2
