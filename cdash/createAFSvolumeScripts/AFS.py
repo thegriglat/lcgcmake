@@ -292,3 +292,18 @@ def deleteVolumeReplicas(path):
     return
 
 
+# --------------------------------------------------------------------------------
+#
+def doVosExamine(vol): 
+    cmd = vosCmd + " exa " + vol
+    p = subprocess.Popen(cmd,shell=True,stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, close_fds=True)
+    (sin, sout, serr) = (p.stdin, p.stdout,p.stderr)
+    ##sin, sout, serr = os.popen3(cmd) --- obsolete (eg)
+    if sout:
+        lines = sout.readlines()
+        for line in lines:
+            print line
+    if serr:
+	errLines = serr.readlines()
+        if errLines and len(errLines)>0 : print "err:", errLines
+    return

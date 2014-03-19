@@ -14,8 +14,8 @@ def skip_in_dry_mode(method):
 
 class ProjectAreaManager(object):
     #(eg)
-    def __init__(self, project_version, prefix, dry=False ):
-        self._version = project_version
+    def __init__(self, project_release, prefix, dry=False ):
+        self._releasename = project_release
         if dry:
            print "=== Running in dry mode === \n"            
         self._dryMode = dry
@@ -27,14 +27,14 @@ class ProjectAreaManager(object):
         
         print "Start CREATE_AREA script"
         prefix = self._prefix
-        version = self._version
+        release = self._releasename
 
-        path = os.path.join(prefix,version,target)
+        path = os.path.join(prefix,release,target)
         print "Check existence of LCG release path" 
         print 'PATH: %s' % path
-        if target:
-            if not os.path.exists(os.path.join(prefix,version)):
-                raise SystemExit(os.path.join(prefix,version), "does not exist I cannot create the MCGenerators volume")
+#        if target:
+#            if not os.path.exists(os.path.join(prefix,release)):
+#                raise SystemExit(os.path.join(prefix,release), "does not exist I cannot create the MCGenerators volume")
             
         if os.path.exists(path):
             print path, "already exists. Nothing to be done"
@@ -42,37 +42,38 @@ class ProjectAreaManager(object):
             print "Going to create mount point", path
             # define necessary size by the size of the previous (shrinked) installation +30%
             print "Looking for previous version"
-            previous_version = self.get_previous_project_version(prefix,version,releasename_pattern)
-            print "Previous version %s:" % previous_version
+            previous_release = self.get_previous_project_version(prefix,release,releasename_pattern)
+            print "Previous version %s:" % previous_release
             quota = "5000000"
-            if previous_version:
-                if previous_version < version:
+            if previous_release:
+                if previous_release < release:
                     if target : 
-                        previous_target = "MCGenerators_"+previous_version
+                        previous_target = "MCGenerators_"+previous_release
                     else: previous_target = ""
-                    previous_path = os.path.join(prefix,previous_version,previous_target)
+                    previous_path = os.path.join(prefix,previous_release,previous_target)
                     print "Previous path ", previous_path
                     # previous path exists 
                     if os.path.exists(previous_path):
                         quota = max (int( int(AFS.getVolumeSize(previous_path)) * 1.3 ), int(quota))
                         print "Previous quota %s" % AFS.getVolumeSize(previous_path)
                         print "New Quota %s" % quota
-                elif previous_version > version:
+                elif previous_release > release:
                     raise SystemExit ("You are creating a release older then the last one. Nothing to be done")
 
             if target: 
-                volume_name = self.create_AFS_volume_name("x"+version+"mc")
+                volume_name = self.create_AFS_volume_name("x"+release+"mc")
             else: 
-                volume_name = self.create_AFS_volume_name("x"+version)
+                volume_name = self.create_AFS_volume_name("x"+release)
             print 'Going to create volume %s of size %s and mounting at %s\n' %(volume_name, quota, path)
             self.create_AFS(path, volume_name, quota)
-            if previous_version:
+            if previous_release:
                 print 'Going to copy ACLs from %s to %s' % (previous_path, path)
                 self.copy_ACL(previous_path, path)
             else:
                 print "No previous release. Going to set default premissions"
                 self.set_default_ACL(path)
             self.list_ACL(path)
+            self.vos_examine(volume_name)
         
     # Find the last release installed
     # (eg)
@@ -95,10 +96,10 @@ class ProjectAreaManager(object):
 
     # (eg)
     @staticmethod
-    def create_AFS_volume_name(version):
+    def create_AFS_volume_name(release):
         #remove name for the projects:
         #### THIS MUST BE CHANGED FOR SW PROJECT !!
-        name = "p.sw.lcg."+version.lower().replace("_","").replace(".","")
+        name = "p.sw.lcg."+release.lower().replace("_","").replace(".","")
         if len(name) > 22:
             print "ERROR: volume name "+name+" too large (>22 char) !"
             sys.exit(1)
@@ -137,6 +138,11 @@ class ProjectAreaManager(object):
     def do_vos_release(self, path):
         AFS.doVosRelease(path)
         
+    @skip_in_dry_mode
+    #(eg)
+    def vos_examine(self, vol):
+        AFS.doVosExamine(vol)
+
     def finalize_area(self):
     #(eg)
         print "Start FINALIZE_ARE script"
