@@ -145,6 +145,7 @@ LCG_external_package(powheg-box         r2092         ${MCGENPATH}/powheg-box   
 LCG_external_package(lhapdf            5.8.9          ${MCGENPATH}/lhapdf       )
 LCG_external_package(lhapdfsets        5.8.9          lhapdfsets   )
 
+LCG_external_package(pythia8           185            ${MCGENPATH}/pythia8      author=185  )
 LCG_external_package(pythia8           183            ${MCGENPATH}/pythia8      author=183  )
 LCG_external_package(pythia8           180            ${MCGENPATH}/pythia8      author=180  )
 LCG_external_package(pythia8           175.lhetau     ${MCGENPATH}/pythia8      author=175  )
