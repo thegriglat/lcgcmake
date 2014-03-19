@@ -1154,7 +1154,7 @@ LCG_add_test(
   pythia8_riv2_test
   TEST_COMMAND ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/riv2test.sh ${rivet2_home} hepmcoutzjets_pythia8.dat
   ENVIRONMENT PATH=${Python_home}/bin:$ENV{PATH}
-                   ${library_path}=${Python_home}/lib:${GSL_home}/lib:${yoda_home}/lib:${ROOT_home}/lib:$ENV{${library_path}}
+                   ${library_path}=${Python_home}/lib:${GSL_home}/lib:${rivet2_home}/lib:${yoda_home}/lib:${ROOT_home}/lib:$ENV{${library_path}}
                    PYTHONPATH=${Python_home}/bin:${yoda_home}/lib/python${Python_config_version_twodigit}/site-packages/:${ROOT_home}/lib:$ENV{PYTHONPATH}
   DEPENDS pythia8_outhepmc
   LABELS PhysicsCheck
@@ -1163,7 +1163,9 @@ LCG_add_test(
        COMMAND ${CMAKE_COMMAND} -DAIDA2ROOT=${AIDA2ROOT} -DPython_cmd=${Python_cmd} -Dyoda_home=${yoda_home} -DINPUT=${CMAKE_BINARY_DIR}/generators/pythia8_riv2.yoda -P ${CMAKE_SOURCE_DIR}/cmake/scripts/yoda2root.cmake
        COMMAND ${Python_cmd} ${CMAKE_SOURCE_DIR}/generators/reference/reference.py ${CMAKE_BINARY_DIR}/generators/pythia8_riv2.root ${CMAKE_BINARY_DIR}/generators/pythia8_riv2_i.root "Path=jet_HT" limit=0.10
        COMMAND ${Python_cmd} ${CMAKE_SOURCE_DIR}/generators/reference/reference.py ${CMAKE_BINARY_DIR}/generators/pythia8_riv2.root ${CMAKE_BINARY_DIR}/generators/pythia8_riv2_i.root "Path=XS" limit=0.05
+       COMMAND ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/riv2html.sh ${rivet2_home}
 )
+
 
 LCG_add_test(
   pythia6_riv2_ttbar
