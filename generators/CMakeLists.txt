@@ -1184,6 +1184,22 @@ LCG_add_test(
        COMMAND ${Python_cmd} ${CMAKE_SOURCE_DIR}/generators/reference/reference.py ${CMAKE_BINARY_DIR}/generators/pythia6_riv2_ttbar.root ${CMAKE_BINARY_DIR}/generators/pythia6_riv2_ttbar_i.root "Path=XS" limit=0.05
 )
 
+LCG_add_test(
+  pythia6_riv2_zjets
+  TEST_COMMAND ${agile_home}/bin/agile-runmc Pythia6:428 -o hepmcfile_pyt6_zjets.dat --paramfile ${CMAKE_SOURCE_DIR}/generators/rivet-testing/pythia6/pythia6-zjets-7tev.params -n 1000
+       COMMAND ${rivet2_home}/bin/rivet -a MC_XS -a MC_ZJETS --histo-file pythia6_riv2_zjets_i.yoda hepmcfile_pyt6_zjets.dat
+  ENVIRONMENT PATH=${agile_home}/bin:${Python_home}/bin:$ENV{PATH}
+              ${library_path}=${Python_home}/lib:${GSL_home}/lib:${rivet2_home}/lib:${yoda_home}/lib:${HepMC_home}/lib:${fastjet_home}/lib:${yamlcpp_home}/lib:${agile_home}/lib:${HepMC_home}/lib:${ROOT_home}/lib:$ENV{${library_path}}
+              PYTHONPATH=${Python_home}/bin:${agile_home}/lib/python${Python_config_version_twodigit}/site-packages:${yoda_home}/lib/python${Python_config_version_twodigit}/site-packages/:${ROOT_home}/lib:$ENV{PYTHONPATH}
+              AGILE_GEN_PATH=${agile_home}/../../..
+  LABELS PhysicsCheck
+  POST_COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/generators/reference/pythia6_riv2_zjets.yoda ${CMAKE_BINARY_DIR}/generators/pythia6_riv2_zjets.yoda
+       COMMAND ${CMAKE_COMMAND} -DAIDA2ROOT=${AIDA2ROOT} -DPython_cmd=${Python_cmd} -Dyoda_home=${yoda_home} -DINPUT=${CMAKE_BINARY_DIR}/generators/pythia6_riv2_zjets.yoda -P ${CMAKE_SOURCE_DIR}/cmake/scripts/yoda2root.cmake
+       COMMAND ${CMAKE_COMMAND} -DAIDA2ROOT=${AIDA2ROOT} -DPython_cmd=${Python_cmd} -Dyoda_home=${yoda_home} -DINPUT=${CMAKE_BINARY_DIR}/generators/pythia6_riv2_zjets_i.yoda -P ${CMAKE_SOURCE_DIR}/cmake/scripts/yoda2root.cmake
+       COMMAND ${Python_cmd} ${CMAKE_SOURCE_DIR}/generators/reference/reference.py ${CMAKE_BINARY_DIR}/generators/pythia6_riv2_zjets.root ${CMAKE_BINARY_DIR}/generators/pythia6_riv2_zjets_i.root "Path=jet_HT" limit=0.10
+       COMMAND ${Python_cmd} ${CMAKE_SOURCE_DIR}/generators/reference/reference.py ${CMAKE_BINARY_DIR}/generators/pythia6_riv2_zjets.root ${CMAKE_BINARY_DIR}/generators/pythia6_riv2_zjets_i.root "Path=XS" limit=0.05
+)
+
 LCG_add_test(herwigpp_riv2_ttbar
   TEST_COMMAND ${herwig++_home}/bin/Herwig++ read ${CMAKE_SOURCE_DIR}/generators/herwig++/tests/LHC-ttbar.in
        COMMAND ${herwig++_home}/bin/Herwig++ run -N1000 LHC-ttbar.run -d1
