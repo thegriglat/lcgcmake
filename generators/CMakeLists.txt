@@ -1152,10 +1152,10 @@ LCG_add_test(jhu_orig_test_C
 
 LCG_add_test(
   pythia8_riv2_test
-  TEST_COMMAND ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/riv2test.sh ${rivet2_home} hepmcoutzjets_pythia8.dat
+  TEST_COMMAND ${rivet2_home}/bin/rivet -a MC_XS -a MC_ZJETS --histo-file pythia8_riv2_i.yoda hepmcoutzjets_pythia8.dat
   ENVIRONMENT PATH=${Python_home}/bin:$ENV{PATH}
-                   ${library_path}=${Python_home}/lib:${GSL_home}/lib:${rivet2_home}/lib:${yoda_home}/lib:${ROOT_home}/lib:$ENV{${library_path}}
-                   PYTHONPATH=${Python_home}/bin:${yoda_home}/lib/python${Python_config_version_twodigit}/site-packages/:${ROOT_home}/lib:$ENV{PYTHONPATH}
+                   ${library_path}=${Python_home}/lib:${GSL_home}/lib:${rivet2_home}/lib:${yoda_home}/lib:${ROOT_home}/lib:${HepMC_home}/lib:${fastjet_home}/lib:$ENV{${library_path}}
+                   PYTHONPATH=${Python_home}/bin:${rivet2_home}/lib/python${Python_config_version_twodigit}/site-packages/:${yoda_home}/lib/python${Python_config_version_twodigit}/site-packages/:${ROOT_home}/lib:$ENV{PYTHONPATH}
   DEPENDS pythia8_outhepmc
   LABELS PhysicsCheck
   POST_COMMAND ${CMAKE_COMMAND} -DAIDA2ROOT=${AIDA2ROOT} -DPython_cmd=${Python_cmd} -Dyoda_home=${yoda_home} -DINPUT=${CMAKE_BINARY_DIR}/generators/pythia8_riv2_i.yoda -P ${CMAKE_SOURCE_DIR}/cmake/scripts/yoda2root.cmake
@@ -1163,15 +1163,15 @@ LCG_add_test(
        COMMAND ${CMAKE_COMMAND} -DAIDA2ROOT=${AIDA2ROOT} -DPython_cmd=${Python_cmd} -Dyoda_home=${yoda_home} -DINPUT=${CMAKE_BINARY_DIR}/generators/pythia8_riv2.yoda -P ${CMAKE_SOURCE_DIR}/cmake/scripts/yoda2root.cmake
        COMMAND ${Python_cmd} ${CMAKE_SOURCE_DIR}/generators/reference/reference.py ${CMAKE_BINARY_DIR}/generators/pythia8_riv2.root ${CMAKE_BINARY_DIR}/generators/pythia8_riv2_i.root "Path=jet_HT" limit=0.10
        COMMAND ${Python_cmd} ${CMAKE_SOURCE_DIR}/generators/reference/reference.py ${CMAKE_BINARY_DIR}/generators/pythia8_riv2.root ${CMAKE_BINARY_DIR}/generators/pythia8_riv2_i.root "Path=XS" limit=0.05
+       COMMAND ${rivet2_home}/bin/rivet-mkhtml --help
        COMMAND ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/riv2html.sh ${rivet2_home}
 )
-
 
 LCG_add_test(
   pythia6_riv2_ttbar
   TEST_COMMAND ${agile_home}/bin/agile-runmc --list-gens
        COMMAND ${agile_home}/bin/agile-runmc Pythia6:428 -o hepmcfile_pyt6_ttbar.dat --paramfile ${CMAKE_SOURCE_DIR}/generators/rivet-testing/pythia6/pythia6-ttbar-7tev.params -n 1000
-       COMMAND ${rivet2_home}/bin/rivet -a MC_XS -a MC_TTBAR -H pythia6_riv2_ttbar_i.yoda hepmcfile_pyt6_ttbar.dat
+       COMMAND ${rivet2_home}/bin/rivet -a MC_XS -a MC_TTBAR --histo-file pythia6_riv2_ttbar_i.yoda hepmcfile_pyt6_ttbar.dat
   ENVIRONMENT PATH=${agile_home}/bin:${Python_home}/bin:$ENV{PATH}
               ${library_path}=${Python_home}/lib:${GSL_home}/lib:${rivet2_home}/lib:${yoda_home}/lib:${HepMC_home}/lib:${fastjet_home}/lib:${yamlcpp_home}/lib:${agile_home}/lib:${HepMC_home}/lib:${ROOT_home}/lib:$ENV{${library_path}}
               PYTHONPATH=${Python_home}/bin:${agile_home}/lib/python${Python_config_version_twodigit}/site-packages:${yoda_home}/lib/python${Python_config_version_twodigit}/site-packages/:${ROOT_home}/lib:$ENV{PYTHONPATH}
@@ -1181,8 +1181,7 @@ LCG_add_test(
        COMMAND ${CMAKE_COMMAND} -DAIDA2ROOT=${AIDA2ROOT} -DPython_cmd=${Python_cmd} -Dyoda_home=${yoda_home} -DINPUT=${CMAKE_BINARY_DIR}/generators/pythia6_riv2_ttbar.yoda -P ${CMAKE_SOURCE_DIR}/cmake/scripts/yoda2root.cmake
        COMMAND ${CMAKE_COMMAND} -DAIDA2ROOT=${AIDA2ROOT} -DPython_cmd=${Python_cmd} -Dyoda_home=${yoda_home} -DINPUT=${CMAKE_BINARY_DIR}/generators/pythia6_riv2_ttbar_i.yoda -P ${CMAKE_SOURCE_DIR}/cmake/scripts/yoda2root.cmake
        COMMAND ${Python_cmd} ${CMAKE_SOURCE_DIR}/generators/reference/reference.py ${CMAKE_BINARY_DIR}/generators/pythia6_riv2_ttbar.root ${CMAKE_BINARY_DIR}/generators/pythia6_riv2_ttbar_i.root "Path=jet_HT,jet_mult" "limit=0.10,0.10"
-       COMMAND ${Python_cmd} ${CMAKE_SOURCE_DIR}/generators/reference/reference.py
- ${CMAKE_BINARY_DIR}/generators/pythia6_riv2_ttbar.root ${CMAKE_BINARY_DIR}/generators/pythia6_riv2_ttbar_i.root "Path=XS" limit=0.05
+       COMMAND ${Python_cmd} ${CMAKE_SOURCE_DIR}/generators/reference/reference.py ${CMAKE_BINARY_DIR}/generators/pythia6_riv2_ttbar.root ${CMAKE_BINARY_DIR}/generators/pythia6_riv2_ttbar_i.root "Path=XS" limit=0.05
 )
 
 LCG_add_test(herwigpp_riv2_ttbar
@@ -1239,7 +1238,7 @@ LCG_add_test(
   LABELS PhysicsCheck
 )
 
-#note: alpgen version (why it is needed?) and pythia6 version are hardcoded in the script below
+#note: alpgen version and pythia6 version are hardcoded in the script below
 LCG_add_test(
   alpgen_riv2
   TEST_COMMAND ${agile_home}/bin/agile-runmc --list-gens
