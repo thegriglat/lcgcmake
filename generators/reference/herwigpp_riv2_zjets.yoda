@@ -1,3 +1,5 @@
+#Reference made on 24.03.2014 by herwig++ 2.7.0 lcgcmt65 x86_64-slc5-gcc47-opt
+#
 # BEGIN YODA_HISTO1D /MC_XS/N
 Path=/MC_XS/N
 Type=Histo1D
