@@ -161,7 +161,7 @@ LCG_external_package(lhapdf6sets       6.0.4          lhapdf6sets   )
 
 LCG_external_package(pythia8           185            ${MCGENPATH}/pythia8    author=185  )
 
-LCG_external_package(sacrifice         0.9.9          ${MCGENPATH}/sacrifice pythia8=183)
+LCG_external_package(sacrifice         0.9.9          ${MCGENPATH}/sacrifice pythia8=185)
 
 
 LCG_external_package(thepeg            1.9.0          ${MCGENPATH}/thepeg       )
@@ -177,7 +177,7 @@ LCG_external_package(agile             1.4.0          ${MCGENPATH}/agile        
 LCG_external_package(photos++          3.52           ${MCGENPATH}/photos++     )
 LCG_external_package(photos            215.4          ${MCGENPATH}/photos       ) 
 
-LCG_external_package(evtgen            1.3.0          ${MCGENPATH}/evtgen         tag=R01-03-00 pythia8=183 tauola++=1.1.4)
+LCG_external_package(evtgen            1.3.0          ${MCGENPATH}/evtgen         tag=R01-03-00 pythia8=185 tauola++=1.1.4)
 
 LCG_external_package(rivet             2.1.1          ${MCGENPATH}/rivet        yoda=1.0.6      )
 if(NOT ${LCG_OS}${LCG_OSVERS} STREQUAL mac109) # rivet 2 does not work yet with mac109
