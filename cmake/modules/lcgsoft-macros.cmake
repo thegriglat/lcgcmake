@@ -576,18 +576,18 @@ function(LCG_add_test test)
     string(REPLACE ";" "#" _cmd "${_cmd}")
   endif()
 
-  set(_command ${CMAKE_COMMAND} -DTST=${test} -DCMD=${_cmd})
+  set(_command ${CMAKE_COMMAND} -DTST=${test} -DCMD:STRING=${_cmd})
 
   #- Handle PRE and POST commands
   if(ARG_PRE_COMMAND)
     set(_pre ${ARG_PRE_COMMAND})
     string(REPLACE ";" "#" _pre "${_pre}")
-    set(_command ${_command} -DPRE=${_pre})
+    set(_command ${_command} -DPRE:STRING=${_pre})
   endif()
   if(ARG_POST_COMMAND)
     set(_post ${ARG_POST_COMMAND})
     string(REPLACE ";" "#" _post "${_post}")
-    set(_command ${_command} -DPOST=${_post})
+    set(_command ${_command} -DPOST:STRING=${_post})
   endif()
 
   #- Handle OUTPUT, ERROR, DEBUG arguments
