@@ -1167,6 +1167,7 @@ LCG_add_test(
        COMMAND ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/riv2html.sh ${rivet2_home}
 )
 
+
 LCG_add_test(
   pythia6_riv2_ttbar
   TEST_COMMAND ${agile_home}/bin/agile-runmc --list-gens
@@ -1208,7 +1209,7 @@ LCG_add_test(herwigpp_riv2_ttbar
        COMMAND cat LHC-ttbar.log
        BINARY_DIR herwig++/tests
        SOURCE_DIR herwig++/tests
-  ENVIRONMENT ${library_path}=${herwig++_home}/lib/Herwig++:${thepeg_home}/lib/ThePEG:${HepMC_home}/lib:${lhapdf_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:${rivet2_home}/lib:${yoda_home}/lib:${yamlcpp_home}/lib:${ROOT_home}/lib:$ENV{${library_path}}
+  ENVIRONMENT ${library_path}=${Python_home}/lib:${herwig++_home}/lib/Herwig++:${thepeg_home}/lib/ThePEG:${HepMC_home}/lib:${lhapdf_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:${rivet2_home}/lib:${yoda_home}/lib:${yamlcpp_home}/lib:${ROOT_home}/lib:$ENV{${library_path}}
               PYTHONPATH=${Python_home}/bin:${agile_home}/lib/python${Python_config_version_twodigit}/site-packages:${yoda_home}/lib/python${Python_config_version_twodigit}/site-packages/:${ROOT_home}/lib:$ENV{PYTHONPATH}
               PATH=${agile_home}/bin:${Python_home}/bin:$ENV{PATH}
   LABELS PhysicsCheck
@@ -1219,6 +1220,25 @@ LCG_add_test(herwigpp_riv2_ttbar
        COMMAND ${Python_cmd} ${CMAKE_SOURCE_DIR}/generators/reference/reference.py ${CMAKE_BINARY_DIR}/generators/herwigpp_riv2_ttbar.root ${CMAKE_BINARY_DIR}/generators/herwigpp_riv2_ttbar_i.root "Path=XS" limit=0.05
 )
   
+LCG_add_test(herwigpp_riv2_zjets
+  TEST_COMMAND ${herwig++_home}/bin/Herwig++ read ${CMAKE_SOURCE_DIR}/generators/herwig++/tests/LHC-zjets.in
+       COMMAND ${herwig++_home}/bin/Herwig++ run -N1000 LHC-zjets.run -d1
+       COMMAND ${rivet2_home}/bin/rivet -a MC_XS -a MC_ZJETS -H herwigpp_riv2_zjets_i.yoda herwigpp_zjets.hepmc
+       COMMAND cat LHC-zjets.out
+       COMMAND cat LHC-zjets.log
+       BINARY_DIR herwig++/tests
+       SOURCE_DIR herwig++/tests
+  ENVIRONMENT ${library_path}=${Python_home}/lib:${herwig++_home}/lib/Herwig++:${thepeg_home}/lib/ThePEG:${HepMC_home}/lib:${lhapdf_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:${rivet2_home}/lib:${yoda_home}/lib:${yamlcpp_home}/lib:${ROOT_home}/lib:$ENV{${library_path}}
+              PYTHONPATH=${Python_home}/bin:${agile_home}/lib/python${Python_config_version_twodigit}/site-packages:${yoda_home}/lib/python${Python_config_version_twodigit}/site-packages/:${ROOT_home}/lib:$ENV{PYTHONPATH}
+              PATH=${agile_home}/bin:${Python_home}/bin:$ENV{PATH}
+  LABELS PhysicsCheck
+  POST_COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/generators/reference/herwigpp_riv2_zjets.yoda ${CMAKE_BINARY_DIR}/generators/herwigpp_riv2_zjets.yoda
+       COMMAND ${CMAKE_COMMAND} -DAIDA2ROOT=${AIDA2ROOT} -DPython_cmd=${Python_cmd} -Dyoda_home=${yoda_home} -DINPUT=${CMAKE_BINARY_DIR}/generators/herwigpp_riv2_zjets.yoda -P ${CMAKE_SOURCE_DIR}/cmake/scripts/yoda2root.cmake
+       COMMAND ${CMAKE_COMMAND} -DAIDA2ROOT=${AIDA2ROOT} -DPython_cmd=${Python_cmd} -Dyoda_home=${yoda_home} -DINPUT=${CMAKE_BINARY_DIR}/generators/herwigpp_riv2_zjets_i.yoda -P ${CMAKE_SOURCE_DIR}/cmake/scripts/yoda2root.cmake
+       COMMAND ${Python_cmd} ${CMAKE_SOURCE_DIR}/generators/reference/reference.py ${CMAKE_BINARY_DIR}/generators/herwigpp_riv2_zjets.root ${CMAKE_BINARY_DIR}/generators/herwigpp_riv2_zjets_i.root "Path=jet_HT" limit=0.10
+       COMMAND ${Python_cmd} ${CMAKE_SOURCE_DIR}/generators/reference/reference.py ${CMAKE_BINARY_DIR}/generators/herwigpp_riv2_zjets.root ${CMAKE_BINARY_DIR}/generators/herwigpp_riv2_zjets_i.root "Path=XS" limit=0.05
+)
+
 LCG_add_test(sherpa_riv2_test
   PRE_COMMAND ${CMAKE_COMMAND} -E remove_directory sherpa/tests_riv2
       COMMAND ${CMAKE_COMMAND} -E make_directory sherpa/tests_riv2
