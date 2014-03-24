@@ -20,6 +20,8 @@ def handle_single_package(packageinfo):
         result += '\nmacro Python_config_version_twodigit "%s"' %(packageinfo["version"][0:3])
       elif packageinfo["name"] == "expat":
         result = result.replace("expat","Expat")
+      elif packageinfo["name"] == "CLHEP" and packageinfo["version"].startswith("2"):
+        result = "" # we ignore CLHEP version 2 as to avoid duplicates  
       return result
 
 
