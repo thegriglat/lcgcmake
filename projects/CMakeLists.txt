@@ -108,6 +108,7 @@ else()
                -Dmysql=ON -DMYSQL_CONFIG_EXECUTABLE=${mysql_home}/bin/mysql_config
                -Dodbc=ON
                -Dopengl=ON
+               -Dpgsql=OFF
                -Dqtgsi=ON
                -Dreflex=ON
                -Droofit=ON
@@ -123,6 +124,7 @@ else()
                -DCINTLONGLINE=4096
                IF LCG_CPP11 THEN
                    -Dc++11=ON
+                   -Dcxx11=ON
                ENDIF   
                IF LCG_TARGET MATCHES x86_64-slc THEN
                    -Dcastor=ON -DCASTOR_DIR=${CASTOR_home}
