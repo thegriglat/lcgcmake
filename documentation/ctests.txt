@@ -50,6 +50,13 @@ the nightlies.
  3. tests of rivet: as in (3) with generator=rivet
 
 
+ Physics rivet tests convention:
+
+ 1. Reference histograms are kept in lcgcmake/generators/reference
+ 2. At the beginning of each reference yoda file there is a line like this:
+     #Reference made on 24.03.2014 by herwig++ 2.7.0 lcgcmt65 x86_64-slc5-gcc47-opt
+
+
  Tools available for the histograms comparison:
 
  1. ${CMAKE_SOURCE_DIR}/cmake/scripts/yoda2root.cmake
