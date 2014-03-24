@@ -1,6 +1,0 @@
-## Read parton-level process from LHA event file
-MSTP(143) = 1
-
-## Handle this specially - we need a single FAlpHer generator
-## interface rather than the aux generator hack
-ALPGENFILE = z2j
