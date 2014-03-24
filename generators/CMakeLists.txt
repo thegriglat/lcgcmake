@@ -819,7 +819,7 @@ LCGPackage_Add(mctester
   URL ${gen_url}/MC-TESTER-${mctester_native_version}.tar.gz
   UPDATE_COMMAND ${CMAKE_COMMAND} -E touch make.inc 
   CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --with-HepMC=${HepMC_home} --with-root=${ROOT_home}/bin "CFLAGS=-O2 -g0" "CXXFLAGS=-O2 -g0" "FFLAGS=-O2 -g0"
-  BUILD_COMMAND ${MAKE} -j1 ${library_path}=${ROOT_home}/lib:$ENV{${library_path}}
+  BUILD_COMMAND ${MAKE} -j1 ${library_path}=${ROOT_home}/lib:$ENV{${library_path}} ROOTSYS=${ROOT_home}
   INSTALL_COMMAND make -j1 install 
 #          COMMAND ${CMAKE_COMMAND} -DINSTALL_DIR=<INSTALL_DIR> -P ${CMAKE_SOURCE_DIR}/cmake/scripts/StripLib.cmake
   BUILD_IN_SOURCE 1
