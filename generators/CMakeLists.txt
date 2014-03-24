@@ -1171,7 +1171,7 @@ LCG_add_test(
 LCG_add_test(
   pythia6_riv2_ttbar
   TEST_COMMAND ${agile_home}/bin/agile-runmc --list-gens
-       COMMAND ${agile_home}/bin/agile-runmc Pythia6:428 -o hepmcfile_pyt6_ttbar.dat --paramfile ${CMAKE_SOURCE_DIR}/generators/rivet-testing/pythia6/pythia6-ttbar-7tev.params -n 1000
+       COMMAND ${agile_home}/bin/agile-runmc Pythia6:428 -o hepmcfile_pyt6_ttbar.dat --paramfile ${CMAKE_SOURCE_DIR}/generators/agile_configs/pythia6-ttbar-7tev.params -n 1000
        COMMAND ${rivet2_home}/bin/rivet -a MC_XS -a MC_TTBAR --histo-file pythia6_riv2_ttbar_i.yoda hepmcfile_pyt6_ttbar.dat
   ENVIRONMENT PATH=${agile_home}/bin:${Python_home}/bin:$ENV{PATH}
               ${library_path}=${Python_home}/lib:${GSL_home}/lib:${rivet2_home}/lib:${yoda_home}/lib:${HepMC_home}/lib:${fastjet_home}/lib:${yamlcpp_home}/lib:${agile_home}/lib:${HepMC_home}/lib:${ROOT_home}/lib:$ENV{${library_path}}
@@ -1187,7 +1187,7 @@ LCG_add_test(
 
 LCG_add_test(
   pythia6_riv2_zjets
-  TEST_COMMAND ${agile_home}/bin/agile-runmc Pythia6:428 -o hepmcfile_pyt6_zjets.dat --paramfile ${CMAKE_SOURCE_DIR}/generators/rivet-testing/pythia6/pythia6-zjets-7tev.params -n 1000
+  TEST_COMMAND ${agile_home}/bin/agile-runmc Pythia6:428 -o hepmcfile_pyt6_zjets.dat --paramfile ${CMAKE_SOURCE_DIR}/generators/agile_configs/pythia6-zjets-13tev.params -n 1000
        COMMAND ${rivet2_home}/bin/rivet -a MC_XS -a MC_ZJETS --histo-file pythia6_riv2_zjets_i.yoda hepmcfile_pyt6_zjets.dat
   ENVIRONMENT PATH=${agile_home}/bin:${Python_home}/bin:$ENV{PATH}
               ${library_path}=${Python_home}/lib:${GSL_home}/lib:${rivet2_home}/lib:${yoda_home}/lib:${HepMC_home}/lib:${fastjet_home}/lib:${yamlcpp_home}/lib:${agile_home}/lib:${HepMC_home}/lib:${ROOT_home}/lib:$ENV{${library_path}}
@@ -1200,6 +1200,7 @@ LCG_add_test(
        COMMAND ${Python_cmd} ${CMAKE_SOURCE_DIR}/generators/reference/reference.py ${CMAKE_BINARY_DIR}/generators/pythia6_riv2_zjets.root ${CMAKE_BINARY_DIR}/generators/pythia6_riv2_zjets_i.root "Path=jet_HT" limit=0.10
        COMMAND ${Python_cmd} ${CMAKE_SOURCE_DIR}/generators/reference/reference.py ${CMAKE_BINARY_DIR}/generators/pythia6_riv2_zjets.root ${CMAKE_BINARY_DIR}/generators/pythia6_riv2_zjets_i.root "Path=XS" limit=0.05
 )
+
 
 LCG_add_test(herwigpp_riv2_ttbar
   TEST_COMMAND ${herwig++_home}/bin/Herwig++ read ${CMAKE_SOURCE_DIR}/generators/herwig++/tests/LHC-ttbar.in
@@ -1239,6 +1240,7 @@ LCG_add_test(herwigpp_riv2_zjets
        COMMAND ${Python_cmd} ${CMAKE_SOURCE_DIR}/generators/reference/reference.py ${CMAKE_BINARY_DIR}/generators/herwigpp_riv2_zjets.root ${CMAKE_BINARY_DIR}/generators/herwigpp_riv2_zjets_i.root "Path=XS" limit=0.05
 )
 
+
 LCG_add_test(sherpa_riv2_test
   PRE_COMMAND ${CMAKE_COMMAND} -E remove_directory sherpa/tests_riv2
       COMMAND ${CMAKE_COMMAND} -E make_directory sherpa/tests_riv2
@@ -1257,10 +1259,11 @@ LCG_add_test(sherpa_riv2_test
 )
 #COMMAND ${rivet2_home}/bin/rivet -a MC_XS -a MC_ZJETS -H sherpa_riv2_zjets_i.yoda sherpa_zjets.hepmc2g
 
+
 LCG_add_test(
   herwig_riv2_zjets
   TEST_COMMAND ${agile_home}/bin/agile-runmc --list-gens
-       COMMAND ${agile_home}/bin/agile-runmc Herwig:6.520 -o hepmcfile_herwig_zjets.dat --paramfile ${CMAKE_SOURCE_DIR}/generators/rivet-testing/herwig/herwig-zjets-7tev.params -n 2000
+       COMMAND ${agile_home}/bin/agile-runmc Herwig:6.520 -o hepmcfile_herwig_zjets.dat --paramfile ${CMAKE_SOURCE_DIR}/generators/agile_configs/herwig-zjets-7tev.params -n 2000
        COMMAND ${rivet2_home}/bin/rivet -a MC_XS -a MC_ZJETS -H herwig_riv2_i.yoda hepmcfile_herwig_zjets.dat
   ENVIRONMENT PATH=${agile_home}/bin:${Python_home}/bin:$ENV{PATH}
               ${library_path}=${Python_home}/lib:${GSL_home}/lib:${rivet2_home}/lib:${yoda_home}/lib:${HepMC_home}/lib:${fastjet_home}/lib:${yamlcpp_home}/lib:${agile_home}/lib:${HepMC_home}/lib:${ROOT_home}/lib:$ENV{${library_path}}
@@ -1274,11 +1277,12 @@ LCG_add_test(
   LABELS PhysicsCheck
 )
 
+
 #note: alpgen version and pythia6 version are hardcoded in the script below
 LCG_add_test(
   alpgen_riv2
   TEST_COMMAND ${agile_home}/bin/agile-runmc --list-gens
-       COMMAND ${CMAKE_COMMAND} -E chdir tmpalpgen/examples ${CMAKE_SOURCE_DIR}/generators/rivet-testing/alpgen/runagile ${agile_home} ${CMAKE_SOURCE_DIR}/generators/rivet-testing/alpgen/alpgen-zjets-7tev.params
+       COMMAND ${CMAKE_COMMAND} -E chdir tmpalpgen/examples ${CMAKE_SOURCE_DIR}/generators/agile_configs/runagile ${agile_home} ${CMAKE_SOURCE_DIR}/generators/agile_configs/alpgen-zjets.params
        COMMAND ${rivet2_home}/bin/rivet -a MC_XS -a MC_ZJETS -H alpgen_riv2_i.yoda tmpalpgen/examples/hepmcfile_alpgen_zjets.dat
   ENVIRONMENT PATH=${agile_home}/bin:${Python_home}/bin:$ENV{PATH}
               ${library_path}=${Python_home}/lib:${GSL_home}/lib:${rivet2_home}/lib:${yoda_home}/lib:${HepMC_home}/lib:${fastjet_home}/lib:${yamlcpp_home}/lib:${agile_home}/lib:${HepMC_home}/lib:${ROOT_home}/lib:$ENV{${library_path}}
@@ -1292,7 +1296,6 @@ LCG_add_test(
   DEPENDS alpgen_test1
   LABELS PhysicsCheck
 )
-#${agile_home}/bin/agile-runmc AlpGenPythia6:428:2.1.4 -o hepmcfile_alpgen_zjets.dat --paramfile ${CMAKE_SOURCE_DIR}/generators/rivet-testing/alpgen/alpgen-zjets-7tev.params -n 1000
 
 
 LCG_add_test(debug-symbols-test 
