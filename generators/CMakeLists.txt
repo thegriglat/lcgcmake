@@ -1152,7 +1152,7 @@ LCG_add_test(jhu_orig_test_C
 
 LCG_add_test(
   pythia8_riv2_test
-  TEST_COMMAND ${rivet2_home}/bin/rivet -a MC_XS -a MC_ZJETS --histo-file pythia8_riv2_i.yoda hepmcoutzjets_pythia8.dat
+  TEST_COMMAND ${rivet2_home}/bin/rivet -a MC_XS -a MC_ZJETS --histo-file=pythia8_riv2_i.yoda hepmcoutzjets_pythia8.dat
   ENVIRONMENT PATH=${Python_home}/bin:$ENV{PATH}
                    ${library_path}=${Python_home}/lib:${GSL_home}/lib:${rivet2_home}/lib:${yoda_home}/lib:${ROOT_home}/lib:${HepMC_home}/lib:${fastjet_home}/lib:$ENV{${library_path}}
                    PYTHONPATH=${Python_home}/bin:${rivet2_home}/lib/python${Python_config_version_twodigit}/site-packages/:${yoda_home}/lib/python${Python_config_version_twodigit}/site-packages/:${ROOT_home}/lib:$ENV{PYTHONPATH}
@@ -1164,8 +1164,10 @@ LCG_add_test(
        COMMAND ${Python_cmd} ${CMAKE_SOURCE_DIR}/generators/reference/reference.py ${CMAKE_BINARY_DIR}/generators/pythia8_riv2.root ${CMAKE_BINARY_DIR}/generators/pythia8_riv2_i.root "Path=jet_HT" limit=0.10
        COMMAND ${Python_cmd} ${CMAKE_SOURCE_DIR}/generators/reference/reference.py ${CMAKE_BINARY_DIR}/generators/pythia8_riv2.root ${CMAKE_BINARY_DIR}/generators/pythia8_riv2_i.root "Path=XS" limit=0.05
        COMMAND ${rivet2_home}/bin/rivet-mkhtml --help
-       COMMAND ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/riv2html.sh ${rivet2_home}
+       COMMAND ${CMAKE_SOURCE_DIR}/generators/reference/riv2html.sh ${rivet2_home} pythia8_riv2.yoda pythia8_riv2_i.yoda pythia8html
 )
+#rivet-mkhtml -o pythia8html -s --mc-errs pythia8_riv2.yoda:'Title=Reference' pythia8_riv2_i.yoda:'LineColor=blue'
+#COMMAND ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/riv2html.sh ${rivet2_home} pythia8_riv2.yoda
 
 
 LCG_add_test(
