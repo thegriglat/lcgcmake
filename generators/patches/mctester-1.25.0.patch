@@ -40,3 +40,63 @@
  
    // Initialization of pythia
    Pythia pythia;
+--- HEPEvent/Makefile
++++ HEPEvent/Makefile
+@@ -17,6 +17,8 @@
+   export DYLD_LIBRARY_PATH
+ endif
+ 
++ROOT_LIBS = $(shell $(ROOTBIN)/root-config --libs)
++
+ ######## Targets #####################################################
+ LIB_OBJ = HEPParticle.o HEPEvent.o \
+           LUJETSEvent.o LUJETSParticle.o \
+@@ -71,7 +73,7 @@
+   $(ROOTBIN)/rootcint -f $(DICT_SRC) -c -p -D_USE_ROOT_ $(LIB_HDR)
+ 
+ $(LIB): $(LIB_OBJ)
+-	 $(LD) $(LDFLAGS) $(SOFLAGS) -o $(LIB) $(LIB_OBJ) -L$(ROOTLIBPATH) -lCore -lCint
++	 $(LD) $(LDFLAGS) $(SOFLAGS) -o $(LIB) $(LIB_OBJ) -L$(ROOTLIBPATH) $(ROOT_LIBS)
+ 
+ $(LIB_A): $(LIB_OBJ)
+ 	   ar cr $(LIB_A) $(LIB_OBJ)
+--- src/Makefile
++++ src/Makefile
+@@ -34,6 +34,8 @@
+ 
+ override CXXFLAGS += -I../HEPEvent
+ 
++ROOT_LIBS = $(shell $(ROOTBIN)/root-config --libs)
++
+ ######## Targets #####################################################
+ all: $(LIB) $(LIB_A)
+ 
+@@ -52,7 +54,7 @@
+ 
+ 
+ $(LIB): $(LIB_OBJ)
+-	 $(LD) $(LDFLAGS) $(SOFLAGS) -o $(LIB) $(LIB_OBJ) -L$(ROOTLIBPATH) -lCore -lCint -lHist -lGpad -lGraf -lRIO -L$(CURDIR)/../lib -lHEPEvent
++	 $(LD) $(LDFLAGS) $(SOFLAGS) -o $(LIB) $(LIB_OBJ) -L$(ROOTLIBPATH) $(ROOT_LIBS) -L$(CURDIR)/../lib -lHEPEvent
+ 
+ $(LIB_A): $(LIB_OBJ)
+ 	   ar cr $(LIB_A) $(LIB_OBJ) 
+--- HepMCEvent/Makefile
++++ HepMCEvent/Makefile
+@@ -32,6 +32,8 @@
+ 
+ ROOT_CINT=$(ROOTBIN)/rootcint
+ 
++ROOT_LIBS = $(shell $(ROOTBIN)/root-config --libs)
++
+ ##############   What has to be built ###############################
+ 
+ 
+@@ -48,7 +50,7 @@
+   $(HEPMC_INC) $(CLHEP_INC) $(HEPEVENT_INC) $(LIB_HDR)
+ 
+ $(LIB): $(LIB_OBJ)
+-	 $(LD) $(LDFLAGS) $(SOFLAGS) -o $(LIB) $(LIB_OBJ) -L$(ROOTLIBPATH) -lCore -lCint -L$(CURDIR)/../lib -lHEPEvent
++	 $(LD) $(LDFLAGS) $(SOFLAGS) -o $(LIB) $(LIB_OBJ) -L$(ROOTLIBPATH) $(ROOT_LIBS) -L$(CURDIR)/../lib -lHEPEvent
+ 
+ $(LIB_A): $(LIB_OBJ)
+ 	   ar cr $(LIB_A) $(LIB_OBJ)
