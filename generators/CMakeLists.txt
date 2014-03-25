@@ -17,6 +17,19 @@ else()
 endif()
 string(REPLACE "opt" "dbg" LCG_platform_dbg ${LCG_platform})
 
+#---LCGPackage_set_home(rivet2)-----------------------------------------------------------------------
+foreach(v ${rivet_native_version})
+  if(v VERSION_EQUAL 2.0.0 OR v VERSION_GREATER 2.0.0)
+    set(rivet2_home ${CMAKE_INSTALL_PREFIX}/${rivet_directory_name}/${v}/${LCG_system})
+  endif()
+endforeach()
+
+foreach(v ${pythia6_native_version})
+  set(pythia6_test_version_full ${v})
+endforeach()
+#This is not good that versions .2 cannot be tested with agile, solution to be found:
+string(REGEX MATCH "[0-9][0-9][0-9]" pythia6_test_version ${pythia6_test_version_full})
+
 
 #---lhapdfsets--------------------------------------------------------------------------------------
 message(STATUS "PDFsets to download: ${PDFsets}")
@@ -107,14 +120,6 @@ LCGPackage_Add(
   TEST_COMMAND ${CMAKE_COMMAND} -E chdir <INSTALL_DIR>/bin ./main01.exe
   DEPENDS HepMC lhapdf fastjet
 )
-
-
-#---LCGPackage_set_home(rivet2)-----------------------------------------------------------------------
-foreach(v ${rivet_native_version})
-  if(v VERSION_EQUAL 2.0.0 OR v VERSION_GREATER 2.0.0)
-    set(rivet2_home ${CMAKE_INSTALL_PREFIX}/${rivet_directory_name}/${v}/${LCG_system})
-  endif()
-endforeach()
 
 LCG_add_test(pythia8-build
   BINARY_DIR pythia8/tests
@@ -371,7 +376,7 @@ LCGPackage_Add(
   DEPENDS HepMC Boost Python swig
 )
 
-LCG_add_test(agile_orig_test1 TEST_COMMAND ${agile_home}/bin/agile-runmc Pythia6:428 -o hepmcfile.dat
+LCG_add_test(agile_orig_test1 TEST_COMMAND ${agile_home}/bin/agile-runmc Pythia6:${pythia6_test_version} -o hepmcfile.dat
                               ENVIRONMENT PATH=${agile_home}/bin:${Python_home}/bin:$ENV{PATH}
                                           ${library_path}=${agile_home}/lib:${HepMC_home}/lib:$ENV{${library_path}}
                                           PYTHONPATH=${agile_home}/lib/python${Python_config_version_twodigit}/site-packages:$ENV{PYTHONPATH}
@@ -1148,12 +1153,12 @@ LCG_add_test(jhu_orig_test_C
   TEST_COMMAND ${jhu_home}/bin/testC)
 
 
-### rivet 2 tests
+### tests of generators using rivet 2
 
 LCG_add_test(
   pythia8_riv2_test
   TEST_COMMAND ${rivet2_home}/bin/rivet -a MC_XS -a MC_ZJETS --histo-file=pythia8_riv2_i.yoda hepmcoutzjets_pythia8.dat
-  ENVIRONMENT PATH=${Python_home}/bin:${rivet2_home}/bin:$ENV{PATH}
+  ENVIRONMENT PATH=${Python_home}/bin:$ENV{PATH}
                    ${library_path}=${Python_home}/lib:${GSL_home}/lib:${rivet2_home}/lib:${yoda_home}/lib:${ROOT_home}/lib:${HepMC_home}/lib:${fastjet_home}/lib:$ENV{${library_path}}
                    PYTHONPATH=${Python_home}/bin:${rivet2_home}/lib/python${Python_config_version_twodigit}/site-packages/:${yoda_home}/lib/python${Python_config_version_twodigit}/site-packages/:${ROOT_home}/lib:$ENV{PYTHONPATH}
   DEPENDS pythia8_outhepmc
@@ -1173,7 +1178,7 @@ LCG_add_test(
 LCG_add_test(
   pythia6_riv2_ttbar
   TEST_COMMAND ${agile_home}/bin/agile-runmc --list-gens
-       COMMAND ${agile_home}/bin/agile-runmc Pythia6:428 -o hepmcfile_pyt6_ttbar.dat --paramfile=${CMAKE_SOURCE_DIR}/generators/agile_configs/pythia6-ttbar-7tev.params -n 1000
+       COMMAND ${agile_home}/bin/agile-runmc Pythia6:${pythia6_test_version} -o hepmcfile_pyt6_ttbar.dat --paramfile=${CMAKE_SOURCE_DIR}/generators/agile_configs/pythia6-ttbar-7tev.params -n 1000
        COMMAND ${rivet2_home}/bin/rivet -a MC_XS -a MC_TTBAR --histo-file=pythia6_riv2_ttbar_i.yoda hepmcfile_pyt6_ttbar.dat
   ENVIRONMENT PATH=${agile_home}/bin:${Python_home}/bin:$ENV{PATH}
               ${library_path}=${Python_home}/lib:${GSL_home}/lib:${rivet2_home}/lib:${yoda_home}/lib:${HepMC_home}/lib:${fastjet_home}/lib:${yamlcpp_home}/lib:${agile_home}/lib:${HepMC_home}/lib:${ROOT_home}/lib:$ENV{${library_path}}
@@ -1189,7 +1194,7 @@ LCG_add_test(
 
 LCG_add_test(
   pythia6_riv2_zjets
-  TEST_COMMAND ${agile_home}/bin/agile-runmc Pythia6:428 -o hepmcfile_pyt6_zjets.dat --paramfile=${CMAKE_SOURCE_DIR}/generators/agile_configs/pythia6-zjets-13tev.params -n 1000
+  TEST_COMMAND ${agile_home}/bin/agile-runmc Pythia6:${pythia6_test_version} -o hepmcfile_pyt6_zjets.dat --paramfile=${CMAKE_SOURCE_DIR}/generators/agile_configs/pythia6-zjets-13tev.params -n 1000
        COMMAND ${rivet2_home}/bin/rivet -a MC_XS -a MC_ZJETS --histo-file=pythia6_riv2_zjets_i.yoda hepmcfile_pyt6_zjets.dat
   ENVIRONMENT PATH=${agile_home}/bin:${Python_home}/bin:$ENV{PATH}
               ${library_path}=${Python_home}/lib:${GSL_home}/lib:${rivet2_home}/lib:${yoda_home}/lib:${HepMC_home}/lib:${fastjet_home}/lib:${yamlcpp_home}/lib:${agile_home}/lib:${HepMC_home}/lib:${ROOT_home}/lib:$ENV{${library_path}}
