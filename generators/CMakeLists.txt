@@ -226,7 +226,7 @@ set(thepeg_v_home <thepeg-<herwig++_<NATIVE_VERSION>_thepeg>_home>)
     herwig++
     URL ${gen_url}/Herwig++-<NATIVE_VERSION>.tar.bz2
     CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR>
-		                              --with-gsl=${GSL_home}
+                                  --with-gsl=${GSL_home}
                                   --with-thepeg=${thepeg_v_home}
                                   --with-fastjet=${fastjet_home}
                                   --with-boost=${Boost_home}
@@ -371,7 +371,7 @@ LCGPackage_Add(
   DEPENDS HepMC Boost Python swig
 )
 
-LCG_add_test(agile_orig_test1 TEST_COMMAND ${agile_home}/bin/agile-runmc Pythia6:427 -o hepmcfile.dat
+LCG_add_test(agile_orig_test1 TEST_COMMAND ${agile_home}/bin/agile-runmc Pythia6:428 -o hepmcfile.dat
                               ENVIRONMENT PATH=${agile_home}/bin:${Python_home}/bin:$ENV{PATH}
                                           ${library_path}=${agile_home}/lib:${HepMC_home}/lib:$ENV{${library_path}}
                                           PYTHONPATH=${agile_home}/lib/python${Python_config_version_twodigit}/site-packages:$ENV{PYTHONPATH}
@@ -1153,7 +1153,7 @@ LCG_add_test(jhu_orig_test_C
 LCG_add_test(
   pythia8_riv2_test
   TEST_COMMAND ${rivet2_home}/bin/rivet -a MC_XS -a MC_ZJETS --histo-file=pythia8_riv2_i.yoda hepmcoutzjets_pythia8.dat
-  ENVIRONMENT PATH=${Python_home}/bin:$ENV{PATH}
+  ENVIRONMENT PATH=${Python_home}/bin:${rivet2_home}/bin:$ENV{PATH}
                    ${library_path}=${Python_home}/lib:${GSL_home}/lib:${rivet2_home}/lib:${yoda_home}/lib:${ROOT_home}/lib:${HepMC_home}/lib:${fastjet_home}/lib:$ENV{${library_path}}
                    PYTHONPATH=${Python_home}/bin:${rivet2_home}/lib/python${Python_config_version_twodigit}/site-packages/:${yoda_home}/lib/python${Python_config_version_twodigit}/site-packages/:${ROOT_home}/lib:$ENV{PYTHONPATH}
   DEPENDS pythia8_outhepmc
@@ -1166,8 +1166,8 @@ LCG_add_test(
        COMMAND ${rivet2_home}/bin/rivet-mkhtml --help
        COMMAND ${CMAKE_SOURCE_DIR}/generators/reference/riv2html.sh ${rivet2_home} pythia8_riv2.yoda pythia8_riv2_i.yoda pythia8html
 )
+#I cannot pass the command below because of quotes. In addition it requires to have ${rivet2_home}/bin in the path
 #rivet-mkhtml -o pythia8html -s --mc-errs pythia8_riv2.yoda:'Title=Reference' pythia8_riv2_i.yoda:'LineColor=blue'
-#COMMAND ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/riv2html.sh ${rivet2_home} pythia8_riv2.yoda
 
 
 LCG_add_test(
@@ -1234,6 +1234,7 @@ LCG_add_test(herwigpp_riv2_zjets
   ENVIRONMENT ${library_path}=${Python_home}/lib:${herwig++_home}/lib/Herwig++:${thepeg_home}/lib/ThePEG:${HepMC_home}/lib:${lhapdf_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:${rivet2_home}/lib:${yoda_home}/lib:${yamlcpp_home}/lib:${ROOT_home}/lib:$ENV{${library_path}}
               PYTHONPATH=${Python_home}/bin:${agile_home}/lib/python${Python_config_version_twodigit}/site-packages:${yoda_home}/lib/python${Python_config_version_twodigit}/site-packages/:${ROOT_home}/lib:$ENV{PYTHONPATH}
               PATH=${agile_home}/bin:${Python_home}/bin:$ENV{PATH}
+              LHAPATH=${lhapdfsets_home}/../share/lhapdf/PDFsets
   LABELS PhysicsCheck
   POST_COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/generators/reference/herwigpp_riv2_zjets.yoda ${CMAKE_BINARY_DIR}/generators/herwigpp_riv2_zjets.yoda
        COMMAND ${CMAKE_COMMAND} -DAIDA2ROOT=${AIDA2ROOT} -DPython_cmd=${Python_cmd} -Dyoda_home=${yoda_home} -DINPUT=${CMAKE_BINARY_DIR}/generators/herwigpp_riv2_zjets.yoda -P ${CMAKE_SOURCE_DIR}/cmake/scripts/yoda2root.cmake
