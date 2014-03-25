@@ -24,7 +24,8 @@ set /Herwig/Shower/Evolver:IntrinsicPtGaussian 2.2*GeV
 #PDFs:
 cd /Herwig/Partons
 create ThePEG::LHAPDF myPDFset ThePEGLHAPDF.so
-set myPDFset:PDFName cteq6ll.LHpdf
+#set myPDFset:PDFName cteq6ll.LHpdf
+set myPDFset:PDFName CT10.LHgrid
 set myPDFset:RemnantHandler HadronRemnants
 set /Herwig/Particles/p+:PDF myPDFset
 set /Herwig/Particles/pbar-:PDF myPDFset
