@@ -266,6 +266,14 @@ function(lcg_get_target_platform)
   # architecture
   set(CMAKE_SYSTEM_PROCESSOR ${LCG_ARCH} PARENT_SCOPE)
 
+  # architecture dependent name of library directory
+  set(LCG_LIBDIR_DEFAULT "lib")
+  if(CMAKE_SYSTEM_NAME MATCHES "Linux" AND NOT CMAKE_CROSSCOMPILING AND NOT EXISTS "/etc/debian_version")
+    if("${CMAKE_SIZEOF_VOID_P}" EQUAL "8")
+      set(LCG_LIBDIR_DEFAULT "lib64")
+    endif()
+  endif()
+
   # system name
   if(LCG_OS STREQUAL "winxp")
     set(CMAKE_SYSTEM_NAME Windows PARENT_SCOPE)
@@ -297,7 +305,7 @@ function(lcg_get_target_platform)
   endif()
 
   # copy variables to parent scope
-  foreach(v ARCH OS OSVERS COMP COMPVERS TARGET)
+  foreach(v ARCH OS OSVERS COMP COMPVERS TARGET LIBDIR_DEFAULT)
     set(LCG_${v} ${LCG_${v}} PARENT_SCOPE)
   endforeach()
 endfunction()

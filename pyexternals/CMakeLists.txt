@@ -511,7 +511,7 @@ LCGPackage_Add(
   xrootd_python
   URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/xrootd-python-${xrootd_python_native_version}.tar.gz
   CONFIGURE_COMMAND <VOID>
-  BUILD_COMMAND   ${Exec_cmd} XRD_LIBDIR=${xrootd_home}/lib64
+  BUILD_COMMAND   ${Exec_cmd} XRD_LIBDIR=${xrootd_home}/${LCG_LIBDIR_DEFAULT}
                               XRD_INCDIR=${xrootd_home}/include/xrootd
                   ${Python_cmd} setup.py build
   INSTALL_COMMAND mkdir -p <INSTALL_DIR>/lib/python${Python_config_version_twodigit}/site-packages/
