@@ -1171,8 +1171,8 @@ LCG_add_test(
 LCG_add_test(
   pythia6_riv2_ttbar
   TEST_COMMAND ${agile_home}/bin/agile-runmc --list-gens
-       COMMAND ${agile_home}/bin/agile-runmc Pythia6:428 -o hepmcfile_pyt6_ttbar.dat --paramfile ${CMAKE_SOURCE_DIR}/generators/agile_configs/pythia6-ttbar-7tev.params -n 1000
-       COMMAND ${rivet2_home}/bin/rivet -a MC_XS -a MC_TTBAR --histo-file pythia6_riv2_ttbar_i.yoda hepmcfile_pyt6_ttbar.dat
+       COMMAND ${agile_home}/bin/agile-runmc Pythia6:428 -o hepmcfile_pyt6_ttbar.dat --paramfile=${CMAKE_SOURCE_DIR}/generators/agile_configs/pythia6-ttbar-7tev.params -n 1000
+       COMMAND ${rivet2_home}/bin/rivet -a MC_XS -a MC_TTBAR --histo-file=pythia6_riv2_ttbar_i.yoda hepmcfile_pyt6_ttbar.dat
   ENVIRONMENT PATH=${agile_home}/bin:${Python_home}/bin:$ENV{PATH}
               ${library_path}=${Python_home}/lib:${GSL_home}/lib:${rivet2_home}/lib:${yoda_home}/lib:${HepMC_home}/lib:${fastjet_home}/lib:${yamlcpp_home}/lib:${agile_home}/lib:${HepMC_home}/lib:${ROOT_home}/lib:$ENV{${library_path}}
               PYTHONPATH=${Python_home}/bin:${agile_home}/lib/python${Python_config_version_twodigit}/site-packages:${yoda_home}/lib/python${Python_config_version_twodigit}/site-packages/:${ROOT_home}/lib:$ENV{PYTHONPATH}
@@ -1187,8 +1187,8 @@ LCG_add_test(
 
 LCG_add_test(
   pythia6_riv2_zjets
-  TEST_COMMAND ${agile_home}/bin/agile-runmc Pythia6:428 -o hepmcfile_pyt6_zjets.dat --paramfile ${CMAKE_SOURCE_DIR}/generators/agile_configs/pythia6-zjets-13tev.params -n 1000
-       COMMAND ${rivet2_home}/bin/rivet -a MC_XS -a MC_ZJETS --histo-file pythia6_riv2_zjets_i.yoda hepmcfile_pyt6_zjets.dat
+  TEST_COMMAND ${agile_home}/bin/agile-runmc Pythia6:428 -o hepmcfile_pyt6_zjets.dat --paramfile=${CMAKE_SOURCE_DIR}/generators/agile_configs/pythia6-zjets-13tev.params -n 1000
+       COMMAND ${rivet2_home}/bin/rivet -a MC_XS -a MC_ZJETS --histo-file=pythia6_riv2_zjets_i.yoda hepmcfile_pyt6_zjets.dat
   ENVIRONMENT PATH=${agile_home}/bin:${Python_home}/bin:$ENV{PATH}
               ${library_path}=${Python_home}/lib:${GSL_home}/lib:${rivet2_home}/lib:${yoda_home}/lib:${HepMC_home}/lib:${fastjet_home}/lib:${yamlcpp_home}/lib:${agile_home}/lib:${HepMC_home}/lib:${ROOT_home}/lib:$ENV{${library_path}}
               PYTHONPATH=${Python_home}/bin:${agile_home}/lib/python${Python_config_version_twodigit}/site-packages:${yoda_home}/lib/python${Python_config_version_twodigit}/site-packages/:${ROOT_home}/lib:$ENV{PYTHONPATH}
