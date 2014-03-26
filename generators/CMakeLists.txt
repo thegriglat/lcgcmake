@@ -27,12 +27,18 @@ endforeach()
 foreach(v ${pythia6_native_version})
   set(pythia6_test_version_full ${v})
 endforeach()
-#This is not good that versions .2 cannot be tested with agile, solution to be found:
+#This is not good that versions .2 cannot be tested with agile if there is a corresponding version without .2, solution to be found:
 string(REGEX MATCH "[0-9][0-9][0-9]" pythia6_test_version ${pythia6_test_version_full})
 
 foreach(v ${alpgen_native_version}) 
   set(alpgen_test_version ${v})
 endforeach()
+
+foreach(v ${herwig_native_version}) 
+  set(herwig_test_version_full ${v})
+endforeach()
+#This is not good that versions .2 cannot be tested with agile if there is a corresponding version without .2, solution to be found:
+string(REGEX MATCH "6.[0-9][0-9][0-9]" herwig_test_version ${herwig_test_version_full})
 
 
 #---lhapdfsets--------------------------------------------------------------------------------------
@@ -1273,8 +1279,10 @@ LCG_add_test(sherpa_riv2_test
 
 LCG_add_test(
   herwig_riv2_zjets
-  TEST_COMMAND ${agile_home}/bin/agile-runmc --list-gens
-       COMMAND ${agile_home}/bin/agile-runmc Herwig:6.520 -o hepmcfile_herwig_zjets.dat --paramfile ${CMAKE_SOURCE_DIR}/generators/agile_configs/herwig-zjets-7tev.params -n 2000
+  TEST_COMMAND ${CMAKE_COMMAND} -E echo available generators for the given AGILE_GEN_PATH:
+       COMMAND ${agile_home}/bin/agile-runmc --list-gens
+       COMMAND ${CMAKE_COMMAND} -E echo
+       COMMAND ${agile_home}/bin/agile-runmc Herwig:${herwig_test_version} -o hepmcfile_herwig_zjets.dat --paramfile ${CMAKE_SOURCE_DIR}/generators/agile_configs/herwig-zjets-7tev.params -n 2000
        COMMAND ${rivet2_home}/bin/rivet -a MC_XS -a MC_ZJETS -H herwig_riv2_i.yoda hepmcfile_herwig_zjets.dat
   ENVIRONMENT PATH=${agile_home}/bin:${Python_home}/bin:$ENV{PATH}
               ${library_path}=${Python_home}/lib:${GSL_home}/lib:${rivet2_home}/lib:${yoda_home}/lib:${HepMC_home}/lib:${fastjet_home}/lib:${yamlcpp_home}/lib:${agile_home}/lib:${HepMC_home}/lib:${ROOT_home}/lib:$ENV{${library_path}}
@@ -1292,7 +1300,9 @@ LCG_add_test(
 #note: alpgen version and pythia6 version are hardcoded in the script below
 LCG_add_test(
   alpgen_riv2
-  TEST_COMMAND ${agile_home}/bin/agile-runmc --list-gens
+  TEST_COMMAND ${CMAKE_COMMAND} -E echo available generators for the given AGILE_GEN_PATH:
+       COMMAND ${agile_home}/bin/agile-runmc --list-gens
+       COMMAND ${CMAKE_COMMAND} -E echo 
        COMMAND ${CMAKE_COMMAND} -E chdir tmpalpgen/examples ${CMAKE_SOURCE_DIR}/generators/agile_configs/runagile_alpgenpythia6 ${agile_home} ${alpgen_test_version} ${pythia6_test_version} ${CMAKE_SOURCE_DIR}/generators/agile_configs/alpgen-zjets.params
        COMMAND ${rivet2_home}/bin/rivet -a MC_XS -a MC_ZJETS -H alpgen_riv2_i.yoda tmpalpgen/examples/hepmcfile_alpgen_zjets.dat
   ENVIRONMENT PATH=${agile_home}/bin:${Python_home}/bin:$ENV{PATH}
