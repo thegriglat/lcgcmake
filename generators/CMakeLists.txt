@@ -30,6 +30,10 @@ endforeach()
 #This is not good that versions .2 cannot be tested with agile, solution to be found:
 string(REGEX MATCH "[0-9][0-9][0-9]" pythia6_test_version ${pythia6_test_version_full})
 
+foreach(v ${alpgen_native_version}) 
+  set(alpgen_test_version ${v})
+endforeach()
+
 
 #---lhapdfsets--------------------------------------------------------------------------------------
 message(STATUS "PDFsets to download: ${PDFsets}")
@@ -1208,7 +1212,6 @@ LCG_add_test(
        COMMAND ${Python_cmd} ${CMAKE_SOURCE_DIR}/generators/reference/reference.py ${CMAKE_BINARY_DIR}/generators/pythia6_riv2_zjets.root ${CMAKE_BINARY_DIR}/generators/pythia6_riv2_zjets_i.root "Path=XS" limit=0.05
 )
 
-
 LCG_add_test(herwigpp_riv2_ttbar
   TEST_COMMAND ${herwig++_home}/bin/Herwig++ read ${CMAKE_SOURCE_DIR}/generators/herwig++/tests/LHC-ttbar.in
        COMMAND ${herwig++_home}/bin/Herwig++ run -N1000 LHC-ttbar.run -d1
@@ -1290,7 +1293,7 @@ LCG_add_test(
 LCG_add_test(
   alpgen_riv2
   TEST_COMMAND ${agile_home}/bin/agile-runmc --list-gens
-       COMMAND ${CMAKE_COMMAND} -E chdir tmpalpgen/examples ${CMAKE_SOURCE_DIR}/generators/agile_configs/runagile ${agile_home} ${CMAKE_SOURCE_DIR}/generators/agile_configs/alpgen-zjets.params
+       COMMAND ${CMAKE_COMMAND} -E chdir tmpalpgen/examples ${CMAKE_SOURCE_DIR}/generators/agile_configs/runagile_alpgenpythia6 ${agile_home} ${alpgen_test_version} ${pythia6_test_version} ${CMAKE_SOURCE_DIR}/generators/agile_configs/alpgen-zjets.params
        COMMAND ${rivet2_home}/bin/rivet -a MC_XS -a MC_ZJETS -H alpgen_riv2_i.yoda tmpalpgen/examples/hepmcfile_alpgen_zjets.dat
   ENVIRONMENT PATH=${agile_home}/bin:${Python_home}/bin:$ENV{PATH}
               ${library_path}=${Python_home}/lib:${GSL_home}/lib:${rivet2_home}/lib:${yoda_home}/lib:${HepMC_home}/lib:${fastjet_home}/lib:${yamlcpp_home}/lib:${agile_home}/lib:${HepMC_home}/lib:${ROOT_home}/lib:$ENV{${library_path}}
