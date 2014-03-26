@@ -1,0 +1,1 @@
+$1/bin/agile-runmc AlpGenPythia6:$3:$2 -o hepmcfile_alpgen_zjets.dat --paramfile $4 -n 1000 < inputalpgen3
