@@ -553,6 +553,17 @@ LCG_add_test(evtgen-${version}_test1 TEST_COMMAND evtgen-${version}/tests/evtgen
                                       PYTHIA8DATA=${pythia8-${evtgen_${version}_pythia8}_home}/xmldoc)
 
 endforeach()
+
+foreach(version ${evtgen_native_version})
+  LCG_add_test(evtgen-${version}_compare
+    PRE_COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/chi.c .
+        COMMAND ${CMAKE_COMMAND} -E copy evtgen-${version}/tests/testi.dat test_evtgen-${version}.dat
+    TEST_COMMAND ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/cmpr.sh evtgen-${version} ${CMAKE_SOURCE_DIR}/generators/evtgen/tests/compare/reference.dat
+    DEPENDS evtgen-${version}_test1
+    LABELS PhysicsCheck
+  )
+endforeach()
+
 #---cython------------------------------------------------------------------------------------------
 LCGPackage_Add(
   cython
