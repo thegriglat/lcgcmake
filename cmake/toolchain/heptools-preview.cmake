@@ -182,9 +182,6 @@ LCG_external_package(photos            215.4          ${MCGENPATH}/photos       
 LCG_external_package(evtgen            1.3.0          ${MCGENPATH}/evtgen         tag=R01-03-00 pythia8=185 tauola++=1.1.4)
 
 LCG_external_package(rivet             2.1.1          ${MCGENPATH}/rivet        yoda=1.0.6      )
-if(NOT ${LCG_OS}${LCG_OSVERS} STREQUAL mac109) # rivet 2 does not work yet with mac109
-  LCG_external_package(rivet             2.0.0          ${MCGENPATH}/rivet yoda=1.0.4        )
-endif()
 LCG_external_package(rivet             1.9.0          ${MCGENPATH}/rivet  yoda=1.0.4      )
 
 LCG_external_package(sherpa            1.4.5.2        ${MCGENPATH}/sherpa         author=1.4.5 hepevt=10000 )
