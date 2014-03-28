@@ -48,6 +48,10 @@ endif()
 if(LCG_TARGET MATCHES "slc6")
   set(Python_config_options --disable-ipv6 ${Python_config_options})
 endif()
+if(LCG_TARGET MATCHES "icc" AND LCG_TARGET MATCHES "slc6")
+  set(Python_config_options --disable-ipv6 --without-gcc --with-cxx-main=${CMAKE_CXX_COMPILER}  ${Python_config_options})
+endif()
+
 LCGPackage_Add(
   Python
   URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/Python-${Python_native_version}.tgz
@@ -69,6 +73,11 @@ if(APPLE)
 else()
   set(Boost_toolset gcc)
   set(Boost_bootstrap_options --with-python=${Python_home}/bin/python)
+  if(LCG_TARGET MATCHES "icc" AND LCG_TARGET MATCHES "slc6")
+    set(Boost_toolset intel-linux)
+  else()
+    set(Boost_toolset gcc)
+  endif()
 endif()
 set(Boost_jam_options -j4 variant=release --layout=versioned)
 set(Boost_compile_options)
@@ -87,7 +96,7 @@ string(REPLACE "." "_" Boost_file_version ${Boost_config_version})
 LCGPackage_Add(
   Boost
   URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/boost_${Boost_file_version}.tar.gz
-  CONFIGURE_COMMAND <SOURCE_DIR>/bootstrap.sh ${Boost_bootstrap_options} 
+  CONFIGURE_COMMAND <SOURCE_DIR>/bootstrap.sh ${Boost_bootstrap_options} --with-toolset=${Boost_toolset}
   BUILD_COMMAND <SOURCE_DIR>/b2 ${Boost_jam_options} ${Boost_compile_options} --debug-configuration 
                 --toolset=${Boost_toolset} --user-config=${CMAKE_CURRENT_BINARY_DIR}/user-config.jam
   INSTALL_COMMAND <SOURCE_DIR>/b2 ${Boost_jam_options} ${Boost_compile_options} --toolset=${Boost_toolset}
@@ -292,6 +301,9 @@ endif()
 if(LCG_TARGET MATCHES "i686")
   list(APPEND graphviz_config_opts --build=i686-unknown-linux-gnu)
 endif()
+if (LCG_TARGET MATCHES "icc" AND LCG_TARGET MATCHES "slc6")
+   set(graphviz_config_opts CC=gcc CXX=g++)
+endif()
 if(LCG_OS STREQUAL mac AND LCG_OSVERS VERSION_GREATER 107)
   set(graphviz_build_opts CFLAGS=-I/usr/X11/include)
 endif()
@@ -324,21 +336,27 @@ LCGPackage_Add(
 )
 
 #---lapack------------------------------------------------------------------------------------------------
+if (LCG_TARGET MATCHES "icc" AND LCG_TARGET MATCHES "slc6")
+   set(lapack_fortran_compiler  gfortran )
+else()
+   set(lapack_fortran_compiler ${CMAKE_Fortran_COMPILER} )
+endif()
+
 LCGPackage_Add(
   lapack
   URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/lapack-${lapack_native_version}.tgz
   UPDATE_COMMAND ${CMAKE_COMMAND} -E touch <SOURCE_DIR>/make.inc
   CONFIGURE_COMMAND <VOID>
-  BUILD_COMMAND make FORTRAN=${CMAKE_Fortran_COMPILER} 
+  BUILD_COMMAND make FORTRAN=${lapack_fortran_compiler} 
                      "OPTS=-O3 -fPIC"  "DRVOPTS=-O3 -fPIC" "NOOPT=-fPIC"
-                     LOADER=${CMAKE_Fortran_COMPILER} TIMER=INT_ETIME
+                     LOADER=${lapack_fortran_compiler} TIMER=INT_ETIME
                      ARCH=ar ARCHFLAGS=cr RANLIB=ranlib
                      BLASLIB=${blas_home}/lib/libBLAS.a LAPACKLIB=libLAPACK.a
                      SHELL=/bin/sh
                      TMGLIB=tmglib.a EIGSRCLIB=eigsrc.a LINSRCLIB=linsrc.a
                      lapacklib
-  INSTALL_COMMAND ${CMAKE_COMMAND} -E make_directory <INSTALL_DIR>/lib
-          COMMAND ${CMAKE_COMMAND} -E copy <SOURCE_DIR>/libLAPACK.a <INSTALL_DIR>/lib/.
+ INSTALL_COMMAND ${CMAKE_COMMAND} -E make_directory <INSTALL_DIR>/lib
+         COMMAND ${CMAKE_COMMAND} -E copy <SOURCE_DIR>/libLAPACK.a <INSTALL_DIR>/lib/.
   BUILD_IN_SOURCE 1
   DEPENDS blas
 )
@@ -347,11 +365,15 @@ LCGPackage_Add(
 if(LCG_TARGET MATCHES mac)
   set(Qt_extra_config_opts -no-pch)
 endif()
+if(LCG_TARGET MATCHES "icc" AND LCG_TARGET MATCHES "slc6")
+  set(Qt_extra_config_opts -platform linux-icc -L/afs/cern.ch/sw/IntelSoftware/linux/x86_64/xe2013/composer_xe_2013_sp1.1.106/compiler/lib/intel64)
+endif()
+
 LCGPackage_Add(
   Qt
   URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/qt-everywhere-opensource-src-${Qt_native_version}.tar.gz
   CONFIGURE_COMMAND ./configure ${Qt_extra_config_opts} -no-separate-debug-info -release --prefix=<INSTALL_DIR> 
-                    -nomake examples -nomake demos --opensource --confirm-license -fast
+                    -nomake examples -nomake demos --opensource --confirm-license -fast -qt3support
   INSTALL_COMMAND ${MAKE} -j1 install
           COMMAND ${CMAKE_SOURCE_DIR}/externals/Qt_postinstall.sh <INSTALL_DIR> 
   BUILD_IN_SOURCE 1

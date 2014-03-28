@@ -55,7 +55,7 @@ LCG_external_package(HepMC             githead                                  
 LCG_external_package(HepPDT            2.06.01                                  )
 LCG_external_package(ipython           0.12.1                                   )
 LCG_external_package(json              2.5.2                                    )
-LCG_external_package(lapack            3.4.0                                    )
+LCG_external_package(lapack            3.5.0                                    )
 LCG_external_package(lcov              1.9                                      )
 LCG_external_package(libsvm            2.86                                     )
 LCG_external_package(libtool           1.5.26                                   )
@@ -105,7 +105,7 @@ LCG_external_package(tcmalloc          1.7p3                                    
 if(NOT ${LCG_OS}${LCG_OSVERS} STREQUAL slc6) # uuid is not distributed with SLC6
 LCG_external_package(uuid              1.42                                     )
 endif()
-if(NOT ${LCG_OS}${LCG_OSVERS} STREQUAL mac109) # valgrind does not work yet with mac109
+if(NOT ${LCG_OS}${LCG_OSVERS} STREQUAL mac109 AND NOT LCG_TARGET MATCHES "icc" ) # valgrind does not work yet with mac109 and icc
   LCG_external_package(valgrind          3.9.0                                    )
 endif()
 LCG_external_package(vdt               0.3.6                                    )

@@ -1,0 +1,11 @@
+--- tests/runtests.sh.orig	2014-03-21 09:53:55.000000000 +0100
++++ tests/runtests.sh	2014-03-21 09:54:17.000000000 +0100
+@@ -7,7 +7,7 @@
+ testdata=$script_dir/testdata
+ library_path=$script_dir/../src
+ export DYLD_LIBRARY_PATH=$library_path
+-export LD_LIBRARY_PATH=$library_path
++export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$library_path
+ 
+ lib=$library_path/libpacparser.so.1
+ 

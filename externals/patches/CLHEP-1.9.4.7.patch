@@ -172,3 +172,37 @@ diff -r -u ../../../../LocalInstallArea/clhep/1.9.4.7/share/sources/CLHEP/config
  }
  
  Hurd288Engine & TripleRand::Hurd() 	       { return hurd; }
+--- CLHEP/Random/src/DRand48Engine.cc.orig 2008-11-13 19:35:53.000000000 +0100
++++ CLHEP/Random/src/DRand48Engine.cc	     2014-03-28 10:39:02.000000000 +0100
+@@ -36,6 +36,7 @@
+ #include "CLHEP/Random/RandomFunc.h"
+ #include "CLHEP/Random/engineIDulong.h"
+ #include <string.h>
++#include <cmath>
+ 
+ //#define TRACE_IO
+ 
+@@ -62,8 +63,8 @@
+    long seed;
+    int cycle,curIndex;
+ 
+-   cycle = abs(int(numEngines/maxIndex));
+-   curIndex = abs(int(numEngines%maxIndex));
++   cycle = std::abs(int(numEngines/maxIndex));
++   curIndex = std::abs(int(numEngines%maxIndex));
+    numEngines += 1;
+    long mask = ((cycle & 0x007fffff) << 8);
+    HepRandom::getTheTableSeeds( seeds, curIndex );
+@@ -77,9 +78,9 @@
+    long seed;
+    long seeds[2];
+ 
+-   int cycle = abs(int(rowIndex/maxIndex));
+-   int row = abs(int(rowIndex%maxIndex));
+-   int col = abs(int(colIndex%2));
++   int cycle = std::abs(int(rowIndex/maxIndex));
++   int row = std::abs(int(rowIndex%maxIndex));
++   int col = std::abs(int(colIndex%2));
+    long mask = ((cycle & 0x000007ff) << 20);
+    HepRandom::getTheTableSeeds( seeds, row );
+    seed = (seeds[col])^mask;
