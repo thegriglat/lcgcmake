@@ -656,6 +656,29 @@ LCG_add_test(lhapdf6_orig_testpdf
     ${library_path}=${lhapdf6_home}/lib:${Boost_home}/lib:${yamlcpp_home}/lib:$ENV{${library_path}}
     LHAPDF_DATA_PATH=${lhapdf6_home}/share/LHAPDF:${lhapdf6sets_home}/../share/LHAPDF
 )
+
+LCG_add_test(lhapdf6_pyt8
+  TEST_COMMAND lhapdf6/tests/pyt8/lhapdf6_pyt8
+  BINARY_DIR lhapdf6/tests/pyt8
+  SOURCE_DIR lhapdf6/tests/pyt8
+  BUILD lhapdf6_pyt8
+  BUILD_OPTIONS
+   -DCMAKE_MODULE_PATH=${cmaketools_home}/modules
+   -DLHAPDF6_ROOT_DIR=${lhapdf6_home}
+   -DBOOST_ROOT=${Boost_home}
+   -DBoost_INCLUDE_DIR=${Boost_home_include}
+   -DYAMLCPP_ROOT_DIR=${yamlcpp_home}
+   -DPYTHIA8_ROOT_DIR=${pythia8_home}
+  ENVIRONMENT
+    ${library_path}=${lhapdf6_home}/lib:${Boost_home}/lib:${yamlcpp_home}/lib:$ENV{${library_path}}
+    LHAPDF_DATA_PATH=${lhapdf6_home}/share/LHAPDF:${lhapdf6sets_home}/../share/LHAPDF
+    PYTHIA8DATA=${pythia8_home}/xmldoc
+  POST_COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/chi.c .
+       COMMAND ${CMAKE_COMMAND} -E copy testi_lhapdf6.dat test_lhapdf6.dat
+       COMMAND ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/cmpr.sh lhapdf6 ${CMAKE_SOURCE_DIR}/generators/lhapdf6/tests/pyt8/reference.dat
+  LABELS PhysicsCheck
+)
+
 #---Rivet-----------------------------------------------------------------------------------------
 
 set(yoda_rivet_home <yoda-<rivet_<NATIVE_VERSION>_yoda>_home>)
