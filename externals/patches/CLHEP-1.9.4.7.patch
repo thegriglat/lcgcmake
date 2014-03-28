@@ -178,7 +178,7 @@ diff -r -u ../../../../LocalInstallArea/clhep/1.9.4.7/share/sources/CLHEP/config
  #include "CLHEP/Random/RandomFunc.h"
  #include "CLHEP/Random/engineIDulong.h"
  #include <string.h>
-+#include <cmath>
++#include <cstdlib>
  
  //#define TRACE_IO
  
