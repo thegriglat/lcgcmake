@@ -1,0 +1,11 @@
+--- build/macos.gcc.inc.orig	2014-03-29 09:22:32.000000000 +0100
++++ build/macos.gcc.inc	2014-03-28 23:35:39.000000000 +0100
+@@ -112,6 +112,6 @@
+ # Setting tbbmalloc data.
+ #------------------------------------------------------------------------------
+ 
+-M_CPLUS_FLAGS = $(CPLUS_FLAGS) -fno-rtti -fno-exceptions -fno-schedule-insns2
++M_CPLUS_FLAGS = $(CPLUS_FLAGS) -fno-rtti -fno-exceptions 
+ 
+ #------------------------------------------------------------------------------
+ # End of setting tbbmalloc data.
