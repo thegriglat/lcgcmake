@@ -11,3 +11,23 @@
  Qt::KeyboardModifiers qt_cocoaModifiers2QtModifiers(ulong modifierFlags);
  Qt::KeyboardModifiers qt_cocoaDragOperation2QtModifiers(uint dragOperations);
  QPixmap qt_mac_convert_iconref(const IconRef icon, int width, int height);
+--- src/declarative/util/qdeclarativefontloader.cpp.orig 2014-03-29 23:40:43.000000000 +0100
++++ src/declarative/util/qdeclarativefontloader.cpp       2014-03-29 23:39:45.000000000 +0100
+@@ -64,7 +64,7 @@
+ Q_OBJECT
+ 
+ public:
+-    QDeclarativeFontObject(int _id);
++    QDeclarativeFontObject(int _id = -1);
+ 
+     void download(const QUrl &url, QNetworkAccessManager *manager);
+ 
+@@ -84,7 +84,7 @@
+     Q_DISABLE_COPY(QDeclarativeFontObject)
+ };
+ 
+-QDeclarativeFontObject::QDeclarativeFontObject(int _id = -1)
++QDeclarativeFontObject::QDeclarativeFontObject(int _id)
+     : QObject(0), id(_id), reply(0), redirectCount(0) {}
+ 
+ 
