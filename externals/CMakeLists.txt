@@ -546,11 +546,15 @@ LCGPackage_Add(
 )
 
 #---valgrind--------------------------------------------------------------------------------------------
+if(LCG_TARGET MATCHES mac108)
+  set (valgrind_build_opts CFLAGS=-Wno-error=unused-command-line-argument-hard-error-in-future)
+endif()
 LCGPackage_Add(
   valgrind
   URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/valgrind-${valgrind_native_version}.tar.bz2
   CONFIGURE_COMMAND chmod +x ./configure 
             COMMAND ./configure --prefix=<INSTALL_DIR> 
+  BUILD_COMMAND make ${valgrind_build_opts}
   BUILD_IN_SOURCE 1
 )
 
