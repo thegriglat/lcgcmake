@@ -7,7 +7,7 @@
 
 /**
  * Example of use of tauola C++ interface. Pythia events are
- * generated with a stable tau. Taus are subsequently decay via
+ * generated with a stable tau. Taus are subsequently decayed via
  * tauola.
  *
  * @author Nadia Davidson, Mikhail Kirsanov
@@ -85,10 +85,10 @@ int main(int argc, char* argv[])
   //HepMC::IO_AsciiParticles ascii_io1("cout",std::ios::out);
   
   int NumberOfEvents = 500;
-  if(argc>3) NumberOfEvents = atoi(argv[3]);
+  if(argc>2) NumberOfEvents = atoi(argv[2]);
   
-  bool ShowersOn = true;
-  if(argc>2) ShowersOn = atoi(argv[2]);
+  int ShowersOn = 1;
+  if(argc>1) ShowersOn = atoi(argv[1]);
   if(!ShowersOn)
   {
     //pythia.readString("HadronLevel:all = off");
@@ -99,10 +99,6 @@ int main(int argc, char* argv[])
     pythia.readString("PartonLevel:ISR = off");
     pythia.readString("PartonLevel:FSR = off");
   }
-  //pythia.readFile(argv[1]);
-
-  //pythia.readString("WeakSingleBoson:ffbar2gmZ = on");
-
   pythia.readString("WeakDoubleBoson:ffbar2ZW = on");
 
   //pythia.readString("HiggsSM:gg2H = on");
@@ -252,8 +248,12 @@ int main(int argc, char* argv[])
        << "        *" << endl;
   cout << "******************************************************" << endl;
 
-  cout << "tauolapp_test1 1  " << rpyt << "    " << erpyt << " " << std::endl;
-  cout << "tauolapp_test1 2  " << rats << "    " << ertau << " " << std::endl;
+  ofstream testi("testi.dat");
+
+  testi << "tauolapp_test1 1  " << rpyt << "    " << erpyt << " " << std::endl;
+  testi << "tauolapp_test1 2  " << rats << "    " << ertau << " " << std::endl;
+
+  testi.close();
 
   Tauolapp::Log::RedirectOutput(Tauolapp::Log::Info());
   pythia.statistics();
