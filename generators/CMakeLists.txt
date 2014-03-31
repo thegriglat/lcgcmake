@@ -295,7 +295,7 @@ LCG_add_test(herwigpp_thepeg_test
 LCGPackage_Add(
   tauola++
   URL ${gen_url}/TAUOLA.<NATIVE_VERSION>-LHC.tar.gz
-  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --with-pic --with-hepmc=${HepMC_home} --with-lhapdf=${lhapdf_home} CFLAGS=-O2 CXXFLAGS=-O2 FFLAGS=-O2  F77=${CMAKE_Fortran_COMPILER}    
+  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --with-pic --with-hepmc=${HepMC_home} --with-lhapdf=${lhapdf_home} CFLAGS=-O2 CXXFLAGS=-O2 FFLAGS=-O2  F77=${CMAKE_Fortran_COMPILER}
   INSTALL_COMMAND  make install
           COMMAND  ${CMAKE_COMMAND} -E create_symlink tauola++ <INSTALL_DIR>/../../../tauolapp
 #          COMMAND ${CMAKE_COMMAND} -DINSTALL_DIR=<INSTALL_DIR> -P ${CMAKE_SOURCE_DIR}/cmake/scripts/StripLib.cmake
@@ -315,10 +315,22 @@ LCG_add_test(tauolapp-build
 
 foreach(i tauolapp_test1 tauolapp_orig_test1 tauolapp_orig_test2 tauolapp_orig_test3)
   LCG_add_test(${i}
-    TEST_COMMAND tauolapp/tests/${i}
+    TEST_COMMAND ${CMAKE_COMMAND} -E chdir tauolapp/tests ${i}
     ENVIRONMENT PYTHIA8DATA=${pythia8_home}/xmldoc ${library_path}=${tauola++_home}/lib:${HepMC_home}/lib:${pythia8_home}/lib:$ENV{${library_path}}
     DEPENDS tauolapp-build)
 endforeach()
+
+LCG_add_test(tauolapp_phys_test1
+  TEST_COMMAND ${CMAKE_COMMAND} -E chdir tauolapp/tests tauolapp_test1 1 10000
+  ENVIRONMENT
+    ${library_path}=${tauola++_home}/lib:${HepMC_home}/lib:${pythia8_home}/lib:$ENV{${library_path}}
+    PYTHIA8DATA=${pythia8_home}/xmldoc
+  POST_COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/chi.c .
+       COMMAND ${CMAKE_COMMAND} -E copy tauolapp/tests/testi.dat test_tauolapp.dat
+       COMMAND ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/cmpr.sh tauolapp ${CMAKE_SOURCE_DIR}/generators/tauolapp/tests/reference.dat
+  DEPENDS tauolapp-build
+  LABELS PhysicsCheck
+)
 
 #---pythia6-------------------------------------------------------------------------------------------
 LCGPackage_Add(
