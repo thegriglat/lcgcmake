@@ -7,7 +7,11 @@ export LC_ALL=en_US.UTF-8
 #---CMake----------------------------------------------------------
 export PATH=/afs/cern.ch/sw/lcg/external/CMake/2.8.9/Linux-i386/bin:${PATH}
 
-#---Compiler------------------------------------------------------
+#---GCC compiler to provide headers of standard libs---------------
+ARCH=$(uname -m)
+. /afs/cern.ch/sw/lcg/contrib/gcc/4.8.1/${ARCH}-slc6/setup.sh
+
+#---Compiler-------------------------------------------------------
 . /afs/cern.ch/sw/IntelSoftware/linux/setup.sh
 . /afs/cern.ch/sw/IntelSoftware/linux/x86_64/xe2013/bin/ifortvars.sh intel64
 . /afs/cern.ch/sw/IntelSoftware/linux/x86_64/xe2013/bin/iccvars.sh intel64
