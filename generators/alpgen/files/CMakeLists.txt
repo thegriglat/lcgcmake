@@ -5,13 +5,13 @@ project(alpgen Fortran)
 
 #---Compilation and Link options----------------------------------------------
 if(CMAKE_SYSTEM_NAME MATCHES Darwin)
-  set(CMAKE_SHARED_LIBRARY_CREATE_Fortran_FLAGS "${CMAKE_SHARED_LIBRARY_CREATE_Fortran_FLAGS} -fcheck=all -flat_namespace -single_module -undefined dynamic_lookup")
+  set(CMAKE_SHARED_LIBRARY_CREATE_Fortran_FLAGS "${CMAKE_SHARED_LIBRARY_CREATE_Fortran_FLAGS} -flat_namespace -single_module -undefined dynamic_lookup")
 endif()
 
-set(CMAKE_Fortran_FLAGS_DEBUG          "-fPIC -g -fno-automatic -fbounds-check")
-set(CMAKE_Fortran_FLAGS_MINSIZEREL     "-fPIC -Os -DNDEBUG -fno-automatic -fbounds-check")
-set(CMAKE_Fortran_FLAGS_RELEASE        "-fPIC -O2 -DNDEBUG -fno-automatic -fbounds-check")
-set(CMAKE_Fortran_FLAGS_RELWITHDEBINFO "-fPIC -O2 -g -fno-automatic -fbounds-check")
+set(CMAKE_Fortran_FLAGS_DEBUG          "-fPIC -g -fno-automatic")
+set(CMAKE_Fortran_FLAGS_MINSIZEREL     "-fPIC -Os -DNDEBUG -fno-automatic")
+set(CMAKE_Fortran_FLAGS_RELEASE        "-fPIC -O2 -DNDEBUG -fno-automatic")
+set(CMAKE_Fortran_FLAGS_RELWITHDEBINFO "-fPIC -O2 -g -fno-automatic")
 
 
 
