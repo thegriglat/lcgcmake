@@ -1,0 +1,15 @@
+--- CLHEP/Matrix/src/Vector.cc.orig	2014-04-01 09:21:25.000000000 +0200
++++ CLHEP/Matrix/src/Vector.cc	2014-04-01 09:22:17.000000000 +0200
+@@ -114,9 +114,9 @@
+ 
+ // trivial methods
+ 
+-inline int HepVector::num_row() const {return nrow;} 
+-inline int HepVector::num_size() const {return nrow;} 
+-inline int HepVector::num_col() const { return 1; }
++int HepVector::num_row() const {return nrow;} 
++int HepVector::num_size() const {return nrow;} 
++int HepVector::num_col() const { return 1; }
+ 
+ // operator()
+ 
