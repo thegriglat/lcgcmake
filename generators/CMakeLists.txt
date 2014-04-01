@@ -321,7 +321,7 @@ foreach(i tauolapp_test1 tauolapp_orig_test1 tauolapp_orig_test2 tauolapp_orig_t
 endforeach()
 
 LCG_add_test(tauolapp_phys_test1
-  TEST_COMMAND ${CMAKE_COMMAND} -E chdir tauolapp/tests ./tauolapp_test1 1 10000
+  TEST_COMMAND ${CMAKE_COMMAND} -E chdir tauolapp/tests ./tauolapp_test1 1 2000
   ENVIRONMENT
     ${library_path}=${tauola++_home}/lib:${HepMC_home}/lib:${pythia8_home}/lib:$ENV{${library_path}}
     PYTHIA8DATA=${pythia8_home}/xmldoc
