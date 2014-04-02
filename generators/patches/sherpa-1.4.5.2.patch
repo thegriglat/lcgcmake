@@ -1,0 +1,23 @@
+--- ATOOLS/Math/Gauss_Integrator.C.orig	2013-02-25 10:18:53.000000000 +0100
++++ ATOOLS/Math/Gauss_Integrator.C	2014-04-02 15:10:32.000000000 +0200
+@@ -21,7 +21,7 @@
+ Weight_Module* Gauss_Integrator::s_wlistroot=0;
+ 
+ 
+-Gauss_Integrator::Gauss_Integrator(Function_Base *func=0){
++Gauss_Integrator::Gauss_Integrator(Function_Base *func){
+   m_numberabsc = 0;  // precisision (number of points) not jet choosen
+   m_wlistact   = 0;    // so no precalculated weights or abscissas are available jet;
+   m_func       = func;    // set function to be integrated
+diff -Naur tmp/sherpa/1.4.5.2/ATOOLS/Math/Gauss_Integrator.H tmp1/sherpa/1.4.5.2/ATOOLS/Math/Gauss_Integrator.H
+--- ATOOLS/Math/Gauss_Integrator.H.orig	2013-02-25 10:18:53.000000000 +0100
++++ ATOOLS/Math/Gauss_Integrator.H	2014-04-02 15:10:09.000000000 +0200
+@@ -27,7 +27,7 @@
+     void   GauLeg(double * x, double * w, int n);    // mode=1;
+     void   GauJac(double * x, double * w, int n, double alf = -0.5, double bet= -0.5);  // mode=5;
+   public:
+-    Gauss_Integrator(Function_Base *);
++    Gauss_Integrator(Function_Base *func=0);
+     double Legendre(double x1 , double x2,int n);
+     double Jacobi(double x1, double x2, int n, double alf, double bet);
+     double Chebyshev( double a, double b, double prec, int n_max, int &i_err );
