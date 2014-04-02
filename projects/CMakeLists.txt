@@ -255,10 +255,33 @@ add_custom_target(install-GAUDI-externals
 LCGPackage_add(
   LCIO
   SVN_REPOSITORY svn://svn.freehep.org/lcio/tags/<LCIO_native_version>
+  UPDATE_COMMAND <VOID>
   CMAKE_ARGS -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
              -DLCIO_GENERATE_HEADERS=off 
              -DBUILD_ROOTDICT=ON
              -DROOT_DIR=${ROOT_home}             
   BUILD_COMMAND ${MAKE} ROOTSYS=${ROOT_home}
   DEPENDS ROOT
+)
+
+#---DD4hep-----------------------------------------------------------------------------------------------
+if(APPLE)
+  set(library_path DYLD_LIBRARY_PATH)
+else()
+  set(library_path LD_LIBRARY_PATH)
+endif()
+
+LCGPackage_add(
+  DD4hep
+  SVN_REPOSITORY https://svnsrv.desy.de/public/aidasoft/DD4hep/tags/<DD4hep_native_version>
+  UPDATE_COMMAND <VOID>
+  CMAKE_ARGS -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
+#             -DDD4HEP_USE_BOOST=ON 
+#             -DBOOST_ROOT=${Boost_home}
+             -DDD4HEP_USE_XERCESC=ON
+             -DXERCESC_ROOT_DIR=${XercesC_home}
+             -DROOTSYS=${ROOT_home}
+             -DDD4HEP_WITH_GEANT4=OFF
+  BUILD_COMMAND ${MAKE} ROOTSYS=${ROOT_home} ${library_path}=${ROOT_home}/lib:$ENV{${library_path}}
+  DEPENDS ROOT XercesC
 )

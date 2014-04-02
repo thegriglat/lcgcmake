@@ -39,6 +39,7 @@ LCG_external_package(coin3d            3.1.3p2                                  
 LCG_external_package(coverage          3.5.2                                    )
 LCG_external_package(CppUnit           1.12.1_p1                 author=1.12.1  )
 LCG_external_package(cx_oracle         5.1.1                                    )
+LCG_external_package(DD4hep            v00-06                                   )
 LCG_external_package(doxygen           1.8.2                                    ) 
 LCG_external_package(expat             2.0.1                                    )
 LCG_external_package(fastjet           3.0.6                                    )
