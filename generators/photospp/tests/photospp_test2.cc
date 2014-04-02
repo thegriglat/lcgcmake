@@ -195,6 +195,11 @@ int main(int argc,char **argv)
 	cout << "********************************************************" << endl;
 
 
-        cout << "photospp_test2 1  " << ratio_exp << "    " << err_exp << " " << std::endl;
-        cout << "photospp_test2 2  " << ratio_alpha  << "    " << err_alpha << " " << std::endl;
+        ofstream testi("testi.dat");
+        
+        testi << "photospp_test2 1  " << ratio_exp << "    " << err_exp << " " << std::endl;
+        testi << "photospp_test2 2  " << ratio_alpha  << "    " << err_alpha << " " << std::endl;
+
+        testi.close();
+
 }
