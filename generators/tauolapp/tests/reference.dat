@@ -1,2 +1,2 @@
-tauolapp_test1 1  0.593305    0.00269327 
+tauolapp_test1 1  0.593305    0.00269327  ! Obtained 31.03.2014 with tauola++ 1.1.4 and pythia8 185 on x86_64-slc5-gcc47-opt, lcgcmt65
 tauolapp_test1 2  0.544869    0.00287418 
