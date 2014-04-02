@@ -1,0 +1,10 @@
+--- ACDC/ACDCGen.h.orig	2014-04-02 16:20:59.000000000 +0200
++++ ACDC/ACDCGen.h	2014-04-02 16:22:40.000000000 +0200
+@@ -13,6 +13,7 @@
+ #include "ACDCTraits.h"
+ #include "ACDCGenCell.h"
+ #include "ThePEG/Utilities/Exception.h"
++#include <algorithm>
+ 
+ namespace ACDCGenerator {
+ 
