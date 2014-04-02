@@ -250,3 +250,15 @@ add_custom_target(install-GAUDI-externals
                  COMMENT "Target to install all externals packages needed by Gaudi"
                  DEPENDS ${GAUDI-installs} )
 
+
+#---LCIO-----------------------------------------------------------------------------------------------
+LCGPackage_add(
+  LCIO
+  SVN_REPOSITORY svn://svn.freehep.org/lcio/tags/<LCIO_native_version>
+  CMAKE_ARGS -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
+             -DLCIO_GENERATE_HEADERS=off 
+             -DBUILD_ROOTDICT=ON
+             -DROOT_DIR=${ROOT_home}             
+  BUILD_COMMAND ${MAKE} ROOTSYS=${ROOT_home}
+  DEPENDS ROOT
+)
