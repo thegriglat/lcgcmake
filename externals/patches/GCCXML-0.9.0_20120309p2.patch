@@ -1,3 +1,14 @@
+--- GCC_XML/Support/GCC/4.2/gccxml_builtins.h.orig	2014-04-02 23:01:38.000000000 +0200
++++ GCC_XML/Support/GCC/4.2/gccxml_builtins.h		2014-04-02 23:02:53.000000000 +0200
+@@ -133,4 +133,8 @@
+ #ifdef __llvm__
+ extern unsigned int  __builtin_bswap32(unsigned int _data);
+ extern unsigned long __builtin_bswap64(unsigned long _data);
++#ifndef __has_feature
++#define __has_feature(x) 0
++#endif
++
+ #endif
 diff -r -P -u ../gccxml-0.9.0_20120309p1/GCC_XML/Support/GCC/4.8/bits/c++config.h ./GCC_XML/Support/GCC/4.8/bits/c++config.h
 --- ../gccxml-0.9.0_20120309p1/GCC_XML/Support/GCC/4.8/bits/c++config.h	1970-01-01 01:00:00.000000000 +0100
 +++ ./GCC_XML/Support/GCC/4.8/bits/c++config.h	2013-03-25 20:17:18.000000000 +0100
