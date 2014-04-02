@@ -1,6 +1,6 @@
 --- build/macos.gcc.inc.orig	2014-03-29 09:22:32.000000000 +0100
 +++ build/macos.gcc.inc	2014-03-28 23:35:39.000000000 +0100
-@@ -112,6 +112,6 @@
+@@ -112,7 +112,7 @@
  # Setting tbbmalloc data.
  #------------------------------------------------------------------------------
  
@@ -9,3 +9,13 @@
  
  #------------------------------------------------------------------------------
  # End of setting tbbmalloc data.
+--- src/tbb/mac64-tbb-export.lst.orig	2014-04-02 09:28:19.000000000 +0200
++++ src/tbb/mac64-tbb-export.lst		2014-04-02 09:29:55.000000000 +0200
+@@ -117,7 +117,6 @@
+ __TBB_SYMBOL( _ZTVN3tbb18captured_exceptionE )
+ __TBB_SYMBOL( _ZTIN3tbb13tbb_exceptionE )
+ __TBB_SYMBOL( _ZTSN3tbb13tbb_exceptionE )
+-__TBB_SYMBOL( _ZTVN3tbb13tbb_exceptionE )
+ #endif /* __TBB_TASK_GROUP_CONTEXT */
+ 
+ // Symbols for exceptions thrown from TBB
