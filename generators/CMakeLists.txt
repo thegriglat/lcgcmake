@@ -527,10 +527,36 @@ LCG_add_test(photospp-build
 
 foreach(i photospp_orig_test2 photospp_test1 photospp_test2)
   LCG_add_test(${i}
-    TEST_COMMAND photospp/tests/${i}
-    ENVIRONMENT PYTHIA8DATA=${pythia8_home}/xmldoc ${library_path}=${photos++_home}/lib:${HepMC_home}/lib:${pythia8_home}/lib:$ENV{${library_path}}
+    TEST_COMMAND  ${CMAKE_COMMAND} -E chdir photospp/tests ./${i}
+    ENVIRONMENT
+      PYTHIA8DATA=${pythia8_home}/xmldoc 
+      ${library_path}=${photos++_home}/lib:${HepMC_home}/lib:${pythia8_home}/lib:$ENV{${library_path}}
     DEPENDS photospp-build)
 endforeach()
+
+LCG_add_test(photospp_phys_test1
+  TEST_COMMAND ${CMAKE_COMMAND} -E chdir photospp/tests ./photospp_test1
+  ENVIRONMENT
+    ${library_path}=${photos++_home}/lib:${HepMC_home}/lib:${pythia8_home}/lib:$ENV{${library_path}}
+    PYTHIA8DATA=${pythia8_home}/xmldoc
+  POST_COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/chi.c .
+       COMMAND ${CMAKE_COMMAND} -E copy photospp/tests/testi.dat test_photospp.dat
+  DEPENDS photospp-build
+  LABELS PhysicsCheck
+)
+
+LCG_add_test(photospp_phys_test2
+  TEST_COMMAND ${CMAKE_COMMAND} -E chdir photospp/tests ./photospp_test2
+  ENVIRONMENT
+    ${library_path}=${photos++_home}/lib:${HepMC_home}/lib:${pythia8_home}/lib:$ENV{${library_path}}
+    PYTHIA8DATA=${pythia8_home}/xmldoc
+  POST_COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/chi.c .
+       COMMAND ${CMAKE_SOURCE_DIR}/generators/photospp/tests/mergetest
+       COMMAND ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/cmpr.sh photospp ${CMAKE_SOURCE_DIR}/generators/photospp/tests/reference.dat
+  DEPENDS photospp-build photospp_phys_test1
+  LABELS PhysicsCheck
+)
+
 
 #---evtgen------------------------------------------------------------------------------------------
 LCGPackage_Add(
