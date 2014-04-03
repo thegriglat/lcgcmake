@@ -260,7 +260,7 @@ process_tests () {
   process_tests | while read line ; do print_html $line >> $RESULTS ; done
   bottom_html
 
-  mkdir -p ${RESULTSTORE}/html/${1}
+  mkdir -p ${RESULTSTORE}/html
   cp -f $RESULTS ${RESULTSTORE}/html/${NAMESTORAGE}
   echo
   echo html file with comparison is produced, its address is:
