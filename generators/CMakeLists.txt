@@ -208,7 +208,7 @@ LCG_add_test(pythia8-genser_test4
 
 LCG_add_test(pythia8-compare
   PRE_COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/chi.c .
-  TEST_COMMAND ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/cmpr.sh pythia8 ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/reference.dat
+  TEST_COMMAND ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/cmpr.sh pythia8 ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/reference.dat ${LCG_VERSION} ${LCG_platform}
   DEPENDS pythia8-genser_test2 pythia8-genser_test3 pythia8-genser_test4
   LABELS PhysicsCheck
 )
@@ -327,7 +327,7 @@ LCG_add_test(tauolapp_phys_test1
     PYTHIA8DATA=${pythia8_home}/xmldoc
   POST_COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/chi.c .
        COMMAND ${CMAKE_COMMAND} -E copy tauolapp/tests/testi.dat test_tauolapp.dat
-       COMMAND ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/cmpr.sh tauolapp ${CMAKE_SOURCE_DIR}/generators/tauolapp/tests/reference.dat
+       COMMAND ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/cmpr.sh tauolapp ${CMAKE_SOURCE_DIR}/generators/tauolapp/tests/reference.dat ${LCG_VERSION} ${LCG_platform}
   DEPENDS tauolapp-build
   LABELS PhysicsCheck
 )
@@ -371,7 +371,7 @@ LCG_add_test(pythia6-genser_test1
 
 LCG_add_test(pythia6-compare
   PRE_COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/chi.c .
-  TEST_COMMAND ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/cmpr.sh pythia6 ${CMAKE_SOURCE_DIR}/generators/pythia6/tests/reference.dat
+  TEST_COMMAND ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/cmpr.sh pythia6 ${CMAKE_SOURCE_DIR}/generators/pythia6/tests/reference.dat ${LCG_VERSION} ${LCG_platform}
   DEPENDS pythia6-genser_test1
   LABELS PhysicsCheck
 )
@@ -552,11 +552,10 @@ LCG_add_test(photospp_phys_test2
     PYTHIA8DATA=${pythia8_home}/xmldoc
   POST_COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/chi.c .
        COMMAND ${CMAKE_SOURCE_DIR}/generators/photospp/tests/mergetest
-       COMMAND ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/cmpr.sh photospp ${CMAKE_SOURCE_DIR}/generators/photospp/tests/reference.dat
+       COMMAND ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/cmpr.sh photospp ${CMAKE_SOURCE_DIR}/generators/photospp/tests/reference.dat ${LCG_VERSION} ${LCG_platform}
   DEPENDS photospp-build photospp_phys_test1
   LABELS PhysicsCheck
 )
-
 
 #---evtgen------------------------------------------------------------------------------------------
 LCGPackage_Add(
@@ -596,7 +595,7 @@ foreach(version ${evtgen_native_version})
   LCG_add_test(evtgen-${version}_compare
     PRE_COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/chi.c .
         COMMAND ${CMAKE_COMMAND} -E copy evtgen-${version}/tests/testi.dat test_evtgen-${version}.dat
-    TEST_COMMAND ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/cmpr.sh evtgen-${version} ${CMAKE_SOURCE_DIR}/generators/evtgen/tests/compare/reference.dat
+    TEST_COMMAND ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/cmpr.sh evtgen-${version} ${CMAKE_SOURCE_DIR}/generators/evtgen/tests/compare/reference.dat ${LCG_VERSION} ${LCG_platform}
     DEPENDS evtgen-${version}_test1
     LABELS PhysicsCheck
   )
@@ -713,7 +712,7 @@ LCG_add_test(lhapdf6_pyt8
     PYTHIA8DATA=${pythia8_home}/xmldoc
   POST_COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/chi.c .
        COMMAND ${CMAKE_COMMAND} -E copy testi_lhapdf6.dat test_lhapdf6.dat
-       COMMAND ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/cmpr.sh lhapdf6 ${CMAKE_SOURCE_DIR}/generators/lhapdf6/tests/pyt8/reference.dat
+       COMMAND ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/cmpr.sh lhapdf6 ${CMAKE_SOURCE_DIR}/generators/lhapdf6/tests/pyt8/reference.dat ${LCG_VERSION} ${LCG_platform}
   LABELS PhysicsCheck
 )
 
