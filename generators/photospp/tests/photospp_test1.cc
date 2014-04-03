@@ -98,6 +98,7 @@ int main(int argc,char **argv)
   //e+ e- collisions
   if (!pythia.init( 11, -11, 91.187)) return 1;
 
+        Photospp::Photos::setSeed( 1234 , 1234); 
 	Photospp::Photos::initialize();
 
 	// Turn on NLO corrections - only for Photos 3.2 or higher
