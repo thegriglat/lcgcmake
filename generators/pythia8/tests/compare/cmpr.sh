@@ -1,5 +1,13 @@
 #!/bin/bash
 
+# Produces html page with comparison
+#
+# input:
+# 1 - generator name
+# 2 - reference file full path
+# 3 - LCG version
+# 4 - platform
+
 TEST_DAT=test_${1}.dat
 FORMAT="html"
 REFERENCE_DAT=$2
@@ -251,12 +259,14 @@ process_tests () {
   top_html
   process_tests | while read line ; do print_html $line >> $RESULTS ; done
   bottom_html
+
   mkdir -p ${RESULTSTORE}/html/${1}
   cp -f $RESULTS ${RESULTSTORE}/html/${NAMESTORAGE}
   echo
   echo html file with comparison is produced, its address is:
   echo file://${RESULTSTORE}/html/${NAMESTORAGE}
   echo
+
 #fi
 
 export result=`cat fresult`
