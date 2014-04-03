@@ -4,6 +4,9 @@ TEST_DAT=test_${1}.dat
 FORMAT="html"
 REFERENCE_DAT=$2
 RESULTS=test_${1}.html
+NAMESTORAGE=test_${1}_${3}_${4}.html
+
+RESULTSTORE=/afs/cern.ch/sw/lcg/external/MCGenerators_test/validation
 
 rm -f $RESULTS
 
@@ -248,7 +251,12 @@ process_tests () {
   top_html
   process_tests | while read line ; do print_html $line >> $RESULTS ; done
   bottom_html
-  cat $RESULTS
+  mkdir -p ${RESULTSTORE}/html/${1}
+  cp -f $RESULTS ${RESULTSTORE}/html/${NAMESTORAGE}
+  echo
+  echo html file with comparison is produced, its address is:
+  echo file://${RESULTSTORE}/html/${NAMESTORAGE}
+  echo
 #fi
 
 export result=`cat fresult`
