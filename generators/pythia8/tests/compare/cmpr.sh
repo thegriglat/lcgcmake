@@ -5,14 +5,15 @@
 # input:
 # 1 - generator name
 # 2 - reference file full path
-# 3 - LCG version
-# 4 - platform
+# 3 - generator version
+# 4 - LCG version
+# 5 - platform
 
 TEST_DAT=test_${1}.dat
 FORMAT="html"
 REFERENCE_DAT=$2
 RESULTS=test_${1}.html
-NAMESTORAGE=test_${1}_${3}_${4}.html
+NAMESTORAGE=test_${1}_${3}_${4}_${5}.html
 
 RESULTSTORE=/afs/cern.ch/sw/lcg/external/MCGenerators_test/validation
 
