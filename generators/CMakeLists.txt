@@ -1247,10 +1247,9 @@ LCG_add_test(
   POST_COMMAND ${CMAKE_COMMAND} -DAIDA2ROOT=${AIDA2ROOT} -DPython_cmd=${Python_cmd} -Dyoda_home=${yoda_home} -DINPUT=${CMAKE_BINARY_DIR}/generators/pythia8_riv2_zjets_i.yoda -P ${CMAKE_SOURCE_DIR}/cmake/scripts/yoda2root.cmake
        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/generators/reference/pythia8_riv2_zjets.yoda ${CMAKE_BINARY_DIR}/generators/pythia8_riv2_zjets.yoda
        COMMAND ${CMAKE_COMMAND} -DAIDA2ROOT=${AIDA2ROOT} -DPython_cmd=${Python_cmd} -Dyoda_home=${yoda_home} -DINPUT=${CMAKE_BINARY_DIR}/generators/pythia8_riv2_zjets.yoda -P ${CMAKE_SOURCE_DIR}/cmake/scripts/yoda2root.cmake
+       COMMAND ${CMAKE_SOURCE_DIR}/generators/reference/riv2html.sh ${rivet2_home} pythia8 zjets ${LCG_VERSION} ${LCG_platform}
        COMMAND ${Python_cmd} ${CMAKE_SOURCE_DIR}/generators/reference/reference.py ${CMAKE_BINARY_DIR}/generators/pythia8_riv2_zjets.root ${CMAKE_BINARY_DIR}/generators/pythia8_riv2_zjets_i.root "Path=jet_HT" limit=0.10
        COMMAND ${Python_cmd} ${CMAKE_SOURCE_DIR}/generators/reference/reference.py ${CMAKE_BINARY_DIR}/generators/pythia8_riv2_zjets.root ${CMAKE_BINARY_DIR}/generators/pythia8_riv2_zjets_i.root "Path=XS" limit=0.05
-       COMMAND ${rivet2_home}/bin/rivet-mkhtml --help
-       COMMAND ${CMAKE_SOURCE_DIR}/generators/reference/riv2html.sh ${rivet2_home} pythia8 zjets ${LCG_VERSION} ${LCG_platform}
 )
 #I cannot pass the command below because of quotes. In addition it requires to have ${rivet2_home}/bin in the path
 #rivet-mkhtml -o pythia8html -s --mc-errs pythia8_riv2.yoda:'Title=Reference' pythia8_riv2_i.yoda:'LineColor=blue'
