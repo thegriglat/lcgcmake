@@ -183,7 +183,8 @@ LCG_external_package(pythia6           428            ${MCGENPATH}/pythia6    au
 LCG_external_package(pythia6           428.2          ${MCGENPATH}/pythia6    author=6.4.28 hepevt=10000  )
 
 LCG_external_package(agile             1.4.0          ${MCGENPATH}/agile        )
-LCG_external_package(photos++          3.52           ${MCGENPATH}/photos++     )
+LCG_external_package(photos++          3.52           ${MCGENPATH}/photos++   author=3.52 )
+LCG_external_package(photos++          3.54a          ${MCGENPATH}/photos++   author=3.54 )
 LCG_external_package(photos            215.4          ${MCGENPATH}/photos       ) 
 
 #LCG_external_package(evtgen            1.2.0          ${MCGENPATH}/evtgen         tag=R01-02-00 pythia8=175 tauola++=1.1.1a)
