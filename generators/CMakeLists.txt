@@ -499,7 +499,7 @@ LCG_add_test(hydjet_test1
 #---photos++------------------------------------------------------------------------------------------
 LCGPackage_Add(
   photos++
-  URL ${gen_url}/PHOTOS.<NATIVE_VERSION>-LHC.tar.gz
+  URL ${gen_url}/PHOTOS.<photos++_<NATIVE_VERSION>_author>-LHC.tar.gz
   CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --with-hepmc=${HepMC_home} CFLAGS=-O2 CXXFLAGS=-O2 FFLAGS=-O2 F77=${CMAKE_Fortran_COMPILER} 
   BUILD_IN_SOURCE 1
   INSTALL_COMMAND  make install
