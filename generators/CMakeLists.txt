@@ -30,15 +30,17 @@ endforeach()
 #This is not good that versions .2 cannot be tested with agile if there is a corresponding version without .2, solution to be found:
 string(REGEX MATCH "[0-9][0-9][0-9]" pythia6_test_version ${pythia6_test_version_full})
 
-foreach(v ${alpgen_native_version}) 
-  set(alpgen_test_version ${v})
-endforeach()
-
 foreach(v ${herwig_native_version}) 
   set(herwig_test_version_full ${v})
 endforeach()
 #This is not good that versions .2 cannot be tested with agile if there is a corresponding version without .2, solution to be found:
 string(REGEX MATCH "6.[0-9][0-9][0-9]" herwig_test_version ${herwig_test_version_full})
+
+foreach(g alpgen pythia8 photos++ tauola++ lhapdf6)
+  foreach(v ${${g}_native_version})
+    set(${g}_test_version ${v})
+  endforeach()
+endforeach()
 
 
 #---lhapdfsets--------------------------------------------------------------------------------------
@@ -1247,7 +1249,7 @@ LCG_add_test(
   POST_COMMAND ${CMAKE_COMMAND} -DAIDA2ROOT=${AIDA2ROOT} -DPython_cmd=${Python_cmd} -Dyoda_home=${yoda_home} -DINPUT=${CMAKE_BINARY_DIR}/generators/pythia8_riv2_zjets_i.yoda -P ${CMAKE_SOURCE_DIR}/cmake/scripts/yoda2root.cmake
        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/generators/reference/pythia8_riv2_zjets.yoda ${CMAKE_BINARY_DIR}/generators/pythia8_riv2_zjets.yoda
        COMMAND ${CMAKE_COMMAND} -DAIDA2ROOT=${AIDA2ROOT} -DPython_cmd=${Python_cmd} -Dyoda_home=${yoda_home} -DINPUT=${CMAKE_BINARY_DIR}/generators/pythia8_riv2_zjets.yoda -P ${CMAKE_SOURCE_DIR}/cmake/scripts/yoda2root.cmake
-       COMMAND ${CMAKE_SOURCE_DIR}/generators/reference/riv2html.sh ${rivet2_home} pythia8 zjets ${LCG_VERSION} ${LCG_platform}
+       COMMAND ${CMAKE_SOURCE_DIR}/generators/reference/riv2html.sh ${rivet2_home} pythia8 ${pythia8_test_version} zjets ${LCG_VERSION} ${LCG_platform}
        COMMAND ${Python_cmd} ${CMAKE_SOURCE_DIR}/generators/reference/reference.py ${CMAKE_BINARY_DIR}/generators/pythia8_riv2_zjets.root ${CMAKE_BINARY_DIR}/generators/pythia8_riv2_zjets_i.root "Path=jet_HT" limit=0.10
        COMMAND ${Python_cmd} ${CMAKE_SOURCE_DIR}/generators/reference/reference.py ${CMAKE_BINARY_DIR}/generators/pythia8_riv2_zjets.root ${CMAKE_BINARY_DIR}/generators/pythia8_riv2_zjets_i.root "Path=XS" limit=0.05
 )
