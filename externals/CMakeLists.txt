@@ -414,6 +414,7 @@ LCGPackage_Add(
   expat
   URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/expat-${expat_native_version}.tar.gz
   CONFIGURE_COMMAND ./configure --prefix <INSTALL_DIR>
+  BUILD_COMMAND ${MAKE} CFLAGS=-fPIC
   BUILD_IN_SOURCE 1
 )
 
