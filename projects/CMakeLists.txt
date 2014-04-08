@@ -277,9 +277,11 @@ LCGPackage_add(
              -DXERCESC_ROOT_DIR=${XercesC_home}
              -DGEANT4_USE_SYSTEM_CLHEP=ON
              -DCLHEP_ROOT_DIR=<CLHEP-<Geant4_<VERSION>_CLHEP>_home>
+             -DEXPAT_LIBRARY=${expat_home}/lib/libexpat.a
+             -DEXPAT_INCLUDE_DIR=${expat_home}/include
              IF LCG_CPP11 THEN  -DGEANT4_BUILD_CXXSTD=c++11  ENDIF
   BUILD_COMMAND ${MAKE}
-  DEPENDS CLHEP XercesC
+  DEPENDS CLHEP XercesC expat
 )
 
 #---DD4hep-----------------------------------------------------------------------------------------------
