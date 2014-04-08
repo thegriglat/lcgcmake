@@ -146,63 +146,42 @@ endif()
 
 set(MCGENPATH  MCGenerators)
 
+
 #LCG_external_package(powheg-box         r2463         ${MCGENPATH}/powheg-box       )
 LCG_external_package(powheg-box         r2092         ${MCGENPATH}/powheg-box       )
 
-#LCG_external_package(lhapdf            5.8.9          ${MCGENPATH}/lhapdf       )
-#LCG_external_package(lhapdf            5.9.0          ${MCGENPATH}/lhapdf       )
 LCG_external_package(lhapdf            5.9.1          ${MCGENPATH}/lhapdf       )
-#LCG_external_package(lhapdfsets        5.8.9          lhapdfsets   )
-#LCG_external_package(lhapdfsets        5.9.0          lhapdfsets   )
 LCG_external_package(lhapdfsets        5.9.1          lhapdfsets   )
 
 LCG_external_package(lhapdf6           6.0.4          ${MCGENPATH}/lhapdf6       )
 LCG_external_package(lhapdf6sets       6.0.4          lhapdf6sets   )
 
 LCG_external_package(pythia8           175.lhetau     ${MCGENPATH}/pythia8    author=175  )
-#LCG_external_package(pythia8           175            ${MCGENPATH}/pythia8    author=175  )
-#LCG_external_package(pythia8           176            ${MCGENPATH}/pythia8    author=176  )
-#LCG_external_package(pythia8           180            ${MCGENPATH}/pythia8    author=180  )
 LCG_external_package(pythia8           183            ${MCGENPATH}/pythia8    author=183  )
+LCG_external_package(pythia8           185            ${MCGENPATH}/pythia8    author=185  )
 
-LCG_external_package(sacrifice         0.9.9          ${MCGENPATH}/sacrifice pythia8=183)
-
+LCG_external_package(sacrifice         0.9.9          ${MCGENPATH}/sacrifice pythia8=185)
 
 LCG_external_package(thepeg            1.9.0          ${MCGENPATH}/thepeg       )
+LCG_external_package(thepeg            1.9.0a          ${MCGENPATH}/thepeg       )
 
 LCG_external_package(herwig++          2.7.0          ${MCGENPATH}/herwig++  thepeg=1.9.0  )
+LCG_external_package(herwig++          2.7.0a          ${MCGENPATH}/herwig++  thepeg=1.9.0a  )
 
-#LCG_external_package(tauola++          1.1.1          ${MCGENPATH}/tauola++     )
-#LCG_external_package(tauola++          1.1.1a         ${MCGENPATH}/tauola++     )
-#LCG_external_package(tauola++          1.1.3          ${MCGENPATH}/tauola++     )
 LCG_external_package(tauola++          1.1.4          ${MCGENPATH}/tauola++     )
 
-#LCG_external_package(pythia6           427            ${MCGENPATH}/pythia6    author=6.4.27 hepevt=4000   )
-#LCG_external_package(pythia6           427.2          ${MCGENPATH}/pythia6    author=6.4.27 hepevt=10000  )
 LCG_external_package(pythia6           428            ${MCGENPATH}/pythia6    author=6.4.28 hepevt=4000   )
 LCG_external_package(pythia6           428.2          ${MCGENPATH}/pythia6    author=6.4.28 hepevt=10000  )
 
 LCG_external_package(agile             1.4.0          ${MCGENPATH}/agile        )
-LCG_external_package(photos++          3.52           ${MCGENPATH}/photos++    author=3.52 )
-LCG_external_package(photos++          3.54a          ${MCGENPATH}/photos++    author=3.54 )
+
+LCG_external_package(photos++          3.55          ${MCGENPATH}/photos++   author=3.55 )
 LCG_external_package(photos            215.4          ${MCGENPATH}/photos       ) 
-
-#LCG_external_package(evtgen            1.2.0          ${MCGENPATH}/evtgen         tag=R01-02-00 pythia8=175 tauola++=1.1.1a)
-LCG_external_package(evtgen            1.3.0          ${MCGENPATH}/evtgen         tag=R01-03-00 pythia8=183 tauola++=1.1.4)
-
-
-
+LCG_external_package(evtgen            1.3.0          ${MCGENPATH}/evtgen         tag=R01-03-00 pythia8=185 tauola++=1.1.4)
 LCG_external_package(rivet             2.1.0          ${MCGENPATH}/rivet        yoda=1.0.5      )
-if(NOT ${LCG_OS}${LCG_OSVERS} STREQUAL mac109) # rivet 2 does not work yet with mac109
-  LCG_external_package(rivet             2.0.0          ${MCGENPATH}/rivet yoda=1.0.4        )
-endif()
 LCG_external_package(rivet             1.9.0          ${MCGENPATH}/rivet  yoda=1.0.4      )
 
-#LCG_external_package(sherpa            1.4.3          ${MCGENPATH}/sherpa         author=1.4.3 hepevt=4000  )
-#LCG_external_package(sherpa            1.4.3.2        ${MCGENPATH}/sherpa         author=1.4.3 hepevt=10000 )
-#LCG_external_package(sherpa            1.4.5          ${MCGENPATH}/sherpa         author=1.4.5 hepevt=4000 )
 LCG_external_package(sherpa            1.4.5.2        ${MCGENPATH}/sherpa         author=1.4.5 hepevt=10000 )
-#LCG_external_package(sherpa            2.0.0          ${MCGENPATH}/sherpa         author=2.0.0 hepevt=10000)
 LCG_external_package(sherpa            2.1.0          ${MCGENPATH}/sherpa         author=2.1.0 hepevt=10000)
 
 LCG_external_package(hepmcanalysis     3.4.14         ${MCGENPATH}/hepmcanalysis  author=00-03-04-14        )
@@ -212,6 +191,7 @@ LCG_external_package(starlight         r43            ${MCGENPATH}/starlight    
 
 LCG_external_package(herwig            6.520.2        ${MCGENPATH}/herwig       )
 LCG_external_package(herwig            6.521.2        ${MCGENPATH}/herwig       )
+
 
 LCG_external_package(crmc              1.3            ${MCGENPATH}/crmc         )
 LCG_external_package(cython            0.19.1         ${MCGENPATH}/cython       )
@@ -235,6 +215,8 @@ if(${LCG_COMP}${LCG_COMPVERS} STRGREATER gcc45)
 endif()
 
 LCG_external_package(jhu               3.1.8          ${MCGENPATH}/jhu       )
+
+
 
 # Prepare the search paths according to the versions above
 LCG_prepare_paths()
