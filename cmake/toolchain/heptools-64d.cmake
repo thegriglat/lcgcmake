@@ -216,7 +216,7 @@ LCG_external_package(lhapdf            5.8.8          ${MCGENPATH}/lhapdf       
 LCG_external_package(lhapdfsets        5.8.8          lhapdfsets   )
 LCG_external_package(lhapdfsets        5.8.9          lhapdfsets   )
 
-LCG_external_package(photos++          3.52           ${MCGENPATH}/photos++        author=3.55 )
+LCG_external_package(photos++          3.55           ${MCGENPATH}/photos++        author=3.55 )
 LCG_external_package(photos++          3.52           ${MCGENPATH}/photos++        author=3.52 )
 
 LCG_external_package(pythia6           428.2          ${MCGENPATH}/pythia6        author=6.4.28 hepevt=10000  )
