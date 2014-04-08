@@ -304,7 +304,7 @@ endif()
 if (LCG_TARGET MATCHES "icc" AND LCG_TARGET MATCHES "slc6")
    set(graphviz_config_opts CC=gcc CXX=g++)
 endif()
-if(LCG_OS STREQUAL mac AND LCG_OSVERS VERSION_GREATER 107)
+if(LCG_OS STREQUAL mac AND LCG_OSVERS VERSION_EQUAL 108)
   set(graphviz_build_opts CFLAGS=-I/usr/X11/include)
 endif()
 LCGPackage_Add(
