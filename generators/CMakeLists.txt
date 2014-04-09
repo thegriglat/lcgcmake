@@ -34,8 +34,9 @@ foreach(v ${herwig_native_version})
   set(herwig_test_version_full ${v})
 endforeach()
 #This is not good that versions .2 cannot be tested with agile if there is a corresponding version without .2, solution to be found:
-if (${herwig_test_version_full})
-	string(REGEX MATCH "6.[0-9][0-9][0-9]" herwig_test_version ${herwig_test_version_full})
+if ("${herwig_test_version_full}" STREQUAL "" )
+else()
+        string(REGEX MATCH "6.[0-9][0-9][0-9]" herwig_test_version ${herwig_test_version_full})
 endif()
 
 foreach(g alpgen pythia8 photos++ tauola++ lhapdf6)
