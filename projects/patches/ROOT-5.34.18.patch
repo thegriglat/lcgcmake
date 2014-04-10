@@ -10,10 +10,53 @@ index eca73e9..40e3ae8 100644
    ROOT_MODULE_LIBRARY(ReflexDict G__Reflex.cxx LIBRARIES Reflex Cint Core)
    #---Reflex library---------------------------------------------------------
    ROOT_LINKER_LIBRARY(Reflex *.cxx LIBRARIES ${CMAKE_DL_LIBS})  
-index a9123e1..1359485 100644
+diff --git a/cmake/modules/CheckCompiler.cmake b/cmake/modules/CheckCompiler.cmake
+index cd65bb7..ffef223 100644
+--- cmake/modules/CheckCompiler.cmake
++++ cmake/modules/CheckCompiler.cmake
+@@ -11,6 +11,15 @@ if(fortran AND NOT WIN32 AND NOT CMAKE_GENERATOR STREQUAL Xcode AND NOT CMAKE_GE
+   enable_language(Fortran OPTIONAL)
+ endif()
+ 
++#----Get the compiler file name (to ensure re-location)---------------------------------------------
++get_filename_component(_compiler_name ${CMAKE_CXX_COMPILER} NAME)
++get_filename_component(_compiler_path ${CMAKE_CXX_COMPILER} PATH)
++if("$ENV{PATH}" MATCHES ${_compiler_path})
++  set(CXX ${_compiler_name})
++else()
++  set(CXX ${CMAKE_CXX_COMPILER})
++endif()
++string(TOUPPER "${CMAKE_BUILD_TYPE}" uppercase_CMAKE_BUILD_TYPE)
+ 
+ #----Test if clang setup works----------------------------------------------------------------------
+ if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+@@ -88,4 +97,4 @@ endif()
+ message(STATUS "ROOT Platform: ${ROOT_PLATFORM}")
+ message(STATUS "ROOT Architecture: ${ROOT_ARCHITECTURE}")
+ message(STATUS "Build Type: ${CMAKE_BUILD_TYPE}")
+-message(STATUS "Compiler Flags: ${CMAKE_CXX_FLAGS} ${ALL_CXX_FLAGS_${CMAKE_BUILD_TYPE}}")
++message(STATUS "Compiler Flags: ${CMAKE_CXX_FLAGS} ${ALL_CXX_FLAGS_${uppercase_CMAKE_BUILD_TYPE}}")
+diff --git a/cmake/modules/RootConfiguration.cmake b/cmake/modules/RootConfiguration.cmake
+index a9123e1..32b9101 100644
 --- cmake/modules/RootConfiguration.cmake
 +++ cmake/modules/RootConfiguration.cmake
-@@ -406,11 +406,7 @@ configure_file(${CMAKE_SOURCE_DIR}/config/RConfigOptions.in include/RConfigOptio
+@@ -376,10 +376,11 @@ string(REPLACE "c++11" "cxx11" features ${features}) # change the name of the c+
+ set(configfeatures ${features})
+ set(configargs ${ROOT_CONFIGARGS})
+ set(configoptions ${ROOT_CONFIGARGS})
+-set(altcc ${CMAKE_C_COMPILER})
+-set(altcxx ${CMAKE_CXX_COMPILER})
+-set(altf77 ${CMAKE_Fortran_COMPILER})
+-set(altld ${CMAKE_CXX_COMPILER})
++get_filename_component(altcc ${CMAKE_C_COMPILER} NAME)
++get_filename_component(altcxx ${CMAKE_CXX_COMPILER} NAME)
++get_filename_component(altf77 ${CMAKE_Fortran_COMPILER} NAME)
++get_filename_component(altld ${CMAKE_CXX_COMPILER} NAME)
++
+ set(pythonvers ${PYTHON_VERSION})
+ 
+ #---CINT Configuration---------------------------------------------------------------------------------------
+@@ -406,11 +407,7 @@ configure_file(${CMAKE_SOURCE_DIR}/config/RConfigOptions.in include/RConfigOptio
  if(ruby)
    file(APPEND ${CMAKE_BINARY_DIR}/include/RConfigOptions.h "\#define R__RUBY_MAJOR ${RUBY_MAJOR_VERSION}\n\#define R__RUBY_MINOR ${RUBY_MINOR_VERSION}\n")
  endif()
@@ -26,7 +69,7 @@ index a9123e1..1359485 100644
  configure_file(${CMAKE_SOURCE_DIR}/config/Makefile-comp.in config/Makefile.comp)
  configure_file(${CMAKE_SOURCE_DIR}/config/Makefile.in config/Makefile.config)
  configure_file(${CMAKE_SOURCE_DIR}/config/mimes.unix.in ${CMAKE_BINARY_DIR}/etc/root.mimes)
-@@ -480,6 +476,20 @@ if(prefix STREQUAL "$(ROOTSYS)")
+@@ -480,6 +477,19 @@ if(prefix STREQUAL "$(ROOTSYS)")
    set(etcdir $ROOTSYS/etc)
    set(mandir $ROOTSYS/man/man1)
  endif()
@@ -34,19 +77,109 @@ index a9123e1..1359485 100644
 +
 +#---compiledata.h--------------------------------------------------------------------------------------------
 +if(WIN32)
-+  set(makecompiledata ${CMAKE_SOURCE_DIR}/build/win/compiledata.sh)
++  # We cannot use the compiledata.sh script for windows
++  configure_file(${CMAKE_SOURCE_DIR}/cmake/scripts/compiledata.win32.in include/compiledata.h)
 +else()
-+  set(makecompiledata ${CMAKE_SOURCE_DIR}/build/unix/compiledata.sh)
++  execute_process(COMMAND ${CMAKE_SOURCE_DIR}/build/unix/compiledata.sh include/compiledata.h "${CXX}" ""
++       "${CMAKE_CXX_FLAGS_${uppercase_CMAKE_BUILD_TYPE}}"
++	     "${CMAKE_CXX_FLAGS}" "${CMAKE_SHARED_LIBRARY_CREATE_CXX_FLAGS}" "${CMAKE_EXE_FLAGS}" "${LibSuffix}" "${SYSLIBS}"
++	     "${libdir}" "-lCore" "-Rint" "${incdir}" "" "" "${ROOT_ARCHITECTURE}" "" "${explicitlink}" )
 +endif()
-+get_filename_component(cxx ${CMAKE_CXX_COMPILER} NAME)
-+string(TOUPPER "${CMAKE_BUILD_TYPE}" uppercase_CMAKE_BUILD_TYPE)
-+execute_process(COMMAND ${makecompiledata} include/compiledata.h "${cxx}" "" "${CMAKE_CXX_FLAGS_${uppercase_CMAKE_BUILD_TYPE}}"
-+	   "${CMAKE_CXX_FLAGS}" "${CMAKE_SHARED_LIBRARY_CREATE_CXX_FLAGS}" "${CMAKE_EXE_FLAGS}" "${LibSuffix}" "${SYSLIBS}"
-+	   "${libdir}" "-lCore" "-Rint" "${incdir}" "" "" "${ROOT_ARCHITECTURE}" "" "${explicitlink}" )
 +
  configure_file(${CMAKE_SOURCE_DIR}/config/root-config.in ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/root-config @ONLY)
  configure_file(${CMAKE_SOURCE_DIR}/config/memprobe.in ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/memprobe @ONLY)
  configure_file(${CMAKE_SOURCE_DIR}/config/thisroot.sh ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/thisroot.sh @ONLY)
--- 
-1.7.11.1
-
+diff --git a/cmake/modules/SetUpLinux.cmake b/cmake/modules/SetUpLinux.cmake
+index c0e4888..7a9e70e 100644
+--- cmake/modules/SetUpLinux.cmake
++++ cmake/modules/SetUpLinux.cmake
+@@ -70,7 +70,7 @@ if(CMAKE_COMPILER_IS_GNUCXX OR
+   set(CMAKE_C_FLAGS_PROFILE          "-g3 -fno-inline -ftest-coverage -fprofile-arcs")
+  
+   #Settings for cint
+-  set(CPPPREP "${CMAKE_CXX_COMPILER} -E -C")  
++  set(CPPPREP "${CXX} -E -C")
+   set(CXXOUT "-o ")
+   set(EXPLICITLINK "no") #TODO
+ 
+@@ -145,7 +145,7 @@ elseif(CMAKE_CXX_COMPILER_ID STREQUAL Intel)
+   set(CMAKE_C_FLAGS_DEBUG            "-g -O2")
+ 
+   #Settings for cint
+-  set(CPPPREP "${CMAKE_CXX_COMPILER} -E -C")  
++  set(CPPPREP "${CXX} -E -C")  
+   set(CXXOUT "-o ")
+   set(EXPLICITLINK "no") #TODO
+ 
+diff --git a/cmake/modules/SetUpMacOS.cmake b/cmake/modules/SetUpMacOS.cmake
+index f5956ea..2bca102 100644
+--- cmake/modules/SetUpMacOS.cmake
++++ cmake/modules/SetUpMacOS.cmake
+@@ -87,7 +87,7 @@ if (CMAKE_SYSTEM_NAME MATCHES Darwin)
+      set(CMAKE_C_FLAGS_PROFILE          "-g3 -fno-inline -ftest-coverage -fprofile-arcs")
+    
+      #settings for cint
+-     set(CPPPREP "${CMAKE_CXX_COMPILER} -E -C")  
++     set(CPPPREP "${CXX} -E -C")
+      set(CXXOUT "-o ")
+      set(EXEEXT "")
+      set(SOEXT "so")
+@@ -122,7 +122,7 @@ if (CMAKE_SYSTEM_NAME MATCHES Darwin)
+      set(CMAKE_C_FLAGS_PROFILE          "-g3 -fno-inline -ftest-coverage -fprofile-arcs")
+    
+      #settings for cint
+-     set(CPPPREP "${CMAKE_CXX_COMPILER} -E -C")  
++     set(CPPPREP "${CXX} -E -C")  
+      set(CXXOUT "-o ")
+      set(EXEEXT "")
+      set(SOEXT "so")
+diff --git a/cmake/modules/WriteConfigCint.cmake b/cmake/modules/WriteConfigCint.cmake
+index 731f006..27ff710 100644
+--- cmake/modules/WriteConfigCint.cmake
++++ cmake/modules/WriteConfigCint.cmake
+@@ -25,10 +25,10 @@ function(WRITE_CONFIG_CINT file)
+     write_file(${file} "#define G__CFG_COUT \"${CXXOUT}\"" APPEND)
+     write_file(${file} "#define G__CFG_COUTEXE \"${CXXOUT}\"" APPEND)
+     write_file(${file} "#define G__CFG_INCP \"-I\"" APPEND)
+-    write_file(${file} "#define G__CFG_CXX \"${CMAKE_CXX_COMPILER}\"" APPEND)
++    write_file(${file} "#define G__CFG_CXX \"${CXX}\"" APPEND)
+     write_file(${file} "#define G__CFG_CXXFLAGS \" ${CMAKE_CXX_FLAGS} ${CINT_CXX_DEFINITIONS} -I${CMAKE_BINARY_DIR}/include\"" APPEND)
+     write_file(${file} "#define G__CFG_CXXMACROS \"${CINT_CXX_DEFINITIONS}\"" APPEND)
+-    write_file(${file} "#define G__CFG_LD \"${CMAKE_CXX_COMPILER}\"" APPEND)
++    write_file(${file} "#define G__CFG_LD \"${CXX}\"" APPEND)
+     write_file(${file} "#define G__CFG_LDFLAGS \"${CMAKE_CXX_LINK_FLAGS}\"" APPEND)
+     write_file(${file} "#define G__CFG_LIBP \"-L\"" APPEND)
+     write_file(${file} "#define G__CFG_SOFLAGS \"${CMAKE_SHARED_LIBRARY_CREATE_C_FLAGS}\"" APPEND)
+@@ -72,10 +72,10 @@ function(WRITE_CONFIG_CINT file)
+     write_file(${file} "#define G__CFG_COUT \"-Fo\"" APPEND)
+     write_file(${file} "#define G__CFG_COUTEXE \"-Fo\"" APPEND)
+     write_file(${file} "#define G__CFG_INCP \"-I\"" APPEND)
+-    write_file(${file} "#define G__CFG_CXX \"${CMAKE_CXX_COMPILER}\"" APPEND)
++    write_file(${file} "#define G__CFG_CXX \"${CXX}\"" APPEND)
+     write_file(${file} "#define G__CFG_CXXFLAGS \" ${CMAKE_CXX_FLAGS} ${CINT_CXX_DEFINITIONS} -I${CMAKE_BINARY_DIR}/include\"" APPEND)
+     write_file(${file} "#define G__CFG_CXXMACROS \"${CINT_CXX_DEFINITIONS}\"" APPEND)
+-    write_file(${file} "#define G__CFG_LD \"${CMAKE_CXX_COMPILER}\"" APPEND)
++    write_file(${file} "#define G__CFG_LD \"${CXX}\"" APPEND)
+     write_file(${file} "#define G__CFG_LDFLAGS \"${CMAKE_SHARED_LINKER_FLAGS}\"" APPEND)
+     write_file(${file} "#define G__CFG_LIBP \"-L\"" APPEND)
+     write_file(${file} "#define G__CFG_SOFLAGS \"-DLL\"" APPEND)
+diff --git a/roofit/roofitcore/inc/LinkDef1.h b/roofit/roofitcore/inc/LinkDef1.h
+index c534931..5251955 100644
+--- roofit/roofitcore/inc/LinkDef1.h
++++ roofit/roofitcore/inc/LinkDef1.h
+@@ -4,6 +4,7 @@
+ #pragma link off all functions;
+ #pragma link C++ class Roo1DTable+ ;
+ #pragma link C++ class RooAbsArg- ;
++#pragma link C++ class stack<RooAbsArg*,deque<RooAbsArg*> > ;
+ #pragma link C++ class RooRefArray- ;
+ #pragma read sourceClass="RooAbsArg" targetClass="RooAbsArg" version="[1-4]" source="TList _proxyList" target="_proxyList" \
+     code="{ TIterator* iter = onfile._proxyList.MakeIterator() ; TObject* tmpObj ; while ((tmpObj = iter->Next())) { _proxyList.Add(tmpObj) ; } delete iter ; }" 
+@@ -68,6 +69,6 @@
+ #pragma link C++ class RooEffProd+ ;
+ #pragma link C++ class RooExtendPdf+ ;
+ #pragma link off class RooErrorHandler+ ;
+-#endif 
++#endif
+  
+ 

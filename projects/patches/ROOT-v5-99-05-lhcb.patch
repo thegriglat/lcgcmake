@@ -1,38 +1,36 @@
-From 0555cc7792ad5bae0c04146d5fcaafff8c04b0e2 Mon Sep 17 00:00:00 2001
-From: Pere Mato <pere.mato@cern.ch>
-Date: Fri, 14 Mar 2014 14:44:38 +0100
-Subject: [PATCH] Added netxng on the CMake builds
-
----
- cmake/modules/RootConfiguration.cmake       |  7 +++++++
- cmake/modules/SearchInstalledSoftware.cmake | 11 +++++++++++
- net/CMakeLists.txt                          |  4 ++++
- net/netxng/CMakeLists.txt                   |  2 +-
- 4 files changed, 23 insertions(+), 1 deletion(-)
-
-diff --git a/cmake/modules/RootConfiguration.cmake b/cmake/modules/RootConfiguration.cmake
-index da09a1a..c0f5814 100644
---- cmake/modules/RootConfiguration.cmake
-+++ cmake/modules/RootConfiguration.cmake
-@@ -152,6 +152,13 @@ set(davixlibdir ${DAVIX_LIBRARY_DIR})
- set(davixlib ${DAVIX_LIBRARY})
- set(davixincdir ${DAVIX_INCLUDE_DIR})
- 
-+set(buildnetxng ${value${netxng}})
-+if(netxng)
-+  set(useoldnetx no)
-+else()
-+  set(useoldnetx yes)
-+endif()
-+
- set(builddcap ${value${dcap}})
- set(dcaplibdir ${DCAP_LIBRARY_DIR})
- set(dcaplib ${DCAP_LIBRARY})
 diff --git a/cmake/modules/SearchInstalledSoftware.cmake b/cmake/modules/SearchInstalledSoftware.cmake
-index a0d2015..ff9c4e8 100644
+index a0d2015..2bba510 100644
 --- cmake/modules/SearchInstalledSoftware.cmake
 +++ cmake/modules/SearchInstalledSoftware.cmake
-@@ -566,6 +566,8 @@ if(xrootd)
+@@ -93,12 +93,17 @@ if(builtin_lzma)
+     set(LZMA_LIBRARIES ${CMAKE_BINARY_DIR}/LZMA/src/LZMA/lib/liblzma.lib)
+     set(LZMA_INCLUDE_DIR ${CMAKE_BINARY_DIR}/LZMA/src/LZMA/include)
+   else() 
++    if(CMAKE_CXX_COMPILER_ID STREQUAL Clang)
++      set(LZMA_CFLAGS "-Wno-format-nonliteral")
++    elseif( CMAKE_CXX_COMPILER_ID STREQUAL Intel)
++      set(LZMA_CFLAGS "-wd188 -wd181 -wd1292 -wd10006 -wd10156 -wd2259 -wd981 -wd128 -wd3179")
++    endif()
+     ExternalProject_Add(
+       LZMA
+       URL ${CMAKE_SOURCE_DIR}/core/lzma/src/xz-${lzma_version}.tar.gz 
+       URL_MD5 858405e79590e9b05634c399497f4ba7
+       INSTALL_DIR ${CMAKE_BINARY_DIR}
+-      CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix <INSTALL_DIR> --with-pic --disable-shared
++      CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix <INSTALL_DIR> --with-pic --disable-shared CFLAGS=${LZMA_CFLAGS}
+       BUILD_IN_SOURCE 1)
+     set(LZMA_LIBRARIES -L${CMAKE_BINARY_DIR}/lib -llzma)
+     set(LZMA_INCLUDE_DIR ${CMAKE_BINARY_DIR}/include)
+@@ -292,7 +297,7 @@ endif()
+ #---Check for Qt installation-------------------------------------------------------
+ if(qt OR qtgsi)
+   message(STATUS "Looking for Qt4")
+-  find_package(Qt4 COMPONENTS QtCore QtGui)
++  find_package(Qt4 4.8 COMPONENTS QtCore QtGui)
+   if(NOT QT4_FOUND)
+     if(fail-on-missing)
+       message(FATAL_ERROR "Qt4 package not found and qt/qtgsi component required")
+@@ -566,6 +571,8 @@ if(xrootd)
        message(STATUS "                  Alternatively, you can also enable the option 'builtin_xrootd' to build XROOTD  internally'")
        message(STATUS "                  For the time being switching OFF 'xrootd' option")
        set(xrootd OFF CACHE BOOL "" FORCE)
@@ -41,18 +39,37 @@ index a0d2015..ff9c4e8 100644
      endif()
    endif()
  endif()
-@@ -578,6 +580,10 @@ if(builtin_xrootd)
+@@ -573,19 +580,38 @@ if(builtin_xrootd)
+   set(xrootd_version 3.3.6)
+   set(xrootd_versionnum 300030006)
+   message(STATUS "Downloading and building XROOTD version ${xrootd_version}") 
++  string(REPLACE "-Wall " "" __cxxflags "${CMAKE_CXX_FLAGS}")                        # Otherwise it produces tones of warnings
++  string(REPLACE "-W " "" __cxxflags "${__cxxflags} -Wno-deprecated-declarations -Wno-duplicate-decl-specifier")
+   ExternalProject_Add(
+     XROOTD
      URL http://xrootd.org/download/v${xrootd_version}/xrootd-${xrootd_version}.tar.gz
      INSTALL_DIR ${CMAKE_BINARY_DIR}
      CMAKE_ARGS -DCMAKE_INSTALL_PREFIX:PATH=<INSTALL_DIR>
 +               -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER}
 +               -DCMAKE_C_FLAGS=${CMAKE_C_FLAGS}
 +               -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
-+               -DCMAKE_CXX_FLAGS=${CMAKE_CXX_FLAGS}
++               -DCMAKE_CXX_FLAGS=${__cxxflags}
    )
++  # We cannot call find_package(XROOTD) becuase the package is not yet built. So, we need to emulate what it defines....
++  set(_LIBDIR_DEFAULT "lib")
++  if(CMAKE_SYSTEM_NAME MATCHES "Linux" AND NOT CMAKE_CROSSCOMPILING AND NOT EXISTS "/etc/debian_version")
++    if("${CMAKE_SIZEOF_VOID_P}" EQUAL "8")
++      set(_LIBDIR_DEFAULT "lib64")
++    endif()
++  endif()
    set(XROOTD_INCLUDE_DIRS ${CMAKE_BINARY_DIR}/include/xrootd ${CMAKE_BINARY_DIR}/include/xrootd/private)
-   set(XROOTD_LIBRARIES ${CMAKE_BINARY_DIR}/lib/libXrdMain${CMAKE_SHARED_LIBRARY_SUFFIX}
-@@ -586,6 +592,11 @@ if(builtin_xrootd)
+-  set(XROOTD_LIBRARIES ${CMAKE_BINARY_DIR}/lib/libXrdMain${CMAKE_SHARED_LIBRARY_SUFFIX}
+-                       ${CMAKE_BINARY_DIR}/lib/libXrdUtils${CMAKE_SHARED_LIBRARY_SUFFIX}
+-                       ${CMAKE_BINARY_DIR}/lib/libXrdClient${CMAKE_SHARED_LIBRARY_SUFFIX})
++  set(XROOTD_LIBRARIES ${CMAKE_BINARY_DIR}/${_LIBDIR_DEFAULT}/libXrdMain${CMAKE_SHARED_LIBRARY_SUFFIX}
++                       ${CMAKE_BINARY_DIR}/${_LIBDIR_DEFAULT}/libXrdUtils${CMAKE_SHARED_LIBRARY_SUFFIX}
++                       ${CMAKE_BINARY_DIR}/${_LIBDIR_DEFAULT}/libXrdClient${CMAKE_SHARED_LIBRARY_SUFFIX}
++                       ${CMAKE_BINARY_DIR}/${_LIBDIR_DEFAULT}/libXrdCl${CMAKE_SHARED_LIBRARY_SUFFIX})
    set(XROOTD_CFLAGS "-DROOTXRDVERS=${xrootd_versionnum}")
    set(xrootd ON CACHE BOOL "" FORCE)
  endif()
@@ -64,79 +81,31 @@ index a0d2015..ff9c4e8 100644
  
  #---Check for cling and llvm ----------------------------------------------------------------
  find_library(CMAKE_TINFO_LIBS NAMES tinfo ncurses)
-diff --git a/net/CMakeLists.txt b/net/CMakeLists.txt
-index 6aab949..0e52b5f 100644
---- net/CMakeLists.txt
-+++ net/CMakeLists.txt
-@@ -35,3 +35,7 @@ endif()
- if(davix)
-    add_subdirectory(davix)
+@@ -694,7 +720,10 @@ if(cling)
+                         ${CMAKE_BINARY_DIR}/CLING-install/lib/libclingUtils.a 
+                         ${LLVM_LIBRARIES})
+     #--Additional flags obtained from llvm-config --cxxflags
+-    set(CLING_CXXFLAGS "-fvisibility-inlines-hidden -fno-strict-aliasing -Wno-unused-parameter -Wwrite-strings -Wmissing-field-initializers -Wno-long-long -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS")
++    set(CLING_CXXFLAGS "-fvisibility-inlines-hidden -fno-strict-aliasing -Wno-unused-parameter -Wwrite-strings -Wno-long-long -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS")
++    if (CMAKE_COMPILER_IS_GNUCXX)
++      set(CLING_CXXFLAGS "${CLING_CXXFLAGS} -Wno-missing-field-initializers")
++    endif()
+     add_dependencies(CLING LLVM)
  endif()
-+
-+if(netxng)
-+   add_subdirectory(netxng)
-+endif()
-\ No newline at end of file
+ 
 diff --git a/net/netxng/CMakeLists.txt b/net/netxng/CMakeLists.txt
-index f9a34a2..554c3b5 100644
+index f9a34a2..9eab1cf 100644
 --- net/netxng/CMakeLists.txt
 +++ net/netxng/CMakeLists.txt
-@@ -3,7 +3,7 @@
+@@ -3,11 +3,17 @@
  # @author Lukasz Janyst <ljanyst@cern.ch>
  ############################################################################
  
 -include_directories(${XROOTD_INCLUDE_DIR})
++ROOT_USE_PACKAGE(net/net)
++
 +include_directories(${XROOTD_INCLUDE_DIRS})
  add_definitions(${XROOTD_CFLAGS})
- 
- ROOT_GENERATE_DICTIONARY(G__NetxNG *.h MODULE NetxNG LINKDEF LinkDef.h)
--- 
-1.7.11.1
-
-From 47d0a80d69e4d6be7e5ae3f06aefa32c523dfc4f Mon Sep 17 00:00:00 2001
-From: Pere Mato <pere.mato@cern.ch>
-Date: Fri, 14 Mar 2014 17:59:57 +0100
-Subject: [PATCH] Changes associated to builtin_xrootd option
-
----
- cmake/modules/SearchInstalledSoftware.cmake | 7 +++++--
- net/netxng/CMakeLists.txt                   | 2 +-
- 2 files changed, 6 insertions(+), 3 deletions(-)
-
-diff --git a/cmake/modules/SearchInstalledSoftware.cmake b/cmake/modules/SearchInstalledSoftware.cmake
-index ff9c4e8..7b1897c 100644
---- cmake/modules/SearchInstalledSoftware.cmake
-+++ cmake/modules/SearchInstalledSoftware.cmake
-@@ -575,6 +575,8 @@ if(builtin_xrootd)
-   set(xrootd_version 3.3.6)
-   set(xrootd_versionnum 300030006)
-   message(STATUS "Downloading and building XROOTD version ${xrootd_version}") 
-+  string(REPLACE "-Wall " "" __cxxflags "${CMAKE_CXX_FLAGS}")                        # Otherwise it produces tones of warnings
-+  string(REPLACE "-W " "" __cxxflags "${__cxxflags} -Wno-deprecated-declarations -Wno-duplicate-decl-specifier")
-   ExternalProject_Add(
-     XROOTD
-     URL http://xrootd.org/download/v${xrootd_version}/xrootd-${xrootd_version}.tar.gz
-@@ -583,12 +585,13 @@ if(builtin_xrootd)
-                -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER}
-                -DCMAKE_C_FLAGS=${CMAKE_C_FLAGS}
-                -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
--               -DCMAKE_CXX_FLAGS=${CMAKE_CXX_FLAGS}
-+               -DCMAKE_CXX_FLAGS=${__cxxflags}
-   )
-   set(XROOTD_INCLUDE_DIRS ${CMAKE_BINARY_DIR}/include/xrootd ${CMAKE_BINARY_DIR}/include/xrootd/private)
-   set(XROOTD_LIBRARIES ${CMAKE_BINARY_DIR}/lib/libXrdMain${CMAKE_SHARED_LIBRARY_SUFFIX}
-                        ${CMAKE_BINARY_DIR}/lib/libXrdUtils${CMAKE_SHARED_LIBRARY_SUFFIX}
--                       ${CMAKE_BINARY_DIR}/lib/libXrdClient${CMAKE_SHARED_LIBRARY_SUFFIX})
-+                       ${CMAKE_BINARY_DIR}/lib/libXrdClient${CMAKE_SHARED_LIBRARY_SUFFIX}
-+                       ${CMAKE_BINARY_DIR}/lib/libXrdCl${CMAKE_SHARED_LIBRARY_SUFFIX})
-   set(XROOTD_CFLAGS "-DROOTXRDVERS=${xrootd_versionnum}")
-   set(xrootd ON CACHE BOOL "" FORCE)
- endif()
-diff --git a/net/netxng/CMakeLists.txt b/net/netxng/CMakeLists.txt
-index 554c3b5..915c0fb 100644
---- net/netxng/CMakeLists.txt
-+++ net/netxng/CMakeLists.txt
-@@ -8,6 +8,6 @@ add_definitions(${XROOTD_CFLAGS})
  
  ROOT_GENERATE_DICTIONARY(G__NetxNG *.h MODULE NetxNG LINKDEF LinkDef.h)
  
@@ -144,20 +113,10 @@ index 554c3b5..915c0fb 100644
 +ROOT_LINKER_LIBRARY(NetxNG *.cxx G__NetxNG.cxx LIBRARIES ${XROOTD_LIBRARIES} DEPENDENCIES Net RIO Thread)
  
  ROOT_INSTALL_HEADERS()
--- 
-1.7.11.1
-
-From 4ee2378c7691b4cfd641c6fb15a582dac32e64da Mon Sep 17 00:00:00 2001
-From: Pere Mato <pere.mato@cern.ch>
-Date: Sun, 16 Mar 2014 21:02:04 +0100
-Subject: [PATCH] Fix for building  netxng for CMake
-
----
- cmake/modules/FindXROOTD.cmake | 2 +-
- net/netx/CMakeLists.txt        | 3 +++
- net/netxng/CMakeLists.txt      | 6 ++++++
- 3 files changed, 10 insertions(+), 1 deletion(-)
-
++
++if(builtin_xrootd)
++  add_dependencies(NetxNG XROOTD)
++endif()
 diff --git a/cmake/modules/FindXROOTD.cmake b/cmake/modules/FindXROOTD.cmake
 index db703f4..3ee31ab 100644
 --- cmake/modules/FindXROOTD.cmake
@@ -182,78 +141,6 @@ index 6d7c5bd..c526638 100644
 +if(builtin_xrootd)
 +  add_dependencies(Netx XROOTD)
 +endif()
-diff --git a/net/netxng/CMakeLists.txt b/net/netxng/CMakeLists.txt
-index 915c0fb..9eab1cf 100644
---- net/netxng/CMakeLists.txt
-+++ net/netxng/CMakeLists.txt
-@@ -3,6 +3,8 @@
- # @author Lukasz Janyst <ljanyst@cern.ch>
- ############################################################################
- 
-+ROOT_USE_PACKAGE(net/net)
-+
- include_directories(${XROOTD_INCLUDE_DIRS})
- add_definitions(${XROOTD_CFLAGS})
- 
-@@ -11,3 +13,7 @@ ROOT_GENERATE_DICTIONARY(G__NetxNG *.h MODULE NetxNG LINKDEF LinkDef.h)
- ROOT_LINKER_LIBRARY(NetxNG *.cxx G__NetxNG.cxx LIBRARIES ${XROOTD_LIBRARIES} DEPENDENCIES Net RIO Thread)
- 
- ROOT_INSTALL_HEADERS()
-+
-+if(builtin_xrootd)
-+  add_dependencies(NetxNG XROOTD)
-+endif()
--- 
-1.7.11.1
-
-From f7fbb919430a46b9cb7bbc945e289cdcf8db3b84 Mon Sep 17 00:00:00 2001
-From: Pere Mato <pere.mato@cern.ch>
-Date: Mon, 17 Mar 2014 10:15:39 +0100
-Subject: [PATCH] More fixes for building netxng for CMake
-
----
- cmake/modules/SearchInstalledSoftware.cmake | 15 +++++++++++----
- 1 file changed, 11 insertions(+), 4 deletions(-)
-
-diff --git a/cmake/modules/SearchInstalledSoftware.cmake b/cmake/modules/SearchInstalledSoftware.cmake
-index 7b1897c..0c48a18 100644
---- cmake/modules/SearchInstalledSoftware.cmake
-+++ cmake/modules/SearchInstalledSoftware.cmake
-@@ -587,11 +587,18 @@ if(builtin_xrootd)
-                -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
-                -DCMAKE_CXX_FLAGS=${__cxxflags}
-   )
-+  # We cannot call find_package(XROOTD) becuase the package is not yet built. So, we need to emulate what it defines....
-+  set(_LIBDIR_DEFAULT "lib")
-+  if(CMAKE_SYSTEM_NAME MATCHES "Linux" AND NOT CMAKE_CROSSCOMPILING AND NOT EXISTS "/etc/debian_version")
-+    if("${CMAKE_SIZEOF_VOID_P}" EQUAL "8")
-+      set(_LIBDIR_DEFAULT "lib64")
-+    endif()
-+  endif()
-   set(XROOTD_INCLUDE_DIRS ${CMAKE_BINARY_DIR}/include/xrootd ${CMAKE_BINARY_DIR}/include/xrootd/private)
--  set(XROOTD_LIBRARIES ${CMAKE_BINARY_DIR}/lib/libXrdMain${CMAKE_SHARED_LIBRARY_SUFFIX}
--                       ${CMAKE_BINARY_DIR}/lib/libXrdUtils${CMAKE_SHARED_LIBRARY_SUFFIX}
--                       ${CMAKE_BINARY_DIR}/lib/libXrdClient${CMAKE_SHARED_LIBRARY_SUFFIX}
--                       ${CMAKE_BINARY_DIR}/lib/libXrdCl${CMAKE_SHARED_LIBRARY_SUFFIX})
-+  set(XROOTD_LIBRARIES ${CMAKE_BINARY_DIR}/${_LIBDIR_DEFAULT}/libXrdMain${CMAKE_SHARED_LIBRARY_SUFFIX}
-+                       ${CMAKE_BINARY_DIR}/${_LIBDIR_DEFAULT}/libXrdUtils${CMAKE_SHARED_LIBRARY_SUFFIX}
-+                       ${CMAKE_BINARY_DIR}/${_LIBDIR_DEFAULT}/libXrdClient${CMAKE_SHARED_LIBRARY_SUFFIX}
-+                       ${CMAKE_BINARY_DIR}/${_LIBDIR_DEFAULT}/libXrdCl${CMAKE_SHARED_LIBRARY_SUFFIX})
-   set(XROOTD_CFLAGS "-DROOTXRDVERS=${xrootd_versionnum}")
-   set(xrootd ON CACHE BOOL "" FORCE)
- endif()
--- 
-1.7.11.1
-
-From e4efa2b949e16c284905c417d548152e481f7cad Mon Sep 17 00:00:00 2001
-From: Pere Mato <pere.mato@cern.ch>
-Date: Wed, 19 Mar 2014 10:43:22 +0100
-Subject: [PATCH] Introduce a fix that was in the patches branch
-
----
- cmake/modules/FindOracle.cmake | 2 ++
- 1 file changed, 2 insertions(+)
-
 diff --git a/cmake/modules/FindOracle.cmake b/cmake/modules/FindOracle.cmake
 index 9fb8759..9a13eeb 100644
 --- cmake/modules/FindOracle.cmake
@@ -269,38 +156,348 @@ index 9fb8759..9a13eeb 100644
  							 	      MESSAGE(STATUS "Found sqlplus version: ${sqlplus_version}")
 -- 
 1.7.11.1
-From d89374410b68166e2fff569cbee84f13d5a71c89 Mon Sep 17 00:00:00 2001
-From: Pere Mato <pere.mato@cern.ch>
-Date: Wed, 9 Apr 2014 18:12:57 +0200
-Subject: [PATCH] Fix for ROOT-6194 - ROOT6 build for LHCb seems to have
- hardcoded dependencies on AFS
 
----
- cmake/modules/SearchInstalledSoftware.cmake      |  5 ++++-
- interpreter/cling/lib/Interpreter/CMakeLists.txt | 11 ++++++++++-
- 2 files changed, 14 insertions(+), 2 deletions(-)
-
-diff --git a/cmake/modules/SearchInstalledSoftware.cmake b/cmake/modules/SearchInstalledSoftware.cmake
-index 5e599cb..2bba510 100644
---- cmake/modules/SearchInstalledSoftware.cmake
-+++ cmake/modules/SearchInstalledSoftware.cmake
-@@ -720,7 +720,10 @@ if(cling)
-                         ${CMAKE_BINARY_DIR}/CLING-install/lib/libclingUtils.a 
-                         ${LLVM_LIBRARIES})
-     #--Additional flags obtained from llvm-config --cxxflags
--    set(CLING_CXXFLAGS "-fvisibility-inlines-hidden -fno-strict-aliasing -Wno-unused-parameter -Wwrite-strings -Wmissing-field-initializers -Wno-long-long -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS")
-+    set(CLING_CXXFLAGS "-fvisibility-inlines-hidden -fno-strict-aliasing -Wno-unused-parameter -Wwrite-strings -Wno-long-long -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS")
-+    if (CMAKE_COMPILER_IS_GNUCXX)
-+      set(CLING_CXXFLAGS "${CLING_CXXFLAGS} -Wno-missing-field-initializers")
-+    endif()
-     add_dependencies(CLING LLVM)
+diff --git a/cmake/modules/CheckCompiler.cmake b/cmake/modules/CheckCompiler.cmake
+index f7209a1..cbe7680 100644
+--- cmake/modules/CheckCompiler.cmake
++++ cmake/modules/CheckCompiler.cmake
+@@ -11,6 +11,15 @@ if(fortran AND NOT WIN32 AND NOT CMAKE_GENERATOR STREQUAL Xcode AND NOT CMAKE_GE
+   enable_language(Fortran OPTIONAL)
  endif()
  
++#----Get the compiler file name (to ensure re-location)---------------------------------------------
++get_filename_component(_compiler_name ${CMAKE_CXX_COMPILER} NAME)
++get_filename_component(_compiler_path ${CMAKE_CXX_COMPILER} PATH)
++if("$ENV{PATH}" MATCHES ${_compiler_path})
++  set(CXX ${_compiler_name})
++else()
++  set(CXX ${CMAKE_CXX_COMPILER})
++endif()
++string(TOUPPER "${CMAKE_BUILD_TYPE}" uppercase_CMAKE_BUILD_TYPE)
+ 
+ #----Test if clang setup works----------------------------------------------------------------------
+ if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+@@ -87,10 +96,13 @@ elseif(WIN32)
+ endif()
+ 
+ if(cxx11)
+-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wno-deprecated-declarations")
++  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
++  if(CMAKE_COMPILER_IS_GNUCXX)
++    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-deprecated-declarations")
++  endif()
+ endif()
+ if(libcxx)
+-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++")
++  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++")
+ endif()
+ if(gnuinstall)
+   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DR__HAVE_CONFIG")
+@@ -100,4 +112,4 @@ endif()
+ message(STATUS "ROOT Platform: ${ROOT_PLATFORM}")
+ message(STATUS "ROOT Architecture: ${ROOT_ARCHITECTURE}")
+ message(STATUS "Build Type: ${CMAKE_BUILD_TYPE}")
+-message(STATUS "Compiler Flags: ${CMAKE_CXX_FLAGS} ${ALL_CXX_FLAGS_${CMAKE_BUILD_TYPE}}")
++message(STATUS "Compiler Flags: ${CMAKE_CXX_FLAGS} ${ALL_CXX_FLAGS_${uppercase_CMAKE_BUILD_TYPE}}")
+diff --git a/cmake/modules/RootBuildOptions.cmake b/cmake/modules/RootBuildOptions.cmake
+index 74c47e8..943ab1e 100644
+--- cmake/modules/RootBuildOptions.cmake
++++ cmake/modules/RootBuildOptions.cmake
+@@ -103,7 +103,7 @@ ROOT_BUILD_OPTION(builtin_gsl OFF "Built the GSL library internally (downloading
+ ROOT_BUILD_OPTION(builtin_cfitsio OFF "Built the FITSIO library internally (downloading tarfile from the Web)")
+ ROOT_BUILD_OPTION(builtin_xrootd OFF "Built the XROOTD internally (downloading tarfile from the Web)")
+ ROOT_BUILD_OPTION(builtin_llvm ON "Built the LLVM internally")
+-ROOT_BUILD_OPTION(cxx11 OFF "Build using C++11 compatible mode, requires gcc > 4.7.x or clang")
++ROOT_BUILD_OPTION(cxx11 ON "Build using C++11 compatible mode, requires gcc > 4.7.x or clang")
+ ROOT_BUILD_OPTION(libcxx OFF "Build using libc++, requires cxx11 option (MacOS X only, for the time being)")
+ ROOT_BUILD_OPTION(castor ON "CASTOR support, requires libshift from CASTOR >= 1.5.2")
+ ROOT_BUILD_OPTION(chirp ON "Chirp support (Condor remote I/O), requires libchirp_client")
+@@ -144,8 +144,8 @@ ROOT_BUILD_OPTION(pythia6 ON "Pythia6 EG support, requires libPythia6")
+ ROOT_BUILD_OPTION(pythia6_nolink OFF "Delayed linking of Pythia6 library")
+ ROOT_BUILD_OPTION(pythia8 ON "Pythia8 EG support, requires libPythia8")
+ ROOT_BUILD_OPTION(python ON "Python ROOT bindings, requires python >= 2.2")
+-ROOT_BUILD_OPTION(qt OFF "Qt graphics backend, requires libqt >= 4.x")
+-ROOT_BUILD_OPTION(qtgsi OFF "GSI's Qt integration, requires libqt >= 3")
++ROOT_BUILD_OPTION(qt OFF "Qt graphics backend, requires libqt >= 4.8")
++ROOT_BUILD_OPTION(qtgsi OFF "GSI's Qt integration, requires libqt >= 4.8")
+ ROOT_BUILD_OPTION(reflex ON "Build the libReflex dictionary library")
+ ROOT_BUILD_OPTION(roofit OFF "Build the libRooFit advanced fitting package")
+ ROOT_BUILD_OPTION(ruby OFF "Ruby ROOT bindings, requires ruby >= 1.8")
+diff --git a/cmake/modules/RootConfiguration.cmake b/cmake/modules/RootConfiguration.cmake
+index da09a1a..a2cd398 100644
+--- cmake/modules/RootConfiguration.cmake
++++ cmake/modules/RootConfiguration.cmake
+@@ -152,6 +152,13 @@ set(davixlibdir ${DAVIX_LIBRARY_DIR})
+ set(davixlib ${DAVIX_LIBRARY})
+ set(davixincdir ${DAVIX_INCLUDE_DIR})
+ 
++set(buildnetxng ${value${netxng}})
++if(netxng)
++  set(useoldnetx no)
++else()
++  set(useoldnetx yes)
++endif()
++
+ set(builddcap ${value${dcap}})
+ set(dcaplibdir ${DCAP_LIBRARY_DIR})
+ set(dcaplib ${DCAP_LIBRARY})
+@@ -372,12 +379,12 @@ string(REPLACE "c++11" "cxx11" features ${features}) # change the name of the c+
+ set(configfeatures ${features})
+ set(configargs ${ROOT_CONFIGARGS})
+ set(configoptions ${ROOT_CONFIGARGS})
+-set(altcc ${CMAKE_C_COMPILER})
+-set(altcxx ${CMAKE_CXX_COMPILER})
+-set(altf77 ${CMAKE_Fortran_COMPILER})
+-set(altld ${CMAKE_CXX_COMPILER})
++get_filename_component(altcc ${CMAKE_C_COMPILER} NAME)
++get_filename_component(altcxx ${CMAKE_CXX_COMPILER} NAME)
++get_filename_component(altf77 ${CMAKE_Fortran_COMPILER} NAME)
++get_filename_component(altld ${CMAKE_CXX_COMPILER} NAME)
++
+ set(pythonvers ${PYTHON_VERSION})
+-get_filename_component(cxx ${CMAKE_CXX_COMPILER} NAME)
+ 
+ #---RConfigure.h---------------------------------------------------------------------------------------------
+ configure_file(${PROJECT_SOURCE_DIR}/config/RConfigure.in include/RConfigure.h)
+@@ -391,11 +398,7 @@ configure_file(${CMAKE_SOURCE_DIR}/config/RConfigOptions.in include/RConfigOptio
+ if(ruby)
+   file(APPEND ${CMAKE_BINARY_DIR}/include/RConfigOptions.h "\#define R__RUBY_MAJOR ${RUBY_MAJOR_VERSION}\n\#define R__RUBY_MINOR ${RUBY_MINOR_VERSION}\n")
+ endif()
+-if(WIN32)
+-  configure_file(${CMAKE_SOURCE_DIR}/cmake/scripts/compiledata.win32.in include/compiledata.h)
+-else()
+-  configure_file(${CMAKE_SOURCE_DIR}/cmake/scripts/compiledata.in include/compiledata.h)
+-endif()
++
+ configure_file(${CMAKE_SOURCE_DIR}/config/Makefile-comp.in config/Makefile.comp)
+ configure_file(${CMAKE_SOURCE_DIR}/config/Makefile.in config/Makefile.config)
+ configure_file(${CMAKE_SOURCE_DIR}/config/mimes.unix.in ${CMAKE_BINARY_DIR}/etc/root.mimes)
+@@ -465,6 +468,19 @@ if(prefix STREQUAL "$(ROOTSYS)")
+   set(etcdir $ROOTSYS/etc)
+   set(mandir $ROOTSYS/man/man1)
+ endif()
++
++
++#---compiledata.h--------------------------------------------------------------------------------------------
++if(WIN32)
++  # We cannot use the compiledata.sh script for windows
++  configure_file(${CMAKE_SOURCE_DIR}/cmake/scripts/compiledata.win32.in include/compiledata.h)
++else()
++  execute_process(COMMAND ${CMAKE_SOURCE_DIR}/build/unix/compiledata.sh include/compiledata.h "${CXX}" ""
++       "${CMAKE_CXX_FLAGS_${uppercase_CMAKE_BUILD_TYPE}}"
++	     "${CMAKE_CXX_FLAGS}" "${CMAKE_SHARED_LIBRARY_CREATE_CXX_FLAGS}" "${CMAKE_EXE_FLAGS}" "${LibSuffix}" "${SYSLIBS}"
++	     "${libdir}" "-lCore" "-Rint" "${incdir}" "" "" "${ROOT_ARCHITECTURE}" "" "${explicitlink}" )
++endif()
++
+ configure_file(${CMAKE_SOURCE_DIR}/config/root-config.in ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/root-config @ONLY)
+ configure_file(${CMAKE_SOURCE_DIR}/config/memprobe.in ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/memprobe @ONLY)
+ configure_file(${CMAKE_SOURCE_DIR}/config/thisroot.sh ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/thisroot.sh @ONLY)
+diff --git a/cmake/modules/SetUpLinux.cmake b/cmake/modules/SetUpLinux.cmake
+index 9226172..588a5d3 100644
+--- cmake/modules/SetUpLinux.cmake
++++ cmake/modules/SetUpLinux.cmake
+@@ -70,7 +70,7 @@ if(CMAKE_COMPILER_IS_GNUCXX OR
+   set(CMAKE_C_FLAGS_PROFILE          "-g3 -fno-inline -ftest-coverage -fprofile-arcs")
+  
+   #Settings for cint
+-  set(CPPPREP "${CMAKE_CXX_COMPILER} -E -C")  
++  set(CPPPREP "${CXX} -E -C")
+   set(CXXOUT "-o ")
+   set(EXPLICITLINK "no") #TODO
+ 
+@@ -101,38 +101,36 @@ elseif(CMAKE_CXX_COMPILER_ID STREQUAL Intel)
+   if(ICC_MAJOR EQUAL 9)  
+     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -wd1572")
+     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -wd1572")
+-    set(ICC_GE_9  9)
+   endif()  
+ 
+   if(ICC_MAJOR EQUAL 10)  
+     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -wd1572")
+     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -wd1572")
+-    set(ICC_GE_9  10)
+-    if(ICC_MINOR GREATER 0)  
+-      set(ICC_GE_101 101)
+-    endif()  
+   endif()  
+ 
+   if(ICC_MAJOR EQUAL 11)  
+     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${BIT_ENVIRONMENT} -wd1572 -wd279")
+     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${BIT_ENVIRONMENT} -wd1572 -wd279")
+     set(CMAKE_SHARED_LINKER_FLAGS "${BIT_ENVIRONMENT} -Wl,--no-undefined")
+-    #set(CMAKE_C_LINK_FLAGS "${CMAKE_C_LINK_FLAGS} ${BIT_ENVIRONMENT}")
+-    #set(CMAKE_CXX_LINK_FLAGS "${CMAKE_CXX_LINK_FLAGS} ${BIT_ENVIRONMENT}")
+-    set(ICC_GE_9  11)
+-    set(ICC_GE_101 110)
+   endif()  
+ 
+   if(ICC_MAJOR EQUAL 12)  
+     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${BIT_ENVIRONMENT} -wd1572 -wd279")
+     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${BIT_ENVIRONMENT} -wd1572 -wd279")
+     set(CMAKE_SHARED_LINKER_FLAGS "${BIT_ENVIRONMENT} -Wl,--no-undefined")
+-    #set(CMAKE_C_LINK_FLAGS "${CMAKE_C_LINK_FLAGS} ${BIT_ENVIRONMENT}")
+-    #set(CMAKE_CXX_LINK_FLAGS "${CMAKE_CXX_LINK_FLAGS} ${BIT_ENVIRONMENT}")
+-    set(ICC_GE_9  12)
+-    set(ICC_GE_101 120)
+   endif()  
+ 
++  if(ICC_MAJOR EQUAL 13)
++    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${BIT_ENVIRONMENT} -wd1572 -wd279")
++    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${BIT_ENVIRONMENT} -wd1572 -wd279")
++    set(CMAKE_SHARED_LINKER_FLAGS "${BIT_ENVIRONMENT} -Wl,--no-undefined")
++  endif()
++
++  if(ICC_MAJOR EQUAL 14)
++    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${BIT_ENVIRONMENT} -wd1572 -wd279 -wd2536 -wd873")
++    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${BIT_ENVIRONMENT} -wd1572 -wd279 -wd2536 -wd873")
++    set(CMAKE_SHARED_LINKER_FLAGS "${BIT_ENVIRONMENT} -Wl,--no-undefined")
++  endif()
+ 
+   set(CMAKE_SHARED_LIBRARY_CREATE_C_FLAGS "${CMAKE_SHARED_LIBRARY_CREATE_C_FLAGS}")
+   set(CMAKE_SHARED_LIBRARY_CREATE_CXX_FLAGS "${CMAKE_SHARED_LIBRARY_CREATE_CXX_FLAGS}")
+@@ -147,7 +145,7 @@ elseif(CMAKE_CXX_COMPILER_ID STREQUAL Intel)
+   set(CMAKE_C_FLAGS_DEBUG            "-g -O2")
+ 
+   #Settings for cint
+-  set(CPPPREP "${CMAKE_CXX_COMPILER} -E -C")  
++  set(CPPPREP "${CXX} -E -C")  
+   set(CXXOUT "-o ")
+   set(EXPLICITLINK "no") #TODO
+ 
+diff --git a/cmake/modules/SetUpMacOS.cmake b/cmake/modules/SetUpMacOS.cmake
+index 440ca69..7915c6e 100644
+--- cmake/modules/SetUpMacOS.cmake
++++ cmake/modules/SetUpMacOS.cmake
+@@ -20,7 +20,7 @@ if (CMAKE_SYSTEM_NAME MATCHES Darwin)
+                   COMMAND cut -d . -f 2 
+                   OUTPUT_VARIABLE MACOSX_MINOR OUTPUT_STRIP_TRAILING_WHITESPACE)
+ 
+-  if(MACOSX_VERSION VERSION_GREATER 10.8 AND ${CMAKE_CXX_COMPILER_ID} STREQUAL Clang)
++  if(MACOSX_VERSION VERSION_GREATER 10.7 AND ${CMAKE_CXX_COMPILER_ID} STREQUAL Clang)
+     set(libcxx ON CACHE BOOL "Build using libc++" FORCE)
+   endif()
+ 
+@@ -85,7 +85,7 @@ if (CMAKE_SYSTEM_NAME MATCHES Darwin)
+      set(CMAKE_C_FLAGS_PROFILE          "-g3 -fno-inline -ftest-coverage -fprofile-arcs")
+    
+      #settings for cint
+-     set(CPPPREP "${CMAKE_CXX_COMPILER} -E -C")  
++     set(CPPPREP "${CXX} -E -C")
+      set(CXXOUT "-o ")
+      set(EXEEXT "")
+      set(SOEXT "so")
+@@ -119,7 +119,7 @@ if (CMAKE_SYSTEM_NAME MATCHES Darwin)
+      set(CMAKE_C_FLAGS_PROFILE          "-g3 -fno-inline -ftest-coverage -fprofile-arcs")
+    
+      #settings for cint
+-     set(CPPPREP "${CMAKE_CXX_COMPILER} -E -C")  
++     set(CPPPREP "${CXX} -E -C")  
+      set(CXXOUT "-o ")
+      set(EXEEXT "")
+      set(SOEXT "so")
+diff --git a/cmake/modules/WriteConfigCint.cmake b/cmake/modules/WriteConfigCint.cmake
+index 731f006..27ff710 100644
+--- cmake/modules/WriteConfigCint.cmake
++++ cmake/modules/WriteConfigCint.cmake
+@@ -25,10 +25,10 @@ function(WRITE_CONFIG_CINT file)
+     write_file(${file} "#define G__CFG_COUT \"${CXXOUT}\"" APPEND)
+     write_file(${file} "#define G__CFG_COUTEXE \"${CXXOUT}\"" APPEND)
+     write_file(${file} "#define G__CFG_INCP \"-I\"" APPEND)
+-    write_file(${file} "#define G__CFG_CXX \"${CMAKE_CXX_COMPILER}\"" APPEND)
++    write_file(${file} "#define G__CFG_CXX \"${CXX}\"" APPEND)
+     write_file(${file} "#define G__CFG_CXXFLAGS \" ${CMAKE_CXX_FLAGS} ${CINT_CXX_DEFINITIONS} -I${CMAKE_BINARY_DIR}/include\"" APPEND)
+     write_file(${file} "#define G__CFG_CXXMACROS \"${CINT_CXX_DEFINITIONS}\"" APPEND)
+-    write_file(${file} "#define G__CFG_LD \"${CMAKE_CXX_COMPILER}\"" APPEND)
++    write_file(${file} "#define G__CFG_LD \"${CXX}\"" APPEND)
+     write_file(${file} "#define G__CFG_LDFLAGS \"${CMAKE_CXX_LINK_FLAGS}\"" APPEND)
+     write_file(${file} "#define G__CFG_LIBP \"-L\"" APPEND)
+     write_file(${file} "#define G__CFG_SOFLAGS \"${CMAKE_SHARED_LIBRARY_CREATE_C_FLAGS}\"" APPEND)
+@@ -72,10 +72,10 @@ function(WRITE_CONFIG_CINT file)
+     write_file(${file} "#define G__CFG_COUT \"-Fo\"" APPEND)
+     write_file(${file} "#define G__CFG_COUTEXE \"-Fo\"" APPEND)
+     write_file(${file} "#define G__CFG_INCP \"-I\"" APPEND)
+-    write_file(${file} "#define G__CFG_CXX \"${CMAKE_CXX_COMPILER}\"" APPEND)
++    write_file(${file} "#define G__CFG_CXX \"${CXX}\"" APPEND)
+     write_file(${file} "#define G__CFG_CXXFLAGS \" ${CMAKE_CXX_FLAGS} ${CINT_CXX_DEFINITIONS} -I${CMAKE_BINARY_DIR}/include\"" APPEND)
+     write_file(${file} "#define G__CFG_CXXMACROS \"${CINT_CXX_DEFINITIONS}\"" APPEND)
+-    write_file(${file} "#define G__CFG_LD \"${CMAKE_CXX_COMPILER}\"" APPEND)
++    write_file(${file} "#define G__CFG_LD \"${CXX}\"" APPEND)
+     write_file(${file} "#define G__CFG_LDFLAGS \"${CMAKE_SHARED_LINKER_FLAGS}\"" APPEND)
+     write_file(${file} "#define G__CFG_LIBP \"-L\"" APPEND)
+     write_file(${file} "#define G__CFG_SOFLAGS \"-DLL\"" APPEND)
 diff --git a/interpreter/cling/lib/Interpreter/CMakeLists.txt b/interpreter/cling/lib/Interpreter/CMakeLists.txt
-index ce547b7..1b9fdc6 100644
+index 4acd373..1b9fdc6 100644
 --- interpreter/cling/lib/Interpreter/CMakeLists.txt
 +++ interpreter/cling/lib/Interpreter/CMakeLists.txt
-@@ -95,8 +95,17 @@ if( git_executable )
+@@ -7,21 +7,18 @@
+ #------------------------------------------------------------------------------
+ 
+ set( LLVM_LINK_COMPONENTS
+-  ${LLVM_NATIVE_ARCH}
+-  ${LLVM_NATIVE_ARCH}codegen
+-  ${LLVM_NATIVE_ARCH}info
+-  ${LLVM_NATIVE_ARCH}utils
+-  bitreader
+   bitwriter
+-  codegen
+-  support
+-  target
+   jit
++  native
++  option
++  ipo
++  instrumentation
++  objcarcopts
+ )
+ 
+ add_cling_library(clingInterpreter
+-  ASTNodeEraser.cpp
+   AutoSynthesizer.cpp
++  BackendPass.cpp
+   CheckEmptyTransactionTransformer.cpp
+   CIFactory.cpp
+   ClangInternalState.cpp
+@@ -40,9 +37,9 @@ add_cling_library(clingInterpreter
+   RequiredSymbols.cpp
+   ValueExtractionSynthesizer.cpp
+   RuntimeException.cpp
+-  StoredValueRef.cpp
+   Transaction.cpp
+   TransactionTransformer.cpp
++  TransactionUnloader.cpp
+   Value.cpp
+   ValuePrinter.cpp
+   ValuePrinterInfo.cpp
+@@ -54,14 +51,24 @@ add_cling_library(clingInterpreter
+   
+ if(NOT WIN32)
+ set_source_files_properties(RuntimeException.cpp COMPILE_FLAGS -fexceptions)
+-else()
++endif()
++
+ #set_source_files_properties(RuntimeException.cpp COMPILE_FLAGS " /EHsc ")
+ # the line above doesn't work, and it gives the following warnings:
+ # cl : Command line warning D9025: overriding '/EHs' with '/EHs-'
+ # cl : Command line warning D9025: overriding '/EHc' with '/EHc-'
+-# so let's change the global compiler flags instead:
+-string(REPLACE "/EHs-c-" "" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
+-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /EHsc")
++# so let's change the target compiler flags instead:
++if(MSVC)
++  get_target_property(CI_COMPILE_FLAGS clingInterpreter COMPILE_FLAGS)
++  if(${CI_COMPILE_FLAGS})
++    string(REPLACE "/EHs-c-" "" CI_COMPILE_FLAGS ${CI_COMPILE_FLAGS})
++    # add /EHsc exception handling flag
++    set(CI_COMPILE_FLAGS "${CI_COMPILE_FLAGS} /EHsc")
++  else()
++    set(CI_COMPILE_FLAGS "/EHsc")
++  endif()
++  set_target_properties(clingInterpreter PROPERTIES
++    COMPILE_FLAGS ${CI_COMPILE_FLAGS})
+ endif()
+ 
+ #add_dependencies(clangDriver ClangAttrList ClangDiagnosticDriver
+@@ -88,8 +95,17 @@ if( git_executable )
    endif( )
  endif( git_executable )
  
@@ -319,57 +516,3 @@ index ce547b7..1b9fdc6 100644
  #define CLING_VERSION \"${CLING_VERSION}\"
  "
  )
--- 
-1.7.11.1
-
-From 99b08f3885e36d3e96df004d2bcb6a9ed649bfc0 Mon Sep 17 00:00:00 2001
-From: Pere Mato <pere.mato@cern.ch>
-Date: Wed, 9 Apr 2014 22:37:08 +0200
-Subject: [PATCH] Fix for ROOT-6194 and ROOT-6164
-
----
- cmake/modules/RootConfiguration.cmake | 20 +++++++++++++++-----
- 1 file changed, 15 insertions(+), 5 deletions(-)
-
-diff --git a/cmake/modules/RootConfiguration.cmake b/cmake/modules/RootConfiguration.cmake
-index c0f5814..2e02de8 100644
---- cmake/modules/RootConfiguration.cmake
-+++ cmake/modules/RootConfiguration.cmake
-@@ -398,11 +398,7 @@ configure_file(${CMAKE_SOURCE_DIR}/config/RConfigOptions.in include/RConfigOptio
- if(ruby)
-   file(APPEND ${CMAKE_BINARY_DIR}/include/RConfigOptions.h "\#define R__RUBY_MAJOR ${RUBY_MAJOR_VERSION}\n\#define R__RUBY_MINOR ${RUBY_MINOR_VERSION}\n")
- endif()
--if(WIN32)
--  configure_file(${CMAKE_SOURCE_DIR}/cmake/scripts/compiledata.win32.in include/compiledata.h)
--else()
--  configure_file(${CMAKE_SOURCE_DIR}/cmake/scripts/compiledata.in include/compiledata.h)
--endif()
-+
- configure_file(${CMAKE_SOURCE_DIR}/config/Makefile-comp.in config/Makefile.comp)
- configure_file(${CMAKE_SOURCE_DIR}/config/Makefile.in config/Makefile.config)
- configure_file(${CMAKE_SOURCE_DIR}/config/mimes.unix.in ${CMAKE_BINARY_DIR}/etc/root.mimes)
-@@ -472,6 +468,20 @@ if(prefix STREQUAL "$(ROOTSYS)")
-   set(etcdir $ROOTSYS/etc)
-   set(mandir $ROOTSYS/man/man1)
- endif()
-+
-+
-+#---compiledata.h--------------------------------------------------------------------------------------------
-+if(WIN32)
-+  set(makecompiledata ${CMAKE_SOURCE_DIR}/build/win/compiledata.sh)
-+else()
-+  set(makecompiledata ${CMAKE_SOURCE_DIR}/build/unix/compiledata.sh)
-+endif()
-+
-+string(TOUPPER "${CMAKE_BUILD_TYPE}" uppercase_CMAKE_BUILD_TYPE)
-+execute_process(COMMAND ${makecompiledata} include/compiledata.h "${cxx}" "" "${CMAKE_CXX_FLAGS_${uppercase_CMAKE_BUILD_TYPE}}"
-+	   "${CMAKE_CXX_FLAGS}" "${CMAKE_SHARED_LIBRARY_CREATE_CXX_FLAGS}" "${CMAKE_EXE_FLAGS}" "${LibSuffix}" "${SYSLIBS}"
-+	   "${libdir}" "-lCore" "-Rint" "${incdir}" "" "" "${ROOT_ARCHITECTURE}" "" "${explicitlink}" )
-+
- configure_file(${CMAKE_SOURCE_DIR}/config/root-config.in ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/root-config @ONLY)
- configure_file(${CMAKE_SOURCE_DIR}/config/memprobe.in ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/memprobe @ONLY)
- configure_file(${CMAKE_SOURCE_DIR}/config/thisroot.sh ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/thisroot.sh @ONLY)
--- 
-1.7.11.1
-
-
