@@ -269,4 +269,107 @@ index 9fb8759..9a13eeb 100644
  							 	      MESSAGE(STATUS "Found sqlplus version: ${sqlplus_version}")
 -- 
 1.7.11.1
+From d89374410b68166e2fff569cbee84f13d5a71c89 Mon Sep 17 00:00:00 2001
+From: Pere Mato <pere.mato@cern.ch>
+Date: Wed, 9 Apr 2014 18:12:57 +0200
+Subject: [PATCH] Fix for ROOT-6194 - ROOT6 build for LHCb seems to have
+ hardcoded dependencies on AFS
+
+---
+ cmake/modules/SearchInstalledSoftware.cmake      |  5 ++++-
+ interpreter/cling/lib/Interpreter/CMakeLists.txt | 11 ++++++++++-
+ 2 files changed, 14 insertions(+), 2 deletions(-)
+
+diff --git a/cmake/modules/SearchInstalledSoftware.cmake b/cmake/modules/SearchInstalledSoftware.cmake
+index 5e599cb..2bba510 100644
+--- cmake/modules/SearchInstalledSoftware.cmake
++++ cmake/modules/SearchInstalledSoftware.cmake
+@@ -720,7 +720,10 @@ if(cling)
+                         ${CMAKE_BINARY_DIR}/CLING-install/lib/libclingUtils.a 
+                         ${LLVM_LIBRARIES})
+     #--Additional flags obtained from llvm-config --cxxflags
+-    set(CLING_CXXFLAGS "-fvisibility-inlines-hidden -fno-strict-aliasing -Wno-unused-parameter -Wwrite-strings -Wmissing-field-initializers -Wno-long-long -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS")
++    set(CLING_CXXFLAGS "-fvisibility-inlines-hidden -fno-strict-aliasing -Wno-unused-parameter -Wwrite-strings -Wno-long-long -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS")
++    if (CMAKE_COMPILER_IS_GNUCXX)
++      set(CLING_CXXFLAGS "${CLING_CXXFLAGS} -Wno-missing-field-initializers")
++    endif()
+     add_dependencies(CLING LLVM)
+ endif()
+ 
+diff --git a/interpreter/cling/lib/Interpreter/CMakeLists.txt b/interpreter/cling/lib/Interpreter/CMakeLists.txt
+index ce547b7..1b9fdc6 100644
+--- interpreter/cling/lib/Interpreter/CMakeLists.txt
++++ interpreter/cling/lib/Interpreter/CMakeLists.txt
+@@ -95,8 +95,17 @@ if( git_executable )
+   endif( )
+ endif( git_executable )
+ 
++# Remove absolute path from CMAKE_CXX_COMPILER
++get_filename_component(_path ${CMAKE_CXX_COMPILER} PATH)
++get_filename_component(_name ${CMAKE_CXX_COMPILER} NAME)
++if("$ENV{PATH}" MATCHES ${_path})
++  set(CMAKE_CXX_COMPILER_RELATIVE ${_name})
++else()
++  set(CMAKE_CXX_COMPILER_RELATIVE ${CMAKE_CXX_COMPILER})
++endif()
++
+ file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/cling-compiledata.h
+-  "#define LLVM_CXX \"${CMAKE_CXX_COMPILER} ${CMAKE_CXX_FLAGS_NO_I} ${CMAKE_CXX_FLAGS_${uppercase_CMAKE_BUILD_TYPE}}\"
++  "#define LLVM_CXX \"${CMAKE_CXX_COMPILER_RELATIVE} ${CMAKE_CXX_FLAGS_NO_I} ${CMAKE_CXX_FLAGS_${uppercase_CMAKE_BUILD_TYPE}}\"
+ #define CLING_VERSION \"${CLING_VERSION}\"
+ "
+ )
+-- 
+1.7.11.1
+
+From 99b08f3885e36d3e96df004d2bcb6a9ed649bfc0 Mon Sep 17 00:00:00 2001
+From: Pere Mato <pere.mato@cern.ch>
+Date: Wed, 9 Apr 2014 22:37:08 +0200
+Subject: [PATCH] Fix for ROOT-6194 and ROOT-6164
+
+---
+ cmake/modules/RootConfiguration.cmake | 20 +++++++++++++++-----
+ 1 file changed, 15 insertions(+), 5 deletions(-)
+
+diff --git a/cmake/modules/RootConfiguration.cmake b/cmake/modules/RootConfiguration.cmake
+index c0f5814..2e02de8 100644
+--- cmake/modules/RootConfiguration.cmake
++++ cmake/modules/RootConfiguration.cmake
+@@ -398,11 +398,7 @@ configure_file(${CMAKE_SOURCE_DIR}/config/RConfigOptions.in include/RConfigOptio
+ if(ruby)
+   file(APPEND ${CMAKE_BINARY_DIR}/include/RConfigOptions.h "\#define R__RUBY_MAJOR ${RUBY_MAJOR_VERSION}\n\#define R__RUBY_MINOR ${RUBY_MINOR_VERSION}\n")
+ endif()
+-if(WIN32)
+-  configure_file(${CMAKE_SOURCE_DIR}/cmake/scripts/compiledata.win32.in include/compiledata.h)
+-else()
+-  configure_file(${CMAKE_SOURCE_DIR}/cmake/scripts/compiledata.in include/compiledata.h)
+-endif()
++
+ configure_file(${CMAKE_SOURCE_DIR}/config/Makefile-comp.in config/Makefile.comp)
+ configure_file(${CMAKE_SOURCE_DIR}/config/Makefile.in config/Makefile.config)
+ configure_file(${CMAKE_SOURCE_DIR}/config/mimes.unix.in ${CMAKE_BINARY_DIR}/etc/root.mimes)
+@@ -472,6 +468,20 @@ if(prefix STREQUAL "$(ROOTSYS)")
+   set(etcdir $ROOTSYS/etc)
+   set(mandir $ROOTSYS/man/man1)
+ endif()
++
++
++#---compiledata.h--------------------------------------------------------------------------------------------
++if(WIN32)
++  set(makecompiledata ${CMAKE_SOURCE_DIR}/build/win/compiledata.sh)
++else()
++  set(makecompiledata ${CMAKE_SOURCE_DIR}/build/unix/compiledata.sh)
++endif()
++
++string(TOUPPER "${CMAKE_BUILD_TYPE}" uppercase_CMAKE_BUILD_TYPE)
++execute_process(COMMAND ${makecompiledata} include/compiledata.h "${cxx}" "" "${CMAKE_CXX_FLAGS_${uppercase_CMAKE_BUILD_TYPE}}"
++	   "${CMAKE_CXX_FLAGS}" "${CMAKE_SHARED_LIBRARY_CREATE_CXX_FLAGS}" "${CMAKE_EXE_FLAGS}" "${LibSuffix}" "${SYSLIBS}"
++	   "${libdir}" "-lCore" "-Rint" "${incdir}" "" "" "${ROOT_ARCHITECTURE}" "" "${explicitlink}" )
++
+ configure_file(${CMAKE_SOURCE_DIR}/config/root-config.in ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/root-config @ONLY)
+ configure_file(${CMAKE_SOURCE_DIR}/config/memprobe.in ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/memprobe @ONLY)
+ configure_file(${CMAKE_SOURCE_DIR}/config/thisroot.sh ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/thisroot.sh @ONLY)
+-- 
+1.7.11.1
+
 
