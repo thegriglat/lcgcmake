@@ -223,75 +223,6 @@ index 74c47e8..943ab1e 100644
  ROOT_BUILD_OPTION(reflex ON "Build the libReflex dictionary library")
  ROOT_BUILD_OPTION(roofit OFF "Build the libRooFit advanced fitting package")
  ROOT_BUILD_OPTION(ruby OFF "Ruby ROOT bindings, requires ruby >= 1.8")
-diff --git a/cmake/modules/RootConfiguration.cmake b/cmake/modules/RootConfiguration.cmake
-index da09a1a..a2cd398 100644
---- cmake/modules/RootConfiguration.cmake
-+++ cmake/modules/RootConfiguration.cmake
-@@ -152,6 +152,13 @@ set(davixlibdir ${DAVIX_LIBRARY_DIR})
- set(davixlib ${DAVIX_LIBRARY})
- set(davixincdir ${DAVIX_INCLUDE_DIR})
- 
-+set(buildnetxng ${value${netxng}})
-+if(netxng)
-+  set(useoldnetx no)
-+else()
-+  set(useoldnetx yes)
-+endif()
-+
- set(builddcap ${value${dcap}})
- set(dcaplibdir ${DCAP_LIBRARY_DIR})
- set(dcaplib ${DCAP_LIBRARY})
-@@ -372,12 +379,12 @@ string(REPLACE "c++11" "cxx11" features ${features}) # change the name of the c+
- set(configfeatures ${features})
- set(configargs ${ROOT_CONFIGARGS})
- set(configoptions ${ROOT_CONFIGARGS})
--set(altcc ${CMAKE_C_COMPILER})
--set(altcxx ${CMAKE_CXX_COMPILER})
--set(altf77 ${CMAKE_Fortran_COMPILER})
--set(altld ${CMAKE_CXX_COMPILER})
-+get_filename_component(altcc ${CMAKE_C_COMPILER} NAME)
-+get_filename_component(altcxx ${CMAKE_CXX_COMPILER} NAME)
-+get_filename_component(altf77 ${CMAKE_Fortran_COMPILER} NAME)
-+get_filename_component(altld ${CMAKE_CXX_COMPILER} NAME)
-+
- set(pythonvers ${PYTHON_VERSION})
--get_filename_component(cxx ${CMAKE_CXX_COMPILER} NAME)
- 
- #---RConfigure.h---------------------------------------------------------------------------------------------
- configure_file(${PROJECT_SOURCE_DIR}/config/RConfigure.in include/RConfigure.h)
-@@ -391,11 +398,7 @@ configure_file(${CMAKE_SOURCE_DIR}/config/RConfigOptions.in include/RConfigOptio
- if(ruby)
-   file(APPEND ${CMAKE_BINARY_DIR}/include/RConfigOptions.h "\#define R__RUBY_MAJOR ${RUBY_MAJOR_VERSION}\n\#define R__RUBY_MINOR ${RUBY_MINOR_VERSION}\n")
- endif()
--if(WIN32)
--  configure_file(${CMAKE_SOURCE_DIR}/cmake/scripts/compiledata.win32.in include/compiledata.h)
--else()
--  configure_file(${CMAKE_SOURCE_DIR}/cmake/scripts/compiledata.in include/compiledata.h)
--endif()
-+
- configure_file(${CMAKE_SOURCE_DIR}/config/Makefile-comp.in config/Makefile.comp)
- configure_file(${CMAKE_SOURCE_DIR}/config/Makefile.in config/Makefile.config)
- configure_file(${CMAKE_SOURCE_DIR}/config/mimes.unix.in ${CMAKE_BINARY_DIR}/etc/root.mimes)
-@@ -465,6 +468,19 @@ if(prefix STREQUAL "$(ROOTSYS)")
-   set(etcdir $ROOTSYS/etc)
-   set(mandir $ROOTSYS/man/man1)
- endif()
-+
-+
-+#---compiledata.h--------------------------------------------------------------------------------------------
-+if(WIN32)
-+  # We cannot use the compiledata.sh script for windows
-+  configure_file(${CMAKE_SOURCE_DIR}/cmake/scripts/compiledata.win32.in include/compiledata.h)
-+else()
-+  execute_process(COMMAND ${CMAKE_SOURCE_DIR}/build/unix/compiledata.sh include/compiledata.h "${CXX}" ""
-+       "${CMAKE_CXX_FLAGS_${uppercase_CMAKE_BUILD_TYPE}}"
-+	     "${CMAKE_CXX_FLAGS}" "${CMAKE_SHARED_LIBRARY_CREATE_CXX_FLAGS}" "${CMAKE_EXE_FLAGS}" "${LibSuffix}" "${SYSLIBS}"
-+	     "${libdir}" "-lCore" "-Rint" "${incdir}" "" "" "${ROOT_ARCHITECTURE}" "" "${explicitlink}" )
-+endif()
-+
- configure_file(${CMAKE_SOURCE_DIR}/config/root-config.in ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/root-config @ONLY)
- configure_file(${CMAKE_SOURCE_DIR}/config/memprobe.in ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/memprobe @ONLY)
- configure_file(${CMAKE_SOURCE_DIR}/config/thisroot.sh ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/thisroot.sh @ONLY)
 diff --git a/cmake/modules/SetUpLinux.cmake b/cmake/modules/SetUpLinux.cmake
 index 9226172..588a5d3 100644
 --- cmake/modules/SetUpLinux.cmake
@@ -426,78 +357,10 @@ index 731f006..27ff710 100644
      write_file(${file} "#define G__CFG_LIBP \"-L\"" APPEND)
      write_file(${file} "#define G__CFG_SOFLAGS \"-DLL\"" APPEND)
 diff --git a/interpreter/cling/lib/Interpreter/CMakeLists.txt b/interpreter/cling/lib/Interpreter/CMakeLists.txt
-index 4acd373..1b9fdc6 100644
+index ce547b7..1b9fdc6 100644
 --- interpreter/cling/lib/Interpreter/CMakeLists.txt
 +++ interpreter/cling/lib/Interpreter/CMakeLists.txt
-@@ -7,21 +7,18 @@
- #------------------------------------------------------------------------------
- 
- set( LLVM_LINK_COMPONENTS
--  ${LLVM_NATIVE_ARCH}
--  ${LLVM_NATIVE_ARCH}codegen
--  ${LLVM_NATIVE_ARCH}info
--  ${LLVM_NATIVE_ARCH}utils
--  bitreader
-   bitwriter
--  codegen
--  support
--  target
-   jit
-+  native
-+  option
-+  ipo
-+  instrumentation
-+  objcarcopts
- )
- 
- add_cling_library(clingInterpreter
--  ASTNodeEraser.cpp
-   AutoSynthesizer.cpp
-+  BackendPass.cpp
-   CheckEmptyTransactionTransformer.cpp
-   CIFactory.cpp
-   ClangInternalState.cpp
-@@ -40,9 +37,9 @@ add_cling_library(clingInterpreter
-   RequiredSymbols.cpp
-   ValueExtractionSynthesizer.cpp
-   RuntimeException.cpp
--  StoredValueRef.cpp
-   Transaction.cpp
-   TransactionTransformer.cpp
-+  TransactionUnloader.cpp
-   Value.cpp
-   ValuePrinter.cpp
-   ValuePrinterInfo.cpp
-@@ -54,14 +51,24 @@ add_cling_library(clingInterpreter
-   
- if(NOT WIN32)
- set_source_files_properties(RuntimeException.cpp COMPILE_FLAGS -fexceptions)
--else()
-+endif()
-+
- #set_source_files_properties(RuntimeException.cpp COMPILE_FLAGS " /EHsc ")
- # the line above doesn't work, and it gives the following warnings:
- # cl : Command line warning D9025: overriding '/EHs' with '/EHs-'
- # cl : Command line warning D9025: overriding '/EHc' with '/EHc-'
--# so let's change the global compiler flags instead:
--string(REPLACE "/EHs-c-" "" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
--set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /EHsc")
-+# so let's change the target compiler flags instead:
-+if(MSVC)
-+  get_target_property(CI_COMPILE_FLAGS clingInterpreter COMPILE_FLAGS)
-+  if(${CI_COMPILE_FLAGS})
-+    string(REPLACE "/EHs-c-" "" CI_COMPILE_FLAGS ${CI_COMPILE_FLAGS})
-+    # add /EHsc exception handling flag
-+    set(CI_COMPILE_FLAGS "${CI_COMPILE_FLAGS} /EHsc")
-+  else()
-+    set(CI_COMPILE_FLAGS "/EHsc")
-+  endif()
-+  set_target_properties(clingInterpreter PROPERTIES
-+    COMPILE_FLAGS ${CI_COMPILE_FLAGS})
- endif()
- 
- #add_dependencies(clangDriver ClangAttrList ClangDiagnosticDriver
-@@ -88,8 +95,17 @@ if( git_executable )
+@@ -95,8 +95,17 @@ if( git_executable )
    endif( )
  endif( git_executable )
  
@@ -516,3 +379,72 @@ index 4acd373..1b9fdc6 100644
  #define CLING_VERSION \"${CLING_VERSION}\"
  "
  )
+diff --git a/cmake/modules/RootConfiguration.cmake b/cmake/modules/RootConfiguration.cmake
+index da09a1a..a2cd398 100644
+--- cmake/modules/RootConfiguration.cmake
++++ cmake/modules/RootConfiguration.cmake
+@@ -152,6 +152,13 @@ set(davixlibdir ${DAVIX_LIBRARY_DIR})
+ set(davixlib ${DAVIX_LIBRARY})
+ set(davixincdir ${DAVIX_INCLUDE_DIR})
+ 
++set(buildnetxng ${value${netxng}})
++if(netxng)
++  set(useoldnetx no)
++else()
++  set(useoldnetx yes)
++endif()
++
+ set(builddcap ${value${dcap}})
+ set(dcaplibdir ${DCAP_LIBRARY_DIR})
+ set(dcaplib ${DCAP_LIBRARY})
+@@ -372,12 +379,12 @@ string(REPLACE "c++11" "cxx11" features ${features}) # change the name of the c+
+ set(configfeatures ${features})
+ set(configargs ${ROOT_CONFIGARGS})
+ set(configoptions ${ROOT_CONFIGARGS})
+-set(altcc ${CMAKE_C_COMPILER})
+-set(altcxx ${CMAKE_CXX_COMPILER})
+-set(altf77 ${CMAKE_Fortran_COMPILER})
+-set(altld ${CMAKE_CXX_COMPILER})
++get_filename_component(altcc ${CMAKE_C_COMPILER} NAME)
++get_filename_component(altcxx ${CMAKE_CXX_COMPILER} NAME)
++get_filename_component(altf77 ${CMAKE_Fortran_COMPILER} NAME)
++get_filename_component(altld ${CMAKE_CXX_COMPILER} NAME)
++
+ set(pythonvers ${PYTHON_VERSION})
+-get_filename_component(cxx ${CMAKE_CXX_COMPILER} NAME)
+ 
+ #---RConfigure.h---------------------------------------------------------------------------------------------
+ configure_file(${PROJECT_SOURCE_DIR}/config/RConfigure.in include/RConfigure.h)
+@@ -391,11 +398,7 @@ configure_file(${CMAKE_SOURCE_DIR}/config/RConfigOptions.in include/RConfigOptio
+ if(ruby)
+   file(APPEND ${CMAKE_BINARY_DIR}/include/RConfigOptions.h "\#define R__RUBY_MAJOR ${RUBY_MAJOR_VERSION}\n\#define R__RUBY_MINOR ${RUBY_MINOR_VERSION}\n")
+ endif()
+-if(WIN32)
+-  configure_file(${CMAKE_SOURCE_DIR}/cmake/scripts/compiledata.win32.in include/compiledata.h)
+-else()
+-  configure_file(${CMAKE_SOURCE_DIR}/cmake/scripts/compiledata.in include/compiledata.h)
+-endif()
++
+ configure_file(${CMAKE_SOURCE_DIR}/config/Makefile-comp.in config/Makefile.comp)
+ configure_file(${CMAKE_SOURCE_DIR}/config/Makefile.in config/Makefile.config)
+ configure_file(${CMAKE_SOURCE_DIR}/config/mimes.unix.in ${CMAKE_BINARY_DIR}/etc/root.mimes)
+@@ -465,6 +468,19 @@ if(prefix STREQUAL "$(ROOTSYS)")
+   set(etcdir $ROOTSYS/etc)
+   set(mandir $ROOTSYS/man/man1)
+ endif()
++
++
++#---compiledata.h--------------------------------------------------------------------------------------------
++if(WIN32)
++  # We cannot use the compiledata.sh script for windows
++  configure_file(${CMAKE_SOURCE_DIR}/cmake/scripts/compiledata.win32.in include/compiledata.h)
++else()
++  execute_process(COMMAND ${CMAKE_SOURCE_DIR}/build/unix/compiledata.sh include/compiledata.h "${CXX}" ""
++       "${CMAKE_CXX_FLAGS_${uppercase_CMAKE_BUILD_TYPE}}"
++	     "${CMAKE_CXX_FLAGS}" "${CMAKE_SHARED_LIBRARY_CREATE_CXX_FLAGS}" "${CMAKE_EXE_FLAGS}" "${LibSuffix}" "${SYSLIBS}"
++	     "${libdir}" "-lCore" "-Rint" "${incdir}" "" "" "${ROOT_ARCHITECTURE}" "" "${explicitlink}" )
++endif()
++
+ configure_file(${CMAKE_SOURCE_DIR}/config/root-config.in ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/root-config @ONLY)
+ configure_file(${CMAKE_SOURCE_DIR}/config/memprobe.in ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/memprobe @ONLY)
+ configure_file(${CMAKE_SOURCE_DIR}/config/thisroot.sh ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/thisroot.sh @ONLY)
