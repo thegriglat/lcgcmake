@@ -822,7 +822,6 @@ LCGPackage_Add(
   CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR>
      --enable-shared --enable-static --enable-binreloc --enable-analysis
      --enable-pythia --enable-hepevtsize=<sherpa_<NATIVE_VERSION>_hepevt>
-     --enable-multithread
      --enable-lhapdf=${lhapdf_home}
      --enable-hepmc2=${HepMC_home}
      --enable-openloops=.
