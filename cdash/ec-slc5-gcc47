@@ -25,7 +25,7 @@ if [ x$VERSION = x ]; then
   export VERSION=trunk
 fi
 
-export BUILD_PREFIX=${WORKDIR}/${MODE}
+export BUILD_PREFIX=${WORKDIR}
 
 #if [ ! -d "${SOURCE}" ]; then
 #  svn co svn+ssh://svn.cern.ch/reps/lcgsoft/trunk/lcgcmake ${SOURCE}
