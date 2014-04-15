@@ -9,16 +9,8 @@ GET_PWD(pwd)
 GET_HOST(host)
 GET_NCPUS(ncpu)
 GET_CONFIGURATION_TAG(tag)
+GET_CTEST_BUILD_NAME(CTEST_BUILD_NAME)
 
-#---------------------------------------------------------------------------
-list(APPEND CMAKE_CONFIGURATION_TYPES Release Debug RelWithDebInfo MinSizeRel TestRelease Maintainer)
-set(TypeRelease opt)
-set(TypeDebug   dbg)
-set(TypeRelWithDebInfo o2d)
-set(TypeMinSizeRel min)
-set(TypeCoverage cov)
-
-set(CTEST_BUILD_NAME ${tag}-${Type$ENV{BUILDTYPE}})
 set(CTEST_BUILD_CONFIGURATION $ENV{BUILDTYPE})
 set(CTEST_CONFIGURATION_TYPE ${CTEST_BUILD_CONFIGURATION})
 

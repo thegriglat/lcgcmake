@@ -1,3 +1,11 @@
+#---------------------------------------------------------------------------
+list(APPEND CMAKE_CONFIGURATION_TYPES Release Debug RelWithDebInfo MinSizeRel TestRelease Maintainer)
+set(TypeRelease opt)
+set(TypeDebug   dbg)
+set(TypeRelWithDebInfo o2d)
+set(TypeMinSizeRel min)
+set(TypeCoverage cov)
+
 #---Utility Macros----------------------------------------------------------
 function(GET_NCPUS ncpu)
   if(APPLE)
@@ -152,4 +160,9 @@ function(GET_TIME time)
 		set(tmp 0000)
 	endiF()
   set(${time} ${tmp} PARENT_SCOPE)
+endfunction()
+
+function(GET_CTEST_BUILD_NAME buildname)
+  GET_CONFIGURATION_TAG(tag)
+  set(${buildname} ${tag}-${Type$ENV{BUILDTYPE}} PARENT_SCOPE)
 endfunction()
