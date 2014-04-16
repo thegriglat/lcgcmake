@@ -42,7 +42,7 @@ if __name__ == '__main__':
         print "target must be one of all|externals|generators"
         raise ValueError("target must be either all or externals or generators")
 
-    releasename = "lcg"+opts.version
+    releasename = opts.version
     area = ProjectAreaManager( releasename, opts.prefix, dry=opts.dry )
 
     print "Prepare the AFS volumes in  %s" % (opts.prefix)
