@@ -815,6 +815,38 @@ LCG_add_test(rivet_orig_test1
     PATH=${Python_home}/bin:$ENV{PATH}
 )
 
+#---QD------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  qd
+  URL ${gen_url}/qd-${qd_native_version}.tar.gz
+  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR>
+     --enable-shared
+
+  INSTALL_COMMAND make install 
+
+  BUILD_IN_SOURCE 1
+  DEPENDS Python
+)
+
+
+#---BlackHat------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  blackhat
+  URL ${gen_url}/blackhat-${blackhat_native_version}.tar.gz
+  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR>
+  --with-QDpath=${qd_home}  
+  --enable-pythoninterface
+  PYTHON=${Python_home}/bin/python
+  ${library_path}=${Python_home}/lib:$ENV{${library_path}}
+  PYTHONPATH=${Python_home}/lib/python${Python_config_version_twodigit}/site-packages:$ENV{PYTHONPATH}
+  INSTALL_COMMAND make install 
+  
+  BUILD_IN_SOURCE 1
+  DEPENDS qd
+)
+
+
+
 #---Sherpa------------------------------------------------------------------------------------------
 LCGPackage_Add(
   sherpa
