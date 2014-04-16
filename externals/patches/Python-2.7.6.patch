@@ -8,3 +8,34 @@
  #define UINT128 __m128
  #else
  #if defined(__SUNPRO_C)
+--- Lib/sysconfig.py.orig	2014-04-16 11:24:39.000000000 +0200
++++ Lib/sysconfig.py		2014-04-16 11:24:51.000000000 +0200
+@@ -339,8 +339,16 @@
+     with open(destfile, 'wb') as f:
+         f.write('# system configuration generated and used by'
+                 ' the sysconfig module\n')
++        # derive location of this file
++        f.write('import os\n')
++        f.write('__location__ = os.path.dirname(os.path.realpath(__file__))\n')
+         f.write('build_time_vars = ')
+-        pprint.pprint(vars, stream=f)
++        prefix = vars['prefix']
++        result = pprint.pformat(vars)
++        result = result.replace('--prefix='+prefix,'--prefix="+__location__+"')
++        result = result.replace("'"+prefix,"__location__+'") 
++        result = result.replace(prefix,"'+__location__+'") 
++        f.write(result)
+ 
+     # Create file used for sys.path fixup -- see Modules/getpath.c
+     with open('pybuilddir.txt', 'w') as f:
+@@ -349,7 +359,7 @@
+ def _init_posix(vars):
+     """Initialize the module as appropriate for POSIX systems."""
+     # _sysconfigdata is generated at build time, see _generate_posix_vars()
+-    from _sysconfigdata import build_time_vars
+-    vars.update(build_time_vars)
++    import _sysconfigdata
++    vars.update(_sysconfigdata.build_time_vars)
+ 
+ def _init_non_posix(vars):
+     """Initialize the module as appropriate for NT"""
