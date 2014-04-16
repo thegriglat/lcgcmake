@@ -32,8 +32,8 @@ if __name__ == '__main__':
     if not os.path.exists(opts.prefix):
         print ("You specified a non existing path in --prefix")
         raise ValueError("You have to specify an existing path")
-    if not re.match(releasename_pattern, opts.version):
-        print "the name of the release is not standard"
+    if not re.match(full_releasename_pattern, opts.version):
+        print "ERROR : the name of the release is not standard"
         raise ValueError("You have to use a standard release name (number[+letter] ")   
     if not opts.target: 
         print "No option target - all - will be used by default"
