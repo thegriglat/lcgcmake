@@ -21,7 +21,7 @@ if __name__ == '__main__':
     parser.add_option('-d', '--dry', action='store_true', dest='dry', help='dry run, no commands will be executed',default=False )
     parser.add_option('-v', '--version', action='store', dest='version', help='name of the release')
     parser.add_option('-p', '--prefix', action='store', dest='prefix', help='AFS prefix where to install the new volume')
-    parser.add_option('-t', '--target', action='store', dest='target', help='all|externals|generators')
+    parse.add_option('-e', '--handleExternalsOnly', action='store', dest='handleExternalsOnly', help='Set true if you install only externals and not Generators', default=False )
 
     (opts,args) = parser.parse_args()
 
@@ -35,19 +35,15 @@ if __name__ == '__main__':
     if not re.match(full_releasename_pattern, opts.version):
         print "ERROR : the name of the release is not standard"
         raise ValueError("You have to use a standard release name (number[+letter] ")   
-    if not opts.target: 
-        print "No option target - all - will be used by default"
-        opts.target = 'all'
-    if opts.target not in ('all', 'externals', 'generators'): 
-        print "target must be one of all|externals|generators"
-        raise ValueError("target must be either all or externals or generators")
+    if not opts.handleExternalsOnly: 
+        print "Externals and Generators areas will be prepared"
 
     releasename = opts.version
     area = ProjectAreaManager( releasename, opts.prefix, dry=opts.dry )
 
     print "Prepare the AFS volumes in  %s" % (opts.prefix)
 
-    if opts.target == "externals":
+    if opts.target :
         if not os.path.exists(os.path.join(opts.prefix, releasename)):
             print "create %s area"  % os.path.join(opts.prefix,releasename) 
             area.create_area(full_releasename_pattern, "")
@@ -55,10 +51,10 @@ if __name__ == '__main__':
             print "area already exits - check replicas"
     else: 
         if os.path.exists(os.path.join(opts.prefix, releasename)):
-            # case target generators/all when lcg area already exists
+            # case target all when lcg area already exists
             print "create %s area" % (os.path.join(opts.prefix,releasename,"MCGenerators_"+releasename))
             area.create_area(full_releasename_pattern, "MCGenerators_"+releasename)
-        else: # target is all/ generators and area lcg does not exists 
+        else: # target is generators and area lcg does not exists 
             print "create %s area and %s area" % (os.path.join(opts.prefix,releasename), (os.path.join(opts.prefix,releasename,"MCGenerators_"+releasename)))
             area.create_area(full_releasename_pattern, "")
             cmd = '/usr/bin/fs checks; /usr/bin/fs checkv; /usr/bin/fs flushm '+os.path.join(opts.prefix,releasename)
