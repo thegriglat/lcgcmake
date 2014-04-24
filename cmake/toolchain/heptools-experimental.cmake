@@ -157,8 +157,8 @@ LCG_external_package(powheg-box         r2092         ${MCGENPATH}/powheg-box   
 LCG_external_package(lhapdf            5.9.1          ${MCGENPATH}/lhapdf       )
 LCG_external_package(lhapdfsets        5.9.1          lhapdfsets   )
 
-LCG_external_package(lhapdf6           6.0.4          ${MCGENPATH}/lhapdf6       )
-LCG_external_package(lhapdf6sets       6.0.4          lhapdf6sets   )
+LCG_external_package(lhapdf6           6.0.5          ${MCGENPATH}/lhapdf6       )
+LCG_external_package(lhapdf6sets       6.0.5          lhapdf6sets   )
 
 LCG_external_package(pythia8           185            ${MCGENPATH}/pythia8    author=185  )
 
@@ -166,8 +166,10 @@ LCG_external_package(sacrifice         0.9.9          ${MCGENPATH}/sacrifice pyt
 
 
 LCG_external_package(thepeg            1.9.0          ${MCGENPATH}/thepeg       )
+LCG_external_package(thepeg            1.9.0a          ${MCGENPATH}/thepeg       )
 
 LCG_external_package(herwig++          2.7.0          ${MCGENPATH}/herwig++  thepeg=1.9.0  )
+LCG_external_package(herwig++          2.7.0a         ${MCGENPATH}/herwig++  thepeg=1.9.0a  )
 
 LCG_external_package(tauola++          1.1.4          ${MCGENPATH}/tauola++     )
 
