@@ -9,6 +9,8 @@ export CXX=clang++
 export FC=gfortran
 export LIBRARY_PATH=/usr/local/gfortran/lib
 export PATH=${PATH}:/usr/local/bin:/opt/X11/bin
+export CXXFLAGS=-stdlib=libstdc++
+export LDFLAGS=-stdlib=libstdc++
 
 #-----------------------------------------------------------------
 THIS=$(dirname $0)

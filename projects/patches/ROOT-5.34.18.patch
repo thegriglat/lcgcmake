@@ -182,4 +182,17 @@ index c534931..5251955 100644
 -#endif 
 +#endif
   
+
+diff --git a/cmake/modules/SetUpMacOS.cmake b/cmake/modules/SetUpMacOS.cmake
+index 2bca102..ddc3123 100644
+--- cmake/modules/SetUpMacOS.cmake
++++ cmake/modules/SetUpMacOS.cmake
+@@ -20,7 +20,7 @@ if (CMAKE_SYSTEM_NAME MATCHES Darwin)
+                   COMMAND cut -d . -f 2 
+                   OUTPUT_VARIABLE MACOSX_MINOR OUTPUT_STRIP_TRAILING_WHITESPACE)
+ 
+-  if(MACOSX_VERSION VERSION_GREATER 10.8 AND ${CMAKE_CXX_COMPILER_ID} STREQUAL Clang)
++  if(MACOSX_VERSION VERSION_GREATER 10.8 AND ${CMAKE_CXX_COMPILER_ID} STREQUAL Clang AND cxx11)
+     set(libcxx ON CACHE BOOL "Build using libc++" FORCE)
+   endif()
  

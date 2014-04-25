@@ -28,6 +28,10 @@ set(MAKE ${CMAKE_SOURCE_DIR}/cmake/scripts/make_verbose $(MAKE))
 enable_testing()
 include(CTest)
 
+if(NOT "$ENV{CXXFLAGS}" STREQUAL "")
+  set(libtoolpatch CXX=$ENV{CXX}\ $ENV{CXXFLAGS})
+endif()
+
 add_subdirectory(externals)
 add_subdirectory(gridexternals)
 add_subdirectory(projects)

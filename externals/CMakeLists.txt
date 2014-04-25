@@ -272,7 +272,7 @@ LCGPackage_Add(
 LCGPackage_Add(
   CppUnit
   URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/cppunit-<CppUnit_<NATIVE_VERSION>_author>.tar.gz
-  CONFIGURE_COMMAND ./configure --prefix <INSTALL_DIR>
+  CONFIGURE_COMMAND ./configure --prefix <INSTALL_DIR> ${libtoolpatch}
             COMMAND echo to ignore the status code
   BUILD_IN_SOURCE 1
 )
@@ -395,7 +395,7 @@ endif()
 LCGPackage_Add(
   coin3d
   URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/Coin-${coin3d_native_version}.tar.gz
-  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --enable-debug=no --enable-symbols=no ${coin3d_config_opts}
+  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --enable-debug=no --enable-symbols=no ${coin3d_config_opts} ${libtoolpatch}
   BUILD_COMMAND  make
   BUILD_IN_SOURCE 1
 )
