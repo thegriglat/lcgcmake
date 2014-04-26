@@ -164,7 +164,7 @@ LCG_external_package(lhapdfsets        5.9.1          lhapdfsets   )
 LCG_external_package(lhapdf6           6.0.5          ${MCGENPATH}/lhapdf6       )
 LCG_external_package(lhapdf6sets       6.0.5          lhapdf6sets   )
 
-LCG_external_package(lhapdf6           6.1.0beta1     ${MCGENPATH}/lhapdf6       )
+LCG_external_package(lhapdf6           6.1.0          ${MCGENPATH}/lhapdf6       )
 
 LCG_external_package(pythia8           185            ${MCGENPATH}/pythia8    author=185  )
 
