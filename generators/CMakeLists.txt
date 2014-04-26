@@ -562,6 +562,15 @@ LCG_add_test(photospp_phys_test2
   LABELS PhysicsCheck
 )
 
+LCG_add_test(photospp_phys_test3
+  TEST_COMMAND ${CMAKE_COMMAND} -E chdir photospp/tests ./photospp_test3
+  ENVIRONMENT
+    ${library_path}=${photos++_home}/lib:${HepMC_home}/lib:${pythia8_home}/lib:$ENV{${library_path}}
+    PYTHIA8DATA=${pythia8_home}/xmldoc
+  DEPENDS photospp-build
+  LABELS PhysicsCheck
+)
+
 #---evtgen------------------------------------------------------------------------------------------
 LCGPackage_Add(
   evtgen
@@ -1319,6 +1328,7 @@ LCG_add_test(
   POST_COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/generators/reference/pythia6_riv2_zjets.yoda ${CMAKE_BINARY_DIR}/generators/pythia6_riv2_zjets.yoda
        COMMAND ${CMAKE_COMMAND} -DAIDA2ROOT=${AIDA2ROOT} -DPython_cmd=${Python_cmd} -Dyoda_home=${yoda_home} -DINPUT=${CMAKE_BINARY_DIR}/generators/pythia6_riv2_zjets.yoda -P ${CMAKE_SOURCE_DIR}/cmake/scripts/yoda2root.cmake
        COMMAND ${CMAKE_COMMAND} -DAIDA2ROOT=${AIDA2ROOT} -DPython_cmd=${Python_cmd} -Dyoda_home=${yoda_home} -DINPUT=${CMAKE_BINARY_DIR}/generators/pythia6_riv2_zjets_i.yoda -P ${CMAKE_SOURCE_DIR}/cmake/scripts/yoda2root.cmake
+       COMMAND ${CMAKE_SOURCE_DIR}/generators/reference/riv2html.sh ${rivet2_home} pythia6 ${pythia6_test_version} zjets ${LCG_VERSION} ${LCG_platform}
        COMMAND ${Python_cmd} ${CMAKE_SOURCE_DIR}/generators/reference/reference.py ${CMAKE_BINARY_DIR}/generators/pythia6_riv2_zjets.root ${CMAKE_BINARY_DIR}/generators/pythia6_riv2_zjets_i.root "Path=jet_HT" limit=0.10
        COMMAND ${Python_cmd} ${CMAKE_SOURCE_DIR}/generators/reference/reference.py ${CMAKE_BINARY_DIR}/generators/pythia6_riv2_zjets.root ${CMAKE_BINARY_DIR}/generators/pythia6_riv2_zjets_i.root "Path=XS" limit=0.05
 )
