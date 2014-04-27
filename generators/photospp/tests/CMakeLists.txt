@@ -23,3 +23,7 @@ target_link_libraries(photospp_test1 ${PHOTOSPP_LIBRARIES} ${HEPMC_LIBRARY} ${PY
 
 add_executable(photospp_test2 photospp_test2.cc)
 target_link_libraries(photospp_test2 ${PHOTOSPP_LIBRARIES} ${HEPMC_LIBRARY} ${PYTHIA8_LIBRARIES})
+
+add_executable(photospp_test3 photospp_test3.cc)
+target_link_libraries(photospp_test3 ${PHOTOSPP_LIBRARIES} ${HEPMC_LIBRARY} ${PYTHIA8_LIBRARIES})
+
