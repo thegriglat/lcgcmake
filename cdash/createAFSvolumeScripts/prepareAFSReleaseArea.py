@@ -21,7 +21,7 @@ if __name__ == '__main__':
     parser.add_option('-d', '--dry', action='store_true', dest='dry', help='dry run, no commands will be executed',default=False )
     parser.add_option('-v', '--version', action='store', dest='version', help='name of the release')
     parser.add_option('-p', '--prefix', action='store', dest='prefix', help='AFS prefix where to install the new volume')
-    parse.add_option('-e', '--handleExternalsOnly', action='store', dest='handleExternalsOnly', help='Set true if you install only externals and not Generators', default=False )
+    parser.add_option('-e', '--handleExternalsOnly', action='store', dest='handleExternalsOnly', help='Set true if you install only externals and not Generators', default=False )
 
     (opts,args) = parser.parse_args()
 
@@ -43,18 +43,22 @@ if __name__ == '__main__':
 
     print "Prepare the AFS volumes in  %s" % (opts.prefix)
 
-    if opts.target :
+    if opts.handleExternalsOnly : # Build only externals
         if not os.path.exists(os.path.join(opts.prefix, releasename)):
             print "create %s area"  % os.path.join(opts.prefix,releasename) 
             area.create_area(full_releasename_pattern, "")
         else:
             print "area already exits - check replicas"
-    else: 
+    else: # Build both Generators and Externals
         if os.path.exists(os.path.join(opts.prefix, releasename)):
-            # case target all when lcg area already exists
-            print "create %s area" % (os.path.join(opts.prefix,releasename,"MCGenerators_"+releasename))
-            area.create_area(full_releasename_pattern, "MCGenerators_"+releasename)
-        else: # target is generators and area lcg does not exists 
+            # lcg area for externals already exists
+            if os.path.exists(os.path.join(opts.prefix,releasename,"MCGenerators_"+releasename)):
+                # both areas already exist
+                print "Both areas already exists, nothing need to be created"
+            else:
+                print "create %s area" % (os.path.join(opts.prefix,releasename,"MCGenerators_"+releasename))
+                area.create_area(full_releasename_pattern, "MCGenerators_"+releasename)
+        else: # lcg area does not exists 
             print "create %s area and %s area" % (os.path.join(opts.prefix,releasename), (os.path.join(opts.prefix,releasename,"MCGenerators_"+releasename)))
             area.create_area(full_releasename_pattern, "")
             cmd = '/usr/bin/fs checks; /usr/bin/fs checkv; /usr/bin/fs flushm '+os.path.join(opts.prefix,releasename)
