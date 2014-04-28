@@ -23,6 +23,11 @@ ${PROJECT_SOURCE_DIR}/alplib/alputi.f ${PROJECT_SOURCE_DIR}/alplib/Asu3.f)
 
 file(GLOB alpgen_alpsho_sources ${PROJECT_SOURCE_DIR}/alplib/alpsho.f)
 
+file(GLOB sources_libs RECURSIVE ${PROJECT_SOURCE_DIR}/*lib)
+file(GLOB sources_work RECURSIVE ${PROJECT_SOURCE_DIR}/*work)
+file(GLOB sources_rest RECURSIVE ${PROJECT_SOURCE_DIR}/DOCS ${PROJECT_SOURCE_DIR}/validation ${PROJECT_SOURCE_DIR}/examples )
+file(GLOB source_readme compare prc.list README)
+
 #---Add libraries------------------------------------------------------------
 
 
@@ -54,6 +59,9 @@ install(TARGETS alpgen alpsho atoher atopyt DESTINATION lib)
 install(TARGETS alpgen_static alpsho_static atoher_static atopyt_static DESTINATION lib)
 
 #---create subdirectory archive with symlinks----------------------------------
+install(DIRECTORY ${sources_libs} ${sources_work} ${sources_rest}  DESTINATION ${CMAKE_INSTALL_PREFIX}/share/sources)
+install(CODE "execute_process(COMMAND cmake -E create_symlink sources ${CMAKE_INSTALL_PREFIX}/share/alpgen-author)") 
+
 install(CODE "file(MAKE_DIRECTORY ${CMAKE_INSTALL_PREFIX}/lib/archive)")
 install(CODE "execute_process(COMMAND cmake -E create_symlink ../libalpgen.a ${CMAKE_INSTALL_PREFIX}/lib/archive/libalpgen.a)")
 install(CODE "execute_process(COMMAND cmake -E create_symlink ../libalpsho.a ${CMAKE_INSTALL_PREFIX}/lib/archive/libalpsho.a)")
