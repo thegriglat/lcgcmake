@@ -132,6 +132,15 @@ LCGPackage_Add(
   ENDIF
 )
 
+#---Davix--------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  Davix
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/davix-<NATIVE_VERSION>.tar.gz
+  CONFIGURE_COMMAND ${CMAKE_COMMAND} -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
+                                       -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+                                       <SOURCE_DIR>
+)
+
 #---HepMC--------------------------------------------------------------------------------------------
 if(LCG_TARGET MATCHES i686)
   set(HepMC_config_options --build=i686-unknown-linux-gnu)
