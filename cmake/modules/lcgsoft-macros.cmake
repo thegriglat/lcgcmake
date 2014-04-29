@@ -185,18 +185,29 @@ macro(LCGPackage_Add name)
         endif()
       endif()
 
-      #---Adding extra step to copy the sources in /share/sources-------------------------------------
+      #---Adding extra step to copy the sources in /share/sources-------------------------------------	
       if(NOT ARG_BINARY_PACKAGE) 
-        ExternalProject_Add_Step(${targetname} install_sources
-          COMMENT "Installing sources for '${targetname}' and create source tarball"
-          COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_INSTALL_PREFIX}/${${dest_name}_directory_name}/${dest_version}
-          COMMAND lockfile -l 300 ${CMAKE_INSTALL_PREFIX}/${${dest_name}_directory_name}/${dest_version}/lock.txt
-          COMMAND ${CMAKE_COMMAND} -DSRC=<SOURCE_DIR> -DDST=${CMAKE_INSTALL_PREFIX}/${${dest_name}_directory_name}/${dest_version}/share/sources/${curr_name} -P ${CMAKE_SOURCE_DIR}/cmake/scripts/copy.cmake
-          COMMAND ${CMAKE_COMMAND} -E remove -f ${CMAKE_INSTALL_PREFIX}/${${dest_name}_directory_name}/${dest_version}/lock.txt
-          COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_INSTALL_PREFIX}/${${dest_name}_directory_name}/../distribution/${name}
-          COMMAND ${CMAKE_COMMAND} -E chdir <SOURCE_DIR>/../.. ${CMAKE_COMMAND} -E tar cfz ${CMAKE_INSTALL_PREFIX}/${${dest_name}_directory_name}/../distribution/${name}/${name}-${version}-src.tgz ${name}
+         if (LCG_TARBALL_INSTALL) 
+          ExternalProject_Add_Step(${targetname} install_sources
+              COMMENT "Installing sources for '${targetname}' and create source tarball"
+              COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_INSTALL_PREFIX}/${${dest_name}_directory_name}/${dest_version}
+              COMMAND lockfile -l 300 ${CMAKE_INSTALL_PREFIX}/${${dest_name}_directory_name}/${dest_version}/lock.txt
+              COMMAND ${CMAKE_COMMAND} -DSRC=<SOURCE_DIR> -DDST=${CMAKE_INSTALL_PREFIX}/${${dest_name}_directory_name}/${dest_version}/share/sources/${curr_name} -P ${CMAKE_SOURCE_DIR}/cmake/scripts/copy.cmake
+              COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_INSTALL_PREFIX}/${${dest_name}_directory_name}/../distribution/${name}
+              COMMAND ${CMAKE_COMMAND} -E chdir <SOURCE_DIR>/../.. ${CMAKE_COMMAND} -E tar cfz ${CMAKE_INSTALL_PREFIX}/${${dest_name}_directory_name}/../distribution/${name}/${name}-${version}-src.tgz ${name}
+	      COMMAND ${CMAKE_COMMAND} -E remove -f ${CMAKE_INSTALL_PREFIX}/${${dest_name}_directory_name}/${dest_version}/lock.txt
           DEPENDERS configure
           DEPENDEES update patch)
+         else()
+	   ExternalProject_Add_Step(${targetname} install_sources
+              COMMENT "Installing sources for '${targetname}'"
+              COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_INSTALL_PREFIX}/${${dest_name}_directory_name}/${dest_version}
+              COMMAND lockfile -l 300 ${CMAKE_INSTALL_PREFIX}/${${dest_name}_directory_name}/${dest_version}/lock.txt
+              COMMAND ${CMAKE_COMMAND} -DSRC=<SOURCE_DIR> -DDST=${CMAKE_INSTALL_PREFIX}/${${dest_name}_directory_name}/${dest_version}/share/sources/${curr_name} -P ${CMAKE_SOURCE_DIR}/cmake/scripts/copy.cmake
+              COMMAND ${CMAKE_COMMAND} -E remove -f ${CMAKE_INSTALL_PREFIX}/${${dest_name}_directory_name}/${dest_version}/lock.txt
+          DEPENDERS configure
+          DEPENDEES update patch)
+         endif()
       endif()
 
       #---Compile information needed for the build description file (installed alongside version.txt)
@@ -262,15 +273,17 @@ macro(LCGPackage_Add name)
         DEPENDEES ${current_dependee})
 
       #---Adding extra step to build the binary tarball-----------------------------------------------
-      if(NOT ARG_DEST_NAME)  # Only if is not installed grouped with other packages
-        get_filename_component(n_name ${${name}_directory_name} NAME)
-        ExternalProject_Add_Step(${targetname} package COMMENT "Creating binary tarball and version.txt file for '${targetname}'"
+      if (LCG_TARBALL_INSTALL)	
+      	if(NOT ARG_DEST_NAME)  # Only if is not installed grouped with other packages
+       	 get_filename_component(n_name ${${name}_directory_name} NAME)
+       	 ExternalProject_Add_Step(${targetname} package COMMENT "Creating binary tarball and version.txt file for '${targetname}'"
                   COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_INSTALL_PREFIX}/${${name}_directory_name}/../distribution/${name}
                   COMMAND ${CMAKE_COMMAND} -DINSTALL_DIR=${${dest_name}_home} -DFULL_VERSION=${${name}_full_version} -P ${CMAKE_SOURCE_DIR}/cmake/scripts/InstallVersionFile.cmake
                   COMMAND ${CMAKE_COMMAND} -E chdir ${${dest_name}_home}/../../..
                   ${CMAKE_TAR} -czf ${CMAKE_INSTALL_PREFIX}/${${name}_directory_name}/../distribution/${name}/${name}-${version}-${LCG_system}.tgz ${n_name}/${version}/${LCG_system}
           DEPENDEES strip_rpath install_logs)
-      endif()
+      	endif()
+      endif()	
 
 
       #---Adding clean targets--------------------------------------------------------------------------

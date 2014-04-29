@@ -11,11 +11,13 @@ set(LCG_INSTALL_POLICY separate CACHE STRING "'separate' or 'join' installation 
 set(LCG_SAFE_INSTALL   OFF      CACHE BOOL "Ensure that no overwites occurs at the installation area of packages")
 set(LCG_IGNORE         ""       CACHE STRING "List of packages to be ignored from LCG_INSTALL_PREFIX (';' separated)")
 set(LCG_INSTALL_PREFIX ""       CACHE PATH "Existing LCG installation path prefix.")
+set(LCG_TARBALL_INSTALL   OFF   CACHE BOOL "Turn ON/OFF creation/installation of tarballs")
 
 #---Report the values of the options-----------------------------------------------------------------------------------
 message(STATUS "Target installation prefix: ${CMAKE_INSTALL_PREFIX}")
 message(STATUS "Existing LCG installations: ${LCG_INSTALL_PREFIX}")
 message(STATUS "Safe installation: ${LCG_SAFE_INSTALL}")
+message(STATUS "Source and binary tarball installation: ${LCG_TARBALL_INSTALL}")
 
 include(${CMAKE_SOURCE_DIR}/toolchain.cmake)
 include(lcgsoft-macros)
