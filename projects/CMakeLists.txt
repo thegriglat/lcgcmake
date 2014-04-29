@@ -225,6 +225,7 @@ LCGPackage_add(
 LCGPackage_add(
   COOL
   SVN_REPOSITORY http://svn.cern.ch/guest/lcgcool/cool/tags/${COOL_native_version} --quiet
+  UPDATE_COMMAND <VOID>
   CONFIGURE_COMMAND ${CMAKE_COMMAND} -E chdir <SOURCE_DIR>/config/cmt ${cmt_exec_cmd} ${LCG_system} ${LCGCMT_pos} ${CMTROOT} cmt broadcast -global -select='/${COOL_native_version}/' cmt config
   BUILD_COMMAND     ${CMAKE_COMMAND} -E chdir <SOURCE_DIR>/config/cmt ${cmt_exec_cmd} ${LCG_system} ${LCGCMT_pos} ${CMTROOT} cmt broadcast -global -select='/${COOL_native_version}/' - cmt make --debug  all_groups
   INSTALL_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/../${LCG_system} <INSTALL_DIR>
