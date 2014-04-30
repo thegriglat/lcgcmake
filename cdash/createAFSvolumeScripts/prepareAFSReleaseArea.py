@@ -32,21 +32,23 @@ if __name__ == '__main__':
     if not os.path.exists(opts.prefix):
         print ("You specified a non existing path in --prefix")
         raise ValueError("You have to specify an existing path")
-    if not re.match(full_releasename_pattern, opts.version):
-        print "ERROR : the name of the release is not standard"
-        raise ValueError("You have to use a standard release name (number[+letter] ")   
-    if not opts.handleExternalsOnly: 
+#    if not re.match(full_releasename_pattern, opts.version):
+#        print "ERROR : the name of the release is not standard"
+#        raise ValueError("You have to use a standard release name (number[+letter] ")   
+    if opts.handleExternalsOnly == 'False' or opts.handleExternalsOnly =='false': 
         print "Externals and Generators areas will be prepared"
 
-    releasename = opts.version
+    releasename = 'lcg'+opts.version
     area = ProjectAreaManager( releasename, opts.prefix, dry=opts.dry )
 
+    print opts.handleExternalsOnly
     print "Prepare the AFS volumes in  %s" % (opts.prefix)
 
-    if opts.handleExternalsOnly : # Build only externals
+    if opts.handleExternalsOnly == 'True' or opts.handleExternalsOnly == 'true' : # Build only externals
         if not os.path.exists(os.path.join(opts.prefix, releasename)):
             print "create %s area"  % os.path.join(opts.prefix,releasename) 
             area.create_area(full_releasename_pattern, "")
+            print "I am here"
         else:
             print "area already exits - check replicas"
     else: # Build both Generators and Externals
