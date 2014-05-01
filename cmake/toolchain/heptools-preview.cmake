@@ -53,8 +53,7 @@ LCG_external_package(GCCXML            0.9.0_20131026            gccxml         
 LCG_external_package(genshi            0.6                                      )
 LCG_external_package(graphviz          2.28.0                                   )
 LCG_external_package(GSL               1.10                                     )
-#LCG_external_package(HepMC             2.06.08                                  )
-LCG_external_package(HepMC             githead                                  )
+LCG_external_package(HepMC             2.06.08                                  )
 LCG_external_package(HepPDT            2.06.01                                  )
 LCG_external_package(ipython           0.12.1                                   )
 LCG_external_package(json              2.5.2                                    )
@@ -184,8 +183,8 @@ LCG_external_package(pythia6           428            ${MCGENPATH}/pythia6    au
 LCG_external_package(pythia6           428.2          ${MCGENPATH}/pythia6    author=6.4.28 hepevt=10000  )
 
 LCG_external_package(agile             1.4.1          ${MCGENPATH}/agile        )
-LCG_external_package(photos++          3.54a          ${MCGENPATH}/photos++   author=3.54 )
 LCG_external_package(photos++          3.55          ${MCGENPATH}/photos++   author=3.55 )
+LCG_external_package(photos++          3.55a          ${MCGENPATH}/photos++   author=3.55 )
 LCG_external_package(photos            215.4          ${MCGENPATH}/photos       ) 
 
 LCG_external_package(evtgen            1.3.0          ${MCGENPATH}/evtgen         tag=R01-03-00 pythia8=185 tauola++=1.1.4)
