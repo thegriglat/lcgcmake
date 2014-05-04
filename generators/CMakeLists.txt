@@ -349,6 +349,7 @@ LCGPackage_Add(
          COMMAND ${CMAKE_COMMAND} -E remove <SOURCE_DIR>/pythia-<pythia6_<NATIVE_VERSION>_author>.f 
          COMMAND ${CMAKE_COMMAND} -E remove <SOURCE_DIR>/preparePythia6.cmake
          COMMAND ${CMAKE_COMMAND} -E remove <SOURCE_DIR>/splitter.pl
+         COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/pythia6/files/pystrf.f <SOURCE_DIR>/src/pystrf.f
   CMAKE_ARGS -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
 )
 
@@ -521,7 +522,8 @@ LCG_add_test(photospp-build
    -DCMAKE_MODULE_PATH=${cmaketools_home}/modules
    -DPHOTOSPP_ROOT_DIR=${photos++_home}
    -DPYTHIA8_ROOT_DIR=${pythia8_home}
-   -DHEPMC_ROOT_DIR=${HepMC_home})
+   -DHEPMC_ROOT_DIR=${HepMC_home}
+   -DCMAKE_BUILD_TYPE=Debug)
 
   LCG_add_test(photospp_orig_test1
     PRE_COMMAND ${CMAKE_COMMAND} -E remove -f photos_standalone_example.dat
