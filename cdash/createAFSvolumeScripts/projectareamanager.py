@@ -47,10 +47,7 @@ class ProjectAreaManager(object):
             quota = "5000000"
             if previous_release:
                 if previous_release < release:
-                    if target : 
-                        previous_target = "MCGenerators_"+previous_release
-                    else: previous_target = ""
-                    previous_path = os.path.join(prefix,previous_release,previous_target)
+                    previous_path = os.path.join(prefix,previous_release,target)
                     print "Previous path ", previous_path
                     # previous path exists 
                     if os.path.exists(previous_path):

@@ -48,22 +48,21 @@ if __name__ == '__main__':
         if not os.path.exists(os.path.join(opts.prefix, releasename)):
             print "create %s area"  % os.path.join(opts.prefix,releasename) 
             area.create_area(full_releasename_pattern, "")
-            print "I am here"
         else:
             print "area already exits - check replicas"
     else: # Build both Generators and Externals
         if os.path.exists(os.path.join(opts.prefix, releasename)):
             # lcg area for externals already exists
-            if os.path.exists(os.path.join(opts.prefix,releasename,"MCGenerators_"+releasename)):
+            if os.path.exists(os.path.join(opts.prefix,releasename,"MCGenerators")):
                 # both areas already exist
                 print "Both areas already exists, nothing need to be created"
             else:
-                print "create %s area" % (os.path.join(opts.prefix,releasename,"MCGenerators_"+releasename))
-                area.create_area(full_releasename_pattern, "MCGenerators_"+releasename)
+                print "create %s area" % (os.path.join(opts.prefix,releasename,"MCGenerators"))
+                area.create_area(full_releasename_pattern, "MCGenerators")
         else: # lcg area does not exists 
-            print "create %s area and %s area" % (os.path.join(opts.prefix,releasename), (os.path.join(opts.prefix,releasename,"MCGenerators_"+releasename)))
+            print "create %s area and %s area" % (os.path.join(opts.prefix,releasename), (os.path.join(opts.prefix,releasename,"MCGenerators")))
             area.create_area(full_releasename_pattern, "")
             cmd = '/usr/bin/fs checks; /usr/bin/fs checkv; /usr/bin/fs flushm '+os.path.join(opts.prefix,releasename)
             os.system(cmd)
-            area.create_area(full_releasename_pattern, "MCGenerators_"+releasename)
+            area.create_area(full_releasename_pattern, "MCGenerators")
 
