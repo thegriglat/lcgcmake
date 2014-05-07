@@ -569,7 +569,7 @@ LCG_add_test(photospp_phys_test3
   ENVIRONMENT
     ${library_path}=${photos++_home}/lib:${HepMC_home}/lib:${pythia8_home}/lib:$ENV{${library_path}}
     PYTHIA8DATA=${pythia8_home}/xmldoc
-  DEPENDS photospp-build
+  DEPENDS photospp-build photospp_phys_test2
   LABELS PhysicsCheck
 )
 

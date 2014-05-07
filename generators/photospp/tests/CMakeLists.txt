@@ -9,6 +9,8 @@ find_package(HepMC REQUIRED)
 
 set(TEST_DIR ${PHOTOSPP_ROOT_DIR}/../share/sources/examples/)
 
+set(CMAKE_CXX_FLAGS "-g")
+
 include_directories(${PHOTOSPP_INCLUDE_DIR} ${HEPMC_INCLUDE_DIR} ${PYTHIA8_INCLUDE_DIRS})
 add_definitions(-DPYTHIA8_VERSION=${PYTHIA8_VERSION})
 
