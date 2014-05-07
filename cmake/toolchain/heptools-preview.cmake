@@ -155,7 +155,6 @@ endif()
 
 set(MCGENPATH  MCGenerators)
 
-#LCG_external_package(powheg-box         r2463         ${MCGENPATH}/powheg-box       )
 LCG_external_package(powheg-box         r2092         ${MCGENPATH}/powheg-box       )
 
 LCG_external_package(lhapdf            5.9.1          ${MCGENPATH}/lhapdf       )
@@ -184,8 +183,7 @@ LCG_external_package(pythia6           428            ${MCGENPATH}/pythia6    au
 LCG_external_package(pythia6           428.2          ${MCGENPATH}/pythia6    author=6.4.28 hepevt=10000  )
 
 LCG_external_package(agile             1.4.1          ${MCGENPATH}/agile        )
-LCG_external_package(photos++          3.55          ${MCGENPATH}/photos++   author=3.55 )
-LCG_external_package(photos++          3.55a          ${MCGENPATH}/photos++   author=3.55 )
+LCG_external_package(photos++          3.56          ${MCGENPATH}/photos++   author=3.56 )
 LCG_external_package(photos            215.4          ${MCGENPATH}/photos       ) 
 
 LCG_external_package(evtgen            1.3.0          ${MCGENPATH}/evtgen         tag=R01-03-00 pythia8=185 tauola++=1.1.4)
