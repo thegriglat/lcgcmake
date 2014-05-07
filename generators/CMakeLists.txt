@@ -295,6 +295,17 @@ LCG_add_test(herwigpp_thepeg_test
                           ENVIRONMENT ${library_path}=${herwig++_home}/lib:${thepeg_home}/lib/ThePEG:${HepMC_home}/lib:${lhapdf_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:$ENV{${library_path}})
 
 
+# native herwig++ tests (not all of them are run)
+
+foreach(version ${herwig++_native_version})
+
+
+LCG_add_test(herwigpp_native_testsLHC_${version}
+      TEST_COMMAND ${CMAKE_COMMAND} -E chdir ${PROJECT_BINARY_DIR}/generators/herwig++-${version}/src/herwig++/${version}/Tests make -j8 tests-LEP REPO=${herwig++-${version}_home}/share/Herwig++/HerwigDefaults.rpo
+      ENVIRONMENT ${library_path}=${herwig++_home}/lib:${thepeg_home}/lib/ThePEG:${HepMC_home}/lib:${lhapdf_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:$ENV{${library_path}})
+endforeach()
+
+
 
 #---tauola++------------------------------------------------------------------------------------------
 LCGPackage_Add(
