@@ -18,6 +18,7 @@ if __name__ == "__main__":
   # first we check whether we want to do anything at all
   slotname = os.environ.get('SLOTNAME')
   if slotname in (None, "none") :
+    print "skipping AFS install step"
     sys.exit(0)
 
   # define source and target  
