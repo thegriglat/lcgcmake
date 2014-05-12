@@ -306,12 +306,12 @@ LCG_add_test(herwigpp_${version}_native_LEP-VV TEST_COMMAND ${CMAKE_COMMAND} -E 
 
 
  
-    foreach(herwig-leptest LEP-VV LEP-VH LEP-VBF LEP-BB LEP-Quarks LEP-Leptons LEP-default LEP-Powheg)
+    foreach(herwig-leptest LEP-VH LEP-VBF LEP-BB LEP-Quarks LEP-Leptons LEP-default LEP-Powheg)
 LCG_add_test(herwigpp_${version}_native_${herwig-leptest}
       TEST_COMMAND ${CMAKE_COMMAND} -E chdir ${PROJECT_BINARY_DIR}/generators/herwig++-${version}/src/herwig++/${version}/Tests make -j1 test-${herwig-leptest} REPO=${herwig++-${version}_home}/share/Herwig++/HerwigDefaults.rpo
            COMMAND ${CMAKE_COMMAND} -E chdir ${PROJECT_BINARY_DIR}/generators/herwig++-${version}/src/herwig++/${version}/Tests cat ${herwig-leptest}.log       
-      ENVIRONMENT ${library_path}=${herwig++_home}/lib:${thepeg_home}/lib/ThePEG:${HepMC_home}/lib:${lhapdf_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:$ENV{${library_path}})
-      DEPENDS herwigpp_${version}_native_LEP-VV
+      ENVIRONMENT ${library_path}=${herwig++_home}/lib:${thepeg_home}/lib/ThePEG:${HepMC_home}/lib:${lhapdf_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:$ENV{${library_path}}
+      DEPENDS herwigpp_${version}_native_LEP-VV)
     endforeach()
 endforeach()
 
