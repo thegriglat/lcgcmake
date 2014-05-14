@@ -168,6 +168,8 @@ LCG_external_package(lhapdf6           6.1.0          ${MCGENPATH}/lhapdf6      
 LCG_external_package(pythia8           185            ${MCGENPATH}/pythia8    author=185  )
 LCG_external_package(pythia8           test            ${MCGENPATH}/pythia8    author=test  )
 
+LCG_external_package(vincia           1.1.03          ${MCGENPATH}/vincia       )
+
 LCG_external_package(sacrifice         0.9.9          ${MCGENPATH}/sacrifice pythia8=185)
 
 

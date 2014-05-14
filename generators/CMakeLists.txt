@@ -217,7 +217,19 @@ LCG_add_test(pythia8-compare
   DEPENDS pythia8-genser_test2 pythia8-genser_test3 pythia8-genser_test4
   LABELS PhysicsCheck
 )
+#---vincia------------------------------------------------------------------------------------------
 
+LCGPackage_Add(
+  vincia
+  URL ${gen_url}/vincia-<NATIVE_VERSION>.tgz
+
+  UPDATE_COMMAND ${CMAKE_COMMAND} -DSRC=${CMAKE_CURRENT_SOURCE_DIR}/vincia/files -DDST=<SOURCE_DIR> -P ${CMAKE_SOURCE_DIR}/cmake/scripts/copy.cmake
+  CMAKE_ARGS -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+-DCMAKE_INSTALL_PREFIX=<INSTALL_DIR> -DPYTHIA8_ROOT_DIR=${pythia8_home}
+-DROOTSYS=${ROOT_home} -DFASTJET_ROOT_DIR=${fastjet_home}
+
+  DEPENDS ROOT pythia8 fastjet 
+)
 
 #---ThePEG------------------------------------------------------------------------------------------
 

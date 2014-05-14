@@ -91,7 +91,7 @@ file( GLOB APP_EXEC RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} vincia*.exe )
 
 #INSTALL_TARGETS(${CMAKE_INSTALL_PREFIX}/lib libvincia)
 INSTALL_TARGETS(/lib vincia vinciaroot mginterfacedummy )
-INSTALL_TARGETS(/bin/ ${APP_EXEC} )
+#INSTALL_TARGETS(/bin/ ${APP_EXEC} )
 
 
 
