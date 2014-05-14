@@ -2,9 +2,20 @@ cmake_minimum_required(VERSION 2.6 FATAL_ERROR)
 #----------------------------------------------------------------------------
 project(vincia CXX Fortran)
 
+
+#---Set pathes where to put the libraries, executables and headers------------------------------
+#set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+#set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+#set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+#set(HEADER_OUTPUT_PATH ${CMAKE_BINARY_DIR}/include)
+
 set(CMAKE_DISABLE_SOURCE_CHANGES ON)
 set(CMAKE_DISABLE_IN_SOURCE_BUILD ON)
 SET(CMAKE_COLOR_MAKEFILE ON)
+
+IF( NOT CMAKE_BUILD_TYPE )
+    SET( CMAKE_BUILD_TYPE "Release" )
+ENDIF()
 
 set(CMAKE_Fortran_FLAGS        "-fPIC -O2 -DNDEBUG -fno-automatic")
 set(CMAKE_Fortran_FLAGS_RELEASE        "-fPIC -O2 -DNDEBUG -fno-automatic")
@@ -45,6 +56,9 @@ message(STATUS "PYTHIA8_INCLUDE_DIR == " ${PYTHIA8_INCLUDE_DIR} )
 include_directories(${PYTHIA8_INCLUDE_DIR} ${PROJECT_SOURCE_DIR}/include
 ${PROJECT_SOURCE_DIR}/vinciaroot/include ${ROOT_INCLUDE_DIRS}
 ${FASTJET_INCLUDE_DIR} )
+
+file(GLOB vincia_header_files ${PROJECT_SOURCE_DIR}/include/*.h ${PROJECT_SOURCE_DIR}/vinciaroot/include/*.h )
+
 #---Select sources for the various libraries---------------------------------
 
 
@@ -65,6 +79,7 @@ file(GLOB vincia_root_sources vinciaroot/src/*)
 add_library(dhelas3 STATIC ${MG_lib_files})
 
 add_library(vincia SHARED ${vincia_lib_sources})
+target_link_libraries(vincia mginterface ${PYTHIA8_LIBRARIES})
 
 add_library(mginterfacedummy SHARED ${vincia_MGInterfaceDummy_sources} )
 
@@ -85,13 +100,52 @@ foreach( testsourcefile ${APP_SOURCES} )
     add_executable( ${testname} ${testsourcefile} )
     target_link_libraries( ${testname} vincia dhelas3 mginterface
 ${PYTHIA8_LIBRARIES} ${ROOT_LIBRARIES} vinciaroot ${FASTJET_LIBRARIES} )
+    install(TARGETS ${testname} RUNTIME DESTINATION bin)
 endforeach( testsourcefile ${APP_SOURCES} )
 
-file( GLOB APP_EXEC RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} vincia*.exe )
 
-#INSTALL_TARGETS(${CMAKE_INSTALL_PREFIX}/lib libvincia)
-INSTALL_TARGETS(/lib vincia vinciaroot mginterfacedummy )
-#INSTALL_TARGETS(/bin/ ${APP_EXEC} )
+FILE(GLOB cmnd_files "${CMAKE_CURRENT_SOURCE_DIR}/*.cmnd")	
+INSTALL( FILES ${cmnd_files}  DESTINATION bin)
+
+
+install(TARGETS dhelas3 ARCHIVE DESTINATION lib)
+install(TARGETS vincia mginterface mginterfacedummy vinciaroot LIBRARY DESTINATION lib)
+#install(TARGETS  include) 
+install( FILES ${vincia_header_files} DESTINATION include) 
+
+# display status message for important variables
+MESSAGE( STATUS )
+MESSAGE( STATUS
+"-------------------------------------------------------------------------------"
+)
+MESSAGE( STATUS "BUILD_SHARED_LIBS = ${BUILD_SHARED_LIBS}" )
+MESSAGE( STATUS "CMAKE_INSTALL_PREFIX = ${CMAKE_INSTALL_PREFIX}" )
+MESSAGE( STATUS "CMAKE_BUILD_TYPE = ${CMAKE_BUILD_TYPE}" )
+MESSAGE( STATUS "CMAKE_MODULE_PATH = ${CMAKE_MODULE_PATH}" )
+MESSAGE( STATUS "CMAKE_BINARY_DIR = ${CMAKE_BINARY_DIR}" )
+MESSAGE( STATUS "${PROJECT_NAME}_DEPENDS = \"${${PROJECT_NAME}_DEPENDS}\"" )
+MESSAGE( STATUS "BUILD_WITH = \"${BUILD_WITH}\"" )
+MESSAGE( STATUS "INSTALL_DOC = ${INSTALL_DOC}" )
+MESSAGE( STATUS "Change a value with: cmake -D<Variable>=<Value>" )
+MESSAGE( STATUS
+"-------------------------------------------------------------------------------"
+)
+MESSAGE( STATUS )
+
+# force some variables that could be defined in the command line
+# to be written to cache
+SET( BUILD_SHARED_LIBS "${BUILD_SHARED_LIBS}" CACHE BOOL
+    "Set to OFF to build static libraries" FORCE )
+SET( CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}" CACHE PATH
+    "Where to install ${PROJECT_NAME}" FORCE )
+SET( CMAKE_BUILD_TYPE "${CMAKE_BUILD_TYPE}" CACHE STRING
+    "Choose the type of build, options are: None Debug Release RelWithDebInfo
+MinSizeRel." FORCE )
+SET( CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH}" CACHE PATH
+    "Path to custom CMake Modules" FORCE )
+SET( INSTALL_DOC "${INSTALL_DOC}" CACHE BOOL
+    "Set to OFF to skip build/install Documentation" FORCE )
+
 
 
 
