@@ -84,7 +84,7 @@ target_link_libraries(vincia mginterface ${PYTHIA8_LIBRARIES})
 add_library(mginterfacedummy SHARED ${vincia_MGInterfaceDummy_sources} )
 
 add_library(mginterface SHARED ${vincia_MGInterface_sources} )
-target_link_libraries(mginterface dhelas3)
+target_link_libraries(mginterface dhelas3 vincia ${PYTHIA8_LIBRARIES})
 
 add_library(vinciaroot SHARED ${vincia_root_sources} )
 target_link_libraries(vinciaroot ${ROOT_LIBRARIES})
