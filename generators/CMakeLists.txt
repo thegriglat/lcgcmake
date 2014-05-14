@@ -383,7 +383,6 @@ LCGPackage_Add(
          COMMAND ${CMAKE_COMMAND} -E remove <SOURCE_DIR>/pythia-<pythia6_<NATIVE_VERSION>_author>.f 
          COMMAND ${CMAKE_COMMAND} -E remove <SOURCE_DIR>/preparePythia6.cmake
          COMMAND ${CMAKE_COMMAND} -E remove <SOURCE_DIR>/splitter.pl
-         COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/pythia6/files/pystrf.f <SOURCE_DIR>/src/pystrf.f
   CMAKE_ARGS -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
 )
 
