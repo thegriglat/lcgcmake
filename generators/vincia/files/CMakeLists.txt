@@ -51,6 +51,12 @@ set(CMAKE_Fortran_FLAGS_RELEASE        "-fPIC -O2 -DNDEBUG -fno-automatic")
 set(CMAKE_Fortran_FLAGS_RELWITHDEBINFO "-fPIC -O2 -g -fno-automatic")
 
 
+if(APPLE)
+      set( CMAKE_SHARED_LIBRARY_CREATE_CXX_FLAGS 
+           "${CMAKE_SHARED_LIBRARY_CREATE_CXX_FLAGS} -Wl,-undefined -Wl,dynamic_lookup -Wl,-single_module")
+endif(APPLE)
+
+
 message(STATUS "PYTHIA8_INCLUDE_DIR == " ${PYTHIA8_INCLUDE_DIR} )
 
 include_directories(${PYTHIA8_INCLUDE_DIR} ${PROJECT_SOURCE_DIR}/include
@@ -79,15 +85,15 @@ file(GLOB vincia_root_sources vinciaroot/src/*)
 add_library(dhelas3 STATIC ${MG_lib_files})
 
 add_library(vincia SHARED ${vincia_lib_sources})
-target_link_libraries(vincia mginterface ${PYTHIA8_LIBRARIES})
+#target_link_libraries(vincia mginterface ${PYTHIA8_LIBRARIES})
 
 add_library(mginterfacedummy SHARED ${vincia_MGInterfaceDummy_sources} )
 
 add_library(mginterface SHARED ${vincia_MGInterface_sources} )
-target_link_libraries(mginterface dhelas3 vincia ${PYTHIA8_LIBRARIES})
+#target_link_libraries(mginterface dhelas3 vincia ${PYTHIA8_LIBRARIES})
 
 add_library(vinciaroot SHARED ${vincia_root_sources} )
-target_link_libraries(vinciaroot ${ROOT_LIBRARIES})
+#target_link_libraries(vinciaroot ${ROOT_LIBRARIES})
 
 
 #add_executable (Tutorial vincia01.cc)
@@ -98,7 +104,7 @@ foreach( testsourcefile ${APP_SOURCES} )
     # I used a simple string replace, to cut off .cc.
     string( REPLACE ".cc" ".exe" testname ${testsourcefile} )
     add_executable( ${testname} ${testsourcefile} )
-    target_link_libraries( ${testname} vincia dhelas3 mginterface
+    target_link_libraries( ${testname} vincia dhelas3 mginterface dhelas3
 ${PYTHIA8_LIBRARIES} ${ROOT_LIBRARIES} vinciaroot ${FASTJET_LIBRARIES} )
     install(TARGETS ${testname} RUNTIME DESTINATION bin)
 endforeach( testsourcefile ${APP_SOURCES} )
@@ -109,7 +115,7 @@ INSTALL( FILES ${cmnd_files}  DESTINATION bin)
 
 
 install(TARGETS dhelas3 ARCHIVE DESTINATION lib)
-install(TARGETS vincia mginterface mginterfacedummy vinciaroot LIBRARY DESTINATION lib)
+install(TARGETS vincia  vinciaroot mginterface mginterfacedummy LIBRARY DESTINATION lib)
 #install(TARGETS  include) 
 install( FILES ${vincia_header_files} DESTINATION include) 
 
