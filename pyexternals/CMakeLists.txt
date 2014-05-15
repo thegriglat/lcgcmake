@@ -1,7 +1,7 @@
 #---General parameters--------------------------------------------------------------------------------------------
 set(Python_cmd ${Python_home}/bin/python)
 set(PythonFW_cmd ${Python_home}/Library/Frameworks/Python.framework/Versions/Current/bin/python)
-set(Exec_cmd ${CMAKE_SOURCE_DIR}/cmake/scripts/exec-with-env)
+set(Exec_cmd ${env_cmd})
 
 #=================================================================================================================
 #---pyanalysis----------------------------------------------------------------------------------------------------

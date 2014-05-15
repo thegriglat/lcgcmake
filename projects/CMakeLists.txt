@@ -1,5 +1,4 @@
 #--- General parameters ----------------------------------------------------------------------------
-set(cmt_exec_cmd ${CMAKE_SOURCE_DIR}/cmake/scripts/exec-cmt-with-env)
 set(Python_cmd ${Python_home}/bin/python)
 
 #--- Check for lib64 -------------------------------------------------------------------------------
@@ -209,13 +208,20 @@ LCGPackage_Add(
 set(LCGCMT_pos "${LCGCMT_home}/.." )
 set(CMTROOT ${cmt_home}/CMT/${cmt_native_version})
 
+set(CMT_make_cmd
+    ${env_cmd} CMTSITE=CERN CMTCONFIG=${LCG_system} CMTPATH=${LCGCMT_pos}
+               CMTROOT=${CMTROOT} CMTBIN=${CMAKE_SYSTEM_NAME}-${CMAKE_SYSTEM_PROCESSOR}
+       ${CMAKE_MAKE_PROGRAM} -f ${CMAKE_SOURCE_DIR}/cmake/utils/Makefile-cmt.mk
+                             -C <SOURCE_DIR>
+                             CMT=${CMTROOT}/${CMAKE_SYSTEM_NAME}-${CMAKE_SYSTEM_PROCESSOR}/cmt)
+
 #---CORAL----------------------------------------------------------------------------------------------
 LCGPackage_add(
   CORAL
   SVN_REPOSITORY http://svn.cern.ch/guest/lcgcoral/coral/tags/${CORAL_native_version} --quiet
   UPDATE_COMMAND <VOID>
-  CONFIGURE_COMMAND ${CMAKE_COMMAND} -E chdir <SOURCE_DIR>/config/cmt ${cmt_exec_cmd} ${LCG_system} ${LCGCMT_pos} ${CMTROOT} cmt broadcast -global -select='/${CORAL_native_version}/' cmt config
-  BUILD_COMMAND     ${CMAKE_COMMAND} -E chdir <SOURCE_DIR>/config/cmt ${cmt_exec_cmd} ${LCG_system} ${LCGCMT_pos} ${CMTROOT} cmt broadcast -global -select='/${CORAL_native_version}/' - cmt make --debug  all_groups
+  CONFIGURE_COMMAND <VOID>
+  BUILD_COMMAND     ${CMT_make_cmd}
   INSTALL_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/../${LCG_system} <INSTALL_DIR>
           COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/../include <INSTALL_DIR>/../include
   DEPENDS cmt LCGCMT Boost CppUnit sqlite XercesC oracle mysql QMtest tcmalloc Frontier_Client Python
@@ -226,8 +232,8 @@ LCGPackage_add(
   COOL
   SVN_REPOSITORY http://svn.cern.ch/guest/lcgcool/cool/tags/${COOL_native_version} --quiet
   UPDATE_COMMAND <VOID>
-  CONFIGURE_COMMAND ${CMAKE_COMMAND} -E chdir <SOURCE_DIR>/config/cmt ${cmt_exec_cmd} ${LCG_system} ${LCGCMT_pos} ${CMTROOT} cmt broadcast -global -select='/${COOL_native_version}/' cmt config
-  BUILD_COMMAND     ${CMAKE_COMMAND} -E chdir <SOURCE_DIR>/config/cmt ${cmt_exec_cmd} ${LCG_system} ${LCGCMT_pos} ${CMTROOT} cmt broadcast -global -select='/${COOL_native_version}/' - cmt make --debug  all_groups
+  CONFIGURE_COMMAND <VOID>
+  BUILD_COMMAND     ${CMT_make_cmd}
   INSTALL_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/../${LCG_system} <INSTALL_DIR>
           COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/../include <INSTALL_DIR>/../include
   DEPENDS LCGCMT CORAL ROOT

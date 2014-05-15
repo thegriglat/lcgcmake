@@ -23,7 +23,9 @@ include(${CMAKE_SOURCE_DIR}/toolchain.cmake)
 include(lcgsoft-macros)
 
 #---Define Global variables--------------------------------------------------------------------------------------------
-set(EXEC ${CMAKE_SOURCE_DIR}/cmake/scripts/exec-with-env)
+find_program(env_cmd NAMES env)
+mark_as_advanced(env_cmd)
+set(EXEC ${env_cmd})
 set(MAKE ${CMAKE_SOURCE_DIR}/cmake/scripts/make_verbose $(MAKE))
 
 #---Enable (the defintion) of tests by default-------------------------------------------------------------------------

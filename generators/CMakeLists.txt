@@ -5,7 +5,7 @@ set(PDFsets "--all" CACHE STRING "The PDFsets to be downloaded for the 'lhspdfse
 set (gen_url "http://cern.ch/service-spi/external/tarFiles/MCGeneratorsTarFiles")
 
 set(Python_cmd ${Python_home}/bin/python)
-set(Exec_cmd ${CMAKE_SOURCE_DIR}/cmake/scripts/exec-with-env)
+set(Exec_cmd ${env_cmd})
 
 set (AIDA2ROOT "${CMAKE_SOURCE_DIR}/generators/reference/aida2root.py")
 string(REPLACE "." "_" Boost_underscore_twodigit ${Boost_config_version_twodigit})
