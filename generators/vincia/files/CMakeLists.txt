@@ -129,7 +129,7 @@ install( FILES ${vincia_header_files} DESTINATION include)
 
 install(DIRECTORY xmldoc tunes antennae DESTINATION .)
 
-
+install(FILES ${CMAKE_BINARY_DIR}/script.sh DESTINATION .)
 
 # display status message for important variables
 MESSAGE( STATUS )
