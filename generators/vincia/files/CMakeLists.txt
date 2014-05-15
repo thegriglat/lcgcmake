@@ -42,6 +42,7 @@ endif( NOT PYTHIA8_FOUND)
 #---Compilation and Link options----------------------------------------------
 if(CMAKE_SYSTEM_NAME MATCHES Darwin)
   set(CMAKE_SHARED_LIBRARY_CREATE_Fortran_FLAGS "${CMAKE_SHARED_LIBRARY_CREATE_Fortran_FLAGS} -flat_namespace -single_module -undefined dynamic_lookup")
+  set( CMAKE_SHARED_LIBRARY_CREATE_CXX_FLAGS "${CMAKE_SHARED_LIBRARY_CREATE_CXX_FLAGS} -Wl,-undefined -Wl,dynamic_lookup -Wl,-single_module")
 endif()
 
 set(CMAKE_Fortran_FLAGS                "")
@@ -49,12 +50,6 @@ set(CMAKE_Fortran_FLAGS_DEBUG          "-fPIC -g -fno-automatic")
 set(CMAKE_Fortran_FLAGS_MINSIZEREL     "-fPIC -Os -DNDEBUG -fno-automatic")
 set(CMAKE_Fortran_FLAGS_RELEASE        "-fPIC -O2 -DNDEBUG -fno-automatic")
 set(CMAKE_Fortran_FLAGS_RELWITHDEBINFO "-fPIC -O2 -g -fno-automatic")
-
-
-if(APPLE)
-      set( CMAKE_SHARED_LIBRARY_CREATE_CXX_FLAGS 
-           "${CMAKE_SHARED_LIBRARY_CREATE_CXX_FLAGS} -Wl,-undefined -Wl,dynamic_lookup -Wl,-single_module")
-endif(APPLE)
 
 
 message(STATUS "PYTHIA8_INCLUDE_DIR == " ${PYTHIA8_INCLUDE_DIR} )
