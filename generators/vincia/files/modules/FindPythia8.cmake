@@ -35,8 +35,8 @@ set(PYTHIA8_LIBRARIES ${PYTHIA8_LIBRARY} ${PYTHIA8_lhapdfdummy_LIBRARY})
 
 include(FindPackageHandleStandardArgs)
 
-find_package_handle_standard_args(Pythia8 DEFAULT_MSG PYTHIA8_INCLUDE_DIR PYTHIA8_LIBRARY )
+find_package_handle_standard_args(Pythia8 DEFAULT_MSG PYTHIA8_INCLUDE_DIRS PYTHIA8_LIBRARIES )
 
-mark_as_advanced(PYTHIA8_INCLUDE_DIR PYTHIA_LIBRARY )
+mark_as_advanced(PYTHIA8_INCLUDE_DIR PYTHIA8_LIBRARY )
 
 

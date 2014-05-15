@@ -13,6 +13,12 @@ set(CMAKE_DISABLE_SOURCE_CHANGES ON)
 set(CMAKE_DISABLE_IN_SOURCE_BUILD ON)
 SET(CMAKE_COLOR_MAKEFILE ON)
 
+configure_file(
+    "${PROJECT_SOURCE_DIR}/script.sh.in"
+    "${PROJECT_BINARY_DIR}/script.sh"
+    @ONLY)
+
+
 IF( NOT CMAKE_BUILD_TYPE )
     SET( CMAKE_BUILD_TYPE "Release" )
 ENDIF()
@@ -53,6 +59,9 @@ set(CMAKE_Fortran_FLAGS_RELWITHDEBINFO "-fPIC -O2 -g -fno-automatic")
 
 
 message(STATUS "PYTHIA8_INCLUDE_DIR == " ${PYTHIA8_INCLUDE_DIR} )
+message(STATUS "PYTHIA8_LIBRARY == " ${PYTHIA8_LIBRARY} )
+message(STATUS "PYTHIA8_LIBRARIES == " ${PYTHIA8_LIBRARIES} )
+
 
 include_directories(${PYTHIA8_INCLUDE_DIR} ${PROJECT_SOURCE_DIR}/include
 ${PROJECT_SOURCE_DIR}/vinciaroot/include ${ROOT_INCLUDE_DIRS}
@@ -64,6 +73,9 @@ file(GLOB vincia_header_files ${PROJECT_SOURCE_DIR}/include/*.h ${PROJECT_SOURCE
 
 
 file(GLOB MG_lib_files ${PROJECT_SOURCE_DIR}/MGInterface/HELAS/*.F  ${PROJECT_SOURCE_DIR}/MGInterface/HELAS/*.f)
+list(REMOVE_ITEM MG_lib_files ${PROJECT_SOURCE_DIR}/MGInterface/HELAS/fvtikk.F ${PROJECT_SOURCE_DIR}/MGInterface/HELAS/fvtokk.F)
+
+
 
 file(GLOB vincia_lib_sources
     ${PROJECT_SOURCE_DIR}/src/*.cc
@@ -77,7 +89,7 @@ MGInterface/*.f MGInterface/*.F  )
 file(GLOB vincia_root_sources vinciaroot/src/*)
 
 
-add_library(dhelas3 STATIC ${MG_lib_files})
+add_library(dhelas3 SHARED ${MG_lib_files})
 
 add_library(vincia SHARED ${vincia_lib_sources})
 #target_link_libraries(vincia mginterface ${PYTHIA8_LIBRARIES})
@@ -91,28 +103,33 @@ add_library(vinciaroot SHARED ${vincia_root_sources} )
 #target_link_libraries(vinciaroot ${ROOT_LIBRARIES})
 
 
-#add_executable (Tutorial vincia01.cc)
-#target_link_libraries (Tutorial  vincia_shared vincia_MG_shared ${PYTHIA8_LIBRARIES} )
 
 file( GLOB APP_SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} vincia*.cc )
 foreach( testsourcefile ${APP_SOURCES} )
     # I used a simple string replace, to cut off .cc.
     string( REPLACE ".cc" ".exe" testname ${testsourcefile} )
     add_executable( ${testname} ${testsourcefile} )
-    target_link_libraries( ${testname} vincia dhelas3 mginterface dhelas3
+    target_link_libraries( ${testname} vincia dhelas3 mginterface
 ${PYTHIA8_LIBRARIES} ${ROOT_LIBRARIES} vinciaroot ${FASTJET_LIBRARIES} )
     install(TARGETS ${testname} RUNTIME DESTINATION bin)
 endforeach( testsourcefile ${APP_SOURCES} )
 
+#
+
+
+# install targets -----------------------------------
 
 FILE(GLOB cmnd_files "${CMAKE_CURRENT_SOURCE_DIR}/*.cmnd")	
 INSTALL( FILES ${cmnd_files}  DESTINATION bin)
 
 
-install(TARGETS dhelas3 ARCHIVE DESTINATION lib)
-install(TARGETS vincia  vinciaroot mginterface mginterfacedummy LIBRARY DESTINATION lib)
-#install(TARGETS  include) 
+#install(TARGETS dhelas3 ARCHIVE DESTINATION lib)
+install(TARGETS dhelas3 vincia  vinciaroot mginterface mginterfacedummy LIBRARY DESTINATION lib)
 install( FILES ${vincia_header_files} DESTINATION include) 
+
+install(DIRECTORY xmldoc tunes antennae DESTINATION .)
+
+
 
 # display status message for important variables
 MESSAGE( STATUS )
@@ -146,8 +163,3 @@ SET( CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH}" CACHE PATH
     "Path to custom CMake Modules" FORCE )
 SET( INSTALL_DOC "${INSTALL_DOC}" CACHE BOOL
     "Set to OFF to skip build/install Documentation" FORCE )
-
-
-
-
-
