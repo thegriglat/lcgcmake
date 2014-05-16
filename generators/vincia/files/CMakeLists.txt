@@ -13,9 +13,16 @@ set(CMAKE_DISABLE_SOURCE_CHANGES ON)
 set(CMAKE_DISABLE_IN_SOURCE_BUILD ON)
 SET(CMAKE_COLOR_MAKEFILE ON)
 
+#set this to true if you are using makefiles and want to see the full compile and link commands instead of only the shortened ones 
+SET(CMAKE_VERBOSE_MAKEFILE ON)
+
 configure_file(
-    "${PROJECT_SOURCE_DIR}/script.sh.in"
-    "${PROJECT_BINARY_DIR}/script.sh"
+    "${PROJECT_SOURCE_DIR}/vinciaenv.sh.in"
+    "${PROJECT_BINARY_DIR}/vinciaenv.sh"
+    @ONLY)
+configure_file(
+    "${PROJECT_SOURCE_DIR}/vinciaenv.csh.in"
+    "${PROJECT_BINARY_DIR}/vincianev.csh"
     @ONLY)
 
 
@@ -92,15 +99,12 @@ file(GLOB vincia_root_sources vinciaroot/src/*)
 add_library(dhelas3 SHARED ${MG_lib_files})
 
 add_library(vincia SHARED ${vincia_lib_sources})
-#target_link_libraries(vincia mginterface ${PYTHIA8_LIBRARIES})
 
 add_library(mginterfacedummy SHARED ${vincia_MGInterfaceDummy_sources} )
 
 add_library(mginterface SHARED ${vincia_MGInterface_sources} )
-#target_link_libraries(mginterface dhelas3 vincia ${PYTHIA8_LIBRARIES})
 
 add_library(vinciaroot SHARED ${vincia_root_sources} )
-#target_link_libraries(vinciaroot ${ROOT_LIBRARIES})
 
 
 
@@ -114,22 +118,18 @@ ${PYTHIA8_LIBRARIES} ${ROOT_LIBRARIES} vinciaroot ${FASTJET_LIBRARIES} )
     install(TARGETS ${testname} RUNTIME DESTINATION bin)
 endforeach( testsourcefile ${APP_SOURCES} )
 
-#
-
 
 # install targets -----------------------------------
 
 FILE(GLOB cmnd_files "${CMAKE_CURRENT_SOURCE_DIR}/*.cmnd")	
 INSTALL( FILES ${cmnd_files}  DESTINATION bin)
 
-
-#install(TARGETS dhelas3 ARCHIVE DESTINATION lib)
-install(TARGETS dhelas3 vincia  vinciaroot mginterface mginterfacedummy LIBRARY DESTINATION lib)
+install(TARGETS dhelas3 vincia  vinciaroot mginterface LIBRARY DESTINATION lib)
 install( FILES ${vincia_header_files} DESTINATION include) 
 
 install(DIRECTORY xmldoc tunes antennae DESTINATION .)
 
-install(FILES ${CMAKE_BINARY_DIR}/script.sh DESTINATION .)
+install(FILES ${CMAKE_BINARY_DIR}/vinciaenv.sh ${CMAKE_BINARY_DIR}/vinciaenv.csh DESTINATION .)
 
 # display status message for important variables
 MESSAGE( STATUS )
