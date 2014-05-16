@@ -33,7 +33,7 @@ ENDIF()
 set(CMAKE_Fortran_FLAGS        "-fPIC -O2 -DNDEBUG -fno-automatic")
 set(CMAKE_Fortran_FLAGS_RELEASE        "-fPIC -O2 -DNDEBUG -fno-automatic")
 
-list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/modules)
+list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake/modules)
 
 find_package(ROOT REQUIRED COMPONENTS Core RIO Hist Graf Gpad)
 find_package(FastJet REQUIRED)
