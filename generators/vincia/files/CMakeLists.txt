@@ -22,7 +22,7 @@ configure_file(
     @ONLY)
 configure_file(
     "${PROJECT_SOURCE_DIR}/vinciaenv.csh.in"
-    "${PROJECT_BINARY_DIR}/vincianev.csh"
+    "${PROJECT_BINARY_DIR}/vinciaenv.csh"
     @ONLY)
 
 
