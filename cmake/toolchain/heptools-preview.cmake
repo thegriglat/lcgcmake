@@ -157,7 +157,9 @@ set(MCGENPATH  MCGenerators)
 
 LCG_external_package(powheg-box         r2092         ${MCGENPATH}/powheg-box       )
 
+LCG_external_package(lhapdf            5.8.8          ${MCGENPATH}/lhapdf       )
 LCG_external_package(lhapdf            5.9.1          ${MCGENPATH}/lhapdf       )
+LCG_external_package(lhapdfsets        5.8.8          lhapdfsets   )
 LCG_external_package(lhapdfsets        5.9.1          lhapdfsets   )
 
 LCG_external_package(lhapdf6           6.0.5          ${MCGENPATH}/lhapdf6       )
@@ -165,6 +167,7 @@ LCG_external_package(lhapdf6sets       6.0.5          lhapdf6sets   )
 
 LCG_external_package(lhapdf6           6.1.0          ${MCGENPATH}/lhapdf6       )
 
+LCG_external_package(pythia8           175            ${MCGENPATH}/pythia8    author=175  )
 LCG_external_package(pythia8           185            ${MCGENPATH}/pythia8    author=185  )
 LCG_external_package(pythia8           test            ${MCGENPATH}/pythia8    author=test  )
 
@@ -173,14 +176,18 @@ LCG_external_package(vincia           1.1.03          ${MCGENPATH}/vincia       
 LCG_external_package(sacrifice         0.9.9          ${MCGENPATH}/sacrifice pythia8=185)
 
 
+LCG_external_package(thepeg            1.8.1          ${MCGENPATH}/thepeg       )
 LCG_external_package(thepeg            1.9.0          ${MCGENPATH}/thepeg       )
 LCG_external_package(thepeg            1.9.0a         ${MCGENPATH}/thepeg       )
 
+LCG_external_package(herwig++          2.6.1b          ${MCGENPATH}/herwig++     thepeg=1.8.1)
 LCG_external_package(herwig++          2.7.0          ${MCGENPATH}/herwig++  thepeg=1.9.0  )
-LCG_external_package(herwig++          2.7.0a         ${MCGENPATH}/herwig++  thepeg=1.9.0a  )
+LCG_external_package(herwig++          2.7.0a          ${MCGENPATH}/herwig++  thepeg=1.9.0a  )
 
+LCG_external_package(tauola++          1.1.1a          ${MCGENPATH}/tauola++     )
 LCG_external_package(tauola++          1.1.4          ${MCGENPATH}/tauola++     )
 
+LCG_external_package(pythia6           427.2          ${MCGENPATH}/pythia6    author=6.4.27 hepevt=10000  )
 LCG_external_package(pythia6           429            ${MCGENPATH}/pythia6    author=6.4.28 hepevt=4000   )
 LCG_external_package(pythia6           429.2          ${MCGENPATH}/pythia6    author=6.4.28 hepevt=10000  )
 
@@ -191,7 +198,8 @@ LCG_external_package(photos            215.4          ${MCGENPATH}/photos       
 LCG_external_package(evtgen            1.3.0          ${MCGENPATH}/evtgen         tag=R01-03-00 pythia8=185 tauola++=1.1.4)
 
 LCG_external_package(rivet             2.1.1          ${MCGENPATH}/rivet        yoda=1.0.6      )
-LCG_external_package(rivet             1.9.0          ${MCGENPATH}/rivet  yoda=1.0.4      )
+LCG_external_package(rivet             1.8.3          ${MCGENPATH}/rivet        yoda=1.0.4      )
+LCG_external_package(rivet             1.9.0          ${MCGENPATH}/rivet        yoda=1.0.4      )
 
 LCG_external_package(sherpa            1.4.5.2        ${MCGENPATH}/sherpa         author=1.4.5 hepevt=10000 )
 LCG_external_package(sherpa            2.1.0          ${MCGENPATH}/sherpa         author=2.1.0 hepevt=10000)
