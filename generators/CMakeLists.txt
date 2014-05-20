@@ -831,6 +831,7 @@ LCGPackage_Add(
                     PYTHONPATH=${cython_home}/lib/python${Python_config_version_twodigit}/site-packages:$ENV{PYTHONPATH}
             COMMAND ${CMAKE_COMMAND} -E copy <SOURCE_DIR>/rivetenv.csh <INSTALL_DIR>/
             COMMAND ${CMAKE_COMMAND} -E copy <SOURCE_DIR>/rivetenv.sh <INSTALL_DIR>/
+            COMMAND ${CMAKE_COMMAND} -DINSTALL_DIR=<INSTALL_DIR> -P ${CMAKE_SOURCE_DIR}/cmake/scripts/StripLib.cmake
   ENDIF
   BUILD_IN_SOURCE 1
   DEPENDS HepMC Boost fastjet GSL Python swig
