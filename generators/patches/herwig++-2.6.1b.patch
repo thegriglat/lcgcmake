@@ -56,3 +56,25 @@
  DISTCLEANFILES = config.herwig
  all: all-recursive
 
+--- Tests/Makefile.am.orig	2014-05-20 10:08:47.000000000 +0200
++++ Tests/Makefile.am	2014-05-20 10:10:13.000000000 +0200
+@@ -52,7 +52,7 @@
+ 
+ REPO = $(top_builddir)/src/HerwigDefaults.rpo
+ HERWIG = $(top_builddir)/src/Herwig++
+-HWREAD = $(HERWIG) read -r $(REPO) -L $(builddir)/.libs
++HWREAD = $(HERWIG) read --repo $(REPO) -L $(builddir)/.libs
+ HWRUN = $(HERWIG) run
+ 
+ tests : tests-LEP tests-DIS tests-LHC tests-Gamma
+--- Tests/Makefile.in.orig	2014-05-20 10:08:53.000000000 +0200
++++ Tests/Makefile.in	2014-05-20 10:09:26.000000000 +0200
+@@ -360,7 +360,7 @@
+ 
+ REPO = $(top_builddir)/src/HerwigDefaults.rpo
+ HERWIG = $(top_builddir)/src/Herwig++
+-HWREAD = $(HERWIG) read -r $(REPO) -L $(builddir)/.libs
++HWREAD = $(HERWIG) read --repo $(REPO) -L $(builddir)/.libs
+ HWRUN = $(HERWIG) run
+ all: all-am
+ 
