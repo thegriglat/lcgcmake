@@ -236,6 +236,8 @@ foreach( vinciatest vincia01.exe vincia02.exe vincia03-root.exe
 vincia04-root.exe vincia05-root.exe vincia06.exe vincia07-root.exe
 vincia08-root.exe vincia09-root.exe vincia10-root.exe vincia_test_LHE.exe)
 LCG_add_test(${vinciatest}
+    
+    PRE_COMMAND  ${CMAKE_COMMAND} -DSRC=${vincia_home}/tunes  -DDST=${vincia_home}/bin/ -P ${CMAKE_SOURCE_DIR}/cmake/scripts/copy.cmake
     TEST_COMMAND ${CMAKE_COMMAND} -E chdir ${vincia_home}/bin/ ./${vinciatest} 
     ENVIRONMENT
     ${library_path}=${pythia8_home}/lib:${fastjet_home}/lib:${vincia_home}/lib:${ROOT_home}/lib:$ENV{${library_path}}
