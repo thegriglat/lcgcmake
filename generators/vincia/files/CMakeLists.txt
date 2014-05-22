@@ -30,8 +30,8 @@ IF( NOT CMAKE_BUILD_TYPE )
     SET( CMAKE_BUILD_TYPE "Release" )
 ENDIF()
 
-set(CMAKE_Fortran_FLAGS        "-fPIC -O2 -DNDEBUG -fno-automatic")
-set(CMAKE_Fortran_FLAGS_RELEASE        "-fPIC -O2 -DNDEBUG -fno-automatic")
+set(CMAKE_Fortran_FLAGS        "-fPIC -g -fno-automatic")
+set(CMAKE_Fortran_FLAGS_RELEASE        "-fPIC -g -fno-automatic")
 
 list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake/modules)
 
@@ -48,6 +48,7 @@ if ( NOT PYTHIA8_FOUND)
 endif( NOT PYTHIA8_FOUND)
 
 
+#set (CMAKE_SHARED_LIBRARY_CREATE_CXX_FLAGS "-g -fPIC")
 
 
 
@@ -61,9 +62,9 @@ endif()
 set(CMAKE_Fortran_FLAGS                "")
 set(CMAKE_Fortran_FLAGS_DEBUG          "-fPIC -g -fno-automatic")
 set(CMAKE_Fortran_FLAGS_MINSIZEREL     "-fPIC -Os -DNDEBUG -fno-automatic")
-set(CMAKE_Fortran_FLAGS_RELEASE        "-fPIC -O2 -DNDEBUG -fno-automatic")
+set(CMAKE_Fortran_FLAGS_RELEASE        "-fPIC -g -fno-automatic")
 set(CMAKE_Fortran_FLAGS_RELWITHDEBINFO "-fPIC -O2 -g -fno-automatic")
-
+set(CMAKE_CXX_FLAGS_RELEASE        "-fPIC -g -fbounds-check")
 
 message(STATUS "PYTHIA8_INCLUDE_DIR == " ${PYTHIA8_INCLUDE_DIR} )
 message(STATUS "PYTHIA8_LIBRARY == " ${PYTHIA8_LIBRARY} )
@@ -123,6 +124,9 @@ endforeach( testsourcefile ${APP_SOURCES} )
 
 FILE(GLOB cmnd_files "${CMAKE_CURRENT_SOURCE_DIR}/*.cmnd")	
 INSTALL( FILES ${cmnd_files}  DESTINATION bin)
+
+FILE(GLOB xml_examples_files "${CMAKE_CURRENT_SOURCE_DIR}/vincia*.xml")
+INSTALL( FILES ${xml_examples_files}  DESTINATION bin)
 
 install(TARGETS dhelas3 vincia  vinciaroot mginterface LIBRARY DESTINATION lib)
 install( FILES ${vincia_header_files} DESTINATION include) 
