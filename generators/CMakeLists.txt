@@ -740,6 +740,7 @@ LCGPackage_Add(
   BUILD_COMMAND ${MAKE} all ${library_path}=${yamlcpp_home}/lib:$ENV{${library_path}} PYTHONPATH=${cython_pythonpath}
   BUILD_IN_SOURCE 1
   INSTALL_COMMAND make install PYTHONPATH=${cython_pythonpath}
+          COMMAND ${CMAKE_COMMAND} -DINSTALL_DIR=<INSTALL_DIR> -P ${CMAKE_SOURCE_DIR}/cmake/scripts/StripLib.cmake
   DEPENDS lhapdf6sets Boost yamlcpp Python cython
 )
 
