@@ -736,7 +736,7 @@ LCGPackage_Add(
      --with-yaml-cpp=${yamlcpp_home}
      PYTHON=${Python_home}/bin/python
      CYTHON=${cython_home}/bin/cython
-     PYTHONPATH=${cython_pythonpath}
+     PYTHONPATH=${cython_pythonpath}  CFLAGS="-O2" CXXFLAGS="-O2" FCFLAGS="-O2" LDFLAGS="-O2"
   BUILD_COMMAND ${MAKE} all ${library_path}=${yamlcpp_home}/lib:$ENV{${library_path}} PYTHONPATH=${cython_pythonpath}
   BUILD_IN_SOURCE 1
   INSTALL_COMMAND make install PYTHONPATH=${cython_pythonpath}
