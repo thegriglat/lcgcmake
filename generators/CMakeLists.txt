@@ -221,8 +221,11 @@ LCG_add_test(pythia8-compare
 
 LCGPackage_Add(
   vincia
-  URL ${gen_url}/vincia-<NATIVE_VERSION>.tgz
-
+  IF <NATIVE_VERSION> VERSION_EQUAL 9.9.9 THEN
+    SVN_REPOSITORY https://vincia.hepforge.org/svn/trunk
+  ELSE
+    URL ${gen_url}/vincia-<NATIVE_VERSION>.tgz
+  ENDIF
   UPDATE_COMMAND ${CMAKE_COMMAND} -DSRC=${CMAKE_CURRENT_SOURCE_DIR}/vincia/files -DDST=<SOURCE_DIR> -P ${CMAKE_SOURCE_DIR}/cmake/scripts/copy.cmake
   CMAKE_ARGS -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
 -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR> -DPYTHIA8_ROOT_DIR=${pythia8_home}
