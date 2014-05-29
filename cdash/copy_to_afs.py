@@ -25,7 +25,7 @@ if __name__ == "__main__":
   workdir = os.environ['WORKDIR']
   sourcedir = "%s/%s-install" %(workdir,get_platform())
   targetdir = "/afs/cern.ch/sw/lcg/app/nightlies/%s/%s" %(slotname,today())
-  command = "rsync -au %s/ %s" %(sourcedir,targetdir)
+  command = "rsync -au --no-g %s/ %s" %(sourcedir,targetdir)
   print "Executing %s" %command
   print subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).stdout.read()
   command = "touch %s/isDone-%s" %(targetdir,get_platform())

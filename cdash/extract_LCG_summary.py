@@ -49,20 +49,21 @@ def create_package_from_file(directory, filename, packages):
 if __name__ == "__main__":
 
   options = sys.argv
-  if len(options) != 3:
-    print "Please provide PLATFORM and LCG_version as command line parameters"
+  if len(options) != 4:
+    print "Please provide DIR, PLATFORM and LCG_version as command line parameters"
     sys.exit()  
-  name, platform, version = options
+  name, thedir, platform, version = options
 
   packages = {}
   # collect all .buildinfo_<name>.txt files
-  for root, dirs, files in os.walk("."):
+  for root, dirs, files in os.walk(thedir):
       for afile in files:
           if afile.endswith('.txt') and afile.startswith(".buildinfo") and platform in root:
               fullname = os.path.join(root, afile)
               a = open(fullname).read() 
               create_package_from_file(root,fullname,packages)
-             
+
+  print packages             
   # now compile entire dependency lists
   # every dependency of a subpackage is forwarded to the real package
   for name,package in packages.iteritems():
@@ -82,7 +83,7 @@ if __name__ == "__main__":
 
   # write out the files to disk
   # first the externals
-  thefile = open("LCG_externals_%s.txt" %platform, "w")
+  thefile = open(thedir+"/LCG_externals_%s.txt" %platform, "w")
   thefile.write( "PLATFORM: %s\nVERSION: %s\n" %(platform, version) ) 
   for name,package in packages.iteritems():
       result = package.compile_summary()
@@ -90,7 +91,7 @@ if __name__ == "__main__":
         thefile.write(result+"\n")
   thefile.close()
   # then the generators
-  thefile = open("LCG_generators_%s.txt" %platform, "w")
+  thefile = open(thedir+"/LCG_generators_%s.txt" %platform, "w")
   thefile.write( "PLATFORM: %s\nVERSION: %s\n" %(platform, version) )
   for name,package in packages.iteritems():
      result = package.compile_summary()
