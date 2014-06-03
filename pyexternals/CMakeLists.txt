@@ -4,90 +4,6 @@ set(PythonFW_cmd ${Python_home}/Library/Frameworks/Python.framework/Versions/Cur
 set(Exec_cmd ${env_cmd})
 
 #=================================================================================================================
-#---pyanalysis----------------------------------------------------------------------------------------------------
-# This is only a placeholder where all the sub-packages will be installed
-#=================================================================================================================
-LCGPackage_set_home(pyanalysis)
-
-#---numpy---------------------------------------------------------------------------------------------------------
-LCGPackage_Add(
-  numpy
-  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/numpy-${numpy_native_version}.tar.gz
-  CONFIGURE_COMMAND <VOID>
-  BUILD_COMMAND ${Python_cmd} setup.py build
-  INSTALL_COMMAND ${Python_cmd} setup.py install --prefix <INSTALL_DIR>
-  BUILD_IN_SOURCE 1
-  DEST_NAME pyanalysis
-  DEPENDS Python
-)
-
-#---scipy---------------------------------------------------------------------------------------------------------
-LCGPackage_Add(
-  scipy
-  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/scipy-${scipy_native_version}.tar.gz
-  CONFIGURE_COMMAND <VOID>
-  BUILD_COMMAND ${Exec_cmd} PYTHONPATH=${pyanalysis_home}/lib/python${Python_config_version_twodigit}/site-packages
-                            BLAS=${blas_home}/lib/libBLAS.a LAPACK=${lapack_home}/lib/libLAPACK.a
-                ${Python_cmd} setup.py build
-  INSTALL_COMMAND ${Exec_cmd} PYTHONPATH=${pyanalysis_home}/lib/python${Python_config_version_twodigit}/site-packages
-                              BLAS=${blas_home}/lib/libBLAS.a LAPACK=${lapack_home}/lib/libLAPACK.a
-                  ${Python_cmd} setup.py install --prefix <INSTALL_DIR>
-  BUILD_IN_SOURCE 1
-  DEST_NAME pyanalysis
-  DEPENDS Python numpy blas lapack
-)
-
-#---sympy---------------------------------------------------------------------------------------------------------
-LCGPackage_Add(
-  sympy
-  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/sympy-${sympy_native_version}.tar.gz
-  CONFIGURE_COMMAND <VOID>
-  BUILD_COMMAND ${Python_cmd} setup.py build
-  INSTALL_COMMAND ${Python_cmd} setup.py install --prefix <INSTALL_DIR>
-  BUILD_IN_SOURCE 1
-  DEST_NAME pyanalysis
-  DEPENDS Python
-)
-
-
-#---matplotlib----------------------------------------------------------------------------------------------------
-LCGPackage_Add(
-  matplotlib
-  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/matplotlib-${matplotlib_native_version}.tar.gz
-  CONFIGURE_COMMAND <VOID>
-  BUILD_COMMAND ${Exec_cmd} PYTHONPATH=${pyanalysis_home}/lib/python${Python_config_version_twodigit}/site-packages 
-                ${Python_cmd} setup.py build
-  INSTALL_COMMAND ${Exec_cmd} PYTHONPATH=${pyanalysis_home}/lib/python${Python_config_version_twodigit}/site-packages 
-                  ${Python_cmd} setup.py install --prefix <INSTALL_DIR>
-  BUILD_IN_SOURCE 1
-  DEST_NAME pyanalysis
-  DEPENDS Python numpy
-)
-
-#---pyminuit---------------------------------------------------------------------------------------------------------
-LCGPackage_Add(
-  pyminuit
-  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/pyminuit2-${pyminuit_native_version}.tar.gz
-  CONFIGURE_COMMAND <VOID>
-  BUILD_COMMAND ${Exec_cmd} PATH=${ROOT_home}/bin:$ENV{PATH} ${Python_cmd} setup.py build
-  INSTALL_COMMAND ${Python_cmd} setup.py install --prefix <INSTALL_DIR>
-  BUILD_IN_SOURCE 1
-  DEST_NAME pyanalysis
-  DEPENDS Python ROOT
-)
-
-#---Add the dependencies now----------------------------------------------------------------------------------------
-LCGPackage_Add(
-  pyanalysis
-  DOWNLOAD_COMMAND <VOID>
-  CONFIGURE_COMMAND <VOID>
-  BUILD_COMMAND <VOID>
-  INSTALL_COMMAND ${CMAKE_SOURCE_DIR}/pyexternals/Python_postinstall.sh <INSTALL_DIR>
-  BUNDLE_PACKAGE 1
-  DEPENDS matplotlib numpy scipy sympy pyminuit
-)
-
-#=================================================================================================================
 #---pytools----------------------------------------------------------------------------------------------------
 # This is only a placeholder where all the sub-packages will be installed
 #=================================================================================================================
@@ -370,6 +286,90 @@ LCGPackage_Add(
   BUNDLE_PACKAGE 1
   DEPENDS lxml sqlalchemy genshi 4suite cx_oracle ipython json mock multiprocessing setuptools mysql_python processing py py2neo pyxml storm pytest pylint nose coverage stomppy
 )
+
+#=================================================================================================================
+#---pyanalysis----------------------------------------------------------------------------------------------------
+# This is only a placeholder where all the sub-packages will be installed
+#=================================================================================================================
+LCGPackage_set_home(pyanalysis)
+
+#---numpy---------------------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  numpy
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/numpy-${numpy_native_version}.tar.gz
+  CONFIGURE_COMMAND <VOID>
+  BUILD_COMMAND ${Python_cmd} setup.py build
+  INSTALL_COMMAND ${Python_cmd} setup.py install --prefix <INSTALL_DIR>
+  BUILD_IN_SOURCE 1
+  DEST_NAME pyanalysis
+  DEPENDS Python
+)
+
+#---scipy---------------------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  scipy
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/scipy-${scipy_native_version}.tar.gz
+  CONFIGURE_COMMAND <VOID>
+  BUILD_COMMAND ${Exec_cmd} PYTHONPATH=${pyanalysis_home}/lib/python${Python_config_version_twodigit}/site-packages
+                            BLAS=${blas_home}/lib/libBLAS.a LAPACK=${lapack_home}/lib/libLAPACK.a
+                ${Python_cmd} setup.py build
+  INSTALL_COMMAND ${Exec_cmd} PYTHONPATH=${pyanalysis_home}/lib/python${Python_config_version_twodigit}/site-packages
+                              BLAS=${blas_home}/lib/libBLAS.a LAPACK=${lapack_home}/lib/libLAPACK.a
+                  ${Python_cmd} setup.py install --prefix <INSTALL_DIR>
+  BUILD_IN_SOURCE 1
+  DEST_NAME pyanalysis
+  DEPENDS Python numpy blas lapack
+)
+
+#---sympy---------------------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  sympy
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/sympy-${sympy_native_version}.tar.gz
+  CONFIGURE_COMMAND <VOID>
+  BUILD_COMMAND ${Python_cmd} setup.py build
+  INSTALL_COMMAND ${Python_cmd} setup.py install --prefix <INSTALL_DIR>
+  BUILD_IN_SOURCE 1
+  DEST_NAME pyanalysis
+  DEPENDS Python
+)
+
+#---matplotlib----------------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  matplotlib
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/matplotlib-${matplotlib_native_version}.tar.gz
+  CONFIGURE_COMMAND <VOID>
+  BUILD_COMMAND ${Exec_cmd} PYTHONPATH=${pyanalysis_home}/lib/python${Python_config_version_twodigit}/site-packages:${pytools_home}/lib/python${Python_config_version_twodigit}/site-packages
+                ${Python_cmd} setup.py build
+  INSTALL_COMMAND ${Exec_cmd} PYTHONPATH=${pyanalysis_home}/lib/python${Python_config_version_twodigit}/site-packages:${pytools_home}/lib/python${Python_config_version_twodigit}/site-packages
+                  ${Python_cmd} setup.py install --prefix <INSTALL_DIR>
+  BUILD_IN_SOURCE 1
+  DEST_NAME pyanalysis
+  DEPENDS Python numpy nose
+)
+
+#---pyminuit---------------------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  pyminuit
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/pyminuit2-${pyminuit_native_version}.tar.gz
+  CONFIGURE_COMMAND <VOID>
+  BUILD_COMMAND ${Exec_cmd} PATH=${ROOT_home}/bin:$ENV{PATH} ${Python_cmd} setup.py build
+  INSTALL_COMMAND ${Python_cmd} setup.py install --prefix <INSTALL_DIR>
+  BUILD_IN_SOURCE 1
+  DEST_NAME pyanalysis
+  DEPENDS Python ROOT
+)
+
+#---Add the dependencies now----------------------------------------------------------------------------------------
+LCGPackage_Add(
+  pyanalysis
+  DOWNLOAD_COMMAND <VOID>
+  CONFIGURE_COMMAND <VOID>
+  BUILD_COMMAND <VOID>
+  INSTALL_COMMAND ${CMAKE_SOURCE_DIR}/pyexternals/Python_postinstall.sh <INSTALL_DIR>
+  BUNDLE_PACKAGE 1
+  DEPENDS matplotlib numpy scipy sympy pyminuit
+)
+
 
 #=================================================================================================================
 #---pygraphics----------------------------------------------------------------------------------------------------
