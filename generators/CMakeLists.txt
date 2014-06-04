@@ -446,9 +446,10 @@ LCGPackage_Add(
      PYTHON=${Python_home}/bin/python 
      ${library_path}=${Python_home}/lib:${pcre_home}/lib:$ENV{${library_path}}
      SWIG=${swig_home}/bin/swig
+     SWIG_LIB=${swig_home}/share/swig/${swig_native_version}
      "CFLAGS=-g0 -O2" "CXXFLAGS=-g0 -O2" "FFLAGS=-g0 -O2"
-  BUILD_COMMAND ${MAKE} all ${library_path}=${Python_home}/lib:${pcre_home}/lib:$ENV{${library_path}}
-  INSTALL_COMMAND make install ${library_path}=${Python_home}/lib:${pcre_home}/lib:$ENV{${library_path}}
+  BUILD_COMMAND ${MAKE} all ${library_path}=${Python_home}/lib:${pcre_home}/lib:$ENV{${library_path}} SWIG_LIB=${swig_home}/share/swig/${swig_native_version} LIBRARY_PATH=${Python_home}/lib
+  INSTALL_COMMAND make install ${library_path}=${Python_home}/lib:${pcre_home}/lib:$ENV{${library_path}} LIBRARY_PATH=${Python_home}/lib
           COMMAND ${CMAKE_COMMAND} -E copy <SOURCE_DIR>/agileenv.csh <INSTALL_DIR>/.
           COMMAND ${CMAKE_COMMAND} -E copy <SOURCE_DIR>/agileenv.sh <INSTALL_DIR>/.
           COMMAND ${CMAKE_COMMAND} -DINSTALL_DIR=<INSTALL_DIR> -P ${CMAKE_SOURCE_DIR}/cmake/scripts/StripLib.cmake
@@ -701,8 +702,8 @@ LCGPackage_Add(
       --with-boost=${Boost_home}
       PYTHON=${Python_home}/bin/python ${library_path}=${Python_home}/lib:$ENV{${library_path}}
       PYTHONPATH=${cython_home}/lib/python${Python_config_version_twodigit}/site-packages:$ENV{PYTHONPATH}
-  BUILD_COMMAND ${MAKE} all ${library_path}=${Python_home}/lib:$ENV{${library_path}} PYTHONPATH=:${cython_pythonpath}:$ENV{PYTHONPATH}
-  INSTALL_COMMAND make install ${library_path}=${Python_home}/lib:$ENV{${library_path}} PYTHONPATH=:${cython_pythonpath}:$ENV{PYTHONPATH}
+  BUILD_COMMAND ${MAKE} all ${library_path}=${Python_home}/lib:$ENV{${library_path}} PYTHONPATH=:${cython_pythonpath}:$ENV{PYTHONPATH} LIBRARY_PATH=${Python_home}/lib
+  INSTALL_COMMAND make install ${library_path}=${Python_home}/lib:$ENV{${library_path}} PYTHONPATH=:${cython_pythonpath}:$ENV{PYTHONPATH} LIBRARY_PATH=${Python_home}/lib
   BUILD_IN_SOURCE 1
   DEPENDS Python Boost cython
 )
@@ -740,9 +741,10 @@ LCGPackage_Add(
      PYTHON=${Python_home}/bin/python
      CYTHON=${cython_home}/bin/cython
      PYTHONPATH=${cython_pythonpath}  CFLAGS=-O2 CXXFLAGS=-O2 FCFLAGS=-O2 LDFLAGS=-O2
-  BUILD_COMMAND ${MAKE} all ${library_path}=${yamlcpp_home}/lib:$ENV{${library_path}} PYTHONPATH=${cython_pythonpath}
+  BUILD_COMMAND ${MAKE} all
+  ${library_path}=${yamlcpp_home}/lib:$ENV{${library_path}} PYTHONPATH=${cython_pythonpath} LIBRARY_PATH=${Python_home}/lib
   BUILD_IN_SOURCE 1
-  INSTALL_COMMAND make install PYTHONPATH=${cython_pythonpath}
+  INSTALL_COMMAND make install PYTHONPATH=${cython_pythonpath} LIBRARY_PATH=${Python_home}/lib
           COMMAND ${CMAKE_COMMAND} -DINSTALL_DIR=<INSTALL_DIR> -P ${CMAKE_SOURCE_DIR}/cmake/scripts/StripLib.cmake
   DEPENDS lhapdf6sets Boost yamlcpp Python cython
 )
@@ -807,8 +809,9 @@ LCGPackage_Add(
        CC=${CMAKE_C_COMPILER}
        CXX=${CMAKE_CXX_COMPILER}
        CFLAGS=-O2
-    BUILD_COMMAND ${MAKE} all ${library_path}=${Python_home}/lib:${pcre_home}/lib:$ENV{${library_path}}
-    INSTALL_COMMAND make install ${library_path}=${Python_home}/lib:${pcre_home}/lib:$ENV{${library_path}}
+       SWIG_LIB=${swig_home}/share/swig/${swig_native_version}
+    BUILD_COMMAND ${MAKE} all${library_path}=${Python_home}/lib:${pcre_home}/lib:$ENV{${library_path}} SWIG_LIB=${swig_home}/share/swig/${swig_native_version} LIBRARY_PATH=${Python_home}/lib
+    INSTALL_COMMAND make install ${library_path}=${Python_home}/lib:${pcre_home}/lib:$ENV{${library_path}} LIBRARY_PATH=${Python_home}/lib
             COMMAND ${CMAKE_COMMAND} -E copy <SOURCE_DIR>/rivetenv.csh <INSTALL_DIR>/
             COMMAND ${CMAKE_COMMAND} -E copy <SOURCE_DIR>/rivetenv.sh <INSTALL_DIR>/
             COMMAND ${CMAKE_COMMAND} -DINSTALL_DIR=<INSTALL_DIR> -P ${CMAKE_SOURCE_DIR}/cmake/scripts/StripLib.cmake
@@ -826,14 +829,14 @@ LCGPackage_Add(
        --enable-unvalidated
        PYTHON=${Python_home}/bin/python
        PYTHONPATH=${cython_home}/lib/python${Python_config_version_twodigit}/site-packages:$ENV{PYTHONPATH}
-       ${library_path}=${Python_home}/lib:$ENV{${library_path}}
+       ${library_path}=${Python_home}/lib:${pcre_home}/lib:$ENV{${library_path}}
        CC=${CMAKE_C_COMPILER}
        CXX=${CMAKE_CXX_COMPILER}
-    BUILD_COMMAND ${MAKE} all
-                  ${library_path}=${Python_home}/lib:${yamlcpp_home}/lib:$ENV{${library_path}}
-                  PYTHONPATH=${cython_home}/lib/python${Python_config_version_twodigit}/site-packages:$ENV{PYTHONPATH}
-    INSTALL_COMMAND make install ${library_path}=${Python_home}/lib:${yamlcpp_home}/lib:$ENV{${library_path}}
+       SWIG_LIB=${swig_home}/share/swig/${swig_native_version}
+    BUILD_COMMAND ${MAKE} all ${library_path}=${Python_home}/lib:${pcre_home}/lib:${yamlcpp_home}/lib:$ENV{${library_path}} PYTHONPATH=${cython_home}/lib/python${Python_config_version_twodigit}/site-packages:$ENV{PYTHONPATH} SWIG_LIB=${swig_home}/share/swig/${swig_native_version} LIBRARY_PATH=${Python_home}/lib
+    INSTALL_COMMAND make install ${library_path}=${Python_home}/lib:${pcre_home}/lib:${yamlcpp_home}/lib:$ENV{${library_path}}
                     PYTHONPATH=${cython_home}/lib/python${Python_config_version_twodigit}/site-packages:$ENV{PYTHONPATH}
+                    LIBRARY_PATH=${Python_home}/lib
             COMMAND ${CMAKE_COMMAND} -E copy <SOURCE_DIR>/rivetenv.csh <INSTALL_DIR>/
             COMMAND ${CMAKE_COMMAND} -E copy <SOURCE_DIR>/rivetenv.sh <INSTALL_DIR>/
             COMMAND ${CMAKE_COMMAND} -DINSTALL_DIR=<INSTALL_DIR> -P ${CMAKE_SOURCE_DIR}/cmake/scripts/StripLib.cmake
