@@ -171,6 +171,7 @@ LCG_external_package(lhapdfsets        5.8.8          lhapdfsets   )
 LCG_external_package(lhapdfsets        5.9.1          lhapdfsets   )
 
 LCG_external_package(lhapdf6           6.1.0          ${MCGENPATH}/lhapdf6       )
+LCG_external_package(lhapdf6           6.1.2          ${MCGENPATH}/lhapdf6       )
 LCG_external_package(lhapdf6           6.0.5          ${MCGENPATH}/lhapdf6       ) 
 LCG_external_package(lhapdf6sets       6.0.0          lhapdf6sets   )
 
@@ -218,6 +219,7 @@ if(NOT ${LCG_OS}${LCG_OSVERS} STREQUAL mac109) # rivet 2 does not work yet with 
 endif()
 LCG_external_package(rivet             2.1.0          ${MCGENPATH}/rivet        yoda=1.0.5      )
 LCG_external_package(rivet             2.1.1          ${MCGENPATH}/rivet        yoda=1.0.6      )
+#LCG_external_package(rivet             2.1.2          ${MCGENPATH}/rivet        yoda=1.0.8      )
 
 LCG_external_package(rivet             1.8.3          ${MCGENPATH}/rivet yoda=1.0.4       )
 LCG_external_package(rivet             1.9.0          ${MCGENPATH}/rivet yoda=1.0.4      )
@@ -243,6 +245,7 @@ LCG_external_package(yamlcpp           0.3.0          ${MCGENPATH}/yamlcpp      
 
 LCG_external_package(yoda              1.0.6          ${MCGENPATH}/yoda         )
 LCG_external_package(yoda              1.0.5          ${MCGENPATH}/yoda         )
+#LCG_external_package(yoda              1.0.8          ${MCGENPATH}/yoda         )
 LCG_external_package(yoda              1.0.4          ${MCGENPATH}/yoda         ) 
 
 
@@ -254,6 +257,7 @@ LCG_external_package(hydjet++          2.1            ${MCGENPATH}/hydjet++ auth
 LCG_external_package(alpgen            2.1.4          ${MCGENPATH}/alpgen author=214 )
 LCG_external_package(pyquen            1.5.1          ${MCGENPATH}/pyquen author=1_5)
 LCG_external_package(baurmc            1.0            ${MCGENPATH}/baurmc       )
+LCG_external_package(professor         1.3.3          ${MCGENPATH}/professor       )
 
 LCG_external_package(jhu               3.1.8          ${MCGENPATH}/jhu       )
 
