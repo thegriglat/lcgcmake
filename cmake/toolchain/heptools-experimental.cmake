@@ -12,7 +12,7 @@ include(${CMAKE_CURRENT_LIST_DIR}/heptools-common.cmake)
 
 
 # Application Area Projects
-LCG_AA_project(COOL  COOL_3_0_0-preview)
+LCG_AA_project(COOL  COOL_3_0-preview)
 LCG_AA_project(CORAL CORAL_3_0-preview)
 LCG_AA_project(RELAX RELAX-root6)
 LCG_AA_project(ROOT  HEAD)
