@@ -810,7 +810,7 @@ LCGPackage_Add(
        CXX=${CMAKE_CXX_COMPILER}
        CFLAGS=-O2
        SWIG_LIB=${swig_home}/share/swig/${swig_native_version}
-    BUILD_COMMAND ${MAKE} all${library_path}=${Python_home}/lib:${pcre_home}/lib:$ENV{${library_path}} SWIG_LIB=${swig_home}/share/swig/${swig_native_version} LIBRARY_PATH=${Python_home}/lib
+    BUILD_COMMAND ${MAKE} all ${library_path}=${Python_home}/lib:${pcre_home}/lib:$ENV{${library_path}} SWIG_LIB=${swig_home}/share/swig/${swig_native_version} LIBRARY_PATH=${Python_home}/lib
     INSTALL_COMMAND make install ${library_path}=${Python_home}/lib:${pcre_home}/lib:$ENV{${library_path}} LIBRARY_PATH=${Python_home}/lib
             COMMAND ${CMAKE_COMMAND} -E copy <SOURCE_DIR>/rivetenv.csh <INSTALL_DIR>/
             COMMAND ${CMAKE_COMMAND} -E copy <SOURCE_DIR>/rivetenv.sh <INSTALL_DIR>/
