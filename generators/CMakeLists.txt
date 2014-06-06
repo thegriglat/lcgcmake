@@ -2,7 +2,7 @@
 set(PDFsets "--all" CACHE STRING "The PDFsets to be downloaded for the 'lhspdfsets' package (default --all)")
 
 #---General parameters------------------------------------------------------------------------------
-set (gen_url "http://cern.ch/service-spi/external/tarFiles/MCGeneratorsTarFiles")
+set (gen_url "http://service-spi.web.cern.ch/service-spi/external/tarFiles/MCGeneratorsTarFiles")
 
 set(Python_cmd ${Python_home}/bin/python)
 set(Exec_cmd ${env_cmd})
