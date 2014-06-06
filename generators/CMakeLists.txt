@@ -928,7 +928,8 @@ LCGPackage_Add(
      --enable-lhole
      --with-sqlite3=${sqlite_home}  "CFLAGS=-O2 -g0" "CXXFLAGS=-O2 -g0" "FFLAGS=-O2 -g0"
 
-  INSTALL_COMMAND make install 
+  BUILD_COMMAND ${MAKE} LIBRARY_PATH=${lhapdf_home}/lib CPPFLAGS=-I${lhapdf_home}/include
+  INSTALL_COMMAND make install LIBRARY_PATH=${lhapdf_home}/lib CPPFLAGS=-I${lhapdf_home}/include
   BUILD_IN_SOURCE 1
   DEPENDS lhapdf HepMC sqlite
 )
