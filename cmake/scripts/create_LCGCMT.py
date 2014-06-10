@@ -35,9 +35,15 @@ if __name__ == "__main__":
   dependencies = open(input_filename).read()
   releaseinfo = eval(dependencies)
 
+  # ROOT 6 or not
+  isROOT6 = False
+
   # translate 
   results = []
   for package in releaseinfo["packages"].itervalues():
+    if package["name"] == "ROOT":
+      if package["version"] == "ROOT_today" or package["version"].startswith("6"):
+        isROOT6 = True
     result = handle_single_package(package)
     if result: results.append(result)
   results.sort()
@@ -59,6 +65,9 @@ macro LCG_config_version   "%s"
 %s
 """ %(releaseinfo["description"]["version"],"\n".join(results))
 
+  # if there is ROOT 6 or newer - apply_tag ROOT_GE_6_00
+  if isROOT6:
+    final_content += "apply_tag ROOT_GE_6_00\n"
   # now save the result
   out = open(output_filename, "w")  
   out.write(final_content)
