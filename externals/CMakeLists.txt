@@ -191,7 +191,7 @@ LCGPackage_Add(
   IF <VERSION> VERSION_LESS 2.0.0 THEN
     CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix=<INSTALL_DIR>
   ELSE
-    CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix=<INSTALL_DIR> --with-pcre-prefix=${pcre_home}
+    CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix=<INSTALL_DIR> --with-pcre-prefix=${pcre_home} PCRE_LIBS=${pcre_home}/lib/libpcre.a
     DEPENDS pcre
   ENDIF
  )
