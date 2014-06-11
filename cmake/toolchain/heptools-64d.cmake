@@ -244,6 +244,7 @@ LCG_external_package(sacrifice         0.9.9          ${MCGENPATH}/sacrifice    
 # sherpa depedencies: lhapdf HepMC rivet
 LCG_external_package(sherpa            2.1.0p1        ${MCGENPATH}/sherpa         author=2.1.0 hepevt=10000 )
 LCG_external_package(sherpa            2.1.0          ${MCGENPATH}/sherpa         author=2.1.0 hepevt=10000 )
+LCG_external_package(sherpa            2.1.1          ${MCGENPATH}/sherpa         author=2.1.1 hepevt=10000 )
 LCG_external_package(sherpa            1.4.5.2        ${MCGENPATH}/sherpa         author=1.4.5 hepevt=10000 )
 
 LCG_external_package(thepeg            1.8.3a        ${MCGENPATH}/thepeg)
