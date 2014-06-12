@@ -133,7 +133,7 @@ LCG_external_package(py2neo            1.4.6                                    
 LCG_external_package(pylint            0.26.0                                   )
 LCG_external_package(nose              1.1.2                                    )
 LCG_external_package(coverage          3.5.2                                    )  
-LCG_external_package(swig              1.3.40                                   )
+LCG_external_package(swig              1.3.40         author=1.3.40             )
 
 
 

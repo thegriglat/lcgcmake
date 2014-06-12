@@ -192,6 +192,8 @@ LCGPackage_Add(
     CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix=<INSTALL_DIR>
   ELSE
     CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix=<INSTALL_DIR> --with-pcre-prefix=${pcre_home} PCRE_LIBS=${pcre_home}/lib/libpcre.a
+    BUILD_COMMAND ${MAKE} CPPFLAGS=${pcre_home}/include
+    INSTALL_COMMAND ${MAKE} install
     DEPENDS pcre
   ENDIF
  )

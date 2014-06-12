@@ -130,7 +130,7 @@ LCG_external_package(vomsclients       1.9.17-1                                 
 LCG_external_package(XercesC           3.1.1p1                                  )
 LCG_external_package(xqilla            2.2.4                                    )
 LCG_external_package(xrootd            3.2.4                                    )
-LCG_external_package(swig              1.3.40                                   )
+LCG_external_package(swig              1.3.40         author=1.3.40             )
 LCG_external_package(py2neo            1.4.6                                    )
 
 set(MCGENPATH  MCGenerators_lcgcmt64b)

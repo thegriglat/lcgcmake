@@ -154,7 +154,7 @@ endif()
 
 LCG_external_package(XercesC           3.1.1p1        author=3.1.1              )
 LCG_external_package(CppUnit           1.12.1_p1                 author=1.12.1  )
-LCG_external_package(swig              1.3.40                                   )
+LCG_external_package(swig              1.3.40         author=1.3.40             )
 LCG_external_package(pacparser         1.3.1                                    )
 LCG_external_package(cmaketools        1.1                                      )
 

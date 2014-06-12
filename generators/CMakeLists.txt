@@ -39,13 +39,13 @@ else()
         string(REGEX MATCH "6.[0-9][0-9][0-9]" herwig_test_version ${herwig_test_version_full})
 endif()
 
-foreach(g alpgen pythia8 photos++ tauola++ lhapdf6)
+foreach(g alpgen pythia8 photos++ tauola++ lhapdf6 swig)
   foreach(v ${${g}_native_version})
     set(${g}_test_version ${v})
   endforeach()
 endforeach()
 
-
+string(REGEX MATCH "[0-9]+[.][0-9]+[.][0-9]+" swig_author_version ${swig_test_version})
 #---lhapdfsets--------------------------------------------------------------------------------------
 message(STATUS "PDFsets to download: ${PDFsets}")
 LCGPackage_Add(
@@ -446,9 +446,9 @@ LCGPackage_Add(
      PYTHON=${Python_home}/bin/python 
      ${library_path}=${Python_home}/lib:${pcre_home}/lib:$ENV{${library_path}}
      SWIG=${swig_home}/bin/swig
-     SWIG_LIB=${swig_home}/share/swig/${swig_native_version}
+     SWIG_LIB=${swig_home}/share/swig/${swig_author_version}
      "CFLAGS=-g0 -O2" "CXXFLAGS=-g0 -O2" "FFLAGS=-g0 -O2"
-  BUILD_COMMAND ${MAKE} all ${library_path}=${Python_home}/lib:${pcre_home}/lib:$ENV{${library_path}} SWIG_LIB=${swig_home}/share/swig/${swig_native_version} LIBRARY_PATH=${Python_home}/lib
+  BUILD_COMMAND ${MAKE} all ${library_path}=${Python_home}/lib:${pcre_home}/lib:$ENV{${library_path}} SWIG_LIB=${swig_home}/share/swig/${swig_author_version} LIBRARY_PATH=${Python_home}/lib
   INSTALL_COMMAND make install ${library_path}=${Python_home}/lib:${pcre_home}/lib:$ENV{${library_path}} LIBRARY_PATH=${Python_home}/lib
           COMMAND ${CMAKE_COMMAND} -E copy <SOURCE_DIR>/agileenv.csh <INSTALL_DIR>/.
           COMMAND ${CMAKE_COMMAND} -E copy <SOURCE_DIR>/agileenv.sh <INSTALL_DIR>/.
@@ -809,8 +809,8 @@ LCGPackage_Add(
        CC=${CMAKE_C_COMPILER}
        CXX=${CMAKE_CXX_COMPILER}
        CFLAGS=-O2
-       SWIG_LIB=${swig_home}/share/swig/${swig_native_version}
-    BUILD_COMMAND ${MAKE} all ${library_path}=${Python_home}/lib:${pcre_home}/lib:$ENV{${library_path}} SWIG_LIB=${swig_home}/share/swig/${swig_native_version} LIBRARY_PATH=${Python_home}/lib
+       SWIG_LIB=${swig_home}/share/swig/${swig_author_version}
+    BUILD_COMMAND ${MAKE} all ${library_path}=${Python_home}/lib:${pcre_home}/lib:$ENV{${library_path}} SWIG_LIB=${swig_home}/share/swig/${swig_author_version} LIBRARY_PATH=${Python_home}/lib
     INSTALL_COMMAND make install ${library_path}=${Python_home}/lib:${pcre_home}/lib:$ENV{${library_path}} LIBRARY_PATH=${Python_home}/lib
             COMMAND ${CMAKE_COMMAND} -E copy <SOURCE_DIR>/rivetenv.csh <INSTALL_DIR>/
             COMMAND ${CMAKE_COMMAND} -E copy <SOURCE_DIR>/rivetenv.sh <INSTALL_DIR>/
@@ -832,8 +832,8 @@ LCGPackage_Add(
        ${library_path}=${Python_home}/lib:${pcre_home}/lib:$ENV{${library_path}}
        CC=${CMAKE_C_COMPILER}
        CXX=${CMAKE_CXX_COMPILER}
-       SWIG_LIB=${swig_home}/share/swig/${swig_native_version}
-    BUILD_COMMAND ${MAKE} all ${library_path}=${Python_home}/lib:${pcre_home}/lib:${yamlcpp_home}/lib:$ENV{${library_path}} PYTHONPATH=${cython_home}/lib/python${Python_config_version_twodigit}/site-packages:$ENV{PYTHONPATH} SWIG_LIB=${swig_home}/share/swig/${swig_native_version} LIBRARY_PATH=${Python_home}/lib
+       SWIG_LIB=${swig_home}/share/swig/${swig_author_version}
+    BUILD_COMMAND ${MAKE} all ${library_path}=${Python_home}/lib:${pcre_home}/lib:${yamlcpp_home}/lib:$ENV{${library_path}} PYTHONPATH=${cython_home}/lib/python${Python_config_version_twodigit}/site-packages:$ENV{PYTHONPATH} SWIG_LIB=${swig_home}/share/swig/${swig_author_version} LIBRARY_PATH=${Python_home}/lib
     INSTALL_COMMAND make install ${library_path}=${Python_home}/lib:${pcre_home}/lib:${yamlcpp_home}/lib:$ENV{${library_path}}
                     PYTHONPATH=${cython_home}/lib/python${Python_config_version_twodigit}/site-packages:$ENV{PYTHONPATH}
                     LIBRARY_PATH=${Python_home}/lib
