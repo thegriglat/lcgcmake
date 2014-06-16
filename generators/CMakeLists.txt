@@ -282,15 +282,15 @@ set(thepeg_v_home <thepeg-<herwig++_<NATIVE_VERSION>_thepeg>_home>)
                                   --with-fastjet=${fastjet_home}
                                   --with-boost=${Boost_home}
                                   ${library_path}=${thepeg_v_home}/lib/ThePEG:${GSL_home}/lib:${Boost_home}/lib:$ENV{${library_path}}
-    BUILD_COMMAND ${MAKE} all ${library_path}=${thepeg_v_home}/lib/ThePEG:${GSL_home}/lib:${Boost_home}/lib:$ENV{${library_path}}
-          COMMAND ${CMAKE_COMMAND} -E chdir <SOURCE_DIR>/Contrib make ${library_path}=${thepeg_v_home}/lib/ThePEG:${GSL_home}/lib:${Boost_home}/lib:$ENV{${library_path}}   
+    BUILD_COMMAND ${MAKE} all ${library_path}=${thepeg_v_home}/lib/ThePEG:${GSL_home}/lib:${Boost_home}/lib:${fastjet_home}/lib:$ENV{${library_path}} LIBRARY_PATH=${fastjet_home}/lib
+          COMMAND ${CMAKE_COMMAND} -E chdir <SOURCE_DIR>/Contrib make ${library_path}=${thepeg_v_home}/lib/ThePEG:${GSL_home}/lib:${Boost_home}/lib:${fastjet_home}/lib:$ENV{${library_path}} CPPFLAGS=-I${fastjet_home}/include LIBRARY_PATH=${fastjet_home}/lib
 	        COMMAND ${CMAKE_COMMAND} -E chdir <SOURCE_DIR>/Contrib/AlpGen 
                                    make BasicLesHouchesFileReader.so HERWIGINCLUDE=-I<SOURCE_DIR>/include 
-                                                                     ${library_path}=${thepeg_v_home}/lib/ThePEG:${GSL_home}/lib:${Boost_home}/lib:${herwig++_home}/lib/Herwig++:$ENV{${library_path}}
+                                                                     ${library_path}=${thepeg_v_home}/lib/ThePEG:${GSL_home}/lib:${Boost_home}/lib:${herwig++_home}/lib/Herwig++:${fastjet_home}/lib:$ENV{${library_path}} CPPFLAGS=-I${fastjet_home}/include LIBRARY_PATH=${fastjet_home}/lib
           COMMAND ${CMAKE_COMMAND} -E chdir <SOURCE_DIR>/Contrib/AlpGen 
                                    make AlpGenHandler.so HERWIGINCLUDE=-I<SOURCE_DIR>/include
-                                   ${library_path}=${thepeg_v_home}/lib/ThePEG:${GSL_home}/lib:${Boost_home}/lib:${herwig++_home}/lib/Herwig++:$ENV{${library_path}}
-    INSTALL_COMMAND make install  ${library_path}=${thepeg_v_home}/lib/ThePEG:${GSL_home}/lib:${Boost_home}/lib:${HepMC_home}/lib:$ENV{${library_path}}
+                                   ${library_path}=${thepeg_v_home}/lib/ThePEG:${GSL_home}/lib:${Boost_home}/lib:${herwig++_home}/lib/Herwig++:${fastjet_home}/lib:$ENV{${library_path}} CPPFLAGS=-I${fastjet_home}/include LIBRARY_PATH=${fastjet_home}/lib
+    INSTALL_COMMAND make install ${library_path}=${thepeg_v_home}/lib/ThePEG:${GSL_home}/lib:${Boost_home}/lib:${HepMC_home}/lib:${fastjet_home}/lib:$ENV{${library_path}} LIBRARY_PATH=${fastjet_home}/lib
             COMMAND  ${CMAKE_COMMAND} -E create_symlink herwig++ <INSTALL_DIR>/../../../herwigpp
             COMMAND  ${CMAKE_COMMAND} -E copy <SOURCE_DIR>/Contrib/AlpGen/AlpGenHandler.so <INSTALL_DIR>/lib/Herwig++/	    
             COMMAND  ${CMAKE_COMMAND} -E copy <SOURCE_DIR>/Contrib/AlpGen/BasicLesHouchesFileReader.so <INSTALL_DIR>/lib/Herwig++/ 
