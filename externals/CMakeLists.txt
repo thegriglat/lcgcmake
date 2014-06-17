@@ -114,6 +114,9 @@ LCGPackage_Add(
   GSL
   URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/gsl-${GSL_native_version}.tar.gz
   CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix <INSTALL_DIR> ${GSL_config_options} CC=${CMAKE_C_COMPILER} CFLAGS=-O2
+  BUILD_COMMAND ${MAKE}
+  INSTALL_COMMAND ${MAKE} install
+          COMMAND $ENV{SHELL} -c "rm -f <INSTALL_DIR>/lib/*.la"
   BUILD_IN_SOURCE 1 )
 
 #---CLHEP--------------------------------------------------------------------------------------------
