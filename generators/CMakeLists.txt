@@ -804,14 +804,14 @@ LCGPackage_Add(
        --disable-pdfmanual
        --enable-unvalidated
        PYTHON=${Python_home}/bin/python 
-       ${library_path}=${Python_home}/lib:${pcre_home}/lib:$ENV{${library_path}}
+       ${library_path}=${Python_home}/lib:${pcre_home}/lib:${GSL_home}/lib:$ENV{${library_path}}
        SWIG=${swig_home}/bin/swig
        CC=${CMAKE_C_COMPILER}
        CXX=${CMAKE_CXX_COMPILER}
        CFLAGS=-O2
        SWIG_LIB=${swig_home}/share/swig/${swig_author_version}
-    BUILD_COMMAND ${MAKE} all ${library_path}=${Python_home}/lib:${pcre_home}/lib:$ENV{${library_path}} SWIG_LIB=${swig_home}/share/swig/${swig_author_version} LIBRARY_PATH=${Python_home}/lib
-    INSTALL_COMMAND make install ${library_path}=${Python_home}/lib:${pcre_home}/lib:$ENV{${library_path}} LIBRARY_PATH=${Python_home}/lib
+    BUILD_COMMAND ${MAKE} all ${library_path}=${Python_home}/lib:${pcre_home}/lib:${GSL_home}/lib:$ENV{${library_path}} SWIG_LIB=${swig_home}/share/swig/${swig_author_version} LIBRARY_PATH=${Python_home}/lib:${GSL_home}/lib
+    INSTALL_COMMAND make install ${library_path}=${Python_home}/lib:${pcre_home}/lib:$ENV{${library_path}} LIBRARY_PATH=${Python_home}/lib:${GSL_home}/lib
             COMMAND ${CMAKE_COMMAND} -E copy <SOURCE_DIR>/rivetenv.csh <INSTALL_DIR>/
             COMMAND ${CMAKE_COMMAND} -E copy <SOURCE_DIR>/rivetenv.sh <INSTALL_DIR>/
             COMMAND ${CMAKE_COMMAND} -DINSTALL_DIR=<INSTALL_DIR> -P ${CMAKE_SOURCE_DIR}/cmake/scripts/StripLib.cmake
@@ -829,14 +829,14 @@ LCGPackage_Add(
        --enable-unvalidated
        PYTHON=${Python_home}/bin/python
        PYTHONPATH=${cython_home}/lib/python${Python_config_version_twodigit}/site-packages:$ENV{PYTHONPATH}
-       ${library_path}=${Python_home}/lib:${pcre_home}/lib:$ENV{${library_path}}
+       ${library_path}=${Python_home}/lib:${pcre_home}/lib:${GSL_home}/lib:$ENV{${library_path}}
        CC=${CMAKE_C_COMPILER}
        CXX=${CMAKE_CXX_COMPILER}
        SWIG_LIB=${swig_home}/share/swig/${swig_author_version}
-    BUILD_COMMAND ${MAKE} all ${library_path}=${Python_home}/lib:${pcre_home}/lib:${yamlcpp_home}/lib:$ENV{${library_path}} PYTHONPATH=${cython_home}/lib/python${Python_config_version_twodigit}/site-packages:$ENV{PYTHONPATH} SWIG_LIB=${swig_home}/share/swig/${swig_author_version} LIBRARY_PATH=${Python_home}/lib
+    BUILD_COMMAND ${MAKE} all ${library_path}=${Python_home}/lib:${pcre_home}/lib:${yamlcpp_home}/lib:$ENV{${library_path}} PYTHONPATH=${cython_home}/lib/python${Python_config_version_twodigit}/site-packages:$ENV{PYTHONPATH} SWIG_LIB=${swig_home}/share/swig/${swig_author_version} LIBRARY_PATH=${Python_home}/lib:${GSL_home}/lib
     INSTALL_COMMAND make install ${library_path}=${Python_home}/lib:${pcre_home}/lib:${yamlcpp_home}/lib:$ENV{${library_path}}
                     PYTHONPATH=${cython_home}/lib/python${Python_config_version_twodigit}/site-packages:$ENV{PYTHONPATH}
-                    LIBRARY_PATH=${Python_home}/lib
+                    LIBRARY_PATH=${Python_home}/lib:${GSL_home}/lib
             COMMAND ${CMAKE_COMMAND} -E copy <SOURCE_DIR>/rivetenv.csh <INSTALL_DIR>/
             COMMAND ${CMAKE_COMMAND} -E copy <SOURCE_DIR>/rivetenv.sh <INSTALL_DIR>/
             COMMAND ${CMAKE_COMMAND} -DINSTALL_DIR=<INSTALL_DIR> -P ${CMAKE_SOURCE_DIR}/cmake/scripts/StripLib.cmake
