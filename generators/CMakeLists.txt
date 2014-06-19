@@ -940,7 +940,8 @@ LCG_add_test(sherpa_orig_test1
       COMMAND ${CMAKE_COMMAND} -E make_directory sherpa/tests_orig1
   TEST_COMMAND ${CMAKE_COMMAND} -E chdir sherpa/tests_orig1 ${sherpa_home}/bin/Sherpa -j20 -f ${CMAKE_SOURCE_DIR}/generators/sherpa/tests/LHC_Z.dat
   ENVIRONMENT
-    ${library_path}=${sherpa_home}/lib/SHERPA-MC:${HepMC_home}/lib:${lhapdf_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:$ENV{${library_path}}
+    ${library_path}=${sherpa_home}/lib/SHERPA-MC:${HepMC_home}/lib:${lhapdf_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:${sqlite_home}/lib:$ENV{${library_path}}
+    PATH=${sqlite_home}/bin:$ENV{PATH}
     PWD=.
 )
 
@@ -949,7 +950,8 @@ LCG_add_test(sherpa_orig_test2
       COMMAND ${CMAKE_COMMAND} -E make_directory sherpa/tests_orig2
   TEST_COMMAND ${CMAKE_COMMAND} -E chdir sherpa/tests_orig2 ${sherpa_home}/bin/Sherpa -j20 -f ${CMAKE_SOURCE_DIR}/generators/sherpa/tests/LHC_ZJets.dat
   ENVIRONMENT
-    ${library_path}=${sherpa_home}/lib/SHERPA-MC:${HepMC_home}/lib:${lhapdf_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:$ENV{${library_path}}
+    ${library_path}=${sherpa_home}/lib/SHERPA-MC:${HepMC_home}/lib:${lhapdf_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:${sqlite_home}/lib:$ENV{${library_path}}
+    PATH=${sqlite_home}/bin:$ENV{PATH}
     PWD=.
   LABELS PhysicsCheck
 )
