@@ -95,7 +95,8 @@ LCG_external_package(sqlalchemy        0.7.7                                    
 LCG_external_package(sqlite            3070900                                  )
 LCG_external_package(stomppy           3.1.3                                    )
 LCG_external_package(storm             0.19                                     )
-LCG_external_package(swig              2.0.11             author=2.0.11         )
+LCG_external_package(swig              2.0.11                author=2.0.11      )
+LCG_external_package(swig              2.0.11p1              author=2.0.11      )
 LCG_external_package(sympy             0.7.1                                    )
 LCG_external_package(tbb               42_20131118                              )
 LCG_external_package(tcmalloc          1.7p3                                    )
@@ -153,6 +154,9 @@ LCG_external_package(lhapdf            5.9.1          ${MCGENPATH}/lhapdf       
 LCG_external_package(lhapdfsets        5.8.8          lhapdfsets   )
 LCG_external_package(lhapdfsets        5.9.1          lhapdfsets   )
 
+LCG_external_package(lhapdf6           6.1.1          ${MCGENPATH}/lhapdf6       )
+LCG_external_package(lhapdf6           6.1.2          ${MCGENPATH}/lhapdf6       )
+LCG_external_package(lhapdf6           6.1.3          ${MCGENPATH}/lhapdf6       )
 LCG_external_package(lhapdf6           6.1.0          ${MCGENPATH}/lhapdf6       )
 
 LCG_external_package(lhapdf6           6.0.5          ${MCGENPATH}/lhapdf6       )
@@ -200,6 +204,7 @@ if(NOT ${LCG_OS}${LCG_OSVERS} STREQUAL mac109) # rivet 2 does not work yet with 
 endif()
 LCG_external_package(rivet             2.1.0          ${MCGENPATH}/rivet        yoda=1.0.5      )
 LCG_external_package(rivet             2.1.1          ${MCGENPATH}/rivet        yoda=1.0.6      )
+LCG_external_package(rivet             2.1.2          ${MCGENPATH}/rivet        yoda=1.1.0      )
 LCG_external_package(rivet             1.8.3          ${MCGENPATH}/rivet        yoda=1.0.4      )
 LCG_external_package(rivet             1.9.0          ${MCGENPATH}/rivet        yoda=1.0.4      )
 
@@ -220,6 +225,7 @@ LCG_external_package(cython            0.19.1         ${MCGENPATH}/cython       
 LCG_external_package(yamlcpp           0.3.0          ${MCGENPATH}/yamlcpp      )
 
 LCG_external_package(yoda              1.0.6          ${MCGENPATH}/yoda         )
+LCG_external_package(yoda              1.1.0          ${MCGENPATH}/yoda         )
 LCG_external_package(yoda              1.0.4          ${MCGENPATH}/yoda         )
 LCG_external_package(yoda              1.0.5          ${MCGENPATH}/yoda         )
 
