@@ -17,6 +17,7 @@ if echo ${ROOT_PATH} | grep -q '\-opt'; then
         debug=`readelf --debug-dump $name 2> /dev/null`
         if [ "x$debug" != "x" ];then
             echo "WARNING: File $name contains debug symbols."
+            echo $name | grep -q -i MCGenerators && exitcode=1
         fi
     done
 elif echo ${ROOT_PATH} | grep -q '\-dbg'; then
