@@ -9,12 +9,35 @@
 # 12.12.2013
 
 ROOT_PATH=$1
+OS=$(uname)
+[ "Darwin" == $OS ] && filepattern="find $ROOT_PATH -type f -name *.dylib" || filepattern="find $ROOT_PATH -type f -name *.so"
+
+slc_check(){
+    readelf --debug-dump "$1" 2> /dev/null
+}
+
+mac_check(){
+    symbols -onlyDebugMapData "$1" | grep -vE "DATA|TEXT" | tail -n +4
+}
+
+check(){
+    echo $OS
+    if [ "Darwin" == $OS ];then
+        mac_check "$1"
+    elif [ "Linux" == $OS ]; then
+        slc_check "$1"
+    else
+        echo "Cannot determine Operating System: $OS."
+        exit 1
+    fi
+}
+
 echo "Checking debug symbols in ${ROOT_PATH}/* ..."
 exitcode=0
 if echo ${ROOT_PATH} | grep -q '\-opt'; then
     echo "The following libraries have debug symbols:"
-    find $ROOT_PATH -type f -name *.so | while read name; do
-        debug=`readelf --debug-dump $name 2> /dev/null`
+    for name in $($filepattern); do
+        debug=$(check "$name")
         if [ "x$debug" != "x" ];then
             echo "WARNING: File $name contains debug symbols."
             echo $name | grep -q -i MCGenerators && exitcode=1
@@ -22,8 +45,8 @@ if echo ${ROOT_PATH} | grep -q '\-opt'; then
     done
 elif echo ${ROOT_PATH} | grep -q '\-dbg'; then
     echo "The following libraries don't have debug symbols:"
-    find $ROOT_PATH -type f -name *.so  | grep '-dbg' | while read name; do
-        debug=`readelf --debug-dump $name 2> /dev/null`
+    for name in $($filepattern | grep '-dbg'); do
+        debug=$(check "$name")
         if [ "x$debug" = "x" ];then
             echo "WARNING: File $name doesn't contain debug symbols."
         fi
