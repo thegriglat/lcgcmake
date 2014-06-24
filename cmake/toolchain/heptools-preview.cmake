@@ -219,6 +219,7 @@ LCG_external_package(powheg-box         r2092         ${MCGENPATH}/powheg-box   
 
     LCG_external_package(crmc              v3400          ${MCGENPATH}/crmc         )
     LCG_external_package(crmc              1.3            ${MCGENPATH}/crmc         )
+    LCG_external_package(crmc              1.4            ${MCGENPATH}/crmc         )
     LCG_external_package(cython            0.19.1         ${MCGENPATH}/cython       )
     LCG_external_package(yamlcpp           0.3.0          ${MCGENPATH}/yamlcpp      )
 
