@@ -1,0 +1,40 @@
+#!/bin/sh
+
+# A POSIX variable
+OPTIND=1         # Reset in case getopts has been used previously in the shell.
+
+# Initialize our own variables:
+output_file=""
+verbose=0
+PREFIX=.
+
+for i in "$@"
+do
+case $i in
+    -p=*|--prefix=*)
+    PREFIX="${i#*=}"
+    ;;
+    --with-root=*)
+    ROOTSYS="${i#*=}"
+    ;;
+    --with-pythia8=*)
+    PYTHIA8DIR="${i#*=}"
+    ;;
+    --with-fastjet=*)
+    FASTJETDIR="${i#*=}"
+    ;;
+    *)
+            # unknown option
+    ;;
+esac
+done
+echo PREFIX = ${PREFIX}
+echo ROOTSYS = ${ROOTSYS}
+echo FASTJETDIR = ${FASTJETDIR}
+echo PYTHIA8DIR = ${PYTHIA8DIR}
+
+
+cmake -DCMAKE_INSTALL_PREFIX=${PREFIX} -DPYTHIA8_ROOT_DIR=${PYTHIA8DIR}  -DROOTSYS=${ROOTSYS} -DFASTJET_ROOT_DIR=${FASTJETDIR}  .
+
+
+

@@ -1,7 +1,9 @@
-cmake_minimum_required(VERSION 2.6 FATAL_ERROR)
+cmake_minimum_required(VERSION 2.8 FATAL_ERROR)
 #----------------------------------------------------------------------------
 project(vincia CXX Fortran)
 
+set(BUILD_ALL_EXAMPLES OFF)   # by defualt we build only vincia01.cc
+INCLUDE( ${PROJECT_SOURCE_DIR}/cmake/modules/TargetDistclean.cmake OPTIONAL)
 
 #---Set pathes where to put the libraries, executables and headers------------------------------
 #set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
@@ -10,7 +12,7 @@ project(vincia CXX Fortran)
 #set(HEADER_OUTPUT_PATH ${CMAKE_BINARY_DIR}/include)
 
 set(CMAKE_DISABLE_SOURCE_CHANGES ON)
-set(CMAKE_DISABLE_IN_SOURCE_BUILD ON)
+#set(CMAKE_DISABLE_IN_SOURCE_BUILD ON)
 SET(CMAKE_COLOR_MAKEFILE ON)
 
 #set this to true if you are using makefiles and want to see the full compile and link commands instead of only the shortened ones 
@@ -101,15 +103,19 @@ add_library(dhelas3 SHARED ${MG_lib_files})
 
 add_library(vincia SHARED ${vincia_lib_sources})
 
-add_library(mginterfacedummy SHARED ${vincia_MGInterfaceDummy_sources} )
+#add_library(mginterfacedummy SHARED ${vincia_MGInterfaceDummy_sources} )
 
 add_library(mginterface SHARED ${vincia_MGInterface_sources} )
 
 add_library(vinciaroot SHARED ${vincia_root_sources} )
 
 
+if ( BUILD_ALL_EXAMPLES MATCHES ON)
+	file( GLOB APP_SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} vincia*.cc )
+else ( BUILD_ALL_EXAMPLES MATCHES ON) 
+        file( GLOB APP_SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} vincia01.cc)	
+endif (BUILD_ALL_EXAMPLES MATCHES ON)
 
-file( GLOB APP_SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} vincia*.cc )
 foreach( testsourcefile ${APP_SOURCES} )
     # I used a simple string replace, to cut off .cc.
     string( REPLACE ".cc" ".exe" testname ${testsourcefile} )
@@ -131,7 +137,7 @@ INSTALL( FILES ${xml_examples_files}  DESTINATION bin)
 install(TARGETS dhelas3 vincia  vinciaroot mginterface LIBRARY DESTINATION lib)
 install( FILES ${vincia_header_files} DESTINATION include) 
 
-install(DIRECTORY xmldoc tunes antennae DESTINATION .)
+install(DIRECTORY settings DESTINATION .)
 
 install(FILES ${CMAKE_BINARY_DIR}/vinciaenv.sh  DESTINATION .)
 install(FILES ${CMAKE_BINARY_DIR}/vinciaenv.csh DESTINATION .)
