@@ -21,7 +21,6 @@ mac_check(){
 }
 
 check(){
-    echo $OS
     if [ "Darwin" == $OS ];then
         mac_check "$1"
     elif [ "Linux" == $OS ]; then
@@ -40,7 +39,7 @@ if echo ${ROOT_PATH} | grep -q '\-opt'; then
         debug=$(check "$name")
         if [ "x$debug" != "x" ];then
             echo "WARNING: File $name contains debug symbols."
-            echo $name | grep -q -i MCGenerators && exitcode=1
+            echo "$name" | grep -q -i MCGenerators && echo "$name" | grep -q -v site-packages && exitcode=1
         fi
     done
 elif echo ${ROOT_PATH} | grep -q '\-dbg'; then
