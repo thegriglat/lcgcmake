@@ -5,14 +5,7 @@ project(vincia CXX Fortran)
 set(BUILD_ALL_EXAMPLES OFF)   # by defualt we build only vincia01.cc
 INCLUDE( ${PROJECT_SOURCE_DIR}/cmake/modules/TargetDistclean.cmake OPTIONAL)
 
-#---Set pathes where to put the libraries, executables and headers------------------------------
-#set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
-#set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
-#set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
-#set(HEADER_OUTPUT_PATH ${CMAKE_BINARY_DIR}/include)
-
 set(CMAKE_DISABLE_SOURCE_CHANGES ON)
-#set(CMAKE_DISABLE_IN_SOURCE_BUILD ON)
 SET(CMAKE_COLOR_MAKEFILE ON)
 
 #set this to true if you are using makefiles and want to see the full compile and link commands instead of only the shortened ones 
@@ -37,7 +30,10 @@ set(CMAKE_Fortran_FLAGS_RELEASE        "-fPIC -g -fno-automatic")
 
 list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake/modules)
 
-find_package(ROOT REQUIRED COMPONENTS Core RIO Hist Graf Gpad)
+if (ROOTSYS)
+ 	find_package(ROOT REQUIRED COMPONENTS Core RIO Hist Graf Gpad)
+endif (ROOTSYS)
+
 find_package(FastJet REQUIRED)
 find_package(Pythia8 REQUIRED)
 
@@ -107,8 +103,10 @@ add_library(vincia SHARED ${vincia_lib_sources})
 
 add_library(mginterface SHARED ${vincia_MGInterface_sources} )
 
+if (ROOTSYS)
 add_library(vinciaroot SHARED ${vincia_root_sources} )
-
+set (VINCIAROOT_INTERFACE vinciaroot)
+endif (ROOTSYS)
 
 if ( BUILD_ALL_EXAMPLES MATCHES ON)
 	file( GLOB APP_SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} vincia*.cc )
@@ -120,8 +118,7 @@ foreach( testsourcefile ${APP_SOURCES} )
     # I used a simple string replace, to cut off .cc.
     string( REPLACE ".cc" ".exe" testname ${testsourcefile} )
     add_executable( ${testname} ${testsourcefile} )
-    target_link_libraries( ${testname} vincia dhelas3 mginterface
-${PYTHIA8_LIBRARIES} ${ROOT_LIBRARIES} vinciaroot ${FASTJET_LIBRARIES} )
+    target_link_libraries( ${testname} vincia dhelas3 mginterface ${PYTHIA8_LIBRARIES} ${ROOT_LIBRARIES} ${VINCIAROOT_INTERFACE} ${FASTJET_LIBRARIES} )
     install(TARGETS ${testname} RUNTIME DESTINATION bin)
 endforeach( testsourcefile ${APP_SOURCES} )
 
@@ -134,7 +131,12 @@ INSTALL( FILES ${cmnd_files}  DESTINATION bin)
 FILE(GLOB xml_examples_files "${CMAKE_CURRENT_SOURCE_DIR}/vincia*.xml")
 INSTALL( FILES ${xml_examples_files}  DESTINATION bin)
 
-install(TARGETS dhelas3 vincia  vinciaroot mginterface LIBRARY DESTINATION lib)
+install(TARGETS dhelas3 vincia   mginterface LIBRARY DESTINATION lib)
+
+if (ROOTSYS)
+	install(TARGETS vinciaroot LIBRARY DESTINATION lib)
+endif (ROOTSYS)
+
 install( FILES ${vincia_header_files} DESTINATION include) 
 
 install(DIRECTORY settings DESTINATION .)
