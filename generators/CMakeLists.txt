@@ -1207,7 +1207,8 @@ if(NOT APPLE)    #  (installation fails on MacOSX)
                -DHEPMC_PREFIX=${HepMC_home}
                -DBOOST_ROOT=${Boost_home}
                -DBOOST_INCLUDE_DIR=${Boost_home_include}
-#               -D__CRMCSTATIC__=ON
+               -D__PYTHIA__=ON -D__SIBYLL__=ON  -D__PHOJET__=ON
+               -D__DPMJET__=ON -D__QGSJETII04__=ON
     DEPENDS HepMC Boost ROOT
   )
   
