@@ -80,7 +80,7 @@ LCG_external_package(pyanalysis        1.4                                      
 LCG_external_package(pydot             1.0.28                                   )
 LCG_external_package(pygraphics        1.4                                      )
 LCG_external_package(pygsi             0.5                                      )
-LCG_external_package(pylint            0.26.0                                   )
+LCG_external_package(pylint            1.2.1                                    )
 LCG_external_package(pyminuit          0.0.1                                    )
 LCG_external_package(pyparsing         1.5.6                                    )
 LCG_external_package(pyqt              4.9.5                                    )
