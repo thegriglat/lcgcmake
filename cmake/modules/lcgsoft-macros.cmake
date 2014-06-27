@@ -636,7 +636,7 @@ function(LCG_add_test test)
   if(NOT EXISTS ${_driver})
     message(FATAL_ERROR "LCG_ADD_TEST: TestDriver.cmake not found!")
   endif()
-  set(_command ${_command} -P ${_driver})
+  set(_command ${_command} -DTESTLOGDIR=${TESTLOGDIR} -P ${_driver})
 
   #- Now we can actually add the test
   if(ARG_BUILD)
@@ -662,6 +662,7 @@ function(LCG_add_test test)
        endif()
     endif() 
     add_test(NAME ${test} COMMAND ${CMAKE_CTEST_COMMAND}
+      --output-log ${TESTLOGDIR}/${test}.log
       --build-and-test  ${ARG_SOURCE_DIR} ${ARG_BINARY_DIR}
       --build-generator ${CMAKE_GENERATOR}
       --build-makeprogram ${CMAKE_MAKE_PROGRAM}

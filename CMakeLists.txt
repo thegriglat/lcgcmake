@@ -32,6 +32,7 @@ set(MAKE ${CMAKE_SOURCE_DIR}/cmake/scripts/make_verbose $(MAKE))
 enable_testing()
 include(CTest)
 
+set(TESTLOGDIR "${PROJECT_BINARY_DIR}/tests")
 if(NOT "$ENV{CXXFLAGS}" STREQUAL "")
   set(libtoolpatch CXX=$ENV{CXX}\ $ENV{CXXFLAGS})
 endif()
