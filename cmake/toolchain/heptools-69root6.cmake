@@ -12,8 +12,8 @@ include(${CMAKE_CURRENT_LIST_DIR}/heptools-common.cmake)
 
 
 # Application Area Projects
-LCG_AA_project(COOL  COOL_3_0-preview)
-LCG_AA_project(CORAL CORAL_3_0-preview)
+LCG_AA_project(COOL  COOL_3_0_0)
+LCG_AA_project(CORAL CORAL_3_0_0)
 LCG_AA_project(RELAX RELAX-root6)
 LCG_AA_project(ROOT  6.00.01)
 LCG_AA_project(LCGCMT LCGCMT_${heptools_version})
@@ -77,7 +77,7 @@ LCG_external_package(pyanalysis        1.4                                      
 LCG_external_package(pydot             1.0.28                                   )
 LCG_external_package(pygraphics        1.4                                      )
 LCG_external_package(pygsi             0.5                                      )
-LCG_external_package(pylint            0.26.0                                   )
+LCG_external_package(pylint            1.2.1                                    )
 LCG_external_package(pyminuit          0.0.1                                    )
 LCG_external_package(pyparsing         1.5.6                                    )
 LCG_external_package(pyqt              4.9.5                                    )
