@@ -886,7 +886,10 @@ LCG_add_test(rivet_orig_test1
 #---QD------------------------------------------------------------------------------------------
 LCGPackage_Add(
   qd
-  URL ${gen_url}/qd-${qd_native_version}.tar.gz
+ URL ${gen_url}/qd-${qd_native_version}.tar.gz
+ UPDATE_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/qd-<NATIVE_VERSION> <SOURCE_DIR>
+ COMMAND ${CMAKE_COMMAND} -E remove_directory <SOURCE_DIR>/<NATIVE_VERSION>
+
   CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR>
      --enable-shared
 
