@@ -33,7 +33,7 @@ LCG_external_package(blas              20110419                                 
 LCG_external_package(Boost             1.55.0                                   )
 LCG_external_package(CLHEP             2.1.4.1                   clhep          )
 LCG_external_package(CLHEP             1.9.4.7                   clhep          )
-LCG_external_package(cmaketools        1.1                                      )
+LCG_external_package(cmaketools        1.2                                      )
 LCG_external_package(cmt               v1r20p20090520                           )
 LCG_external_package(coin3d            3.1.3p2                                  )
 LCG_external_package(coverage          3.5.2                                    )
