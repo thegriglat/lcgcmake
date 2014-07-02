@@ -930,12 +930,57 @@ LCGPackage_Add(
      --enable-openloops=.
      --enable-lhole
      --with-sqlite3=${sqlite_home}  "CFLAGS=-O2 -g0" "CXXFLAGS=-O2 -g0" "FFLAGS=-O2 -g0"
-
   BUILD_COMMAND ${MAKE} LIBRARY_PATH=${lhapdf_home}/lib CPPFLAGS=-I${lhapdf_home}/include
   INSTALL_COMMAND make install LIBRARY_PATH=${lhapdf_home}/lib CPPFLAGS=-I${lhapdf_home}/include
   BUILD_IN_SOURCE 1
   DEPENDS lhapdf HepMC sqlite
 )
+
+#---Sherpa with MPI support------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  sherpa-mpi
+  URL ${gen_url}/SHERPA-MC-<sherpa_<NATIVE_VERSION>_author>.tar.gz
+  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR>
+     --enable-shared --enable-static --enable-binreloc --enable-analysis
+     --enable-pythia --enable-hepevtsize=<sherpa_<NATIVE_VERSION>_hepevt>
+     --enable-lhapdf=${lhapdf_home}
+     --enable-hepmc2=${HepMC_home}
+     --enable-openloops=.
+     --enable-lhole
+     --enable-mpi
+     --with-sqlite3=${sqlite_home}  "CFLAGS=-O2 -g0" "CXXFLAGS=-O2 -g0" "FFLAGS=-O2 -g0" PATH=${openmpi_home}/bin:$ENV{PATH} LIBRARY_PATH=${openmpi_home}/lib
+  BUILD_COMMAND ${MAKE} LIBRARY_PATH=${lhapdf_home}/lib
+CPPFLAGS=-I${lhapdf_home}/include
+  INSTALL_COMMAND make install LIBRARY_PATH=${lhapdf_home}/lib
+CPPFLAGS=-I${lhapdf_home}/include
+  BUILD_IN_SOURCE 1
+  DEPENDS lhapdf HepMC sqlite openmpi
+)
+
+
+LCGPackage_Add(
+  sherpa-mpich2
+  URL ${gen_url}/SHERPA-MC-<sherpa_<NATIVE_VERSION>_author>.tar.gz
+  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR>
+     --enable-shared --enable-static --enable-binreloc --enable-analysis
+     --enable-pythia --enable-hepevtsize=<sherpa_<NATIVE_VERSION>_hepevt>
+     --enable-lhapdf=${lhapdf_home}
+     --enable-hepmc2=${HepMC_home}
+     --enable-openloops=.
+     --enable-lhole
+     --enable-mpi
+     --with-sqlite3=${sqlite_home} "CFLAGS=-O2 -g0 -fPIC" "CXXFLAGS=-O2 -g0 -fPIC" "FFLAGS=-O2 -g0 -fPIC" PATH=${mpich2_home}/bin:$ENV{PATH} LIBRARY_PATH=${mpich2_home}/lib
+  BUILD_COMMAND ${MAKE} LIBRARY_PATH=${lhapdf_home}/lib
+CPPFLAGS=-I${lhapdf_home}/include
+  INSTALL_COMMAND make install LIBRARY_PATH=${lhapdf_home}/lib
+CPPFLAGS=-I${lhapdf_home}/include
+  BUILD_IN_SOURCE 1
+  DEPENDS lhapdf HepMC sqlite mpich2
+)
+
+
+
+
 
 # $PWD is needed because Sherpa uses this variable to know current directory
 LCG_add_test(sherpa_orig_test1
