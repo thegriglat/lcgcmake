@@ -529,6 +529,27 @@ LCGPackage_Add(
   BINARY_PACKAGE 1
 )
 
+#---openmpi-----------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  openmpi
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/openmpi-${openmpi_native_version}.tar.gz
+  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR>
+  BUILD_COMMAND ${MAKE} 
+  BUILD_IN_SOURCE 1
+)
+
+
+LCGPackage_Add(
+  mpich2
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/mpich2-${mpich2_native_version}.tar.gz
+  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --enable-shared --enable-sharedlibs=gcc "CFLAGS=-O2 -g0 -fPIC"
+  BUILD_COMMAND ${MAKE} all
+  BUILD_IN_SOURCE 1
+)
+
+
+
+
 #---oracle-----------------------------------------------------------------------------------------------
 LCGPackage_Add(
   oracle
