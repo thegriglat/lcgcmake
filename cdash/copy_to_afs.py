@@ -84,6 +84,7 @@ if __name__ == "__main__":
   if slotname in (None, "none") :
     print "skipping AFS install step"
     sys.exit(0)
+  lcgversion = os.environ.get('LCGVERSION')  
 
   # define source and target  
   workdir = os.environ['WORKDIR']
@@ -92,13 +93,17 @@ if __name__ == "__main__":
   command = "rsync -au --no-g %s/ %s" %(sourcedir,targetdir)
   print "Executing %s" %command
   print subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).stdout.read()
-  command = "touch %s/isDone-%s" %(targetdir,get_platform())
+
+  #create InstallArea for ATLAS
+  createInstallArea(targetdir,get_platform(),"LCGCMT_%s"%lcgversion ) #TODO: make version dynamic 
+    
+  #create release summary file for LHCb
+  command = "/ec/lcg-scripts/extract_LCG_summary.py %s %s %s" %(targetdir,get_platform(),lcgversion)
   print subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).stdout.read()
 
-  #create InstallArea
-  createInstallArea(targetdir,get_platform(),"LCGCMT_69root6") #TODO: make version dynamic 
-    
-
+  # declare as done
+  command = "touch %s/isDone-%s" %(targetdir,get_platform())
+  print subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).stdout.read()
 
     
   
