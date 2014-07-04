@@ -746,7 +746,7 @@ LCGPackage_Add(
   BUILD_IN_SOURCE 1
   INSTALL_COMMAND make install PYTHONPATH=${cython_pythonpath} LIBRARY_PATH=${Python_home}/lib
           COMMAND ${CMAKE_COMMAND} -DINSTALL_DIR=<INSTALL_DIR> -P ${CMAKE_SOURCE_DIR}/cmake/scripts/StripLib.cmake
-  DEPENDS lhapdf6sets Boost yamlcpp Python cython
+  DEPENDS Boost yamlcpp Python cython
 )
 
 LCG_add_test(lhapdf6_orig_testpdf
