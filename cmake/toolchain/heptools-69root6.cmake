@@ -14,10 +14,10 @@ include(${CMAKE_CURRENT_LIST_DIR}/heptools-common.cmake)
 # Application Area Projects
 LCG_AA_project(COOL  COOL_3_0_0)
 LCG_AA_project(CORAL CORAL_3_0_0)
-LCG_AA_project(RELAX RELAX-root6)
+LCG_AA_project(RELAX RELAX_1_4_0)
 LCG_AA_project(ROOT  6.00.01)
 LCG_AA_project(LCGCMT LCGCMT_${heptools_version})
-LCG_AA_project(HepMC githead)
+LCG_AA_project(HepMC 2.06.08)
 
 # Compilers
 #LCG_compiler(gcc43 gcc 4.3.5)
