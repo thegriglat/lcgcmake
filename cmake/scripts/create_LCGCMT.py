@@ -61,7 +61,7 @@ apply_tag ROOT_GE_5_15
 apply_tag ROOT_GE_5_19
 
 macro LCG_config_version   "%s"
-
+macro uuid_config_version "dummy"
 %s
 """ %(releaseinfo["description"]["version"],"\n".join(results))
 
