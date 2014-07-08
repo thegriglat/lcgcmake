@@ -134,7 +134,11 @@ endforeach()
 #---pythia8------------------------------------------------------------------------------------------
 LCGPackage_Add(
   pythia8
-  URL ${gen_url}/pythia8<pythia8_<NATIVE_VERSION>_author>.tgz
+  IF <pythia8_<NATIVE_VERSION>_author> VERSION_EQUAL 999 THEN
+    SVN_REPOSITORY https://pythia8.hepforge.org/svn/pythia81/trunk
+  ELSE
+    URL ${gen_url}/pythia8<pythia8_<NATIVE_VERSION>_author>.tgz
+  ENDIF
   CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --with-hepmc=${HepMC_home} --enable-shared --lcgplatform=${LCG_platform}
   BUILD_COMMAND ${MAKE}
   INSTALL_COMMAND ${CMAKE_COMMAND} -E chdir <SOURCE_DIR> ${MAKE} install
@@ -148,7 +152,7 @@ LCGPackage_Add(
   INSTALL_EXAMPLES_COMMAND ${CMAKE_COMMAND} -E make_directory <INSTALL_DIR>/bin
                    COMMAND ${CMAKE_COMMAND} -E chdir <SOURCE_DIR>/examples cp bin/main01.exe bin/main03.exe main03.cmnd <INSTALL_DIR>/bin
   TEST_COMMAND ${CMAKE_COMMAND} -E chdir <INSTALL_DIR>/bin ./main01.exe
-  DEPENDS HepMC lhapdf fastjet
+  DEPENDS HepMC
 )
 
 foreach(v ${pythia8_native_version})
