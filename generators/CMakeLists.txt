@@ -514,6 +514,12 @@ LCG_add_test(professor-${v}.genser-import
   TEST_COMMAND ${Python_cmd} -c "import professor.user as prof;"
   ENVIRONMENT PYTHONPATH=${pyanalysis_home}/lib/python${Python_config_version_twodigit}/site-packages:${professor-${v}_home}/lib/python${Python_config_version_twodigit}/site-packages ${library_path}=${ROOT_home}/lib:$ENV{${library_path}}
 )
+
+LCG_add_test(professor-${v}.genser-executable
+  TEST_COMMAND ${professor_home}/bin/prof-interpolate -h
+  ENVIRONMENT PYTHONPATH=${pyanalysis_home}/lib/python${Python_config_version_twodigit}/site-packages:${professor-${v}_home}/lib/python${Python_config_version_twodigit}/site-packages ${library_path}=${ROOT_home}/lib:$ENV{${library_path}}
+)
+
 endforeach()
 
 #---pyquen--------------------------------------------------------------------------------------
