@@ -1287,7 +1287,8 @@ if(NOT APPLE)    #  (installation fails on MacOSX)
                -DROOTSYS=${ROOT_home}
                -DHEPMC_PREFIX=${HepMC_home}
                -DBOOST_ROOT=${Boost_home}
-               -DBOOST_INCLUDE_DIR=${Boost_home_include}
+               -DBOOST_INCLUDEDIR=${Boost_home_include}
+               -DBoost_NO_SYSTEM_PATHS=TRUE
      IF <NATIVE_VERSION> VERSION_GREATER 1.3 THEN
                -D__PYTHIA__=ON -D__SIBYLL__=ON  -D__PHOJET__=ON
                -D__DPMJET__=ON -D__QGSJETII04__=ON
