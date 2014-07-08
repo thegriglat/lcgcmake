@@ -101,6 +101,10 @@ if __name__ == "__main__":
   command = "/ec/lcg-scripts/extract_LCG_summary.py %s %s %s" %(targetdir,get_platform(),lcgversion)
   print subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).stdout.read()
 
+  #create symlink to gcc
+  command = "ln -s /afs/cern.ch/sw/lcg/contrib/gcc %s/gcc" %targetdir
+  print subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).stdout.read()
+
   # declare as done
   command = "touch %s/isDone-%s" %(targetdir,get_platform())
   print subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).stdout.read()
