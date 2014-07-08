@@ -1,0 +1,9 @@
+Main:numberOfEvents = 1000
+WeakBosonAndParton:qqbar2gmZg = on
+WeakBosonAndParton:qg2gmZq = on
+PhaseSpace:pTHatMin = 20.
+
+Next:numberShowEvent = 0
+23:onMode = off
+23:onIfAny = 11 13 15
+
