@@ -84,7 +84,7 @@ if __name__ == "__main__":
   if slotname in (None, "none") :
     print "skipping AFS install step"
     sys.exit(0)
-  lcgversion = os.environ.get('LCGVERSION')  
+  lcgversion = os.environ.get('LCG_VERSION')  
 
   # define source and target  
   workdir = os.environ['WORKDIR']
