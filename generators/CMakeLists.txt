@@ -112,8 +112,9 @@ LCGPackage_Add(
   DEPENDS lhapdfsets-<NATIVE_VERSION>
 )
 
-LCG_add_test(lhapdf_build
-  BINARY_DIR lhapdf/tests
+foreach(v ${lhapdf_native_version})
+LCG_add_test(lhapdf-${v}.build
+  BINARY_DIR lhapdf/tests/${v}
   SOURCE_DIR lhapdf/tests
   BUILD all
   BUILD_OPTIONS
@@ -121,16 +122,16 @@ LCG_add_test(lhapdf_build
    -DLHAPDF_ROOT_DIR=${lhapdf_home}
 )
 
-foreach(i lhapdf_orig_testCC1 lhapdf_orig_testCC3 lhapdf_orig_testCC4)
-  LCG_add_test(${i}
-    TEST_COMMAND lhapdf/tests/${i}
+foreach(i native-CCTest1 native-CCTest3 native-CCTest4)
+  LCG_add_test(lhapdf-${v}.${i}
+    TEST_COMMAND lhapdf/tests/${v}/${i}
     ENVIRONMENT
       ${library_path}=${lhapdf_home}/lib:$ENV{${library_path}}
       LHAPATH=${lhapdfsets_home}/../share/lhapdf/PDFsets
-    DEPENDS lhapdf_build
+    DEPENDS lhapdf-${v}.build
   )
 endforeach()
-
+endforeach()
 #---pythia8------------------------------------------------------------------------------------------
 LCGPackage_Add(
   pythia8
@@ -183,8 +184,8 @@ LCG_add_test(pythia8-${v}.genser-test1_nightly
     PYTHIA8DATA=${pythia8-${v}_home}/xmldoc
   DEPENDS pythia8-${v}.build)
 
-LCG_add_test(pythia8-${v}.native-test1
-  TEST_COMMAND pythia8/tests/${v}/pythia8_orig_test1
+LCG_add_test(pythia8-${v}.native-main01
+  TEST_COMMAND pythia8/tests/${v}/native-main01
   ENVIRONMENT
     ${library_path}=${pythia8-${v}_home}/lib:$ENV{${library_path}}
     PYTHIA8DATA=${pythia8-${v}_home}/xmldoc
@@ -320,54 +321,50 @@ set(thepeg_v_home <thepeg-<herwig++_<NATIVE_VERSION>_thepeg>_home>)
     DEPENDS GSL Boost thepeg-<herwig++_<VERSION>_thepeg> fastjet
   )
 
-LCG_add_test(herwigpp_orig_test1 
-			  TEST_COMMAND ${herwig++_home}/bin/Herwig++ read ${herwig++_home}/../share/sources/src/LHC.in 
-			       COMMAND ${herwig++_home}/bin/Herwig++ run -N100 LHC.run -d1 
+foreach(v ${herwig++_native_version})
+LCG_add_test(herwigpp-${v}.native-LHC 
+			  TEST_COMMAND ${herwig++-${v}_home}/bin/Herwig++ read ${herwig++-${v}_home}/../share/sources/src/LHC.in 
+			       COMMAND ${herwig++-${v}_home}/bin/Herwig++ run -N100 LHC.run -d1 
                           POST_COMMAND cat LHC.out
 			       COMMAND cat LHC.log	
                           BINARY_DIR herwig++/tests
                           SOURCE_DIR herwig++/tests
-                          ENVIRONMENT ${library_path}=${herwig++_home}/lib:${thepeg_home}/lib/ThePEG:${HepMC_home}/lib:${lhapdf_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:$ENV{${library_path}})
+                          ENVIRONMENT ${library_path}=${herwig++-${v}_home}/lib:${thepeg-${herwig++_${v}_thepeg}_home}/lib/ThePEG:${HepMC_home}/lib:${lhapdf_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:$ENV{${library_path}})
 
-LCG_add_test(herwigpp_orig_test2 
-			  TEST_COMMAND ${herwig++_home}/bin/Herwig++ read ${herwig++_home}/../share/sources/src/TVT.in 
-                               COMMAND ${herwig++_home}/bin/Herwig++ run -N100 TVT.run -d1 
+LCG_add_test(herwigpp-${v}.native-TVT 
+			  TEST_COMMAND ${herwig++-${v}_home}/bin/Herwig++ read ${herwig++-${v}_home}/../share/sources/src/TVT.in 
+                               COMMAND ${herwig++-${v}_home}/bin/Herwig++ run -N100 TVT.run -d1 
                           POST_COMMAND cat TVT.out
                                COMMAND cat TVT.log  
                           BINARY_DIR herwig++/tests
                           SOURCE_DIR herwig++/tests
-                          ENVIRONMENT ${library_path}=${herwig++_home}/lib:${thepeg_home}/lib/ThePEG:${HepMC_home}/lib:${lhapdf_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:$ENV{${library_path}})
+                          ENVIRONMENT ${library_path}=${herwig++-${v}_home}/lib:${thepeg-${herwig++_${v}_thepeg}_home}/lib/ThePEG:${HepMC_home}/lib:${lhapdf_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:$ENV{${library_path}})
 
-LCG_add_test(herwigpp_thepeg_test
-                          TEST_COMMAND ${herwig++_home}/bin/Herwig++ read ${CMAKE_SOURCE_DIR}/generators/herwig++/tests/LHC-W.in --repo=${herwig++_home}/share/Herwig++/HerwigDefaults.rpo
-                               COMMAND ${herwig++_home}/bin/Herwig++ run -N100 LHC-W.run -d1
+LCG_add_test(herwigpp-${v}.genser-LHC-W
+                          TEST_COMMAND ${herwig++-${v}_home}/bin/Herwig++ read ${CMAKE_SOURCE_DIR}/generators/herwig++/tests/LHC-W.in --repo=${herwig++-${v}_home}/share/Herwig++/HerwigDefaults.rpo
+                               COMMAND ${herwig++-${v}_home}/bin/Herwig++ run -N100 LHC-W.run -d1
                           POST_COMMAND cat LHC-W.out
                                COMMAND cat LHC-W.log
                           BINARY_DIR herwig++/tests
                           SOURCE_DIR herwig++/tests
-                          ENVIRONMENT ${library_path}=${herwig++_home}/lib:${thepeg_home}/lib/ThePEG:${HepMC_home}/lib:${lhapdf_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:$ENV{${library_path}})
+                          ENVIRONMENT ${library_path}=${herwig++-${v}_home}/lib:${thepeg-${herwig++_${v}_thepeg}_home}/lib/ThePEG:${HepMC_home}/lib:${lhapdf_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:$ENV{${library_path}})
 
 
 # native herwig++ tests (not all of them are run)
 
-
-foreach(version ${herwig++_native_version})
-
-LCG_add_test(herwigpp_${version}_native_LEP-VV TEST_COMMAND ${CMAKE_COMMAND} -E chdir ${PROJECT_BINARY_DIR}/generators/herwig++-${version}/src/herwig++/${version}/Tests make -j1 test-LEP-VV REPO=${herwig++-${version}_home}/share/Herwig++/HerwigDefaults.rpo
-           COMMAND ${CMAKE_COMMAND} -E chdir ${PROJECT_BINARY_DIR}/generators/herwig++-${version}/src/herwig++/${version}/Tests cat LEP-VV.log       
-      ENVIRONMENT ${library_path}=${herwig++_home}/lib:${thepeg_home}/lib/ThePEG:${HepMC_home}/lib:${lhapdf_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:$ENV{${library_path}})
-
-
+LCG_add_test(herwigpp-${v}.native-LEP-VV 
+      TEST_COMMAND ${CMAKE_COMMAND} -E chdir ${PROJECT_BINARY_DIR}/generators/herwig++-${v}/src/herwig++/${v}/Tests make -j1 test-LEP-VV REPO=${herwig++-${v}_home}/share/Herwig++/HerwigDefaults.rpo
+           COMMAND ${CMAKE_COMMAND} -E chdir ${PROJECT_BINARY_DIR}/generators/herwig++-${v}/src/herwig++/${v}/Tests cat LEP-VV.log       
+      ENVIRONMENT ${library_path}=${herwig++-${v}_home}/lib:${thepeg-${herwig++_${v}_thepeg}_home}/lib/ThePEG:${HepMC_home}/lib:${lhapdf_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:$ENV{${library_path}})
  
-    foreach(herwig-leptest LEP-VH LEP-VBF LEP-BB LEP-Quarks LEP-Leptons LEP-default LEP-Powheg)
-LCG_add_test(herwigpp_${version}_native_${herwig-leptest}
-      TEST_COMMAND ${CMAKE_COMMAND} -E chdir ${PROJECT_BINARY_DIR}/generators/herwig++-${version}/src/herwig++/${version}/Tests make -j1 test-${herwig-leptest} REPO=${herwig++-${version}_home}/share/Herwig++/HerwigDefaults.rpo
-           COMMAND ${CMAKE_COMMAND} -E chdir ${PROJECT_BINARY_DIR}/generators/herwig++-${version}/src/herwig++/${version}/Tests cat ${herwig-leptest}.log       
-      ENVIRONMENT ${library_path}=${herwig++_home}/lib:${thepeg_home}/lib/ThePEG:${HepMC_home}/lib:${lhapdf_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:$ENV{${library_path}}
-      DEPENDS herwigpp_${version}_native_LEP-VV)
-    endforeach()
+foreach(herwig-leptest LEP-VH LEP-VBF LEP-BB LEP-Quarks LEP-Leptons LEP-default LEP-Powheg)
+LCG_add_test(herwigpp-${v}.native-${herwig-leptest}
+      TEST_COMMAND ${CMAKE_COMMAND} -E chdir ${PROJECT_BINARY_DIR}/generators/herwig++-${v}/src/herwig++/${v}/Tests make -j1 test-${herwig-leptest} REPO=${herwig++-${v}_home}/share/Herwig++/HerwigDefaults.rpo
+           COMMAND ${CMAKE_COMMAND} -E chdir ${PROJECT_BINARY_DIR}/generators/herwig++-${v}/src/herwig++/${v}/Tests cat ${herwig-leptest}.log       
+      ENVIRONMENT ${library_path}=${herwig++-${v}_home}/lib:${thepeg-${herwig++_${v}_thepeg}_home}/lib/ThePEG:${HepMC_home}/lib:${lhapdf_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:$ENV{${library_path}}
+      DEPENDS herwigpp-${v}.native-LEP-VV)
 endforeach()
-
+endforeach()
 
 
 
@@ -383,34 +380,36 @@ LCGPackage_Add(
   DEPENDS HepMC lhapdf
 )
 
-LCG_add_test(tauolapp-build
-  BINARY_DIR tauolapp/tests
+foreach(v ${tauola++_native_version})
+LCG_add_test(tauolapp-${v}.build
+  BINARY_DIR tauolapp/tests/${v}
   SOURCE_DIR tauolapp/tests
   BUILD all
   BUILD_OPTIONS
    -DCMAKE_MODULE_PATH=${cmaketools_home}/modules
-   -DTAUOLAPP_ROOT_DIR=${tauola++_home}
+   -DTAUOLAPP_ROOT_DIR=${tauola++-${v}_home}
    -DPYTHIA8_ROOT_DIR=${pythia8_home}
    -DHEPMC_ROOT_DIR=${HepMC_home})
 
-foreach(i tauolapp_test1 tauolapp_orig_test1 tauolapp_orig_test2 tauolapp_orig_test3)
-  LCG_add_test(${i}
-    TEST_COMMAND ${CMAKE_COMMAND} -E chdir tauolapp/tests ./${i}
-    ENVIRONMENT PYTHIA8DATA=${pythia8_home}/xmldoc ${library_path}=${tauola++_home}/lib:${HepMC_home}/lib:${pythia8_home}/lib:$ENV{${library_path}}
-    DEPENDS tauolapp-build)
+foreach(i genser-test1 native-taumain_stand_alone native-taummk_pythia native-taumain_hepevt)
+  LCG_add_test(tauolapp-${v}.${i}
+    TEST_COMMAND ${CMAKE_COMMAND} -E chdir tauolapp/tests/${v} ./${i}
+    ENVIRONMENT PYTHIA8DATA=${pythia8_home}/xmldoc ${library_path}=${tauola++-${v}_home}/lib:${HepMC_home}/lib:${pythia8_home}/lib:$ENV{${library_path}}
+    DEPENDS tauolapp-${v}.build)
 endforeach()
 
-LCG_add_test(tauolapp_phys_test1
-  TEST_COMMAND ${CMAKE_COMMAND} -E chdir tauolapp/tests ./tauolapp_test1 1 2000
+LCG_add_test(tauolapp-${v}.genser-test1-1_2000
+  TEST_COMMAND ${CMAKE_COMMAND} -E chdir tauolapp/tests/${v} ./genser-test1 1 2000
   ENVIRONMENT
-    ${library_path}=${tauola++_home}/lib:${HepMC_home}/lib:${pythia8_home}/lib:$ENV{${library_path}}
+    ${library_path}=${tauola++-${v}_home}/lib:${HepMC_home}/lib:${pythia8_home}/lib:$ENV{${library_path}}
     PYTHIA8DATA=${pythia8_home}/xmldoc
   POST_COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/chi.c .
-       COMMAND ${CMAKE_COMMAND} -E copy tauolapp/tests/testi.dat test_tauolapp.dat
-       COMMAND ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/cmpr.sh tauolapp ${CMAKE_SOURCE_DIR}/generators/tauolapp/tests/reference.dat ${tauola++_test_version} ${LCG_VERSION} ${LCG_platform}
-  DEPENDS tauolapp-build
+       COMMAND ${CMAKE_COMMAND} -E copy tauolapp/tests/${v}/testi.dat test_tauolapp.dat
+       COMMAND ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/cmpr.sh tauolapp ${CMAKE_SOURCE_DIR}/generators/tauolapp/tests/reference.dat ${v} ${LCG_VERSION} ${LCG_platform}
+  DEPENDS tauolapp-${v}.build
   
 )
+endforeach()
 
 #---pythia6-------------------------------------------------------------------------------------------
 LCGPackage_Add(
@@ -481,12 +480,14 @@ LCGPackage_Add(
   DEPENDS HepMC Boost Python swig
 )
 
-LCG_add_test(agile_orig_test1 TEST_COMMAND ${agile_home}/bin/agile-runmc Pythia6:${pythia6_test_version} -o hepmcfile.dat
-                              ENVIRONMENT PATH=${agile_home}/bin:${Python_home}/bin:$ENV{PATH}
-                                          ${library_path}=${agile_home}/lib:${HepMC_home}/lib:$ENV{${library_path}}
-                                          PYTHONPATH=${agile_home}/lib/python${Python_config_version_twodigit}/site-packages:$ENV{PYTHONPATH}
-                                          AGILE_GEN_PATH=${agile_home}/../../..
+foreach(v ${agile_native_version})
+LCG_add_test(agile-${v}.native-test_pythia6 TEST_COMMAND ${agile-${v}_home}/bin/agile-runmc Pythia6:${pythia6_test_version} -o hepmcfile.dat
+                              ENVIRONMENT PATH=${agile-${v}_home}/bin:${Python_home}/bin:$ENV{PATH}
+                                          ${library_path}=${agile-${v}_home}/lib:${HepMC_home}/lib:$ENV{${library_path}}
+                                          PYTHONPATH=${agile-${v}_home}/lib/python${Python_config_version_twodigit}/site-packages:$ENV{PYTHONPATH}
+                                          AGILE_GEN_PATH=${agile-${v}_home}/../../..
                               )
+endforeach()
 
 #---photos------------------------------------------------------------------------------------------
 if(NOT APPLE)    #  (installation fails on MacOSX)
@@ -503,15 +504,17 @@ if(NOT APPLE)    #  (installation fails on MacOSX)
             COMMAND ${CMAKE_COMMAND} -E chdir <INSTALL_DIR>/lib ${CMAKE_COMMAND} -E create_symlink archive/libphotos.a libphotos.a
   )
 
-LCG_add_test(photos-test1 TEST_COMMAND photos/tests/photos_test1
-                          BINARY_DIR photos/tests
+foreach(v ${photos_native_version})
+LCG_add_test(photos-${v}.genser-test TEST_COMMAND photos/tests/${v}/photos_test1
+                          BINARY_DIR photos/tests/${v}
                           SOURCE_DIR photos/tests
                           BUILD photos_test1
-                          BUILD_OPTIONS -DPHOTOS_ROOT_DIR=${photos_home} 
+                          BUILD_OPTIONS -DPHOTOS_ROOT_DIR=${photos-${v}_home} 
                                         -DPYTHIA6_ROOT_DIR=${pythia6_home}
                                         -DCMAKE_MODULE_PATH=${cmaketools_home}/modules
                           FAILREGEX "Fatal error"
-                          ENVIRONMENT ${library_path}=${photos_home}/lib:${pythia6_home}/lib:$ENV{${library_path}})
+                          ENVIRONMENT ${library_path}=${photos-${v}_home}/lib:${pythia6_home}/lib:$ENV{${library_path}})
+endforeach()
 
 endif()
 
@@ -556,16 +559,18 @@ LCGPackage_Add(
   CMAKE_ARGS -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
 )
 
-LCG_add_test(pyquen_test1
-  TEST_COMMAND pyquen/tests/pyquen_test1
-  BINARY_DIR pyquen/tests
+foreach(v ${pyquen_native_version})
+LCG_add_test(pyquen-${v}.genser-test1
+  TEST_COMMAND pyquen/tests/${v}/pyquen_test1
+  BINARY_DIR pyquen/tests/${v}
   SOURCE_DIR pyquen/tests
   BUILD pyquen_test1
   BUILD_OPTIONS
-   -DPYQUEN_ROOT_DIR=${pyquen_home}
+   -DPYQUEN_ROOT_DIR=${pyquen-${v}_home}
    -DPYTHIA6_ROOT_DIR=${pythia6_home}
    -DCMAKE_MODULE_PATH=${cmaketools_home}/modules
-  ENVIRONMENT ${library_path}=${pyquen_home}/lib:${pythia6_home}/lib:$ENV{${library_path}})
+  ENVIRONMENT ${library_path}=${pyquen-${v}_home}/lib:${pythia6_home}/lib:$ENV{${library_path}})
+endforeach()
 
 #---hydjet--------------------------------------------------------------------------------------
 LCGPackage_Add(
@@ -580,17 +585,19 @@ LCGPackage_Add(
   CMAKE_ARGS -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
 )
 
-LCG_add_test(hydjet_test1
-  TEST_COMMAND hydjet/tests/hydjet_test1
-  BINARY_DIR hydjet/tests
+foreach(v ${hydjet_native_version})
+LCG_add_test(hydjet-${v}.genser-test
+  TEST_COMMAND hydjet/tests/${v}/hydjet_test1
+  BINARY_DIR hydjet/tests/${v}
   SOURCE_DIR hydjet/tests
   BUILD all
   BUILD_OPTIONS
-   -DHYDJET_ROOT_DIR=${hydjet_home}
+   -DHYDJET_ROOT_DIR=${hydjet-${v}_home}
    -DPYTHIA6_ROOT_DIR=${pythia6_home}
    -DPYQUEN_ROOT_DIR=${pyquen_home}
    -DCMAKE_MODULE_PATH=${cmaketools_home}/modules
-  ENVIRONMENT ${library_path}=${hydjet_home}/lib:${pyquen_home}/lib:${pythia6_home}/lib:$ENV{${library_path}})
+  ENVIRONMENT ${library_path}=${hydjet-${v}_home}/lib:${pyquen_home}/lib:${pythia6_home}/lib:$ENV{${library_path}})
+endforeach()
 
 #---photos++------------------------------------------------------------------------------------------
 LCGPackage_Add(
@@ -604,64 +611,66 @@ LCGPackage_Add(
   DEPENDS HepMC
 )
 
-LCG_add_test(photospp-build
-  BINARY_DIR photospp/tests
+foreach(v ${photos++_native_version})
+LCG_add_test(photospp-${v}.build
+  BINARY_DIR photospp/tests/${v}
   SOURCE_DIR photospp/tests
   BUILD all
   BUILD_OPTIONS
    -DCMAKE_MODULE_PATH=${cmaketools_home}/modules
-   -DPHOTOSPP_ROOT_DIR=${photos++_home}
+   -DPHOTOSPP_ROOT_DIR=${photos++-${v}_home}
    -DPYTHIA8_ROOT_DIR=${pythia8_home}
    -DHEPMC_ROOT_DIR=${HepMC_home}
    -DCMAKE_BUILD_TYPE=Debug)
 
-  LCG_add_test(photospp_orig_test1
+  LCG_add_test(photospp-${v}.native-photos_standalone
     PRE_COMMAND ${CMAKE_COMMAND} -E remove -f photos_standalone_example.dat
-        COMMAND ${CMAKE_COMMAND} -E create_symlink ${photos++_home}/../share/sources/examples/photos_standalone_example.dat photos_standalone_example.dat
-    TEST_COMMAND photospp/tests/photospp_orig_test1
-    ENVIRONMENT ${library_path}=${photos++_home}/lib:${HepMC_home}/lib:${pythia8_home}/lib:$ENV{${library_path}}
-    DEPENDS photospp-build)
+        COMMAND ${CMAKE_COMMAND} -E create_symlink ${photos++-${v}_home}/../share/sources/examples/photos_standalone_example.dat photos_standalone_example.dat
+    TEST_COMMAND photospp/tests/${v}/native-photos_standalone
+    ENVIRONMENT ${library_path}=${photos++-${v}_home}/lib:${HepMC_home}/lib:${pythia8_home}/lib:$ENV{${library_path}}
+    DEPENDS photospp-${v}.build)
 
-foreach(i photospp_orig_test2 photospp_test1 photospp_test2)
-  LCG_add_test(${i}
-    TEST_COMMAND  ${CMAKE_COMMAND} -E chdir photospp/tests ./${i}
+foreach(i native-photos_hepevt genser-test1 genser-test2)
+  LCG_add_test(photospp-${v}.${i}
+    TEST_COMMAND  ${CMAKE_COMMAND} -E chdir photospp/tests/${v} ./${i}
     ENVIRONMENT
       PYTHIA8DATA=${pythia8_home}/xmldoc 
-      ${library_path}=${photos++_home}/lib:${HepMC_home}/lib:${pythia8_home}/lib:$ENV{${library_path}}
-    DEPENDS photospp-build)
+      ${library_path}=${photos++-${v}_home}/lib:${HepMC_home}/lib:${pythia8_home}/lib:$ENV{${library_path}}
+    DEPENDS photospp-${v}.build)
 endforeach()
 
-LCG_add_test(photospp_phys_test1
-  TEST_COMMAND ${CMAKE_COMMAND} -E chdir photospp/tests ./photospp_test1
+LCG_add_test(photospp-${v}.genser-test1-nightlies
+  TEST_COMMAND ${CMAKE_COMMAND} -E chdir photospp/tests/${v} ./genser-test1
   ENVIRONMENT
-    ${library_path}=${photos++_home}/lib:${HepMC_home}/lib:${pythia8_home}/lib:$ENV{${library_path}}
+    ${library_path}=${photos++-${v}_home}/lib:${HepMC_home}/lib:${pythia8_home}/lib:$ENV{${library_path}}
     PYTHIA8DATA=${pythia8_home}/xmldoc
   POST_COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/chi.c .
-       COMMAND ${CMAKE_COMMAND} -E copy photospp/tests/testi.dat test_photospp.dat
-  DEPENDS photospp-build
+       COMMAND ${CMAKE_COMMAND} -E copy photospp/tests/${v}/testi.dat test_photospp.dat
+  DEPENDS photospp-${v}.build
   
 )
 
-LCG_add_test(photospp_phys_test2
-  TEST_COMMAND ${CMAKE_COMMAND} -E chdir photospp/tests ./photospp_test2
+LCG_add_test(photospp-${v}.genser-test2-nightlies
+  TEST_COMMAND ${CMAKE_COMMAND} -E chdir photospp/tests/${v} ./genser-test2
   ENVIRONMENT
-    ${library_path}=${photos++_home}/lib:${HepMC_home}/lib:${pythia8_home}/lib:$ENV{${library_path}}
+    ${library_path}=${photos++-${v}_home}/lib:${HepMC_home}/lib:${pythia8_home}/lib:$ENV{${library_path}}
     PYTHIA8DATA=${pythia8_home}/xmldoc
   POST_COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/chi.c .
-       COMMAND ${CMAKE_SOURCE_DIR}/generators/photospp/tests/mergetest
-       COMMAND ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/cmpr.sh photospp ${CMAKE_SOURCE_DIR}/generators/photospp/tests/reference.dat ${photos++_test_version} ${LCG_VERSION} ${LCG_platform}
-  DEPENDS photospp-build photospp_phys_test1
+       COMMAND ${CMAKE_SOURCE_DIR}/generators/photospp/tests/mergetest ${v}
+       COMMAND ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/cmpr.sh photospp ${CMAKE_SOURCE_DIR}/generators/photospp/tests/reference.dat ${v} ${LCG_VERSION} ${LCG_platform}
+  DEPENDS photospp-${v}.build photospp-${v}.genser-test1-nightlies
   
 )
 
-LCG_add_test(photospp_phys_test3
-  TEST_COMMAND ${CMAKE_COMMAND} -E chdir photospp/tests ./photospp_test3
+LCG_add_test(photospp-${v}.genser-test3
+  TEST_COMMAND ${CMAKE_COMMAND} -E chdir photospp/tests/${v} ./genser-test3
   ENVIRONMENT
-    ${library_path}=${photos++_home}/lib:${HepMC_home}/lib:${pythia8_home}/lib:$ENV{${library_path}}
+    ${library_path}=${photos++-${v}_home}/lib:${HepMC_home}/lib:${pythia8_home}/lib:$ENV{${library_path}}
     PYTHIA8DATA=${pythia8_home}/xmldoc
-  DEPENDS photospp-build photospp_phys_test2
+  DEPENDS photospp-${v}.build photospp-${v}.genser-test2-nightlies
   
 )
+endforeach()
 
 #---evtgen------------------------------------------------------------------------------------------
 LCGPackage_Add(
@@ -682,7 +691,7 @@ LCGPackage_Add(
 )
 
 foreach(version ${evtgen_native_version})
-LCG_add_test(evtgen-${version}_test1 TEST_COMMAND evtgen-${version}/tests/evtgen_test1 ${evtgen-${version}_home}/share/DECAY_2010.DEC ${evtgen-${version}_home}/share/evt.pdl ${CMAKE_CURRENT_SOURCE_DIR}/evtgen/tests/DDALITZ.DEC 10000
+LCG_add_test(evtgen-${version}.genser-test TEST_COMMAND evtgen-${version}/tests/evtgen_test1 ${evtgen-${version}_home}/share/DECAY_2010.DEC ${evtgen-${version}_home}/share/evt.pdl ${CMAKE_CURRENT_SOURCE_DIR}/evtgen/tests/DDALITZ.DEC 10000
                           BINARY_DIR evtgen-${version}/tests
                           SOURCE_DIR evtgen/tests
                           BUILD evtgen_test1
@@ -698,11 +707,11 @@ LCG_add_test(evtgen-${version}_test1 TEST_COMMAND evtgen-${version}/tests/evtgen
 endforeach()
 
 foreach(version ${evtgen_native_version})
-  LCG_add_test(evtgen-${version}_compare
+  LCG_add_test(evtgen-${version}.compare
     PRE_COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/chi.c .
         COMMAND ${CMAKE_COMMAND} -E copy evtgen-${version}/tests/testi.dat test_evtgen-${version}.dat
     TEST_COMMAND ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/cmpr.sh evtgen-${version} ${CMAKE_SOURCE_DIR}/generators/evtgen/tests/compare/reference.dat _ ${LCG_VERSION} ${LCG_platform}
-    DEPENDS evtgen-${version}_test1
+    DEPENDS evtgen-${version}.genser-test
     
   )
 endforeach()
@@ -786,43 +795,45 @@ LCGPackage_Add(
   DEPENDS Boost yamlcpp Python cython
 )
 
-LCG_add_test(lhapdf6_orig_testpdf
-  TEST_COMMAND lhapdf6/tests/lhapdf6_orig_testpdf CT10 1
-  BINARY_DIR lhapdf6/tests
+foreach(v ${lhapdf6_native_version})
+LCG_add_test(lhapdf6-${v}.native-testpdf
+  TEST_COMMAND lhapdf6/tests/${v}/native-testpdf CT10 1
+  BINARY_DIR lhapdf6/tests/${v}
   SOURCE_DIR lhapdf6/tests
-  BUILD lhapdf6_orig_testpdf
+  BUILD native-testpdf
   BUILD_OPTIONS
    -DCMAKE_MODULE_PATH=${cmaketools_home}/modules
-   -DLHAPDF6_ROOT_DIR=${lhapdf6_home}
+   -DLHAPDF6_ROOT_DIR=${lhapdf6-${v}_home}
    -DBOOST_ROOT=${Boost_home}
    -DBoost_INCLUDE_DIR=${Boost_home_include}
    -DYAMLCPP_ROOT_DIR=${yamlcpp_home}
   ENVIRONMENT
-    ${library_path}=${lhapdf6_home}/lib:${Boost_home}/lib:${yamlcpp_home}/lib:$ENV{${library_path}}
-    LHAPDF_DATA_PATH=${lhapdf6_home}/share/LHAPDF:${lhapdf6sets_home}/../share/LHAPDF
+    ${library_path}=${lhapdf6-${v}_home}/lib:${Boost_home}/lib:${yamlcpp_home}/lib:$ENV{${library_path}}
+    LHAPDF_DATA_PATH=${lhapdf6-${v}_home}/share/LHAPDF:${lhapdf6sets_home}/../share/LHAPDF
 )
 
-LCG_add_test(lhapdf6_pyt8
-  TEST_COMMAND lhapdf6/tests/pyt8/lhapdf6_pyt8
-  BINARY_DIR lhapdf6/tests/pyt8
+LCG_add_test(lhapdf6-${v}.native-pythia8
+  TEST_COMMAND lhapdf6/tests/pyt8/${v}/lhapdf6_pyt8
+  BINARY_DIR lhapdf6/tests/pyt8/${v}
   SOURCE_DIR lhapdf6/tests/pyt8
   BUILD lhapdf6_pyt8
   BUILD_OPTIONS
    -DCMAKE_MODULE_PATH=${cmaketools_home}/modules
-   -DLHAPDF6_ROOT_DIR=${lhapdf6_home}
+   -DLHAPDF6_ROOT_DIR=${lhapdf6-${v}_home}
    -DBOOST_ROOT=${Boost_home}
    -DBoost_INCLUDE_DIR=${Boost_home_include}
    -DYAMLCPP_ROOT_DIR=${yamlcpp_home}
    -DPYTHIA8_ROOT_DIR=${pythia8_home}
   ENVIRONMENT
-    ${library_path}=${lhapdf6_home}/lib:${Boost_home}/lib:${yamlcpp_home}/lib:$ENV{${library_path}}
-    LHAPDF_DATA_PATH=${lhapdf6_home}/share/LHAPDF:${lhapdf6sets_home}/../share/LHAPDF
+    ${library_path}=${lhapdf6-${v}_home}/lib:${Boost_home}/lib:${yamlcpp_home}/lib:$ENV{${library_path}}
+    LHAPDF_DATA_PATH=${lhapdf6-${v}_home}/share/LHAPDF:${lhapdf6sets_home}/../share/LHAPDF
     PYTHIA8DATA=${pythia8_home}/xmldoc
   POST_COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/chi.c .
        COMMAND ${CMAKE_COMMAND} -E copy testi_lhapdf6.dat test_lhapdf6.dat
-       COMMAND ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/cmpr.sh lhapdf6 ${CMAKE_SOURCE_DIR}/generators/lhapdf6/tests/pyt8/reference.dat ${lhapdf6_test_version} ${LCG_VERSION} ${LCG_platform}
+       COMMAND ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/cmpr.sh lhapdf6 ${CMAKE_SOURCE_DIR}/generators/lhapdf6/tests/pyt8/reference.dat ${v} ${LCG_VERSION} ${LCG_platform}
   
 )
+endforeach()
 
 #---Rivet-----------------------------------------------------------------------------------------
 
@@ -885,40 +896,44 @@ LCGPackage_Add(
   ENDIF
 )
 
+foreach(v ${rivet_native_version})
+if (${v} MATCHES "^2.[.]*")
 LCG_add_test(
-       rivet2_test_cms
-       TEST_COMMAND  ${rivet2_home}/bin/rivet --ignore-beams -a CMS_2012_I1184941 ${CMAKE_SOURCE_DIR}/generators/rivet/tests/data.hepmc
-       ENVIRONMENT ${library_path}=${Python_home}/lib:${GSL_home}/lib:${rivet2_home}/lib:${yoda_home}/lib:${HepMC_home}/lib:${fastjet_home}/lib:${yamlcpp_home}/lib:$ENV{${library_path}}
+       rivet-${v}.genser-cms
+       TEST_COMMAND  ${rivet-${v}_home}/bin/rivet --ignore-beams -a CMS_2012_I1184941 ${CMAKE_SOURCE_DIR}/generators/rivet/tests/data.hepmc
+       ENVIRONMENT ${library_path}=${Python_home}/lib:${GSL_home}/lib:${rivet-${v}_home}/lib:${yoda-${rivet_${v}_yoda}_home}/lib:${HepMC_home}/lib:${fastjet_home}/lib:${yamlcpp_home}/lib:$ENV{${library_path}}
                    PATH=${Python_home}/bin:$ENV{PATH}   
 )
 
 LCG_add_test(
-       rivet2_test_atlas
-       TEST_COMMAND  ${rivet2_home}/bin/rivet --ignore-beams -a ATLAS_2012_I1083318 ${CMAKE_SOURCE_DIR}/generators/rivet/tests/data.hepmc
-       ENVIRONMENT ${library_path}=${Python_home}/lib:${GSL_home}/lib:${rivet2_home}/lib:${yoda_home}/lib:${HepMC_home}/lib:${fastjet_home}/lib:${yamlcpp_home}/lib:$ENV{${library_path}}
+       rivet-${v}.genser-atlas
+       TEST_COMMAND  ${rivet-${v}_home}/bin/rivet --ignore-beams -a ATLAS_2012_I1083318 ${CMAKE_SOURCE_DIR}/generators/rivet/tests/data.hepmc
+       ENVIRONMENT ${library_path}=${Python_home}/lib:${GSL_home}/lib:${rivet-${v}_home}/lib:${yoda-${rivet_${v}_yoda}_home}/lib:${HepMC_home}/lib:${fastjet_home}/lib:${yamlcpp_home}/lib:$ENV{${library_path}}
                    PATH=${Python_home}/bin:$ENV{PATH}
 )
 
 LCG_add_test(
-       rivet2_test_cms_script
-       TEST_COMMAND ${CMAKE_SOURCE_DIR}/generators/rivet2/tests/testCMS.sh ${rivet2_home} ${CMAKE_SOURCE_DIR}/generators/rivet/tests/data.hepmc  
+       rivet-${v}.genser-cms_script
+       TEST_COMMAND ${CMAKE_SOURCE_DIR}/generators/rivet2/tests/testCMS.sh ${rivet-${v}_home} ${CMAKE_SOURCE_DIR}/generators/rivet/tests/data.hepmc  
        ENVIRONMENT PATH=${Python_home}/bin:$ENV{PATH}
 		   ${library_path}=${Python_home}/lib:${GSL_home}/lib:$ENV{${library_path}}
 )   
 
 LCG_add_test(
-       rivet2_test_atlas_script  
-       TEST_COMMAND ${CMAKE_SOURCE_DIR}/generators/rivet2/tests/testATLAS.sh ${rivet2_home} ${CMAKE_SOURCE_DIR}/generators/rivet/tests/data.hepmc
+       rivet-${v}.genser-atlas_script  
+       TEST_COMMAND ${CMAKE_SOURCE_DIR}/generators/rivet2/tests/testATLAS.sh ${rivet-${v}_home} ${CMAKE_SOURCE_DIR}/generators/rivet/tests/data.hepmc
        ENVIRONMENT PATH=${Python_home}/bin:$ENV{PATH}
 		   ${library_path}=${Python_home}/lib:${GSL_home}/lib:$ENV{${library_path}}
 )
-
-LCG_add_test(rivet_orig_test1
-  TEST_COMMAND ${CMAKE_SOURCE_DIR}/generators/rivet/tests/test1.sh ${rivet_home} ${CMAKE_SOURCE_DIR}/generators/rivet/tests/data.hepmc
+else()
+LCG_add_test(rivet-${v}.native-MC_DIJET
+  TEST_COMMAND ${CMAKE_SOURCE_DIR}/generators/rivet/tests/test1.sh ${rivet-${v}_home} ${CMAKE_SOURCE_DIR}/generators/rivet/tests/data.hepmc
   ENVIRONMENT
     ${library_path}=${GSL_home}/lib:$ENV{${library_path}}
     PATH=${Python_home}/bin:$ENV{PATH}
 )
+endif()
+endforeach()
 
 #---QD------------------------------------------------------------------------------------------
 LCGPackage_Add(
@@ -1020,27 +1035,28 @@ CPPFLAGS=-I${lhapdf_home}/include
 
 
 # $PWD is needed because Sherpa uses this variable to know current directory
-LCG_add_test(sherpa_orig_test1
-  PRE_COMMAND ${CMAKE_COMMAND} -E remove_directory sherpa/tests_orig1
-      COMMAND ${CMAKE_COMMAND} -E make_directory sherpa/tests_orig1
-  TEST_COMMAND ${CMAKE_COMMAND} -E chdir sherpa/tests_orig1 ${sherpa_home}/bin/Sherpa -j20 -f ${CMAKE_SOURCE_DIR}/generators/sherpa/tests/LHC_Z.dat
+foreach(v ${sherpa_native_version})
+LCG_add_test(sherpa-${v}.native-LHC_Z
+  PRE_COMMAND ${CMAKE_COMMAND} -E remove_directory sherpa/native-LHC_Z/${v}
+      COMMAND ${CMAKE_COMMAND} -E make_directory sherpa/native-LHC_Z/${v}
+  TEST_COMMAND ${CMAKE_COMMAND} -E chdir sherpa/native-LHC_Z/${v} ${sherpa-${v}_home}/bin/Sherpa -j20 -f ${CMAKE_SOURCE_DIR}/generators/sherpa/tests/LHC_Z.dat
   ENVIRONMENT
-    ${library_path}=${sherpa_home}/lib/SHERPA-MC:${HepMC_home}/lib:${lhapdf_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:${sqlite_home}/lib:$ENV{${library_path}}
+    ${library_path}=${sherpa-${v}_home}/lib/SHERPA-MC:${HepMC_home}/lib:${lhapdf_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:${sqlite_home}/lib:$ENV{${library_path}}
     PATH=${sqlite_home}/bin:$ENV{PATH}
     PWD=.
 )
 
-LCG_add_test(sherpa_orig_test2
-  PRE_COMMAND ${CMAKE_COMMAND} -E remove_directory sherpa/tests_orig2
-      COMMAND ${CMAKE_COMMAND} -E make_directory sherpa/tests_orig2
-  TEST_COMMAND ${CMAKE_COMMAND} -E chdir sherpa/tests_orig2 ${sherpa_home}/bin/Sherpa -j20 -f ${CMAKE_SOURCE_DIR}/generators/sherpa/tests/LHC_ZJets.dat
+LCG_add_test(sherpa-${v}.native-LHC_ZJets
+  PRE_COMMAND ${CMAKE_COMMAND} -E remove_directory sherpa/native-LHC_ZJets/${v}
+      COMMAND ${CMAKE_COMMAND} -E make_directory sherpa/native-LHC_ZJets/${v}
+  TEST_COMMAND ${CMAKE_COMMAND} -E chdir sherpa/native-LHC_ZJets/${v} ${sherpa-${v}_home}/bin/Sherpa -j20 -f ${CMAKE_SOURCE_DIR}/generators/sherpa/tests/LHC_ZJets.dat
   ENVIRONMENT
-    ${library_path}=${sherpa_home}/lib/SHERPA-MC:${HepMC_home}/lib:${lhapdf_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:${sqlite_home}/lib:$ENV{${library_path}}
+    ${library_path}=${sherpa-${v}_home}/lib/SHERPA-MC:${HepMC_home}/lib:${lhapdf_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:${sqlite_home}/lib:$ENV{${library_path}}
     PATH=${sqlite_home}/bin:$ENV{PATH}
     PWD=.
   
 )
-
+endforeach()
 
 #---HepMCAnalysis------------------------------------------------------------------------------------
 LCGPackage_Add(
@@ -1056,14 +1072,16 @@ LCGPackage_Add(
   DEPENDS HepMC fastjet CLHEP ROOT
 
 )
-LCG_add_test(hepmcanalysis-build
-  BINARY_DIR hepmcanalysis/tests
+
+foreach(v ${hepmcanalysis_native_version})
+LCG_add_test(hepmcanalysis-${v}.build
+  BINARY_DIR hepmcanalysis/tests/${v}
   SOURCE_DIR hepmcanalysis/tests  
   BUILD all
   BUILD_OPTIONS
    -DCMAKE_MODULE_SEARCHPATH1=${CMAKE_SOURCE_DIR}/cmake/modules
    -DCMAKE_MODULE_SEARCHPATH2=${cmaketools_home}/modules
-   -DHEPMCANALYSIS_ROOT_DIR=${hepmcanalysis_home}
+   -DHEPMCANALYSIS_ROOT_DIR=${hepmcanalysis-${v}_home}
    -DPYTHIA6_ROOT_DIR=${pythia6_home}
    -DHEPMC_ROOT_DIR=${HepMC_home}
    -DFASTJET_ROOT_DIR=${fastjet_home}
@@ -1073,21 +1091,21 @@ LCG_add_test(hepmcanalysis-build
   ENVIRONMENT ${library_path}=${ROOT_home}/lib:${fastjet_home}/lib:${CLHEP_home}/lib:${HepMC_home}/lib:${pythia6_home}/lib:$ENV{${library_path}})
  
 
-LCG_add_test(hepmcanalysis_test_pythia6
-   TEST_COMMAND hepmcanalysis/tests/hepmcanalysis_test_pythia6 ${hepmcanalysis_home}/../share/sources/examples/pythia6/Process.config
-   DEPENDS hepmcanalysis-build
-   ENVIRONMENT ${library_path}=${hepmcanalysis_home}/lib:${ROOT_home}/lib:${fastjet_home}/lib:${CLHEP_home}/lib:${HepMC_home}/lib:${pythia6_home}/lib:$ENV{${library_path}}
+LCG_add_test(hepmcanalysis-${v}.native-pythia6
+   TEST_COMMAND hepmcanalysis/tests/${v}/native-pythia6 ${hepmcanalysis-${v}_home}/../share/sources/examples/pythia6/Process.config
+   DEPENDS hepmcanalysis-${v}.build
+   ENVIRONMENT ${library_path}=${hepmcanalysis-${v}_home}/lib:${ROOT_home}/lib:${fastjet_home}/lib:${CLHEP_home}/lib:${HepMC_home}/lib:${pythia6_home}/lib:$ENV{${library_path}}
 )
     
-LCG_add_test(hepmcanalysis_test_hepmcreader
-    BINARY_DIR hepmcanalysis/tests
-    PRE_COMMAND ${CMAKE_COMMAND} -E create_symlink ${hepmcanalysis_home}/../share/sources/examples/hepmcreader/Process.config Process.config
+LCG_add_test(hepmcanalysis-${v}.native-hepmcreader
+    BINARY_DIR hepmcanalysis/tests/${v}
+    PRE_COMMAND ${CMAKE_COMMAND} -E create_symlink ${hepmcanalysis-${v}_home}/../share/sources/examples/hepmcreader/Process.config Process.config
         COMMAND ${CMAKE_COMMAND} -E create_symlink ${CMAKE_SOURCE_DIR}/generators/rivet/tests/data.hepmc sample1.input
-    TEST_COMMAND hepmcanalysis/tests/hepmcanalysis_test_hepmcreader Process.config
-    DEPENDS hepmcanalysis-build
-    ENVIRONMENT ${library_path}=${hepmcanalysis_home}/lib:${ROOT_home}/lib:${fastjet_home}/lib:${CLHEP_home}/lib:${HepMC_home}/lib:${pythia6_home}/lib:$ENV{${library_path}}
+    TEST_COMMAND hepmcanalysis/tests/${v}/native-hepmcreader Process.config
+    DEPENDS hepmcanalysis-${v}.build
+    ENVIRONMENT ${library_path}=${hepmcanalysis-${v}_home}/lib:${ROOT_home}/lib:${fastjet_home}/lib:${CLHEP_home}/lib:${HepMC_home}/lib:${pythia6_home}/lib:$ENV{${library_path}}
 )
-
+endforeach()
 
 
 
@@ -1103,28 +1121,30 @@ LCGPackage_Add(mctester
   DEPENDS HepMC ROOT
 )
 
-LCG_add_test(mctester-build
-  BINARY_DIR mctester/tests
+foreach(v ${mctester_native_version})
+LCG_add_test(mctester-${v}.build
+  BINARY_DIR mctester/tests/${v}
   SOURCE_DIR mctester/tests  
   BUILD all
   BUILD_OPTIONS
    -DCMAKE_MODULE_SEARCHPATH1=${CMAKE_SOURCE_DIR}/cmake/modules
    -DCMAKE_MODULE_SEARCHPATH2=${cmaketools_home}/modules
-   -DMCTESTER_ROOT_DIR=${mctester_home}
+   -DMCTESTER_ROOT_DIR=${mctester-${v}_home}
    -DPYTHIA8_ROOT_DIR=${pythia8_home}
    -DHEPMC_ROOT_DIR=${HepMC_home}
    -DROOTSYS=${ROOT_home}
-   ENVIRONMENT ${library_path}=${mctester_home}/lib:${pythia8_home}/lib:${HepMC_home}/lib:$ENV{${library_path}})
+   ENVIRONMENT ${library_path}=${mctester-${v}_home}/lib:${pythia8_home}/lib:${HepMC_home}/lib:$ENV{${library_path}})
   
-LCG_add_test(mctester_test_pyt8
-    BINARY_DIR mctester/tests
-    PRE_COMMAND ${CMAKE_COMMAND} -E create_symlink ${mctester_home}/../share/sources/examples-C++/pythia/SETUP.C SETUP.C
-    TEST_COMMAND mctester/tests/mctester_test_pyt8
-    ENVIRONMENT ${library_path}=${ROOT_home}/lib:${mctester_home}/lib:${pythia8_home}/lib:${HepMC_home}/lib:$ENV{${library_path}} 
+LCG_add_test(mctester-${v}.native-pythia
+    BINARY_DIR mctester/tests/${v}
+    PRE_COMMAND ${CMAKE_COMMAND} -E create_symlink ${mctester-${v}_home}/../share/sources/examples-C++/pythia/SETUP.C SETUP.C
+    TEST_COMMAND mctester/tests/${v}/mctester_test_pyt8
+    ENVIRONMENT ${library_path}=${ROOT_home}/lib:${mctester-${v}_home}/lib:${pythia8_home}/lib:${HepMC_home}/lib:$ENV{${library_path}} 
                 PYTHIA8DATA=${pythia8_home}/xmldoc
-    DEPENDS mctester-build
+    DEPENDS mctester-${v}.build
   	)
     
+endforeach()
 
 #---HIJING----------------------------------------------------------------------------------------
 
@@ -1143,13 +1163,16 @@ if(NOT APPLE)    #  (installation fails on MacOSX, can be fixed on macos)
        	  COMMAND ${CMAKE_COMMAND} -E copy  <SOURCE_DIR>/tmp/pyhidata.o <INSTALL_DIR>/lib
     BUILD_IN_SOURCE 1
 )
-LCG_add_test(hijing_orig_test1 TEST_COMMAND hijing/tests/hijing_orig_test1
-                          BINARY_DIR hijing/tests
+
+foreach(v ${hijing_native_version})
+LCG_add_test(hijing-${v}.native-example TEST_COMMAND hijing/tests/${v}/hijing_orig_test1
+                          BINARY_DIR hijing/tests/${v}
                           SOURCE_DIR hijing/tests
                           BUILD hijing_orig_test1
-                          BUILD_OPTIONS -DHIJING_ROOT_DIR=${hijing_home} 
+                          BUILD_OPTIONS -DHIJING_ROOT_DIR=${hijing-${v}_home} 
                                         -DCMAKE_MODULE_PATH=${cmaketools_home}/modules
-                          ENVIRONMENT ${library_path}=${hijing_home}/lib:$ENV{${library_path}})
+                          ENVIRONMENT ${library_path}=${hijing-${v}_home}/lib:$ENV{${library_path}})
+endforeach()
 
 endif()
 
@@ -1162,10 +1185,12 @@ LCGPackage_Add(
   CMAKE_ARGS -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
 )
 
-LCG_add_test(starlight_orig_test1
+foreach(v ${starlight_native_version})
+LCG_add_test(starlight-${v}.native-slight
   PRE_COMMAND ${CMAKE_COMMAND} -E remove -f slight.in
-      COMMAND ${CMAKE_COMMAND} -E create_symlink ${starlight_home}/../share/sources/config/slight.in.new slight.in
-  TEST_COMMAND ${starlight_home}/bin/starlight)
+      COMMAND ${CMAKE_COMMAND} -E create_symlink ${starlight-${v}_home}/../share/sources/config/slight.in.new slight.in
+  TEST_COMMAND ${starlight-${v}_home}/bin/starlight)
+endforeach()
 
 #---HERWIG----------------------------------------------------------------------------------------
 LCGPackage_Add(
@@ -1192,15 +1217,18 @@ if(NOT APPLE)    #  (installation fails on MacOSX)
     BUILD_IN_SOURCE 1
     DEPENDS photos pythia6
   )
-  LCG_add_test(tauola-test1 TEST_COMMAND tauola/tests/tauola_test1
-                          BINARY_DIR tauola/tests
+
+foreach(v ${tauola_native_version})
+  LCG_add_test(tauola-${v}.genser-test TEST_COMMAND tauola/tests/${v}/tauola_test1
+                          BINARY_DIR tauola/tests/${v}
                           SOURCE_DIR tauola/tests
                           BUILD tauola_test1
-                          BUILD_OPTIONS -DTAUOLA_ROOT_DIR=${tauola_home} 
+                          BUILD_OPTIONS -DTAUOLA_ROOT_DIR=${tauola-${v}_home} 
                                         -DPHOTOS_ROOT_DIR=${photos_home} 
                                         -DPYTHIA6_ROOT_DIR=${pythia6_home}
                                         -DCMAKE_MODULE_PATH=${cmaketools_home}/modules
-                          ENVIRONMENT ${library_path}=${tauola_home}/lib:${photos_home}/lib:${pythia6_home}/lib:$ENV{${library_path}})
+                          ENVIRONMENT ${library_path}=${tauola-${v}_home}/lib:${photos_home}/lib:${pythia6_home}/lib:$ENV{${library_path}})
+endforeach()
 
 endif()
 
@@ -1247,16 +1275,18 @@ LCGPackage_Add(
   BUILD_IN_SOURCE 1
 )
 
+foreach(v ${alpgen_native_version})
 LCG_add_test(
-  alpgen_test1
+  alpgen-${v}.native-examples
   PRE_COMMAND ${CMAKE_COMMAND} -E remove_directory tmpalpgen
-      COMMAND ${CMAKE_COMMAND} -E make_directory tmpalpgen/examples
-      COMMAND ${CMAKE_COMMAND} -E copy_directory ${alpgen_home}/../share/sources/examples tmpalpgen/examples
-      COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/generators/alpgen/tests/inputalpgen tmpalpgen/examples
-      COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/generators/alpgen/tests/inputalpgen2 tmpalpgen/examples
-      COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/generators/alpgen/tests/inputalpgen3 tmpalpgen/examples  
-  TEST_COMMAND ${CMAKE_COMMAND} -E chdir tmpalpgen/examples ${CMAKE_SOURCE_DIR}/generators/alpgen/tests/runalpgen ${alpgen_home}/../share/sources ${alpgen_home}/lib/archive
+      COMMAND ${CMAKE_COMMAND} -E make_directory tmpalpgen/examples-${v}
+      COMMAND ${CMAKE_COMMAND} -E copy_directory ${alpgen-${v}_home}/../share/sources/examples tmpalpgen/examples-${v}
+      COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/generators/alpgen/tests/inputalpgen tmpalpgen/examples-${v}
+      COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/generators/alpgen/tests/inputalpgen2 tmpalpgen/examples-${v}
+      COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/generators/alpgen/tests/inputalpgen3 tmpalpgen/examples-${v}
+  TEST_COMMAND ${CMAKE_COMMAND} -E chdir tmpalpgen/examples-${v} ${CMAKE_SOURCE_DIR}/generators/alpgen/tests/runalpgen ${alpgen-${v}_home}/../share/sources ${alpgen-${v}_home}/lib/archive
 )
+endforeach()
 
 #---CRMC (FORMER EPOS)-----------------------------------------------------------------------------
 # SVN repository:
@@ -1274,12 +1304,14 @@ if(NOT APPLE)    #  (installation fails on MacOSX)
   )
   
   # add test only if version is defined in toolchain configuration
-  if(NOT ${crmcold_home} STREQUAL "")
-    LCG_add_test(crmcold_orig_test
-      TEST_COMMAND ${crmcold_home}/bin/crmc -T 1 -c ${crmcold_home}/crmc.param
+foreach(v ${crmcold_native_version})
+  if(NOT ${crmcold-${v}_home} STREQUAL "")
+    LCG_add_test(crmcold-${v}.native-crmc
+      TEST_COMMAND ${crmcold-${v}_home}/bin/crmc -T 1 -c ${crmcold-${v}_home}/crmc.param
       ENVIRONMENT ${library_path}=${HepMC_home}/lib:$ENV{${library_path}}
     )
   endif()
+endforeach()
 endif()
 
 if(NOT APPLE)    #  (installation fails on MacOSX)
@@ -1300,10 +1332,12 @@ if(NOT APPLE)    #  (installation fails on MacOSX)
     DEPENDS HepMC Boost ROOT
   )
   
-  LCG_add_test(crmc_orig_test
-    TEST_COMMAND ${crmc_home}/bin/crmc -T 1 -c ${crmc_home}/crmc.param
-    ENVIRONMENT ${library_path}=${crmc_home}/lib:${ROOT_home}/lib:${HepMC_home}/lib:${Boost_home}/lib:$ENV{${library_path}}	
+foreach(v ${crmc_native_version})
+  LCG_add_test(crmc-${v}.native-crmc
+    TEST_COMMAND ${crmc-${v}_home}/bin/crmc -T 1 -c ${crmc-${v}_home}/crmc.param
+    ENVIRONMENT ${library_path}=${crmc-${v}_home}/lib:${ROOT_home}/lib:${HepMC_home}/lib:${Boost_home}/lib:$ENV{${library_path}}	
   )
+endforeach()
 endif()
 
 #---powhegbox---------------------------------------------------------------------------------------
@@ -1331,7 +1365,6 @@ foreach(i WW HJ W_ew-BW Wbb Wj HJJ ZZ W_ew-BMNNP Dijet gg_H VBF_H Z W hvq Zj ST_
       LHAPATH=${lhapdfsets_home}/../share/PDFsets
   )
 endforeach()
-
 endif()
 
 #---sacrifice------------------------------------------------------------------------------------------
@@ -1351,13 +1384,13 @@ LCGPackage_Add(
   DEPENDS pythia8-<sacrifice_<VERSION>_pythia8>  Boost HepMC lhapdf photos++
 )
 
-
-LCG_add_test(sacrifice_test 
-   TEST_COMMAND ${sacrifice_home}/bin/run-pythia  --collision-energy 8000 -i ${CMAKE_SOURCE_DIR}/generators/sacrifice/AU2-CT10.params -n 1000 --photos 
-   ENVIRONMENT ${library_path}=${photos++_home}/lib:${lhapdf_home}/lib:${HepMC_home}/lib:${pythia8-${sacrifice_${sacrifice_native_version}_pythia8}_home}/lib:$ENV{${library_path}}
+foreach(v ${sacrifice_native_version})
+LCG_add_test(sacrifice-{v}.genser-AU2-CT10
+   TEST_COMMAND ${sacrifice-${v}_home}/bin/run-pythia  --collision-energy 8000 -i ${CMAKE_SOURCE_DIR}/generators/sacrifice/AU2-CT10.params -n 1000 --photos 
+   ENVIRONMENT ${library_path}=${photos++_home}/lib:${lhapdf_home}/lib:${HepMC_home}/lib:${pythia8-${sacrifice_${v}_pythia8}_home}/lib:$ENV{${library_path}}
 	       LHAPATH=${lhapdfsets_home}/../share/lhapdf/PDFsets
    )
-
+endforeach()
 
 
 
@@ -1417,17 +1450,18 @@ LCGPackage_Add(
   BUILD_IN_SOURCE 1
 )
 
-LCG_add_test(jhu_orig_test_JHUGen
+foreach(v ${jhu_native_version})
+LCG_add_test(jhu-${v}.native-JHUGen
   PRE_COMMAND ${CMAKE_COMMAND} -E remove -f pdfs
-      COMMAND ${CMAKE_COMMAND} -E create_symlink ${jhu_home}/pdfs pdfs
-  TEST_COMMAND ${jhu_home}/bin/JHUGen VegasNc0=100000 VegasNc1=500000 VegasNc2=100)
+      COMMAND ${CMAKE_COMMAND} -E create_symlink ${jhu-${v}_home}/pdfs pdfs
+  TEST_COMMAND ${jhu-${v}_home}/bin/JHUGen VegasNc0=100000 VegasNc1=500000 VegasNc2=100)
 
-LCG_add_test(jhu_orig_test_F
-  TEST_COMMAND ${jhu_home}/bin/testF)
+LCG_add_test(jhu-${v}.native-testF
+  TEST_COMMAND ${jhu-${v}_home}/bin/testF)
 
-LCG_add_test(jhu_orig_test_C
-  TEST_COMMAND ${jhu_home}/bin/testC)
-
+LCG_add_test(jhu-${v}.native-testC
+  TEST_COMMAND ${jhu-${v}_home}/bin/testC)
+endforeach()
 
 ### tests of generators using rivet 2
 foreach(v ${pythia8_native_version})
@@ -1436,8 +1470,8 @@ LCG_add_test(
   pythia8-${v}.genser-zjets-rivet
   PRE_COMMAND $ENV{SHELL} -c "cat ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/pythia8-zjets-rivet.params | sed \"s/Main:numberOfEvents.*/Main:numberOfEvents = ${pythia8_stat_size}/g\" | cat > ${CMAKE_BINARY_DIR}/generators/pythia8/tests/pythia8-${v}.zjets-rivet.params"
   TEST_COMMAND $ENV{SHELL} -c "env | grep PATH > pythia8-${v}.genser-zjets-rivet.env"
-       COMMAND ${CMAKE_BINARY_DIR}/generators/pythia8/tests/${v}/pythia8 ${CMAKE_BINARY_DIR}/generators/pythia8/tests/pythia8-${v}.zjets-rivet.params pythia8.genser-zjets.hempc.dat
-       COMMAND ${rivet2_home}/bin/rivet -a MC_XS -a MC_ZJETS --histo-file=pythia8-${v}.genser-zjets-rivet.yoda pythia8.genser-zjets.hempc.dat
+       COMMAND ${CMAKE_BINARY_DIR}/generators/pythia8/tests/${v}/pythia8 ${CMAKE_BINARY_DIR}/generators/pythia8/tests/pythia8-${v}.zjets-rivet.params pythia8-${v}.genser-zjets.hempc.dat
+       COMMAND ${rivet2_home}/bin/rivet -a MC_XS -a MC_ZJETS --histo-file=pythia8-${v}.genser-zjets-rivet.yoda pythia8-${v}.genser-zjets.hempc.dat
   ENVIRONMENT PATH=${Python_home}/bin:{sacrifice_home}/bin:$ENV{PATH}
                    ${library_path}=${Python_home}/lib:${GSL_home}/lib:${rivet2_home}/lib:${yoda_home}/lib:${HepMC_home}/lib:${fastjet_home}/lib:${yamlcpp_home}/lib:${ROOT_home}/lib:$ENV{${library_path}}
                    PYTHONPATH=${Python_home}/bin:${rivet2_home}/lib/python${Python_config_version_twodigit}/site-packages/:${yoda_home}/lib/python${Python_config_version_twodigit}/site-packages/:${ROOT_home}/lib:$ENV{PYTHONPATH}
@@ -1479,8 +1513,8 @@ LCG_add_test(
 
 LCG_add_test(
   pythia6-${v}.genser-zjets-rivet
+  PRE_COMMAND $ENV{SHELL} -c "env | grep PATH > pythia6-${v}.genser-zjets-rivet.env"
   TEST_COMMAND ${agile_home}/bin/agile-runmc Pythia6:${v_test_version} -o pythia6-${v}.genser-zjets.hepmc.dat --paramfile=${CMAKE_SOURCE_DIR}/generators/agile_configs/pythia6-zjets-13tev.params -n ${pythia6_stat_size}
-       COMMAND $ENV{SHELL} -c "env | grep PATH > pythia6-${v}.genser-zjets-rivet.env"
        COMMAND ${rivet2_home}/bin/rivet -a MC_XS -a MC_ZJETS --histo-file=pythia6-${v}.genser-zjets-rivet.yoda pythia6-${v}.genser-zjets.hepmc.dat
   ENVIRONMENT PATH=${agile_home}/bin:${Python_home}/bin:$ENV{PATH}
               ${library_path}=${Python_home}/lib:${GSL_home}/lib:${rivet2_home}/lib:${yoda_home}/lib:${HepMC_home}/lib:${fastjet_home}/lib:${yamlcpp_home}/lib:${agile_home}/lib:${HepMC_home}/lib:${ROOT_home}/lib:$ENV{${library_path}}
@@ -1499,6 +1533,7 @@ endforeach()
 
 foreach(v ${herwig++_native_version})
 LCG_add_test(herwigpp-${v}.genser-ttbar-rivet
+  PRE_COMMAND $ENV{SHELL} -c "env | grep PATH > herwigpp-${v}.genser-ttbar-rivet.env"
   TEST_COMMAND ${herwig++-${v}_home}/bin/Herwig++ read ${CMAKE_SOURCE_DIR}/generators/herwig++/tests/LHC-ttbar.in
        COMMAND ${herwig++-${v}_home}/bin/Herwig++ run -N${herwig++_stat_size} LHC-ttbar.run -d1
        COMMAND ${rivet2_home}/bin/rivet -a MC_XS -a MC_TTBAR -H herwigpp-${v}.genser-ttbar-rivet.yoda herwigpp_ttbar.hepmc
@@ -1519,6 +1554,7 @@ LCG_add_test(herwigpp-${v}.genser-ttbar-rivet
 )
   
 LCG_add_test(herwigpp-${v}.genser-zjets-rivet
+  PRE_COMMAND $ENV{SHELL} -c "env | grep PATH > herwigpp-${v}.genser-zjets-rivet.env"
   TEST_COMMAND ${herwig++-${v}_home}/bin/Herwig++ read ${CMAKE_SOURCE_DIR}/generators/herwig++/tests/LHC-zjets.in
        COMMAND ${herwig++-${v}_home}/bin/Herwig++ run -N${herwig++_stat_size} LHC-zjets.run -d1
        COMMAND ${rivet2_home}/bin/rivet -a MC_XS -a MC_ZJETS -H herwigpp-${v}.genser-zjets-rivet.yoda herwigpp_zjets.hepmc

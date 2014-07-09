@@ -12,14 +12,14 @@ set(TEST_DIR ${TAUOLAPP_ROOT_DIR}/../share/sources/examples/)
 include_directories(${TAUOLAPP_INCLUDE_DIR} ${HEPMC_INCLUDE_DIR} ${PYTHIA8_INCLUDE_DIRS})
 add_definitions(-DPYTHIA8_VERSION=${PYTHIA8_VERSION})
 
-add_executable(tauolapp_orig_test1 ${TEST_DIR}/taumain_stand_alone_example.cxx)
-target_link_libraries(tauolapp_orig_test1 ${TAUOLAPP_INTERFACE_LIBRARY} ${TAUOLAPP_FORTRAN_LIBRARY} ${HEPMC_LIBRARIES})
+add_executable(native-taumain_stand_alone ${TEST_DIR}/taumain_stand_alone_example.cxx)
+target_link_libraries(native-taumain_stand_alone ${TAUOLAPP_INTERFACE_LIBRARY} ${TAUOLAPP_FORTRAN_LIBRARY} ${HEPMC_LIBRARIES})
 
-add_executable(tauolapp_orig_test2 ${TEST_DIR}/taummk_pythia_example.cxx)
-target_link_libraries(tauolapp_orig_test2 ${TAUOLAPP_INTERFACE_LIBRARY} ${TAUOLAPP_FORTRAN_LIBRARY} ${HEPMC_LIBRARIES} ${PYTHIA8_LIBRARIES})
+add_executable(native-taummk_pythia ${TEST_DIR}/taummk_pythia_example.cxx)
+target_link_libraries(native-taummk_pythia ${TAUOLAPP_INTERFACE_LIBRARY} ${TAUOLAPP_FORTRAN_LIBRARY} ${HEPMC_LIBRARIES} ${PYTHIA8_LIBRARIES})
 
-add_executable(tauolapp_orig_test3 ${TEST_DIR}/taumain_hepevt_example.cxx)
-target_link_libraries(tauolapp_orig_test3 ${TAUOLAPP_INTERFACE_LIBRARY}  ${TAUOLAPP_FORTRAN_LIBRARY} ${HEPMC_LIBRARIES})
+add_executable(native-taumain_hepevt ${TEST_DIR}/taumain_hepevt_example.cxx)
+target_link_libraries(native-taumain_hepevt ${TAUOLAPP_INTERFACE_LIBRARY}  ${TAUOLAPP_FORTRAN_LIBRARY} ${HEPMC_LIBRARIES})
 
-add_executable(tauolapp_test1 tauolapp_test1.cc)
-target_link_libraries(tauolapp_test1 ${TAUOLAPP_INTERFACE_LIBRARY}  ${TAUOLAPP_FORTRAN_LIBRARY} ${HEPMC_LIBRARIES} ${PYTHIA8_LIBRARIES})
+add_executable(genser-test1 tauolapp_test1.cc)
+target_link_libraries(genser-test1 ${TAUOLAPP_INTERFACE_LIBRARY}  ${TAUOLAPP_FORTRAN_LIBRARY} ${HEPMC_LIBRARIES} ${PYTHIA8_LIBRARIES})

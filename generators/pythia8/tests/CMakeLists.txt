@@ -20,8 +20,8 @@ set(TESTS_DIR ${PYTHIA8_ROOT_DIR}/../share/sources/examples)
 add_executable(pythia8_genser_test1 pythia8_test1.cc analyserhepmc/AnalyserHepMC.cc analyserhepmc/LeptonAnalyserHepMC.cc analyserhepmc/JetInputHepMC.cc)
 target_link_libraries(pythia8_genser_test1 ${PYTHIA8_LIBRARIES} ${HEPMC_LIBRARIES} ${FASTJET_LIBRARIES})
 
-add_executable(pythia8_outhepmc pythia8_outhepmc.cc)
-target_link_libraries(pythia8_outhepmc ${PYTHIA8_LIBRARIES} ${HEPMC_LIBRARIES} ${FASTJET_LIBRARIES})
+#add_executable(pythia8_outhepmc pythia8_outhepmc.cc)
+#target_link_libraries(pythia8_outhepmc ${PYTHIA8_LIBRARIES} ${HEPMC_LIBRARIES} ${FASTJET_LIBRARIES})
 
 add_executable(pythia8 pythia8.cc)
 target_link_libraries(pythia8 ${PYTHIA8_LIBRARIES} ${HEPMC_LIBRARIES} ${FASTJET_LIBRARIES})
@@ -36,8 +36,8 @@ add_executable(pythia8_genser_test4 pythia8_test4.cc)
 target_link_libraries(pythia8_genser_test4 ${PYTHIA8_LIBRARIES} ${HEPMC_LIBRARIES})
 
 
-add_executable(pythia8_orig_test1 ${TESTS_DIR}/main01.cc)
-target_link_libraries(pythia8_orig_test1 ${PYTHIA8_LIBRARY} ${PYTHIA8_lhapdfdummy_LIBRARY})
+add_executable(native-main01 ${TESTS_DIR}/main01.cc)
+target_link_libraries(native-main01 ${PYTHIA8_LIBRARY} ${PYTHIA8_lhapdfdummy_LIBRARY})
 
 add_executable(pythia8_orig_test2 ${TESTS_DIR}/main02.cc)
 target_link_libraries(pythia8_orig_test2 ${PYTHIA8_LIBRARY} ${PYTHIA8_lhapdfdummy_LIBRARY})

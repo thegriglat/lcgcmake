@@ -17,5 +17,5 @@ set(TEST_DIR ${LHAPDF6_ROOT_DIR}/../share/sources/examples/)
 
 include_directories(${LHAPDF6_INCLUDE_DIRS} ${Boost_INCLUDE_DIRS} ${YAMLCPP_INCLUDE_DIRS})
 
-add_executable(lhapdf6_orig_testpdf ${TEST_DIR}/testpdf.cc)
-target_link_libraries(lhapdf6_orig_testpdf ${LHAPDF6_LIBRARIES} ${Boost_LIBRARIES} ${YAMLCPP_LIBRARIES})
+add_executable(native-testpdf ${TEST_DIR}/testpdf.cc)
+target_link_libraries(native-testpdf ${LHAPDF6_LIBRARIES} ${Boost_LIBRARIES} ${YAMLCPP_LIBRARIES})
