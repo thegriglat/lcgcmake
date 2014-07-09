@@ -12,8 +12,11 @@ echo end arguments
 RESULTSTORE=/afs/cern.ch/sw/lcg/external/MCGenerators_test/validation
 
 mkdir -p ${RESULTSTORE}/yoda
-cp -f ${2}_riv2_${4}.yoda ${RESULTSTORE}/yoda/${2}_${4}_ref.yoda
-cp -f ${2}_riv2_${4}_i.yoda ${RESULTSTORE}/yoda/${2}_${3}_${4}_${5}_${6}.yoda
+#cp -f ${2}_riv2_${4}.yoda ${RESULTSTORE}/yoda/${2}_${4}_ref.yoda
+#cp -f ${2}_riv2_${4}_i.yoda ${RESULTSTORE}/yoda/${2}_${3}_${4}_${5}_${6}.yoda
+# new names:
+cp -f ${2}.genser-${4}-rivet.yoda ${RESULTSTORE}/yoda/${2}_${4}_ref.yoda
+cp -f ${2}-${3}.genser-${4}-rivet.yoda ${RESULTSTORE}/yoda/${2}_${3}_${4}_${5}_${6}.yoda
 
 echo
 echo yoda file with results is produced and put together with the reference on AFS
