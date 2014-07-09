@@ -191,7 +191,7 @@ LCGPackage_Add(
 #---LCGCMT--------------------------------------------------------------------------------------------
 LCGPackage_Add(
   LCGCMT
-  IF ${heptools_version} STREQUAL "68_root6" OR ${heptools_version} STREQUAL "69root6" THEN
+  IF ${heptools_version} STREQUAL "68_root6" OR ${heptools_version} STREQUAL "69root6" OR ${heptools_version} STREQUAL "experimental" THEN
     SVN_REPOSITORY http://svn.cern.ch/guest/lcgsoft/tags/LCGCMT-cmake_root6/lcgcmt --quiet
   ELSE
     SVN_REPOSITORY http://svn.cern.ch/guest/lcgsoft/tags/LCGCMT-cmake/lcgcmt --quiet
