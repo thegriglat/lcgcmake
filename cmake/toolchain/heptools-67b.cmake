@@ -193,6 +193,9 @@ LCG_external_package(herwig++          2.6.3a          ${MCGENPATH}/herwig++    
 LCG_external_package(thepeg            1.9.0          ${MCGENPATH}/thepeg       )
 LCG_external_package(herwig++          2.7.0          ${MCGENPATH}/herwig++     thepeg=1.9.0)
 
+LCG_external_package(thepeg            1.9.2          ${MCGENPATH}/thepeg       )
+LCG_external_package(herwig++          2.7.1          ${MCGENPATH}/herwig++     thepeg=1.9.2)
+
 LCG_external_package(thepeg            1.9.0a          ${MCGENPATH}/thepeg       )
 LCG_external_package(herwig++          2.7.0a          ${MCGENPATH}/herwig++     thepeg=1.9.0a)
 
