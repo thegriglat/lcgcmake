@@ -239,7 +239,7 @@ LCG_external_package(rivet             2.1.0          ${MCGENPATH}/rivet        
 LCG_external_package(rivet             1.9.0          ${MCGENPATH}/rivet        yoda=1.0.5      )
 LCG_external_package(rivet             1.8.2          ${MCGENPATH}/rivet        yoda=1.0.5      )
 
-LCG_external_package(sacrifice         0.9.9          ${MCGENPATH}/sacrifice    pythia8=183 )
+LCG_external_package(sacrifice         0.9.9          ${MCGENPATH}/sacrifice    pythia8=185 )
 
 # sherpa depedencies: lhapdf HepMC rivet
 LCG_external_package(sherpa            2.1.0p1        ${MCGENPATH}/sherpa         author=2.1.0 hepevt=10000 )
