@@ -153,7 +153,7 @@ LCGPackage_Add(
   INSTALL_EXAMPLES_COMMAND ${CMAKE_COMMAND} -E make_directory <INSTALL_DIR>/bin
                    COMMAND ${CMAKE_COMMAND} -E chdir <SOURCE_DIR>/examples cp bin/main01.exe bin/main03.exe main03.cmnd <INSTALL_DIR>/bin
   TEST_COMMAND ${CMAKE_COMMAND} -E chdir <INSTALL_DIR>/bin ./main01.exe
-  DEPENDS HepMC
+  DEPENDS HepMC lhapdf fastjet
 )
 
 foreach(v ${pythia8_native_version})
