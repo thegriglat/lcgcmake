@@ -775,6 +775,28 @@ LCGPackage_Add(
 
 )
 
+foreach(v ${lhapdf6_native_version})
+set (pdf ${PDFsets})
+if (${pdf} MATCHES "all")
+
+LCG_add_test(
+  lhapdf6sets-${v}.download
+  TEST_COMMAND $ENV{SHELL} -c "mkdir -p ${CMAKE_INSTALL_PREFIX}/lhapdf6sets/${v}/${LCG_platform}/../share/LHAPDF"
+       COMMAND ${CMAKE_COMMAND} -E chdir ${CMAKE_INSTALL_PREFIX}/lhapdf6sets/${v}/${LCG_platform}/../share/LHAPDF wget -q -r -nH -nd -np -A.gz http://www.hepforge.org/archive/lhapdf/pdfsets/${v}/
+       COMMAND ${CMAKE_COMMAND} -E chdir ${CMAKE_INSTALL_PREFIX}/lhapdf6sets/${v}/${LCG_platform}/../share/LHAPDF wget -q http://www.hepforge.org/archive/lhapdf/pdfsets/${v}/pdfsets.index
+       COMMAND $ENV{SHELL} -c "cd ${CMAKE_INSTALL_PREFIX}/lhapdf6sets/${v}/${LCG_platform}/../share/LHAPDF; ls *.tar.gz | xargs -i {} tar xzf {}"
+)
+else()
+set (pdf "CT10")
+LCG_add_test(
+  lhapdf6sets-${v}.download
+  TEST_COMMAND $ENV{SHELL} -c "mkdir -p ${CMAKE_INSTALL_PREFIX}/lhapdf6sets/${v}/${LCG_platform}/../share/LHAPDF"
+       COMMAND ${CMAKE_COMMAND} -E chdir ${CMAKE_INSTALL_PREFIX}/lhapdf6sets/${v}/${LCG_platform}/../share/LHAPDF wget -q http://www.hepforge.org/archive/lhapdf/pdfsets/${v}/${pdf}.tar.gz
+       COMMAND ${CMAKE_COMMAND} -E chdir ${CMAKE_INSTALL_PREFIX}/lhapdf6sets/${v}/${LCG_platform}/../share/LHAPDF wget -q http://www.hepforge.org/archive/lhapdf/pdfsets/${v}/pdfsets.index
+       COMMAND ${CMAKE_COMMAND} -E chdir ${CMAKE_INSTALL_PREFIX}/lhapdf6sets/${v}/${LCG_platform}/../share/LHAPDF tar xzf ${pdf}.tar.gz
+)
+endif()
+endforeach()
 
 #---lhapdf6------------------------------------------------------------------------------------------
 LCGPackage_Add(
@@ -810,6 +832,7 @@ LCG_add_test(lhapdf6-${v}.native-testpdf
   ENVIRONMENT
     ${library_path}=${lhapdf6-${v}_home}/lib:${Boost_home}/lib:${yamlcpp_home}/lib:$ENV{${library_path}}
     LHAPDF_DATA_PATH=${lhapdf6-${v}_home}/share/LHAPDF:${lhapdf6sets_home}/../share/LHAPDF
+  DEPENDS lhapdf6sets-${v}.download
 )
 
 LCG_add_test(lhapdf6-${v}.native-pythia8
@@ -831,7 +854,7 @@ LCG_add_test(lhapdf6-${v}.native-pythia8
   POST_COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/chi.c .
        COMMAND ${CMAKE_COMMAND} -E copy testi_lhapdf6.dat test_lhapdf6.dat
        COMMAND ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/cmpr.sh lhapdf6 ${CMAKE_SOURCE_DIR}/generators/lhapdf6/tests/pyt8/reference.dat ${v} ${LCG_VERSION} ${LCG_platform}
-  
+  DEPENDS lhapdf6sets-${v}.download
 )
 endforeach()
 
