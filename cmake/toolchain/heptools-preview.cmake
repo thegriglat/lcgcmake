@@ -171,8 +171,8 @@ LCG_external_package(powheg-box         r2092         ${MCGENPATH}/powheg-box   
 
     LCG_external_package(pythia8           175            ${MCGENPATH}/pythia8    author=175  )
     LCG_external_package(pythia8           183            ${MCGENPATH}/pythia8    author=183  )
-    LCG_external_package(pythia8           185            ${MCGENPATH}/pythia8    author=185  )
     LCG_external_package(pythia8           999            ${MCGENPATH}/pythia8    author=999  )
+    LCG_external_package(pythia8           185            ${MCGENPATH}/pythia8    author=185  )
 
     LCG_external_package(sacrifice         0.9.9          ${MCGENPATH}/sacrifice pythia8=185)
 
