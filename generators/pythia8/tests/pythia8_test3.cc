@@ -24,7 +24,7 @@ int main() {
   // Begin event loop. Generate event. Skip if error. List first one.
   for (int iEvent = 0; iEvent < nEvent; ++iEvent) {
     if (!pythia.next()) continue;
-    if (iEvent < 1) {pythia.info.list(); pythia.event.list();} 
+    if (iEvent < 1) {pythia.info.list(); } 
     // Find number of all final charged particles and fill histogram.
     int nCharged = 0;
     for (int i = 0; i < pythia.event.size(); ++i) 

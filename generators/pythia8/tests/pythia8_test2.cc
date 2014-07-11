@@ -84,7 +84,6 @@ int main() {
       pythia.LHAeventList();
       pythia.info.list();
       pythia.process.list();
-      event.list();
     }
 
     // HepMC installed on CERN AFS by default have MeV as energy units
