@@ -1596,7 +1596,7 @@ endforeach()
 
 foreach(v ${sherpa_native_version})
 LCG_add_test(sherpa-${v}.genser-zjets-rivet
-   PRE_COMMAND $ENV{SHELL} -c "cat ${CMAKE_SOURCE_DIR}/generators/sherpa/tests/LHC_ZJets_riv2.dat | sed 's/ *EVENTS =.*/  EVENTS = ${sherpa_stat_size}/g;/EVENT_OUTPUT/s/sherpa_zjets.hepmc2g/sherpa-${v}_zjets.hepmc2g/g' > ${CMAKE_BINARY_DIR}/generators/sherpa-${v}.genser-zjets-rivet.dat"
+   PRE_COMMAND $ENV{SHELL} -c "cat ${CMAKE_SOURCE_DIR}/generators/sherpa/tests/LHC_ZJets_riv2.dat | sed 's/ *EVENTS =.*/  EVENTS = ${sherpa_stat_size}/g' | sed '/EVENT_OUTPUT/s/sherpa_zjets/sherpa-${v}_zjets/g' > ${CMAKE_BINARY_DIR}/generators/sherpa-${v}.genser-zjets-rivet.dat"
        COMMAND $ENV{SHELL} -c "env | grep PATH > sherpa-${v}.genser-zjets-rivet.env"
   TEST_COMMAND ${sherpa-${v}_home}/bin/Sherpa -j20 -f ${CMAKE_BINARY_DIR}/generators/sherpa-${v}.genser-zjets-rivet.dat
        COMMAND ${rivet2_home}/bin/rivet -a MC_XS -a MC_ZJETS --histo-file=sherpa-${v}.genser-zjets-rivet.yoda sherpa-${v}_zjets.hepmc2g
