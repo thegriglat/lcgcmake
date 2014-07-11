@@ -1487,7 +1487,7 @@ LCG_add_test(
   PRE_COMMAND $ENV{SHELL} -c "cat ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/pythia8-zjets-rivet.params | sed \"s/Main:numberOfEvents.*/Main:numberOfEvents = ${pythia8_stat_size}/g\" | cat > ${CMAKE_BINARY_DIR}/generators/pythia8/tests/pythia8-${v}.zjets-rivet.params"
   TEST_COMMAND $ENV{SHELL} -c "env | grep PATH > pythia8-${v}.genser-zjets-rivet.env"
        COMMAND ${CMAKE_BINARY_DIR}/generators/pythia8/tests/${v}/pythia8 ${CMAKE_BINARY_DIR}/generators/pythia8/tests/pythia8-${v}.zjets-rivet.params pythia8-${v}.genser-zjets.hempc.dat
-       COMMAND ${rivet2_home}/bin/rivet -a MC_XS -a MC_ZJETS --histo-file=pythia8-${v}.genser-zjets-rivet.yoda pythia8-${v}.genser-zjets.hempc.dat
+       COMMAND ${rivet2_home}/bin/rivet -a MC_GENERIC -a MC_IDENTIFIED -a MC_XS -a MC_ZJETS --histo-file=pythia8-${v}.genser-zjets-rivet.yoda pythia8-${v}.genser-zjets.hempc.dat
   ENVIRONMENT PATH=${Python_home}/bin:{sacrifice_home}/bin:$ENV{PATH}
                    ${library_path}=${Python_home}/lib:${GSL_home}/lib:${rivet2_home}/lib:${yoda_home}/lib:${HepMC_home}/lib:${fastjet_home}/lib:${yamlcpp_home}/lib:${ROOT_home}/lib:$ENV{${library_path}}
                    PYTHONPATH=${Python_home}/bin:${rivet2_home}/lib/python${Python_config_version_twodigit}/site-packages/:${yoda_home}/lib/python${Python_config_version_twodigit}/site-packages/:${ROOT_home}/lib:$ENV{PYTHONPATH}
@@ -1513,7 +1513,7 @@ LCG_add_test(
   TEST_COMMAND ${agile_home}/bin/agile-runmc --list-gens
        COMMAND $ENV{SHELL} -c "env | grep PATH > pythia6-${v}.genser-ttbar-rivet.env"
        COMMAND ${agile_home}/bin/agile-runmc Pythia6:${v_test_version} -o pythia6-${v}.genser-ttbar.hepmc.dat --paramfile=${CMAKE_SOURCE_DIR}/generators/agile_configs/pythia6-ttbar-8tev.params -n ${pythia6_stat_size}
-       COMMAND ${rivet2_home}/bin/rivet -a MC_XS -a MC_TTBAR --histo-file=pythia6-${v}.genser-ttbar-rivet.yoda pythia6-${v}.genser-ttbar.hepmc.dat
+       COMMAND ${rivet2_home}/bin/rivet -a MC_GENERIC -a MC_IDENTIFIED -a MC_XS -a MC_TTBAR --histo-file=pythia6-${v}.genser-ttbar-rivet.yoda pythia6-${v}.genser-ttbar.hepmc.dat
   ENVIRONMENT PATH=${agile_home}/bin:${Python_home}/bin:$ENV{PATH}
               ${library_path}=${Python_home}/lib:${GSL_home}/lib:${rivet2_home}/lib:${yoda_home}/lib:${HepMC_home}/lib:${fastjet_home}/lib:${yamlcpp_home}/lib:${agile_home}/lib:${HepMC_home}/lib:${ROOT_home}/lib:$ENV{${library_path}}
               PYTHONPATH=${Python_home}/bin:${agile_home}/lib/python${Python_config_version_twodigit}/site-packages:${yoda_home}/lib/python${Python_config_version_twodigit}/site-packages/:${ROOT_home}/lib:$ENV{PYTHONPATH}
@@ -1531,7 +1531,7 @@ LCG_add_test(
   pythia6-${v}.genser-zjets-rivet
   PRE_COMMAND $ENV{SHELL} -c "env | grep PATH > pythia6-${v}.genser-zjets-rivet.env"
   TEST_COMMAND ${agile_home}/bin/agile-runmc Pythia6:${v_test_version} -o pythia6-${v}.genser-zjets.hepmc.dat --paramfile=${CMAKE_SOURCE_DIR}/generators/agile_configs/pythia6-zjets-8tev.params -n ${pythia6_stat_size}
-       COMMAND ${rivet2_home}/bin/rivet -a MC_XS -a MC_ZJETS --histo-file=pythia6-${v}.genser-zjets-rivet.yoda pythia6-${v}.genser-zjets.hepmc.dat
+       COMMAND ${rivet2_home}/bin/rivet -a MC_GENERIC -a MC_IDENTIFIED -a MC_XS -a MC_ZJETS --histo-file=pythia6-${v}.genser-zjets-rivet.yoda pythia6-${v}.genser-zjets.hepmc.dat
   ENVIRONMENT PATH=${agile_home}/bin:${Python_home}/bin:$ENV{PATH}
               ${library_path}=${Python_home}/lib:${GSL_home}/lib:${rivet2_home}/lib:${yoda_home}/lib:${HepMC_home}/lib:${fastjet_home}/lib:${yamlcpp_home}/lib:${agile_home}/lib:${HepMC_home}/lib:${ROOT_home}/lib:$ENV{${library_path}}
               PYTHONPATH=${Python_home}/bin:${agile_home}/lib/python${Python_config_version_twodigit}/site-packages:${yoda_home}/lib/python${Python_config_version_twodigit}/site-packages/:${ROOT_home}/lib:$ENV{PYTHONPATH}
@@ -1553,7 +1553,7 @@ LCG_add_test(herwigpp-${v}.genser-ttbar-rivet
       COMMAND $ENV{SHELL} -c "cat ${CMAKE_SOURCE_DIR}/generators/herwig++/tests/LHC-ttbar.in | sed '/HepMCFile:Filename/s/herwigpp_ttbar.hepmc/herwigpp-${v}_ttbar.hepmc/g' > ${CMAKE_BINARY_DIR}/generators/LHC-ttbar-${v}.in"
   TEST_COMMAND ${herwig++-${v}_home}/bin/Herwig++ read ${CMAKE_BINARY_DIR}/generators/LHC-ttbar-${v}.in
        COMMAND ${herwig++-${v}_home}/bin/Herwig++ run -N${herwig++_stat_size} LHC-ttbar.run -d1
-       COMMAND ${rivet2_home}/bin/rivet -a MC_XS -a MC_TTBAR -H herwigpp-${v}.genser-ttbar-rivet.yoda herwigpp-${v}_ttbar.hepmc
+       COMMAND ${rivet2_home}/bin/rivet -a MC_GENERIC -a MC_IDENTIFIED -a MC_XS -a MC_TTBAR -H herwigpp-${v}.genser-ttbar-rivet.yoda herwigpp-${v}_ttbar.hepmc
        COMMAND cat LHC-ttbar.out
        COMMAND cat LHC-ttbar.log
        BINARY_DIR herwig++/tests
@@ -1575,7 +1575,7 @@ LCG_add_test(herwigpp-${v}.genser-zjets-rivet
       COMMAND $ENV{SHELL} -c "cat ${CMAKE_SOURCE_DIR}/generators/herwig++/tests/LHC-zjets.in | sed '/HepMCFile:Filename/s/herwigpp_zjets.hepmc/herwigpp-${v}_zjets.hepmc/g' > ${CMAKE_BINARY_DIR}/generators/LHC-zjets-${v}.in"
   TEST_COMMAND ${herwig++-${v}_home}/bin/Herwig++ read ${CMAKE_BINARY_DIR}/generators/LHC-zjets-${v}.in
        COMMAND ${herwig++-${v}_home}/bin/Herwig++ run -N${herwig++_stat_size} LHC-zjets.run -d1
-       COMMAND ${rivet2_home}/bin/rivet -a MC_XS -a MC_ZJETS -H herwigpp-${v}.genser-zjets-rivet.yoda herwigpp-${v}_zjets.hepmc
+       COMMAND ${rivet2_home}/bin/rivet -a MC_GENERIC -a MC_IDENTIFIED -a MC_XS -a MC_ZJETS -H herwigpp-${v}.genser-zjets-rivet.yoda herwigpp-${v}_zjets.hepmc
        COMMAND cat LHC-zjets.out
        COMMAND cat LHC-zjets.log
        BINARY_DIR herwig++/tests
@@ -1599,7 +1599,7 @@ LCG_add_test(sherpa-${v}.genser-zjets-rivet
    PRE_COMMAND $ENV{SHELL} -c "cat ${CMAKE_SOURCE_DIR}/generators/sherpa/tests/LHC_ZJets_riv2.dat | sed 's/ *EVENTS =.*/  EVENTS = ${sherpa_stat_size}/g' | sed '/EVENT_OUTPUT/s/sherpa_zjets/sherpa-${v}_zjets/g' > ${CMAKE_BINARY_DIR}/generators/sherpa-${v}.genser-zjets-rivet.dat"
        COMMAND $ENV{SHELL} -c "env | grep PATH > sherpa-${v}.genser-zjets-rivet.env"
   TEST_COMMAND ${sherpa-${v}_home}/bin/Sherpa -j20 -f ${CMAKE_BINARY_DIR}/generators/sherpa-${v}.genser-zjets-rivet.dat
-       COMMAND ${rivet2_home}/bin/rivet -a MC_XS -a MC_ZJETS --histo-file=sherpa-${v}.genser-zjets-rivet.yoda sherpa-${v}_zjets.hepmc2g
+       COMMAND ${rivet2_home}/bin/rivet -a MC_GENERIC -a MC_IDENTIFIED -a MC_XS -a MC_ZJETS --histo-file=sherpa-${v}.genser-zjets-rivet.yoda sherpa-${v}_zjets.hepmc2g
 #       COMMAND ${CMAKE_SOURCE_DIR}/generators/sherpa/tests/riv2test.sh ${rivet2_home} sherpa/tests_riv2/sherpa_zjets.hepmc2g
   ENVIRONMENT PATH=${agile_home}/bin:${Python_home}/bin:${rivet2_home}/bin:{yoda_home}/bin:$ENV{PATH}
               ${library_path}=${sherpa-${v}_home}/lib/SHERPA-MC:${HepMC_home}/lib:${lhapdf_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:${Python_home}/lib:${rivet2_home}/lib:${yoda_home}/lib:${yamlcpp_home}/lib:${ROOT_home}/lib:$ENV{${library_path}}
@@ -1624,7 +1624,7 @@ LCG_add_test(
        COMMAND ${agile_home}/bin/agile-runmc --list-gens
        COMMAND ${CMAKE_COMMAND} -E echo
        COMMAND ${agile_home}/bin/agile-runmc Herwig:${v_test_version} -o hepmcfile_herwig-${v}_zjets.dat --paramfile ${CMAKE_SOURCE_DIR}/generators/agile_configs/herwig-zjets-8tev.params -n ${herwig_stat_size}
-       COMMAND ${rivet2_home}/bin/rivet -a MC_XS -a MC_ZJETS -H herwig-${v}.genser-zjets-rivet.yoda hepmcfile_herwig-${v}_zjets.dat
+       COMMAND ${rivet2_home}/bin/rivet -a MC_GENERIC -a MC_IDENTIFIED -a MC_XS -a MC_ZJETS -H herwig-${v}.genser-zjets-rivet.yoda hepmcfile_herwig-${v}_zjets.dat
   ENVIRONMENT PATH=${agile_home}/bin:${Python_home}/bin:$ENV{PATH}
               ${library_path}=${Python_home}/lib:${GSL_home}/lib:${rivet2_home}/lib:${yoda_home}/lib:${HepMC_home}/lib:${fastjet_home}/lib:${yamlcpp_home}/lib:${agile_home}/lib:${HepMC_home}/lib:${ROOT_home}/lib:$ENV{${library_path}}
               PYTHONPATH=${Python_home}/bin:${agile_home}/lib/python${Python_config_version_twodigit}/site-packages:${yoda_home}/lib/python${Python_config_version_twodigit}/site-packages/:${ROOT_home}/lib:${rivet2_home}/lib/python${Python_config_version_twodigit}/site-packages:$ENV{PYTHONPATH}
@@ -1648,7 +1648,7 @@ LCG_add_test(
        COMMAND ${agile_home}/bin/agile-runmc --list-gens
        COMMAND ${CMAKE_COMMAND} -E echo 
        COMMAND ${CMAKE_COMMAND} -E chdir tmpalpgen/examples-${v} ${CMAKE_SOURCE_DIR}/generators/agile_configs/runagile_alpgenpythia6 ${agile_home} ${v} ${pythia6_test_version} ${CMAKE_SOURCE_DIR}/generators/agile_configs/alpgen-zjets.params
-       COMMAND ${rivet2_home}/bin/rivet -a MC_XS -a MC_ZJETS -H alpgen-${v}.genser-zjets-rivet.yoda tmpalpgen/examples-${v}/hepmcfile_alpgen_zjets.dat
+       COMMAND ${rivet2_home}/bin/rivet -a MC_GENERIC -a MC_IDENTIFIED -a MC_XS -a MC_ZJETS -H alpgen-${v}.genser-zjets-rivet.yoda tmpalpgen/examples-${v}/hepmcfile_alpgen_zjets.dat
   ENVIRONMENT PATH=${agile_home}/bin:${Python_home}/bin:$ENV{PATH}
               ${library_path}=${Python_home}/lib:${GSL_home}/lib:${rivet2_home}/lib:${yoda_home}/lib:${HepMC_home}/lib:${fastjet_home}/lib:${yamlcpp_home}/lib:${agile_home}/lib:${HepMC_home}/lib:${ROOT_home}/lib:$ENV{${library_path}}
               PYTHONPATH=${Python_home}/bin:${agile_home}/lib/python${Python_config_version_twodigit}/site-packages:${yoda_home}/lib/python${Python_config_version_twodigit}/site-packages/:${ROOT_home}/lib:$ENV{PYTHONPATH}
