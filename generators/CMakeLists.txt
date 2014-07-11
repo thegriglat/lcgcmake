@@ -168,15 +168,6 @@ LCG_add_test(pythia8-${v}.build
    -DFASTJET_ROOT_DIR=${fastjet_home}
 )
 
-LCG_add_test(pythia8-${v}.genser-outhepmc
-  TEST_COMMAND pythia8/tests/${v}/pythia8_outhepmc
-  ENVIRONMENT
-    ${library_path}=${pythia8-${v}_home}/lib:${HepMC_home}/lib:$ENV{${library_path}}
-    PYTHIA8DATA=${pythia8-${v}_home}/xmldoc
-  DEPENDS pythia8-${v}.build
-  
-)
-
 LCG_add_test(pythia8-${v}.genser-test1_nightly
   TEST_COMMAND pythia8/tests/${v}/pythia8_genser_test1
   ENVIRONMENT
@@ -1559,9 +1550,10 @@ endforeach()
 foreach(v ${herwig++_native_version})
 LCG_add_test(herwigpp-${v}.genser-ttbar-rivet
   PRE_COMMAND $ENV{SHELL} -c "env | grep PATH > herwigpp-${v}.genser-ttbar-rivet.env"
-  TEST_COMMAND ${herwig++-${v}_home}/bin/Herwig++ read ${CMAKE_SOURCE_DIR}/generators/herwig++/tests/LHC-ttbar.in
+      COMMAND $ENV{SHELL} -c "cat ${CMAKE_SOURCE_DIR}/generators/herwig++/tests/LHC-ttbar.in | sed '/HepMCFile:Filename/s/herwigpp_ttbar.hepmc/herwigpp-${v}_ttbar.hepmc/g' > ${CMAKE_BINARY_DIR}/generators/LHC-ttbar-${v}.in"
+  TEST_COMMAND ${herwig++-${v}_home}/bin/Herwig++ read ${CMAKE_BINARY_DIR}/generators/LHC-ttbar-${v}.in
        COMMAND ${herwig++-${v}_home}/bin/Herwig++ run -N${herwig++_stat_size} LHC-ttbar.run -d1
-       COMMAND ${rivet2_home}/bin/rivet -a MC_XS -a MC_TTBAR -H herwigpp-${v}.genser-ttbar-rivet.yoda herwigpp_ttbar.hepmc
+       COMMAND ${rivet2_home}/bin/rivet -a MC_XS -a MC_TTBAR -H herwigpp-${v}.genser-ttbar-rivet.yoda herwigpp-${v}_ttbar.hepmc
        COMMAND cat LHC-ttbar.out
        COMMAND cat LHC-ttbar.log
        BINARY_DIR herwig++/tests
@@ -1580,9 +1572,10 @@ LCG_add_test(herwigpp-${v}.genser-ttbar-rivet
   
 LCG_add_test(herwigpp-${v}.genser-zjets-rivet
   PRE_COMMAND $ENV{SHELL} -c "env | grep PATH > herwigpp-${v}.genser-zjets-rivet.env"
-  TEST_COMMAND ${herwig++-${v}_home}/bin/Herwig++ read ${CMAKE_SOURCE_DIR}/generators/herwig++/tests/LHC-zjets.in
+      COMMAND $ENV{SHELL} -c "cat ${CMAKE_SOURCE_DIR}/generators/herwig++/tests/LHC-zjets.in | sed '/HepMCFile:Filename/s/herwigpp_zjets.hepmc/herwigpp-${v}_zjets.hepmc/g' > ${CMAKE_BINARY_DIR}/generators/LHC-zjets-${v}.in"
+  TEST_COMMAND ${herwig++-${v}_home}/bin/Herwig++ read ${CMAKE_BINARY_DIR}/generators/LHC-zjets-${v}.in
        COMMAND ${herwig++-${v}_home}/bin/Herwig++ run -N${herwig++_stat_size} LHC-zjets.run -d1
-       COMMAND ${rivet2_home}/bin/rivet -a MC_XS -a MC_ZJETS -H herwigpp-${v}.genser-zjets-rivet.yoda herwigpp_zjets.hepmc
+       COMMAND ${rivet2_home}/bin/rivet -a MC_XS -a MC_ZJETS -H herwigpp-${v}.genser-zjets-rivet.yoda herwigpp-${v}_zjets.hepmc
        COMMAND cat LHC-zjets.out
        COMMAND cat LHC-zjets.log
        BINARY_DIR herwig++/tests
@@ -1603,10 +1596,10 @@ endforeach()
 
 foreach(v ${sherpa_native_version})
 LCG_add_test(sherpa-${v}.genser-zjets-rivet
-   PRE_COMMAND $ENV{SHELL} -c "cat ${CMAKE_SOURCE_DIR}/generators/sherpa/tests/LHC_ZJets_riv2.dat | sed 's/ *EVENTS =.*/  EVENTS = ${sherpa_stat_size}/g' > ${CMAKE_BINARY_DIR}/generators/sherpa-${v}.genser-zjets-rivet.dat"
+   PRE_COMMAND $ENV{SHELL} -c "cat ${CMAKE_SOURCE_DIR}/generators/sherpa/tests/LHC_ZJets_riv2.dat | sed 's/ *EVENTS =.*/  EVENTS = ${sherpa_stat_size}/g;/EVENT_OUTPUT/s/sherpa_zjets.hepmc2g/sherpa-${v}_zjets.hepmc2g/g' > ${CMAKE_BINARY_DIR}/generators/sherpa-${v}.genser-zjets-rivet.dat"
        COMMAND $ENV{SHELL} -c "env | grep PATH > sherpa-${v}.genser-zjets-rivet.env"
   TEST_COMMAND ${sherpa-${v}_home}/bin/Sherpa -j20 -f ${CMAKE_BINARY_DIR}/generators/sherpa-${v}.genser-zjets-rivet.dat
-       COMMAND ${rivet2_home}/bin/rivet -a MC_XS -a MC_ZJETS --histo-file=sherpa-${v}.genser-zjets-rivet.yoda sherpa_zjets.hepmc2g
+       COMMAND ${rivet2_home}/bin/rivet -a MC_XS -a MC_ZJETS --histo-file=sherpa-${v}.genser-zjets-rivet.yoda sherpa-${v}_zjets.hepmc2g
 #       COMMAND ${CMAKE_SOURCE_DIR}/generators/sherpa/tests/riv2test.sh ${rivet2_home} sherpa/tests_riv2/sherpa_zjets.hepmc2g
   ENVIRONMENT PATH=${agile_home}/bin:${Python_home}/bin:${rivet2_home}/bin:{yoda_home}/bin:$ENV{PATH}
               ${library_path}=${sherpa-${v}_home}/lib/SHERPA-MC:${HepMC_home}/lib:${lhapdf_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:${Python_home}/lib:${rivet2_home}/lib:${yoda_home}/lib:${yamlcpp_home}/lib:${ROOT_home}/lib:$ENV{${library_path}}
@@ -1648,26 +1641,27 @@ endforeach()
 
 
 #note: alpgen version and pythia6 version are hardcoded in the script below
+foreach(v ${alpgen_native_version})
 LCG_add_test(
-  alpgen_riv2
+  alpgen-${v}.genser-zjets-rivet
   TEST_COMMAND ${CMAKE_COMMAND} -E echo available generators for the given AGILE_GEN_PATH:
        COMMAND ${agile_home}/bin/agile-runmc --list-gens
        COMMAND ${CMAKE_COMMAND} -E echo 
-       COMMAND ${CMAKE_COMMAND} -E chdir tmpalpgen/examples ${CMAKE_SOURCE_DIR}/generators/agile_configs/runagile_alpgenpythia6 ${agile_home} ${alpgen_test_version} ${pythia6_test_version} ${CMAKE_SOURCE_DIR}/generators/agile_configs/alpgen-zjets.params
-       COMMAND ${rivet2_home}/bin/rivet -a MC_XS -a MC_ZJETS -H alpgen_riv2_i.yoda tmpalpgen/examples/hepmcfile_alpgen_zjets.dat
+       COMMAND ${CMAKE_COMMAND} -E chdir tmpalpgen/examples-${v} ${CMAKE_SOURCE_DIR}/generators/agile_configs/runagile_alpgenpythia6 ${agile_home} ${v} ${pythia6_test_version} ${CMAKE_SOURCE_DIR}/generators/agile_configs/alpgen-zjets.params
+       COMMAND ${rivet2_home}/bin/rivet -a MC_XS -a MC_ZJETS -H alpgen-${v}.genser-zjets-rivet.yoda tmpalpgen/examples-${v}/hepmcfile_alpgen_zjets.dat
   ENVIRONMENT PATH=${agile_home}/bin:${Python_home}/bin:$ENV{PATH}
               ${library_path}=${Python_home}/lib:${GSL_home}/lib:${rivet2_home}/lib:${yoda_home}/lib:${HepMC_home}/lib:${fastjet_home}/lib:${yamlcpp_home}/lib:${agile_home}/lib:${HepMC_home}/lib:${ROOT_home}/lib:$ENV{${library_path}}
               PYTHONPATH=${Python_home}/bin:${agile_home}/lib/python${Python_config_version_twodigit}/site-packages:${yoda_home}/lib/python${Python_config_version_twodigit}/site-packages/:${ROOT_home}/lib:$ENV{PYTHONPATH}
               AGILE_GEN_PATH=${agile_home}/../../..
-  POST_COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/generators/reference/alpgen_riv2.yoda ${CMAKE_BINARY_DIR}/generators/alpgen_riv2.yoda
-       COMMAND ${CMAKE_COMMAND} -DAIDA2ROOT=${AIDA2ROOT} -DPython_cmd=${Python_cmd} -Dyoda_home=${yoda_home} -DINPUT=${CMAKE_BINARY_DIR}/generators/alpgen_riv2.yoda -P ${CMAKE_SOURCE_DIR}/cmake/scripts/yoda2root.cmake
-       COMMAND ${CMAKE_COMMAND} -DAIDA2ROOT=${AIDA2ROOT} -DPython_cmd=${Python_cmd} -Dyoda_home=${yoda_home} -DINPUT=${CMAKE_BINARY_DIR}/generators/alpgen_riv2_i.yoda -P ${CMAKE_SOURCE_DIR}/cmake/scripts/yoda2root.cmake
-       COMMAND ${Python_cmd} ${CMAKE_SOURCE_DIR}/generators/reference/reference.py ${CMAKE_BINARY_DIR}/generators/alpgen_riv2.root ${CMAKE_BINARY_DIR}/generators/alpgen_riv2_i.root "Path=jet_HT" limit=0.10
-       COMMAND ${Python_cmd} ${CMAKE_SOURCE_DIR}/generators/reference/reference.py ${CMAKE_BINARY_DIR}/generators/alpgen_riv2.root ${CMAKE_BINARY_DIR}/generators/alpgen_riv2_i.root "Path=XS" limit=0.05
-  DEPENDS alpgen_test1
+  POST_COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/generators/reference/alpgen_riv2.yoda ${CMAKE_BINARY_DIR}/generators/alpgen.genser-zjets-rivet.yoda
+       COMMAND ${CMAKE_COMMAND} -DAIDA2ROOT=${AIDA2ROOT} -DPython_cmd=${Python_cmd} -Dyoda_home=${yoda_home} -DINPUT=${CMAKE_BINARY_DIR}/generators/alpgen.genser-zjets-rivet.yoda -P ${CMAKE_SOURCE_DIR}/cmake/scripts/yoda2root.cmake
+       COMMAND ${CMAKE_COMMAND} -DAIDA2ROOT=${AIDA2ROOT} -DPython_cmd=${Python_cmd} -Dyoda_home=${yoda_home} -DINPUT=${CMAKE_BINARY_DIR}/generators/alpgen-${v}.genser-zjets-rivet.yoda -P ${CMAKE_SOURCE_DIR}/cmake/scripts/yoda2root.cmake
+       COMMAND ${Python_cmd} ${CMAKE_SOURCE_DIR}/generators/reference/reference.py ${CMAKE_BINARY_DIR}/generators/alpgen.genser-zjets-rivet.root ${CMAKE_BINARY_DIR}/generators/alpgen-${v}.genser-zjets-rivet.root "Path=jet_HT" limit=0.10
+       COMMAND ${Python_cmd} ${CMAKE_SOURCE_DIR}/generators/reference/reference.py ${CMAKE_BINARY_DIR}/generators/alpgen.genser-zjets-rivet.root ${CMAKE_BINARY_DIR}/generators/alpgen-${v}.genser-zjets-rivet.root "Path=XS" limit=0.05
+  DEPENDS alpgen-${v}.native-examples
   
 )
-
+endforeach()
 
 LCG_add_test(debug-symbols-test 
              TEST_COMMAND ${CMAKE_SOURCE_DIR}/cmake/scripts/check_debug_symbols.sh ${CMAKE_INSTALL_PREFIX}
