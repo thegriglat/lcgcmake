@@ -171,11 +171,13 @@ LCGPackage_Add(
   BUILD_COMMAND ${MAKE}
 )
 
-LCG_add_test(hepmc_tests
+foreach(v ${HepMC_native_version})
+LCG_add_test(HepMC-${v}.test
 
   TEST_COMMAND ${CMAKE_COMMAND} -E chdir ${PROJECT_BINARY_DIR}/externals/HepMC-${HepMC_native_version}/src/HepMC-${HepMC_native_version}-build/test ctest
 
 )
+endforeach()
 
 #---HepPDT-------------------------------------------------------------------------------------------
 LCGPackage_Add(
