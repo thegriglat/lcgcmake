@@ -4,7 +4,8 @@
 
 ! 1) Settings that could be used in a main program, if desired.
 Main:numberOfEvents = 1000         ! number of events to generate
-Main:numberToList = 1              ! number of events to print
+Main:numberToList = 0              ! number of events to print
 Main:timesToShow = 20              ! show how far along run is this many times
 Main:timesAllowErrors = 10         ! abort run after this many flawed events
+Next:numberShowEvent = 0
 Main:showChangedSettings = on      ! print changed flags/modes/parameters

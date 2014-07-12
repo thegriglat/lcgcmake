@@ -16,6 +16,8 @@ int main() {
   Pythia pythia;
   pythia.readString("HardQCD:all = on");    
   pythia.readString("PhaseSpace:pTHatMin = 20.");  
+  pythia.readString("Next:numberShowEvent = 0");
+
   pythia.init( 2212, 2212, 14000.);
   Hist mult("charged multiplicity", 100, -0.5, 799.5);
   int ntotCharged = 0;
