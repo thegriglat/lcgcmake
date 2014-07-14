@@ -1486,7 +1486,7 @@ LCG_add_test(
   PRE_COMMAND $ENV{SHELL} -c "cat ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/pythia8-zjets-rivet.params | sed \"s/Main:numberOfEvents.*/Main:numberOfEvents = ${pythia8_stat_size}/g\" | cat > ${CMAKE_BINARY_DIR}/generators/pythia8/tests/pythia8-${v}.zjets-rivet.params"
   TEST_COMMAND ${CMAKE_BINARY_DIR}/generators/pythia8/tests/${v}/pythia8 ${CMAKE_BINARY_DIR}/generators/pythia8/tests/pythia8-${v}.zjets-rivet.params pythia8-${v}.genser-zjets.hempc.dat
        COMMAND ${rivet2_home}/bin/rivet -a MC_GENERIC -a MC_IDENTIFIED -a MC_XS -a MC_ZJETS --histo-file=pythia8-${v}.genser-zjets-rivet.yoda pythia8-${v}.genser-zjets.hempc.dat
-  ENVIRONMENT PATH=${Python_home}/bin:{sacrifice_home}/bin:$ENV{PATH}
+  ENVIRONMENT PATH=${Python_home}/bin:$ENV{PATH}
                    ${library_path}=${Python_home}/lib:${GSL_home}/lib:${rivet2_home}/lib:${yoda_home}/lib:${HepMC_home}/lib:${fastjet_home}/lib:${yamlcpp_home}/lib:${ROOT_home}/lib:$ENV{${library_path}}
                    PYTHONPATH=${Python_home}/bin:${rivet2_home}/lib/python${Python_config_version_twodigit}/site-packages/:${yoda_home}/lib/python${Python_config_version_twodigit}/site-packages/:${ROOT_home}/lib:$ENV{PYTHONPATH}
             PYTHIA8DATA=${pythia8-${v}_home}/xmldoc
