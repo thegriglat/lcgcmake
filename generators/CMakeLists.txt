@@ -225,7 +225,7 @@ LCG_add_test(pythia8-${v}.genser-test4
 
 LCG_add_test(pythia8-${v}.compare
   PRE_COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/chi.c .
-  TEST_COMMAND ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/cmpr.sh pythia8 ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/reference.dat ${pythia8_test_version} ${LCG_VERSION} ${LCG_platform}
+  TEST_COMMAND ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/cmpr.sh pythia8 ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/reference.dat ${v} ${LCG_VERSION} ${LCG_platform}
   DEPENDS pythia8-${v}.genser-test2 pythia8-${v}.genser-test3 pythia8-${v}.genser-test4
   
 )
@@ -418,7 +418,6 @@ LCGPackage_Add(
 )
 
 foreach(v ${pythia6_native_version})
-string(REGEX MATCH "[0-9][0-9][0-9]" v_test_version ${v})
 LCG_add_test(pythia6-${v}.build
   BINARY_DIR pythia6/tests/${v}
   SOURCE_DIR pythia6/tests
@@ -443,7 +442,7 @@ LCG_add_test(pythia6-${v}.genser-test
 
 LCG_add_test(pythia6-${v}.genser-compare
   PRE_COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/chi.c .
-  TEST_COMMAND ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/cmpr.sh pythia6 ${CMAKE_SOURCE_DIR}/generators/pythia6/tests/reference.dat ${v_test_version} ${LCG_VERSION} ${LCG_platform}
+  TEST_COMMAND ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/cmpr.sh pythia6 ${CMAKE_SOURCE_DIR}/generators/pythia6/tests/reference.dat ${v} ${LCG_VERSION} ${LCG_platform}
   DEPENDS pythia6-${v}.genser-test1
   
 )
