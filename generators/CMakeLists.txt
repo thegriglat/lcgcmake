@@ -1592,7 +1592,7 @@ endforeach()
 foreach(v ${sherpa_native_version})
 LCG_add_test(sherpa-${v}.genser-zjets-rivet
    PRE_COMMAND $ENV{SHELL} -c "cat ${CMAKE_SOURCE_DIR}/generators/sherpa/tests/LHC_ZJets_riv2.dat | sed '/EVENT_OUTPUT/s/sherpa_zjets/sherpa-${v}_zjets/g' > ${CMAKE_BINARY_DIR}/generators/sherpa-${v}.genser-zjets-rivet.dat"
-  TEST_COMMAND ${sherpa-${v}_home}/bin/Sherpa -f ${CMAKE_BINARY_DIR}/generators/sherpa-${v}.genser-zjets-rivet.data -e ${sherpa_stat_size}
+  TEST_COMMAND ${sherpa-${v}_home}/bin/Sherpa -f ${CMAKE_BINARY_DIR}/generators/sherpa-${v}.genser-zjets-rivet.dat -e ${sherpa_stat_size}
        COMMAND ${rivet2_home}/bin/rivet -a MC_GENERIC -a MC_IDENTIFIED -a MC_XS -a MC_ZJETS --histo-file=sherpa-${v}.genser-zjets-rivet.yoda sherpa-${v}_zjets.hepmc2g
 #       COMMAND ${CMAKE_SOURCE_DIR}/generators/sherpa/tests/riv2test.sh ${rivet2_home} sherpa/tests_riv2/sherpa_zjets.hepmc2g
   ENVIRONMENT PATH=${agile_home}/bin:${Python_home}/bin:${rivet2_home}/bin:{yoda_home}/bin:$ENV{PATH}
