@@ -111,6 +111,9 @@ if(ENV)
   endforeach()
 endif()
 
+# Save PATH-like variables
+execute_process(COMMAND $ENV{SHELL} -c "env | grep PATH > ${CMAKE_BINARY_DIR}/${TST}.env")
+
 #-----------------------------------------------------------------------
 # Execute pre command
 #
