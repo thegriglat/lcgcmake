@@ -9,7 +9,7 @@ z2j       ! label for files
 *** For a complete list of accessible parameters and their values,
 *** input 'print 1' (to display on the screen) or 'print 2' to write to file
 ih2 1
-ebeam 7000
+ebeam 8000
 irapgap 0            ! tells phase space to force one fwd/ one bkwd jets
 etagap 2             ! eta value to separate central and fwd jets
 etajmax 5            ! full rap range for jets
