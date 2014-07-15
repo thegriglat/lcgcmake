@@ -207,7 +207,7 @@ LCG_add_test(pythia8-${v}.genser-test3
   TEST_COMMAND pythia8/tests/${v}/pythia8_genser_test3
   POST_COMMAND ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/mergetest
   ENVIRONMENT
-    ${library_path}=${pythia8-${v}_home}/lib:$ENV{${library_path}}
+    ${library_path}=${pythia8-${v}_home}/lib:${HepMC_home}/lib:$ENV{${library_path}}
     PYTHIA8DATA=${pythia8-${v}_home}/xmldoc
   DEPENDS pythia8-${v}.build pythia8-${v}.genser-test1
   
@@ -838,7 +838,7 @@ LCG_add_test(lhapdf6-${v}.native-pythia8
    -DYAMLCPP_ROOT_DIR=${yamlcpp_home}
    -DPYTHIA8_ROOT_DIR=${pythia8_home}
   ENVIRONMENT
-    ${library_path}=${lhapdf6-${v}_home}/lib:${Boost_home}/lib:${yamlcpp_home}/lib:$ENV{${library_path}}
+    ${library_path}=${lhapdf6-${v}_home}/lib:${pythia8_home}/lib:${Boost_home}/lib:${yamlcpp_home}/lib:$ENV{${library_path}}
     LHAPDF_DATA_PATH=${lhapdf6-${v}_home}/share/LHAPDF:${lhapdf6sets_home}/../share/LHAPDF
     PYTHIA8DATA=${pythia8_home}/xmldoc
   POST_COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/chi.c .
@@ -1487,7 +1487,7 @@ LCG_add_test(
   TEST_COMMAND ${CMAKE_BINARY_DIR}/generators/pythia8/tests/${v}/pythia8 ${CMAKE_BINARY_DIR}/generators/pythia8/tests/pythia8-${v}.zjets-rivet.params pythia8-${v}.genser-zjets.hempc.dat
        COMMAND ${rivet2_home}/bin/rivet -a MC_GENERIC -a MC_IDENTIFIED -a MC_XS -a MC_ZJETS --histo-file=pythia8-${v}.genser-zjets-rivet.yoda pythia8-${v}.genser-zjets.hempc.dat
   ENVIRONMENT PATH=${Python_home}/bin:$ENV{PATH}
-                   ${library_path}=${Python_home}/lib:${GSL_home}/lib:${rivet2_home}/lib:${yoda_home}/lib:${HepMC_home}/lib:${fastjet_home}/lib:${yamlcpp_home}/lib:${ROOT_home}/lib:$ENV{${library_path}}
+                   ${library_path}=${Python_home}/lib:${GSL_home}/lib:${rivet2_home}/lib:${yoda_home}/lib:${HepMC_home}/lib:${fastjet_home}/lib:${yamlcpp_home}/lib:${ROOT_home}/lib:${pythia8_home}/lib:$ENV{${library_path}}
                    PYTHONPATH=${Python_home}/bin:${rivet2_home}/lib/python${Python_config_version_twodigit}/site-packages/:${yoda_home}/lib/python${Python_config_version_twodigit}/site-packages/:${ROOT_home}/lib:$ENV{PYTHONPATH}
             PYTHIA8DATA=${pythia8-${v}_home}/xmldoc
   
