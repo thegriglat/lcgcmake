@@ -1545,7 +1545,7 @@ endforeach()
 
 foreach(v ${herwig++_native_version})
 LCG_add_test(herwigpp-${v}.genser-ttbar-rivet
-   PRE_COMMAND $ENV{SHELL} -c "cat ${CMAKE_SOURCE_DIR}/generators/herwig++/tests/LHC-ttbar.in | sed '/HepMCFile:Filename/s/herwigpp_ttbar.hepmc/herwigpp-${v}_ttbar.hepmc/g' > ${CMAKE_BINARY_DIR}/generators/LHC-ttbar-${v}.in"
+   PRE_COMMAND $ENV{SHELL} -c "cat ${CMAKE_SOURCE_DIR}/generators/herwig++/tests/LHC-ttbar.in | sed '/HepMCFile:Filename/s/herwigpp_ttbar.hepmc/herwigpp-${v}_ttbar.hepmc/g'| sed '/HepMCFile:PrintEvent/s/1000.*/${herwig++_stat_size}/g' > ${CMAKE_BINARY_DIR}/generators/LHC-ttbar-${v}.in"
   TEST_COMMAND ${herwig++-${v}_home}/bin/Herwig++ read ${CMAKE_BINARY_DIR}/generators/LHC-ttbar-${v}.in
        COMMAND ${herwig++-${v}_home}/bin/Herwig++ run -N${herwig++_stat_size} LHC-ttbar.run -d1
        COMMAND ${rivet2_home}/bin/rivet -a MC_GENERIC -a MC_IDENTIFIED -a MC_XS -a MC_TTBAR -H herwigpp-${v}.genser-ttbar-rivet.yoda herwigpp-${v}_ttbar.hepmc
