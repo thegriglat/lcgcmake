@@ -148,7 +148,7 @@ LCG_external_package(tauola++          1.1.1a         ${MCGENPATH}/tauola++     
 LCG_external_package(pythia6           427            ${MCGENPATH}/pythia6        author=6.4.27 hepevt=4000   )
 LCG_external_package(pythia6           427.2          ${MCGENPATH}/pythia6        author=6.4.27 hepevt=10000  )
 LCG_external_package(agile             1.4.0          ${MCGENPATH}/agile        )
-LCG_external_package(photos++          3.52           ${MCGENPATH}/photos++     )
+LCG_external_package(photos++          3.52           ${MCGENPATH}/photos++     author=3.52)
 #LCG_external_package(photos            215.5         ${MCGENPATH}/photos     )
 LCG_external_package(photos            215.4          ${MCGENPATH}/photos     ) 
 #LCG_external_package(photos            215.3         ${MCGENPATH}/photos     ) 

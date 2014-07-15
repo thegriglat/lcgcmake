@@ -146,7 +146,7 @@ LCG_external_package(tauola++          1.1.1a         MCGenerators/tauola++     
 LCG_external_package(pythia6           427            MCGenerators/pythia6        author=6.4.27 hepevt=4000   )
 LCG_external_package(pythia6           427.2          MCGenerators/pythia6        author=6.4.27 hepevt=10000  )
 LCG_external_package(agile             1.4.0          MCGenerators/agile        )
-LCG_external_package(photos++          3.52           MCGenerators/photos++     )
+LCG_external_package(photos++          3.52           MCGenerators/photos++     author=3.52)
 LCG_external_package(evtgen            1.1.0          MCGenerators/evtgen         tag=R01-01-00)
 LCG_external_package(rivet             1.8.2          MCGenerators/rivet        )
 LCG_external_package(sherpa            1.4.3          MCGenerators/sherpa         author=1.4.3 hepevt=4000  )
