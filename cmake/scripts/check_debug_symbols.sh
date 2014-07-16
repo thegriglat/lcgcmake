@@ -10,7 +10,7 @@
 
 ROOT_PATH=$1
 OS=$(uname)
-[ "Darwin" == $OS ] && filepattern="find $ROOT_PATH -type f -name *.dylib" || filepattern="find $ROOT_PATH -type f -name *.so"
+[ "Darwin" == $OS ] && filepattern="-name *.dylib" || filepattern="-name *.so"
 
 slc_check(){
     readelf --debug-dump "$1" 2> /dev/null
@@ -35,20 +35,24 @@ echo "Checking debug symbols in ${ROOT_PATH}/* ..."
 exitcode=0
 if echo ${ROOT_PATH} | grep -q '\-opt'; then
     echo "The following libraries have debug symbols:"
-    for name in $($filepattern); do
+    for dirs in $(find $ROOT_PATH -maxdepth 4 -type d); do
+      for name in $([ -d "$dirs/lib" ] && find $dirs/lib -type f $filepattern) $([ -d "$dirs/bin" ] && find $dirs/bin -type f $filepattern); do
         debug=$(check "$name")
         if [ "x$debug" != "x" ];then
             echo "WARNING: File $name contains debug symbols."
             echo "$name" | grep -q -i MCGenerators && echo "$name" | grep -q -v site-packages && exitcode=1
         fi
+      done
     done
 elif echo ${ROOT_PATH} | grep -q '\-dbg'; then
     echo "The following libraries don't have debug symbols:"
-    for name in $($filepattern | grep '-dbg'); do
+    for dirs in $(find $ROOT_PATH -maxdepth 4 -type d); do
+      for name in $([ -d "$dirs/lib" ] && find $dirs/lib -type f $filepattern | grep '\-dbg') $([ -d "$dirs/bin" ] && find $dirs/bin -type f $filepattern | grep '\-dbg'); do
         debug=$(check "$name")
         if [ "x$debug" = "x" ];then
             echo "WARNING: File $name doesn't contain debug symbols."
         fi
+      done
     done
 fi
 exit $exitcode
