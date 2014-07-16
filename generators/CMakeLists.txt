@@ -12,9 +12,9 @@ else()
   set (timeout 1500)
   set (pythia6_stat_size  1000)
   set (pythia8_stat_size  1000)
-  set (herwig++_stat_size 1000)
+  set (herwig++_stat_size 500)
   set (herwig_stat_size   1000)
-  set (sherpa_stat_size   1000)
+  set (sherpa_stat_size   500)
 endif()
 #---General parameters------------------------------------------------------------------------------
 set (gen_url "http://service-spi.web.cern.ch/service-spi/external/tarFiles/MCGeneratorsTarFiles")
@@ -333,7 +333,7 @@ LCG_add_test(herwigpp-${v}.native-TVT
 
 LCG_add_test(herwigpp-${v}.genser-LHC-W
                           TEST_COMMAND ${herwig++-${v}_home}/bin/Herwig++ read ${CMAKE_SOURCE_DIR}/generators/herwig++/tests/LHC-W.in --repo=${herwig++-${v}_home}/share/Herwig++/HerwigDefaults.rpo
-                               COMMAND ${herwig++-${v}_home}/bin/Herwig++ run -N100 LHC-W.run -d1
+                               COMMAND ${herwig++-${v}_home}/bin/Herwig++ run -N50 LHC-W.run -d1
                           POST_COMMAND cat LHC-W.out
                                COMMAND cat LHC-W.log
                           BINARY_DIR herwig++/tests

@@ -2,7 +2,7 @@
   # disable colorizing of text messages
   PRETTY_PRINT = Off
   
-  EVENTS = 1000
+  EVENTS = 500
 }(run)
 
 (beam){
