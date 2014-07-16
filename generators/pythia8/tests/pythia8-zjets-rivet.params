@@ -1,3 +1,10 @@
+
+# Beam parameter settings.
+Beams:idA = 2212                ! first beam, p = 2212, pbar = -2212
+Beams:idB = 2212                ! second beam, p = 2212, pbar = -2212
+Beams:eCM = 8000                ! CM energy of collision
+
+
 Main:numberOfEvents = 1000
 WeakBosonAndParton:qqbar2gmZg = on
 WeakBosonAndParton:qg2gmZq = on
