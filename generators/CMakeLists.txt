@@ -1536,9 +1536,9 @@ endforeach()
 
 foreach(v ${herwig++_native_version})
 LCG_add_test(herwigpp-${v}.genser-ttbar-rivet
-   PRE_COMMAND $ENV{SHELL} -c "cat ${CMAKE_SOURCE_DIR}/generators/herwig++/tests/LHC-ttbar.in | sed '/HepMCFile:Filename/s/herwigpp_ttbar.hepmc/herwigpp-${v}_ttbar.hepmc/g'| sed '/HepMCFile:PrintEvent/s/1000.*/${herwig++_stat_size}/g' > ${CMAKE_BINARY_DIR}/generators/LHC-ttbar-${v}.in"
+   PRE_COMMAND $ENV{SHELL} -c "cat ${CMAKE_SOURCE_DIR}/generators/herwig++/tests/LHC-ttbar.in | sed '/HepMCFile:Filename/s/herwigpp_ttbar.hepmc/herwigpp-${v}_ttbar.hepmc/g'| sed '/HepMCFile:PrintEvent/s/1000.*/${herwig++_stat_size}/g' | sed 's/saverun LHC-ttbar/saverun LHC-ttbar-${v}/g' > ${CMAKE_BINARY_DIR}/generators/LHC-ttbar-${v}.in"
   TEST_COMMAND ${herwig++-${v}_home}/bin/Herwig++ read ${CMAKE_BINARY_DIR}/generators/LHC-ttbar-${v}.in
-       COMMAND ${herwig++-${v}_home}/bin/Herwig++ run -N${herwig++_stat_size} LHC-ttbar.run -d1
+       COMMAND ${herwig++-${v}_home}/bin/Herwig++ run -N${herwig++_stat_size} LHC-ttbar-${v}.run -d1
        COMMAND ${rivet2_home}/bin/rivet -a MC_GENERIC -a MC_IDENTIFIED -a MC_XS -a MC_TTBAR -H herwigpp-${v}.genser-ttbar-rivet.yoda herwigpp-${v}_ttbar.hepmc
        COMMAND cat LHC-ttbar.out
        COMMAND cat LHC-ttbar.log
@@ -1557,9 +1557,9 @@ LCG_add_test(herwigpp-${v}.genser-ttbar-rivet
 )
   
 LCG_add_test(herwigpp-${v}.genser-zjets-rivet
-   PRE_COMMAND $ENV{SHELL} -c "cat ${CMAKE_SOURCE_DIR}/generators/herwig++/tests/LHC-zjets.in | sed '/HepMCFile:Filename/s/herwigpp_zjets.hepmc/herwigpp-${v}_zjets.hepmc/g' | sed '/HepMCFile:PrintEvent/s/1000.*/${herwig++_stat_size}/g' > ${CMAKE_BINARY_DIR}/generators/LHC-zjets-${v}.in"
+   PRE_COMMAND $ENV{SHELL} -c "cat ${CMAKE_SOURCE_DIR}/generators/herwig++/tests/LHC-zjets.in | sed '/HepMCFile:Filename/s/herwigpp_zjets.hepmc/herwigpp-${v}_zjets.hepmc/g' | sed '/HepMCFile:PrintEvent/s/1000.*/${herwig++_stat_size}/g'  | sed 's/saverun LHC-zjets/saverun LHC-zjets-${v}/g' > ${CMAKE_BINARY_DIR}/generators/LHC-zjets-${v}.in"
   TEST_COMMAND ${herwig++-${v}_home}/bin/Herwig++ read ${CMAKE_BINARY_DIR}/generators/LHC-zjets-${v}.in
-       COMMAND ${herwig++-${v}_home}/bin/Herwig++ run -N${herwig++_stat_size} LHC-zjets.run -d1
+       COMMAND ${herwig++-${v}_home}/bin/Herwig++ run -N${herwig++_stat_size} LHC-zjets-${v}.run -d1
        COMMAND ${rivet2_home}/bin/rivet -a MC_GENERIC -a MC_IDENTIFIED -a MC_XS -a MC_ZJETS -H herwigpp-${v}.genser-zjets-rivet.yoda herwigpp-${v}_zjets.hepmc
        COMMAND cat LHC-zjets.out
        COMMAND cat LHC-zjets.log
