@@ -38,6 +38,11 @@ cd /Herwig/MatrixElements/
 
 # Drell-Yan Z/gamma
 insert SimpleQCD:MatrixElements[0] MEqq2gZ2ff
+
+# Select only electron channel
+
+set MEqq2gZ2ff:Process Electron
+
 # only Z/gamma -> l+ l- are allowed:
 set    SimpleQCD:MatrixElements[0]:Process 3 
 
