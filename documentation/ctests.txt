@@ -43,12 +43,17 @@ the nightlies.
 
 
  CTESTS NAMING CONVENTION:
-
- 1. tests of a generator using rivet:                  generator_riv2[_tname]
- 2. tests of a generator using auxiliary generator2:   generator_gen2[_tname]
-       (here gen2 is a shortened name of generaror2, for example "pyt6")
- 3. tests of rivet: as in (3) with generator=rivet
-
+ Each test name contains
+   - generator's name
+   - generator's version
+   - type of test
+     - "native" tests are test that use examples, sources, ...  provided by package developers
+     - "genser" tests are test that use source codes made by GENSER team
+     - some tests may have a short name accompanying to its function, mainly these tests check common functionality of Installation or provide specific actions.
+   - definition of the test. It should be related with test's actions and/or parameters.
+ 
+ Formula of test name:
+   generator-version.(native|genser)-definition[-rivet for rivet tests]
 
  Physics rivet tests convention:
 
@@ -82,3 +87,15 @@ the nightlies.
       reference.py file1.yoda file2.yoda "Path=XS" limit=0.05
         But it is disabled now (will give an error). To use it, the code is to be further
         developed, adding extraction of scatter plot errors from yoda.
+
+
+==  Save yoda file in SQLite3 database
+  The scripts for export .yoda files to SQLite3 database are generators/reference/push2database.sh and generators/reference/push2database.py. 
+  To process one file  use push2database.py (see generators/reference/push2database.py -h)
+  To process all .yoda files in selected directory use push2database.sh (see generators/reference/push2database.sh -h)
+  In any cases you need to specify database which will be used for storing data. Web page genservis.cern.ch use SQLite3 database from local file system (at the moment it is /var/www/gensertest.db).
+  Recommended way to publish tests results to web site:
+    - copy SQLite3 database from /var/www/ at genservis.cern.ch to temporary location (for example /tmp/gensertest.db)
+    - export .yoda files to /tmp/gensertest.db by using push2database.sh or push2database.py
+    - replace original gensertest.db at genservis.cern.ch with /tmp/gensertest.db
+
