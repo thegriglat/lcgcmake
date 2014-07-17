@@ -39,27 +39,11 @@ foreach(v ${rivet_native_version})
   endif()
 endforeach()
 
-foreach(v ${pythia6_native_version})
-  set(pythia6_test_version_full ${v})
-endforeach()
+list(GET pythia6_native_version -1 pythia6_test_version_full)
 #This is not good that versions .2 cannot be tested with agile if there is a corresponding version without .2, solution to be found:
 string(REGEX MATCH "[0-9][0-9][0-9]" pythia6_test_version ${pythia6_test_version_full})
 
-foreach(v ${herwig_native_version}) 
-  set(herwig_test_version_full ${v})
-endforeach()
-#This is not good that versions .2 cannot be tested with agile if there is a corresponding version without .2, solution to be found:
-if ("${herwig_test_version_full}" STREQUAL "" )
-else()
-        string(REGEX MATCH "6.[0-9][0-9][0-9]" herwig_test_version ${herwig_test_version_full})
-endif()
-
-foreach(g alpgen pythia8 photos++ tauola++ lhapdf6 swig)
-  foreach(v ${${g}_native_version})
-    set(${g}_test_version ${v})
-  endforeach()
-endforeach()
-
+list(GET swig_native_version -1 swig_test_version)
 string(REGEX MATCH "[0-9]+[.][0-9]+[.][0-9]+" swig_author_version ${swig_test_version})
 #---lhapdfsets--------------------------------------------------------------------------------------
 message(STATUS "PDFsets to download: ${PDFsets}")
@@ -434,16 +418,16 @@ LCG_add_test(pythia6-${v}.native-test
   DEPENDS pythia6-${v}.build)
 
 LCG_add_test(pythia6-${v}.genser-test
-  TEST_COMMAND pythia6/tests/${v}/pythia6_genser_test1
-  POST_COMMAND ${CMAKE_COMMAND} -E copy testi_pythia6.dat test_pythia6.dat
+  TEST_COMMAND ${CMAKE_COMMAND} -E chdir pythia6/tests/${v} ./pythia6_genser_test1
+  POST_COMMAND ${CMAKE_COMMAND} -E chdir pythia6/tests/${v} ${CMAKE_COMMAND} -E copy testi_pythia6.dat test_pythia6.dat
   ENVIRONMENT ${library_path}=${pythia6-${v}_home}/lib:${HepMC_home}/lib:$ENV{${library_path}}
   DEPENDS pythia6-${v}.build
   )
 
 LCG_add_test(pythia6-${v}.genser-compare
-  PRE_COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/chi.c .
-  TEST_COMMAND ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/cmpr.sh pythia6 ${CMAKE_SOURCE_DIR}/generators/pythia6/tests/reference.dat ${v} ${LCG_VERSION} ${LCG_platform}
-  DEPENDS pythia6-${v}.genser-test1
+  PRE_COMMAND ${CMAKE_COMMAND} -E chdir pythia6/tests/${v} ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/chi.c .
+  TEST_COMMAND ${CMAKE_COMMAND} -E chdir pythia6/tests/${v} ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/cmpr.sh pythia6 ${CMAKE_SOURCE_DIR}/generators/pythia6/tests/reference.dat ${v} ${LCG_VERSION} ${LCG_platform}
+  DEPENDS pythia6-${v}.genser-test
   
 )
 endforeach()
@@ -765,9 +749,7 @@ LCGPackage_Add(
 
 )
 
-foreach(v ${lhapdf6_native_version})
-  set (pdf_version ${v})
-endforeach()
+list(GET lhapdf6_native_version -1 pdf_version)
 LCG_add_test(lhapdf6sets.download
    PRE_COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_INSTALL_PREFIX}/lhapdf6sets/current
        COMMAND ${CMAKE_COMMAND} -E echo "Download LHAPDF6 PDF sets (version ${pdf_version}) ..."
@@ -1481,7 +1463,7 @@ LCG_add_test(
                    ${library_path}=${Python_home}/lib:${GSL_home}/lib:${rivet2_home}/lib:${yoda_home}/lib:${HepMC_home}/lib:${fastjet_home}/lib:${yamlcpp_home}/lib:${ROOT_home}/lib:${pythia8_home}/lib:$ENV{${library_path}}
                    PYTHONPATH=${Python_home}/bin:${rivet2_home}/lib/python${Python_config_version_twodigit}/site-packages/:${yoda_home}/lib/python${Python_config_version_twodigit}/site-packages/:${ROOT_home}/lib:$ENV{PYTHONPATH}
             PYTHIA8DATA=${pythia8-${v}_home}/xmldoc
-  POST_COMMAND ${CMAKE_COMMAND} -DAIDA2ROOT=${AIDA2ROOT} -DPython_cmd=${Python_cmd} -Dyoda_home=${yoda_home} -DINPUT=${CMAKE_BINARY_DIR}/generators/pythia8.genser-zjets-rivet.yoda -P ${CMAKE_SOURCE_DIR}/cmake/scripts/yoda2root.cmake
+  POST_COMMAND ${CMAKE_COMMAND} -DAIDA2ROOT=${AIDA2ROOT} -DPython_cmd=${Python_cmd} -Dyoda_home=${yoda_home} -DINPUT=${CMAKE_BINARY_DIR}/generators/pythia8-${v}.genser-zjets-rivet.yoda -P ${CMAKE_SOURCE_DIR}/cmake/scripts/yoda2root.cmake
        COMMAND ${CMAKE_SOURCE_DIR}/generators/reference/riv2html.sh ${rivet2_home} pythia8 ${v_test_version} zjets ${LCG_VERSION} ${LCG_platform}
        COMMAND ${Python_cmd} ${CMAKE_SOURCE_DIR}/generators/reference/reference.py ${CMAKE_BINARY_DIR}/generators/pythia8.genser-zjets-rivet.root ${CMAKE_BINARY_DIR}/generators/pythia8-${v}.genser-zjets-rivet.root "Path=jet_HT" limit=0.10
        COMMAND ${Python_cmd} ${CMAKE_SOURCE_DIR}/generators/reference/reference.py ${CMAKE_BINARY_DIR}/generators/pythia8.genser-zjets-rivet.root ${CMAKE_BINARY_DIR}/generators/pythia8-${v}.genser-zjets-rivet.root "Path=XS" limit=0.05
@@ -1648,7 +1630,6 @@ LCG_add_test(rivet-tests.genser-prepare_references
        COMMAND ${CMAKE_COMMAND} -DAIDA2ROOT=${AIDA2ROOT} -DPython_cmd=${Python_cmd} -Dyoda_home=${yoda_home} -DINPUT=${CMAKE_BINARY_DIR}/generators/pythia6.genser-zjets-rivet.yoda -P ${CMAKE_SOURCE_DIR}/cmake/scripts/yoda2root.cmake
        COMMAND ${CMAKE_COMMAND} -DAIDA2ROOT=${AIDA2ROOT} -DPython_cmd=${Python_cmd} -Dyoda_home=${yoda_home} -DINPUT=${CMAKE_BINARY_DIR}/generators/pythia6.genser-ttbar-rivet.yoda -P ${CMAKE_SOURCE_DIR}/cmake/scripts/yoda2root.cmake
        COMMAND ${CMAKE_COMMAND} -DAIDA2ROOT=${AIDA2ROOT} -DPython_cmd=${Python_cmd} -Dyoda_home=${yoda_home} -DINPUT=${CMAKE_BINARY_DIR}/generators/pythia8.genser-zjets-rivet.yoda -P ${CMAKE_SOURCE_DIR}/cmake/scripts/yoda2root.cmake
-  POST_COMMAND ${CMAKE_COMMAND} -E remove -f ${CMAKE_BINARY_DIR}/generators/*.yoda ${CMAKE_BINARY_DIR}/generators/*.aida
   ENVIRONMENT PATH=${Python_home}/bin:$ENV{PATH}
               ${library_path}=${Python_home}/lib:${rivet2_home}/lib:${yoda_home}/lib:${ROOT_home}/lib:$ENV{${library_path}}
               PYTHONPATH=${Python_home}/bin:${rivet2_home}/lib/python${Python_config_version_twodigit}/site-packages/:${yoda_home}/lib/python${Python_config_version_twodigit}/site-packages/:${ROOT_home}/lib:$ENV{PYTHONPATH}
