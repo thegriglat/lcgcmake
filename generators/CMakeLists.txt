@@ -1151,10 +1151,10 @@ if(NOT APPLE)    #  (installation fails on MacOSX, can be fixed on macos)
 )
 
 foreach(v ${hijing_native_version})
-LCG_add_test(hijing-${v}.native-example TEST_COMMAND hijing/tests/${v}/hijing_orig_test1
+LCG_add_test(hijing-${v}.native-example1-nopause TEST_COMMAND hijing/tests/${v}/hijing_orig_example1-nopause
                           BINARY_DIR hijing/tests/${v}
                           SOURCE_DIR hijing/tests
-                          BUILD hijing_orig_test1
+                          BUILD hijing_orig_example1-nopause
                           BUILD_OPTIONS -DHIJING_ROOT_DIR=${hijing-${v}_home} 
                                         -DCMAKE_MODULE_PATH=${cmaketools_home}/modules
                           ENVIRONMENT ${library_path}=${hijing-${v}_home}/lib:$ENV{${library_path}})

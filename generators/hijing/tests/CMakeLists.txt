@@ -5,7 +5,11 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/../../../cmake/modules)
 
 find_package(Hijing REQUIRED)
 
-add_executable(hijing_orig_test1 ${HIJING_ROOT_DIR}/../share/sources/examples/example_1.f)
-#add_executable(hijing_genser_test1 hijing_test1.F)
-target_link_libraries(hijing_orig_test1 ${HIJING_LIBRARIES})
+# strip PAUSE FORTRAN command
+file(READ ${HIJING_ROOT_DIR}/../share/sources/examples/example_1.f ORIGINAL)
+STRING(REPLACE "PAUSE" "" REPLACED ${ORIGINAL})
+file(WRITE ${CMAKE_BINARY_DIR}/example_1-nopause.f ${REPLACED})
+
+add_executable(hijing_orig_example1-nopause ${CMAKE_BINARY_DIR}/example_1-nopause.f)
+target_link_libraries(hijing_orig_example1-nopause ${HIJING_LIBRARIES})
 
