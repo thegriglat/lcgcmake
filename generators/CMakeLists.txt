@@ -245,13 +245,14 @@ LCG_add_test( vincia-pretest
 )
 
 #foreach( vinciatest vincia01.exe vincia02.exe vincia03-root.exe vincia04-root.exe vincia05-root.exe vincia06.exe vincia07-root.exe vincia08-root.exe vincia09-root.exe vincia10-root.exe vincia_test_LHE.exe)
-foreach( vinciatest vincia01.exe vincia02.exe vincia06.exe vincia07-root.exe vincia09-root.exe vincia_test_LHE.exe)
+#  vincia02.exe vincia06.exe vincia07-root.exe vincia09-root.exe vincia_test_LHE.exe)
+foreach( vinciatest vincia01.exe )
 LCG_add_test(${vinciatest}
     TEST_COMMAND ${CMAKE_COMMAND} -E chdir ${vincia_home}/bin/ ./${vinciatest} 
     ENVIRONMENT
     ${library_path}=${pythia8_home}/lib:${fastjet_home}/lib:${vincia_home}/lib:${ROOT_home}/lib:$ENV{${library_path}}
     PYTHIA8DATA=${pythia8_home}/xmldoc
-    VINCIADATA=${vincia_home}/xmldoc
+    VINCIADATA=${vincia_home}/settings/xmldoc
     DEPENDS vincia-pretest
 )
 endforeach()
