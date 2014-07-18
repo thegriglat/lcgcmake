@@ -23,9 +23,15 @@
 //         53 - 55 : Excited fermions (compositeness).
 //         56 - 56 : excited Graviton (RS extra dimensions).
 
-#include "Pythia8/Pythia.h"
 #include <iostream>
 #include <fstream>
+
+#ifdef PYTHIA8NEWVERS
+  #include "Pythia8/Pythia.h"
+#else
+  #include "Pythia.h"
+#endif
+
 using namespace std;
 using namespace Pythia8;
 
