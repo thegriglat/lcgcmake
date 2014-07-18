@@ -245,5 +245,8 @@ endif()
 
 LCG_external_package(jhu               3.1.8          ${MCGENPATH}/jhu       )
 
+LCG_external_package(vincia            9.9.9          ${MCGENPATH}/vincia       )
+
+
 # Prepare the search paths according to the versions above
 LCG_prepare_paths()

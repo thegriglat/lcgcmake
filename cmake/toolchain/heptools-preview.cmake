@@ -240,6 +240,8 @@ LCG_external_package(powheg-box         r2092         ${MCGENPATH}/powheg-box   
     LCG_external_package(baurmc            1.0            ${MCGENPATH}/baurmc       )
     LCG_external_package(professor         1.3.3          ${MCGENPATH}/professor       )
 
+    LCG_external_package(vincia            9.9.9          ${MCGENPATH}/vincia       ) 
+
 if(${LCG_COMP}${LCG_COMPVERS} STRGREATER gcc45)
   LCG_external_package(madgraph5v2       2.0.0.beta3    ${MCGENPATH}/madgraph5       )
 endif()
