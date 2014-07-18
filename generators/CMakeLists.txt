@@ -1476,7 +1476,7 @@ LCG_add_test(
        COMMAND ${Python_cmd} ${CMAKE_SOURCE_DIR}/generators/reference/reference.py ${CMAKE_BINARY_DIR}/generators/pythia8.genser-zjets-rivet.root ${CMAKE_BINARY_DIR}/generators/pythia8-${v}.genser-zjets-rivet.root "Path=jet_HT" limit=0.10
        COMMAND ${Python_cmd} ${CMAKE_SOURCE_DIR}/generators/reference/reference.py ${CMAKE_BINARY_DIR}/generators/pythia8.genser-zjets-rivet.root ${CMAKE_BINARY_DIR}/generators/pythia8-${v}.genser-zjets-rivet.root "Path=XS" limit=0.05
   TIMEOUT ${timeout}
-  DEOENDS rivet-tests.genser-prepare_references
+  DEPENDS rivet-tests.genser-prepare_references
 )
 #I cannot pass the command below because of quotes. In addition it requires to have ${rivet2_home}/bin in the path
 #rivet-mkhtml -o pythia8html -s --mc-errs pythia8_riv2.yoda:'Title=Reference' pythia8_riv2_i.yoda:'LineColor=blue'
