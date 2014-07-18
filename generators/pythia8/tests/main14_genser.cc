@@ -75,13 +75,21 @@ map<string, double> openXSec(string filename)
 
 int main(int argc, char *argv[]){
 
-string refFile="xsec_pythia6_ref.dat";
+  string refFile="";
+  map<string, double> mapProcXsecRef;
+  map<string, double> mapProcXsec;
 
-  if( argc == 1 )
-      cout << "No reference filename provided; default xsec_pythia6_ref.dat will be used "  << endl;
+  if( argc == 1 ){
+      cout << endl;
+      cout << "No reference filename provided; comparison with Pythia6 only "  << endl;
+      cout << endl;
+   }
    else if ( argc == 2 ){
+      cout << endl; 
       cout << "You provided new reference file! File is "  << argv[1] << endl;
       refFile=argv[1];	
+      mapProcXsecRef=openXSec(refFile);
+      cout << endl;
    }
    else if( argc > 2 )
       {
@@ -89,12 +97,7 @@ string refFile="xsec_pythia6_ref.dat";
       return 1;	
       }
        
-
-
-  map<string, double> mapProcXsecRef;
-  map<string, double> mapProcXsec;
   
-  mapProcXsecRef=openXSec(refFile);
 
   // First and last process to test: can run from 0 through 40.
   int iFirst = 0;
@@ -175,6 +178,19 @@ string refFile="xsec_pythia6_ref.dat";
     "ExcitedFermion:qqbar2eStare",
     "ExtraDimensionsG*:all" };
 
+
+  // List of cross sections from Pythia6.
+  double sigma6[57] = {   4.960e-01, 1.627e-02, 2.790e-01, 2.800e-02,
+               3.310e-04, 3.653e-04, 1.697e-04, 1.163e-05, 1.065e-07, 8.259e-08,
+               8.237e-08, 2.544e-05, 5.321e-06, 5.571e-05, 1.621e-04, 9.039e-09,
+               2.247e-08, 5.893e-08, 3.781e-06, 1.078e-05, 4.551e-08, 1.025e-05,
+               3.208e-05, 5.435e-08, 1.038e-04, 3.929e-05, 4.155e-07, 6.685e-08, 
+               1.898e-07, 4.240e-10, 7.142e-09, 1.547e-10, 7.064e-09, 1.316e-10,
+               2.332e-10, 5.105e-10, 1.316e-09, 4.462e-11, 5.557e-09, 1.966e-09,
+               8.725e-12, 2.450e-08, 5.839e-09, 1.687e-08, 8.950e-11, 4.188e-11,
+               1.980e-07, 4.551e-07, 6.005e-09, 1.102e-07, 7.784e-11, 3.488e-11,
+                          6.006e-08, 3.235e-06, 1.689e-05, 5.986e-07, 3.241e-10 };
+
   // Generator.
   Pythia pythia;
 
@@ -218,20 +234,25 @@ string refFile="xsec_pythia6_ref.dat";
 
   // Loop over processes.
 
-  cout << " comparison between current version and reference file - " << refFile << endl;
+  if ( argc == 2 ) { cout << " comparison between current version and reference  -  " << refFile << " + Pythia6 " << endl;  }
+  else cout << " comparison between current version and pythia6 only "  << endl;		 
+ printf ("*=========================================================================================================================================================*\n");
+  printf ("|                                                                        |               |               |          |             |              |        |\n"); 
+  printf ("|                                Processes                               |    Current    |   Reference   |  Ratio   |             |    Pythia6   | Ratio  |\n");
+  printf ("|                                                                        |      XS       |      XS       |          |             |      XS      |        |\n");
+  printf ("*=========================================================================================================================================================*\n");
 
   for (int iProc = iFirst; iProc <= iLast; ++iProc) {
-//    cout << "\n Begin subrun number " << iProc << " : ";
-
+     string processName; 
     // Switch off previous process(es) and switch on new one(s).
     if (iProc > iFirst) for (int i = iBeg[iProc - 1]; i < iBeg[iProc]; ++i)
       pythia.readString( processes[i] + " = off" );
     for (int i = iBeg[iProc]; i < iBeg[iProc + 1]; ++i) {
+      processName+=processes[i];
       pythia.readString( processes[i] + " = on" );
- //     if (i > iBeg[iProc]) cout << " + ";
-  //    cout << processes[i];
+      if (i < iBeg[iProc+1]-1 ) processName+="+"; 
     }
-//    cout << endl;
+
 
     // Switch between SM and MSSM Higgs scenario.
     if (iProc <= 40) {
@@ -262,16 +283,20 @@ string refFile="xsec_pythia6_ref.dat";
     //pythia.stat();
     double sigma = pythia.info.sigmaGen();
 
-    mapProcXsec[processes[iProc]]=sigma;
+    mapProcXsec[processName]=sigma;
     string wmessage = "";
-    if ( fabs(1.-sigma / mapProcXsecRef[processes[iProc]])> 0.05) wmessage = "WARNING";
-    if ( fabs(1.-sigma / mapProcXsecRef[processes[iProc]])> 0.3 ) wmessage = "LARGE DEVIATION";
-    printf ( "XS of %30s is %E and it was %E in ref. file and ratio is %f %10s \n",  
-         processes[iProc].c_str(), sigma, mapProcXsecRef[processes[iProc]], sigma / mapProcXsecRef[processes[iProc]], wmessage.c_str() );
-
+    if ( fabs(1.-sigma / mapProcXsecRef[processName])> 0.05) wmessage = "WARNING";
+    if ( fabs(1.-sigma / mapProcXsecRef[processName])> 0.3 ) wmessage = "LARGE DEVIATION";
+    if ( argc == 2 ) // reference file is provided          
+    	printf ( "| %70s |  %E |  %E |   %4.2f   |  %10s | %E |  %4.2f  | \n",  
+        	 processName.c_str() , sigma, mapProcXsecRef[processName], sigma / mapProcXsecRef[processName], wmessage.c_str(), sigma6[iProc], sigma / sigma6[iProc]  );
+    else
+               printf ( "| %70s |  %E |  %12s |   %4s   |  %10s | %E |  %4.2f  | \n",  
+                 processName.c_str() , sigma, "N/A" , "N/A" , "N/A", sigma6[iProc], sigma / sigma6[iProc]  );
+ 
   // End of loop over processes.
   }
-
+   printf ("*=========================================================================================================================================================*\n");
    dumpXSec(mapProcXsec);
 
   // Done.
