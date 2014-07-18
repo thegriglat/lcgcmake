@@ -155,7 +155,7 @@ LCG_add_test(pythia8-${v}.build
 LCG_add_test(pythia8-${v}.genser-main14_genser
   TEST_COMMAND pythia8/tests/${v}/pythia8_main14_genser ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/ref-pythia8-186-main14-xsec-x86_64-slc6-gcc48-opt.dat
   ENVIRONMENT
-    ${library_path}=${pythia8-${v}_home}/lib:$ENV{${library_path}}
+    ${library_path}=${pythia8-${v}_home}/lib:${HepMC_home}/lib:$ENV{${library_path}}
     PYTHIA8DATA=${pythia8-${v}_home}/xmldoc
   DEPENDS pythia8-${v}.build)
 
