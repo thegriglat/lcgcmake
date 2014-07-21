@@ -509,7 +509,7 @@ LCGPackage_Add(
   CONFIGURE_COMMAND <VOID>
   BUILD_COMMAND ${Exec_cmd} PYTHONPATH=${pyanalysis_home}/lib/python${Python_config_version_twodigit}/site-packages 
 		${Exec_cmd} ${library_path}=${ROOT_home}/lib:$ENV{${library_path}}
-		${Python_cmd} setup.py build
+		${Python_cmd} setup.py build  -e "${env_cmd} python"
 
   INSTALL_COMMAND ${Exec_cmd} PYTHONPATH=${pyanalysis_home}/lib/python${Python_config_version_twodigit}/site-packages 
 		${Exec_cmd} ${library_path}=${ROOT_home}/lib:$ENV{${library_path}}
@@ -704,7 +704,7 @@ LCGPackage_Add(
   cython
   URL ${gen_url}/Cython-${cython_native_version}.tar.gz
   CONFIGURE_COMMAND <VOID>
-  BUILD_COMMAND ${Python_home}/bin/python setup.py build
+  BUILD_COMMAND ${Python_home}/bin/python setup.py build -e "${env_cmd} python"
   INSTALL_COMMAND ${Python_home}/bin/python setup.py install --prefix <INSTALL_DIR>
   BUILD_IN_SOURCE 1
   DEPENDS Python
