@@ -291,8 +291,8 @@ int main(int argc, char *argv[]){
 
     mapProcXsec[processName]=sigma;
     string wmessage = "";
-    if ( fabs(1.-sigma / mapProcXsecRef[processName])> 0.05) wmessage = "WARNING";
-    if ( fabs(1.-sigma / mapProcXsecRef[processName])> 0.3 ) wmessage = "LARGE DEVIATION";
+    if ( fabs(1.-sigma / mapProcXsecRef[processName])> 0.05) wmessage = "WARNING ";
+    if ( fabs(1.-sigma / mapProcXsecRef[processName])> 0.3 ) wmessage = "CRITICAL";
     if ( argc == 2 ) // reference file is provided          
     	printf ( "| %70s |  %E |  %E |   %4.2f   |  %10s | %E |  %4.2f  | \n",  
         	 processName.c_str() , sigma, mapProcXsecRef[processName], sigma / mapProcXsecRef[processName], wmessage.c_str(), sigma6[iProc], sigma / sigma6[iProc]  );
