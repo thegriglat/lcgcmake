@@ -284,6 +284,31 @@ macro(LCGPackage_Add name)
           DEPENDEES strip_rpath install_logs)
       	endif()
       endif()	
+  
+      #---Process and copy environment scripts --------------------------------------------------------
+      if (EXISTS "${CMAKE_SOURCE_DIR}/generators/environment/${name}.template")
+        get_filename_component(gcc_source "${CMAKE_C_COMPILER}" PATH)
+        # Available variables in template:
+        # - <package>_version = version of installed package and its dependencies
+        # - <package>_home    = home of installed package and its dependencies
+        # - gcc_source        = path to setup.sh of gcc
+        # - platform          = target platform
+        set (_args "-D${name}_version=${version}" "-DTEMPLATE=${CMAKE_SOURCE_DIR}/generators/environment/${name}.template" "-DTARGET=${${name}_home}/${name}-genser.sh" "-Dgcc_source=${gcc_source}/../setup.sh" "-Dplatform=${LCG_platform}")
+        foreach(dep ${ARG_DEPENDS})
+          if(dep MATCHES "(.+)-(.+)")
+            list (APPEND _args "-D${CMAKE_MATCH_1}_version=${CMAKE_MATCH_2}")
+            list (APPEND _args "-D${CMAKE_MATCH_1}_home=${${CMAKE_MATCH_1}-${CMAKE_MATCH_2}_home}")
+          else()
+            list(GET ${dep}_native_version -1 dep_vers) 
+            list(APPEND _args "-D${dep}_version=${dep_vers}")
+            list(APPEND _args "-D${dep}_home=${${dep}-${dep_vers}_home}")
+          endif()
+        endforeach()
+        ExternalProject_Add_Step(${targetname} setup_environment COMMENT "Installing environment for ${name}"
+          COMMAND ${CMAKE_COMMAND} ${_args} -P ${CMAKE_SOURCE_DIR}/cmake/scripts/provide-environment.cmake
+          DEPENDEES install_logs
+        )
+      endif()
 
 
       #---Adding clean targets--------------------------------------------------------------------------

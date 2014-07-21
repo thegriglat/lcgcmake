@@ -1,0 +1,27 @@
+#!/bin/sh
+
+### Parameters
+PYTHON_VERSION=%Python_version%
+PROFESSOR_VERSION=%professor_version%
+
+PLATFORM=%platform%
+source %gcc_source%
+
+PYANALYSIS_VERSION=$(cd %scipy_home%; pwd | awk -F'pyanalysis/' '{print $2}' | awk -F'/' '{print $1}')
+### End parameters
+
+PYTHON_VERSION_SHORT=$(echo $PYTHON_VERSION | awk -F'.' '{print $1"."$2}')
+scriptdir=$(dirname -- "${BASH_SOURCE[0]}")
+LCGDIR="$(cd $scriptdir;pwd | awk -F'MCGenerators' '{print $1}')"
+MCGEN="$LCGDIR/$(cd $scriptdir;pwd | awk -F"$LCGDIR" '{print $2}' | awk -F'/' '{print $1}')"
+
+ROOT_VERSION=$(ls -t $LCGDIR/ROOT/ | head -1)
+PROFESSOR_HOME=$MCGEN/professor/$PROFESSOR_VERSION/$PLATFORM
+PYANALYSIS_HOME=$LCGDIR/pyanalysis/$PYANALYSIS_VERSION/$PLATFORM
+PYTHON_HOME=$LCGDIR/Python/$PYTHON_VERSION/$PLATFORM
+ROOT_HOME=$LCGDIR/ROOT/$ROOT_VERSION/$PLATFORM
+
+export PYTHONPATH=${PYANALYSIS_HOME}/lib/python$PYTHON_VERSION_SHORT/site-packages:$PROFESSOR_HOME/lib/python$PYTHON_VERSION_SHORT/site-packages:$PYTHONPATH
+export LD_LIBRARY_PATH=${ROOT_HOME}/lib:$LD_LIBRARY_PATH
+export PATH=${PYTHON_HOME}/bin:$PROFESSOR_HOME/bin:$PATH
+

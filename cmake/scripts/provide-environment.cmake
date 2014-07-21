@@ -1,0 +1,10 @@
+set (inscript ${TEMPLATE})
+set (outscript ${TARGET})
+file(READ ${inscript} TEXT)
+
+get_cmake_property(varnames VARIABLES)
+foreach (varname ${varnames})
+  string(REPLACE "%${varname}%" "${${varname}}" TEXT "${TEXT}")
+endforeach()
+message("Write environment scripts to ${outscript}")
+file(WRITE ${outscript} "${TEXT}")
