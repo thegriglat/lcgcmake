@@ -928,6 +928,13 @@ LCG_add_test(rivet-${v}.native-MC_DIJET
     PATH=${Python_home}/bin:$ENV{PATH}
 )
 endif()
+
+LCG_add_test(rivet-${v}.genser-check_rivet_scripts
+  TEST_COMMAND $ENV{SHELL} -c "source ${rivet-${v}_home}/rivet-genser.sh
+       ${rivet-${v}_home}/bin/rivet -a MC_WJETS ${CMAKE_SOURCE_DIR}/generators/rivet/tests/data.hepmc
+       ${rivet-${v}_home}/bin/rivet-mkhtml Rivet.yoda"
+)
+
 endforeach()
 
 #---QD------------------------------------------------------------------------------------------
