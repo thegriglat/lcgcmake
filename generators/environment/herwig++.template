@@ -8,7 +8,7 @@ FASTJET_VERSION=%fastjet_version%
 HERWIGPP_VERSION=%herwig++_version%
 
 PLATFORM=%platform%
-source %gcc_source%
+[ ! "Darwin" = $(uname -s) ] && source %gcc_source%
 ### End parameters
 
 scriptdir=$(dirname -- "${BASH_SOURCE[0]}")
@@ -29,3 +29,4 @@ export PATH=$HERWIGPP_HOME/bin:$PATH
 export LD_LIBRARY_PATH=${THEPEG_HOME}/lib/ThePEG:${GSL_HOME}/lib:${BOOST_HOME}/lib:${HERWIGPP_HOME}/lib/Herwig++:${FASTJET_HOME}/lib:${THEPEG_HOME}/lib/ThePEG:${GSL_HOME}/lib:${BOOST_HOME}/lib:${FASTJET_HOME}/lib:$HEPMC_HOME/lib:$LD_LIBRARY_PATH
 export REPO=${HERWIGPP_HOME}/share/Herwig++/HerwigDefaults.rpo
 export LHAPATH=$LHAPDF_HOME/share/PDFsets
+[ "Darwin" = $(uname -s) ] && export DYLD_LIBRARY_PATH=$LD_LIBRARY_PATH

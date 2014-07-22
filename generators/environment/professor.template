@@ -5,7 +5,7 @@ PYTHON_VERSION=%Python_version%
 PROFESSOR_VERSION=%professor_version%
 
 PLATFORM=%platform%
-source %gcc_source%
+[ ! "Darwin" = $(uname -s) ] && source %gcc_source%
 
 PYANALYSIS_VERSION=$(echo %scipy_home% | awk -F'pyanalysis/' '{print $2}' | awk -F'/' '{print $1}')
 ### End parameters
@@ -24,4 +24,4 @@ ROOT_HOME=$LCGDIR/ROOT/$ROOT_VERSION/$PLATFORM
 export PYTHONPATH=${PYANALYSIS_HOME}/lib/python$PYTHON_VERSION_SHORT/site-packages:$PROFESSOR_HOME/lib/python$PYTHON_VERSION_SHORT/site-packages:$PYTHONPATH
 export LD_LIBRARY_PATH=${ROOT_HOME}/lib:$LD_LIBRARY_PATH
 export PATH=${PYTHON_HOME}/bin:$PROFESSOR_HOME/bin:$PATH
-
+[ "Darwin" = $(uname -s) ] && export DYLD_LIBRARY_PATH=$LD_LIBRARY_PATH
