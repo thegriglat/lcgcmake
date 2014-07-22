@@ -187,7 +187,7 @@ LCG_add_test(pythia8-${v}.genser-test1
 LCG_add_test(pythia8-${v}.genser-test2
   PRE_COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/pythia8_test2.cmnd .
   TEST_COMMAND pythia8/tests/${v}/pythia8_genser_test2
-  POST_COMMAND ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/mergetest
+  POST_COMMAND $ENV{SHELL} -c "cat testi_pythia8.dat >> test_pythia8.dat"
   ENVIRONMENT
     ${library_path}=${pythia8-${v}_home}/lib:${HepMC_home}/lib:$ENV{${library_path}}
     PYTHIA8DATA=${pythia8-${v}_home}/xmldoc
@@ -197,7 +197,7 @@ LCG_add_test(pythia8-${v}.genser-test2
 
 LCG_add_test(pythia8-${v}.genser-test3
   TEST_COMMAND pythia8/tests/${v}/pythia8_genser_test3
-  POST_COMMAND ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/mergetest
+  POST_COMMAND $ENV{SHELL} -c "cat testi_pythia8.dat >> test_pythia8.dat"
   ENVIRONMENT
     ${library_path}=${pythia8-${v}_home}/lib:${HepMC_home}/lib:$ENV{${library_path}}
     PYTHIA8DATA=${pythia8-${v}_home}/xmldoc
@@ -207,7 +207,7 @@ LCG_add_test(pythia8-${v}.genser-test3
 
 LCG_add_test(pythia8-${v}.genser-test4
   TEST_COMMAND pythia8/tests/${v}/pythia8_genser_test4
-  POST_COMMAND ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/mergetest
+  POST_COMMAND $ENV{SHELL} -c "cat testi_pythia8.dat >> test_pythia8.dat"
   ENVIRONMENT
     ${library_path}=${pythia8-${v}_home}/lib:${HepMC_home}/lib:$ENV{${library_path}}
     PYTHIA8DATA=${pythia8-${v}_home}/xmldoc
@@ -639,7 +639,7 @@ LCG_add_test(photospp-${v}.genser-test2-nightlies
     ${library_path}=${photos++-${v}_home}/lib:${HepMC_home}/lib:${pythia8_home}/lib:$ENV{${library_path}}
     PYTHIA8DATA=${pythia8_home}/xmldoc
   POST_COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/chi.c .
-       COMMAND ${CMAKE_SOURCE_DIR}/generators/photospp/tests/mergetest ${v}
+       COMMAND $ENV{SHELL} -c "cat photospp/tests/${v}/testi.dat >> test_photospp.dat"
        COMMAND ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/cmpr.sh photospp ${CMAKE_SOURCE_DIR}/generators/photospp/tests/reference.dat ${v} ${LCG_VERSION} ${LCG_platform}
   DEPENDS photospp-${v}.build photospp-${v}.genser-test1-nightlies
   
@@ -909,20 +909,23 @@ LCG_add_test(
 
 LCG_add_test(
        rivet-${v}.genser-cms_script
-       TEST_COMMAND ${CMAKE_SOURCE_DIR}/generators/rivet2/tests/testCMS.sh ${rivet-${v}_home} ${CMAKE_SOURCE_DIR}/generators/rivet/tests/data.hepmc  
+       TEST_COMMAND $ENV{SHELL} -c "source ${rivet-${v}_home}/rivetenv.sh
+                    rivet --ignore-beams -a CMS_2012_I1184941 ${CMAKE_SOURCE_DIR}/generators/rivet/tests/data.hepmc"
        ENVIRONMENT PATH=${Python_home}/bin:$ENV{PATH}
 		   ${library_path}=${Python_home}/lib:${GSL_home}/lib:$ENV{${library_path}}
 )   
 
 LCG_add_test(
        rivet-${v}.genser-atlas_script  
-       TEST_COMMAND ${CMAKE_SOURCE_DIR}/generators/rivet2/tests/testATLAS.sh ${rivet-${v}_home} ${CMAKE_SOURCE_DIR}/generators/rivet/tests/data.hepmc
+       TEST_COMMAND $ENV{SHELL} -c "source ${rivet-${v}_home}/rivetenv.sh
+                    rivet --ignore-beams -a ATLAS_2012_I1083318 ${CMAKE_SOURCE_DIR}/generators/rivet/tests/data.hepmc"
        ENVIRONMENT PATH=${Python_home}/bin:$ENV{PATH}
 		   ${library_path}=${Python_home}/lib:${GSL_home}/lib:$ENV{${library_path}}
 )
 else()
 LCG_add_test(rivet-${v}.native-MC_DIJET
-  TEST_COMMAND ${CMAKE_SOURCE_DIR}/generators/rivet/tests/test1.sh ${rivet-${v}_home} ${CMAKE_SOURCE_DIR}/generators/rivet/tests/data.hepmc
+  TEST_COMMAND $ENV{SHELL} -c "source ${rivet-${v}_home}/rivetenv.sh
+               rivet --analysis=MC_DIJET ${CMAKE_SOURCE_DIR}/generators/rivet/tests/data.hepmc"
   ENVIRONMENT
     ${library_path}=${GSL_home}/lib:$ENV{${library_path}}
     PATH=${Python_home}/bin:$ENV{PATH}
@@ -1286,7 +1289,10 @@ LCG_add_test(
       COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/generators/alpgen/tests/inputalpgen tmpalpgen/examples-${v}
       COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/generators/alpgen/tests/inputalpgen2 tmpalpgen/examples-${v}
       COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/generators/alpgen/tests/inputalpgen3 tmpalpgen/examples-${v}
-  TEST_COMMAND ${CMAKE_COMMAND} -E chdir tmpalpgen/examples-${v} ${CMAKE_SOURCE_DIR}/generators/alpgen/tests/runalpgen ${alpgen-${v}_home}/../share/sources ${alpgen-${v}_home}/lib/archive
+  TEST_COMMAND ${CMAKE_COMMAND} -E chdir tmpalpgen/examples-${v} $ENV{SHELL} -c "./configure_simple --with-alpgeninstalled=${alpgen-${v}_home}/../share/sources --with-alpgenlibs=${alpgen-${v}_home}/lib/archive
+               make -f Makefile_simple zjet
+               ./zjetgen.exe < inputalpgen
+               ./zjetgen.exe < inputalpgen2"
 )
 endforeach()
 
@@ -1484,7 +1490,7 @@ LCG_add_test(
        COMMAND ${Python_cmd} ${CMAKE_SOURCE_DIR}/generators/reference/reference.py ${CMAKE_BINARY_DIR}/generators/pythia8.genser-zjets-rivet.root ${CMAKE_BINARY_DIR}/generators/pythia8-${v}.genser-zjets-rivet.root "Path=jet_HT" limit=0.10
        COMMAND ${Python_cmd} ${CMAKE_SOURCE_DIR}/generators/reference/reference.py ${CMAKE_BINARY_DIR}/generators/pythia8.genser-zjets-rivet.root ${CMAKE_BINARY_DIR}/generators/pythia8-${v}.genser-zjets-rivet.root "Path=XS" limit=0.05
   TIMEOUT ${timeout}
-  DEPENDS rivet-tests.genser-prepare_references
+  DEPENDS rivet-tests.genser-prepare_references pythia8-${v}.build
 )
 #I cannot pass the command below because of quotes. In addition it requires to have ${rivet2_home}/bin in the path
 #rivet-mkhtml -o pythia8html -s --mc-errs pythia8_riv2.yoda:'Title=Reference' pythia8_riv2_i.yoda:'LineColor=blue'
@@ -1615,7 +1621,7 @@ LCG_add_test(
   TEST_COMMAND ${CMAKE_COMMAND} -E echo available generators for the given AGILE_GEN_PATH:
        COMMAND ${agile_home}/bin/agile-runmc --list-gens
        COMMAND ${CMAKE_COMMAND} -E echo 
-       COMMAND ${CMAKE_COMMAND} -E chdir tmpalpgen/examples-${v} ${CMAKE_SOURCE_DIR}/generators/agile_configs/runagile_alpgenpythia6 ${agile_home} ${v} ${pythia6_test_version} ${CMAKE_SOURCE_DIR}/generators/agile_configs/alpgen-zjets.params
+       COMMAND ${CMAKE_COMMAND} -E chdir tmpalpgen/examples-${v} $ENV{SHELL} -c "${agile_home}/bin/agile-runmc AlpGenPythia6:${pythia6_test_version}:${v} -o hepmcfile_alpgen_zjets.dat --paramfile ${CMAKE_SOURCE_DIR}/generators/agile_configs/alpgen-zjets.params -n 1000 < inputalpgen3"
        COMMAND ${rivet2_home}/bin/rivet -a MC_GENERIC -a MC_IDENTIFIED -a MC_XS -a MC_ZJETS -H alpgen-${v}.genser-zjets-rivet.yoda tmpalpgen/examples-${v}/hepmcfile_alpgen_zjets.dat
   ENVIRONMENT PATH=${agile_home}/bin:${Python_home}/bin:$ENV{PATH}
               ${library_path}=${Python_home}/lib:${GSL_home}/lib:${rivet2_home}/lib:${yoda_home}/lib:${HepMC_home}/lib:${fastjet_home}/lib:${yamlcpp_home}/lib:${agile_home}/lib:${HepMC_home}/lib:${ROOT_home}/lib:$ENV{${library_path}}

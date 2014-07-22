@@ -1,3 +1,0 @@
-#!/bin/sh
-version="$1"
-cat photospp/tests/$version/testi.dat >> test_photospp.dat
