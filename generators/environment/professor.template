@@ -12,8 +12,8 @@ PYANALYSIS_VERSION=$(echo %scipy_home% | awk -F'pyanalysis/' '{print $2}' | awk 
 
 PYTHON_VERSION_SHORT=$(echo $PYTHON_VERSION | awk -F'.' '{print $1"."$2}')
 scriptdir=$(dirname -- "${BASH_SOURCE[0]}")
-LCGDIR="$(cd $scriptdir;pwd | awk -F'MCGenerators' '{print $1}')"
-MCGEN="$LCGDIR/$(cd $scriptdir;pwd | awk -F"$LCGDIR" '{print $2}' | awk -F'/' '{print $1}')"
+LCGDIR="$(cd $scriptdir;pwd | awk -F'/MCGenerators' '{print $1}')"
+MCGEN="$LCGDIR/$(cd $scriptdir;pwd | awk -F"$LCGDIR" '{print $2}' | awk -F'/' '{print $2}')"
 
 ROOT_VERSION=$(ls -t $LCGDIR/ROOT/ | head -1)
 PROFESSOR_HOME=$MCGEN/professor/$PROFESSOR_VERSION/$PLATFORM

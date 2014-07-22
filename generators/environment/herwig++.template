@@ -12,8 +12,8 @@ source %gcc_source%
 ### End parameters
 
 scriptdir=$(dirname -- "${BASH_SOURCE[0]}")
-LCGDIR=$(cd $scriptdir;pwd | awk -F'MCGenerators' '{print $1}')
-MCGEN=$LCGDIR/$(cd $scriptdir;pwd | awk -F"$LCGDIR" '{print $2}' | awk -F'/' '{print $1}')
+LCGDIR=$(cd $scriptdir;pwd | awk -F'/MCGenerators' '{print $1}')
+MCGEN=$LCGDIR/$(cd $scriptdir;pwd | awk -F"$LCGDIR" '{print $2}' | awk -F'/' '{print $2}')
 
 LHAPDF_VERSION=$(ls -t $MCGEN/lhapdf | head -1 )
 LHAPDF_HOME=/afs/cern.ch/sw/lcg/external/lhapdfsets/$LHAPDF_VERSION

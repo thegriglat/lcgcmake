@@ -293,7 +293,7 @@ macro(LCGPackage_Add name)
         # - <package>_home    = home of installed package and its dependencies
         # - gcc_source        = path to setup.sh of gcc
         # - platform          = target platform
-        set (_args "-D${name}_version=${version}" "-DTEMPLATE=${CMAKE_SOURCE_DIR}/generators/environment/${name}.template" "-DTARGET=${${name}_home}/${name}-genser.sh" "-Dgcc_source=${gcc_source}/../setup.sh" "-Dplatform=${LCG_platform}")
+        set (_args "-D${name}_version=${version}" "-DTEMPLATE=${CMAKE_SOURCE_DIR}/generators/environment/${name}.template" "-DTARGET=${${name}_home}/${name}env-genser.sh" "-Dgcc_source=${gcc_source}/../setup.sh" "-Dplatform=${LCG_platform}")
         foreach(dep ${ARG_DEPENDS})
           if(dep MATCHES "(.+)-(.+)")
             list (APPEND _args "-D${CMAKE_MATCH_1}_version=${CMAKE_MATCH_2}")

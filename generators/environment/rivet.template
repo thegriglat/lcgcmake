@@ -16,9 +16,9 @@ PLATFORM=%platform%
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-LCGDIR=$(echo ${DIR} | awk -F'MCGenerators' '{print $1}')
+LCGDIR=$(echo ${DIR} | awk -F'/MCGenerators' '{print $1}')
 
-MCGDIR=$LCGDIR/$(cd $DIR;pwd | awk -F"$LCGDIR" '{print $2}' | awk -F'/' '{print $1}')
+MCGDIR=$LCGDIR/$(cd $DIR;pwd | awk -F"$LCGDIR" '{print $2}' | awk -F'/' '{print $2}')
 
 
 prefix=${DIR}
