@@ -7,7 +7,7 @@ PROFESSOR_VERSION=%professor_version%
 PLATFORM=%platform%
 source %gcc_source%
 
-PYANALYSIS_VERSION=$(cd %scipy_home%; pwd | awk -F'pyanalysis/' '{print $2}' | awk -F'/' '{print $1}')
+PYANALYSIS_VERSION=$(echo %scipy_home% | awk -F'pyanalysis/' '{print $2}' | awk -F'/' '{print $1}')
 ### End parameters
 
 PYTHON_VERSION_SHORT=$(echo $PYTHON_VERSION | awk -F'.' '{print $1"."$2}')
