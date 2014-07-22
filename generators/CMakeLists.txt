@@ -931,8 +931,8 @@ endif()
 
 LCG_add_test(rivet-${v}.genser-check_rivet_scripts
   TEST_COMMAND $ENV{SHELL} -c "source ${rivet-${v}_home}/rivet-genser.sh
-       ${rivet-${v}_home}/bin/rivet -a MC_WJETS ${CMAKE_SOURCE_DIR}/generators/rivet/tests/data.hepmc
-       ${rivet-${v}_home}/bin/rivet-mkhtml Rivet.yoda"
+       ${rivet-${v}_home}/bin/rivet -a MC_WJETS -H data-${v}.yoda ${CMAKE_SOURCE_DIR}/generators/rivet/tests/data.hepmc
+       ${rivet-${v}_home}/bin/rivet-mkhtml -o data-${v} data-${v}.yoda"
 )
 
 endforeach()
