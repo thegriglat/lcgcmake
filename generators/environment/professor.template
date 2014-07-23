@@ -4,16 +4,16 @@
 PYTHON_VERSION=%Python_version%
 PROFESSOR_VERSION=%professor_version%
 
-PLATFORM=%platform%
 [ ! "Darwin" = $(uname -s) ] && source %gcc_source%
 
 PYANALYSIS_VERSION=$(echo %scipy_home% | awk -F'pyanalysis/' '{print $2}' | awk -F'/' '{print $1}')
 ### End parameters
 
 PYTHON_VERSION_SHORT=$(echo $PYTHON_VERSION | awk -F'.' '{print $1"."$2}')
-scriptdir=$(dirname -- "${BASH_SOURCE[0]}")
+scriptdir=$(cd "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
 LCGDIR="$(cd $scriptdir;pwd | awk -F'/MCGenerators' '{print $1}')"
 MCGEN="$LCGDIR/$(cd $scriptdir;pwd | awk -F"$LCGDIR" '{print $2}' | awk -F'/' '{print $2}')"
+PLATFORM=$(basename $scriptdir)
 
 ROOT_VERSION=$(ls -t $LCGDIR/ROOT/ | head -1)
 PROFESSOR_HOME=$MCGEN/professor/$PROFESSOR_VERSION/$PLATFORM

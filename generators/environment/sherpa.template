@@ -6,13 +6,13 @@ HEPMC_VERSION=%HepMC_version%
 SQLITE_VERSION=%sqlite_version%
 SHERPA_VERSION=%sherpa_version%
 
-PLATFORM=%platform%
 [ ! "Darwin" = $(uname -s) ] && source %gcc_source%
 ### End parameters
 
-scriptdir=$(dirname -- "${BASH_SOURCE[0]}")
+scriptdir=$(cd "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
 LCGDIR=$(cd $scriptdir;pwd | awk -F'/MCGenerators' '{print $1}')
 MCGEN=$LCGDIR/$(cd $scriptdir;pwd | awk -F"$LCGDIR" '{print $2}' | awk -F'/' '{print $2}')
+PLATFORM=$(basename $scriptdir)
 
 LHAPDF_HOME=$MCGEN/lhapdf/$LHAPDF_VERSION/$PLATFORM
 HEPMC_HOME=$LCGDIR/HepMC/$HEPMC_VERSION/$PLATFORM
