@@ -128,6 +128,10 @@ LCG_external_package(xqilla            2.2.4p1                                  
 LCG_external_package(xrootd            3.2.7                                    )
 
 
+LCG_external_package(openmpi           1.8.1                                    )
+LCG_external_package(mpich2            1.5                                      )
+
+
 #---EMI-2 grid externals and other binary packages---------------------
 if(NOT ${LCG_OS} STREQUAL mac)
   LCG_external_package(libunwind       5c2cade                                  )
@@ -234,6 +238,11 @@ LCG_external_package(sherpa            2.0.0          ${MCGENPATH}/sherpa       
 LCG_external_package(sherpa            2.1.0          ${MCGENPATH}/sherpa         author=2.1.0 hepevt=10000)
 LCG_external_package(sherpa            2.1.1          ${MCGENPATH}/sherpa         author=2.1.1 hepevt=10000)
 LCG_external_package(sherpa            2.1.0p1        ${MCGENPATH}/sherpa         author=2.1.0 hepevt=10000)
+
+LCG_external_package(sherpa-openmpi    2.1.1.openmpi  ${MCGENPATH}/sherpa         author=2.1.1 hepevt=10000)
+ 
+LCG_external_package(sherpa-mpich2     2.1.1.mpich2   ${MCGENPATH}/sherpa         author=2.1.1 hepevt=10000)
+
 
 LCG_external_package(hepmcanalysis     3.4.14         ${MCGENPATH}/hepmcanalysis  author=00-03-04-14        )
 LCG_external_package(mctester          1.25.0         ${MCGENPATH}/mctester     )
