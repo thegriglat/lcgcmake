@@ -31,7 +31,7 @@ if echo ${ROOT_PATH} | grep -q '\-opt'; then
     echo "The following libraries have debug symbols:"
     for dirs in $(find $ROOT_PATH -maxdepth 4 -type d); do
       for name in $([ -d "$dirs/lib" ] && find $dirs/lib -type f $filepattern) $([ -d "$dirs/bin" ] && find $dirs/bin -type f $filepattern); do
-        $chkcmd $1 | wc -l | grep -q -w 0
+        $chkcmd $name | wc -l | grep -q -w 0
         if [ $? -ne 0 ];then
             echo "WARNING: File $name contains debug symbols."
             echo "$name" | grep -q -i MCGenerators && echo "$name" | grep -q -v site-packages && exitcode=1
@@ -42,7 +42,7 @@ elif echo ${ROOT_PATH} | grep -q '\-dbg'; then
     echo "The following libraries don't have debug symbols:"
     for dirs in $(find $ROOT_PATH -maxdepth 4 -type d); do
       for name in $([ -d "$dirs/lib" ] && find $dirs/lib -type f $filepattern | grep '\-dbg') $([ -d "$dirs/bin" ] && find $dirs/bin -type f $filepattern | grep '\-dbg'); do
-        $chkcmd $1 | wc -l | grep -q -w 0 && echo "WARNING: File $name doesn't contain debug symbols."
+        $chkcmd $name | wc -l | grep -q -w 0 && echo "WARNING: File $name doesn't contain debug symbols."
       done
     done
 fi
