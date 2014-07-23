@@ -23,3 +23,51 @@ This file describes how to install generators to MCGenerators trees:
         ---
            Best regards,
                        GENSER
+
+### 
+### Installation in LCG_68 and more newer releases 
+###
+1. Steps 1-4 from instructions listed above.
+
+5. Built generators in temporary location (e.g. /afs/cern.ch/sw/lcg/external/MCGenerators_test1/) and cd to it.
+
+6. Create the summary files for a release
+  /afs/cern.ch/sw/lcg/app/spi/tools/LCGRPM/package/extract_LCG_summary.py . <platform> <release version> UPGRADE
+    # /afs/cern.ch/sw/lcg/app/spi/tools/LCGRPM/package/extract_LCG_summary.py . x86_64-slc6-gcc48-opt 69root6 UPGRADE
+  The files LCG_*.txt should be created. (contrib, generators, externals)
+
+7. Create RPM specfile
+  a) Determine current release number
+     ls /afs/cern.ch/sw/lcg/external/rpms/lcg/ | grep LCG_generators | grep 69root6
+     Output is:
+       LCG_generators_69root6_x86_64_slc6_gcc48_opt-1.0.0-6.noarch.rpm
+       LCG_generators_69root6_x86_64_slc6_gcc48_opt-1.0.0-7.noarch.rpm
+       LCG_generators_69root6_x86_64_slc6_gcc48_opt-1.0.0-8.noarch.rpm
+                                                        -> <- is release number
+     Use next releasen number (9 in this case)
+  b) Prepare temporary build directory (/tmp/sftnight in this case)
+     rm -rf /tmp/sftnight/*
+  c) Produce .spec file
+     /afs/cern.ch/sw/lcg/app/spi/tools/LCGRPM/package/createLCGRPMSpec.py LCG_generators_x86_64-slc6-gcc48-opt.txt -b /tmp/sftnight -o generators.spec --release <release number>
+
+8. Make rpm
+   rpmbuild -bb generators.spec
+
+9. Copy rpm
+   cp -v -i /tmp/sftnight/rpmbuild/RPMS/noarch/*.rpm /afs/cern.ch/sw/lcg/external/rpms/lcg/
+
+10. Update rpm database
+  createrepo --workers=20 /afs/cern.ch/sw/lcg/external/rpms/lcg/
+
+11. Install to AFS
+  a) Prepare environment
+     export MYSITEROOT=/afs/cern.ch/sw/lcg/releases/
+  b) Install 
+     List rpms
+       /afs/cern.ch/sw/lcg/app/spi/tools/LCGRPM/install/lcg_install.sh list
+     Install
+      /afs/cern.ch/sw/lcg/app/spi/tools/LCGRPM/install/lcg_install.sh --rpmupdate install LCG_generators_69root6_x86_64_slc6_gcc48_opt-1.0.0-9
+
+12. Check that the new generators are installed on AFS
+
+13. If installation is successfull, mail to genser-announce@cern.ch.
