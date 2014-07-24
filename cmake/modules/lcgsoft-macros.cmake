@@ -210,10 +210,17 @@ macro(LCGPackage_Add name)
          endif()
       endif()
 
+      # record the revision number of lcgcmake
+      execute_process(COMMAND svnversion  ${CMAKE_SOURCE_DIR} 
+                      OUTPUT_VARIABLE lcgcmakerevision
+      )
+      string(REPLACE "\n" "" lcgcmakerevision "${lcgcmakerevision}")
+      MESSAGE("${lcgcmakerevision}")
       #---Compile information needed for the build description file (installed alongside version.txt)
      set(buildinfostring " COMPILER: ${CMAKE_CXX_COMPILER_ID} ${CMAKE_CXX_COMPILER_VERSION},")
      site_name(hostname)
      set(buildinfostring "${buildinfostring} HOSTNAME: ${hostname},")
+     set(buildinfostring "${buildinfostring} SVNREVISION: ${lcgcmakerevision},")
      set(buildinfostring "${buildinfostring} HASH: ${targethash},")    
      set(buildinfostring "${buildinfostring} DESTINATION: ${dest_name},")
      set(buildinfostring "${buildinfostring} NAME: ${name},")
