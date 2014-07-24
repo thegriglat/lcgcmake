@@ -215,8 +215,8 @@ macro(LCGPackage_Add name)
                       OUTPUT_VARIABLE lcgcmakerevision
       )
       string(REPLACE "\n" "" lcgcmakerevision "${lcgcmakerevision}")
-      MESSAGE("${lcgcmakerevision}")
-      #---Compile information needed for the build description file (installed alongside version.txt)
+
+     #---Compile information needed for the build description file (installed alongside version.txt)
      set(buildinfostring " COMPILER: ${CMAKE_CXX_COMPILER_ID} ${CMAKE_CXX_COMPILER_VERSION},")
      site_name(hostname)
      set(buildinfostring "${buildinfostring} HOSTNAME: ${hostname},")
