@@ -947,8 +947,7 @@ LCGPackage_Add(
  UPDATE_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/qd-<NATIVE_VERSION> <SOURCE_DIR>
  COMMAND ${CMAKE_COMMAND} -E remove_directory <SOURCE_DIR>/<NATIVE_VERSION>
 
-  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR>
-     --enable-shared
+  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --enable-shared
 
   INSTALL_COMMAND make install 
 
@@ -961,13 +960,11 @@ LCGPackage_Add(
 LCGPackage_Add(
   blackhat
   URL ${gen_url}/blackhat-${blackhat_native_version}.tar.gz
-  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR>
-  --with-QDpath=${qd_home}  
-  --enable-pythoninterface
+  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --with-QDpath=${qd_home} "CFLAGS=-O2 -g0" "CXXFLAGS=-O2 -g0" "FFLAGS=-O2 -g0"  
   PYTHON=${Python_home}/bin/python
   ${library_path}=${Python_home}/lib:$ENV{${library_path}}
   PYTHONPATH=${Python_home}/lib/python${Python_config_version_twodigit}/site-packages:$ENV{PYTHONPATH}
-  INSTALL_COMMAND make install 
+  INSTALL_COMMAND make install "CFLAGS=-O2 -g0" "CXXFLAGS=-O2 -g0" "FFLAGS=-O2 -g0"
   
   BUILD_IN_SOURCE 1
   DEPENDS qd
