@@ -1005,7 +1005,7 @@ LCGPackage_Add(
      --enable-mpi
      --with-sqlite3=${sqlite_home}  "CFLAGS=-O2 -g0" "CXXFLAGS=-O2 -g0" "FFLAGS=-O2 -g0" PATH=${openmpi_home}/bin:$ENV{PATH} ${library_path}=${openmpi_home}/lib:$ENV{${library_path}} LIBRARY_PATH=${openmpi_home}/lib
   BUILD_COMMAND ${MAKE} PATH=${openmpi_home}/bin:$ENV{PATH} LIBRARY_PATH=${lhapdf_home}/lib ${library_path}=${openmpi_home}/lib:${blackhat_home}/lib:$ENV{${library_path}} CPPFLAGS=-I${lhapdf_home}/include
-  INSTALL_COMMAND make install LIBRARY_PATH=${lhapdf_home}/lib CPPFLAGS=-I${lhapdf_home}/include
+  INSTALL_COMMAND make install LIBRARY_PATH=${lhapdf_home}/lib CPPFLAGS=-I${lhapdf_home}/include PATH=${openmpi_home}/bin:$ENV{PATH} LIBRARY_PATH=${lhapdf_home}/lib ${library_path}=${openmpi_home}/lib:${blackhat_home}/lib:$ENV{${library_path}}
   BUILD_IN_SOURCE 1
   DEPENDS lhapdf HepMC sqlite openmpi blackhat
 )
