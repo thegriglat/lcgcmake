@@ -57,8 +57,11 @@ function(lcg_find_host_os)
       if(issue MATCHES Ubuntu)
         set(os ubuntu)
         string(REGEX REPLACE ".*Ubuntu ([0-9]+)[.]([0-9]+).*" "\\1.\\2" osvers "${issue}")
-      elseif(issue MATCHES SLC|Fedora) # RedHat-like distributions
+      elseif(issue MATCHES "Scientific Linux|SLC|Fedora") # RedHat-like distributions
         string(TOLOWER "${CMAKE_MATCH_0}" os)
+        if (${os} STREQUAL "scientific linux")
+          set(os "slc")
+        endif()
         if(os STREQUAL fedora)
           set(os fc) # we use an abbreviation for Fedora
         endif()
