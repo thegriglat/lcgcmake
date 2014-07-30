@@ -932,21 +932,33 @@ LCG_add_test(rivet-${v}.native-MC_DIJET
 )
 endif()
 
-LCG_add_test(rivet-${v}.genser-check_rivet_scripts
-  TEST_COMMAND $ENV{SHELL} -c "echo Environment: source ${rivet-${v}_home}/rivetenv-genser.sh
-      source ${rivet-${v}_home}/rivetenv-genser.sh
-      echo Run: rivet-mkanalysis ATLAS_2010_S8591806
-      rivet-mkanalysis ATLAS_2010_S8591806
-      echo Run: rivet-buildplugin RivetATLAS_2010_S8591806.so ATLAS_2010_S8591806.cc
-      rivet-buildplugin RivetATLAS_2010_S8591806.so ATLAS_2010_S8591806.cc
-      echo Run: rivet-findid 1003.0694
-      rivet-findid 1003.0694
-      echo Run: rivet-which ATLAS_2010_S8591806*
-      rivet-which ATLAS_2010_S8591806*
-      echo Run: rivet -a MC_WJETS -H data-${v}.yoda ${CMAKE_SOURCE_DIR}/generators/rivet/tests/data.hepmc
-      rivet -a MC_WJETS -H data-${v}.yoda ${CMAKE_SOURCE_DIR}/generators/rivet/tests/data.hepmc
-      echo Run: rivet-mkhtml -o data-${v} data-${v}.yoda
-      rivet-mkhtml -o data-${v} data-${v}.yoda"
+LCG_add_test(rivet-${v}.genser-scripts-source
+  TEST_COMMAND $ENV{SHELL} -c "source ${rivet-${v}_home}/rivetenv-genser.sh"
+)
+LCG_add_test(rivet-${v}.genser-scripts-mkanalysis
+  TEST_COMMAND $ENV{SHELL} -c "source ${rivet-${v}_home}/rivetenv-genser.sh
+      rivet-mkanalysis ATLAS_2010_S8591806"
+)
+LCG_add_test(rivet-${v}.genser-scripts-buildplugin
+  TEST_COMMAND $ENV{SHELL} -c "source ${rivet-${v}_home}/rivetenv-genser.sh
+      rivet-buildplugin RivetATLAS_2010_S8591806.so ATLAS_2010_S8591806.cc"
+  DEPENDS rivet-${v}.genser-scripts-mkanalysis
+)
+LCG_add_test(rivet-${v}.genser-scripts-findid
+  TEST_COMMAND $ENV{SHELL} -c "source ${rivet-${v}_home}/rivetenv-genser.sh
+      rivet-findid 1003.0694"
+)
+LCG_add_test(rivet-${v}.genser-scripts-which
+  TEST_COMMAND $ENV{SHELL} -c "source ${rivet-${v}_home}/rivetenv-genser.sh
+      rivet-which ATLAS_2010_S8591806*"
+)
+LCG_add_test(rivet-${v}.genser-scripts-rivet
+  TEST_COMMAND $ENV{SHELL} -c "source ${rivet-${v}_home}/rivetenv-genser.sh
+      rivet -a MC_WJETS -H data-${v}.yoda ${CMAKE_SOURCE_DIR}/generators/rivet/tests/data.hepmc"
+)
+LCG_add_test(rivet-${v}.genser-scripts-rivet-mkhtml
+  TEST_COMMAND $ENV{SHELL} -c "source ${rivet-${v}_home}/rivetenv-genser.sh
+      rivet-mkhtml -o rivet-mkhtml-${v} ${CMAKE_SOURCE_DIR}/generators/reference/pythia6_riv2_zjets.yoda ${CMAKE_SOURCE_DIR}/generators/reference/pythia8_riv2_zjets.yoda"
 )
 
 endforeach()
