@@ -162,7 +162,16 @@ macro(LCGPackage_Add name)
         LOG_CONFIGURE 1 LOG_BUILD 1 LOG_INSTALL 1 )
         
       if(ARG_DEPENDS)
-        add_dependencies(${targetname} ${ARG_DEPENDS})
+        set (deps)
+        foreach(dep ${ARG_DEPENDS})
+          if(dep MATCHES "(.+)-(.+)")
+            list (APPEND deps "${CMAKE_MATCH_1}-${CMAKE_MATCH_2}")
+          else()
+            list(GET ${dep}_native_version -1 dep_vers)
+            list(APPEND deps "${dep}-${dep_vers}")
+          endif()
+        endforeach()
+        add_dependencies(${targetname} ${deps})
       endif()
 
       #--Prioritize the update and patch command------------------------------------------------------
