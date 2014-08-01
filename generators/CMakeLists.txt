@@ -728,6 +728,9 @@ LCGPackage_Add(
   yoda
   URL ${gen_url}/YODA-<NATIVE_VERSION>.tar.gz
   CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix=<INSTALL_DIR>
+  IF EXISTS "${ROOT_home}/" THEN
+      --enable-root
+  ENDIF
       --with-boost=${Boost_home}
       PYTHON=${Python_home}/bin/python ${library_path}=${Python_home}/lib:$ENV{${library_path}}
       PYTHONPATH=${cython_home}/lib/python${Python_config_version_twodigit}/site-packages:$ENV{PYTHONPATH}
