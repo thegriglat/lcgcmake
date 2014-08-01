@@ -1,0 +1,29 @@
+#!/bin/sh
+
+### Parameters
+PYTHON_VERSION=%Python_version%
+YODA_VERSION=%yoda_version%
+BOOST_VERSION=%Boost_version%
+CYTHON_VERSION=%cython_version%
+
+[ ! "Darwin" = $(uname -s) ] && source %gcc_source%
+
+### End parameters
+
+PYTHON_VERSION_SHORT=$(echo $PYTHON_VERSION | awk -F'.' '{print $1"."$2}')
+scriptdir=$(cd "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
+LCGDIR="$(cd $scriptdir;pwd | awk -F'/MCGenerators' '{print $1}')"
+MCGEN="$LCGDIR/$(cd $scriptdir;pwd | awk -F"$LCGDIR" '{print $2}' | awk -F'/' '{print $2}')"
+PLATFORM=$(basename $scriptdir)
+
+ROOT_VERSION=$(ls -t $LCGDIR/ROOT/ | head -1)
+YODA_HOME=$MCGEN/yoda/$YODA_VERSION/$PLATFORM
+PYTHON_HOME=$LCGDIR/Python/$PYTHON_VERSION/$PLATFORM
+ROOT_HOME=$LCGDIR/ROOT/$ROOT_VERSION/$PLATFORM
+BOOST_HOME=$LCGDIR/Boost/$BOOST_VERSION/$PLATFORM
+CYTHON_HOME=$MCGEN/cython/$CYTHON_VERSION/$PLATFORM
+
+export PYTHONPATH=$ROOT_HOME/lib:$YODA_HOME/lib/python$PYTHON_VERSION_SHORT/site-packages:${CYTHON_HOME}/lib/python${PYTHON_VERSION_SHORT}/site-packages:$PYTHONPATH
+export LD_LIBRARY_PATH=${BOOST_HOME}/lib:${ROOT_HOME}/lib:${YODA_HOME}/lib:${PYTHON_HOME}/lib:$LD_LIBRARY_PATH
+export PATH=${PYTHON_HOME}/bin:$YODA_HOME/bin:$PATH
+[ "Darwin" = $(uname -s) ] && export DYLD_LIBRARY_PATH=$LD_LIBRARY_PATH

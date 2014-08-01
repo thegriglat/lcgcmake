@@ -1,0 +1,22 @@
+#!/bin/sh
+
+### Parameters
+JHU_VERSION=%jhu_version%
+
+[ ! "Darwin" = $(uname -s) ] && source %gcc_source%
+
+### End parameters
+
+scriptdir=$(cd "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
+LCGDIR="$(cd $scriptdir;pwd | awk -F'/MCGenerators' '{print $1}')"
+MCGEN="$LCGDIR/$(cd $scriptdir;pwd | awk -F"$LCGDIR" '{print $2}' | awk -F'/' '{print $2}')"
+PLATFORM=$(basename $scriptdir)
+
+JHU_HOME=$MCGEN/jhu/$JHU_VERSION/$PLATFORM
+
+export PATH=$JHU_HOME/bin:$PATH
+export FC=gfortran
+[ "Darwin" = $(uname -s) ] && export DYLD_LIBRARY_PATH=$LD_LIBRARY_PATH
+
+echo "To run JHUGen you need to change directory to $JHU_HOME:"
+echo "  cd $JHU_HOME"

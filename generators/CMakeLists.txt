@@ -464,6 +464,11 @@ LCGPackage_Add(
 )
 
 foreach(v ${agile_native_version})
+LCG_add_test(agile-${v}.genser-scripts-pythia6
+  TEST_COMMAND $ENV{SHELL} -c "source ${agile-${v}_home}/agileenv-genser.sh
+    agile-runmc Pythia6:${pythia6_test_version} -o agile-scripts-hepmc-${v}.dat"
+)
+
 LCG_add_test(agile-${v}.native-test_pythia6 TEST_COMMAND ${agile-${v}_home}/bin/agile-runmc Pythia6:${pythia6_test_version} -o hepmcfile.dat
                               ENVIRONMENT PATH=${agile-${v}_home}/bin:${Python_home}/bin:$ENV{PATH}
                                           ${library_path}=${agile-${v}_home}/lib:${HepMC_home}/lib:$ENV{${library_path}}
@@ -739,6 +744,20 @@ LCGPackage_Add(
   BUILD_IN_SOURCE 1
   DEPENDS Python Boost cython
 )
+
+set (yoda_convert_scripts "aida" "flat")
+if (EXISTS "${ROOT_home}/")
+  list(APPEND yoda_convert_scripts "root")
+endif()
+foreach(v ${yoda_native_version})
+  foreach(f ${yoda_convert_scripts})
+  LCG_add_test(yoda-${v}.genser-scripts-yoda2${f}
+    PRE_COMMAND ${CMAKE_COMMAND} -E make_directory yoda/tests/${v}
+    TEST_COMMAND ${CMAKE_COMMAND} -E chdir yoda/tests/${v} $ENV{SHELL} -c "source ${yoda-${v}_home}/yodaenv-genser.sh
+      yoda2${f} ${CMAKE_SOURCE_DIR}/generators/reference/sherpa_riv2.yoda"
+  )
+  endforeach()
+endforeach()
 
 
 #---lhapdf6sets--------------------------------------------------------------------------------------
@@ -1335,6 +1354,10 @@ if(NOT APPLE)    #  (installation fails on MacOSX)
   # add test only if version is defined in toolchain configuration
 foreach(v ${crmcold_native_version})
   if(NOT ${crmcold-${v}_home} STREQUAL "")
+    LCG_add_test(crmcold-${v}.genser-scripts
+      TEST_COMMAND $ENV{SHELL} -c "source ${crmcold-${v}_home}/crmcoldenv-genser.sh
+        crmc -T 1 -c ${crmcold-${v}_home}/crmc.param"
+    )
     LCG_add_test(crmcold-${v}.native-crmc
       TEST_COMMAND ${crmcold-${v}_home}/bin/crmc -T 1 -c ${crmcold-${v}_home}/crmc.param
       ENVIRONMENT ${library_path}=${HepMC_home}/lib:$ENV{${library_path}}
@@ -1362,6 +1385,10 @@ if(NOT APPLE)    #  (installation fails on MacOSX)
   )
   
 foreach(v ${crmc_native_version})
+  LCG_add_test(crmc-${v}.genser-scripts
+    TEST_COMMAND $ENV{SHELL} -c "source ${crmc-${v}_home}/crmcenv-genser.sh
+      crmc -T 1 -c ${crmc-${v}_home}/crmc.param"
+  )
   LCG_add_test(crmc-${v}.native-crmc
     TEST_COMMAND ${crmc-${v}_home}/bin/crmc -T 1 -c ${crmc-${v}_home}/crmc.param
     ENVIRONMENT ${library_path}=${crmc-${v}_home}/lib:${ROOT_home}/lib:${HepMC_home}/lib:${Boost_home}/lib:$ENV{${library_path}}	
@@ -1416,6 +1443,11 @@ LCGPackage_Add(
 )
 
 foreach(v ${sacrifice_native_version})
+LCG_add_test(sacrifice-${v}.genser-scripts
+  TEST_COMMAND $ENV{SHELL} -c "source ${sacrifice-${v}_home}/sacrificeenv-genser.sh
+    run-pythia  --collision-energy 8000 -i ${CMAKE_SOURCE_DIR}/generators/sacrifice/AU2-CT10.params -n 1000 --photos"
+)
+
 LCG_add_test(sacrifice-${v}.genser-AU2-CT10
    TEST_COMMAND ${sacrifice-${v}_home}/bin/run-pythia  --collision-energy 8000 -i ${CMAKE_SOURCE_DIR}/generators/sacrifice/AU2-CT10.params -n 1000 --photos 
    ENVIRONMENT ${library_path}=${photos++_home}/lib:${lhapdf_home}/lib:${HepMC_home}/lib:${pythia8-${sacrifice_${v}_pythia8}_home}/lib:$ENV{${library_path}}
@@ -1482,6 +1514,12 @@ LCGPackage_Add(
 )
 
 foreach(v ${jhu_native_version})
+LCG_add_test(jhu-${v}.genser-scripts
+  TEST_COMMAND $ENV{SHELL} -c "source ${jhu-${v}_home}/jhuenv-genser.sh
+    cd \$JHU_HOME
+    JHUGen VegasNc0=100000 VegasNc1=500000 VegasNc2=100"
+)
+
 LCG_add_test(jhu-${v}.native-JHUGen
   PRE_COMMAND ${CMAKE_COMMAND} -E remove -f pdfs
       COMMAND ${CMAKE_COMMAND} -E create_symlink ${jhu-${v}_home}/pdfs pdfs
