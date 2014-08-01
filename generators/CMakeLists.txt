@@ -126,7 +126,7 @@ LCGPackage_Add(
   ENDIF
   CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --with-hepmc=${HepMC_home} --enable-shared --lcgplatform=${LCG_platform}
   BUILD_COMMAND ${MAKE}
-  INSTALL_COMMAND $ENV{SHELL} -c "sed -i 's/cp -r/cp -rf/g' <SOURCE_DIR>/Makefile"
+  INSTALL_COMMAND $ENV{SHELL} -c "sed -i -e 's/cp -r/cp -rf/g' <SOURCE_DIR>/Makefile"
           COMMAND ${CMAKE_COMMAND} -E chdir <SOURCE_DIR> ${MAKE} install
           COMMAND ${CMAKE_COMMAND} -E create_symlink sources/xmldoc <INSTALL_DIR>/../share/xmldoc
   BUILD_IN_SOURCE 1
