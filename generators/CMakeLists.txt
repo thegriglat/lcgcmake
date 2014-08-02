@@ -973,7 +973,7 @@ LCG_add_test(rivet-${v}.genser-scripts-findid
 )
 LCG_add_test(rivet-${v}.genser-scripts-which
   TEST_COMMAND $ENV{SHELL} -c "source ${rivet-${v}_home}/rivetenv-genser.sh
-      rivet-which ATLAS_2010_S8591806*"
+      which rivet-which && rivet-which ATLAS_2010_S8591806* || echo rivet-which is not available for this rivet version"
 )
 LCG_add_test(rivet-${v}.genser-scripts-rivet
   TEST_COMMAND $ENV{SHELL} -c "source ${rivet-${v}_home}/rivetenv-genser.sh
