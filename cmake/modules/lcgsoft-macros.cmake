@@ -60,6 +60,18 @@ macro(LCGPackage_Add name)
         list(APPEND ${targetname}_dependencies ${dep})
       endforeach()
     endif()
+#---Get list of dependencies as package-version
+    if(ARG_DEPENDS)
+      set (${targetname}-dependencies)
+      foreach(dep ${ARG_DEPENDS})
+        if(dep MATCHES "(.+)-(.+)")
+          list (APPEND ${targetname}-dependencies "${CMAKE_MATCH_1}-${CMAKE_MATCH_2}")
+        else()
+          list(GET ${dep}_native_version -1 dep_vers)
+          list(APPEND ${targetname}-dependencies "${dep}-${dep_vers}")
+        endif()
+      endforeach()
+    endif()
     #---Get the expanded list of dependencies with their versions-------------------------------------
     LCG_get_full_version(${targetname} ${version} ${name}_full_version)
 
@@ -104,6 +116,7 @@ macro(LCGPackage_Add name)
       set(${targetname}_home ${${name}_home})
       add_custom_target(${targetname} ALL COMMAND ${CMAKE_COMMAND} -E make_directory  ${CMAKE_INSTALL_PREFIX}/${${dest_name}_directory_name}/${dest_version}
                                           COMMAND ${CMAKE_COMMAND} -E create_symlink ${LCG_INSTALL_PREFIX}/${install_path} ${CMAKE_INSTALL_PREFIX}/${install_path}
+                                          DEPENDS ${${targetname}-dependencies}
                                           COMMENT "${targetname} package already existing in ${LCG_INSTALL_PREFIX}/${install_path}. Making a soft-link.")
       add_custom_target(clean-${targetname} COMMAND ${CMAKE_COMMAND} -E remove ${CMAKE_INSTALL_PREFIX}/${install_path}
                                             COMMENT "Deleting soft-link for package ${targetname}")
@@ -162,16 +175,7 @@ macro(LCGPackage_Add name)
         LOG_CONFIGURE 1 LOG_BUILD 1 LOG_INSTALL 1 )
         
       if(ARG_DEPENDS)
-        set (deps)
-        foreach(dep ${ARG_DEPENDS})
-          if(dep MATCHES "(.+)-(.+)")
-            list (APPEND deps "${CMAKE_MATCH_1}-${CMAKE_MATCH_2}")
-          else()
-            list(GET ${dep}_native_version -1 dep_vers)
-            list(APPEND deps "${dep}-${dep_vers}")
-          endif()
-        endforeach()
-        add_dependencies(${targetname} ${deps})
+        add_dependencies(${targetname} ${${targetname}-dependencies})
       endif()
 
       #--Prioritize the update and patch command------------------------------------------------------
@@ -310,14 +314,10 @@ macro(LCGPackage_Add name)
         # - gcc_source        = path to setup.sh of gcc
         # - platform          = target platform
         set (_args "-D${name}_version=${version}" "-DTEMPLATE=${CMAKE_SOURCE_DIR}/generators/environment/${name}.template" "-DTARGET=${${name}_home}/${name}env-genser.sh" "-Dgcc_source=${gcc_source}/../setup.sh" "-Dplatform=${LCG_platform}")
-        foreach(dep ${ARG_DEPENDS})
+        foreach(dep ${${targetname}-dependencies})
           if(dep MATCHES "(.+)-(.+)")
             list (APPEND _args "-D${CMAKE_MATCH_1}_version=${CMAKE_MATCH_2}")
             list (APPEND _args "-D${CMAKE_MATCH_1}_home=${${CMAKE_MATCH_1}-${CMAKE_MATCH_2}_home}")
-          else()
-            list(GET ${dep}_native_version -1 dep_vers) 
-            list(APPEND _args "-D${dep}_version=${dep_vers}")
-            list(APPEND _args "-D${dep}_home=${${dep}-${dep_vers}_home}")
           endif()
         endforeach()
         ExternalProject_Add_Step(${targetname} setup_environment COMMENT "Installing environment for ${name}"
