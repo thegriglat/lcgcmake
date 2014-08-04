@@ -1,0 +1,37 @@
+From 7421575b5f0529e06f82c38477f043077ee102f2 Mon Sep 17 00:00:00 2001
+From: Brian Bockelman <bbockelm@cse.unl.edu>
+Date: Thu, 24 Apr 2014 09:25:37 -0500
+Subject: [PATCH] Correctly handle reads of a partial header.  #45
+
+If a partial header was read, we previously did not return to the
+poll loop.  Instead, a read into the data buffer was attempted.  If
+that read actually succeeded (that is, a packet arrived between the
+two read calls), then the next attempt to read the header resulted
+in garbage size/offsets being attempted.
+
+The fix is to simply check for a partial header read and return to the
+poll loop immediately if one occurred.
+---
+ src/XrdCl/XrdClXRootDMsgHandler.cc |    6 ++++++
+ 1 files changed, 6 insertions(+), 0 deletions(-)
+
+diff --git a/src/XrdCl/XrdClXRootDMsgHandler.cc b/src/XrdCl/XrdClXRootDMsgHandler.cc
+index 5eb3128..5a329e6 100644
+--- src/XrdCl/XrdClXRootDMsgHandler.cc
++++ src/XrdCl/XrdClXRootDMsgHandler.cc
+@@ -783,6 +783,12 @@ namespace XrdCl
+       //------------------------------------------------------------------------
+       if( !st.IsOK() )
+         return st;
++
++      //------------------------------------------------------------------------
++      // If we are not done reading the header, return back to the event loop.
++      //------------------------------------------------------------------------
++      if( st.IsOK() && st.code != suDone )
++        return st;
+     }
+ 
+     //--------------------------------------------------------------------------
+-- 
+1.7.1
+
