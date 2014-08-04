@@ -3,100 +3,48 @@
 #
 # Options are      
 # $0 RefFile TestFile "Path=XS,W_mass" "limit=0.05,0.1"
-# Function Check_XS is not used for the moment. It is unfinished:
-# calculation of chi2 using errors and probability is to be made.
+# Calculation of chi2 using errors and probability is to be made.
 #
 
 import sys
-from xml.dom import minidom
 import yoda
 
-def Exit(status,message):
-    print message
-    sys.exit(status)
-
-def GetXS(YodaFile):
-    """ Return MC_XS/XS from Yoda file as float"""
-    for i in YodaFile:
-        if '/MC_XS/XS' in i.annotations['Path']:
-            return float(i.points()[0].y)
-    Exit(1,"Cannot found XS value in Yoda file")
-
-
-def Check_XS(RefFile,TestFile,limit = 0.95):
-    """ Compare two XS and return True if difference less than 'percent' %"""
-    print "### Compare MC_XS/XS value ###"
-    if limit == None: limit = 0.95
-    try:
-        RefValue = GetXS(yoda.read(RefFile, asdict=False))
-        TestValue = GetXS(yoda.read(TestFile, asdict=False))
-    except:
-        RefValue = GetXS(yoda.read(RefFile))
-        TestValue = GetXS(yoda.read(TestFile))
-    print "Test value: " + str(TestValue) + " | Reference value: " + str(RefValue) + " | limit = " + str(limit)
-    if (1 - abs(TestValue - RefValue)/RefValue) >= limit:
-        return True
-    else:
-        return False
 
 def Check_Histos(RefFile, TestFile, component, limit = 0.9):
     """ Check Kolmogorov value between 'component' of Reference and Test file """
-    print "### Do kolmogorov test to compare two TH1F (" + component + ") ###"
-    if limit == None: limit = 0.9
+    print "### Do test to compare two TH1F (" + component + ") ###"
     try:
         import ROOT
     except:
-        Exit(1,"Cannot import ROOT")
+        raise Exception("Cannot import ROOT")
     try:
         RefF = ROOT.TFile(RefFile)
         TestF = ROOT.TFile(TestFile)
     except:
-        Exit(1,"Cannot open ROOT files")
+        raise Exception("Cannot open ROOT files")
     try:
         RefHist  = RefF.Get(component)
         TestHist = TestF.Get(component)
     except:
-        Exit(1,"Cannot obtain " + component + " from files")
-    try:
-        hi = RefHist.KolmogorovTest(TestHist)
-    except:
-        print "Cannot do Kolmogorov test"
-        return False
-    print "Result: " + str(hi) + " | success if >= " + str(limit)
-    if hi >= limit:
-        return True
+        raise Exception("Cannot obtain " + component + " from files")
+    if component == "XS":
+        try:
+            ValueRef = RefHist.GetBinContent(1)
+            ValueTest = TestHist.GetBinContent(1)
+            ErrRef = RefHist.GetBinError(1)
+            ErrTest = TestHist.GetBinError(1)
+            chi2 = (ValueTest-ValueRef)*(ValueTest-ValueRef)/(ErrRef*ErrRef+ErrTest*ErrTest)
+            print "chi2 =  " + str(chi2)
+            hi = ROOT.TMath.Prob(chi2, 1)
+        except:
+            raise Exception("Cannot do Chi2Test!")
+            return False
     else:
-        return False
-
-def Check_HistosN(RefFile, TestFile, component, limit = 0.9):
-    """ Check chi2 value between 'component' of Reference and Test file """
-    print "### Do chi2 test to compare two TH1F (" + component + ") ###"
-    if limit == None: limit = 0.9
-    try:
-        import ROOT
-    except:
-        Exit(1,"Cannot import ROOT")
-    try:
-        RefF = ROOT.TFile(RefFile)
-        TestF = ROOT.TFile(TestFile)
-    except:
-        Exit(1,"Cannot open ROOT files")
-    try:
-        RefHist  = RefF.Get(component)
-        TestHist = TestF.Get(component)
-    except:
-        Exit(1,"Cannot obtain " + component + " from files")
-    try:
-        ValueRef = RefHist.GetBinContent(1)
-        ValueTest = TestHist.GetBinContent(1)
-        ErrRef = RefHist.GetBinError(1)
-        ErrTest = TestHist.GetBinError(1)
-        chi2 = (ValueTest-ValueRef)*(ValueTest-ValueRef)/(ErrRef*ErrRef+ErrTest*ErrTest)
-        print "chi2 =  " + str(chi2)
-        hi = ROOT.TMath.Prob(chi2, 1)
-    except:
-        print "Cannot do chi2 test"
-        return False
+        try:
+            hi = RefHist.KolmogorovTest(TestHist)
+        except:
+            raise Exception("Cannot do Kolmogorov test")
+            return False
     print "Result: " + str(hi) + " | success if >= " + str(limit)
     if hi >= limit:
         return True
@@ -113,36 +61,29 @@ if len(sys.argv) >= 3:
             options[key] = value
         except:
             print opt
-            Exit(1,"Can't split key=value pair by symbol '=' in \'" + opt + "\'")
+            raise Exception("Can't split key=value pair by symbol '=' in \'" + opt + "\'")
 else:
-    Exit(1,"No options specified!")
+    raise Exception("No options specified!")
 if not options.has_key('Path') or not options.has_key('limit'):
-    Exit(1,"Path or limit option isn't specified.")
+    raise Exception("Path or limit option isn't specified.")
 
 tests = []
 if len(options['Path'].split(',')) != len(options['limit'].split(',')):
-    Exit(1,"Path and limit has different number of tests!")
+    raise Exception("Path and limit has different number of tests!")
 else:
     for i in xrange(len(options['Path'].split(','))):
         tests.append((options['Path'].split(',')[i],float(options['limit'].split(',')[i])))
 
 status = {'success':0,'failed':0}
 for (Path,limit) in tests:  
-    if Path == 'XS' and len(tests) == 1:
-        if Check_HistosN(RefFile,TestFile,Path,limit):
-            print Path,"check succeeded."
-            status['success'] += 1
-        else:
-            print Path,"check failed."
-            status['failed'] += 1
+    if Check_Histos(RefFile,TestFile,Path,limit):
+        print Path,"check succeeded."
+        status['success'] += 1
     else:
-        if Check_Histos(RefFile,TestFile,Path,limit):
-            print Path,"check succeeded."
-            status['success'] += 1
-        else:
-            print Path,"check failed."
-            status['failed'] += 1
+        print Path,"check failed."
+        status['failed'] += 1
 
 print "Total check: " + str(status['success'] + status['failed']) + ", success: " + str(status['success']) + ", failed: " + str(status['failed'])
 if status['failed'] > 0:
-    Exit(1,"One or more checks are failed. Test failed.")
+    print("One or more checks are failed. Test failed.")
+    sys.exit(1)
