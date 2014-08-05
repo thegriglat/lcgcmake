@@ -277,6 +277,20 @@ LCGPackage_Add(
   DEPENDS HepMC GSL lhapdf
 )
 
+foreach(v ${thepeg_native_version})
+  LCG_add_test(thepeg-${v}.genser-scripts-setupThePEG
+    PRE_COMMAND ${CMAKE_COMMAND} -E make_directory thepeg/${v}
+    TEST_COMMAND ${CMAKE_COMMAND} -E chdir thepeg/${v} $ENV{SHELL} -c "source ${thepeg-${v}_home}/thepegenv-genser.sh
+      setupThePEG ${thepeg-${v}_home}/share/ThePEG/MultiLEP.in"
+  )
+  LCG_add_test(thepeg-${v}.genser-scripts-runThePEG
+    TEST_COMMAND ${CMAKE_COMMAND} -E chdir thepeg/${v} $ENV{SHELL} -c "source ${thepeg-${v}_home}/thepegenv-genser.sh
+      runThePEG MultiLEP.run"
+    POST_COMMAND ${CMAKE_COMMAND} -E chdir thepeg/${v} cat MultiLEP.out
+    DEPENDS thepeg-${v}.genser-scripts-setupThePEG
+  )
+endforeach()
+
 #---Herwig++------------------------------------------------------------------------------------------
 #Version 2.6.2 compiles on Mac, however the installation does not run :-(
 set(thepeg_v_home <thepeg-<herwig++_<NATIVE_VERSION>_thepeg>_home>)

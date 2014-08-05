@@ -1,0 +1,25 @@
+#!/bin/sh
+
+### Parameters
+THEPEG_VERSION=%thepeg_version%
+GSL_VERSION=%GSL_version%
+HEPMC_VERSION=%HepMC_version%
+LHAPDF_VERSION=%lhapdf_version%
+
+[ ! "Darwin" = $(uname -s) ] && source %gcc_source%
+### End parameters
+
+scriptdir=$(cd "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
+LCGDIR=$(cd $scriptdir;pwd | awk -F'/MCGenerators' '{print $1}')
+MCGEN=$LCGDIR/$(cd $scriptdir;pwd | awk -F"$LCGDIR" '{print $2}' | awk -F'/' '{print $2}')
+PLATFORM=$(basename $scriptdir)
+
+LHAPDF_HOME=$LCGDIR/lhapdfsets/$LHAPDF_VERSION
+HEPMC_HOME=$LCGDIR/HepMC/$HEPMC_VERSION/$PLATFORM
+THEPEG_HOME=$MCGEN/thepeg/$THEPEG_VERSION/$PLATFORM
+GSL_HOME=$LCGDIR/GSL/$GSL_VERSION/$PLATFORM
+
+export PATH=$THEPEG_HOME/bin:$PATH
+export LD_LIBRARY_PATH=${THEPEG_HOME}/lib/ThePEG:${GSL_HOME}/lib:${HEPMC_HOME}/lib:${GSL_HOME}/lib:$LD_LIBRARY_PATH
+export LHAPATH=$LHAPDF_HOME/share/PDFsets
+[ "Darwin" = $(uname -s) ] && export DYLD_LIBRARY_PATH=$LD_LIBRARY_PATH
