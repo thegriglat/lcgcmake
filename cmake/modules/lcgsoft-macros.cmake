@@ -19,6 +19,8 @@ include(CMakeParseArguments)
 #     o It uses ${name}_native_version which has to be set externally     
 #
 #----------------------------------------------------------------------------------------------------
+set (dependency_split_pattern "([^-]+)-(.+)")
+
 macro(LCGPackage_Add name)
 
   #---If version is not defined (package not mentioned in toolchain) skip the whole macro------------
@@ -64,7 +66,7 @@ macro(LCGPackage_Add name)
     if(ARG_DEPENDS)
       set (${targetname}-dependencies)
       foreach(dep ${ARG_DEPENDS})
-        if(dep MATCHES "(.+)-(.+)")
+        if(dep MATCHES "${dependency_split_pattern}")
           list (APPEND ${targetname}-dependencies "${CMAKE_MATCH_1}-${CMAKE_MATCH_2}")
         else()
           list(GET ${dep}_native_version -1 dep_vers)
@@ -240,7 +242,7 @@ macro(LCGPackage_Add name)
      set(buildinfostring "${buildinfostring} VERSION: ${version},")
      foreach(dep ${ARG_DEPENDS})
        # dependent package may have the form name-version
-       if(dep MATCHES "(.+)-(.+)")
+       if(dep MATCHES "${dependency_split_pattern}")
          set(buildinfostring "${buildinfostring}${CMAKE_MATCH_1}-${${dep}_hash},")
        else()
          list(GET ${dep}_native_version -1 vers)
@@ -315,7 +317,7 @@ macro(LCGPackage_Add name)
         # - platform          = target platform
         set (_args "-D${name}_version=${version}" "-DTEMPLATE=${CMAKE_SOURCE_DIR}/generators/environment/${name}.template" "-DTARGET=${${name}_home}/${name}env-genser.sh" "-Dgcc_source=${gcc_source}/../setup.sh" "-Dplatform=${LCG_platform}")
         foreach(dep ${${targetname}-dependencies})
-          if(dep MATCHES "(.+)-(.+)")
+          if(dep MATCHES "${dependency_split_pattern}")
             list (APPEND _args "-D${CMAKE_MATCH_1}_version=${CMAKE_MATCH_2}")
             list (APPEND _args "-D${CMAKE_MATCH_1}_home=${${CMAKE_MATCH_1}-${CMAKE_MATCH_2}_home}")
           endif()
@@ -428,7 +430,7 @@ function(LCG_create_dependency_files)
               SET (sum_prefix ",")
           ENDIF()
           # dependent package may have the form name-version
-          if(dep MATCHES "(.+)-(.+)")
+          if(dep MATCHES "${dependency_split_pattern}")
             set(json_string "${json_string} '${CMAKE_MATCH_1}-${${dep}_hash}',")
             set(sum_string "${sum_string}${sum_prefix}${CMAKE_MATCH_1}-${${dep}_hash}")
           else()
