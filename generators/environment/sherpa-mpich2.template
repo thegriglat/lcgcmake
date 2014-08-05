@@ -6,7 +6,7 @@ HEPMC_VERSION=%HepMC_version%
 SQLITE_VERSION=%sqlite_version%
 SHERPA_VERSION=%sherpa-mpich2_version%
 MPICH2_VERSION=%mpich2_version%
-BLACKHAT_VERION=%blackhat_version%
+BLACKHAT_VERSION=%blackhat_version%
 
 [ ! "Darwin" = $(uname -s) ] && source %gcc_source%
 ### End parameters
