@@ -308,26 +308,45 @@ macro(LCGPackage_Add name)
       endif()	
   
       #---Process and copy environment scripts --------------------------------------------------------
+      # Available variables in template:
+      # - <package>_version = version of installed package and its dependencies
+      # - <package>_home    = home of installed package and its dependencies
+      # - gcc_source        = path to setup.sh of gcc
+      # - platform          = target platform
+      get_filename_component(gcc_source "${CMAKE_C_COMPILER}" PATH)
+      # Set different file name template for generators and externals
+      if (${${targetname}_home} MATCHES ".*MCGenerators.*")
+        set(output_name "${name}env-genser.sh")
+      else()
+        set(output_name "${name}-env.sh")
+      endif()
       if (EXISTS "${CMAKE_SOURCE_DIR}/generators/environment/${name}.template")
-        get_filename_component(gcc_source "${CMAKE_C_COMPILER}" PATH)
-        # Available variables in template:
-        # - <package>_version = version of installed package and its dependencies
-        # - <package>_home    = home of installed package and its dependencies
-        # - gcc_source        = path to setup.sh of gcc
-        # - platform          = target platform
-        set (_args "-D${name}_version=${version}" "-DTEMPLATE=${CMAKE_SOURCE_DIR}/generators/environment/${name}.template" "-DTARGET=${${name}_home}/${name}env-genser.sh" "-Dgcc_source=${gcc_source}/../setup.sh" "-Dplatform=${LCG_platform}")
-        foreach(dep ${${targetname}-dependencies})
-          if(dep MATCHES "${dependency_split_pattern}")
-            list (APPEND _args "-D${CMAKE_MATCH_1}_version=${CMAKE_MATCH_2}")
-            list (APPEND _args "-D${CMAKE_MATCH_1}_home=${${CMAKE_MATCH_1}-${CMAKE_MATCH_2}_home}")
-          endif()
-        endforeach()
-        ExternalProject_Add_Step(${targetname} setup_environment COMMENT "Installing environment for ${name}"
+        # use template if it exists
+        set (template_name "${CMAKE_SOURCE_DIR}/generators/environment/${name}.template")
+        set (_args "-D${name}_version=${version}" "-D${name}_home=${${name}_home}")
+      else()
+        # else use common template
+        # Available variables
+        # - this_package      = name of installed package
+        # - this_version      = version of installed package
+        # - dependencies      = space-separated list of dependencies
+        set (template_name "${CMAKE_SOURCE_DIR}/generators/environment/common.template")
+        string(REPLACE ";" " " deps "${${targetname}-dependencies}")
+        set (_args "-Dthis_package=${name}" "-Dthis_version=${version}" "-Ddependencies='${deps}'")
+      endif()
+      # Common variables
+      list(APPEND _args "-DTARGET=${${name}_home}/${output_name}" "-DTEMPLATE=${template_name}" "-Dgcc_source=${gcc_source}/../setup.sh" "-Dplatform=${LCG_platform}")
+      # process dependencies
+      foreach(dep ${${targetname}-dependencies})
+        if(dep MATCHES "${dependency_split_pattern}")
+          list (APPEND _args "-D${CMAKE_MATCH_1}_version=${CMAKE_MATCH_2}")
+          list (APPEND _args "-D${CMAKE_MATCH_1}_home=${${CMAKE_MATCH_1}-${CMAKE_MATCH_2}_home}")
+        endif()
+      endforeach()
+      ExternalProject_Add_Step(${targetname} setup_environment COMMENT "Installing environment for ${name}"
           COMMAND ${CMAKE_COMMAND} ${_args} -P ${CMAKE_SOURCE_DIR}/cmake/scripts/provide-environment.cmake
           DEPENDEES install_logs
-        )
-      endif()
-
+      )
 
       #---Adding clean targets--------------------------------------------------------------------------
       if(LCG_SAFE_INSTALL)

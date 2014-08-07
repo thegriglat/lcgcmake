@@ -1,0 +1,93 @@
+#!/bin/sh
+
+# === Parameters
+THIS_PACKAGE=%this_package%
+THIS_VERSION=%this_version%
+THIS_DEPENDS="%dependencies%"
+
+[ ! "Darwin" = $(uname -s) ] && source %gcc_source%
+echo "%Python_version%" | grep -q % || PYTHON_VERSION_SHORT=$(echo "%Python_version%" | awk -F'.' '{print $1"."$2}')
+
+# === End parameters
+
+# === Determine common parameters ...
+scriptdir=$(cd "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
+echo $scriptdir | grep -q "MCGenerators" && LCGDIR="$(cd $scriptdir;pwd | awk -F'/MCGenerators' '{print $1}')" || LCGDIR=$(cd $scriptdir/../../../;pwd)
+MCGEN="$LCGDIR/$(cd $scriptdir;pwd | awk -F"$LCGDIR" '{print $2}' | awk -F'/' '{print $2}')"
+PLATFORM=$(basename $scriptdir)
+
+# === Detemine THIS_HOME
+if [ -d "$LCGDIR/$THIS_PACKAGE/$THIS_VERSION/$PLATFORM" ]; then
+  THIS_HOME="$LCGDIR/$THIS_PACKAGE/$THIS_VERSION/$PLATFORM"
+else
+  THIS_HOME="$MCGEN/$THIS_PACKAGE/$THIS_VERSION/$PLATFORM"
+fi
+[ -d "$THIS_HOME" ] || echo "Cannot find $THIS_HOME"
+
+echo "== $THIS_PACKAGE-$THIS_VERSION =="
+echo "  home: $THIS_HOME"
+
+# === Setup LD_LIBRARY_PATH
+for l in "${THIS_HOME}/lib" "${THIS_HOME}/lib64" ; do
+  if [ -d "$l" ]; then
+    echo "  LD_LIBRARY_PATH: add $l"
+    export LD_LIBRARY_PATH=$l:$LD_LIBRARY_PATH
+    # Scan for subdirs
+    for sl in $l/*; do
+      if [ -d "$sl" ] && [ $(ls $sl/*.so 2>/dev/null | wc -l) -gt 0 ]; then
+        echo "  LD_LIBRARY_PATH: add $sl"
+        export LD_LIBRARY_PATH=$sl:$LD_LIBRARY_PATH
+      fi
+    done
+  fi
+done
+
+# === Setup PATH
+if [ -d "$THIS_HOME/bin" ]; then
+  echo "  PATH           : add $THIS_HOME/bin"
+  export PATH=$THIS_HOME/bin:$PATH
+fi
+
+# === Setup PYTHONPATH if needed
+if [ -d "$THIS_HOME/lib/python$PYTHON_VERSION_SHORT/site-packages" ];then 
+  echo "  PYTHONPATH     : add $THIS_HOME/lib/python$PYTHON_VERSION_SHORT/site-packages"
+  export PYTHONPATH=$THIS_HOME/lib/python$PYTHON_VERSION_SHORT/site-packages:$PYTHONPATH
+fi
+
+# === Process dependencies
+sources=""
+for pkg in $THIS_DEPENDS;do
+  pkg_name=$(echo $pkg | cut -d- -f 1 )
+  pkg_version=$(echo $pkg | cut -d- -f 2-)
+  if [ -d "$LCGDIR/$pkg_name/$pkg_version/$PLATFORM" ]; then
+    pkg_home="$LCGDIR/$pkg_name/$pkg_version/$PLATFORM"
+    source_name="${pkg_name}-env.sh"
+  else
+    pkg_home="$MCGEN/$pkg_name/$pkg_version/$PLATFORM"
+    source_name="${pkg_name}env-genser.sh"
+  fi
+  [ -d "$pkg_home" ] || echo "  Cannot determine home directory for $pkg"
+  if [ -e "$pkg_home/${source_name}" ]; then
+    sources="$sources $pkg_home/${source_name}"
+  else
+    echo "  Cannot source $pkg_home/${source_name}"
+  fi
+done
+
+# === Source files ...
+for s in $sources; do 
+  echo "  sourcing $s ..."
+  source $s
+done
+
+# === Remove duplicates in environment variables
+for i in $(echo $PATH|tr ":" "\n"|sort|uniq);do PATH_NEW="${PATH_NEW}$i:";done;PATH="${PATH_NEW%:}"
+for i in $(echo $LD_LIBRARY_PATH|tr ":" "\n"|sort|uniq);do LD_LIBRARY_PATH_NEW="${LD_LIBRARY_PATH_NEW}$i:";done;LD_LIBRARY_PATH="${LD_LIBRARY_PATH_NEW%:}"
+for i in $(echo $PYTHONPATH|tr ":" "\n"|sort|uniq);do PYTHONPATH_NEW="${PYTHONPATH_NEW}$i:";done;PYTHONPATH="${PYTHONPATH_NEW%:}"
+
+# === Setup DYLD_LIBRARY_PATH for MacOS
+[ "Darwin" = $(uname -s) ] && export DYLD_LIBRARY_PATH=$LD_LIBRARY_PATH
+
+unset PATH_NEW
+unset LD_LIBRARY_PATH_NEW
+unset PYTHONPATH_NEW
