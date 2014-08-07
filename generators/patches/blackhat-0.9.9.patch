@@ -1,10 +1,112 @@
---- src/cut_Darren.h.orig 2012-10-18 21:49:36.000000000 +0100
-+++ src/cut_Darren.h 2014-01-31 12:05:12.675707975 +0000
-@@ -489,7 +489,7 @@ protected:
+--- src/cut_Darren.h	2012-10-18 22:49:36.000000000 +0200
++++ src/cut_Darren.h	2014-08-07 11:33:03.381043152 +0200
+@@ -489,7 +489,7 @@
  private:
          //no copy
          triangle_Darren(const triangle_Darren& cd);
-- triangle_Darren operator=(const triangle_Darren& cd);
-+ triangle_Darren& operator=(const triangle_Darren& cd);
+-        triangle_Darren operator=(const triangle_Darren& cd);
++        triangle_Darren& operator=(const triangle_Darren& cd);
          void init();
  };
+ 
+--- src/ME2_from_file.cpp	2012-11-21 00:04:38.000000000 +0100
++++ src/ME2_from_file.cpp	2014-08-07 11:42:12.716877163 +0200
+@@ -1772,14 +1772,25 @@
+ 		return settings::general::s_assembly_data_path;
+ 	} else {
+ 		struct stat st;
+-		string datapath=string(BH_INSTALL_PATH)+"/share/blackhat/datafiles/assembly/";
++        string datapath;
++        if ( getenv("BH_INSTALL_PATH") != NULL ) {
++         datapath = string(getenv("BH_INSTALL_PATH"))+"/share/blackhat/datafiles/assembly/";
++        } else {
++         datapath = string(BH_INSTALL_PATH)+"/share/blackhat/datafiles/assembly/";
++        };
+ 		if( stat(datapath.c_str(),&st) == 0){
+ 			BH_DEBUG_MESSAGE3("Using ",datapath," as the assembly data path.");
+ 			return datapath;
+ 		} else {
++            string sourcepath;
++            if ( getenv("BH_SOURCE_PATH") != NULL ) {
++              sourcepath = string(getenv("BH_SOURCE_PATH"));
++            } else {
++              sourcepath = string(BH_SOURCE_PATH);
++            };
+ 			std::string datafiles="/datafiles/assembly/";
+-			BH_DEBUG_MESSAGE3("Using ",BH_SOURCE_PATH+datafiles," as the assembly data path.");
+-			return BH_SOURCE_PATH+datafiles;
++			BH_DEBUG_MESSAGE3("Using ",sourcepath+datafiles," as the assembly data path.");
++			return sourcepath+datafiles;
+ 		}
+ 	}
+ }
+--- src/path.cpp	2012-11-19 09:42:40.000000000 +0100
++++ src/path.cpp	2014-08-07 11:42:22.063874030 +0200
+@@ -7,14 +7,21 @@
+ 
+ #include <string>
+ #include "BHpath.h"
++#include "stdlib.h"
+ 
+ using namespace std;
+ 
+ std::string GetDataPath(){
+ 	static string path = string(BH_INSTALL_PATH) + string ("/share/blackhat/") ;
++    if ( getenv("BH_INSTALL_PATH") != NULL ) {
++      return string(getenv("BH_INSTALL_PATH")) + string ("/share/blackhat/");
++    };
+ 	return path;
+ }
+ std::string GetSrcPath(){
+ 	static string path = string(BH_SOURCE_PATH)  ;
++    if ( getenv("BH_SOURCE_PATH") != NULL ) {
++      return string(getenv("BH_SOURCE_PATH"));
++    };
+ 	return path;
+ }
+--- src/from_file.cpp	2012-11-20 22:21:49.000000000 +0100
++++ src/from_file.cpp	2014-08-07 11:44:09.125837427 +0200
+@@ -309,13 +309,21 @@
+ 		return settings::general::s_parent_data_path;
+ 	} else {
+ 		struct stat st;
++        char* bhsourcepath = BH_SOURCE_PATH;
++        if (  getenv("BH_SOURCE_PATH") != NULL ) {
++          bhsourcepath = getenv("BH_SOURCE_PATH");
++        };
+ 		std::string datafiles="/datafiles/parents/";
+-		if( stat(BH_SOURCE_PATH,&st) == 0){
+-			BH_DEBUG_MESSAGE3("Using ",BH_SOURCE_PATH+datafiles," as the parent data path.");
+-			return BH_SOURCE_PATH+datafiles;
++		if( stat(bhsourcepath,&st) == 0){
++			BH_DEBUG_MESSAGE3("Using ",bhsourcepath+datafiles," as the parent data path.");
++			return bhsourcepath+datafiles;
+ 		} else {
+-			BH_DEBUG_MESSAGE3("Using ",BH_INSTALL_PATH+datafiles," as the parent data path.");
+-			return BH_INSTALL_PATH+datafiles;
++            char* bhinstallpath = BH_INSTALL_PATH;
++            if ( getenv( "BH_INSTALL_PATH" ) != NULL ) {
++              bhinstallpath =  getenv("BH_INSTALL_PATH");
++            };
++			BH_DEBUG_MESSAGE3("Using ",bhinstallpath+datafiles," as the parent data path.");
++			return bhinstallpath+datafiles;
+ 		}
+ 	}
+ }
+@@ -356,9 +364,13 @@
+ 			//_WARNING("Data path not set. Please set it using the DATA_PATH setting in your BHsettings file. ");
+ 		} else {
+ 			std::string datafiles="/share/blackhat/datafiles/";
+-			if ( stat(BH_INSTALL_PATH,&st) == 0){
+-				BH_DEBUG_MESSAGE3("Using ",BH_INSTALL_PATH+datafiles," as the tree data path.");
+-				return std::string(BH_INSTALL_PATH)+datafiles+subdir;
++            char* bhinstallpath = BH_INSTALL_PATH;
++            if ( getenv( "BH_INSTALL_PATH" ) != NULL ) {
++              bhinstallpath =  getenv("BH_INSTALL_PATH");
++            };
++			if ( stat(bhinstallpath,&st) == 0){
++				BH_DEBUG_MESSAGE3("Using ",bhinstallpath+datafiles," as the tree data path.");
++				return std::string(bhinstallpath)+datafiles+subdir;
+ //			} else if ( stat(BH_SOURCE_PATH,&st) == 0){
+ //				BH_DEBUG_MESSAGE3("Using ",BH_SOURCE_PATH+datafiles," as the tree data path.");
+ //				return std::string(BH_SOURCE_PATH) +std::string("/datafiles/")+subdir;
