@@ -6,7 +6,6 @@ THIS_VERSION=%this_version%
 THIS_DEPENDS="%dependencies%"
 
 [ ! "Darwin" = $(uname -s) ] && source %gcc_source%
-echo "%Python_version%" | grep -q % || PYTHON_VERSION_SHORT=$(echo "%Python_version%" | awk -F'.' '{print $1"."$2}')
 
 # === End parameters
 
@@ -49,10 +48,10 @@ if [ -d "$THIS_HOME/bin" ]; then
 fi
 
 # === Setup PYTHONPATH if needed
-if [ -d "$THIS_HOME/lib/python$PYTHON_VERSION_SHORT/site-packages" ];then 
-  echo "  PYTHONPATH     : add $THIS_HOME/lib/python$PYTHON_VERSION_SHORT/site-packages"
-  export PYTHONPATH=$THIS_HOME/lib/python$PYTHON_VERSION_SHORT/site-packages:$PYTHONPATH
-fi
+for pp in $(ls -d $THIS_HOME/lib/python*/site-packages 2>/dev/null) ; do
+  echo "  PYTHONPATH     : add $pp"
+  export PYTHONPATH=$pp:$PYTHONPATH
+done
 
 # === Process dependencies
 sources=""
@@ -88,6 +87,5 @@ for i in $(echo $PYTHONPATH|tr ":" "\n"|sort|uniq);do PYTHONPATH_NEW="${PYTHONPA
 # === Setup DYLD_LIBRARY_PATH for MacOS
 [ "Darwin" = $(uname -s) ] && export DYLD_LIBRARY_PATH=$LD_LIBRARY_PATH
 
-unset PATH_NEW
-unset LD_LIBRARY_PATH_NEW
-unset PYTHONPATH_NEW
+# === Clear environment
+unset PATH_NEW LD_LIBRARY_PATH_NEW PYTHONPATH_NEW THIS_HOME THIS_VERSION THIS_PACKAGE THIS_DEPENDS scriptdir MCGEN
