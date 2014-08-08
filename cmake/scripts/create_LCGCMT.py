@@ -42,7 +42,7 @@ if __name__ == "__main__":
   results = []
   for package in releaseinfo["packages"].itervalues():
     if package["name"] == "ROOT":
-      if package["version"] == "ROOT_today" or package["version"].startswith("6"):
+      if package["version"] == "ROOT_today" or package["version"].startswith("6") or  package["version"] == "HEAD":
         isROOT6 = True
     result = handle_single_package(package)
     if result: results.append(result)
