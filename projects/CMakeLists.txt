@@ -92,6 +92,9 @@ else()
 #               -DGRAPHVIZ_DIR=${graphviz_home}
                -Dbuiltin_pcre=ON
                -Dcintex=ON
+               IF DEFINED Davix_native_version THEN
+                   -Ddavix=ON -DDAVIX_DIR=${Davix_home}
+               ENDIF
                -Dexceptions=ON
                -Dexplicitlink=ON
                -Dfftw3=ON -DFFTW_LIBRARY=${fftw_home}/lib/libfftw3${CMAKE_SHARED_LIBRARY_SUFFIX}
@@ -139,6 +142,9 @@ else()
                    -Dqt=ON -DQT_QMAKE_EXECUTABLE=${Qt_home}/bin/qmake
                ENDIF
     DEPENDS Python fftw graphviz GSL mysql xrootd 
+            IF DEFINED Davix_native_version THEN
+                Davix
+            ENDIF
             IF LCG_TARGET MATCHES x86_64-slc THEN
                 CASTOR dcap gfal srm_ifce
             ENDIF

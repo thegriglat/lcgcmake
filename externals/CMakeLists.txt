@@ -138,7 +138,7 @@ LCGPackage_Add(
 #---Davix--------------------------------------------------------------------------------------------
 LCGPackage_Add(
   Davix
-  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/davix-<NATIVE_VERSION>.tar.gz
+  URL http://grid-deployment.web.cern.ch/grid-deployment/dms/lcgutil/tar/davix/davix-<NATIVE_VERSION>.tar.gz
   CONFIGURE_COMMAND ${CMAKE_COMMAND} -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
                                        -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
                                        -DBOOST_ROOT:PATHNAME=${Boost_home}
