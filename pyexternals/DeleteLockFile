@@ -1,0 +1,3 @@
+echo "Delete lock file"
+/bin/rm -f /tmp/the.lock
+echo "rm /tmp/the.lock"
