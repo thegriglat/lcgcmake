@@ -93,9 +93,26 @@ the nightlies.
   The scripts for export .yoda files to SQLite3 database are generators/reference/push2database.sh and generators/reference/push2database.py. 
   To process one file  use push2database.py (see generators/reference/push2database.py -h)
   To process all .yoda files in selected directory use push2database.sh (see generators/reference/push2database.sh -h)
-  In any cases you need to specify database which will be used for storing data. Web page genservis.cern.ch use SQLite3 database from local file system (at the moment it is /var/www/gensertest.db).
-  Recommended way to publish tests results to web site:
-    - copy SQLite3 database from /var/www/ at genservis.cern.ch to temporary location (for example /tmp/gensertest.db)
-    - export .yoda files to /tmp/gensertest.db by using push2database.sh or push2database.py
-    - replace original gensertest.db at genservis.cern.ch with /tmp/gensertest.db
+  In any cases you need to specify database which will be used for storing data. Web page genservis.cern.ch use SQLite3 database from local file system (at the moment it is /var/www/genservis.db).
+  Recommended way to publish tests results to web site (will process all *.yoda files in ${CMAKE_BUILD_DIR}/generators):
+    - Use ctest -R copy
+  Manual way to publish tests results to web site:
+    - copy SQLite3 database from /var/www/ at genservis.cern.ch to temporary location (for example /tmp/genservis.db)
+    - export .yoda files to /tmp/genservis.db by using push2database.sh or push2database.py
+    - replace original genservis.db at genservis.cern.ch with /tmp/genservis.db
+  
 
+== How to make validation analyses and publish results (sherpa is used as example)
+  # Use -DVALIDATION in cmake command
+    cmake -DVALIDATION=ON ...
+  # build needed packages
+    make -j 8 sherpa rivet cmaketools
+  # run tests
+    ctest -R reference
+    ctest -j 8 -R sherpa.*.genser-.*-rivet
+  # obtain sftnight ticket and token
+    kdestroy; unlog; kinit sftnight; aklog
+  # copy result to SQLite3 DB
+    ctest -VV -R copy
+  # genservis.db on AFS and it local replica are syncronized every 30 minutes. You can do synchronization manually bu run /var/www/rsync.sh from genservis.cern.ch (you should be logged as apache user).
+  # to change anything go to http://genservis.cern.ch/?query=all&login=admin&password=admin and use 'edit' link.
