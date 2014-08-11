@@ -1,0 +1,3 @@
+echo "Create lock file"
+/usr/bin/lockfile /tmp/the.lock
+echo "/usr/bin/lockfile /tmp/the.lock"
