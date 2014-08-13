@@ -1,0 +1,101 @@
+
+INTRODUCTION
+
+The LCGSOFT package allows distribution/installations of external generator packages
+identical to official LCGCMT releases for given supported platforms. 
+
+Please, notice that given LCGCMT release has set of supported platforms. The
+list of LCG CMT Releases are avalaible here: http://lcgsoft.web.cern.ch/lcgsoft/
+
+Note that LCGCMT soft supports LCGCMT releases starting on 65.
+
+Briefly speaking, LCGSOFT:
+
+1) take source external/generators tarballs from AFS directory:
+
+/afs/cern.ch/sw/lcg/external/tarFiles/ - for externals;
+/afs/cern.ch/sw/lcg/external/tarFiles/MCGeneratorsTarFiles - for generators;
+
+with the corresponding http access:
+
+service-spi.web.cern.ch/service-spi/external/tarFiles/
+service-spi.web.cern.ch/service-spi/external/tarFiles/MCGeneratorsTarFiles
+
+2) untar source files and apply patches if needed:
+ 
+The applying patches can be found in: 
+
+https://svnweb.cern.ch/trac/lcgsoft/browser/trunk/lcgcmake/[package-type]/patches
+
+where [package-type] is one of the following packege types: externals, projects, pyexternals, gridexternals or
+generators.
+
+i.e. generators patches can be found in:
+
+https://svnweb.cern.ch/trac/lcgsoft/browser/trunk/lcgcmake/generators/patches
+
+3) then LCGSOFT package executes set of instructions using macro based on cmake LCGPackage_Add:
+       Default instrutions:
+        #     o automatically adds the log files to the install area 
+	#     o automatically adds the sources to the install area
+	#     o automatically creates a binary tarball
+	#     o automatically strips rpath from .so files    
+
+      Typical instructions for generator package configuration and installation steps (first impression that it is
+complicated but it is not) :
+
+#---lhapdf6------------------------------------------------------------------------------------------
+	LCGPackage_Add(
+	  lhapdf6
+	  URL ${gen_url}/LHAPDF-<NATIVE_VERSION>.tar.gz
+	  CONFIGURE_COMMAND ./configure
+	     --prefix=<INSTALL_DIR>
+	     --with-boost=${Boost_home}
+	     --with-yaml-cpp=${yamlcpp_home}
+	     PYTHON=${Python_home}/bin/python
+	     CYTHON=${cython_home}/bin/cython
+	     PYTHONPATH=${cython_pythonpath}  CFLAGS=-O2 CXXFLAGS=-O2 FCFLAGS=-O2 LDFLAGS=-O2
+	  BUILD_COMMAND ${MAKE} all
+	  ${library_path}=${yamlcpp_home}/lib:$ENV{${library_path}} PYTHONPATH=${cython_pythonpath} LIBRARY_PATH=${Python_home}/lib
+	  BUILD_IN_SOURCE 1
+	  INSTALL_COMMAND make install PYTHONPATH=${cython_pythonpath} LIBRARY_PATH=${Python_home}/lib
+	          COMMAND ${CMAKE_COMMAND} -DINSTALL_DIR=<INSTALL_DIR> -P ${CMAKE_SOURCE_DIR}/cmake/scripts/StripLib.cmake
+	  DEPENDS Boost yamlcpp Python cython
+	)
+
+
+Common instruction contains CONFIGURE_COMMAND, BUILD_COMMAND and INSTALL_COMMAND.
+It is more or less self-explainatory. User can easily change these instructions according to his/her own needs. 
+
+Below you can find step-by-step instructions about LCGSOFT usage:
+
+1) checkout LCGSOFT code from svn:
+
+     svn co svn+ssh://svn.cern.ch/reps/lcgsoft/trunk/lcgcmake
+
+2) create working/build directory:
+     
+     mkdir lcgcmake-build
+     cd lcgcmake-build
+
+3)  set proper gcc and fortran compilers: 
+    on AFS one can run corresponding gcc enviromental scripts (from /afs/cern.ch/sw/lcg/external/gcc )
+
+    source /afs/cern.ch/sw/lcg/external/gcc/4.8.0/x86_64-slc6-gcc48-opt/setup.sh
+
+4) set path to cmake (version should be equal or greater 2.8):
+    export  
+
+5) configure of LCGSOFT package:
+
+cmake -DLCG_VERSION=68
+      -DCMAKE_INSTALL_PREFIX=/ec/lcg-builds/externals-release-1636303/x86_64-mac108-clang34-opt-install"
+      -DPDFsets=ct10 
+      -DLCG_INSTALL_PREFIX=
+      -DLCG_SAFE_INSTALL=ON"
+      -DLCG_IGNORE= 
+      -DLCG_TARBALL_INSTALL=OFF
+      -DCMAKE_BUILD_TYPE:STRING=Release ../lcgcmake
+cmake -DLCG_INSTALL_PREFIX=../lcgcmake-install -DCMAKE_INSTALL_PREFIX=../lcgcmake-install ../lcgcmake -DPDFsets=ct10
+
+
