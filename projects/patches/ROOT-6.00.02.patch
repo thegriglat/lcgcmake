@@ -81,3 +81,16 @@ index 9c1f4da..c28b18c 100644
  
        if (!status.IsOK()) {
           Error("ReadBuffers", "%s", status.ToStr().c_str());
+diff --git a/net/netxng/src/TNetXNGFile.cxx b/net/netxng/src/TNetXNGFile.cxx
+index c28b18c..65824b7 100644
+--- net/netxng/src/TNetXNGFile.cxx
++++ net/netxng/src/TNetXNGFile.cxx
+@@ -576,7 +576,7 @@ XrdCl::OpenFlags::Flags TNetXNGFile::ParseOpenMode(Option_t *modestr)
+    // returns:      correctly parsed option mode
+ 
+    using namespace XrdCl;
+-   OpenFlags::Flags mode = OpenFlags::None;
++   OpenFlags::Flags mode = OpenFlags::Read;
+    TString mod = ToUpper(TString(modestr));
+ 
+    if (mod == "NEW" || mod == "CREATE")  mode = OpenFlags::New;
