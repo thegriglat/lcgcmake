@@ -1,19 +1,19 @@
 This file describes how to install generators to MCGenerators trees:
 
-1. Download new authors tarfile to local source tarrfile repository:
+1. Download new authors tarfile to local source tarfile repository:
 	a. Obtain sftnight AFS token;
 	b. Download source tarball into /afs/cern.ch/sw/lcg/external/tarFiles/MCGeneratorsTarFiles;
 
 2. Add package definition to requested version of LCGCMT release: cmake/toolchain/heptools-<release>.cmake;
 
-3. Try build on local node and run GENSER test for given package;
+3. Try build on local node and run GENSER test for the given package;
 
 4. Commit changes into SVN;
 
-5. Go to https://ecsft.cern.ch/ and submit a jobs for all requested releases;
-   Don't install more then one release simultanously!
+5. Go to https://ecsft.cern.ch/ and submit jobs for all requested releases;
+   Don't install more then one full release at once!
 
-6. If installation is successfull, mail to genser-announce@cern.ch:
+6. If the installation is successfull, mail to genser-announce@cern.ch like this:
     Dear colleagues,
     New Tauola++ version - Tauola++ 1.1.4 has been installed into MCGenerators lcgcmt trees:
 
@@ -25,26 +25,28 @@ This file describes how to install generators to MCGenerators trees:
                        GENSER
 
 ### 
-### Installation in LCG_68 and more newer releases 
+### Installation of LCG_68 and newer releases 
 ###
-1. Steps 1-4 from instructions listed above.
 
-5. Built generators in temporary location (e.g. /afs/cern.ch/sw/lcg/external/MCGenerators_test1/) and cd to it.
+1. Steps 1-4 from the instruction above.
+
+5. Build generators in temporary location (e.g. /afs/cern.ch/sw/lcg/external/MCGenerators_test1/) and
+   cd to it.
 
 6. Create the summary files for a release
   /afs/cern.ch/sw/lcg/app/spi/tools/LCGRPM/package/extract_LCG_summary.py . <platform> <release version> UPGRADE
     # /afs/cern.ch/sw/lcg/app/spi/tools/LCGRPM/package/extract_LCG_summary.py . x86_64-slc6-gcc48-opt 69root6 UPGRADE
   The files LCG_*.txt should be created. (contrib, generators, externals)
 
-7. Create RPM specfile
-  a) Determine current release number
+7. Create RPM spec file
+  a) Determine the current release number
      ls /afs/cern.ch/sw/lcg/external/rpms/lcg/ | grep LCG_generators | grep 69root6
      Output is:
        LCG_generators_69root6_x86_64_slc6_gcc48_opt-1.0.0-6.noarch.rpm
        LCG_generators_69root6_x86_64_slc6_gcc48_opt-1.0.0-7.noarch.rpm
        LCG_generators_69root6_x86_64_slc6_gcc48_opt-1.0.0-8.noarch.rpm
                                                         -> <- is release number
-     Use next releasen number (9 in this case)
+     Use next release number (9 in this case)
   b) Prepare temporary build directory (/tmp/sftnight in this case)
      rm -rf /tmp/sftnight/*
   c) Produce .spec file
@@ -70,4 +72,4 @@ This file describes how to install generators to MCGenerators trees:
 
 12. Check that the new generators are installed on AFS
 
-13. If installation is successfull, mail to genser-announce@cern.ch.
+13. If the installation is successfull, mail to genser-announce@cern.ch.
