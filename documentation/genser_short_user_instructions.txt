@@ -19,7 +19,5 @@ source /afs/cern.ch/sw/lcg/external/gcc/4.8/x86_64-slc6-gcc48-opt/setup.sh
 
 cmake -DLCG_INSTALL_PREFIX=/afs/cern.ch/sw/lcg/releases/LCG_69root6 -DLCG_VERSION=69root6 -DPDFsets=ct10 -DCMAKE_INSTALL_PREFIX=../lcgcmake-install-opt ../lcgcmake
 
-make help | grep pythia8 # List all available pythia8 packages
-
 make -j 8 pythia8        # Build all Pythia8 versions
 make -j 8 pythia8-186    # Build only Pythia8-186

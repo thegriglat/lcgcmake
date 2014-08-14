@@ -94,16 +94,18 @@ Usage of LCGSoft CMake system
     cmake [options] /path/to/LCGSoft/source
 
 Available options of LCGSoft CMake are:
-    LCG_INSTALL_POLICY = [ 'separate' | 'join' ];
-    LCG_SAFE_INSTALL = [ ON | OFF ] : ensure that no overwites occurs at the installation area of packages;
-    LCG_IGNORE : list of packages to be ignored from LCG_INSTALL_PREFIX (';' separated);
-    LCG_INSTALL_PREFIX : existing LCG installation path prefix;
-    LCG_TARBALL_INSTALL = [ ON | OFF ] : turn ON/OFF creation/installation of tarballs;
-    VALIDATION = [ ON | OFF ] : turn ON/OFF validation options for LCGSoft tests;
-    PDFsets : name of PDF sets to be downloaded.
-    CMAKE_BUILD_TYPE = [ ‘Release’ | ‘Debug’ | ‘MinSizeRel’ | 'RelWithDebInfo’ ] : choose the type of build.
+    LCG_SAFE_INSTALL    |      ON/OFF      | ensure that no overwites occurs at the installation area of packages;
+    LCG_IGNORE          |     <string>     | list of packages to be ignored from LCG_INSTALL_PREFIX (';' separated);
+    LCG_INSTALL_PREFIX  |      <path>      | existing LCG installation path prefix;
+    LCG_TARBALL_INSTALL |      ON/OFF      | turn ON/OFF creation/installation of tarballs;
+    VALIDATION          |      ON/OFF      | turn ON/OFF validation options for LCGSoft tests;
+    PDFsets             |     <string>     | name of PDF sets to be downloaded.
+    CMAKE_BUILD_TYPE    |    'Release'     | choose the type of build.
+                        |     'Debug'      |
+                        |   'MinSizeRel'   |
+                        | 'RelWithDebInfo' |
 
-Each option should be passed to CMake by -D flag, e.g.:
+Each option should be passed to cmake by -D flag, e.g.:
     cmake \
      -DCMAKE_INSTALL_PREFIX="/tmp" \
      -DPDFsets=ct10 \
