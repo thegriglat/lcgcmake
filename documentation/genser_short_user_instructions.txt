@@ -1,0 +1,25 @@
+=================================================
+How to build generators with LCGSoft CMake system
+=================================================
+Take /tmp/lcgcmake-build as build path,
+     /tmp/lcgcmake-install-opt as installation path,
+     x86_64-slc6-gcc48-opt as platform, 
+     LCG_69root6 as release.
+
+cd /tmp
+svn co svn+ssh://svn.cern.ch/reps/lcgsoft/trunk/lcgcmake
+
+mkdir lcgcmake-{build,install-opt}
+cd lcgcmake-build
+
+export FC=gfortran
+export PATH=/afs/cern.ch/sw/lcg/external/CMake/2.8.9/Linux-i386/bin:$PATH
+
+source /afs/cern.ch/sw/lcg/external/gcc/4.8/x86_64-slc6-gcc48-opt/setup.sh
+
+cmake -DLCG_INSTALL_PREFIX=/afs/cern.ch/sw/lcg/releases/LCG_69root6 -DLCG_VERSION=69root6 -DPDFsets=ct10 -DCMAKE_INSTALL_PREFIX=../lcgcmake-install-opt ../lcgcmake
+
+make help | grep pythia8 # List all available pythia8 packages
+
+make -j 8 pythia8        # Build all Pythia8 versions
+make -j 8 pythia8-186    # Build only Pythia8-186
