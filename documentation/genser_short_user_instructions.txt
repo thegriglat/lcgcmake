@@ -1,9 +1,10 @@
 =================================================
 How to build generators with LCGSoft CMake system
 =================================================
-Take /tmp/lcgcmake-build as build path,
+Here we take
+     /tmp/lcgcmake-build as build path,
      /tmp/lcgcmake-install-opt as installation path,
-     x86_64-slc6-gcc48-opt as platform, 
+     x86_64-slc6-gcc48-opt as platform (which means that we configure gcc as gcc 4.8.X),
      LCG_69root6 as release.
 
 cd /tmp
@@ -12,12 +13,20 @@ svn co svn+ssh://svn.cern.ch/reps/lcgsoft/trunk/lcgcmake
 mkdir lcgcmake-{build,install-opt}
 cd lcgcmake-build
 
-export FC=gfortran
+export FC=gfortran  (actually this is needed only for slc5 platforms)
 export PATH=/afs/cern.ch/sw/lcg/external/CMake/2.8.9/Linux-i386/bin:$PATH
 
-source /afs/cern.ch/sw/lcg/external/gcc/4.8/x86_64-slc6-gcc48-opt/setup.sh
+source /afs/cern.ch/sw/lcg/external/gcc/4.8/x86_64-slc6-gcc48-opt/setup.sh  (this configures your gcc)
 
-cmake -DLCG_INSTALL_PREFIX=/afs/cern.ch/sw/lcg/releases/LCG_69root6 -DLCG_VERSION=69root6 -DPDFsets=ct10 -DCMAKE_INSTALL_PREFIX=../lcgcmake-install-opt ../lcgcmake
+cmake -DLCG_INSTALL_PREFIX=/afs/cern.ch/sw/lcg/releases/LCG_69root6 -DLCG_VERSION=69root6 -DCMAKE_INSTALL_PREFIX=../lcgcmake-install-opt ../lcgcmake
+
+  (for some explanations on the arguments see https://ph-dep-sft.web.cern.ch/document/using-lcgcmake)
+  (other possible interesting arguments are:
+
+       -DLCG_TARBALL_INSTALL=ON
+       -DPDFsets=ct10                   )
 
 make -j 8 pythia8        # Build all Pythia8 versions
 make -j 8 pythia8-186    # Build only Pythia8-186
+
+ctest -R pythia8
