@@ -3,7 +3,7 @@ INTRODUCTION
 ============
 
 The LCGSoft package allows distribution/installations of external generator packages
-identical to official LCGCMT releases for given supported platforms. 
+identical to the official LCGCMT releases for supported platforms. 
 
 Please note that each LCGCMT release has its own set of supported platforms. The
 list of LCG CMT Releases is avalaible here: http://lcgsoft.web.cern.ch/lcgsoft/
