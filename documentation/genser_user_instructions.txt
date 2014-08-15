@@ -70,6 +70,11 @@ The URL and CONFIGURE_COMMAND directives are obligatory, others are optional.
 The directives names are more or less self-explainatory. User can easily change these instructions 
 according to his/her own needs.
 
+
+The LCGSoft package has a system of different level tests. The corresponding instructions are here:
+https://svnweb.cern.ch/trac/lcgsoft/browser/trunk/lcgcmake/documentation/ctests.txt
+
+
 =============================
 Usage of the LCGSoft CMake system
 =============================
