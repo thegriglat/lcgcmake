@@ -37,12 +37,12 @@ i.e. generators patches can be found in:
 
 Each patch has a package version as a part of patch file name, it is applied only to this version.
 
-3) then LCGSoft package executes set of instructions using the macro based on cmake LCGPackage_Add:
-     Default instructions:
-       o automatically adds the log files to the install area 
-       o automatically adds the sources to the install area
-       o automatically creates a binary tarball
-       o automatically strips rpath from .so files    
+3) then LCGSoft package executes a set of actions using the macro based on cmake LCGPackage_Add:
+     Default actions, performed automatically:
+       o add the log files to the install area 
+       o add the sources to the install area
+       o create a binary tarball
+       o strip rpath from .so files    
 
   A typical set of directives for the generator package configuration and installation steps (first 
 impression that it is complicated but it is not) looks like this:
@@ -67,8 +67,8 @@ impression that it is complicated but it is not) looks like this:
     )
 
 The URL and CONFIGURE_COMMAND directives are obligatory, others are optional.
-The directives names are more or less self-explainatory. User can easily change these instructions 
-according to his/her own needs.
+The directive names are more or less self-explainatory. User can easily change them according to 
+his/her own needs.
 
 
 The LCGSoft package has a system of different level tests. The corresponding instructions are here:
