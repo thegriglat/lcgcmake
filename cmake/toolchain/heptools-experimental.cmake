@@ -121,7 +121,7 @@ endif()
 #---EMI-2 grid externals and other binary packages---------------------
 if(NOT ${LCG_OS} STREQUAL mac)
   LCG_external_package(libunwind       5c2cade                                  )
-  LCG_external_package(igprof          5.9.6                                    )
+  LCG_external_package(igprof          5.9.11                                    )
   if (NOT ${LCG_HOST_ARCH} STREQUAL i686)
    LCG_external_package(CASTOR          2.1.13-6               castor            )
    LCG_external_package(cream           1.14.0-4               Grid/cream        )
