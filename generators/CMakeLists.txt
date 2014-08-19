@@ -787,7 +787,8 @@ LCGPackage_Add(
 
 )
 
-list(GET lhapdf6_native_version -1 pdf_version)
+list(GET lhapdf6_native_version -1 pdf_version_full)
+string(REGEX MATCH "[0-9]+.[0-9]+" pdf_version "${pdf_version_full}")
 LCG_add_test(lhapdf6sets.download
    PRE_COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_INSTALL_PREFIX}/lhapdf6sets/current
        COMMAND ${CMAKE_COMMAND} -E echo "Download LHAPDF6 PDF sets (version ${pdf_version}) ..."
