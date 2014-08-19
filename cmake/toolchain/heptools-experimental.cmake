@@ -163,6 +163,7 @@ LCG_external_package(lhapdfsets        5.9.1          lhapdfsets   )
 
 LCG_external_package(lhapdf6           6.1.2          ${MCGENPATH}/lhapdf6       )
 LCG_external_package(lhapdf6           6.1.3          ${MCGENPATH}/lhapdf6       )
+LCG_external_package(lhapdf6           6.1.4          ${MCGENPATH}/lhapdf6       )
 
 LCG_external_package(lhapdf6sets       6.1.2          lhapdf6sets   )
 LCG_external_package(lhapdf6sets       6.1.3          lhapdf6sets   )
