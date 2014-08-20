@@ -12,7 +12,7 @@ SACRIFICE_VERSION=%sacrifice_version%
 
 ### End parameters
 
-scriptdir=$(cd "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
+scriptdir=$(cd "$(dirname -- "${BASH_SOURCE:-$0}")" && pwd)
 LCGDIR="$(cd $scriptdir;pwd | awk -F'/MCGenerators' '{print $1}')"
 MCGDIR="$LCGDIR/$(cd $scriptdir;pwd | awk -F"$LCGDIR" '{print $2}' | awk -F'/' '{print $2}')"
 PLATFORM=$(basename $scriptdir)

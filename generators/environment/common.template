@@ -10,7 +10,7 @@ THIS_DEPENDS="%dependencies%"
 # === End parameters
 
 # === Determine common parameters ...
-scriptdir=$(cd "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
+scriptdir=$(cd "$(dirname -- "${BASH_SOURCE:-$0}")" && pwd)
 echo $scriptdir | grep -q "MCGenerators" && LCGDIR="$(cd $scriptdir;pwd | awk -F'/MCGenerators' '{print $1}')" || LCGDIR=$(cd $scriptdir/../../../;pwd)
 MCGEN="$LCGDIR/$(cd $scriptdir;pwd | awk -F"$LCGDIR" '{print $2}' | awk -F'/' '{print $2}')"
 PLATFORM=$(basename $scriptdir)
@@ -55,7 +55,7 @@ done
 
 # === Process dependencies
 sources=""
-for pkg in $THIS_DEPENDS;do
+for pkg in $(echo $THIS_DEPENDS | tr ' ' '\n');do
   pkg_name=$(echo $pkg | cut -d- -f 1 )
   pkg_version=$(echo $pkg | cut -d- -f 2-)
   if [ -d "$LCGDIR/$pkg_name/$pkg_version/$PLATFORM" ]; then

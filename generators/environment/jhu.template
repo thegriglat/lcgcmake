@@ -7,7 +7,7 @@ JHU_VERSION=%jhu_version%
 
 ### End parameters
 
-scriptdir=$(cd "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
+scriptdir=$(cd "$(dirname -- "${BASH_SOURCE:-$0}")" && pwd)
 LCGDIR="$(cd $scriptdir;pwd | awk -F'/MCGenerators' '{print $1}')"
 MCGEN="$LCGDIR/$(cd $scriptdir;pwd | awk -F"$LCGDIR" '{print $2}' | awk -F'/' '{print $2}')"
 PLATFORM=$(basename $scriptdir)
