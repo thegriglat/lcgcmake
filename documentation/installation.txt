@@ -58,17 +58,18 @@ This file describes how to install generators to MCGenerators trees:
 9. Copy rpm
    cp -v -i /tmp/sftnight/rpmbuild/RPMS/noarch/*.rpm /afs/cern.ch/sw/lcg/external/rpms/lcg/
 
-10. Update rpm database
-  createrepo --workers=20 /afs/cern.ch/sw/lcg/external/rpms/lcg/
+10. Update rpm database (use createrepo or createrepo_c)
+   createrepo_c --workers=20 /afs/cern.ch/sw/lcg/external/rpms/lcg/
 
 11. Install to AFS
   a) Prepare environment
      export MYSITEROOT=/afs/cern.ch/sw/lcg/releases/
   b) Install 
      List rpms
-       /afs/cern.ch/sw/lcg/app/spi/tools/LCGRPM/install/lcg_install.sh list
+       /afs/cern.ch/sw/lcg/app/spi/tools/LCGRPM/install/lcg_install.sh list | grep LCG_generators_69root6
      Install
       /afs/cern.ch/sw/lcg/app/spi/tools/LCGRPM/install/lcg_install.sh --rpmupdate install LCG_generators_69root6_x86_64_slc6_gcc48_opt-1.0.0-9
+  c) If the error is occurred try to install target package (LCG_68_root6_lhapdf6_6.1.4_x86_64_slc6_gcc48_opt-1.0.0-11 for example) instead of full generators set (LCG_generators_68_root6_x86_64_slc6_gcc48_opt-1.0.0-11)
 
 12. Check that the new generators are installed on AFS
 
