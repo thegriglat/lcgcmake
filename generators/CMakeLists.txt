@@ -111,7 +111,7 @@ endforeach()
 #---pythia8------------------------------------------------------------------------------------------
 LCGPackage_Add(
   pythia8
-  IF <pythia8_<NATIVE_VERSION>_author> VERSION_EQUAL "svn" THEN
+  IF <pythia8_<NATIVE_VERSION>_author> VERSION_EQUAL "HEAD" THEN
     SVN_REPOSITORY https://pythia8.hepforge.org/svn/pythia81/trunk
   ELSE
     URL ${gen_url}/pythia8<pythia8_<NATIVE_VERSION>_author>.tgz
@@ -219,7 +219,7 @@ endforeach()
 
 LCGPackage_Add(
   vincia
-  IF <NATIVE_VERSION> VERSION_EQUAL 9.9.9 THEN
+  IF <NATIVE_VERSION> VERSION_EQUAL "HEAD" THEN
     SVN_REPOSITORY https://vincia.hepforge.org/svn/trunk
   ELSE
     URL ${gen_url}/vincia-<NATIVE_VERSION>.tgz

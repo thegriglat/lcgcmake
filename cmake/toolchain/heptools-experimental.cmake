@@ -171,7 +171,7 @@ LCG_external_package(lhapdf6sets       6.1.3          lhapdf6sets   )
 LCG_external_package(pythia8           175            ${MCGENPATH}/pythia8    author=175  )
 LCG_external_package(pythia8           183            ${MCGENPATH}/pythia8    author=183  )
 LCG_external_package(pythia8           185            ${MCGENPATH}/pythia8    author=185  )
-LCG_external_package(pythia8           svn            ${MCGENPATH}/pythia8 )
+LCG_external_package(pythia8           HEAD            ${MCGENPATH}/pythia8 )
 LCG_external_package(pythia8           186            ${MCGENPATH}/pythia8    author=186  )
 
 LCG_external_package(sacrifice         0.9.9          ${MCGENPATH}/sacrifice pythia8=185)
@@ -246,7 +246,7 @@ endif()
 
 LCG_external_package(jhu               3.1.8          ${MCGENPATH}/jhu       )
 
-LCG_external_package(vincia            9.9.9          ${MCGENPATH}/vincia       )
+LCG_external_package(vincia            HEAD          ${MCGENPATH}/vincia       )
 
 
 # Prepare the search paths according to the versions above
