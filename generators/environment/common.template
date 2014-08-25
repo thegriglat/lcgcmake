@@ -74,7 +74,7 @@ for pkg in $(echo $THIS_DEPENDS | tr ' ' '\n');do
 done
 
 # === Source files ...
-for s in $sources; do 
+for s in $(echo $sources | tr ' ' '\n'); do 
   echo "  sourcing $s ..."
   source $s
 done
