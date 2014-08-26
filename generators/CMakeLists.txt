@@ -1545,6 +1545,46 @@ LCG_add_test(jhu-${v}.native-testC
   TEST_COMMAND ${jhu-${v}_home}/bin/testC)
 endforeach()
 
+
+#--- fastnlo_toolkit -------------------------------------------------------------------------------
+LCGPackage_Add(
+  fastnlo_toolkit
+  URL ${gen_url}/fastnlo_toolkit-<NATIVE_VERSION>.tar.gz
+  CONFIGURE_COMMAND ./configure
+      --prefix=<INSTALL_DIR>
+  #   LHAPDF5 is used but also usage of LHAPDF6 is possible
+      --with-lhapdf=${lhapdf_home}
+      --with-fastjet=${fastjet_home}
+      --with-yoda=${yoda_home}
+  #    --enable-pyext   # need to specify swig package if this option is switched on!
+  BUILD_COMMAND ${MAKE}
+  INSTALL_COMMAND ${MAKE} install
+  BUILD_IN_SOURCE 1
+  DEPENDS lhapdf yoda fastjet
+)
+
+# List of .tab files is available on http://fastnlo.hepforge.org/scenarios/tables-lhc.html
+if (UNIX AND fastnlo_toolkit_native_version)
+# CMS inclusive forward jets 2011 (anti-kT R=0.5; pT, eta); LO, NLO; RIVET_ID: CMS_2012_I1087342
+set(fastnlo_toolkit_tabfile "fnl2222b_I1087342.tab")
+LCG_add_test(fastnlo_toolkit.download
+  TEST_COMMAND $ENV{SHELL} -c "wget -q -O ${fastnlo_toolkit_tabfile}.gz http://fastnlo.hepforge.org/scenarios/tables-v21/${fastnlo_toolkit_tabfile}.gz
+              gzip -df ${fastnlo_toolkit_tabfile}.gz")
+foreach(v ${fastnlo_toolkit_native_version})
+  foreach(fnlotest "example" "yodaout")
+  LCG_add_test(fastnlo_toolkit-${v}.native-fnlo-tk-${fnlotest}
+    TEST_COMMAND $ENV{SHELL} -c "source ${fastnlo_toolkit-${v}_home}/fastnlo_toolkitenv-genser.sh
+              fnlo-tk-${fnlotest} ${fastnlo_toolkit_tabfile}"
+  DEPENDS fastnlo_toolkit.download)
+  endforeach()
+LCG_add_test(fastnlo_toolkit-${v}.native-fnlo-tk-cppread
+  TEST_COMMAND $ENV{SHELL} -c "source ${fastnlo_toolkit-${v}_home}/fastnlo_toolkitenv-genser.sh
+              fnlo-tk-cppread ${fastnlo_toolkit_tabfile} ${lhapdfsets_home}/../share/PDFsets/CT10.LHgrid"
+  DEPENDS fastnlo_toolkit.download)
+endforeach()
+endif()
+
+
 ### tests of generators using rivet 2
 foreach(v ${pythia8_native_version})
 string(REGEX MATCH "[0-9][0-9][0-9]" v_test_version ${v})

@@ -242,6 +242,7 @@ LCG_external_package(powheg-box         r2092         ${MCGENPATH}/powheg-box   
     LCG_external_package(professor         1.3.3          ${MCGENPATH}/professor       )
 
     LCG_external_package(vincia            HEAD          ${MCGENPATH}/vincia       ) 
+    LCG_external_package(fastnlo_toolkit   2.3.1pre-1871  ${MCGENPATH}/fastnlo_toolkit )
 
 if(${LCG_COMP}${LCG_COMPVERS} STRGREATER gcc45)
   LCG_external_package(madgraph5v2       2.0.0.beta3    ${MCGENPATH}/madgraph5       )
