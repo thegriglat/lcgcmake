@@ -538,7 +538,12 @@ LCG_add_test(professor-${v}.genser-import
 
 LCG_add_test(professor-${v}.genser-executable
   TEST_COMMAND ${professor-${v}_home}/bin/prof-interpolate -h
-  ENVIRONMENT PYTHONPATH=${pyanalysis_home}/lib/python${Python_config_version_twodigit}/site-packages:${professor-${v}_home}/lib/python${Python_config_version_twodigit}/site-packages ${library_path}=${ROOT_home}/lib:${Python_home}/lib:$ENV{${library_path}}
+  ENVIRONMENT PYTHONPATH=${pyanalysis_home}/lib/python${Python_config_version_twodigit}/site-packages:${professor-${v}_home}/lib/python${Python_config_version_twodigit}/site-packages ${library_path}=${ROOT_home}/lib:${Python_home}/lib:$ENV{${library_path}} PATH=${Python_home}/bin:$ENV{PATH}
+)
+
+LCG_add_test(professor-${v}.genser-scripts-executable
+  TEST_COMMAND $ENV{SHELL} -c "source ${professor-${v}_home}/professorenv-genser.sh
+               prof-interpolate -h"
 )
 
 endforeach()
