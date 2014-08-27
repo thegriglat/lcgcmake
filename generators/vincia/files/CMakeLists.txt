@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 2.8 FATAL_ERROR)
 #----------------------------------------------------------------------------
 project(vincia CXX Fortran)
 
-set(BUILD_ALL_EXAMPLES OFF)   # by defualt we build only vincia01.cc
+set(BUILD_ALL_EXAMPLES OFF)   # by default we build only vincia01.cc
 INCLUDE( ${PROJECT_SOURCE_DIR}/cmake/modules/TargetDistclean.cmake OPTIONAL)
 
 set(CMAKE_DISABLE_SOURCE_CHANGES ON)
@@ -62,7 +62,7 @@ set(CMAKE_Fortran_FLAGS_DEBUG          "-fPIC -g -fno-automatic")
 set(CMAKE_Fortran_FLAGS_MINSIZEREL     "-fPIC -Os -DNDEBUG -fno-automatic")
 set(CMAKE_Fortran_FLAGS_RELEASE        "-fPIC -O2 -g  -fno-automatic")
 set(CMAKE_Fortran_FLAGS_RELWITHDEBINFO "-fPIC -O2 -g -fno-automatic")
-set(CMAKE_CXX_FLAGS_RELEASE        "-fPIC -g -O2 -fbounds-check")
+set(CMAKE_CXX_FLAGS_RELEASE        "-fPIC -g -O2 -fbounds-check -std=c++11")
 
 message(STATUS "PYTHIA8_INCLUDE_DIR == " ${PYTHIA8_INCLUDE_DIR} )
 message(STATUS "PYTHIA8_LIBRARY == " ${PYTHIA8_LIBRARY} )
