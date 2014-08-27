@@ -133,6 +133,7 @@ LCGPackage_Add(
 )
 
 foreach(v ${pythia8_native_version})
+
 LCG_add_test(pythia8-${v}.build
   BINARY_DIR pythia8/tests/${v}
   SOURCE_DIR pythia8/tests
@@ -151,14 +152,6 @@ LCG_add_test(pythia8-${v}.genser-main14_genser
     PYTHIA8DATA=${pythia8-${v}_home}/xmldoc
   DEPENDS pythia8-${v}.build)
 
-
-LCG_add_test(pythia8-${v}.genser-test1_nightly
-  TEST_COMMAND pythia8/tests/${v}/pythia8_genser_test1
-  ENVIRONMENT
-    ${library_path}=${pythia8-${v}_home}/lib:${HepMC_home}/lib:$ENV{${library_path}}
-    PYTHIA8DATA=${pythia8-${v}_home}/xmldoc
-  DEPENDS pythia8-${v}.build)
-
 LCG_add_test(pythia8-${v}.native-main01
   TEST_COMMAND pythia8/tests/${v}/native-main01
   ENVIRONMENT
@@ -172,9 +165,7 @@ LCG_add_test(pythia8-${v}.genser-test1
   ENVIRONMENT
     ${library_path}=${pythia8-${v}_home}/lib:${HepMC_home}/lib:$ENV{${library_path}}
     PYTHIA8DATA=${pythia8-${v}_home}/xmldoc
-  DEPENDS pythia8-${v}.build
-  
-)
+  DEPENDS pythia8-${v}.build)
 
 LCG_add_test(pythia8-${v}.genser-test2
   PRE_COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/pythia8_test2.cmnd .
@@ -183,9 +174,7 @@ LCG_add_test(pythia8-${v}.genser-test2
   ENVIRONMENT
     ${library_path}=${pythia8-${v}_home}/lib:${HepMC_home}/lib:$ENV{${library_path}}
     PYTHIA8DATA=${pythia8-${v}_home}/xmldoc
-  DEPENDS pythia8-${v}.build pythia8-${v}.genser-test1
-  
-)
+  DEPENDS pythia8-${v}.build pythia8-${v}.genser-test1)
 
 LCG_add_test(pythia8-${v}.genser-test3
   TEST_COMMAND pythia8/tests/${v}/pythia8_genser_test3
@@ -193,9 +182,7 @@ LCG_add_test(pythia8-${v}.genser-test3
   ENVIRONMENT
     ${library_path}=${pythia8-${v}_home}/lib:${HepMC_home}/lib:$ENV{${library_path}}
     PYTHIA8DATA=${pythia8-${v}_home}/xmldoc
-  DEPENDS pythia8-${v}.build pythia8-${v}.genser-test1
-  
-)
+  DEPENDS pythia8-${v}.build pythia8-${v}.genser-test1)
 
 LCG_add_test(pythia8-${v}.genser-test4
   TEST_COMMAND pythia8/tests/${v}/pythia8_genser_test4
@@ -203,16 +190,13 @@ LCG_add_test(pythia8-${v}.genser-test4
   ENVIRONMENT
     ${library_path}=${pythia8-${v}_home}/lib:${HepMC_home}/lib:$ENV{${library_path}}
     PYTHIA8DATA=${pythia8-${v}_home}/xmldoc
-  DEPENDS pythia8-${v}.build pythia8-${v}.genser-test1
-  
-)
+  DEPENDS pythia8-${v}.build pythia8-${v}.genser-test1)
 
 LCG_add_test(pythia8-${v}.compare
   PRE_COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/chi.c .
   TEST_COMMAND ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/cmpr.sh pythia8 ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/reference.dat ${v} ${LCG_VERSION} ${LCG_platform}
-  DEPENDS pythia8-${v}.genser-test2 pythia8-${v}.genser-test3 pythia8-${v}.genser-test4
-  
-)
+  DEPENDS pythia8-${v}.genser-test2 pythia8-${v}.genser-test3 pythia8-${v}.genser-test4)
+
 endforeach()
 
 #---vincia------------------------------------------------------------------------------------------
