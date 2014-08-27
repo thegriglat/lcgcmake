@@ -595,7 +595,8 @@ LCGPackage_Add(
 )
 
 foreach(v ${photos++_native_version})
-LCG_add_test(photospp-${v}.build
+
+ LCG_add_test(photospp-${v}.build
   BINARY_DIR photospp/tests/${v}
   SOURCE_DIR photospp/tests
   BUILD all
@@ -613,16 +614,14 @@ LCG_add_test(photospp-${v}.build
     ENVIRONMENT ${library_path}=${photos++-${v}_home}/lib:${HepMC_home}/lib:${pythia8_home}/lib:$ENV{${library_path}}
     DEPENDS photospp-${v}.build)
 
-foreach(i native-photos_hepevt genser-test1 genser-test2)
-  LCG_add_test(photospp-${v}.${i}
-    TEST_COMMAND  ${CMAKE_COMMAND} -E chdir photospp/tests/${v} ./${i}
+ LCG_add_test(photospp-${v}.native-photos_hepevt
+    TEST_COMMAND  ${CMAKE_COMMAND} -E chdir photospp/tests/${v} ./native-photos_hepevt
     ENVIRONMENT
       PYTHIA8DATA=${pythia8_home}/xmldoc 
       ${library_path}=${photos++-${v}_home}/lib:${HepMC_home}/lib:${pythia8_home}/lib:$ENV{${library_path}}
     DEPENDS photospp-${v}.build)
-endforeach()
 
-LCG_add_test(photospp-${v}.genser-test1-nightlies
+ LCG_add_test(photospp-${v}.genser-test1-nightlies
   TEST_COMMAND ${CMAKE_COMMAND} -E chdir photospp/tests/${v} ./genser-test1
   ENVIRONMENT
     ${library_path}=${photos++-${v}_home}/lib:${HepMC_home}/lib:${pythia8_home}/lib:$ENV{${library_path}}
@@ -631,9 +630,9 @@ LCG_add_test(photospp-${v}.genser-test1-nightlies
        COMMAND ${CMAKE_COMMAND} -E copy photospp/tests/${v}/testi.dat test_photospp.dat
   DEPENDS photospp-${v}.build
   
-)
+ )
 
-LCG_add_test(photospp-${v}.genser-test2-nightlies
+ LCG_add_test(photospp-${v}.genser-test2-nightlies
   TEST_COMMAND ${CMAKE_COMMAND} -E chdir photospp/tests/${v} ./genser-test2
   ENVIRONMENT
     ${library_path}=${photos++-${v}_home}/lib:${HepMC_home}/lib:${pythia8_home}/lib:$ENV{${library_path}}
@@ -643,16 +642,17 @@ LCG_add_test(photospp-${v}.genser-test2-nightlies
        COMMAND ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/cmpr.sh photospp ${CMAKE_SOURCE_DIR}/generators/photospp/tests/reference.dat ${v} ${LCG_VERSION} ${LCG_platform}
   DEPENDS photospp-${v}.build photospp-${v}.genser-test1-nightlies
   
-)
+ )
 
-LCG_add_test(photospp-${v}.genser-test3
+ LCG_add_test(photospp-${v}.genser-test3
   TEST_COMMAND ${CMAKE_COMMAND} -E chdir photospp/tests/${v} ./genser-test3
   ENVIRONMENT
     ${library_path}=${photos++-${v}_home}/lib:${HepMC_home}/lib:${pythia8_home}/lib:$ENV{${library_path}}
     PYTHIA8DATA=${pythia8_home}/xmldoc
   DEPENDS photospp-${v}.build photospp-${v}.genser-test2-nightlies
   
-)
+ )
+
 endforeach()
 
 #---evtgen------------------------------------------------------------------------------------------
