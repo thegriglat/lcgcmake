@@ -108,6 +108,7 @@ foreach(i native-CCTest1 native-CCTest3 native-CCTest4)
   )
 endforeach()
 endforeach()
+
 #---pythia8------------------------------------------------------------------------------------------
 LCGPackage_Add(
   pythia8
@@ -160,41 +161,41 @@ LCG_add_test(pythia8-${v}.native-main01
   DEPENDS pythia8-${v}.build)
 
 LCG_add_test(pythia8-${v}.genser-test1
-  TEST_COMMAND pythia8/tests/${v}/pythia8_genser_test1
-  POST_COMMAND ${CMAKE_COMMAND} -E copy testi_pythia8.dat test_pythia8.dat
+  TEST_COMMAND ${CMAKE_COMMAND} -E chdir pythia8/tests/${v} pythia8_genser_test1
+  POST_COMMAND ${CMAKE_COMMAND} -E copy pythia8/tests/${v}/testi_pythia8.dat pythia8/tests/${v}/test_pythia8.dat
   ENVIRONMENT
     ${library_path}=${pythia8-${v}_home}/lib:${HepMC_home}/lib:$ENV{${library_path}}
     PYTHIA8DATA=${pythia8-${v}_home}/xmldoc
   DEPENDS pythia8-${v}.build)
 
 LCG_add_test(pythia8-${v}.genser-test2
-  PRE_COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/pythia8_test2.cmnd .
-  TEST_COMMAND pythia8/tests/${v}/pythia8_genser_test2
-  POST_COMMAND $ENV{SHELL} -c "cat testi_pythia8.dat >> test_pythia8.dat"
+  PRE_COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/pythia8_test2.cmnd pythia8/tests/${v}/.
+  TEST_COMMAND ${CMAKE_COMMAND} -E chdir pythia8/tests/${v} pythia8_genser_test2
+  POST_COMMAND $ENV{SHELL} -c "cat pythia8/tests/${v}/testi_pythia8.dat >> pythia8/tests/${v}/test_pythia8.dat"
   ENVIRONMENT
     ${library_path}=${pythia8-${v}_home}/lib:${HepMC_home}/lib:$ENV{${library_path}}
     PYTHIA8DATA=${pythia8-${v}_home}/xmldoc
   DEPENDS pythia8-${v}.build pythia8-${v}.genser-test1)
 
 LCG_add_test(pythia8-${v}.genser-test3
-  TEST_COMMAND pythia8/tests/${v}/pythia8_genser_test3
-  POST_COMMAND $ENV{SHELL} -c "cat testi_pythia8.dat >> test_pythia8.dat"
+  TEST_COMMAND ${CMAKE_COMMAND} -E chdir pythia8/tests/${v} pythia8_genser_test3
+  POST_COMMAND $ENV{SHELL} -c "cat pythia8/tests/${v}/testi_pythia8.dat >> pythia8/tests/${v}/test_pythia8.dat"
   ENVIRONMENT
     ${library_path}=${pythia8-${v}_home}/lib:${HepMC_home}/lib:$ENV{${library_path}}
     PYTHIA8DATA=${pythia8-${v}_home}/xmldoc
   DEPENDS pythia8-${v}.build pythia8-${v}.genser-test1)
 
 LCG_add_test(pythia8-${v}.genser-test4
-  TEST_COMMAND pythia8/tests/${v}/pythia8_genser_test4
-  POST_COMMAND $ENV{SHELL} -c "cat testi_pythia8.dat >> test_pythia8.dat"
+  TEST_COMMAND ${CMAKE_COMMAND} -E chdir pythia8/tests/${v} pythia8_genser_test4
+  POST_COMMAND $ENV{SHELL} -c "cat pythia8/tests/${v}/testi_pythia8.dat >> pythia8/tests/${v}/test_pythia8.dat"
   ENVIRONMENT
     ${library_path}=${pythia8-${v}_home}/lib:${HepMC_home}/lib:$ENV{${library_path}}
     PYTHIA8DATA=${pythia8-${v}_home}/xmldoc
   DEPENDS pythia8-${v}.build pythia8-${v}.genser-test1)
 
 LCG_add_test(pythia8-${v}.compare
-  PRE_COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/chi.c .
-  TEST_COMMAND ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/cmpr.sh pythia8 ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/reference.dat ${v} ${LCG_VERSION} ${LCG_platform}
+  PRE_COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/chi.c pythia8/tests/${v}/.
+  TEST_COMMAND ${CMAKE_COMMAND} -E chdir pythia8/tests/${v} ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/cmpr.sh pythia8 ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/reference.dat ${v} ${LCG_VERSION} ${LCG_platform}
   DEPENDS pythia8-${v}.genser-test2 pythia8-${v}.genser-test3 pythia8-${v}.genser-test4)
 
 endforeach()
