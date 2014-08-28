@@ -649,7 +649,7 @@ foreach(v ${photos++_native_version})
   ENVIRONMENT
     ${library_path}=${photos++-${v}_home}/lib:${HepMC_home}/lib:${pythia8_home}/lib:$ENV{${library_path}}
     PYTHIA8DATA=${pythia8_home}/xmldoc
-  DEPENDS photospp-${v}.build photospp-${v}.genser-test2
+  DEPENDS photospp-${v}.build
   
  )
 
