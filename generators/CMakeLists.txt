@@ -826,7 +826,7 @@ LCG_add_test(lhapdf6-${v}.native-testpdf
   DEPENDS lhapdf6sets.download
 )
 
-LCG_add_test(lhapdf6-${v}.native-pythia8
+LCG_add_test(lhapdf6-${v}.pyt8
   TEST_COMMAND lhapdf6/tests/pyt8/${v}/lhapdf6_pyt8
   BINARY_DIR lhapdf6/tests/pyt8/${v}
   SOURCE_DIR lhapdf6/tests/pyt8
