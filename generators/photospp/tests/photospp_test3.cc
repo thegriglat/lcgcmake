@@ -173,13 +173,16 @@ int main(int argc,char **argv)
 	cout << "* PHOTOS - ALPHA ORDER:  " << ratio_alpha <<" +/- "<<err_alpha<<"      *" << endl;
 	cout << "********************************************************" << endl;
 
+        // The output below is disabled because these results have no physical meaning
+        // QED radiation is to be performed only simultaneously with QCD showering
+        // This test is a technical test of photos++
 
-        ofstream testi("testi.dat");
+        // ofstream testi("testi.dat");
 
-        testi << "photospp_test1 1  " << ratio_exp << "    " << err_exp << " " << std::endl;
-        testi << "photospp_test1 2  " << ratio_alpha  << "    " << err_alpha << " " << std::endl;
+        // testi << "photospp_test1 1  " << ratio_exp << "    " << err_exp << " " << std::endl;
+        // testi << "photospp_test1 2  " << ratio_alpha  << "    " << err_alpha << " " << std::endl;
 
-        testi.close();
+        // testi.close();
 	
 	Log::RedirectOutput(Log::Info());
         pythia.statistics();
