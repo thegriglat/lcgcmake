@@ -622,26 +622,25 @@ foreach(v ${photos++_native_version})
       ${library_path}=${photos++-${v}_home}/lib:${HepMC_home}/lib:${pythia8_home}/lib:$ENV{${library_path}}
     DEPENDS photospp-${v}.build)
 
- LCG_add_test(photospp-${v}.genser-test1-nightlies
+ LCG_add_test(photospp-${v}.genser-test1
   TEST_COMMAND ${CMAKE_COMMAND} -E chdir photospp/tests/${v} ./genser-test1
   ENVIRONMENT
     ${library_path}=${photos++-${v}_home}/lib:${HepMC_home}/lib:${pythia8_home}/lib:$ENV{${library_path}}
     PYTHIA8DATA=${pythia8_home}/xmldoc
-  POST_COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/chi.c .
-       COMMAND ${CMAKE_COMMAND} -E copy photospp/tests/${v}/testi.dat test_photospp.dat
+  POST_COMMAND ${CMAKE_COMMAND} -E copy photospp/tests/${v}/testi.dat photospp/tests/${v}/test_photospp.dat
   DEPENDS photospp-${v}.build
   
  )
 
- LCG_add_test(photospp-${v}.genser-test2-nightlies
+ LCG_add_test(photospp-${v}.genser-test2
   TEST_COMMAND ${CMAKE_COMMAND} -E chdir photospp/tests/${v} ./genser-test2
   ENVIRONMENT
     ${library_path}=${photos++-${v}_home}/lib:${HepMC_home}/lib:${pythia8_home}/lib:$ENV{${library_path}}
     PYTHIA8DATA=${pythia8_home}/xmldoc
-  POST_COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/chi.c .
-       COMMAND $ENV{SHELL} -c "cat photospp/tests/${v}/testi.dat >> test_photospp.dat"
-       COMMAND ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/cmpr.sh photospp ${CMAKE_SOURCE_DIR}/generators/photospp/tests/reference.dat ${v} ${LCG_VERSION} ${LCG_platform}
-  DEPENDS photospp-${v}.build photospp-${v}.genser-test1-nightlies
+  POST_COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/chi.c photospp/tests/${v}/.
+       COMMAND $ENV{SHELL} -c "cat photospp/tests/${v}/testi.dat >> photospp/tests/${v}/test_photospp.dat"
+       COMMAND ${CMAKE_COMMAND} -E chdir photospp/tests/${v} ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/cmpr.sh photospp ${CMAKE_SOURCE_DIR}/generators/photospp/tests/reference.dat ${v} ${LCG_VERSION} ${LCG_platform}
+  DEPENDS photospp-${v}.build photospp-${v}.genser-test1
   
  )
 
@@ -650,7 +649,7 @@ foreach(v ${photos++_native_version})
   ENVIRONMENT
     ${library_path}=${photos++-${v}_home}/lib:${HepMC_home}/lib:${pythia8_home}/lib:$ENV{${library_path}}
     PYTHIA8DATA=${pythia8_home}/xmldoc
-  DEPENDS photospp-${v}.build photospp-${v}.genser-test2-nightlies
+  DEPENDS photospp-${v}.build photospp-${v}.genser-test2
   
  )
 
