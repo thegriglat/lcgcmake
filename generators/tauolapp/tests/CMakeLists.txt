@@ -7,7 +7,9 @@ find_package(Tauolapp REQUIRED)
 find_package(Pythia8 REQUIRED)
 find_package(HepMC REQUIRED)
 
-set(TEST_DIR ${TAUOLAPP_ROOT_DIR}/../share/sources/examples/)
+# TAUOLAPP_ROOT_DIR_EX is a compatibility variable for the old version 1.1.1a.
+# To be removed (substituted by TAUOLAPP_ROOT_DIR) when this version is dropped
+set(TEST_DIR ${TAUOLAPP_ROOT_DIR_EX}/../share/sources/examples/)
 
 include_directories(${TAUOLAPP_INCLUDE_DIR} ${HEPMC_INCLUDE_DIR} ${PYTHIA8_INCLUDE_DIRS})
 add_definitions(-DPYTHIA8_VERSION=${PYTHIA8_VERSION})
