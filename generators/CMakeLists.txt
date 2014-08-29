@@ -1665,7 +1665,8 @@ LCG_add_test(herwigpp-${v}.genser-zjets-rivet
 endforeach()
 
 foreach(v ${sherpa_native_version})
-LCG_add_test(sherpa-${v}.genser-zjets-rivet
+if (${v} MATCHES "^2.[.]*")
+ LCG_add_test(sherpa-${v}.genser-zjets-rivet
    PRE_COMMAND $ENV{SHELL} -c "cat ${CMAKE_SOURCE_DIR}/generators/sherpa/tests/LHC_ZJets_riv2.dat | sed '/EVENT_OUTPUT/s/sherpa_zjets/sherpa-${v}_zjets/g' > ${CMAKE_BINARY_DIR}/generators/sherpa-${v}.genser-zjets-rivet.dat"
        COMMAND ${CMAKE_COMMAND} -E make_directory sherpa/zjets/${v}
   TEST_COMMAND ${CMAKE_COMMAND} -E chdir sherpa/zjets/${v} ${sherpa-${v}_home}/bin/Sherpa -f ${CMAKE_BINARY_DIR}/generators/sherpa-${v}.genser-zjets-rivet.dat -e ${rivettests_stat_size}
@@ -1678,8 +1679,24 @@ LCG_add_test(sherpa-${v}.genser-zjets-rivet
        COMMAND ${Python_cmd} ${CMAKE_SOURCE_DIR}/generators/reference/reference.py ${CMAKE_BINARY_DIR}/generators/sherpa.genser-zjets-rivet.root ${CMAKE_BINARY_DIR}/generators/sherpa-${v}.genser-zjets-rivet.root "Path=XS,jet_HT" "limit=0.05,0.10"
   DEPENDS rivet-tests.genser-prepare_references
   TIMEOUT ${timeout}
-)
+ )
+else()
+ LCG_add_test(sherpa-${v}.genser-zjets-rivet
+   PRE_COMMAND $ENV{SHELL} -c "cat ${CMAKE_SOURCE_DIR}/generators/sherpa/tests/LHCV1_ZJets_riv2.dat | sed '/HEPMC2/s/sherpa_zjets/sherpa-${v}_zjets/g' > ${CMAKE_BINARY_DIR}/generators/sherpa-${v}.genser-zjets-rivet.dat"
+       COMMAND ${CMAKE_COMMAND} -E make_directory sherpa/zjets/${v}
+  TEST_COMMAND ${CMAKE_COMMAND} -E chdir sherpa/zjets/${v} ${sherpa-${v}_home}/bin/Sherpa -f ${CMAKE_BINARY_DIR}/generators/sherpa-${v}.genser-zjets-rivet.dat  -e ${rivettests_stat_size}
+       COMMAND ${rivet2_home}/bin/rivet -a MC_GENERIC -a MC_IDENTIFIED -a MC_XS -a MC_ZJETS --histo-file=sherpa-${v}.genser-zjets-rivet.yoda sherpa/zjets/${v}/sherpa-${v}_zjets.hepmc2g
+  ENVIRONMENT PATH=${agile_home}/bin:${Python_home}/bin:${rivet2_home}/bin:{yoda_home}/bin:$ENV{PATH}
+              ${library_path}=${sherpa-${v}_home}/lib/SHERPA-MC:${HepMC_home}/lib:${lhapdf_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:${Python_home}/lib:${rivet2_home}/lib:${yoda_home}/lib:${yamlcpp_home}/lib:${ROOT_home}/lib:$ENV{${library_path}}
+              PYTHONPATH=${Python_home}/bin:${yoda_home}/lib/python${Python_config_version_twodigit}/site-packages/:${ROOT_home}/lib:${rivet2_home}/lib/python${Python_config_version_twodigit}/site-packages/:$ENV{PYTHONPATH}
+              PWD=.
+  POST_COMMAND ${CMAKE_COMMAND} -DAIDA2ROOT=${AIDA2ROOT} -DPython_cmd=${Python_cmd} -Dyoda_home=${yoda_home} -DINPUT=${CMAKE_BINARY_DIR}/generators/sherpa-${v}.genser-zjets-rivet.yoda -P ${CMAKE_SOURCE_DIR}/cmake/scripts/yoda2root.cmake
+       COMMAND ${Python_cmd} ${CMAKE_SOURCE_DIR}/generators/reference/reference.py ${CMAKE_BINARY_DIR}/generators/sherpa.genser-zjets-rivet.root ${CMAKE_BINARY_DIR}/generators/sherpa-${v}.genser-zjets-rivet.root "Path=XS,jet_HT" "limit=0.0001,0.10"
+  DEPENDS rivet-tests.genser-prepare_references
+  TIMEOUT ${timeout}
+ )
 #COMMAND ${rivet2_home}/bin/rivet -a MC_XS -a MC_ZJETS -H sherpa.genser-zjets-rivet_zjets_i.yoda sherpa_zjets.hepmc2g
+endif()
 endforeach()
 
 foreach(v ${herwig_native_version})
