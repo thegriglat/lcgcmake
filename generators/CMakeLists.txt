@@ -161,7 +161,7 @@ LCG_add_test(pythia8-${v}.native-main01
   DEPENDS pythia8-${v}.build)
 
 LCG_add_test(pythia8-${v}.genser-test1
-  TEST_COMMAND ${CMAKE_COMMAND} -E chdir pythia8/tests/${v} pythia8_genser_test1
+  TEST_COMMAND ${CMAKE_COMMAND} -E chdir pythia8/tests/${v} ./pythia8_genser_test1
   POST_COMMAND ${CMAKE_COMMAND} -E copy pythia8/tests/${v}/testi_pythia8.dat pythia8/tests/${v}/test_pythia8.dat
   ENVIRONMENT
     ${library_path}=${pythia8-${v}_home}/lib:${HepMC_home}/lib:$ENV{${library_path}}
@@ -170,7 +170,7 @@ LCG_add_test(pythia8-${v}.genser-test1
 
 LCG_add_test(pythia8-${v}.genser-test2
   PRE_COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/pythia8_test2.cmnd pythia8/tests/${v}/.
-  TEST_COMMAND ${CMAKE_COMMAND} -E chdir pythia8/tests/${v} pythia8_genser_test2
+  TEST_COMMAND ${CMAKE_COMMAND} -E chdir pythia8/tests/${v} ./pythia8_genser_test2
   POST_COMMAND $ENV{SHELL} -c "cat pythia8/tests/${v}/testi_pythia8.dat >> pythia8/tests/${v}/test_pythia8.dat"
   ENVIRONMENT
     ${library_path}=${pythia8-${v}_home}/lib:${HepMC_home}/lib:$ENV{${library_path}}
@@ -178,7 +178,7 @@ LCG_add_test(pythia8-${v}.genser-test2
   DEPENDS pythia8-${v}.build pythia8-${v}.genser-test1)
 
 LCG_add_test(pythia8-${v}.genser-test3
-  TEST_COMMAND ${CMAKE_COMMAND} -E chdir pythia8/tests/${v} pythia8_genser_test3
+  TEST_COMMAND ${CMAKE_COMMAND} -E chdir pythia8/tests/${v} ./pythia8_genser_test3
   POST_COMMAND $ENV{SHELL} -c "cat pythia8/tests/${v}/testi_pythia8.dat >> pythia8/tests/${v}/test_pythia8.dat"
   ENVIRONMENT
     ${library_path}=${pythia8-${v}_home}/lib:${HepMC_home}/lib:$ENV{${library_path}}
@@ -186,7 +186,7 @@ LCG_add_test(pythia8-${v}.genser-test3
   DEPENDS pythia8-${v}.build pythia8-${v}.genser-test1)
 
 LCG_add_test(pythia8-${v}.genser-test4
-  TEST_COMMAND ${CMAKE_COMMAND} -E chdir pythia8/tests/${v} pythia8_genser_test4
+  TEST_COMMAND ${CMAKE_COMMAND} -E chdir pythia8/tests/${v} ./pythia8_genser_test4
   POST_COMMAND $ENV{SHELL} -c "cat pythia8/tests/${v}/testi_pythia8.dat >> pythia8/tests/${v}/test_pythia8.dat"
   ENVIRONMENT
     ${library_path}=${pythia8-${v}_home}/lib:${HepMC_home}/lib:$ENV{${library_path}}
