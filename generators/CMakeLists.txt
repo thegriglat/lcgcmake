@@ -632,6 +632,7 @@ foreach(v ${photos++_native_version})
   
  )
 
+if ( NOT ${v} MATCHES "3.52")
  LCG_add_test(photospp-${v}.genser-test2
   TEST_COMMAND ${CMAKE_COMMAND} -E chdir photospp/tests/${v} ./genser-test2
   ENVIRONMENT
@@ -643,6 +644,7 @@ foreach(v ${photos++_native_version})
   DEPENDS photospp-${v}.build photospp-${v}.genser-test1
   
  )
+endif()
 
  LCG_add_test(photospp-${v}.genser-test3
   TEST_COMMAND ${CMAKE_COMMAND} -E chdir photospp/tests/${v} ./genser-test3
