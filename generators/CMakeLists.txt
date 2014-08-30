@@ -356,29 +356,15 @@ LCGPackage_Add(
 )
 
 foreach(v ${tauola++_native_version})
-if (${v} MATCHES "1.1.1a")
- LCG_add_test(tauolapp-${v}.build
+LCG_add_test(tauolapp-${v}.build
   BINARY_DIR tauolapp/tests/${v}
   SOURCE_DIR tauolapp/tests
   BUILD all
   BUILD_OPTIONS
    -DCMAKE_MODULE_PATH=${cmaketools_home}/modules
    -DTAUOLAPP_ROOT_DIR=${tauola++-${v}_home}
-   -DTAUOLAPP_ROOT_DIR_EX=${tauola++_home}
    -DPYTHIA8_ROOT_DIR=${pythia8_home}
    -DHEPMC_ROOT_DIR=${HepMC_home})
-else()
- LCG_add_test(tauolapp-${v}.build
-  BINARY_DIR tauolapp/tests/${v}
-  SOURCE_DIR tauolapp/tests
-  BUILD all
-  BUILD_OPTIONS
-   -DCMAKE_MODULE_PATH=${cmaketools_home}/modules
-   -DTAUOLAPP_ROOT_DIR=${tauola++-${v}_home}
-   -DTAUOLAPP_ROOT_DIR_EX=${tauola++-${v}_home}
-   -DPYTHIA8_ROOT_DIR=${pythia8_home}
-   -DHEPMC_ROOT_DIR=${HepMC_home})
-endif()
 
 foreach(i genser-test1 native-taumain_stand_alone native-taummk_pythia native-taumain_hepevt)
   LCG_add_test(tauolapp-${v}.${i}
