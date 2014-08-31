@@ -620,6 +620,7 @@ endfunction()
 #                           [LABELS label1 label2 ...])
 #
 function(LCG_add_test test)
+  LCG_replace_conditional_args(ARGN "${ARGN}")  
   cmake_parse_arguments(ARG
     "DEBUG" 
     "TIMEOUT;BUILD;OUTPUT;ERROR;SOURCE_DIR;BINARY_DIR;PROJECT;PASSREGEX;FAILREGEX;WORKING_DIRECTORY" 

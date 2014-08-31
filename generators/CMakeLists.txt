@@ -1797,6 +1797,9 @@ LCG_add_test(test-test PRE_COMMAND /bin/echo pre-comand 1
                            COMMAND /bin/echo pre-comand 5
                       TEST_COMMAND /bin/echo test-command 1
                            COMMAND /bin/echo test-command 2 
+                           IF "2.0.0" VERSION_GREATER "1.5.3" THEN
+                            COMMAND /bin/echo VERSION_GREATER works
+                           ENDIF
                            COMMAND /bin/echo test-command 3
                       POST_COMMAND /bin/echo post-command 1
                            COMMAND date )
