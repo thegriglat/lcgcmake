@@ -858,6 +858,7 @@ set(yoda_rivet_home <yoda-<rivet_<NATIVE_VERSION>_yoda>_home>)
 LCGPackage_Add(
   rivet
   URL ${gen_url}/Rivet-<VERSION>.tar.bz2
+  UPDATE_COMMAND ${CMAKE_COMMAND} -E remove -f <SOURCE_DIR>/bin/rivet-buildplugin
   IF <VERSION> VERSION_LESS 2.0.0 THEN
     CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR>
        --with-hepmc=${HepMC_home}
@@ -930,10 +931,15 @@ LCG_add_test(
 
 LCG_add_test(
        rivet-${v}.genser-cms_script
+IF $ENV{SHELL} MATCHES "/bin/tcsh" OR $ENV{SHELL} MATCHES "/bin/csh" THEN
+       TEST_COMMAND $ENV{SHELL} -c "source ${rivet-${v}_home}/rivetenv.csh
+                    rivet --ignore-beams -a CMS_2012_I1184941 ${CMAKE_SOURCE_DIR}/generators/rivet/tests/data.hepmc"
+ELSE
        TEST_COMMAND $ENV{SHELL} -c "source ${rivet-${v}_home}/rivetenv.sh
                     rivet --ignore-beams -a CMS_2012_I1184941 ${CMAKE_SOURCE_DIR}/generators/rivet/tests/data.hepmc"
+ENDIF
        ENVIRONMENT PATH=${Python_home}/bin:$ENV{PATH}
-		   ${library_path}=${Python_home}/lib:${GSL_home}/lib:$ENV{${library_path}}
+                   ${library_path}=${Python_home}/lib:${GSL_home}/lib:$ENV{${library_path}}
 )   
 
 LCG_add_test(
