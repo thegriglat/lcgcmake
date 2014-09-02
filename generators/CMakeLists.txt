@@ -858,7 +858,6 @@ set(yoda_rivet_home <yoda-<rivet_<NATIVE_VERSION>_yoda>_home>)
 LCGPackage_Add(
   rivet
   URL ${gen_url}/Rivet-<VERSION>.tar.bz2
-  UPDATE_COMMAND ${CMAKE_COMMAND} -E remove -f <SOURCE_DIR>/bin/rivet-buildplugin
   IF <VERSION> VERSION_LESS 2.0.0 THEN
     CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR>
        --with-hepmc=${HepMC_home}
