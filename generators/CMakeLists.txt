@@ -1565,7 +1565,7 @@ foreach(v ${fastnlo_toolkit_native_version})
   endforeach()
 LCG_add_test(fastnlo_toolkit-${v}.native-fnlo-tk-cppread
   TEST_COMMAND $ENV{SHELL} -c "source ${fastnlo_toolkit-${v}_home}/fastnlo_toolkitenv-genser.sh
-              fnlo-tk-cppread ${fastnlo_toolkit_tabfile} ${lhapdfsets_home}/../share/PDFsets/CT10.LHgrid"
+              fnlo-tk-cppread ${fastnlo_toolkit_tabfile} ${lhapdfsets_home}/../share/PDFsets/CT10nnlo.LHgrid"
   DEPENDS fastnlo_toolkit.download)
 endforeach()
 endif()
