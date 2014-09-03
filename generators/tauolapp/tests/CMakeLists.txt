@@ -11,6 +11,10 @@ set(TEST_DIR ${TAUOLAPP_ROOT_DIR}/../share/sources/examples/)
 
 include_directories(${TAUOLAPP_INCLUDE_DIR} ${HEPMC_INCLUDE_DIR} ${PYTHIA8_INCLUDE_DIRS})
 add_definitions(-DPYTHIA8_VERSION=${PYTHIA8_VERSION})
+#in version 1.1.5 the authors introduced their own variable:
+if(${PYTHIA8_VERSION} VERSION_GREATER 177)
+ add_definitions(-DPYTHIA8180_OR_LATER)
+endif()
 
 add_executable(native-taumain_stand_alone ${TEST_DIR}/taumain_stand_alone_example.cxx)
 target_link_libraries(native-taumain_stand_alone ${TAUOLAPP_INTERFACE_LIBRARY} ${TAUOLAPP_FORTRAN_LIBRARY} ${HEPMC_LIBRARIES})
