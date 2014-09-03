@@ -1580,10 +1580,10 @@ endif()
 
 LCG_add_test(rivet-tests.genser-buildanalysis
  IF $ENV{SHELL} MATCHES "/bin/tcsh" OR $ENV{SHELL} MATCHES "/bin/csh" THEN
-  TEST_COMMAND $ENV{SHELL} -c "source ${rivet_home}/rivetenv.csh
+  TEST_COMMAND $ENV{SHELL} -c "source ${rivet2_home}/rivetenv.csh
          rivet-buildplugin RivetGENSER_MC_ZJETS.so ${CMAKE_SOURCE_DIR}/generators/rivetgenser/GENSER_MC_ZJETS.cc"
  ELSE
-  TEST_COMMAND $ENV{SHELL} -c "source ${rivet_home}/rivetenv.sh
+  TEST_COMMAND $ENV{SHELL} -c "source ${rivet2_home}/rivetenv.sh
          rivet-buildplugin RivetGENSER_MC_ZJETS.so ${CMAKE_SOURCE_DIR}/generators/rivetgenser/GENSER_MC_ZJETS.cc"
  ENDIF
        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/generators/rivetgenser/GENSER_MC_ZJETS.info ${CMAKE_BINARY_DIR}/generators
@@ -1597,8 +1597,8 @@ foreach(v ${pythia8_native_version})
 string(REGEX MATCH "[0-9][0-9][0-9]" v_test_version ${v})
 LCG_add_test(
   pythia8-${v}.genser-zjetsgenser-rivet
-  PRE_COMMAND $ENV{SHELL} -c "cat ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/pythia8-zjets-rivet.params | sed \"s/Main:numberOfEvents.*/Main:numberOfEvents = ${rivettests_stat_size}/g\" | cat > ${CMAKE_BINARY_DIR}/generators/pythia8/tests/pythia8-${v}.zjets-rivet.params"
-  TEST_COMMAND ${CMAKE_BINARY_DIR}/generators/pythia8/tests/${v}/pythia8 ${CMAKE_BINARY_DIR}/generators/pythia8/tests/pythia8-${v}.zjets-rivet.params pythia8-${v}.genser-zjetsgenser.hempc.dat
+  PRE_COMMAND $ENV{SHELL} -c "cat ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/pythia8-zjets-rivet.params | sed \"s/Main:numberOfEvents.*/Main:numberOfEvents = ${rivettests_stat_size}/g\" | cat > ${CMAKE_BINARY_DIR}/generators/pythia8/tests/pythia8-${v}.zjetsgenser-rivet.params"
+  TEST_COMMAND ${CMAKE_BINARY_DIR}/generators/pythia8/tests/${v}/pythia8 ${CMAKE_BINARY_DIR}/generators/pythia8/tests/pythia8-${v}.zjetsgenser-rivet.params pythia8-${v}.genser-zjetsgenser.hempc.dat
        COMMAND ${rivet2_home}/bin/rivet --show-analysis GENSER_MC_ZJETS
        COMMAND ${rivet2_home}/bin/rivet -a MC_XS -a GENSER_MC_ZJETS --histo-file=pythia8-${v}.genser-zjetsgenser-rivet.yoda pythia8-${v}.genser-zjetsgenser.hempc.dat
   ENVIRONMENT PATH=${Python_home}/bin:$ENV{PATH}
