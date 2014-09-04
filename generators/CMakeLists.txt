@@ -943,15 +943,25 @@ LCG_add_test(
 
 LCG_add_test(
        rivet-${v}.genser-atlas_script  
+  IF $ENV{SHELL} MATCHES "/bin/tcsh" OR $ENV{SHELL} MATCHES "/bin/csh" THEN
+       TEST_COMMAND $ENV{SHELL} -c "source ${rivet-${v}_home}/rivetenv.csh
+                    rivet --ignore-beams -a ATLAS_2012_I1083318 ${CMAKE_SOURCE_DIR}/generators/rivet/tests/data.hepmc"
+  ELSE
        TEST_COMMAND $ENV{SHELL} -c "source ${rivet-${v}_home}/rivetenv.sh
                     rivet --ignore-beams -a ATLAS_2012_I1083318 ${CMAKE_SOURCE_DIR}/generators/rivet/tests/data.hepmc"
+  ENDIF
        ENVIRONMENT PATH=${Python_home}/bin:$ENV{PATH}
 		   ${library_path}=${Python_home}/lib:${GSL_home}/lib:$ENV{${library_path}}
 )
 else()
 LCG_add_test(rivet-${v}.native-MC_DIJET
+ IF $ENV{SHELL} MATCHES "/bin/tcsh" OR $ENV{SHELL} MATCHES "/bin/csh" THEN
+  TEST_COMMAND $ENV{SHELL} -c "source ${rivet-${v}_home}/rivetenv.csh
+               rivet --analysis=MC_DIJET ${CMAKE_SOURCE_DIR}/generators/rivet/tests/data.hepmc"
+ ELSE
   TEST_COMMAND $ENV{SHELL} -c "source ${rivet-${v}_home}/rivetenv.sh
                rivet --analysis=MC_DIJET ${CMAKE_SOURCE_DIR}/generators/rivet/tests/data.hepmc"
+ ENDIF
   ENVIRONMENT
     ${library_path}=${GSL_home}/lib:$ENV{${library_path}}
     PATH=${Python_home}/bin:$ENV{PATH}
