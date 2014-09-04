@@ -1,0 +1,18 @@
+CMS:
+
+Vitaliano Ciulli             Vitaliano.Ciulli@cern.ch
+Josh Bendavidn               Josh.Bendavid@cern.ch
+Roberto Covarelli            roberto.covarelli@cern.ch
+
+ATLAS:
+
+Andy Buckley                 a.g.buckley@gmail.com
+Ewelina Lobodzinska          ewelina.maria.lobodzinska@cern.ch
+James Monk                   james.william.monk@cern.ch
+Thorsten Kuhl                Thorsten.Kuhl@cern.ch
+
+LHCb:
+
+Gloria Corti                 Gloria.Corti@cern.ch
+Ben Couturier                Ben.Couturier@cern.ch
+Marco Clemencic              Marco.Clemencic@cern.ch
