@@ -10,7 +10,6 @@ else()
 endif()
 #---General parameters------------------------------------------------------------------------------
 set (gen_url "http://service-spi.web.cern.ch/service-spi/external/tarFiles/MCGeneratorsTarFiles")
-set (tarfiles_dir "/afs/cern.ch/sw/lcg/external/tarFiles/MCGeneratorsTarFiles")
 
 set(Python_cmd ${Python_home}/bin/python)
 set(Exec_cmd ${env_cmd})
@@ -355,12 +354,7 @@ endforeach()
 #---tauola++------------------------------------------------------------------------------------------
 LCGPackage_Add(
   tauola++
- IF AUTHORSITE THEN
-  URL http://tauolapp.web.cern.ch/tauolapp/resources/TAUOLA.<NATIVE_VERSION>/TAUOLA.<NATIVE_VERSION>-LHC.tar.gz
-  UPDATE_COMMAND $ENV{SHELL} -c "test -f ${tarfiles_dir}/TAUOLA.<NATIVE_VERSION>-LHC.tar.gz || cp ${CMAKE_BINARY_DIR}/generators/tauola++-<NATIVE_VERSION>/src/TAUOLA.<NATIVE_VERSION>-LHC.tar.gz ${tarfiles_dir}/."
- ELSE
   URL ${gen_url}/TAUOLA.<NATIVE_VERSION>-LHC.tar.gz
- ENDIF
   CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --with-pic --with-hepmc=${HepMC_home} --with-tau-spinner --with-lhapdf=${lhapdf_home} CFLAGS=-O2 CXXFLAGS=-O2 FFLAGS=-O2  F77=${CMAKE_Fortran_COMPILER}
   INSTALL_COMMAND  make install
           COMMAND  ${CMAKE_COMMAND} -E create_symlink tauola++ <INSTALL_DIR>/../../../tauolapp
@@ -928,26 +922,12 @@ LCGPackage_Add(
 
 foreach(v ${rivet_native_version})
 if (${v} MATCHES "^2.[.]*")
-LCG_add_test(
-       rivet-${v}.genser-cms
-       TEST_COMMAND  ${rivet-${v}_home}/bin/rivet --ignore-beams -a CMS_2012_I1184941 ${CMAKE_SOURCE_DIR}/generators/rivet/tests/data.hepmc
-       ENVIRONMENT ${library_path}=${Python_home}/lib:${GSL_home}/lib:${rivet-${v}_home}/lib:${yoda-${rivet_${v}_yoda}_home}/lib:${HepMC_home}/lib:${fastjet_home}/lib:${yamlcpp_home}/lib:$ENV{${library_path}}
-                   PATH=${Python_home}/bin:$ENV{PATH}   
-)
 
 LCG_add_test(
        rivet-${v}.genser-atlas
        TEST_COMMAND  ${rivet-${v}_home}/bin/rivet --ignore-beams -a ATLAS_2012_I1083318 ${CMAKE_SOURCE_DIR}/generators/rivet/tests/data.hepmc
        ENVIRONMENT ${library_path}=${Python_home}/lib:${GSL_home}/lib:${rivet-${v}_home}/lib:${yoda-${rivet_${v}_yoda}_home}/lib:${HepMC_home}/lib:${fastjet_home}/lib:${yamlcpp_home}/lib:$ENV{${library_path}}
                    PATH=${Python_home}/bin:$ENV{PATH}
-)
-
-LCG_add_test(
-       rivet-${v}.genser-cms_script
-       TEST_COMMAND $ENV{SHELL} -c "source ${rivet-${v}_home}/rivetenv.${shell_ext}
-                    rivet --ignore-beams -a CMS_2012_I1184941 ${CMAKE_SOURCE_DIR}/generators/rivet/tests/data.hepmc"
-       ENVIRONMENT PATH=${Python_home}/bin:$ENV{PATH}
-                   ${library_path}=${Python_home}/lib:${GSL_home}/lib:$ENV{${library_path}}
 )
 
 LCG_add_test(
@@ -1491,11 +1471,8 @@ endif()
 #--- MadGraph5aMCatNLO -------------------------------------------------------------------------------
 LCGPackage_Add(
   madgraph5amc
-# IF AUTHORSITE THEN
 #  URL https://launchpad.net/mg5amcnlo/2.0/2.1.0/+download/MG5_aMC_v<NATIVE_VERSION>.tar.gz
-# ELSE
   URL ${gen_url}/MG5_aMC_v<NATIVE_VERSION>.tar.gz
-# ENDIF
   CONFIGURE_COMMAND <VOID>
   BUILD_COMMAND ${MAKE} -j1 -C vendor/CutTools
   INSTALL_COMMAND ${CMAKE_COMMAND} -DSRC=<SOURCE_DIR> -DDST=<INSTALL_DIR> -P ${CMAKE_SOURCE_DIR}/cmake/scripts/copy.cmake
