@@ -354,11 +354,7 @@ endforeach()
 #---tauola++------------------------------------------------------------------------------------------
 LCGPackage_Add(
   tauola++
- IF AUTHORSITE THEN
-  URL http://tauolapp.web.cern.ch/tauolapp/resources/TAUOLA.<NATIVE_VERSION>/TAUOLA.<NATIVE_VERSION>-LHC.tar.gz
- ELSE
   URL ${gen_url}/TAUOLA.<NATIVE_VERSION>-LHC.tar.gz
- ENDIF
   CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --with-pic --with-hepmc=${HepMC_home} --with-tau-spinner --with-lhapdf=${lhapdf_home} CFLAGS=-O2 CXXFLAGS=-O2 FFLAGS=-O2  F77=${CMAKE_Fortran_COMPILER}
   INSTALL_COMMAND  make install
           COMMAND  ${CMAKE_COMMAND} -E create_symlink tauola++ <INSTALL_DIR>/../../../tauolapp
@@ -1509,11 +1505,8 @@ LCGPackage_Add(
 
 LCGPackage_Add(
   madgraph5amc
-# IF AUTHORSITE THEN
 #  URL https://launchpad.net/mg5amcnlo/2.0/2.1.0/+download/MG5_aMC_v<NATIVE_VERSION>.tar.gz
-# ELSE
   URL ${gen_url}/MG5_aMC_v<NATIVE_VERSION>.tar.gz
-# ENDIF
   CONFIGURE_COMMAND <VOID>
   BUILD_COMMAND ${MAKE} -j1 -C vendor/CutTools
   INSTALL_COMMAND ${CMAKE_COMMAND} -DSRC=<SOURCE_DIR> -DDST=<INSTALL_DIR> -P ${CMAKE_SOURCE_DIR}/cmake/scripts/copy.cmake
