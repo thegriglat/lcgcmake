@@ -1489,6 +1489,13 @@ LCG_add_test(madgraph5amc_testmanager
        COMMAND ${Python_cmd} ${CMAKE_BINARY_DIR}/generators/mgcopy/tests/test_manager.py
 )
 
+LCG_add_test(madgraph5amc_zjetsLO
+  TEST_COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/generators/mgwork
+       COMMAND $ENV{SHELL} -c "cd ${CMAKE_BINARY_DIR}/generators/mgwork
+           ${CMAKE_BINARY_DIR}/generators/mgcopy/bin/mg5_aMC < ${CMAKE_SOURCE_DIR}/generators/madgraph5amc/tests/cardsLO"
+  DEPENDS madgraph5amc_testmanager
+)
+
 #--- JHU -------------------------------------------------------------------------------------------
 LCGPackage_Add(
   jhu
