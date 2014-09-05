@@ -921,27 +921,12 @@ LCGPackage_Add(
 )
 
 foreach(v ${rivet_native_version})
-if (${v} MATCHES "^2.[.]*")
-LCG_add_test(
-       rivet-${v}.genser-cms
-       TEST_COMMAND  ${rivet-${v}_home}/bin/rivet --ignore-beams -a CMS_2012_I1184941 ${CMAKE_SOURCE_DIR}/generators/rivet/tests/data.hepmc
-       ENVIRONMENT ${library_path}=${Python_home}/lib:${GSL_home}/lib:${rivet-${v}_home}/lib:${yoda-${rivet_${v}_yoda}_home}/lib:${HepMC_home}/lib:${fastjet_home}/lib:${yamlcpp_home}/lib:$ENV{${library_path}}
-                   PATH=${Python_home}/bin:$ENV{PATH}   
-)
-
+if (${v} VERSION_GREATER "2" OR ${v} VERSION_EQUAL 2.0.0)
 LCG_add_test(
        rivet-${v}.genser-atlas
        TEST_COMMAND  ${rivet-${v}_home}/bin/rivet --ignore-beams -a ATLAS_2012_I1083318 ${CMAKE_SOURCE_DIR}/generators/rivet/tests/data.hepmc
        ENVIRONMENT ${library_path}=${Python_home}/lib:${GSL_home}/lib:${rivet-${v}_home}/lib:${yoda-${rivet_${v}_yoda}_home}/lib:${HepMC_home}/lib:${fastjet_home}/lib:${yamlcpp_home}/lib:$ENV{${library_path}}
                    PATH=${Python_home}/bin:$ENV{PATH}
-)
-
-LCG_add_test(
-       rivet-${v}.genser-cms_script
-       TEST_COMMAND $ENV{SHELL} -c "source ${rivet-${v}_home}/rivetenv.${shell_ext}
-                    rivet --ignore-beams -a CMS_2012_I1184941 ${CMAKE_SOURCE_DIR}/generators/rivet/tests/data.hepmc"
-       ENVIRONMENT PATH=${Python_home}/bin:$ENV{PATH}
-                   ${library_path}=${Python_home}/lib:${GSL_home}/lib:$ENV{${library_path}}
 )
 
 LCG_add_test(
