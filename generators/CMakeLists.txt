@@ -37,6 +37,14 @@ string(REGEX MATCH "[0-9][0-9][0-9]" pythia6_test_version ${pythia6_test_version
 
 list(GET swig_native_version -1 swig_test_version)
 string(REGEX MATCH "[0-9]+[.][0-9]+[.][0-9]+" swig_author_version ${swig_test_version})
+
+### sh <-> csh switch
+if ($ENV{SHELL} MATCHES ".*csh")  # for tcsh, csh
+  set (shell_ext "csh")
+else()
+  set (shell_ext "sh")
+endif()
+
 #---lhapdfsets--------------------------------------------------------------------------------------
 message(STATUS "PDFsets to download: ${PDFsets}")
 LCGPackage_Add(
@@ -934,38 +942,23 @@ LCG_add_test(
 
 LCG_add_test(
        rivet-${v}.genser-cms_script
-  IF $ENV{SHELL} MATCHES "/bin/tcsh" OR $ENV{SHELL} MATCHES "/bin/csh" THEN
-       TEST_COMMAND $ENV{SHELL} -c "source ${rivet-${v}_home}/rivetenv.csh
+       TEST_COMMAND $ENV{SHELL} -c "source ${rivet-${v}_home}/rivetenv.${shell_ext}
                     rivet --ignore-beams -a CMS_2012_I1184941 ${CMAKE_SOURCE_DIR}/generators/rivet/tests/data.hepmc"
-  ELSE
-       TEST_COMMAND $ENV{SHELL} -c "source ${rivet-${v}_home}/rivetenv.sh
-                    rivet --ignore-beams -a CMS_2012_I1184941 ${CMAKE_SOURCE_DIR}/generators/rivet/tests/data.hepmc"
-  ENDIF
        ENVIRONMENT PATH=${Python_home}/bin:$ENV{PATH}
                    ${library_path}=${Python_home}/lib:${GSL_home}/lib:$ENV{${library_path}}
 )
 
 LCG_add_test(
        rivet-${v}.genser-atlas_script  
-  IF $ENV{SHELL} MATCHES "/bin/tcsh" OR $ENV{SHELL} MATCHES "/bin/csh" THEN
-       TEST_COMMAND $ENV{SHELL} -c "source ${rivet-${v}_home}/rivetenv.csh
+       TEST_COMMAND $ENV{SHELL} -c "source ${rivet-${v}_home}/rivetenv.${shell_ext}
                     rivet --ignore-beams -a ATLAS_2012_I1083318 ${CMAKE_SOURCE_DIR}/generators/rivet/tests/data.hepmc"
-  ELSE
-       TEST_COMMAND $ENV{SHELL} -c "source ${rivet-${v}_home}/rivetenv.sh
-                    rivet --ignore-beams -a ATLAS_2012_I1083318 ${CMAKE_SOURCE_DIR}/generators/rivet/tests/data.hepmc"
-  ENDIF
        ENVIRONMENT PATH=${Python_home}/bin:$ENV{PATH}
-		   ${library_path}=${Python_home}/lib:${GSL_home}/lib:$ENV{${library_path}}
+                   ${library_path}=${Python_home}/lib:${GSL_home}/lib:$ENV{${library_path}}
 )
 else()
 LCG_add_test(rivet-${v}.native-MC_DIJET
- IF $ENV{SHELL} MATCHES "/bin/tcsh" OR $ENV{SHELL} MATCHES "/bin/csh" THEN
-  TEST_COMMAND $ENV{SHELL} -c "source ${rivet-${v}_home}/rivetenv.csh
+  TEST_COMMAND $ENV{SHELL} -c "source ${rivet-${v}_home}/rivetenv.${shell_ext}
                rivet --analysis=MC_DIJET ${CMAKE_SOURCE_DIR}/generators/rivet/tests/data.hepmc"
- ELSE
-  TEST_COMMAND $ENV{SHELL} -c "source ${rivet-${v}_home}/rivetenv.sh
-               rivet --analysis=MC_DIJET ${CMAKE_SOURCE_DIR}/generators/rivet/tests/data.hepmc"
- ENDIF
   ENVIRONMENT
     ${library_path}=${GSL_home}/lib:$ENV{${library_path}}
     PATH=${Python_home}/bin:$ENV{PATH}
@@ -1606,13 +1599,8 @@ endif()
 ### tests of generators using rivet 2
 
 LCG_add_test(rivet-tests.genser-buildanalysis
- IF $ENV{SHELL} MATCHES "/bin/tcsh" OR $ENV{SHELL} MATCHES "/bin/csh" THEN
-  TEST_COMMAND $ENV{SHELL} -c "source ${rivet2_home}/rivetenv.csh
+  TEST_COMMAND $ENV{SHELL} -c "source ${rivet2_home}/rivetenv.${shell_ext}
          rivet-buildplugin RivetGENSER_MC_ZJETS.so ${CMAKE_SOURCE_DIR}/generators/rivetgenser/GENSER_MC_ZJETS.cc"
- ELSE
-  TEST_COMMAND $ENV{SHELL} -c "source ${rivet2_home}/rivetenv.sh
-         rivet-buildplugin RivetGENSER_MC_ZJETS.so ${CMAKE_SOURCE_DIR}/generators/rivetgenser/GENSER_MC_ZJETS.cc"
- ENDIF
        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/generators/rivetgenser/GENSER_MC_ZJETS.info ${CMAKE_BINARY_DIR}/generators
        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/generators/rivetgenser/GENSER_MC_ZJETS.plot ${CMAKE_BINARY_DIR}/generators
   ENVIRONMENT
