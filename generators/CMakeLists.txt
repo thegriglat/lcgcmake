@@ -10,6 +10,7 @@ else()
 endif()
 #---General parameters------------------------------------------------------------------------------
 set (gen_url "http://service-spi.web.cern.ch/service-spi/external/tarFiles/MCGeneratorsTarFiles")
+set (tarfiles_dir "/afs/cern.ch/sw/lcg/external/tarFiles/MCGeneratorsTarFiles")
 
 set(Python_cmd ${Python_home}/bin/python)
 set(Exec_cmd ${env_cmd})
@@ -41,7 +42,7 @@ string(REGEX MATCH "[0-9]+[.][0-9]+[.][0-9]+" swig_author_version ${swig_test_ve
 ### sh <-> csh switch
 if ($ENV{SHELL} MATCHES ".*csh")  # for tcsh, csh
   set (shell_ext "csh")
-else()
+else()   
   set (shell_ext "sh")
 endif()
 
@@ -354,7 +355,12 @@ endforeach()
 #---tauola++------------------------------------------------------------------------------------------
 LCGPackage_Add(
   tauola++
+ IF AUTHORSITE THEN
+  URL http://tauolapp.web.cern.ch/tauolapp/resources/TAUOLA.<NATIVE_VERSION>/TAUOLA.<NATIVE_VERSION>-LHC.tar.gz
+  UPDATE_COMMAND $ENV{SHELL} -c "test -f ${tarfiles_dir}/TAUOLA.<NATIVE_VERSION>-LHC.tar.gz || cp ${CMAKE_BINARY_DIR}/generators/tauola++-<NATIVE_VERSION>/src/TAUOLA.<NATIVE_VERSION>-LHC.tar.gz ${tarfiles_dir}/."
+ ELSE
   URL ${gen_url}/TAUOLA.<NATIVE_VERSION>-LHC.tar.gz
+ ENDIF
   CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --with-pic --with-hepmc=${HepMC_home} --with-tau-spinner --with-lhapdf=${lhapdf_home} CFLAGS=-O2 CXXFLAGS=-O2 FFLAGS=-O2  F77=${CMAKE_Fortran_COMPILER}
   INSTALL_COMMAND  make install
           COMMAND  ${CMAKE_COMMAND} -E create_symlink tauola++ <INSTALL_DIR>/../../../tauolapp
@@ -921,7 +927,14 @@ LCGPackage_Add(
 )
 
 foreach(v ${rivet_native_version})
-if (${v} VERSION_GREATER "2" OR ${v} VERSION_EQUAL 2.0.0)
+if (${v} MATCHES "^2.[.]*")
+LCG_add_test(
+       rivet-${v}.genser-cms
+       TEST_COMMAND  ${rivet-${v}_home}/bin/rivet --ignore-beams -a CMS_2012_I1184941 ${CMAKE_SOURCE_DIR}/generators/rivet/tests/data.hepmc
+       ENVIRONMENT ${library_path}=${Python_home}/lib:${GSL_home}/lib:${rivet-${v}_home}/lib:${yoda-${rivet_${v}_yoda}_home}/lib:${HepMC_home}/lib:${fastjet_home}/lib:${yamlcpp_home}/lib:$ENV{${library_path}}
+                   PATH=${Python_home}/bin:$ENV{PATH}   
+)
+
 LCG_add_test(
        rivet-${v}.genser-atlas
        TEST_COMMAND  ${rivet-${v}_home}/bin/rivet --ignore-beams -a ATLAS_2012_I1083318 ${CMAKE_SOURCE_DIR}/generators/rivet/tests/data.hepmc
@@ -930,7 +943,15 @@ LCG_add_test(
 )
 
 LCG_add_test(
-       rivet-${v}.genser-atlas_script  
+       rivet-${v}.genser-cms_script
+       TEST_COMMAND $ENV{SHELL} -c "source ${rivet-${v}_home}/rivetenv.${shell_ext}
+                    rivet --ignore-beams -a CMS_2012_I1184941 ${CMAKE_SOURCE_DIR}/generators/rivet/tests/data.hepmc"
+       ENVIRONMENT PATH=${Python_home}/bin:$ENV{PATH}
+                   ${library_path}=${Python_home}/lib:${GSL_home}/lib:$ENV{${library_path}}
+)
+
+LCG_add_test(
+       rivet-${v}.genser-atlas_script
        TEST_COMMAND $ENV{SHELL} -c "source ${rivet-${v}_home}/rivetenv.${shell_ext}
                     rivet --ignore-beams -a ATLAS_2012_I1083318 ${CMAKE_SOURCE_DIR}/generators/rivet/tests/data.hepmc"
        ENVIRONMENT PATH=${Python_home}/bin:$ENV{PATH}
@@ -1467,36 +1488,28 @@ if(NOT APPLE)    #  (installation fails on MacOSX)
 endif()
 
 
-#--- MadGraph5 -------------------------------------------------------------------------------------
-LCGPackage_Add(
-  madgraph5
-  URL ${gen_url}/MadGraph5_v<NATIVE_VERSION>.tar.gz
-  CONFIGURE_COMMAND <VOID>
-  BUILD_COMMAND <VOID>
-  INSTALL_COMMAND ${CMAKE_COMMAND} -DSRC=<SOURCE_DIR> -DDST=<INSTALL_DIR> -P ${CMAKE_SOURCE_DIR}/cmake/scripts/copy.cmake
-  BUILD_IN_SOURCE 1
-  DEPENDS Python
-)
-
-LCGPackage_Add(
-  madgraph5v2
-  URL ${gen_url}/MadGraph5_v<NATIVE_VERSION>.tar.gz
-  CONFIGURE_COMMAND <VOID>
-  BUILD_COMMAND ${MAKE} -j1 -C vendor/CutTools
-  INSTALL_COMMAND ${CMAKE_COMMAND} -DSRC=<SOURCE_DIR> -DDST=<INSTALL_DIR> -P ${CMAKE_SOURCE_DIR}/cmake/scripts/copy.cmake
-  BUILD_IN_SOURCE 1
-  DEPENDS Python
-)
-
+#--- MadGraph5aMCatNLO -------------------------------------------------------------------------------
 LCGPackage_Add(
   madgraph5amc
+# IF AUTHORSITE THEN
 #  URL https://launchpad.net/mg5amcnlo/2.0/2.1.0/+download/MG5_aMC_v<NATIVE_VERSION>.tar.gz
+# ELSE
   URL ${gen_url}/MG5_aMC_v<NATIVE_VERSION>.tar.gz
+# ENDIF
   CONFIGURE_COMMAND <VOID>
   BUILD_COMMAND ${MAKE} -j1 -C vendor/CutTools
   INSTALL_COMMAND ${CMAKE_COMMAND} -DSRC=<SOURCE_DIR> -DDST=<INSTALL_DIR> -P ${CMAKE_SOURCE_DIR}/cmake/scripts/copy.cmake
+          COMMAND ${CMAKE_COMMAND} -E copy <INSTALL_DIR>/doc.tgz <INSTALL_DIR>/../share/
+          COMMAND ${CMAKE_COMMAND} -E remove <INSTALL_DIR>/doc.tgz
+          COMMAND ${CMAKE_COMMAND} -E remove_directory <INSTALL_DIR>/doc
   BUILD_IN_SOURCE 1
   DEPENDS Python
+)
+
+LCG_add_test(madgraph5amc_testmanager
+  TEST_COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/generators/mgcopy
+       COMMAND ${CMAKE_COMMAND} -E copy_directory ${madgraph5amc_home} ${CMAKE_BINARY_DIR}/generators/mgcopy
+       COMMAND ${Python_cmd} ${CMAKE_BINARY_DIR}/generators/mgcopy/tests/test_manager.py
 )
 
 #--- JHU -------------------------------------------------------------------------------------------
@@ -1813,18 +1826,7 @@ endif()
 
 LCG_add_test(debug-symbols-test 
              TEST_COMMAND ${CMAKE_SOURCE_DIR}/cmake/scripts/check_debug_symbols.sh ${CMAKE_INSTALL_PREFIX}
-            )
-
-## Uncomment after installation of MadGraph5 in MCGenerators tree
-#LCG_add_test(madgraph5_test
-#             TEST_COMMAND ${Python_cmd} ${madgraph5_home}/tests/test_manager.py
-#            )
-
-#LCG_add_test(madgraph5v2_test
-#             TEST_COMMAND ${Python_cmd} ${madgraph5v2_home}/tests/test_manager.py
-#            )
-
-
+)
 
 #---test of the test infrasgtructure---------------------------------------------------------------
 LCG_add_test(test-test PRE_COMMAND /bin/echo pre-comand 1
