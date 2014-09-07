@@ -156,7 +156,9 @@ endif()
 set(MCGENPATH  MCGenerators)
 
 
-LCG_external_package(powheg-box         r2092         ${MCGENPATH}/powheg-box       )
+    LCG_external_package(powheg-box         r2092         ${MCGENPATH}/powheg-box       )
+
+    LCG_external_package(madgraph5amc       2.1.2          ${MCGENPATH}/madgraph5amc )
 
     LCG_external_package(lhapdf            5.8.8          ${MCGENPATH}/lhapdf       )
     LCG_external_package(lhapdf            5.9.1          ${MCGENPATH}/lhapdf       )
