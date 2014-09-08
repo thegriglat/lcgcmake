@@ -41,8 +41,10 @@ string(REGEX MATCH "[0-9]+[.][0-9]+[.][0-9]+" swig_author_version ${swig_test_ve
 ### sh <-> csh switch
 if ($ENV{SHELL} MATCHES ".*csh")  # for tcsh, csh
   set (shell_ext "csh")
+  set (SH_SHELL "/bin/sh")
 else()   
   set (shell_ext "sh")
+  set (SH_SHELL $ENV{SHELL})
 endif()
 
 #---lhapdfsets--------------------------------------------------------------------------------------
@@ -951,7 +953,7 @@ LCG_add_test(rivet-${v}.genser-scripts-source
   TEST_COMMAND $ENV{SHELL} -c "source ${rivet-${v}_home}/rivetenv-genser.sh"
 )
 LCG_add_test(rivet-${v}.genser-scripts-mkanalysis
-  TEST_COMMAND $ENV{SHELL} -c "source ${rivet-${v}_home}/rivetenv-genser.sh
+  TEST_COMMAND ${SH_SHELL} -c "source ${rivet-${v}_home}/rivetenv-genser.sh
       rivet-mkanalysis ATLAS_2010_S8591806"
 )
 LCG_add_test(rivet-${v}.genser-scripts-buildplugin
