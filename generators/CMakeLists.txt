@@ -1483,6 +1483,7 @@ LCGPackage_Add(
   DEPENDS Python
 )
 
+if (madgraph5amc_native_version)
 LCG_add_test(madgraph5amc_testmanager
   TEST_COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/generators/mgcopy
        COMMAND ${CMAKE_COMMAND} -E copy_directory ${madgraph5amc_home} ${CMAKE_BINARY_DIR}/generators/mgcopy
@@ -1495,6 +1496,7 @@ LCG_add_test(madgraph5amc_zjetsLO
            ${CMAKE_BINARY_DIR}/generators/mgcopy/bin/mg5_aMC < ${CMAKE_SOURCE_DIR}/generators/madgraph5amc/tests/cardsLO"
   DEPENDS madgraph5amc_testmanager
 )
+endif()
 
 #--- JHU -------------------------------------------------------------------------------------------
 LCGPackage_Add(
