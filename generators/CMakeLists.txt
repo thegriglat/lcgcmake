@@ -31,6 +31,10 @@ foreach(v ${rivet_native_version})
   endif()
 endforeach()
 
+foreach(v ${pythia8_native_version})
+  set(p8wv ${v})
+endforeach()
+
 list(GET pythia6_native_version -1 pythia6_test_version_full)
 #This is not good that versions .2 cannot be tested with agile if there is a corresponding version without .2, solution to be found:
 string(REGEX MATCH "[0-9][0-9][0-9]" pythia6_test_version ${pythia6_test_version_full})
@@ -1504,6 +1508,21 @@ LCG_add_test(madgraph5amc_zjetsLO
            ${CMAKE_BINARY_DIR}/generators/mgwork/MYPROC/bin/generate_events"
   DEPENDS madgraph5amc_copy
 )
+
+LCG_add_test(madgraph5amc_zjetsLO_hadronize
+  PRE_COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/generators/mgwork/hadronization
+      COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/pythia8_test2.cmnd ${CMAKE_BINARY_DIR}/generators/mgwork/hadronization
+      COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_BINARY_DIR}/generators/mgwork/MYPROC/Events/run_01/unweighted_events.lhe.gz ${CMAKE_BINARY_DIR}/generators/mgwork/hadronization/Zg_pythia8_mg.lhe.gz
+      COMMAND ${CMAKE_COMMAND} -E remove -f ${CMAKE_BINARY_DIR}/generators/mgwork/hadronization/Zg_pythia8_mg.lhe
+      COMMAND ${CMAKE_COMMAND} -E chdir ${CMAKE_BINARY_DIR}/generators/mgwork/hadronization gunzip Zg_pythia8_mg.lhe.gz
+      COMMAND $ENV{SHELL} -c "cat ${CMAKE_BINARY_DIR}/generators/mgwork/hadronization/Zg_pythia8_mg.lhe | sed '/LesHouchesEvents/s/3.0/1.0/' > ${CMAKE_BINARY_DIR}/generators/mgwork/hadronization/Zg_pythia8.lhe"
+  TEST_COMMAND ${CMAKE_COMMAND} -E chdir ${CMAKE_BINARY_DIR}/generators/mgwork/hadronization ${CMAKE_BINARY_DIR}/generators/pythia8/tests/${p8wv}/pythia8_genser_test2
+  ENVIRONMENT
+    ${library_path}=${pythia8-${p8wv}_home}/lib:${HepMC_home}/lib:$ENV{${library_path}}
+    PYTHIA8DATA=${pythia8-${p8wv}_home}/xmldoc
+  DEPENDS pythia8-${p8wv}.build madgraph5amc_zjetsLO
+)
+
 endif()
 
 #--- JHU -------------------------------------------------------------------------------------------
