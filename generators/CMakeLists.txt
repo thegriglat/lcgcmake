@@ -1523,6 +1523,14 @@ LCG_add_test(madgraph5amc_zjetsLO_hadronize
   DEPENDS pythia8-${p8wv}.build madgraph5amc_zjetsLO
 )
 
+#substitute {madgraph5amc_native_version} below by {v} when there will be several versions
+LCG_add_test(madgraph5amc_compare
+  TEST_COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/chi.c ${CMAKE_BINARY_DIR}/generators/mgwork/hadronization/.
+       COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_BINARY_DIR}/generators/mgwork/hadronization/testi_pythia8.dat ${CMAKE_BINARY_DIR}/generators/mgwork/hadronization/test_madgraph5amc.dat
+       COMMAND ${CMAKE_COMMAND} -E chdir ${CMAKE_BINARY_DIR}/generators/mgwork/hadronization ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/cmpr.sh madgraph5amc ${CMAKE_SOURCE_DIR}/generators/madgraph5amc/tests/reference.dat ${madgraph5amc_native_version} ${LCG_VERSION} ${LCG_platform}
+  DEPENDS madgraph5amc_zjetsLO_hadronize
+)
+
 endif()
 
 #--- JHU -------------------------------------------------------------------------------------------
@@ -1783,7 +1791,6 @@ LCG_add_test(
 endforeach()
 
 
-#note: alpgen version and pythia6 version are hardcoded in the script below
 foreach(v ${alpgen_native_version})
 LCG_add_test(
   alpgen-${v}.genser-zjets-rivet
