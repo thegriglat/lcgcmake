@@ -1481,6 +1481,7 @@ LCGPackage_Add(
   URL ${gen_url}/MG5_aMC_v<NATIVE_VERSION>.tar.gz
   CONFIGURE_COMMAND <VOID>
   BUILD_COMMAND ${MAKE} -j1 -C vendor/CutTools
+        COMMAND ${MAKE} -j1 -C vendor/StdHEP
   INSTALL_COMMAND ${CMAKE_COMMAND} -DSRC=<SOURCE_DIR> -DDST=<INSTALL_DIR> -P ${CMAKE_SOURCE_DIR}/cmake/scripts/copy.cmake
           COMMAND ${CMAKE_COMMAND} -E copy <INSTALL_DIR>/doc.tgz <INSTALL_DIR>/../share/
           COMMAND ${CMAKE_COMMAND} -E remove <INSTALL_DIR>/doc.tgz
