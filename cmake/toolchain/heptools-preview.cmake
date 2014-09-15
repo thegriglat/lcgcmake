@@ -241,7 +241,7 @@ set(MCGENPATH  MCGenerators)
     LCG_external_package(baurmc            1.0            ${MCGENPATH}/baurmc       )
     LCG_external_package(professor         1.3.3          ${MCGENPATH}/professor       )
 
-    LCG_external_package(vincia            HEAD          ${MCGENPATH}/vincia       ) 
+#    LCG_external_package(vincia            HEAD          ${MCGENPATH}/vincia       ) 
     LCG_external_package(fastnlo_toolkit   2.3.1pre-1871  ${MCGENPATH}/fastnlo_toolkit )
 
 if(${LCG_COMP}${LCG_COMPVERS} STRGREATER gcc45)
