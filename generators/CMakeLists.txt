@@ -231,6 +231,8 @@ LCGPackage_Add(
   DEPENDS ROOT pythia8 fastjet 
 )
 
+if (vincia_native_version)
+
 LCG_add_test( vincia-pretest
     TEST_COMMAND ${CMAKE_COMMAND} -E copy_directory ${vincia_home}/tunes ${vincia_home}/bin/tunes
 )
@@ -247,6 +249,8 @@ LCG_add_test(${vinciatest}
     DEPENDS vincia-pretest
 )
 endforeach()
+
+endif()
 
 #---ThePEG------------------------------------------------------------------------------------------
 
