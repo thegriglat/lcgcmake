@@ -246,7 +246,7 @@ endif()
 
 LCG_external_package(jhu               3.1.8          ${MCGENPATH}/jhu       )
 
-LCG_external_package(vincia            HEAD          ${MCGENPATH}/vincia       )
+#LCG_external_package(vincia            HEAD          ${MCGENPATH}/vincia       )
 LCG_external_package(fastnlo_toolkit   2.3.1pre-1871  ${MCGENPATH}/fastnlo_toolkit )
 
 
