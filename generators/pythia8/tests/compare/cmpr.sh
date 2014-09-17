@@ -185,7 +185,7 @@ print_html () {
 }
 
 process_tests () {
-  cc -o chi.exe chi.c -lm >&2
+  gcc -o chi.exe chi.c -lm >&2
   
   {
     # print the list of tested generators
