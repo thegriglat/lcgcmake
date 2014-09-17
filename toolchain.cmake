@@ -1,5 +1,5 @@
 # Special wrapper to load the declared version of the heptools toolchain.
-set(LCG_VERSION experimental CACHE STRING "HepTools version (aka LCG configuration)")
+set(LCG_VERSION preview CACHE STRING "HepTools version (aka LCG configuration)")
 
 # Remove the reference to this file from the cache.
 unset(CMAKE_TOOLCHAIN_FILE CACHE)
