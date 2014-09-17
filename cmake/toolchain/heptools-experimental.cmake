@@ -160,12 +160,16 @@ LCG_external_package(madgraph5amc       2.1.2          ${MCGENPATH}/madgraph5amc
 
 LCG_external_package(lhapdf            5.8.8          ${MCGENPATH}/lhapdf       )
 LCG_external_package(lhapdf            5.9.1          ${MCGENPATH}/lhapdf       )
+LCG_external_package(lhapdf           6.1.2          ${MCGENPATH}/lhapdf       )
+LCG_external_package(lhapdf           6.1.3          ${MCGENPATH}/lhapdf       )
+LCG_external_package(lhapdf           6.1.4          ${MCGENPATH}/lhapdf       )
+
 LCG_external_package(lhapdfsets        5.8.8          lhapdfsets   )
 LCG_external_package(lhapdfsets        5.9.1          lhapdfsets   )
-
-LCG_external_package(lhapdf6           6.1.2          ${MCGENPATH}/lhapdf6       )
-LCG_external_package(lhapdf6           6.1.3          ${MCGENPATH}/lhapdf6       )
-LCG_external_package(lhapdf6           6.1.4          ${MCGENPATH}/lhapdf6       )
+# 3 packages below are dummy
+LCG_external_package(lhapdfsets        6.1.2          lhapdfsets   )
+LCG_external_package(lhapdfsets        6.1.3          lhapdfsets   )
+LCG_external_package(lhapdfsets        6.1.4          lhapdfsets   )
 
 LCG_external_package(lhapdf6sets       6.1.2          lhapdf6sets   )
 LCG_external_package(lhapdf6sets       6.1.3          lhapdf6sets   )

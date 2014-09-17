@@ -31,6 +31,13 @@ foreach(v ${rivet_native_version})
   endif()
 endforeach()
 
+#---LCGPackage_set_home(lhapdf5)-----------------------------------------------------------------------
+foreach(v ${lhapdf_native_version})
+  if(v VERSION_LESS 6.0.0)
+    set(lhapdf5_home ${CMAKE_INSTALL_PREFIX}/lhapdf/${v}/${LCG_system})
+  endif()
+endforeach()
+
 foreach(v ${pythia8_native_version})
   set(p8wv ${v})
 endforeach()
@@ -78,50 +85,157 @@ LCGPackage_Add(
  				<INSTALL_DIR>/../../distribution/lhapdfsets/lhapdfsets-<NATIVE_VERSION>-src.tgz
 )
 
+LCGPackage_Add(
+  lhapdf6sets
+  DOWNLOAD_COMMAND <VOID>
+  UPDATE_COMMAND ${CMAKE_COMMAND} -DSRC=${CMAKE_CURRENT_SOURCE_DIR}/lhapdf6sets/ -DDST=<SOURCE_DIR> -P ${CMAKE_SOURCE_DIR}/cmake/scripts/copy.cmake
+  BINARY_PACKAGE 1
+  CONFIGURE_COMMAND <VOID>
+  BUILD_COMMAND <VOID>
+  INSTALL_COMMAND ${CMAKE_COMMAND} -E make_directory <INSTALL_DIR>
+          COMMAND ${CMAKE_COMMAND}
+           -Ddistr=<SOURCE_DIR>
+           -Drepo=http://www.hepforge.org/archive/lhapdf/pdfsets/<NATIVE_VERSION>
+           -DPDFsets=${PDFsets}
+           -Ddst_dir=<INSTALL_DIR>/../share/LHAPDF
+           -P ${CMAKE_CURRENT_SOURCE_DIR}/lhapdf6sets/pdfsets.cmake
+          COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/lhapdf6sets/mktarball.sh <INSTALL_DIR> <NATIVE_VERSION>
+
+)
+
+list(GET lhapdf_native_version -1 pdf_version_full)
+string(REGEX MATCH "[0-9]+.[0-9]+" pdf_version "${pdf_version_full}")
+LCG_add_test(lhapdf6sets.download
+   PRE_COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_INSTALL_PREFIX}/lhapdf6sets/current
+       COMMAND ${CMAKE_COMMAND} -E echo "Download LHAPDF6 PDF sets (version ${pdf_version}) ..."
+  TEST_COMMAND ${CMAKE_COMMAND}
+               -Ddistr=${CMAKE_SOURCE_DIR}/generators/lhapdf6sets
+               -Drepo=http://www.hepforge.org/archive/lhapdf/pdfsets/${pdf_version}
+               -DPDFsets=${PDFsets}
+               -Ddst_dir=${CMAKE_INSTALL_PREFIX}/lhapdf6sets/current/share/LHAPDF
+               -P ${CMAKE_CURRENT_SOURCE_DIR}/lhapdf6sets/pdfsets.cmake
+)
+
+LCGPackage_set_home(yamlcpp)
+LCGPackage_set_home(cython)
+
 #---lhapdf------------------------------------------------------------------------------------------
 LCGPackage_Add(
   lhapdf
-  URL ${gen_url}/lhapdf-<NATIVE_VERSION>.tar.gz
-  PATCH_COMMAND patch -p0 < ${CMAKE_CURRENT_SOURCE_DIR}/patches/lhapdf-getdata.patch
-  CONFIGURE_COMMAND ./configure
-    --prefix=<INSTALL_DIR>
-    --datadir=<lhapdfsets-<NATIVE_VERSION>_home>/../share
-    --enable-low-memory
-    --disable-pyext
-    --disable-doxygen
-    --disable-octave
-    FCFLAGS=-g0 CFLAGS=-g0 CXXFLAGS=-g0
-  INSTALL_COMMAND make install
+  IF <VERSION> VERSION_LESS 6.0.0 THEN
+    URL ${gen_url}/lhapdf-<NATIVE_VERSION>.tar.gz
+  ELSE
+    URL ${gen_url}/LHAPDF-<NATIVE_VERSION>.tar.gz
+  ENDIF
+  IF <VERSION> VERSION_LESS 6.0.0 THEN
+    PATCH_COMMAND patch -p0 < ${CMAKE_CURRENT_SOURCE_DIR}/patches/lhapdf-getdata.patch
+  ENDIF
+  IF <VERSION> VERSION_LESS 6.0.0 THEN
+    CONFIGURE_COMMAND ./configure
+      --prefix=<INSTALL_DIR>
+      --datadir=<lhapdfsets-<VERSION>_home>/../share
+      --enable-low-memory
+      --disable-pyext
+      --disable-doxygen
+      --disable-octave
+      FCFLAGS=-g0 CFLAGS=-g0 CXXFLAGS=-g0
+    INSTALL_COMMAND make install
           COMMAND ${CMAKE_COMMAND} -E remove -f <INSTALL_DIR>/../share/lhapdf
-          COMMAND ${CMAKE_COMMAND} -E create_symlink ../../../../lhapdfsets/<NATIVE_VERSION>/share/lhapdf <INSTALL_DIR>/../share/lhapdf
+          COMMAND ${CMAKE_COMMAND} -E create_symlink ../../../../lhapdfsets/<VERSION>/share/lhapdf <INSTALL_DIR>/../share/lhapdf
           COMMAND ${CMAKE_COMMAND} -E remove -f <INSTALL_DIR>/../share/PDFsets
           COMMAND ${CMAKE_COMMAND} -E create_symlink lhapdf/PDFsets <INSTALL_DIR>/../share/PDFsets
           COMMAND ${CMAKE_COMMAND} -E remove -f <INSTALL_DIR>/../share/PDFsets.index
           COMMAND ${CMAKE_COMMAND} -E create_symlink lhapdf/PDFsets.index <INSTALL_DIR>/../share/PDFsets.index
-  BUILD_IN_SOURCE 1
-  DEPENDS lhapdfsets-<NATIVE_VERSION>
+    BUILD_IN_SOURCE 1
+    DEPENDS lhapdfsets-<VERSION> Boost
+  ELSE
+    CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --with-boost=${Boost_home} --with-yaml-cpp=${yamlcpp_home}
+      PYTHON=${Python_home}/bin/python
+      CYTHON=${cython_home}/bin/cython
+      PYTHONPATH=${cython_pythonpath}  CFLAGS=-O2 CXXFLAGS=-O2 FCFLAGS=-O2 LDFLAGS=-O2
+    BUILD_COMMAND ${MAKE} all
+    ${library_path}=${yamlcpp_home}/lib:$ENV{${library_path}} PYTHONPATH=${cython_pythonpath} LIBRARY_PATH=${Python_home}/lib
+    INSTALL_COMMAND make install PYTHONPATH=${cython_pythonpath} LIBRARY_PATH=${Python_home}/lib
+          COMMAND ${CMAKE_COMMAND} -DINSTALL_DIR=<INSTALL_DIR> -P ${CMAKE_SOURCE_DIR}/cmake/scripts/StripLib.cmake
+    BUILD_IN_SOURCE 1
+    DEPENDS Boost yamlcpp Python cython
+  ENDIF
 )
+
+#---lhapdf5 tests
 
 foreach(v ${lhapdf_native_version})
-LCG_add_test(lhapdf-${v}.build
-  BINARY_DIR lhapdf/tests/${v}
-  SOURCE_DIR lhapdf/tests
-  BUILD all
-  BUILD_OPTIONS
-   -DCMAKE_MODULE_PATH=${cmaketools_home}/modules 
-   -DLHAPDF_ROOT_DIR=${lhapdf_home}
-)
+  if(v VERSION_LESS 6.0.0)
+    LCG_add_test(lhapdf-${v}.build
+      BINARY_DIR lhapdf/tests/${v}
+      SOURCE_DIR lhapdf/tests
+      BUILD all
+      BUILD_OPTIONS
+       -DCMAKE_MODULE_PATH=${cmaketools_home}/modules 
+       -DLHAPDF_ROOT_DIR=${lhapdf_home}
+    )
 
-foreach(i native-CCTest1 native-CCTest3 native-CCTest4)
-  LCG_add_test(lhapdf-${v}.${i}
-    TEST_COMMAND lhapdf/tests/${v}/${i}
-    ENVIRONMENT
-      ${library_path}=${lhapdf_home}/lib:$ENV{${library_path}}
-      LHAPATH=${lhapdfsets_home}/../share/lhapdf/PDFsets
-    DEPENDS lhapdf-${v}.build
-  )
+    foreach(i native-CCTest1 native-CCTest3 native-CCTest4)
+      LCG_add_test(lhapdf-${v}.${i}
+        TEST_COMMAND lhapdf/tests/${v}/${i}
+        ENVIRONMENT
+          ${library_path}=${lhapdf_home}/lib:$ENV{${library_path}}
+          LHAPATH=${lhapdfsets_home}/../share/lhapdf/PDFsets
+        DEPENDS lhapdf-${v}.build
+      )
+    endforeach()
+  endif()
 endforeach()
+
+#---lhapdf6 tests
+
+LCGPackage_set_home(pythia8)
+
+foreach(v ${lhapdf_native_version})
+  if(v VERSION_GREATER 5.9.9)
+    LCG_add_test(lhapdf6-${v}.native-testpdf
+      TEST_COMMAND lhapdf6/tests/${v}/native-testpdf CT10 1
+      BINARY_DIR lhapdf6/tests/${v}
+      SOURCE_DIR lhapdf6/tests
+      BUILD native-testpdf
+      BUILD_OPTIONS
+       -DCMAKE_MODULE_PATH=${cmaketools_home}/modules
+       -DLHAPDF6_ROOT_DIR=${lhapdf-${v}_home}
+       -DBOOST_ROOT=${Boost_home}
+       -DBoost_INCLUDE_DIR=${Boost_home_include}
+       -DYAMLCPP_ROOT_DIR=${yamlcpp_home}
+      ENVIRONMENT
+        ${library_path}=${lhapdf-${v}_home}/lib:${Boost_home}/lib:${yamlcpp_home}/lib:$ENV{${library_path}}
+        LHAPDF_DATA_PATH=${lhapdf-${v}_home}/share/LHAPDF:${CMAKE_INSTALL_PREFIX}/lhapdf6sets/current/share/LHAPDF
+      DEPENDS lhapdf6sets.download
+    )
+
+    LCG_add_test(lhapdf6-${v}.genser-pythia8
+      TEST_COMMAND lhapdf6/tests/pyt8/${v}/lhapdf6_pyt8
+      BINARY_DIR lhapdf6/tests/pyt8/${v}
+      SOURCE_DIR lhapdf6/tests/pyt8
+      BUILD lhapdf6_pyt8
+      BUILD_OPTIONS
+       -DCMAKE_MODULE_PATH=${cmaketools_home}/modules
+       -DLHAPDF6_ROOT_DIR=${lhapdf-${v}_home}
+       -DBOOST_ROOT=${Boost_home}
+       -DBoost_INCLUDE_DIR=${Boost_home_include}
+       -DYAMLCPP_ROOT_DIR=${yamlcpp_home}
+       -DPYTHIA8_ROOT_DIR=${pythia8_home}
+      ENVIRONMENT
+        ${library_path}=${lhapdf-${v}_home}/lib:${pythia8_home}/lib:${Boost_home}/lib:${yamlcpp_home}/lib:$ENV{${library_path}}
+        LHAPDF_DATA_PATH=${lhapdf-${v}_home}/share/LHAPDF:${CMAKE_INSTALL_PREFIX}/lhapdf6sets/current/share/LHAPDF
+        PYTHIA8DATA=${pythia8_home}/xmldoc
+      POST_COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/chi.c .
+           COMMAND ${CMAKE_COMMAND} -E copy testi_lhapdf6.dat test_lhapdf6.dat
+           COMMAND ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/cmpr.sh lhapdf6 ${CMAKE_SOURCE_DIR}/generators/lhapdf6/tests/pyt8/reference.dat ${v} ${LCG_VERSION} ${LCG_platform}
+      DEPENDS lhapdf6sets.download
+    )
+  endif()
 endforeach()
+
+
+
 
 #---pythia8------------------------------------------------------------------------------------------
 LCGPackage_Add(
@@ -365,7 +479,7 @@ endforeach()
 LCGPackage_Add(
   tauola++
   URL ${gen_url}/TAUOLA.<NATIVE_VERSION>-LHC.tar.gz
-  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --with-pic --with-hepmc=${HepMC_home} --with-tau-spinner --with-lhapdf=${lhapdf_home} CFLAGS=-O2 CXXFLAGS=-O2 FFLAGS=-O2  F77=${CMAKE_Fortran_COMPILER}
+  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --with-pic --with-hepmc=${HepMC_home} --with-tau-spinner --with-lhapdf=${lhapdf5_home} CFLAGS=-O2 CXXFLAGS=-O2 FFLAGS=-O2  F77=${CMAKE_Fortran_COMPILER}
   INSTALL_COMMAND  make install
           COMMAND  ${CMAKE_COMMAND} -E create_symlink tauola++ <INSTALL_DIR>/../../../tauolapp
 #          COMMAND ${CMAKE_COMMAND} -DINSTALL_DIR=<INSTALL_DIR> -P ${CMAKE_SOURCE_DIR}/cmake/scripts/StripLib.cmake
@@ -775,99 +889,6 @@ foreach(v ${yoda_native_version})
   endforeach()
 endforeach()
 
-
-#---lhapdf6sets--------------------------------------------------------------------------------------
-
-LCGPackage_Add(
-  lhapdf6sets
-  DOWNLOAD_COMMAND <VOID> 
-  UPDATE_COMMAND ${CMAKE_COMMAND} -DSRC=${CMAKE_CURRENT_SOURCE_DIR}/lhapdf6sets/ -DDST=<SOURCE_DIR> -P ${CMAKE_SOURCE_DIR}/cmake/scripts/copy.cmake
-  BINARY_PACKAGE 1
-  CONFIGURE_COMMAND <VOID>
-  BUILD_COMMAND <VOID>
-  INSTALL_COMMAND ${CMAKE_COMMAND} -E make_directory <INSTALL_DIR>
-          COMMAND ${CMAKE_COMMAND}
-           -Ddistr=<SOURCE_DIR>
-           -Drepo=http://www.hepforge.org/archive/lhapdf/pdfsets/<NATIVE_VERSION>
-           -DPDFsets=${PDFsets}
-           -Ddst_dir=<INSTALL_DIR>/../share/LHAPDF
-           -P ${CMAKE_CURRENT_SOURCE_DIR}/lhapdf6sets/pdfsets.cmake
-          COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/lhapdf6sets/mktarball.sh <INSTALL_DIR> <NATIVE_VERSION>
-
-)
-
-list(GET lhapdf6_native_version -1 pdf_version_full)
-string(REGEX MATCH "[0-9]+.[0-9]+" pdf_version "${pdf_version_full}")
-LCG_add_test(lhapdf6sets.download
-   PRE_COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_INSTALL_PREFIX}/lhapdf6sets/current
-       COMMAND ${CMAKE_COMMAND} -E echo "Download LHAPDF6 PDF sets (version ${pdf_version}) ..."
-  TEST_COMMAND ${CMAKE_COMMAND} 
-               -Ddistr=${CMAKE_SOURCE_DIR}/generators/lhapdf6sets
-               -Drepo=http://www.hepforge.org/archive/lhapdf/pdfsets/${pdf_version}
-               -DPDFsets=${PDFsets}
-               -Ddst_dir=${CMAKE_INSTALL_PREFIX}/lhapdf6sets/current/share/LHAPDF
-               -P ${CMAKE_CURRENT_SOURCE_DIR}/lhapdf6sets/pdfsets.cmake
-)
-
-#---lhapdf6------------------------------------------------------------------------------------------
-LCGPackage_Add(
-  lhapdf6
-  URL ${gen_url}/LHAPDF-<NATIVE_VERSION>.tar.gz
-  CONFIGURE_COMMAND ./configure
-     --prefix=<INSTALL_DIR>
-     --with-boost=${Boost_home}
-     --with-yaml-cpp=${yamlcpp_home}
-     PYTHON=${Python_home}/bin/python
-     CYTHON=${cython_home}/bin/cython
-     PYTHONPATH=${cython_pythonpath}  CFLAGS=-O2 CXXFLAGS=-O2 FCFLAGS=-O2 LDFLAGS=-O2
-  BUILD_COMMAND ${MAKE} all
-  ${library_path}=${yamlcpp_home}/lib:$ENV{${library_path}} PYTHONPATH=${cython_pythonpath} LIBRARY_PATH=${Python_home}/lib
-  BUILD_IN_SOURCE 1
-  INSTALL_COMMAND make install PYTHONPATH=${cython_pythonpath} LIBRARY_PATH=${Python_home}/lib
-          COMMAND ${CMAKE_COMMAND} -DINSTALL_DIR=<INSTALL_DIR> -P ${CMAKE_SOURCE_DIR}/cmake/scripts/StripLib.cmake
-  DEPENDS Boost yamlcpp Python cython
-)
-
-foreach(v ${lhapdf6_native_version})
-LCG_add_test(lhapdf6-${v}.native-testpdf
-  TEST_COMMAND lhapdf6/tests/${v}/native-testpdf CT10 1
-  BINARY_DIR lhapdf6/tests/${v}
-  SOURCE_DIR lhapdf6/tests
-  BUILD native-testpdf
-  BUILD_OPTIONS
-   -DCMAKE_MODULE_PATH=${cmaketools_home}/modules
-   -DLHAPDF6_ROOT_DIR=${lhapdf6-${v}_home}
-   -DBOOST_ROOT=${Boost_home}
-   -DBoost_INCLUDE_DIR=${Boost_home_include}
-   -DYAMLCPP_ROOT_DIR=${yamlcpp_home}
-  ENVIRONMENT
-    ${library_path}=${lhapdf6-${v}_home}/lib:${Boost_home}/lib:${yamlcpp_home}/lib:$ENV{${library_path}}
-    LHAPDF_DATA_PATH=${lhapdf6-${v}_home}/share/LHAPDF:${CMAKE_INSTALL_PREFIX}/lhapdf6sets/current/share/LHAPDF
-  DEPENDS lhapdf6sets.download
-)
-
-LCG_add_test(lhapdf6-${v}.genser-pythia8
-  TEST_COMMAND lhapdf6/tests/pyt8/${v}/lhapdf6_pyt8
-  BINARY_DIR lhapdf6/tests/pyt8/${v}
-  SOURCE_DIR lhapdf6/tests/pyt8
-  BUILD lhapdf6_pyt8
-  BUILD_OPTIONS
-   -DCMAKE_MODULE_PATH=${cmaketools_home}/modules
-   -DLHAPDF6_ROOT_DIR=${lhapdf6-${v}_home}
-   -DBOOST_ROOT=${Boost_home}
-   -DBoost_INCLUDE_DIR=${Boost_home_include}
-   -DYAMLCPP_ROOT_DIR=${yamlcpp_home}
-   -DPYTHIA8_ROOT_DIR=${pythia8_home}
-  ENVIRONMENT
-    ${library_path}=${lhapdf6-${v}_home}/lib:${pythia8_home}/lib:${Boost_home}/lib:${yamlcpp_home}/lib:$ENV{${library_path}}
-    LHAPDF_DATA_PATH=${lhapdf6-${v}_home}/share/LHAPDF:${CMAKE_INSTALL_PREFIX}/lhapdf6sets/current/share/LHAPDF
-    PYTHIA8DATA=${pythia8_home}/xmldoc
-  POST_COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/chi.c .
-       COMMAND ${CMAKE_COMMAND} -E copy testi_lhapdf6.dat test_lhapdf6.dat
-       COMMAND ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/cmpr.sh lhapdf6 ${CMAKE_SOURCE_DIR}/generators/lhapdf6/tests/pyt8/reference.dat ${v} ${LCG_VERSION} ${LCG_platform}
-  DEPENDS lhapdf6sets.download
-)
-endforeach()
 
 #---Rivet-----------------------------------------------------------------------------------------
 
@@ -1409,7 +1430,7 @@ if(NOT APPLE)    #  (installation fails on MacOSX)
   CONFIGURE_COMMAND ./configure  
     --prefix=<INSTALL_DIR>
     --fastjet=${fastjet_home}
-    --lhapdf=${lhapdf_home}
+    --lhapdf=${lhapdf5_home}
   BUILD_COMMAND ${MAKE}
   BUILD_IN_SOURCE 1
   DEPENDS fastjet lhapdf
@@ -1421,7 +1442,7 @@ foreach(i WW HJ W_ew-BW Wbb Wj HJJ ZZ W_ew-BMNNP Dijet gg_H VBF_H Z W hvq Zj ST_
   LCG_add_test(powheg-box-${v}.native-${i}
     TEST_COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/powheg-box/tests/runtest.sh ${powheg-box-${v}_home}/bin ${powheg-box-${v}_home}/../share/sources ${i}
     ENVIRONMENT
-      ${library_path}=${lhapdf_home}/lib:${fastjet_home}/lib:$ENV{${library_path}}
+      ${library_path}=${lhapdf5_home}/lib:${fastjet_home}/lib:$ENV{${library_path}}
       LHAPATH=${lhapdfsets_home}/../share/PDFsets
   )
 endforeach()
@@ -1580,7 +1601,7 @@ LCGPackage_Add(
   URL ${gen_url}/fastnlo_toolkit-<NATIVE_VERSION>.tar.gz
   CONFIGURE_COMMAND ./configure
       --prefix=<INSTALL_DIR>
-  #   LHAPDF5 is used but also usage of LHAPDF6 is possible
+  #   LHAPDF6 is now used
       --with-lhapdf=${lhapdf_home}
       --with-fastjet=${fastjet_home}
       --with-yoda=${yoda_home}
