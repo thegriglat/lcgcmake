@@ -133,7 +133,7 @@ LCGPackage_Add(
   IF <VERSION> VERSION_LESS 6.0.0 THEN
     CONFIGURE_COMMAND ./configure
       --prefix=<INSTALL_DIR>
-      --datadir=<lhapdfsets-<VERSION>_home>/../share
+      --datadir=<lhapdfsets_home>/../share
       --enable-low-memory
       --disable-pyext
       --disable-doxygen
@@ -147,7 +147,7 @@ LCGPackage_Add(
           COMMAND ${CMAKE_COMMAND} -E remove -f <INSTALL_DIR>/../share/PDFsets.index
           COMMAND ${CMAKE_COMMAND} -E create_symlink lhapdf/PDFsets.index <INSTALL_DIR>/../share/PDFsets.index
     BUILD_IN_SOURCE 1
-    DEPENDS lhapdfsets-<VERSION> Boost
+    DEPENDS lhapdfsets Boost
   ELSE
     CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --with-boost=${Boost_home} --with-yaml-cpp=${yamlcpp_home}
       PYTHON=${Python_home}/bin/python
