@@ -35,6 +35,7 @@ endforeach()
 foreach(v ${lhapdf_native_version})
   if(v VERSION_LESS 6.0.0)
     set(lhapdf5_home ${CMAKE_INSTALL_PREFIX}/${lhapdf_directory_name}/${v}/${LCG_system})
+    set(lhapdf5vers ${v})
   endif()
 endforeach()
 
@@ -1420,7 +1421,7 @@ foreach(v ${crmc_native_version})
 endforeach()
 endif()
 
-#---powhegbox---------------------------------------------------------------------------------------
+#---powheg-box--------------------------------------------------------------------------------------
 if(NOT APPLE)    #  (installation fails on MacOSX)
  LCGPackage_Add(
   powheg-box
@@ -1433,7 +1434,7 @@ if(NOT APPLE)    #  (installation fails on MacOSX)
     --lhapdf=${lhapdf5_home}
   BUILD_COMMAND ${MAKE}
   BUILD_IN_SOURCE 1
-  DEPENDS fastjet lhapdf
+  DEPENDS fastjet lhapdf-${lhapdf5vers}
  )
 
 foreach(v ${powheg-box_native_version})
@@ -1444,6 +1445,7 @@ foreach(i WW HJ W_ew-BW Wbb Wj HJJ ZZ W_ew-BMNNP Dijet gg_H VBF_H Z W hvq Zj ST_
     ENVIRONMENT
       ${library_path}=${lhapdf5_home}/lib:${fastjet_home}/lib:$ENV{${library_path}}
       LHAPATH=${lhapdfsets_home}/../share/PDFsets
+      LHAPDF_DATA_PATH=${lhapdf_home}/share/LHAPDF:${CMAKE_INSTALL_PREFIX}/lhapdf6sets/current/share/LHAPDF
   )
 endforeach()
 endforeach()
