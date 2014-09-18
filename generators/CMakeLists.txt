@@ -34,7 +34,7 @@ endforeach()
 #---LCGPackage_set_home(lhapdf5)-----------------------------------------------------------------------
 foreach(v ${lhapdf_native_version})
   if(v VERSION_LESS 6.0.0)
-    set(lhapdf5_home ${CMAKE_INSTALL_PREFIX}/lhapdf/${v}/${LCG_system})
+    set(lhapdf5_home ${CMAKE_INSTALL_PREFIX}/${lhapdf_directory_name}/${v}/${LCG_system})
   endif()
 endforeach()
 
@@ -479,7 +479,7 @@ endforeach()
 LCGPackage_Add(
   tauola++
   URL ${gen_url}/TAUOLA.<NATIVE_VERSION>-LHC.tar.gz
-  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --with-pic --with-hepmc=${HepMC_home} --with-tau-spinner --with-lhapdf=${lhapdf5_home} CFLAGS=-O2 CXXFLAGS=-O2 FFLAGS=-O2  F77=${CMAKE_Fortran_COMPILER}
+  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --with-pic --with-hepmc=${HepMC_home} --with-tau-spinner --with-lhapdf=${lhapdf_home} CFLAGS=-O2 CXXFLAGS=-O2 FFLAGS=-O2  F77=${CMAKE_Fortran_COMPILER}
   INSTALL_COMMAND  make install
           COMMAND  ${CMAKE_COMMAND} -E create_symlink tauola++ <INSTALL_DIR>/../../../tauolapp
 #          COMMAND ${CMAKE_COMMAND} -DINSTALL_DIR=<INSTALL_DIR> -P ${CMAKE_SOURCE_DIR}/cmake/scripts/StripLib.cmake
