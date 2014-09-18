@@ -147,7 +147,7 @@ LCGPackage_Add(
           COMMAND ${CMAKE_COMMAND} -E remove -f <INSTALL_DIR>/../share/PDFsets.index
           COMMAND ${CMAKE_COMMAND} -E create_symlink lhapdf/PDFsets.index <INSTALL_DIR>/../share/PDFsets.index
     BUILD_IN_SOURCE 1
-    DEPENDS lhapdfsets Boost
+    DEPENDS lhapdfsets
   ELSE
     CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --with-boost=${Boost_home} --with-yaml-cpp=${yamlcpp_home}
       PYTHON=${Python_home}/bin/python
@@ -172,14 +172,14 @@ foreach(v ${lhapdf_native_version})
       BUILD all
       BUILD_OPTIONS
        -DCMAKE_MODULE_PATH=${cmaketools_home}/modules 
-       -DLHAPDF_ROOT_DIR=${lhapdf_home}
+       -DLHAPDF_ROOT_DIR=${lhapdf-${v}_home}
     )
 
     foreach(i native-CCTest1 native-CCTest3 native-CCTest4)
       LCG_add_test(lhapdf-${v}.${i}
         TEST_COMMAND lhapdf/tests/${v}/${i}
         ENVIRONMENT
-          ${library_path}=${lhapdf_home}/lib:$ENV{${library_path}}
+          ${library_path}=${lhapdf-${v}_home}/lib:$ENV{${library_path}}
           LHAPATH=${lhapdfsets_home}/../share/lhapdf/PDFsets
         DEPENDS lhapdf-${v}.build
       )
