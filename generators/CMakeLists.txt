@@ -1603,15 +1603,16 @@ LCGPackage_Add(
   URL ${gen_url}/fastnlo_toolkit-<NATIVE_VERSION>.tar.gz
   CONFIGURE_COMMAND ./configure
       --prefix=<INSTALL_DIR>
-  #   LHAPDF6 is now used
-      --with-lhapdf=${lhapdf_home}
+  #   LHAPDF5 is used, LHAPDF6 not yet possible because of no possibility to specify Boost includes
+  #   In addition, the explicit LHAPDF5 PDF set file name is used in the test below
+      --with-lhapdf=${lhapdf5_home}
       --with-fastjet=${fastjet_home}
       --with-yoda=${yoda_home}
   #    --enable-pyext   # need to specify swig package if this option is switched on!
   BUILD_COMMAND ${MAKE}
   INSTALL_COMMAND ${MAKE} install
   BUILD_IN_SOURCE 1
-  DEPENDS lhapdf yoda fastjet
+  DEPENDS lhapdf-${lhapdf5vers} yoda fastjet
 )
 
 # List of .tab files is available on http://fastnlo.hepforge.org/scenarios/tables-lhc.html
