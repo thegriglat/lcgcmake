@@ -23,7 +23,7 @@ class PackageInfo(object):
      if self.is_subpackage:
         return ""    
      dependency_string = ",".join(self.dependencies)
-     return "%s; %s; %s; %s; %s" %(self.name, self.hash, self.version, self.directory.lstrip("./"), dependency_string)
+     return "%s; %s; %s; %s; %s" %(self.name, self.hash, self.version, self.directory, dependency_string)
 
 def create_package_from_file(directory, filename, packages):
    content = open(filename).read()
@@ -42,7 +42,11 @@ def create_package_from_file(directory, filename, packages):
      dependencies = set()
    if name == "ROOT":
      dependencies.discard("pythia8")
-   packages[name] = PackageInfo(name,destination,hash,version,directory,dependencies)
+   #ignore CLHEP 2.X
+   if name == "CLHEP" and version.lstrip().startswith("2"):
+      pass
+   else:
+     packages[name] = PackageInfo(name,destination,hash,version,directory,dependencies)
 
 
 #########################
