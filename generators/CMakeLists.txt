@@ -1054,8 +1054,8 @@ LCGPackage_Add(
      --enable-openloops=.
      --enable-lhole
      --with-sqlite3=${sqlite_home}  "CFLAGS=-O2 -g0" "CXXFLAGS=-O2 -g0" "FFLAGS=-O2 -g0"
-  BUILD_COMMAND ${MAKE} LIBRARY_PATH=${lhapdf_home}/lib CPPFLAGS=-I${lhapdf_home}/include
-  INSTALL_COMMAND make install LIBRARY_PATH=${lhapdf_home}/lib CPPFLAGS=-I${lhapdf_home}/include
+  BUILD_COMMAND ${MAKE} LIBRARY_PATH=${lhapdf_home}/lib CPPFLAGS=-I${Boost_home_include}
+  INSTALL_COMMAND make install LIBRARY_PATH=${lhapdf_home}/lib
   BUILD_IN_SOURCE 1
   DEPENDS lhapdf HepMC sqlite
 )
@@ -1074,8 +1074,8 @@ LCGPackage_Add(
      --enable-lhole
      --enable-mpi
      --with-sqlite3=${sqlite_home}  "CFLAGS=-O2 -g0" "CXXFLAGS=-O2 -g0" "FFLAGS=-O2 -g0" PATH=${openmpi_home}/bin:$ENV{PATH} ${library_path}=${openmpi_home}/lib:$ENV{${library_path}} LIBRARY_PATH=${openmpi_home}/lib
-  BUILD_COMMAND ${MAKE} PATH=${openmpi_home}/bin:$ENV{PATH} LIBRARY_PATH=${lhapdf_home}/lib ${library_path}=${openmpi_home}/lib:${blackhat_home}/lib:$ENV{${library_path}} CPPFLAGS=-I${lhapdf_home}/include
-  INSTALL_COMMAND make install LIBRARY_PATH=${lhapdf_home}/lib CPPFLAGS=-I${lhapdf_home}/include PATH=${openmpi_home}/bin:$ENV{PATH} LIBRARY_PATH=${lhapdf_home}/lib ${library_path}=${openmpi_home}/lib:${blackhat_home}/lib:$ENV{${library_path}}
+  BUILD_COMMAND ${MAKE} PATH=${openmpi_home}/bin:$ENV{PATH} LIBRARY_PATH=${lhapdf_home}/lib ${library_path}=${openmpi_home}/lib:${blackhat_home}/lib:$ENV{${library_path}} CPPFLAGS=-I${Boost_home_include}
+  INSTALL_COMMAND make install LIBRARY_PATH=${lhapdf_home}/lib PATH=${openmpi_home}/bin:$ENV{PATH} LIBRARY_PATH=${lhapdf_home}/lib ${library_path}=${openmpi_home}/lib:${blackhat_home}/lib:$ENV{${library_path}}
   BUILD_IN_SOURCE 1
   DEPENDS lhapdf HepMC sqlite openmpi blackhat
 )
@@ -1094,14 +1094,11 @@ LCGPackage_Add(
      --enable-lhole
      --enable-mpi
      --with-sqlite3=${sqlite_home} "CFLAGS=-O2 -g0 -fPIC" "CXXFLAGS=-O2 -g0 -fPIC" "FFLAGS=-O2 -g0 -fPIC" PATH=${mpich2_home}/bin:$ENV{PATH} ${library_path}=${mpich2_home}/lib:$ENV{${library_path}} LIBRARY_PATH=${mpich2_home}/lib
-  BUILD_COMMAND ${MAKE} PATH=${mpich2_home}/bin:$ENV{PATH} LIBRARY_PATH=${lhapdf_home}/lib ${library_path}=${mpich2_home}/lib:${blackhat_home}/lib:$ENV{${library_path}} CPPFLAGS=-I${lhapdf_home}/include 
-  INSTALL_COMMAND make install LIBRARY_PATH=${lhapdf_home}/lib CPPFLAGS=-I${lhapdf_home}/include PATH=${mpich2_home}/bin:$ENV{PATH} ${library_path}=${mpich2_home}/lib:${blackhat_home}/lib:$ENV{${library_path}} 
+  BUILD_COMMAND ${MAKE} PATH=${mpich2_home}/bin:$ENV{PATH} LIBRARY_PATH=${lhapdf_home}/lib ${library_path}=${mpich2_home}/lib:${blackhat_home}/lib:$ENV{${library_path}} CPPFLAGS=-I${Boost_home_include}
+  INSTALL_COMMAND make install LIBRARY_PATH=${lhapdf_home}/lib PATH=${mpich2_home}/bin:$ENV{PATH} ${library_path}=${mpich2_home}/lib:${blackhat_home}/lib:$ENV{${library_path}} 
   BUILD_IN_SOURCE 1
   DEPENDS lhapdf HepMC sqlite mpich2 blackhat
 )
-
-
-
 
 
 # $PWD is needed because Sherpa uses this variable to know current directory
