@@ -449,14 +449,15 @@ LCG_add_test(herwigpp-${v}.native-TVT
                           ENVIRONMENT ${library_path}=${herwig++-${v}_home}/lib:${thepeg-${herwig++_${v}_thepeg}_home}/lib/ThePEG:${HepMC_home}/lib:${lhapdf_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:$ENV{${library_path}})
 
 LCG_add_test(herwigpp-${v}.genser-LHC-W
-                          TEST_COMMAND ${herwig++-${v}_home}/bin/Herwig++ read ${CMAKE_SOURCE_DIR}/generators/herwig++/tests/LHC-W.in --repo=${herwig++-${v}_home}/share/Herwig++/HerwigDefaults.rpo
-                               COMMAND ${herwig++-${v}_home}/bin/Herwig++ run -N50 LHC-W.run -d1
-                          POST_COMMAND cat LHC-W.out
-                               COMMAND cat LHC-W.log
-                          BINARY_DIR herwig++/tests
-                          SOURCE_DIR herwig++/tests
-                          ENVIRONMENT ${library_path}=${herwig++-${v}_home}/lib:${thepeg-${herwig++_${v}_thepeg}_home}/lib/ThePEG:${HepMC_home}/lib:${lhapdf_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:$ENV{${library_path}})
-
+  TEST_COMMAND ${herwig++-${v}_home}/bin/Herwig++ read ${CMAKE_SOURCE_DIR}/generators/herwig++/tests/LHC-W.in --repo=${herwig++-${v}_home}/share/Herwig++/HerwigDefaults.rpo
+       COMMAND ${herwig++-${v}_home}/bin/Herwig++ run -N50 LHC-W.run -d1
+  POST_COMMAND cat LHC-W.out
+       COMMAND cat LHC-W.log
+  BINARY_DIR herwig++/tests
+  SOURCE_DIR herwig++/tests
+  ENVIRONMENT ${library_path}=${herwig++-${v}_home}/lib:${thepeg-${herwig++_${v}_thepeg}_home}/lib/ThePEG:${HepMC_home}/lib:${lhapdf_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:$ENV{${library_path}}
+  LHAPDF_DATA_PATH=${lhapdf_home}/share/LHAPDF:${CMAKE_INSTALL_PREFIX}/lhapdf6sets/current/share/LHAPDF
+)
 
 # native herwig++ tests (not all of them are run)
 
