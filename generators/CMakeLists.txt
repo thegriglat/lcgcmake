@@ -1755,6 +1755,7 @@ LCG_add_test(herwigpp-${v}.genser-zjets-rivet
               PYTHONPATH=${Python_home}/bin:${agile_home}/lib/python${Python_config_version_twodigit}/site-packages:${yoda_home}/lib/python${Python_config_version_twodigit}/site-packages/:${ROOT_home}/lib:$ENV{PYTHONPATH}
               PATH=${agile_home}/bin:${Python_home}/bin:$ENV{PATH}
               LHAPATH=${lhapdfsets_home}/../share/lhapdf/PDFsets
+              LHAPDF_DATA_PATH=${lhapdf_home}/share/LHAPDF:${CMAKE_INSTALL_PREFIX}/lhapdf6sets/current/share/LHAPDF
   POST_COMMAND ${CMAKE_COMMAND} -DAIDA2ROOT=${AIDA2ROOT} -DPython_cmd=${Python_cmd} -Dyoda_home=${yoda_home} -DINPUT=${CMAKE_BINARY_DIR}/generators/herwigpp-${v}.genser-zjets-rivet.yoda -P ${CMAKE_SOURCE_DIR}/cmake/scripts/yoda2root.cmake
        COMMAND ${Python_cmd} ${CMAKE_SOURCE_DIR}/generators/reference/reference.py ${CMAKE_BINARY_DIR}/generators/herwigpp.genser-zjets-rivet.root ${CMAKE_BINARY_DIR}/generators/herwigpp-${v}.genser-zjets-rivet.root "Path=XS,jet_HT" "limit=0.05,0.10"
   DEPENDS rivet-tests.genser-prepare_references
