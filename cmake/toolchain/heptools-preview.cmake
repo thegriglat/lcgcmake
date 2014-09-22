@@ -168,11 +168,11 @@ LCG_external_package(lhapdfsets        5.9.1          lhapdfsets   )
 LCG_external_package(lhapdf6sets       6.1.2          lhapdf6sets   )
 LCG_external_package(lhapdf6sets       6.1.3          lhapdf6sets   )
 
-LCG_external_package(pythia8           175            ${MCGENPATH}/pythia8    author=175  )
+LCG_external_package(pythia8           175            ${MCGENPATH}/pythia8   )
 LCG_external_package(pythia8           HEAD            ${MCGENPATH}/pythia8 )
-LCG_external_package(pythia8           186            ${MCGENPATH}/pythia8    author=186  )
+LCG_external_package(pythia8           186            ${MCGENPATH}/pythia8   )
 
-LCG_external_package(sacrifice         0.9.9          ${MCGENPATH}/sacrifice pythia8=185)
+LCG_external_package(sacrifice         0.9.9          ${MCGENPATH}/sacrifice pythia8=186)
 
 LCG_external_package(thepeg            1.8.1          ${MCGENPATH}/thepeg       )
 LCG_external_package(thepeg            1.9.0a          ${MCGENPATH}/thepeg       )
@@ -198,7 +198,7 @@ LCG_external_package(photos++          3.56           ${MCGENPATH}/photos++     
 LCG_external_package(photos            215.4          ${MCGENPATH}/photos       ) 
 
 LCG_external_package(evtgen            1.2.0          ${MCGENPATH}/evtgen         tag=R01-02-00 pythia8=175 tauola++=1.1.1a)
-LCG_external_package(evtgen            1.3.0          ${MCGENPATH}/evtgen         tag=R01-03-00 pythia8=185 tauola++=1.1.4)
+LCG_external_package(evtgen            1.3.0          ${MCGENPATH}/evtgen         tag=R01-03-00 pythia8=186 tauola++=1.1.4)
 
 
 LCG_external_package(rivet             1.9.0          ${MCGENPATH}/rivet        yoda=1.1.0      )
