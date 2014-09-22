@@ -199,6 +199,7 @@ LCGPackage_Add(
              -DBOOST_MINVERSION=1.55
              -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
   BUILD_COMMAND ${MAKE}
+  DEPENDS Boost
 )
 
 foreach(v ${hepmc3_native_version})
