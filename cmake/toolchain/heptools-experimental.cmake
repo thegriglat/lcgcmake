@@ -240,10 +240,6 @@ LCG_external_package(pyquen            1.5.1          ${MCGENPATH}/pyquen author
 LCG_external_package(baurmc            1.0            ${MCGENPATH}/baurmc       )
 LCG_external_package(professor         1.3.3          ${MCGENPATH}/professor       )
 
-if(${LCG_COMP}${LCG_COMPVERS} STRGREATER gcc45)
-  LCG_external_package(madgraph5v2       2.0.0.beta3    ${MCGENPATH}/madgraph5       )
-endif()
-
 LCG_external_package(jhu               3.1.8          ${MCGENPATH}/jhu       )
 
 #LCG_external_package(vincia            HEAD          ${MCGENPATH}/vincia       )
