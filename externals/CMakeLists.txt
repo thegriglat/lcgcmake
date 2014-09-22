@@ -196,7 +196,6 @@ LCGPackage_Add(
   ${hepmc3_source_command}
   CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
              -DBOOST_ROOT=${Boost_home}
-             -DBOOST_MINVERSION=1.51
              -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
   BUILD_COMMAND ${MAKE}
   DEPENDS Boost
