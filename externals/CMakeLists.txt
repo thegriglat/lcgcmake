@@ -185,6 +185,30 @@ LCG_add_test(HepMC-${v}.test
 )
 endforeach()
 
+
+if( ${hepmc3_native_version} VERSION_EQUAL githead)
+  set(hepmc3_source_command GIT_REPOSITORY https://:@git.cern.ch/kerberos/hepmc3)
+else()
+  set(hepmc3_source_command URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/MCGeneratorsTarFiles/hepmc3-${hepmc3_native_version}.tgz)
+endif()
+
+#---HepMC3-------------------------------------------------------------------------------------------- 
+LCGPackage_Add(
+  hepmc3
+#  IF ${HepMC_native_version} VERSION_EQUAL githead THEN
+#    GIT_REPOSITORY https://:@git.cern.ch/kerberos/hepmc3
+#  ELSE
+#    URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/MCGeneratorsTarFiles/hepmc3-${hepmc3_native_version}.tgz
+#  ENDIF
+  ${hepmc3_source_command}
+  CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
+             -DBOOST_ROOT=${Boost_home}
+             -DBOOST_MINVERSION=1.55
+             -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+  BUILD_COMMAND ${MAKE}
+)
+
+
 #---HepPDT-------------------------------------------------------------------------------------------
 LCGPackage_Add(
   HepPDT
