@@ -184,12 +184,10 @@ foreach(v ${HepMC_native_version})
 endforeach()
 
 
-if( ${hepmc3_native_version} )
-if( ${hepmc3_native_version} VERSION_EQUAL githead)
+if( hepmc3_native_version MATCHES "githead")
   set(hepmc3_source_command GIT_REPOSITORY https://:@git.cern.ch/kerberos/hepmc3)
 else()
   set(hepmc3_source_command URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/MCGeneratorsTarFiles/hepmc3-${hepmc3_native_version}.tgz)
-endif()
 endif()
 
 #---HepMC3-------------------------------------------------------------------------------------------- 
@@ -203,6 +201,7 @@ LCGPackage_Add(
   BUILD_COMMAND ${MAKE}
   DEPENDS Boost
 )
+
 
 foreach(v ${hepmc3_native_version})
   LCG_add_test(hepmc3-${v}.native-basic_tree
