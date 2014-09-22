@@ -54,6 +54,7 @@ LCG_external_package(genshi            0.6                                      
 LCG_external_package(graphviz          2.28.0                                   )
 LCG_external_package(GSL               1.10                                     )
 LCG_external_package(HepMC             2.06.08                                  )
+LCG_external_package(hepmc3            githead                                  )
 LCG_external_package(HepPDT            2.06.01                                  )
 LCG_external_package(ipython           0.12.1                                   )
 LCG_external_package(json              2.5.2                                    )
@@ -244,11 +245,7 @@ set(MCGENPATH  MCGenerators)
 #    LCG_external_package(vincia            HEAD          ${MCGENPATH}/vincia       ) 
     LCG_external_package(fastnlo_toolkit   2.3.1pre-1871  ${MCGENPATH}/fastnlo_toolkit )
 
-if(${LCG_COMP}${LCG_COMPVERS} STRGREATER gcc45)
-  LCG_external_package(madgraph5v2       2.0.0.beta3    ${MCGENPATH}/madgraph5       )
-endif()
-
-LCG_external_package(jhu               3.1.8          ${MCGENPATH}/jhu       )
+    LCG_external_package(jhu               3.1.8          ${MCGENPATH}/jhu       )
 
 # Prepare the search paths according to the versions above
 LCG_prepare_paths()
