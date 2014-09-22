@@ -178,11 +178,9 @@ LCGPackage_Add(
 )
 
 foreach(v ${HepMC_native_version})
-LCG_add_test(HepMC-${v}.test
-
-  TEST_COMMAND ${CMAKE_COMMAND} -E chdir ${PROJECT_BINARY_DIR}/externals/HepMC-${HepMC_native_version}/src/HepMC-${HepMC_native_version}-build/test ctest
-
-)
+  LCG_add_test(HepMC-${v}.test
+    TEST_COMMAND ${CMAKE_COMMAND} -E chdir ${PROJECT_BINARY_DIR}/externals/HepMC-${v}/src/HepMC-${v}-build/test ctest
+  )
 endforeach()
 
 
@@ -195,11 +193,6 @@ endif()
 #---HepMC3-------------------------------------------------------------------------------------------- 
 LCGPackage_Add(
   hepmc3
-#  IF ${HepMC_native_version} VERSION_EQUAL githead THEN
-#    GIT_REPOSITORY https://:@git.cern.ch/kerberos/hepmc3
-#  ELSE
-#    URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/MCGeneratorsTarFiles/hepmc3-${hepmc3_native_version}.tgz
-#  ENDIF
   ${hepmc3_source_command}
   CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
              -DBOOST_ROOT=${Boost_home}
@@ -207,6 +200,16 @@ LCGPackage_Add(
              -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
   BUILD_COMMAND ${MAKE}
 )
+
+foreach(v ${hepmc3_native_version})
+  LCG_add_test(hepmc3-${v}.native-basic_tree
+    TEST_COMMAND ${PROJECT_BINARY_DIR}/externals/hepmc3-${v}/src/hepmc3-${v}-build/tests/basic_tree
+  )
+
+  LCG_add_test(hepmc3-${v}.native-hepevt_wrapper_test
+    TEST_COMMAND ${PROJECT_BINARY_DIR}/externals/hepmc3-${v}/src/hepmc3-${v}-build/tests/hepevt_wrapper_test
+  )
+endforeach()
 
 
 #---HepPDT-------------------------------------------------------------------------------------------
