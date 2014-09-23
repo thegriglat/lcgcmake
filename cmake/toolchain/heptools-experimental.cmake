@@ -28,6 +28,7 @@ LCG_external_package(Geant4 9.6.p03 CLHEP=2.1.4.1)
 #LCG_compiler(gccmax gcc 4.7.2)
 
 # Externals
+LCG_external_package(hepmc3            githead                                  )
 LCG_external_package(4suite            1.0.2p1                                  )
 LCG_external_package(AIDA              3.2.1                                    )
 LCG_external_package(blas              20110419                                 )
