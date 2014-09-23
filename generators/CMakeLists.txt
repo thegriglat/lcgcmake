@@ -40,7 +40,7 @@ foreach(v ${lhapdf_native_version})
 endforeach()
 
 foreach(v ${pythia8_native_version})
-  set(p8wv ${v})
+  set(pythia8_work_version ${v})
 endforeach()
 
 list(GET pythia6_native_version -1 pythia6_test_version_full)
@@ -1544,11 +1544,11 @@ LCG_add_test(madgraph5amc_zjetsLO_hadronize
       COMMAND ${CMAKE_COMMAND} -E remove -f ${CMAKE_BINARY_DIR}/generators/mgwork/hadronization/Zg_pythia8_mg.lhe
       COMMAND ${CMAKE_COMMAND} -E chdir ${CMAKE_BINARY_DIR}/generators/mgwork/hadronization gunzip Zg_pythia8_mg.lhe.gz
       COMMAND $ENV{SHELL} -c "cat ${CMAKE_BINARY_DIR}/generators/mgwork/hadronization/Zg_pythia8_mg.lhe | sed '/LesHouchesEvents/s/3.0/1.0/' > ${CMAKE_BINARY_DIR}/generators/mgwork/hadronization/Zg_pythia8.lhe"
-  TEST_COMMAND ${CMAKE_COMMAND} -E chdir ${CMAKE_BINARY_DIR}/generators/mgwork/hadronization ${CMAKE_BINARY_DIR}/generators/pythia8/tests/${p8wv}/pythia8_genser_test2
+  TEST_COMMAND ${CMAKE_COMMAND} -E chdir ${CMAKE_BINARY_DIR}/generators/mgwork/hadronization ${CMAKE_BINARY_DIR}/generators/pythia8/tests/${pythia8_work_version}/pythia8_genser_test2
   ENVIRONMENT
-    ${library_path}=${pythia8-${p8wv}_home}/lib:${HepMC_home}/lib:$ENV{${library_path}}
-    PYTHIA8DATA=${pythia8-${p8wv}_home}/xmldoc
-  DEPENDS pythia8-${p8wv}.build madgraph5amc_zjetsLO
+    ${library_path}=${pythia8-${pythia8_work_version}_home}/lib:${HepMC_home}/lib:$ENV{${library_path}}
+    PYTHIA8DATA=${pythia8-${pythia8_work_version}_home}/xmldoc
+  DEPENDS pythia8-${pythia8_work_version}.build madgraph5amc_zjetsLO
 )
 
 #substitute {madgraph5amc_native_version} below by {v} when there will be several versions
