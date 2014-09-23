@@ -36,6 +36,9 @@ foreach(v ${lhapdf_native_version})
   if(v VERSION_LESS 6.0.0)
     set(lhapdf5_home ${CMAKE_INSTALL_PREFIX}/${lhapdf_directory_name}/${v}/${LCG_system})
     set(lhapdf5vers ${v})
+  else()
+    set(lhapdf6_home ${CMAKE_INSTALL_PREFIX}/${lhapdf_directory_name}/${v}/${LCG_system})
+    set(lhapdf6vers ${v})
   endif()
 endforeach()
 
@@ -236,8 +239,6 @@ foreach(v ${lhapdf_native_version})
 endforeach()
 
 
-
-
 #---pythia8------------------------------------------------------------------------------------------
 LCGPackage_Add(
   pythia8
@@ -328,6 +329,22 @@ LCG_add_test(pythia8-${v}.compare
   DEPENDS pythia8-${v}.genser-test2 pythia8-${v}.genser-test3 pythia8-${v}.genser-test4)
 
 endforeach()
+
+
+#---pythia82------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  pythia82
+  IF <pythia82_<NATIVE_VERSION>_author> VERSION_EQUAL "HEAD" THEN
+    SVN_REPOSITORY https://pythia8.hepforge.org/svn/pythia82/trunk
+  ELSE
+    URL ${gen_url}/pythia8<pythia82_<NATIVE_VERSION>_author>.tgz
+  ENDIF
+  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --with-hepmc2=${HepMC_home} --with-lhapdf6=${lhapdf6_home} --with-boost=${Boost_home} --enable-shared
+  BUILD_COMMAND ${MAKE}
+  BUILD_IN_SOURCE 1
+  DEPENDS HepMC lhapdf-${lhapdf6vers} Boost
+)
+
 
 #---vincia------------------------------------------------------------------------------------------
 
@@ -1042,7 +1059,6 @@ LCGPackage_Add(
 )
 
 
-
 #---Sherpa------------------------------------------------------------------------------------------
 LCGPackage_Add(
   sherpa
@@ -1055,6 +1071,7 @@ LCGPackage_Add(
      --enable-openloops=.
      --enable-lhole
      --with-sqlite3=${sqlite_home}  "CFLAGS=-O2 -g0" "CXXFLAGS=-O2 -g0" "FFLAGS=-O2 -g0"
+#Boost includes below are necessary only for sherpa 1 series
   BUILD_COMMAND ${MAKE} LIBRARY_PATH=${lhapdf_home}/lib CPPFLAGS=-I${Boost_home_include}
   INSTALL_COMMAND make install LIBRARY_PATH=${lhapdf_home}/lib
   BUILD_IN_SOURCE 1
