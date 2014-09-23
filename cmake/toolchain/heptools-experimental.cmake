@@ -119,6 +119,8 @@ if(NOT ${LCG_OS} STREQUAL mac)
   LCG_external_package(xrootd_python     0.1.3                                    )
 endif()
 
+LCG_external_package(mpich2            1.5                                      )
+
 #---EMI-2 grid externals and other binary packages---------------------
 if(NOT ${LCG_OS} STREQUAL mac)
   LCG_external_package(libunwind       5c2cade                                  )
@@ -205,6 +207,11 @@ LCG_external_package(rivet             2.1.2          ${MCGENPATH}/rivet        
 
 LCG_external_package(sherpa            1.4.5.2        ${MCGENPATH}/sherpa         author=1.4.5 hepevt=10000 )
 LCG_external_package(sherpa            2.1.1          ${MCGENPATH}/sherpa         author=2.1.1 hepevt=10000)
+
+LCG_external_package(qd                2.3.13          ${MCGENPATH}/qd         )
+LCG_external_package(blackhat           0.9.9          ${MCGENPATH}/blackhat         )
+
+LCG_external_package(sherpa-mpich2     2.1.1          ${MCGENPATH}/sherpa-mpich2  author=2.1.1 hepevt=10000)
 
 LCG_external_package(hepmcanalysis     3.4.14         ${MCGENPATH}/hepmcanalysis  author=00-03-04-14        )
 LCG_external_package(mctester          1.25.0         ${MCGENPATH}/mctester     )
