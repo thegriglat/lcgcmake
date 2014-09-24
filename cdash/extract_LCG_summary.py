@@ -45,6 +45,8 @@ def create_package_from_file(directory, filename, packages):
    #ignore CLHEP 2.X
    if name == "CLHEP" and version.lstrip().startswith("2"):
       pass
+   if name == "hepmc3":
+      pass
    else:
      packages[name] = PackageInfo(name,destination,hash,version,directory,dependencies)
 
