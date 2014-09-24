@@ -331,6 +331,23 @@ LCG_add_test(pythia8-${v}.compare
 endforeach()
 
 
+LCG_add_test(hepmc3-pythia8-test1
+  BINARY_DIR hepmc3/tests
+  SOURCE_DIR hepmc3/tests
+  BUILD all
+  BUILD_OPTIONS
+   -DCMAKE_MODULE_PATH=${CMAKE_SOURCE_DIR}/cmake/modules
+   -DCMAKE_MODULE_PATH2=${cmaketools_home}/modules
+   -DPYTHIA8_ROOT_DIR=${pythia8_home}
+   -DHEPMC_ROOT_DIR=${hepmc3_home}
+   -DBOOST_ROOT=${Boost_home}
+  PRE_COMMAND ${CMAKE_COMMAND} -E copy ${hepmc3_home}/../share/sources/examples/pythia8_ee_to_Z_to_tautau.conf .
+  TEST_COMMAND ${CMAKE_COMMAND} -E chdir ${CMAKE_BINARY_DIR}/generators/hepmc3/tests ./hepmc3_pythia8_test1
+  ENVIRONMENT
+    PYTHIA8DATA=${pythia8_home}/xmldoc
+)
+
+
 #---pythia82------------------------------------------------------------------------------------------
 LCGPackage_Add(
   pythia82
