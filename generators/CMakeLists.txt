@@ -330,8 +330,9 @@ LCG_add_test(pythia8-${v}.compare
 
 endforeach()
 
+if (hepmc3_native_version)
 
-LCG_add_test(hepmc3-pythia8-test1
+ LCG_add_test(hepmc3-pythia8-test1
   BINARY_DIR hepmc3/tests
   SOURCE_DIR hepmc3/tests
   BUILD all
@@ -345,8 +346,9 @@ LCG_add_test(hepmc3-pythia8-test1
   TEST_COMMAND ${CMAKE_COMMAND} -E chdir ${CMAKE_BINARY_DIR}/generators/hepmc3/tests ./hepmc3_pythia8_test1
   ENVIRONMENT
     PYTHIA8DATA=${pythia8_home}/xmldoc
-)
+ )
 
+endif()
 
 #---pythia82------------------------------------------------------------------------------------------
 LCGPackage_Add(
