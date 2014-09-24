@@ -67,6 +67,11 @@ def createInstallArea(basepath,platform,lcgversion):
     if not os.path.exists(key):
       os.symlink(destination,key)
       print "Creating %s" %(destination)
+      # special hack for ATLAS and Boost
+      if "libboost" in key:
+        newname = key.replace("-d-","-")
+        os.symlink(destination,newname)
+        print "Creating %s" %(destination)
   os.chdir(os.path.join(installarea,"bin"))
   for key, value in bins.iteritems():
     destination = os.path.relpath(value)
