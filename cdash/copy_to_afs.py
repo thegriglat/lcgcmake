@@ -68,7 +68,7 @@ def createInstallArea(basepath,platform,lcgversion):
       os.symlink(destination,key)
       print "Creating %s" %(destination)
       # special hack for ATLAS and Boost
-      if "libboost" in key:
+      if "libboost" in key and "-d-" in key:
         newname = key.replace("-d-","-")
         os.symlink(destination,newname)
         print "Creating %s" %(destination)
