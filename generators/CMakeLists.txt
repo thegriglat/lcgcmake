@@ -24,14 +24,12 @@ else()
 endif()
 string(REPLACE "opt" "dbg" LCG_platform_dbg ${LCG_platform})
 
-#---LCGPackage_set_home(rivet2)-----------------------------------------------------------------------
 foreach(v ${rivet_native_version})
   if(v VERSION_EQUAL 2.0.0 OR v VERSION_GREATER 2.0.0)
     set(rivet2_home ${CMAKE_INSTALL_PREFIX}/${rivet_directory_name}/${v}/${LCG_system})
   endif()
 endforeach()
 
-#---LCGPackage_set_home(lhapdf5)-----------------------------------------------------------------------
 foreach(v ${lhapdf_native_version})
   if(v VERSION_LESS 6.0.0)
     set(lhapdf5_home ${CMAKE_INSTALL_PREFIX}/${lhapdf_directory_name}/${v}/${LCG_system})
@@ -120,8 +118,49 @@ LCG_add_test(lhapdf6sets.download
                -P ${CMAKE_CURRENT_SOURCE_DIR}/lhapdf6sets/pdfsets.cmake
 )
 
-LCGPackage_set_home(yamlcpp)
-LCGPackage_set_home(cython)
+
+#---cython------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  cython
+  URL ${gen_url}/Cython-${cython_native_version}.tar.gz
+  CONFIGURE_COMMAND <VOID>
+  BUILD_COMMAND ${Python_home}/bin/python setup.py build -e "${env_cmd} python"
+  INSTALL_COMMAND ${Python_home}/bin/python setup.py install --prefix <INSTALL_DIR>
+  BUILD_IN_SOURCE 1
+  DEPENDS Python
+)
+set(cython_pythonpath ${cython_home}/lib/python${Python_config_version_twodigit}/site-packages)
+
+#---yaml-cpp----------------------------------------------------------------------------------------
+LCGPackage_Add(
+  yamlcpp
+  URL ${gen_url}/yaml-cpp-${yamlcpp_native_version}.tar.gz
+  CMAKE_ARGS -DBOOST_ROOT=${Boost_home} -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR> -DBUILD_SHARED_LIBS=ON
+  BUILD_IN_SOURCE 1
+  INSTALL_COMMAND make install  
+  COMMAND ${CMAKE_COMMAND} -E create_symlink yamlcpp <INSTALL_DIR>/../../../yaml-cpp
+
+)
+
+
+#---Yoda-------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  yoda
+  URL ${gen_url}/YODA-<NATIVE_VERSION>.tar.gz
+  CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix=<INSTALL_DIR>
+      --with-boost=${Boost_home}
+  IF EXISTS "${ROOT_home}/" THEN
+      --enable-root
+      ROOTCONFIG=${ROOT_home}/bin/root-config
+  ENDIF
+      PYTHON=${Python_home}/bin/python ${library_path}=${Python_home}/lib:$ENV{${library_path}}
+      PYTHONPATH=${cython_home}/lib/python${Python_config_version_twodigit}/site-packages:$ENV{PYTHONPATH}
+  BUILD_COMMAND ${MAKE} all ${library_path}=${Python_home}/lib:$ENV{${library_path}} PYTHONPATH=:${cython_pythonpath}:$ENV{PYTHONPATH} LIBRARY_PATH=${Python_home}/lib
+  INSTALL_COMMAND make install ${library_path}=${Python_home}/lib:$ENV{${library_path}} PYTHONPATH=:${cython_pythonpath}:$ENV{PYTHONPATH} LIBRARY_PATH=${Python_home}/lib
+  BUILD_IN_SOURCE 1
+  DEPENDS Python Boost cython
+)
+
 
 #---lhapdf------------------------------------------------------------------------------------------
 LCGPackage_Add(
@@ -187,8 +226,6 @@ foreach(v ${lhapdf_native_version})
 endforeach()
 
 #---lhapdf6 tests
-
-LCGPackage_set_home(pythia8)
 
 foreach(v ${lhapdf_native_version})
   if(v VERSION_GREATER 5.9.9)
@@ -866,47 +903,6 @@ foreach(version ${evtgen_native_version})
   )
 endforeach()
 
-#---cython------------------------------------------------------------------------------------------
-LCGPackage_Add(
-  cython
-  URL ${gen_url}/Cython-${cython_native_version}.tar.gz
-  CONFIGURE_COMMAND <VOID>
-  BUILD_COMMAND ${Python_home}/bin/python setup.py build -e "${env_cmd} python"
-  INSTALL_COMMAND ${Python_home}/bin/python setup.py install --prefix <INSTALL_DIR>
-  BUILD_IN_SOURCE 1
-  DEPENDS Python
-)
-set(cython_pythonpath ${cython_home}/lib/python${Python_config_version_twodigit}/site-packages)
-
-#---yaml-cpp----------------------------------------------------------------------------------------
-LCGPackage_Add(
-  yamlcpp
-  URL ${gen_url}/yaml-cpp-${yamlcpp_native_version}.tar.gz
-  CMAKE_ARGS -DBOOST_ROOT=${Boost_home} -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR> -DBUILD_SHARED_LIBS=ON
-  BUILD_IN_SOURCE 1
-  INSTALL_COMMAND make install	
-  COMMAND ${CMAKE_COMMAND} -E create_symlink yamlcpp <INSTALL_DIR>/../../../yaml-cpp
-
-)
-
-
-#---Yoda-------------------------------------------------------------------------------------------
-LCGPackage_Add(
-  yoda
-  URL ${gen_url}/YODA-<NATIVE_VERSION>.tar.gz
-  CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix=<INSTALL_DIR>
-      --with-boost=${Boost_home}
-  IF EXISTS "${ROOT_home}/" THEN
-      --enable-root
-      ROOTCONFIG=${ROOT_home}/bin/root-config
-  ENDIF
-      PYTHON=${Python_home}/bin/python ${library_path}=${Python_home}/lib:$ENV{${library_path}}
-      PYTHONPATH=${cython_home}/lib/python${Python_config_version_twodigit}/site-packages:$ENV{PYTHONPATH}
-  BUILD_COMMAND ${MAKE} all ${library_path}=${Python_home}/lib:$ENV{${library_path}} PYTHONPATH=:${cython_pythonpath}:$ENV{PYTHONPATH} LIBRARY_PATH=${Python_home}/lib
-  INSTALL_COMMAND make install ${library_path}=${Python_home}/lib:$ENV{${library_path}} PYTHONPATH=:${cython_pythonpath}:$ENV{PYTHONPATH} LIBRARY_PATH=${Python_home}/lib
-  BUILD_IN_SOURCE 1
-  DEPENDS Python Boost cython
-)
 
 set (yoda_convert_scripts "aida" "flat")
 if (EXISTS "${ROOT_home}/")
