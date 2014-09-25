@@ -128,14 +128,8 @@ LCGPackage_Add(
   lhapdf
   IF <VERSION> VERSION_LESS 6.0.0 THEN
     URL ${gen_url}/lhapdf-<NATIVE_VERSION>.tar.gz
-  ELSE
-    URL ${gen_url}/LHAPDF-<NATIVE_VERSION>.tar.gz
-  ENDIF
-  IF <VERSION> VERSION_LESS 6.0.0 THEN
     PATCH_COMMAND patch -p0 < ${CMAKE_CURRENT_SOURCE_DIR}/patches/lhapdf-getdata.patch
-  ENDIF
-  IF <VERSION> VERSION_LESS 6.0.0 THEN
-    CONFIGURE_COMMAND ./configure
+        CONFIGURE_COMMAND ./configure
       --prefix=<INSTALL_DIR>
       --datadir=<lhapdfsets_home>/../share
       --enable-low-memory
@@ -151,9 +145,10 @@ LCGPackage_Add(
           COMMAND ${CMAKE_COMMAND} -E remove -f <INSTALL_DIR>/../share/PDFsets.index
           COMMAND ${CMAKE_COMMAND} -E create_symlink lhapdf/PDFsets.index <INSTALL_DIR>/../share/PDFsets.index
     BUILD_IN_SOURCE 1
-    DEPENDS lhapdfsets
-  ELSE
-    CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --with-boost=${Boost_home} --with-yaml-cpp=${yamlcpp_home}
+    DEPENDS lhapdfsets 
+ ELSE
+    URL ${gen_url}/LHAPDF-<NATIVE_VERSION>.tar.gz
+      CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --with-boost=${Boost_home} --with-yaml-cpp=${yamlcpp_home}
       PYTHON=${Python_home}/bin/python
       CYTHON=${cython_home}/bin/cython
       PYTHONPATH=${cython_pythonpath}  CFLAGS=-O2 CXXFLAGS=-O2 FCFLAGS=-O2 LDFLAGS=-O2
