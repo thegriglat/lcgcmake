@@ -166,12 +166,13 @@ LCG_external_package(cmaketools        1.1                                      
 
 set(MCGENPATH  MCGenerators_lcgcmt${heptools_version})
 
-#LCG_external_package(powheg-box         r2092         ${MCGENPATH}/powheg-box   )
+LCG_external_package(powheg-box         r2092         ${MCGENPATH}/powheg-box   )
 
 LCG_external_package(lhapdf            5.9.1          ${MCGENPATH}/lhapdf       )
-LCG_external_package(lhapdf            6.1.4          ${MCGENPATH}/lhapdf       )
 
 LCG_external_package(lhapdfsets        5.9.1          lhapdfsets   )
+
+LCG_external_package(lhapdf           6.1.4          ${MCGENPATH}/lhapdf       )
 
 LCG_external_package(pythia8           175.lhetau     ${MCGENPATH}/pythia8      author=175     )
 LCG_external_package(pythia8           175            ${MCGENPATH}/pythia8      author=175     )
@@ -197,9 +198,9 @@ LCG_external_package(herwig++          2.7.1          ${MCGENPATH}/herwig++     
 LCG_external_package(thepeg            1.9.0a          ${MCGENPATH}/thepeg       )
 LCG_external_package(herwig++          2.7.0a          ${MCGENPATH}/herwig++     thepeg=1.9.0a)
 
-#LCG_external_package(tauola++          1.1.1a          ${MCGENPATH}/tauola++     )
-#LCG_external_package(tauola++          1.1.5          ${MCGENPATH}/tauola++     )
-#LCG_external_package(tauola++          1.1.4          ${MCGENPATH}/tauola++     ) 
+LCG_external_package(tauola++          1.1.1a          ${MCGENPATH}/tauola++     )
+LCG_external_package(tauola++          1.1.5          ${MCGENPATH}/tauola++     )
+LCG_external_package(tauola++          1.1.4          ${MCGENPATH}/tauola++     ) 
 
 LCG_external_package(pythia6           426.2          ${MCGENPATH}/pythia6        author=6.4.26 hepevt=10000  )
 LCG_external_package(pythia6           427.2          ${MCGENPATH}/pythia6        author=6.4.27 hepevt=10000  )
@@ -214,13 +215,17 @@ LCG_external_package(photos++          3.54a           ${MCGENPATH}/photos++    
 LCG_external_package(photos++          3.54           ${MCGENPATH}/photos++      author=3.54 )
 LCG_external_package(photos            215.4          ${MCGENPATH}/photos       ) 
 
-#LCG_external_package(evtgen            1.2.0          ${MCGENPATH}/evtgen         tag=R01-02-00 pythia8=175 tauola++=1.1.1a)
-#LCG_external_package(evtgen            1.3.0          ${MCGENPATH}/evtgen         tag=R01-03-00 pythia8=180 tauola++=1.1.4)
+LCG_external_package(evtgen            1.2.0          ${MCGENPATH}/evtgen         tag=R01-02-00 pythia8=175 tauola++=1.1.1a)
+LCG_external_package(evtgen            1.3.0          ${MCGENPATH}/evtgen         tag=R01-03-00 pythia8=180 tauola++=1.1.4)
 
+if(NOT ${LCG_OS}${LCG_OSVERS} STREQUAL mac109) # rivet 2 does not work yet with mac109
+  LCG_external_package(rivet             2.0.0         ${MCGENPATH}/rivet	yoda=1.0.4      )
+endif()
 LCG_external_package(rivet             2.1.0          ${MCGENPATH}/rivet        yoda=1.0.5      )
 LCG_external_package(rivet             2.1.1          ${MCGENPATH}/rivet        yoda=1.0.6      )
 LCG_external_package(rivet             2.1.2          ${MCGENPATH}/rivet        yoda=1.1.0      )
 
+LCG_external_package(rivet             1.8.3          ${MCGENPATH}/rivet yoda=1.0.4       )
 LCG_external_package(rivet             1.9.0          ${MCGENPATH}/rivet yoda=1.0.4      )
 
 LCG_external_package(qd           2.3.13          ${MCGENPATH}/qd         )

@@ -549,12 +549,12 @@ endforeach()
 LCGPackage_Add(
   tauola++
   URL ${gen_url}/TAUOLA.<NATIVE_VERSION>-LHC.tar.gz
-  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --with-pic --with-hepmc=${HepMC_home} --with-tau-spinner --with-lhapdf=${lhapdf5_home} CFLAGS=-O2 CXXFLAGS=-O2 FFLAGS=-O2  F77=${CMAKE_Fortran_COMPILER}
-  INSTALL_COMMAND  make install
+  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --with-pic --with-hepmc=${HepMC_home} --with-tau-spinner --with-lhapdf=${lhapdf_home} CFLAGS=-O2 CXXFLAGS=-O2 FFLAGS=-O2  F77=${CMAKE_Fortran_COMPILER}
+  BUILD_COMMAND  make install CPATH=${Boost_home_include} 
           COMMAND  ${CMAKE_COMMAND} -E create_symlink tauola++ <INSTALL_DIR>/../../../tauolapp
 #          COMMAND ${CMAKE_COMMAND} -DINSTALL_DIR=<INSTALL_DIR> -P ${CMAKE_SOURCE_DIR}/cmake/scripts/StripLib.cmake
   BUILD_IN_SOURCE 1
-  DEPENDS HepMC lhapdf-${lhapdf5vers}
+  DEPENDS HepMC lhapdf
 )
 
 foreach(v ${tauola++_native_version})
@@ -1082,7 +1082,7 @@ LCGPackage_Add(
      --enable-lhole
      --with-sqlite3=${sqlite_home}  "CFLAGS=-O2 -g0" "CXXFLAGS=-O2 -g0" "FFLAGS=-O2 -g0"
 #Boost includes below are necessary only for sherpa 1 series
-  BUILD_COMMAND ${MAKE} LIBRARY_PATH=${lhapdf_home}/lib CPPFLAGS=-I${Boost_home_include}
+  BUILD_COMMAND ${MAKE} LIBRARY_PATH=${lhapdf_home}/lib CPPFLAGS=-I${Boost_home_include} CPATH=${Boost_home_include} 
   INSTALL_COMMAND make install LIBRARY_PATH=${lhapdf_home}/lib
   BUILD_IN_SOURCE 1
   DEPENDS lhapdf HepMC sqlite
@@ -1456,10 +1456,10 @@ if(NOT APPLE)    #  (installation fails on MacOSX)
   CONFIGURE_COMMAND ./configure  
     --prefix=<INSTALL_DIR>
     --fastjet=${fastjet_home}
-    --lhapdf=${lhapdf5_home}
-  BUILD_COMMAND ${MAKE}
+    --lhapdf=${lhapdf_home}
+  BUILD_COMMAND ${MAKE} CPATH=${Boost_home_include} 
   BUILD_IN_SOURCE 1
-  DEPENDS fastjet lhapdf-${lhapdf5vers}
+  DEPENDS fastjet lhapdf
  )
 
 foreach(v ${powheg-box_native_version})
@@ -1632,14 +1632,14 @@ LCGPackage_Add(
       --prefix=<INSTALL_DIR>
   #   LHAPDF5 is used, LHAPDF6 not yet possible because of no possibility to specify Boost includes
   #   In addition, the explicit LHAPDF5 PDF set file name is used in the test below
-      --with-lhapdf=${lhapdf5_home}
+      --with-lhapdf=${lhapdf_home}
       --with-fastjet=${fastjet_home}
       --with-yoda=${yoda_home}
   #    --enable-pyext   # need to specify swig package if this option is switched on!
-  BUILD_COMMAND ${MAKE}
+  BUILD_COMMAND ${MAKE} CPATH=${Boost_home_include} 
   INSTALL_COMMAND ${MAKE} install
   BUILD_IN_SOURCE 1
-  DEPENDS lhapdf-${lhapdf5vers} yoda fastjet
+  DEPENDS lhapdf yoda fastjet
 )
 
 # List of .tab files is available on http://fastnlo.hepforge.org/scenarios/tables-lhc.html
