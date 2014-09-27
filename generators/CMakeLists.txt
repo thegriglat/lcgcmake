@@ -200,6 +200,8 @@ LCGPackage_Add(
   ENDIF
 )
 
+LCGPackage_set_home(pythia8)
+
 #---lhapdf5 tests
 
 foreach(v ${lhapdf_native_version})
