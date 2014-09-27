@@ -174,7 +174,7 @@ LCG_external_package(pythia8           175            ${MCGENPATH}/pythia8   )
 LCG_external_package(pythia8           HEAD            ${MCGENPATH}/pythia8 )
 LCG_external_package(pythia8           186            ${MCGENPATH}/pythia8   )
 
-#LCG_external_package(pythia82          HEAD            ${MCGENPATH}/pythia82 )
+LCG_external_package(pythia82          HEAD            ${MCGENPATH}/pythia82 )
 
 LCG_external_package(sacrifice         0.9.9          ${MCGENPATH}/sacrifice pythia8=186)
 
