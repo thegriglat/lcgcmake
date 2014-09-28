@@ -17,7 +17,7 @@ LCG_AA_project(CORAL CORAL_3_0-preview)
 LCG_AA_project(RELAX RELAX-root6)
 LCG_AA_project(ROOT  v6-02-00-patches)
 LCG_AA_project(LCGCMT LCGCMT_${heptools_version})
-LCG_AA_project(HepMC githead)
+LCG_AA_project(HepMC 2.06.08)
 LCG_external_package(Geant4 9.6.p03 CLHEP=2.1.4.1)
 
 # Compilers
