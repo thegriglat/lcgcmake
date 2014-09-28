@@ -31,13 +31,8 @@ foreach(v ${rivet_native_version})
 endforeach()
 
 foreach(v ${lhapdf_native_version})
-  if(v VERSION_LESS 6.0.0)
     set(lhapdf5_home ${CMAKE_INSTALL_PREFIX}/${lhapdf_directory_name}/${v}/${LCG_system})
-    set(lhapdf5vers ${v})
-  else()
-    set(lhapdf6_home ${CMAKE_INSTALL_PREFIX}/${lhapdf_directory_name}/${v}/${LCG_system})
-    set(lhapdf6vers ${v})
-  endif()
+    set(lhapdfvers ${v})
 endforeach()
 
 foreach(v ${pythia8_native_version})
@@ -394,10 +389,10 @@ LCGPackage_Add(
   ELSE
     URL ${gen_url}/pythia8<pythia82_<NATIVE_VERSION>_author>.tgz
   ENDIF
-  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --with-hepmc2=${HepMC_home} --with-lhapdf6=${lhapdf6_home} --with-boost=${Boost_home} --enable-shared
+  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --with-hepmc2=${HepMC_home} --with-lhapdf6=${lhapdf_home} --with-boost=${Boost_home} --enable-shared
   BUILD_COMMAND ${MAKE}
   BUILD_IN_SOURCE 1
-  DEPENDS HepMC lhapdf-${lhapdf6vers} Boost
+  DEPENDS HepMC lhapdf Boost
 )
 
 
@@ -1144,6 +1139,24 @@ LCG_add_test(sherpa-${v}.native-LHC_Z
     PATH=${sqlite_home}/bin:$ENV{PATH}
     PWD=.
 )
+
+LCG_add_test(sherpa-${v}.genser-LHC_Z_lhapdf
+  PRE_COMMAND ${CMAKE_COMMAND} -E remove_directory sherpa/genser-LHC_Z_lhapdf/${v}
+      COMMAND ${CMAKE_COMMAND} -E make_directory sherpa/genser-LHC_Z_lhapdf/${v}
+      COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/generators/sherpa/tests/LHC_Z_lhapdf.dat sherpa/genser-LHC_Z_lhapdf/LHC_Z_lhapdf.dat
+      IF ${lhapdfvers} VERSION_LESS 6.0 THEN
+        COMMAND $ENV{SHELL} -c "sed -i -e 's/CT10/CT10.LHgrid/g' sherpa/genser-LHC_Z_lhapdf/LHC_Z_lhapdf.dat"
+      ENDIF
+  TEST_COMMAND ${CMAKE_COMMAND} -E chdir sherpa/genser-LHC_Z_lhapdf/${v} ${sherpa-${v}_home}/bin/Sherpa -f ${CMAKE_BINARY_DIR}/generators/sherpa/genser-LHC_Z_lhapdf/LHC_Z_lhapdf.dat
+  ENVIRONMENT
+    ${library_path}=${sherpa-${v}_home}/lib/SHERPA-MC:${HepMC_home}/lib:${lhapdf_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:${sqlite_home}/lib:$ENV{${library_path}}
+    LHAPDF_DATA_PATH=${lhapdf_home}/share/LHAPDF:${CMAKE_INSTALL_PREFIX}/lhapdf6sets/current/share/LHAPDF
+    PATH=${sqlite_home}/bin:$ENV{PATH}
+    PWD=.
+    DEPENDS lhapdf6sets.download
+)
+
+
 
 LCG_add_test(sherpa-${v}.native-LHC_ZJets
   PRE_COMMAND ${CMAKE_COMMAND} -E remove_directory sherpa/native-LHC_ZJets/${v}
