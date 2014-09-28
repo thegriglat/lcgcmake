@@ -200,78 +200,7 @@ LCGPackage_Add(
   ENDIF
 )
 
-LCGPackage_set_home(pythia8)
-
-#---lhapdf5 tests
-
-foreach(v ${lhapdf_native_version})
-  if(v VERSION_LESS 6.0.0)
-    LCG_add_test(lhapdf-${v}.build
-      BINARY_DIR lhapdf/tests/${v}
-      SOURCE_DIR lhapdf/tests
-      BUILD all
-      BUILD_OPTIONS
-       -DCMAKE_MODULE_PATH=${cmaketools_home}/modules 
-       -DLHAPDF_ROOT_DIR=${lhapdf-${v}_home}
-    )
-
-    foreach(i native-CCTest1 native-CCTest3 native-CCTest4)
-      LCG_add_test(lhapdf-${v}.${i}
-        TEST_COMMAND lhapdf/tests/${v}/${i}
-        ENVIRONMENT
-          ${library_path}=${lhapdf-${v}_home}/lib:$ENV{${library_path}}
-          LHAPATH=${lhapdfsets_home}/../share/lhapdf/PDFsets
-        DEPENDS lhapdf-${v}.build
-      )
-    endforeach()
-  endif()
-endforeach()
-
-#---lhapdf6 tests
-
-foreach(v ${lhapdf_native_version})
-  if(v VERSION_GREATER 5.9.9)
-    LCG_add_test(lhapdf6-${v}.native-testpdf
-      TEST_COMMAND lhapdf6/tests/${v}/native-testpdf CT10 1
-      BINARY_DIR lhapdf6/tests/${v}
-      SOURCE_DIR lhapdf6/tests
-      BUILD native-testpdf
-      BUILD_OPTIONS
-       -DCMAKE_MODULE_PATH=${cmaketools_home}/modules
-       -DLHAPDF6_ROOT_DIR=${lhapdf-${v}_home}
-       -DBOOST_ROOT=${Boost_home}
-       -DBoost_INCLUDE_DIR=${Boost_home_include}
-       -DYAMLCPP_ROOT_DIR=${yamlcpp_home}
-      ENVIRONMENT
-        ${library_path}=${lhapdf-${v}_home}/lib:${Boost_home}/lib:${yamlcpp_home}/lib:$ENV{${library_path}}
-        LHAPDF_DATA_PATH=${lhapdf-${v}_home}/share/LHAPDF:${CMAKE_INSTALL_PREFIX}/lhapdf6sets/current/share/LHAPDF
-      DEPENDS lhapdf6sets.download
-    )
-
-    LCG_add_test(lhapdf6-${v}.genser-pythia8
-      TEST_COMMAND lhapdf6/tests/pyt8/${v}/lhapdf6_pyt8
-      BINARY_DIR lhapdf6/tests/pyt8/${v}
-      SOURCE_DIR lhapdf6/tests/pyt8
-      BUILD lhapdf6_pyt8
-      BUILD_OPTIONS
-       -DCMAKE_MODULE_PATH=${cmaketools_home}/modules
-       -DLHAPDF6_ROOT_DIR=${lhapdf-${v}_home}
-       -DBOOST_ROOT=${Boost_home}
-       -DBoost_INCLUDE_DIR=${Boost_home_include}
-       -DYAMLCPP_ROOT_DIR=${yamlcpp_home}
-       -DPYTHIA8_ROOT_DIR=${pythia8_home}
-      ENVIRONMENT
-        ${library_path}=${lhapdf-${v}_home}/lib:${pythia8_home}/lib:${Boost_home}/lib:${yamlcpp_home}/lib:$ENV{${library_path}}
-        LHAPDF_DATA_PATH=${lhapdf-${v}_home}/share/LHAPDF:${CMAKE_INSTALL_PREFIX}/lhapdf6sets/current/share/LHAPDF
-        PYTHIA8DATA=${pythia8_home}/xmldoc
-      POST_COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/chi.c .
-           COMMAND ${CMAKE_COMMAND} -E copy testi_lhapdf6.dat test_lhapdf6.dat
-           COMMAND ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/cmpr.sh lhapdf6 ${CMAKE_SOURCE_DIR}/generators/lhapdf6/tests/pyt8/reference.dat ${v} ${LCG_VERSION} ${LCG_platform}
-      DEPENDS lhapdf6sets.download
-    )
-  endif()
-endforeach()
-
+#---lhapdf5 and lhapdf6 moved after pythia8 tests
 
 #---pythia8------------------------------------------------------------------------------------------
 LCGPackage_Add(
@@ -363,6 +292,79 @@ LCG_add_test(pythia8-${v}.compare
   DEPENDS pythia8-${v}.genser-test2 pythia8-${v}.genser-test3 pythia8-${v}.genser-test4)
 
 endforeach()
+
+
+#---lhapdf5 tests
+
+foreach(v ${lhapdf_native_version})
+  if(v VERSION_LESS 6.0.0)
+    LCG_add_test(lhapdf-${v}.build
+      BINARY_DIR lhapdf/tests/${v}
+      SOURCE_DIR lhapdf/tests
+      BUILD all
+      BUILD_OPTIONS
+       -DCMAKE_MODULE_PATH=${cmaketools_home}/modules 
+       -DLHAPDF_ROOT_DIR=${lhapdf-${v}_home}
+    )
+
+    foreach(i native-CCTest1 native-CCTest3 native-CCTest4)
+      LCG_add_test(lhapdf-${v}.${i}
+        TEST_COMMAND lhapdf/tests/${v}/${i}
+        ENVIRONMENT
+          ${library_path}=${lhapdf-${v}_home}/lib:$ENV{${library_path}}
+          LHAPATH=${lhapdfsets_home}/../share/lhapdf/PDFsets
+        DEPENDS lhapdf-${v}.build
+      )
+    endforeach()
+  endif()
+endforeach()
+
+#---lhapdf6 tests
+
+foreach(v ${lhapdf_native_version})
+  if(v VERSION_GREATER 5.9.9)
+    LCG_add_test(lhapdf6-${v}.native-testpdf
+      TEST_COMMAND lhapdf6/tests/${v}/native-testpdf CT10 1
+      BINARY_DIR lhapdf6/tests/${v}
+      SOURCE_DIR lhapdf6/tests
+      BUILD native-testpdf
+      BUILD_OPTIONS
+       -DCMAKE_MODULE_PATH=${cmaketools_home}/modules
+       -DLHAPDF6_ROOT_DIR=${lhapdf-${v}_home}
+       -DBOOST_ROOT=${Boost_home}
+       -DBoost_INCLUDE_DIR=${Boost_home_include}
+       -DYAMLCPP_ROOT_DIR=${yamlcpp_home}
+      ENVIRONMENT
+        ${library_path}=${lhapdf-${v}_home}/lib:${Boost_home}/lib:${yamlcpp_home}/lib:$ENV{${library_path}}
+        LHAPDF_DATA_PATH=${lhapdf-${v}_home}/share/LHAPDF:${CMAKE_INSTALL_PREFIX}/lhapdf6sets/current/share/LHAPDF
+      DEPENDS lhapdf6sets.download
+    )
+
+    LCG_add_test(lhapdf6-${v}.genser-pythia8
+      TEST_COMMAND lhapdf6/tests/pyt8/${v}/lhapdf6_pyt8
+      BINARY_DIR lhapdf6/tests/pyt8/${v}
+      SOURCE_DIR lhapdf6/tests/pyt8
+      BUILD lhapdf6_pyt8
+      BUILD_OPTIONS
+       -DCMAKE_MODULE_PATH=${cmaketools_home}/modules
+       -DLHAPDF6_ROOT_DIR=${lhapdf-${v}_home}
+       -DBOOST_ROOT=${Boost_home}
+       -DBoost_INCLUDE_DIR=${Boost_home_include}
+       -DYAMLCPP_ROOT_DIR=${yamlcpp_home}
+       -DPYTHIA8_ROOT_DIR=${pythia8_home}
+      ENVIRONMENT
+        ${library_path}=${lhapdf-${v}_home}/lib:${pythia8_home}/lib:${Boost_home}/lib:${yamlcpp_home}/lib:$ENV{${library_path}}
+        LHAPDF_DATA_PATH=${lhapdf-${v}_home}/share/LHAPDF:${CMAKE_INSTALL_PREFIX}/lhapdf6sets/current/share/LHAPDF
+        PYTHIA8DATA=${pythia8_home}/xmldoc
+      POST_COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/chi.c .
+           COMMAND ${CMAKE_COMMAND} -E copy testi_lhapdf6.dat test_lhapdf6.dat
+           COMMAND ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/cmpr.sh lhapdf6 ${CMAKE_SOURCE_DIR}/generators/lhapdf6/tests/pyt8/reference.dat ${v} ${LCG_VERSION} ${LCG_platform}
+      DEPENDS lhapdf6sets.download
+    )
+  endif()
+endforeach()
+
+
 
 if (hepmc3_native_version)
 
