@@ -1151,6 +1151,7 @@ LCG_add_test(sherpa-${v}.genser-LHC_Z_lhapdf
   ENVIRONMENT
     ${library_path}=${sherpa-${v}_home}/lib/SHERPA-MC:${HepMC_home}/lib:${lhapdf_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:${sqlite_home}/lib:$ENV{${library_path}}
     LHAPDF_DATA_PATH=${lhapdf_home}/share/LHAPDF:${CMAKE_INSTALL_PREFIX}/lhapdf6sets/current/share/LHAPDF
+    LHAPATH=${lhapdf_home}/../share/PDFsets
     PATH=${sqlite_home}/bin:$ENV{PATH}
     PWD=.
     DEPENDS lhapdf6sets.download
