@@ -1666,16 +1666,20 @@ set(fastnlo_toolkit_tabfile "fnl2222b_I1087342.tab")
 LCG_add_test(fastnlo_toolkit.download
   TEST_COMMAND $ENV{SHELL} -c "wget -q -O ${fastnlo_toolkit_tabfile}.gz http://fastnlo.hepforge.org/scenarios/tables-v21/${fastnlo_toolkit_tabfile}.gz
               gzip -df ${fastnlo_toolkit_tabfile}.gz")
+
 foreach(v ${fastnlo_toolkit_native_version})
   foreach(fnlotest "example" "yodaout" "cppread")
   LCG_add_test(fastnlo_toolkit-${v}.native-fnlo-tk-${fnlotest}
   IF ${lhapdfvers} VERSION_LESS 6.0 THEN
-       TEST_COMMAND $ENV{SHELL} -c "source ${fastnlo_toolkit-${v}_home}/fastnlo_toolkitenv-genser.sh fnlo-tk-${fnlotest} ${fastnlo_toolkit_tabfile} CT10nnlo.LHgrid"
+       TEST_COMMAND $ENV{SHELL} -c "source ${fastnlo_toolkit-${v}_home}/fastnlo_toolkitenv-genser.sh \n fnlo-tk-${fnlotest} ${fastnlo_toolkit_tabfile} CT10nnlo.LHgrid"
   ELSE
-       TEST_COMMAND $ENV{SHELL} -c "source ${fastnlo_toolkit-${v}_home}/fastnlo_toolkitenv-genser.sh fnlo-tk-${fnlotest} ${fastnlo_toolkit_tabfile} CT10nnl"
+       TEST_COMMAND $ENV{SHELL} -c "source ${fastnlo_toolkit-${v}_home}/fastnlo_toolkitenv-genser.sh \n fnlo-tk-${fnlotest} ${fastnlo_toolkit_tabfile} CT10nnlo"
   ENDIF     
-  LHAPDF_DATA_PATH=${lhapdf_home}/share/LHAPDF:${CMAKE_INSTALL_PREFIX}/lhapdf6sets/current/share/LHAPDF
-  DEPENDS fastnlo_toolkit.download)
+  ENVIRONMENT 
+     LHAPDF_DATA_PATH=${lhapdf_home}/share/LHAPDF:${CMAKE_INSTALL_PREFIX}/lhapdf6sets/current/share/LHAPDF
+     LHAPATH=${lhapdf_home}/../share/PDFsets
+
+ DEPENDS fastnlo_toolkit.download)
   endforeach()
 endforeach()
 endif()
