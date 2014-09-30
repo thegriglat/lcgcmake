@@ -183,20 +183,20 @@ LCG_external_package(pythia8           180            ${MCGENPATH}/pythia8      
 
 LCG_external_package(sacrifice         0.9.9          ${MCGENPATH}/sacrifice  pythia8=185 )
 
-LCG_external_package(thepeg            1.8.1          ${MCGENPATH}/thepeg       )
-LCG_external_package(herwig++          2.6.1b          ${MCGENPATH}/herwig++     thepeg=1.8.1)
+#LCG_external_package(thepeg            1.8.1          ${MCGENPATH}/thepeg       )
+#LCG_external_package(herwig++          2.6.1b          ${MCGENPATH}/herwig++     thepeg=1.8.1)
 
-LCG_external_package(thepeg            1.8.3a          ${MCGENPATH}/thepeg       )
-LCG_external_package(herwig++          2.6.3a          ${MCGENPATH}/herwig++     thepeg=1.8.3a)
+#LCG_external_package(thepeg            1.8.3a          ${MCGENPATH}/thepeg       )
+#LCG_external_package(herwig++          2.6.3a          ${MCGENPATH}/herwig++     thepeg=1.8.3a)
 
-LCG_external_package(thepeg            1.9.0          ${MCGENPATH}/thepeg       )
-LCG_external_package(herwig++          2.7.0          ${MCGENPATH}/herwig++     thepeg=1.9.0)
+#LCG_external_package(thepeg            1.9.0          ${MCGENPATH}/thepeg       )
+#LCG_external_package(herwig++          2.7.0          ${MCGENPATH}/herwig++     thepeg=1.9.0)
 
-LCG_external_package(thepeg            1.9.2          ${MCGENPATH}/thepeg       )
-LCG_external_package(herwig++          2.7.1          ${MCGENPATH}/herwig++     thepeg=1.9.2)
+#LCG_external_package(thepeg            1.9.2          ${MCGENPATH}/thepeg       )
+#LCG_external_package(herwig++          2.7.1          ${MCGENPATH}/herwig++     thepeg=1.9.2)
 
-LCG_external_package(thepeg            1.9.0a          ${MCGENPATH}/thepeg       )
-LCG_external_package(herwig++          2.7.0a          ${MCGENPATH}/herwig++     thepeg=1.9.0a)
+#LCG_external_package(thepeg            1.9.0a          ${MCGENPATH}/thepeg       )
+#LCG_external_package(herwig++          2.7.0a          ${MCGENPATH}/herwig++     thepeg=1.9.0a)
 
 LCG_external_package(tauola++          1.1.1a          ${MCGENPATH}/tauola++     )
 LCG_external_package(tauola++          1.1.5          ${MCGENPATH}/tauola++     )
@@ -232,13 +232,13 @@ LCG_external_package(qd           2.3.13          ${MCGENPATH}/qd         )
 LCG_external_package(blackhat           0.9.9          ${MCGENPATH}/blackhat         )
 
 
-LCG_external_package(sherpa            1.4.5.2        ${MCGENPATH}/sherpa         author=1.4.5 hepevt=10000 )
-LCG_external_package(sherpa            2.0.0          ${MCGENPATH}/sherpa         author=2.0.0 hepevt=10000)
-LCG_external_package(sherpa            2.1.0          ${MCGENPATH}/sherpa         author=2.1.0 hepevt=10000)
+#LCG_external_package(sherpa            1.4.5.2        ${MCGENPATH}/sherpa         author=1.4.5 hepevt=10000 )
+#LCG_external_package(sherpa            2.0.0          ${MCGENPATH}/sherpa         author=2.0.0 hepevt=10000)
+#LCG_external_package(sherpa            2.1.0          ${MCGENPATH}/sherpa         author=2.1.0 hepevt=10000)
 LCG_external_package(sherpa            2.1.1          ${MCGENPATH}/sherpa         author=2.1.1 hepevt=10000)
-LCG_external_package(sherpa            2.1.0p1        ${MCGENPATH}/sherpa         author=2.1.0 hepevt=10000)
+#LCG_external_package(sherpa            2.1.0p1        ${MCGENPATH}/sherpa         author=2.1.0 hepevt=10000)
 
-LCG_external_package(sherpa-openmpi    2.1.1.openmpi  ${MCGENPATH}/sherpa         author=2.1.1 hepevt=10000)
+#LCG_external_package(sherpa-openmpi    2.1.1.openmpi  ${MCGENPATH}/sherpa         author=2.1.1 hepevt=10000)
  
 LCG_external_package(sherpa-mpich2     2.1.1.mpich2   ${MCGENPATH}/sherpa         author=2.1.1 hepevt=10000)
 
