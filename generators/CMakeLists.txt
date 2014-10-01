@@ -360,26 +360,31 @@ foreach(v ${lhapdf_native_version})
 endforeach()
 
 
+# HepMC 3 test - hepmc3
 
-if (hepmc3_native_version)
+foreach(v ${hepmc3_native_version})
+  LCG_add_test(hepmc3-${v}.native-basic_tree
+    TEST_COMMAND ${hepmc3_home}/bin/basic_tree
+    ENVIRONMENT
+      ${library_path}=${hepmc3_home}/lib:$ENV{${library_path}}
+  )
 
- LCG_add_test(hepmc3-pythia8-test1
-  BINARY_DIR hepmc3/tests
-  SOURCE_DIR hepmc3/tests
-  BUILD all
-  BUILD_OPTIONS
-   -DCMAKE_MODULE_PATH=${CMAKE_SOURCE_DIR}/cmake/modules
-   -DCMAKE_MODULE_PATH2=${cmaketools_home}/modules
-   -DPYTHIA8_ROOT_DIR=${pythia8_home}
-   -DHEPMC_ROOT_DIR=${hepmc3_home}
-   -DBOOST_ROOT=${Boost_home}
-  PRE_COMMAND ${CMAKE_COMMAND} -E copy ${hepmc3_home}/../share/sources/examples/pythia8_ee_to_Z_to_tautau.conf .
-  TEST_COMMAND ${CMAKE_COMMAND} -E chdir ${CMAKE_BINARY_DIR}/generators/hepmc3/tests ./hepmc3_pythia8_test1
+  LCG_add_test(hepmc3-${v}.native-hepevt_wrapper_test
+    TEST_COMMAND ${hepmc3_home}/bin/hepevt_wrapper_test
+  )
+
+
+ LCG_add_test(hepmc3-${v}.native-pythia8_example
+  PRE_COMMAND  ${CMAKE_COMMAND} -E copy ${hepmc3_home}/../share/sources/examples/pythia8_ee_to_Z_to_tautau.conf .
+  TEST_COMMAND ${hepmc3_home}/bin/pythia8_example pythia8_ee_to_Z_to_tautau.conf
   ENVIRONMENT
     PYTHIA8DATA=${pythia8_home}/xmldoc
+    ${library_path}=${hepmc3_home}/lib:${pythia8_home}/lib:$ENV{${library_path}}
  )
 
-endif()
+endforeach()
+
+
 
 #---pythia82------------------------------------------------------------------------------------------
 LCGPackage_Add(

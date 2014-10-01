@@ -190,27 +190,21 @@ else()
   set(hepmc3_source_command URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/MCGeneratorsTarFiles/hepmc3-${hepmc3_native_version}.tgz)
 endif()
 
-#---HepMC3-------------------------------------------------------------------------------------------- 
+#---Forward declarations----------------------------------------------------------------------------
+LCGPackage_set_home(pythia8)
+
 LCGPackage_Add(
   hepmc3
   ${hepmc3_source_command}
   CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
              -DBOOST_ROOT=${Boost_home}
              -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+             -DHEPMC_BUILD_EXAMPLES=ON -DHEPMC_ENABLE_TESTING=ON
+             -DPYTHIA8_ROOT_DIR=${pythia8_home}
   BUILD_COMMAND ${MAKE}
+        COMMAND ${MAKE} pythia8_example 
   DEPENDS Boost
 )
-
-
-foreach(v ${hepmc3_native_version})
-  LCG_add_test(hepmc3-${v}.native-basic_tree
-    TEST_COMMAND ${PROJECT_BINARY_DIR}/externals/hepmc3-${v}/src/hepmc3-${v}-build/tests/basic_tree
-  )
-
-  LCG_add_test(hepmc3-${v}.native-hepevt_wrapper_test
-    TEST_COMMAND ${PROJECT_BINARY_DIR}/externals/hepmc3-${v}/src/hepmc3-${v}-build/tests/hepevt_wrapper_test
-  )
-endforeach()
 
 #---HepPDT-------------------------------------------------------------------------------------------
 LCGPackage_Add(
