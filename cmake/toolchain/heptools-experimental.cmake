@@ -188,7 +188,7 @@ LCG_external_package(tauola++          1.1.4          ${MCGENPATH}/tauola++     
 LCG_external_package(tauola++          1.1.5          ${MCGENPATH}/tauola++     )
 
 LCG_external_package(pythia6           427.2          ${MCGENPATH}/pythia6    author=6.4.27 hepevt=10000  )
-LCG_external_package(pythia6           429.2          ${MCGENPATH}/pythia6    author=6.4.28 hepevt=10000  )
+LCG_external_package(pythia6           429.2          ${MCGENPATH}/pythia6    author=6.4.29 hepevt=10000  )
 LCG_external_package(pythia6           428.2          ${MCGENPATH}/pythia6    author=6.4.28 hepevt=10000  )
 
 LCG_external_package(agile             1.4.1          ${MCGENPATH}/agile        )
