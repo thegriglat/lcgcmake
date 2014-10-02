@@ -202,7 +202,7 @@ LCGPackage_Add(
              -DHEPMC_BUILD_EXAMPLES=ON -DHEPMC_ENABLE_TESTING=ON
              -DPYTHIA8_ROOT_DIR=${pythia8_home}
   BUILD_COMMAND ${MAKE}
-  DEPENDS Boost
+  DEPENDS Boost pythia8
 )
 
 #---HepPDT-------------------------------------------------------------------------------------------
