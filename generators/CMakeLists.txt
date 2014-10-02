@@ -380,7 +380,7 @@ foreach(v ${hepmc3_native_version})
 
 
  LCG_add_test(hepmc3-${v}.native-pythia8_example
-  PRE_COMMAND  ${CMAKE_COMMAND} -E copy ${hepmc3_home}/../share/sources/examples/pythia8_ee_to_Z_to_tautau.conf .
+  PRE_COMMAND  ${CMAKE_COMMAND} -E copy ${hepmc3_home}/bin/pythia8_ee_to_Z_to_tautau.conf .
   TEST_COMMAND ${hepmc3_home}/bin/pythia8_example pythia8_ee_to_Z_to_tautau.conf
   ENVIRONMENT
     PYTHIA8DATA=${pythia8_home}/xmldoc
