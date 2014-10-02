@@ -7,6 +7,8 @@
 
 namespace Rivet {
 
+  using namespace Cuts;
+
 
   class GENSER_MC_ZJETS : public Analysis {
   public:
@@ -26,7 +28,9 @@ namespace Rivet {
     void init() {
 
       FinalState fs;
-      ZFinder zfinder(fs, -2.4, 2.4, 25*GeV, PID::ELECTRON, 65*GeV, 115*GeV, 0.3, ZFinder::CLUSTERNODECAY, ZFinder::TRACK);
+      Cut cut = etaIn(-2.4,2.4) & (pT >= 25.0*GeV);
+//      ZFinder zfinder(fs, -2.4, 2.4, 25*GeV, PID::ELECTRON, 65*GeV, 115*GeV, 0.3, ZFinder::CLUSTERNODECAY, ZFinder::TRACK);
+      ZFinder zfinder(fs, cut, PID::ELECTRON, 65*GeV, 115*GeV, 0.3, ZFinder::CLUSTERNODECAY, ZFinder::TRACK);
       addProjection(zfinder, "ZFinder");
       FastJets jetpro(zfinder.remainingFinalState(), FastJets::ANTIKT, 0.5);
       addProjection(jetpro, "Jets");
