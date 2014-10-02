@@ -55,6 +55,11 @@ else()
   set (SH_SHELL $ENV{SHELL})
 endif()
 
+### Process -std=c++11 flag
+if (${ROOT_native_version} VERSION_GREATER 6 OR ${ROOT_native_version} VERSION_EQUAL 6)
+  set(root6_used "YES")
+endif()
+
 #---lhapdfsets--------------------------------------------------------------------------------------
 message(STATUS "PDFsets to download: ${PDFsets}")
 LCGPackage_Add(
@@ -1184,6 +1189,9 @@ LCGPackage_Add(
   CONFIGURE_COMMAND <VOID>
   BUILD_COMMAND ${MAKE} VERBOSE=1 HepMCdir=${HepMC_home} FastJetdir=${fastjet_home} ROOTSYS=${ROOT_home} CLHEPdir=${CLHEP_home} 
 			${library_path}=${CLHEP_home}/lib:$ENV{${library_path}}
+            IF DEFINED root6_used THEN
+              CXXFLAGS=-std=c++11
+            ENDIF
   INSTALL_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/lib <INSTALL_DIR>/lib
           COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/include <INSTALL_DIR>/include
   BUILD_IN_SOURCE 1
@@ -1453,6 +1461,9 @@ if(NOT APPLE)    #  (installation fails on MacOSX)
      IF <NATIVE_VERSION> VERSION_GREATER 1.3 THEN
                -D__PYTHIA__=ON -D__SIBYLL__=ON  -D__PHOJET__=ON
                -D__DPMJET__=ON -D__QGSJETII04__=ON
+     ENDIF
+     IF DEFINED root6_used THEN
+               -DCMAKE_CXX_FLAGS=-std=c++11
      ENDIF
     DEPENDS HepMC Boost ROOT
   )
