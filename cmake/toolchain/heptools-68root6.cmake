@@ -83,6 +83,7 @@ LCG_external_package(pytest            2.2.4                                    
 LCG_external_package(Python            2.7.6                                    )
 LCG_external_package(PythonFWK         2.7.6                  Python            )
 LCG_external_package(pytools           1.8                                      )
+LCG_external_package(pytz              2014.7                                   )
 LCG_external_package(pyxml             0.8.4p1                                  )
 LCG_external_package(QMtest            2.4.1                                    )
 LCG_external_package(Qt                4.8.4                     qt             )

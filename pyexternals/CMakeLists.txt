@@ -413,6 +413,20 @@ LCGPackage_Add(
   DEPENDS Python ROOT
 )
 
+#---pytz-------------------------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  pytz
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/pytz-${pytz_native_version}.tar.gz
+  CONFIGURE_COMMAND <VOID>
+  BUILD_COMMAND ${Exec_cmd} PATH=${ROOT_home}/bin:$ENV{PATH} ${Python_cmd} setup.py build
+  INSTALL_COMMAND ${Lock_cmd}
+          COMMAND ${Python_cmd} setup.py install --prefix <INSTALL_DIR>
+          COMMAND ${Unlock_cmd}
+  BUILD_IN_SOURCE 1
+  DEST_NAME pyanalysis
+  DEPENDS Python 
+)
+
 #---Add the dependencies now----------------------------------------------------------------------------------------
 LCGPackage_Add(
   pyanalysis
@@ -421,7 +435,7 @@ LCGPackage_Add(
   BUILD_COMMAND <VOID>
   INSTALL_COMMAND ${CMAKE_SOURCE_DIR}/pyexternals/Python_postinstall.sh <INSTALL_DIR>
   BUNDLE_PACKAGE 1
-  DEPENDS matplotlib numpy scipy sympy pyminuit
+  DEPENDS matplotlib numpy scipy sympy pyminuit pytz
 )
 
 

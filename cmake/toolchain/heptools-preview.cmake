@@ -85,6 +85,7 @@ LCG_external_package(pygsi             0.5                                      
 LCG_external_package(pylint            1.2.1                                    )
 LCG_external_package(pyminuit          0.0.1                                    )
 LCG_external_package(pyparsing         1.5.6                                    )
+LCG_external_package(pytz              2014.7                                   )
 LCG_external_package(pyqt              4.9.5                                    )
 LCG_external_package(pytest            2.2.4                                    )
 LCG_external_package(Python            2.7.6                                    )
