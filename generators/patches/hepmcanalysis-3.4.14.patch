@@ -41,3 +41,18 @@
 -	$(HepMClib) $(HepPDTlib) $(FastJetlib) \
 +	$(HepMClib) $(HepPDTlib) $(FastJetlib) $(CLHEPlib) \
  	$(ROOTGLIBS) $(LINK_LIBS)
+
+
+--- src/baseAnalysis.cc	2013-03-04 19:19:55.000000000 +0100
++++ src/baseAnalysis.cc	2014-10-03 07:36:47.000000000 +0200
+@@ -281,8 +281,8 @@
+     double pe = (*p)->momentum().e();
+     
+       // remove garbage 
+-    if ( isnan( px ) || isnan( py ) || isnan( pz ) || isnan( pe ) || 
+-         isinf( px ) || isinf( py ) || isinf( pz ) || isinf( pe ) ) {
++    if ( std::isnan( px ) || std::isnan( py ) || std::isnan( pz ) || std::isnan( pe ) || 
++         std::isinf( px ) || std::isinf( py ) || std::isinf( pz ) || std::isinf( pe ) ) {
+       cout << "baseAnalysis: NaN (Not A Number) found in the event record! Particle will be skipped." << endl;
+       ++m_NanNum;
+       continue;
