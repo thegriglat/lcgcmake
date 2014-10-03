@@ -16,7 +16,7 @@ LCG_AA_project(COOL  COOL_2_9_3)
 LCG_AA_project(CORAL CORAL_2_4_3)
 LCG_AA_project(RELAX RELAX_1_3_0p)
 LCG_AA_project(ROOT  v5-34-00-patches)
-LCG_AA_project(LCGCMT LCGCMT_${heptools_version})
+LCG_AA_project(LCGCMT LCGCMT_preview)
 
 # Externals
 LCG_external_package(4suite            1.0.2p1                                  )
