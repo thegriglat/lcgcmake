@@ -1214,6 +1214,7 @@ LCG_add_test(hepmcanalysis-${v}.build
    -DROOTSYS=${ROOT_home}
    -DLHAPDF_ROOT_DIR=${lhapdf_home}
    -DCLHEP_ROOT_DIR=${CLHEP_home}	
+  IF DEFINED root6_used THEN -DCMAKE_CXX_FLAGS=-std=c++11 ENDIF
   ENVIRONMENT ${library_path}=${ROOT_home}/lib:${fastjet_home}/lib:${CLHEP_home}/lib:${HepMC_home}/lib:${pythia6_home}/lib:$ENV{${library_path}})
  
 
@@ -1259,6 +1260,7 @@ LCG_add_test(mctester-${v}.build
    -DPYTHIA8_ROOT_DIR=${pythia8_home}
    -DHEPMC_ROOT_DIR=${HepMC_home}
    -DROOTSYS=${ROOT_home}
+  IF DEFINED root6_used THEN -DCMAKE_CXX_FLAGS=-std=c++11 ENDIF
    ENVIRONMENT ${library_path}=${mctester-${v}_home}/lib:${pythia8_home}/lib:${HepMC_home}/lib:$ENV{${library_path}})
   
 LCG_add_test(mctester-${v}.native-pythia
