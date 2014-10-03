@@ -103,6 +103,7 @@ else()
                -Dgsl_shared=ON
                -Dkrb5=ON
                -Dgenvector=ON
+               -Dvc=ON
                -Dldap=ON
                -Dmathmore=ON -DGSL_DIR=${GSL_home}
                -Dmemstat=ON
