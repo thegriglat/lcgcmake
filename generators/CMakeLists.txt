@@ -56,7 +56,7 @@ else()
 endif()
 
 ### Process -std=c++11 flag
-if (${ROOT_native_version} VERSION_GREATER 6 OR ${ROOT_native_version} VERSION_EQUAL 6)
+if (${ROOT_native_version} VERSION_GREATER 6 OR ${ROOT_native_version} VERSION_EQUAL 6 OR ${ROOT_native_version} MATCHES "^v6[.]*")
   set(root6_used "YES")
 endif()
 
