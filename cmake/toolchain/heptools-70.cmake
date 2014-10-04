@@ -16,7 +16,7 @@ LCG_AA_project(COOL  COOL_2_9_3)
 LCG_AA_project(CORAL CORAL_2_4_3)
 LCG_AA_project(RELAX RELAX_1_3_0p)
 LCG_AA_project(ROOT  v5-34-00-patches)
-LCG_AA_project(LCGCMT LCGCMT_preview)
+LCG_AA_project(LCGCMT LCGCMT_${heptools_version})
 
 # Externals
 LCG_external_package(4suite            1.0.2p1                                  )
@@ -201,7 +201,7 @@ LCG_external_package(blackhat           0.9.9          ${MCGENPATH}/blackhat    
 
 LCG_external_package(sherpa-mpich2     2.1.1          ${MCGENPATH}/sherpa-mpich2  author=2.1.1 hepevt=10000)
 
-LCG_external_package(hepmcanalysis     3.4.14         ${MCGENPATH}/hepmcanalysis  author=00-03-04-14        )
+#LCG_external_package(hepmcanalysis     3.4.14         ${MCGENPATH}/hepmcanalysis  author=00-03-04-14        )
 LCG_external_package(mctester          1.25.0         ${MCGENPATH}/mctester     )
 LCG_external_package(hijing            1.383bs.2      ${MCGENPATH}/hijing       )
 LCG_external_package(starlight         r43            ${MCGENPATH}/starlight    )
@@ -210,7 +210,7 @@ LCG_external_package(herwig            6.520.2        ${MCGENPATH}/herwig       
 LCG_external_package(herwig            6.521.2        ${MCGENPATH}/herwig       )
 
 LCG_external_package(crmcold           v3400          ${MCGENPATH}/crmc         )
-LCG_external_package(crmc              1.4            ${MCGENPATH}/crmc         )
+#LCG_external_package(crmc              1.4            ${MCGENPATH}/crmc         )
 LCG_external_package(cython            0.19.1         ${MCGENPATH}/cython       )
 LCG_external_package(yamlcpp           0.3.0          ${MCGENPATH}/yamlcpp      )
 
