@@ -1,0 +1,26 @@
+--- Makefile.orig	2014-10-05 17:38:43.000000000 +0200
++++ Makefile	2014-10-05 17:40:06.000000000 +0200
+@@ -37,15 +37,15 @@
+ 
+ #Set fortran compiler 
+ EXIST = $(strip $(foreach dir,$(BINDIRS),$(wildcard $(dir)/$(PRIMARYF77) ) ) )
+-ifeq ($(EXIST),)
+-F77 = $(ALTF77)
+-F77LIBSO = $(ALTF77LIBSO)
+-EXIST = $(strip $(foreach dir,$(BINDIRS),$(wildcard $(dir)/$(ALTF77) ) ))
+-endif
++#ifeq ($(EXIST),)
++#F77 = $(ALTF77)
++#F77LIBSO = $(ALTF77LIBSO)
++#EXIST = $(strip $(foreach dir,$(BINDIRS),$(wildcard $(dir)/$(ALTF77) ) ))
++#endif
+ #Alt 
+-ifeq ($(EXIST),)
+-$(error Fortran compiler not found. Either $(PRIMARYF77) or $(ALTF77) should be present)
+-endif
++#ifeq ($(EXIST),)
++#$(error Fortran compiler not found. Either $(PRIMARYF77) or $(ALTF77) should be present)
++#endif
+ 
+ LIBS          = $(ROOTLIBS) $(SYSLIBS) -lEG 
+ GLIBS         = $(ROOTGLIBS) $(SYSLIBS)

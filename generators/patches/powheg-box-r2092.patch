@@ -180,12 +180,25 @@ Index: VBF_Wp_Wp/Makefile
  
  LHEFANAL=lhef_analysis.o boostrot.o random.o cernroutines.o         \
  	 opencount.o powheginput.o pwhg_bookhist.o  \
-Index: W_ew-BMNNP/Makefile
-===================================================================
---- W_ew-BMNNP/Makefile	2013-09-27 19:18:23.000000000 +0200
-+++ W_ew-BMNNP/Makefile	2013-09-27 19:19:14.000000000 +0200
-@@ -11,7 +11,7 @@
- STATIC= -static
+--- W_ew-BW/Makefile.orig	2014-10-05 16:33:45.000000000 +0200
++++ W_ew-BW/Makefile	2014-10-05 16:33:54.000000000 +0200
+@@ -8,7 +8,7 @@
+ ## default analysis may require FASTJET package, that has to be installed separately (see below)
+ ANALYSIS=default
+ ## For static linking uncomment the following
+-STATIC= -static
++#STATIC= -static
+ #
+ ifeq ("$(COMPILER)","gfortran")	
+ F77= gfortran -fno-automatic 	
+--- W_ew-BMNNP/Makefile.orig	2013-08-20 15:47:08.000000000 +0200
++++ W_ew-BMNNP/Makefile	2014-10-05 16:47:55.000000000 +0200
+@@ -8,10 +8,10 @@
+ ## default analysis may require FASTJET package, that has to be installed separately (see below)
+ ANALYSIS=default
+ ## For static linking uncomment the following
+-STATIC= -static
++#STATIC= -static
  #
  ifeq ("$(COMPILER)","gfortran")	
 -F77= gfortran -fno-automatic -fno-whole-file
@@ -193,3 +206,36 @@ Index: W_ew-BMNNP/Makefile
  ## -fbounds-check sometimes causes a weird error due to non-lazy evaluation
  ## of boolean in gfortran.
  #FFLAGS= -Wall -Wimplicit-interface -fbounds-check
+--- VBF_H/Makefile.orig	2014-10-05 16:49:37.000000000 +0200
++++ VBF_H/Makefile	2014-10-05 16:49:45.000000000 +0200
+@@ -9,7 +9,7 @@
+ ##           installed separately (see below)
+ ANALYSIS=default
+ ## For static linking uncomment the following
+-STATIC=-static
++#STATIC=-static
+ #
+ ifeq ("$(COMPILER)","gfortran")	
+ F77= gfortran -fno-automatic 	
+--- W/Makefile.orig	2014-10-05 16:51:59.000000000 +0200
++++ W/Makefile	2014-10-05 16:52:09.000000000 +0200
+@@ -8,7 +8,7 @@
+ ## default analysis may require FASTJET package, that has to be installed separately (see below)
+ ANALYSIS=default
+ ## For static linking uncomment the following
+-STATIC= -static
++@STATIC= -static
+ #
+ ifeq ("$(COMPILER)","gfortran")	
+ F77= gfortran -fno-automatic 	
+--- Wj/Makefile.orig	2014-10-05 16:36:00.000000000 +0200
++++ Wj/Makefile	2014-10-05 16:36:08.000000000 +0200
+@@ -8,7 +8,7 @@
+ ## Generic analysis may require FASTJET package, that has to be installed separately (see below)
+ ANALYSIS=default
+ ## For static linking uncomment the following
+-STATIC=-static
++#STATIC=-static
+ #
+ ifeq ("$(COMPILER)","gfortran")	
+ F77= gfortran -fno-automatic 	
