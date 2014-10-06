@@ -110,7 +110,7 @@ if(NOT ${LCG_OS}${LCG_OSVERS} STREQUAL slc6) # uuid is not distributed with SLC6
 LCG_external_package(uuid              1.42                                     )
 endif()
 if(NOT ${LCG_OS}${LCG_OSVERS} STREQUAL mac109 AND NOT LCG_TARGET MATCHES "icc" ) # valgrind does not work yet with mac109 and icc
-  LCG_external_package(valgrind          3.9.0                                    )
+  LCG_external_package(valgrind          3.10.0                                    )
 endif()
 LCG_external_package(vdt               0.3.6                                    )
 LCG_external_package(XercesC           3.1.1p1        author=3.1.1              )
