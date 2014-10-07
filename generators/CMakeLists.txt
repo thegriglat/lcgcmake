@@ -448,7 +448,9 @@ endif()
 
 LCGPackage_Add(
   thepeg
-  URL ${gen_url}/ThePEG-<NATIVE_VERSION>.tar.bz2
+
+<pythia8_<NATIVE_VERSION>_author>
+  URL ${gen_url}/ThePEG-<thepeg_<NATIVE_VERSION>_author>.tar.bz2
 # UPDATE_COMMAND ${CMAKE_COMMAND} -E chdir <SOURCE_DIR> autoreconf --install --force
   CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR>
                                 --with-hepmc=${HepMC_home}
