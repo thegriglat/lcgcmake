@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 2.8.5)
 # Declare the version of HEP Tools we use
 # (must be done before including heptools-common to allow evolution of the
 # structure)
-set(heptools_version  61f)
+set(heptools_version  61g)
 
 include(${CMAKE_CURRENT_LIST_DIR}/heptools-common.cmake)
 
@@ -195,10 +195,9 @@ LCG_external_package(rivet             1.8.3          ${MCGENPATH}/rivet        
 
 LCG_external_package(sacrifice         0.9.9          ${MCGENPATH}/sacrifice   pythia8=185 )
 
-LCG_external_package(sherpa            2.1.0p1        ${MCGENPATH}/sherpa         author=2.1.0 hepevt=10000)
-LCG_external_package(sherpa            2.1.0          ${MCGENPATH}/sherpa         author=2.1.0 hepevt=10000)
+#LCG_external_package(sherpa            2.1.0p1        ${MCGENPATH}/sherpa         author=2.1.0 hepevt=10000)
+#LCG_external_package(sherpa            2.1.0          ${MCGENPATH}/sherpa         author=2.1.0 hepevt=10000)
 LCG_external_package(sherpa            2.1.1          ${MCGENPATH}/sherpa         author=2.1.1 hepevt=10000)
-LCG_external_package(sherpa            2.0.0          ${MCGENPATH}/sherpa         author=2.0.0 hepevt=10000  )
 
 #LCG_external_package(sherpa            1.4.3          ${MCGENPATH}/sherpa         author=1.4.3 hepevt=4000  )
 #LCG_external_package(sherpa            1.4.3.2        ${MCGENPATH}/sherpa         author=1.4.3 hepevt=10000 )
@@ -211,7 +210,7 @@ LCG_external_package(hijing            1.383bs.2      ${MCGENPATH}/hijing       
 LCG_external_package(starlight         r43            ${MCGENPATH}/starlight    )
 #LCG_external_package(herwig            6.520         ${MCGENPATH}/herwig       )
 LCG_external_package(herwig            6.520.2        ${MCGENPATH}/herwig       )
-LCG_external_package(crmc              v3400          ${MCGENPATH}/crmc         )
+LCG_external_package(crmcold           v3400          ${MCGENPATH}/crmc         )
 LCG_external_package(cython            0.19           ${MCGENPATH}/cython       )
 LCG_external_package(yamlcpp           0.3.0          ${MCGENPATH}/yaml-cpp     )
 LCG_external_package(yoda              1.0.0          ${MCGENPATH}/yoda         )
