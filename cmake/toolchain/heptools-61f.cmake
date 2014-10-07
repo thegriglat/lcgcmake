@@ -96,6 +96,7 @@ LCG_external_package(pyminuit          0.0.1                                    
 LCG_external_package(pyparsing         1.5.1                                    )
 LCG_external_package(pyqt              4.7                                      )
 LCG_external_package(pytest            2.1.0                                    )
+LCG_external_package(pytz              2014.7                                   )
 LCG_external_package(Python            2.6.5p2                                  )
 LCG_external_package(pytools           1.6                                      )
 LCG_external_package(pyxml             0.8.4p1                                  )

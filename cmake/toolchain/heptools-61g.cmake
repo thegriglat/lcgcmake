@@ -96,6 +96,7 @@ LCG_external_package(pyminuit          0.0.1                                    
 LCG_external_package(pyparsing         1.5.1                                    )
 LCG_external_package(pyqt              4.7                                      )
 LCG_external_package(pytest            2.1.0                                    )
+LCG_external_package(pytz              2014.7                                   )
 LCG_external_package(Python            2.6.5p2                                  )
 LCG_external_package(pytools           1.6                                      )
 LCG_external_package(pyxml             0.8.4p1                                  )
@@ -147,6 +148,7 @@ LCG_external_package(lhapdfsets        5.9.1          lhapdfsets   )
 
 LCG_external_package(lhapdf            6.1.4          ${MCGENPATH}/lhapdf       )
 
+LCG_external_package(pythia8           186            ${MCGENPATH}/pythia8      )
 LCG_external_package(pythia8           185            ${MCGENPATH}/pythia8      author=185  )
 LCG_external_package(pythia8           183            ${MCGENPATH}/pythia8      author=183  )
 LCG_external_package(pythia8           180            ${MCGENPATH}/pythia8      author=180  )
@@ -156,11 +158,13 @@ LCG_external_package(pythia8           176            ${MCGENPATH}/pythia8      
 
 LCG_external_package(thepeg            1.9.0a          ${MCGENPATH}/thepeg       )
 #LCG_external_package(thepeg            1.9.2           ${MCGENPATH}/thepeg       )
+LCG_external_package(thepeg            1.9.2p1         ${MCGENPATH}/thepeg  author=1.9.2 )
 LCG_external_package(thepeg            1.8.3a         ${MCGENPATH}/thepeg       )
 LCG_external_package(thepeg            1.8.3          ${MCGENPATH}/thepeg       )
 
 LCG_external_package(herwig++          2.7.0a          ${MCGENPATH}/herwig++     thepeg=1.9.0a)
 #LCG_external_package(herwig++          2.7.1           ${MCGENPATH}/herwig++     thepeg=1.9.2)
+LCG_external_package(herwig++          2.7.1           ${MCGENPATH}/herwig++     thepeg=1.9.2p1)
 LCG_external_package(herwig++          2.6.3a         ${MCGENPATH}/herwig++     thepeg=1.8.3a)
 LCG_external_package(herwig++          2.6.3          ${MCGENPATH}/herwig++     thepeg=1.8.3)
 
@@ -193,7 +197,7 @@ LCG_external_package(yoda              1.0.5          ${MCGENPATH}/yoda       )
 LCG_external_package(rivet             1.9.0          ${MCGENPATH}/rivet        yoda=1.0.5       )
 LCG_external_package(rivet             1.8.3          ${MCGENPATH}/rivet        yoda=1.0.5       )
 
-LCG_external_package(sacrifice         0.9.9          ${MCGENPATH}/sacrifice   pythia8=185 )
+#LCG_external_package(sacrifice         0.9.9          ${MCGENPATH}/sacrifice   pythia8=185 )
 
 #LCG_external_package(sherpa            2.1.0p1        ${MCGENPATH}/sherpa         author=2.1.0 hepevt=10000)
 #LCG_external_package(sherpa            2.1.0          ${MCGENPATH}/sherpa         author=2.1.0 hepevt=10000)
