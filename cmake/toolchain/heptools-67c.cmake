@@ -192,8 +192,8 @@ LCG_external_package(sacrifice         0.9.9          ${MCGENPATH}/sacrifice  py
 #LCG_external_package(thepeg            1.9.0          ${MCGENPATH}/thepeg       )
 #LCG_external_package(herwig++          2.7.0          ${MCGENPATH}/herwig++     thepeg=1.9.0)
 
-#LCG_external_package(thepeg            1.9.2          ${MCGENPATH}/thepeg       )
-#LCG_external_package(herwig++          2.7.1          ${MCGENPATH}/herwig++     thepeg=1.9.2)
+LCG_external_package(thepeg            1.9.2p1          ${MCGENPATH}/thepeg    author=1.9.2)
+LCG_external_package(herwig++          2.7.1          ${MCGENPATH}/herwig++     thepeg=1.9.2p1)
 
 #LCG_external_package(thepeg            1.9.0a          ${MCGENPATH}/thepeg       )
 #LCG_external_package(herwig++          2.7.0a          ${MCGENPATH}/herwig++     thepeg=1.9.0a)
