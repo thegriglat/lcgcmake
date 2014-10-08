@@ -467,16 +467,20 @@ LCGPackage_Add(
 foreach(v ${thepeg_native_version})
   LCG_add_test(thepeg-${v}.genser-scripts-setupThePEG
     PRE_COMMAND ${CMAKE_COMMAND} -E make_directory thepeg/${v}
-    TEST_COMMAND ${CMAKE_COMMAND} -E chdir thepeg/${v} $ENV{SHELL} -c "source ${thepeg-${v}_home}/thepegenv-genser.sh
+    TEST_COMMAND ${CMAKE_COMMAND} -E chdir thepeg/${v} ${SH_SHELL} -c "source ${thepeg-${v}_home}/thepegenv-genser.sh
       setupThePEG ${thepeg-${v}_home}/share/ThePEG/MultiLEP.in"
+    ENVIRONMENT LHAPDF_DATA_PATH=${lhapdf_home}/share/LHAPDF:${CMAKE_INSTALL_PREFIX}/lhapdf6sets/current/share/LHAPDF
+    DEPENDS lhapdf6sets.download
   )
   LCG_add_test(thepeg-${v}.genser-scripts-runThePEG
-    TEST_COMMAND ${CMAKE_COMMAND} -E chdir thepeg/${v} $ENV{SHELL} -c "source ${thepeg-${v}_home}/thepegenv-genser.sh
+    TEST_COMMAND ${CMAKE_COMMAND} -E chdir thepeg/${v} ${SH_SHELL} -c "source ${thepeg-${v}_home}/thepegenv-genser.sh
       runThePEG MultiLEP.run"
     POST_COMMAND ${CMAKE_COMMAND} -E chdir thepeg/${v} cat MultiLEP.out
     DEPENDS thepeg-${v}.genser-scripts-setupThePEG
   )
 endforeach()
+
+#${CMAKE_SOURCE_DIR}/generators/thepeg/tests/MultiLEP.in
 
 #---Herwig++------------------------------------------------------------------------------------------
 #Version 2.6.2 compiles on Mac, however the installation does not run :-(
@@ -668,7 +672,7 @@ LCGPackage_Add(
 
 foreach(v ${agile_native_version})
 LCG_add_test(agile-${v}.genser-scripts-pythia6
-  TEST_COMMAND $ENV{SHELL} -c "source ${agile-${v}_home}/agileenv-genser.sh
+  TEST_COMMAND ${SH_SHELL} -c "source ${agile-${v}_home}/agileenv-genser.sh
     agile-runmc Pythia6:${pythia6_test_version} -o agile-scripts-hepmc-${v}.dat"
 )
 
@@ -739,7 +743,7 @@ LCG_add_test(professor-${v}.genser-executable
 )
 
 LCG_add_test(professor-${v}.genser-scripts-executable
-  TEST_COMMAND $ENV{SHELL} -c "source ${professor-${v}_home}/professorenv-genser.sh
+  TEST_COMMAND ${SH_SHELL} -c "source ${professor-${v}_home}/professorenv-genser.sh
                prof-interpolate -h"
 )
 
@@ -922,7 +926,7 @@ foreach(v ${yoda_native_version})
   foreach(f ${yoda_convert_scripts})
   LCG_add_test(yoda-${v}.genser-scripts-yoda2${f}
     PRE_COMMAND ${CMAKE_COMMAND} -E make_directory yoda/tests/${v}
-    TEST_COMMAND ${CMAKE_COMMAND} -E chdir yoda/tests/${v} $ENV{SHELL} -c "source ${yoda-${v}_home}/yodaenv-genser.sh
+    TEST_COMMAND ${CMAKE_COMMAND} -E chdir yoda/tests/${v} ${SH_SHELL} -c "source ${yoda-${v}_home}/yodaenv-genser.sh
       yoda2${f} ${CMAKE_SOURCE_DIR}/generators/reference/sherpa_riv2.yoda"
   )
   endforeach()
@@ -1018,31 +1022,31 @@ LCG_add_test(rivet-${v}.native-MC_DIJET
 endif()
 
 LCG_add_test(rivet-${v}.genser-scripts-source
-  TEST_COMMAND $ENV{SHELL} -c "source ${rivet-${v}_home}/rivetenv-genser.sh"
+  TEST_COMMAND ${SH_SHELL} -c "source ${rivet-${v}_home}/rivetenv-genser.sh"
 )
 LCG_add_test(rivet-${v}.genser-scripts-mkanalysis
   TEST_COMMAND ${SH_SHELL} -c "source ${rivet-${v}_home}/rivetenv-genser.sh
       rivet-mkanalysis ATLAS_2010_S8591806"
 )
 LCG_add_test(rivet-${v}.genser-scripts-buildplugin
-  TEST_COMMAND $ENV{SHELL} -c "source ${rivet-${v}_home}/rivetenv-genser.sh
+  TEST_COMMAND ${SH_SHELL} -c "source ${rivet-${v}_home}/rivetenv-genser.sh
       rivet-buildplugin RivetATLAS_2010_S8591806.so ATLAS_2010_S8591806.cc"
   DEPENDS rivet-${v}.genser-scripts-mkanalysis
 )
 LCG_add_test(rivet-${v}.genser-scripts-findid
-  TEST_COMMAND $ENV{SHELL} -c "source ${rivet-${v}_home}/rivetenv-genser.sh
+  TEST_COMMAND ${SH_SHELL} -c "source ${rivet-${v}_home}/rivetenv-genser.sh
       rivet-findid 1003.0694"
 )
 LCG_add_test(rivet-${v}.genser-scripts-which
-  TEST_COMMAND $ENV{SHELL} -c "source ${rivet-${v}_home}/rivetenv-genser.sh
+  TEST_COMMAND ${SH_SHELL} -c "source ${rivet-${v}_home}/rivetenv-genser.sh
       which rivet-which && rivet-which ATLAS_2010_S8591806* || echo rivet-which is not available for this rivet version"
 )
 LCG_add_test(rivet-${v}.genser-scripts-rivet
-  TEST_COMMAND $ENV{SHELL} -c "source ${rivet-${v}_home}/rivetenv-genser.sh
+  TEST_COMMAND ${SH_SHELL} -c "source ${rivet-${v}_home}/rivetenv-genser.sh
       rivet -a MC_WJETS -H data-${v}.yoda ${CMAKE_SOURCE_DIR}/generators/rivet/tests/data.hepmc"
 )
 LCG_add_test(rivet-${v}.genser-scripts-rivet-mkhtml
-  TEST_COMMAND $ENV{SHELL} -c "source ${rivet-${v}_home}/rivetenv-genser.sh
+  TEST_COMMAND ${SH_SHELL} -c "source ${rivet-${v}_home}/rivetenv-genser.sh
       rivet-mkhtml -o rivet-mkhtml-${v} ${CMAKE_SOURCE_DIR}/generators/reference/pythia6_riv2_zjets.yoda ${CMAKE_SOURCE_DIR}/generators/reference/pythia8_riv2_zjets.yoda"
 )
 
@@ -1439,7 +1443,7 @@ if(NOT APPLE)    #  (installation fails on MacOSX)
 foreach(v ${crmcold_native_version})
   if(NOT ${crmcold-${v}_home} STREQUAL "")
     LCG_add_test(crmcold-${v}.genser-scripts
-      TEST_COMMAND $ENV{SHELL} -c "source ${crmcold-${v}_home}/crmcoldenv-genser.sh
+      TEST_COMMAND ${SH_SHELL} -c "source ${crmcold-${v}_home}/crmcoldenv-genser.sh
         crmc -T 1 -c ${crmcold-${v}_home}/crmc.param"
     )
     LCG_add_test(crmcold-${v}.native-crmc
@@ -1473,7 +1477,7 @@ if(NOT APPLE)    #  (installation fails on MacOSX)
   
 foreach(v ${crmc_native_version})
   LCG_add_test(crmc-${v}.genser-scripts
-    TEST_COMMAND $ENV{SHELL} -c "source ${crmc-${v}_home}/crmcenv-genser.sh
+    TEST_COMMAND ${SH_SHELL} -c "source ${crmc-${v}_home}/crmcenv-genser.sh
       crmc -T 1 -c ${crmc-${v}_home}/crmc.param"
   )
   LCG_add_test(crmc-${v}.native-crmc
@@ -1508,6 +1512,7 @@ foreach(i WW HJ W_ew-BW Wbb Wj HJJ ZZ W_ew-BMNNP Dijet gg_H VBF_H Z W hvq Zj ST_
       ${library_path}=${lhapdf5_home}/lib:${fastjet_home}/lib:$ENV{${library_path}}
       LHAPATH=${lhapdfsets_home}/../share/PDFsets
       LHAPDF_DATA_PATH=${lhapdf_home}/share/LHAPDF:${CMAKE_INSTALL_PREFIX}/lhapdf6sets/current/share/LHAPDF
+    DEPENDS lhapdf6sets.download
   )
 endforeach()
 endforeach()
@@ -1535,6 +1540,7 @@ LCG_add_test(sacrifice-${v}.genser-scripts
   TEST_COMMAND ${SH_SHELL} -c "source ${sacrifice-${v}_home}/sacrificeenv-genser.sh
     run-pythia  --collision-energy 8000 -i ${CMAKE_SOURCE_DIR}/generators/sacrifice/AU2-CT10.params -n 1000 --photos"
   ENVIRONMENT LHAPDF_DATA_PATH=${lhapdf_home}/share/LHAPDF:${CMAKE_INSTALL_PREFIX}/lhapdf6sets/current/share/LHAPDF
+  DEPENDS lhapdf6sets.download
 )
 
 LCG_add_test(sacrifice-${v}.genser-AU2-CT10
@@ -1542,6 +1548,7 @@ LCG_add_test(sacrifice-${v}.genser-AU2-CT10
    ENVIRONMENT ${library_path}=${photos++_home}/lib:${lhapdf_home}/lib:${HepMC_home}/lib:${pythia8-${sacrifice_${v}_pythia8}_home}/lib:$ENV{${library_path}}
 	       LHAPATH=${lhapdfsets_home}/../share/lhapdf/PDFsets
                LHAPDF_DATA_PATH=${lhapdf_home}/share/LHAPDF:${CMAKE_INSTALL_PREFIX}/lhapdf6sets/current/share/LHAPDF
+   DEPENDS lhapdf6sets.download
    )
 endforeach()
 
@@ -1643,7 +1650,7 @@ LCGPackage_Add(
 
 foreach(v ${jhu_native_version})
 LCG_add_test(jhu-${v}.genser-scripts
-  TEST_COMMAND $ENV{SHELL} -c "source ${jhu-${v}_home}/jhuenv-genser.sh
+  TEST_COMMAND ${SH_SHELL} -c "source ${jhu-${v}_home}/jhuenv-genser.sh
     cd \$JHU_HOME
     JHUGen VegasNc0=100000 VegasNc1=500000 VegasNc2=100"
 )
@@ -1688,19 +1695,20 @@ LCG_add_test(fastnlo_toolkit.download
               gzip -df ${fastnlo_toolkit_tabfile}.gz")
 
 foreach(v ${fastnlo_toolkit_native_version})
-  foreach(fnlotest "example" "yodaout" "cppread")
+ foreach(fnlotest "example" "yodaout" "cppread")
   LCG_add_test(fastnlo_toolkit-${v}.native-fnlo-tk-${fnlotest}
   IF ${lhapdfvers} VERSION_LESS 6.0 THEN
-       TEST_COMMAND $ENV{SHELL} -c "source ${fastnlo_toolkit-${v}_home}/fastnlo_toolkitenv-genser.sh \n fnlo-tk-${fnlotest} ${fastnlo_toolkit_tabfile} CT10nnlo.LHgrid"
+       TEST_COMMAND ${SH_SHELL} -c "source ${fastnlo_toolkit-${v}_home}/fastnlo_toolkitenv-genser.sh \n fnlo-tk-${fnlotest} ${fastnlo_toolkit_tabfile} CT10nnlo.LHgrid"
   ELSE
-       TEST_COMMAND $ENV{SHELL} -c "source ${fastnlo_toolkit-${v}_home}/fastnlo_toolkitenv-genser.sh \n fnlo-tk-${fnlotest} ${fastnlo_toolkit_tabfile} CT10nnlo"
+       TEST_COMMAND ${SH_SHELL} -c "source ${fastnlo_toolkit-${v}_home}/fastnlo_toolkitenv-genser.sh \n fnlo-tk-${fnlotest} ${fastnlo_toolkit_tabfile} CT10nnlo"
   ENDIF     
   ENVIRONMENT 
      LHAPDF_DATA_PATH=${lhapdf_home}/share/LHAPDF:${CMAKE_INSTALL_PREFIX}/lhapdf6sets/current/share/LHAPDF
      LHAPATH=${lhapdf_home}/../share/PDFsets
 
- DEPENDS fastnlo_toolkit.download)
-  endforeach()
+  DEPENDS fastnlo_toolkit.download lhapdf6sets.download
+  )
+ endforeach()
 endforeach()
 endif()
 
@@ -1824,7 +1832,7 @@ LCG_add_test(herwigpp-${v}.genser-zjets-rivet
               LHAPDF_DATA_PATH=${lhapdf_home}/share/LHAPDF:${CMAKE_INSTALL_PREFIX}/lhapdf6sets/current/share/LHAPDF
   POST_COMMAND ${CMAKE_COMMAND} -DAIDA2ROOT=${AIDA2ROOT} -DPython_cmd=${Python_cmd} -Dyoda_home=${yoda_home} -DINPUT=${CMAKE_BINARY_DIR}/generators/herwigpp-${v}.genser-zjets-rivet.yoda -P ${CMAKE_SOURCE_DIR}/cmake/scripts/yoda2root.cmake
        COMMAND ${Python_cmd} ${CMAKE_SOURCE_DIR}/generators/reference/reference.py ${CMAKE_BINARY_DIR}/generators/herwigpp.genser-zjets-rivet.root ${CMAKE_BINARY_DIR}/generators/herwigpp-${v}.genser-zjets-rivet.root "Path=XS,jet_HT" "limit=0.05,0.10"
-  DEPENDS rivet-tests.genser-prepare_references
+  DEPENDS rivet-tests.genser-prepare_references lhapdf6sets.download
   TIMEOUT ${timeout}
 )
 endforeach()
