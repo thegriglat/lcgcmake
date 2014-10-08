@@ -534,6 +534,7 @@ LCG_add_test(herwigpp-${v}.genser-LHC-W
   SOURCE_DIR herwig++/tests
   ENVIRONMENT ${library_path}=${herwig++-${v}_home}/lib:${thepeg-${herwig++_${v}_thepeg}_home}/lib/ThePEG:${HepMC_home}/lib:${lhapdf_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:$ENV{${library_path}}
   LHAPDF_DATA_PATH=${lhapdf_home}/share/LHAPDF:${CMAKE_INSTALL_PREFIX}/lhapdf6sets/current/share/LHAPDF
+  DEPENDS lhapdf6sets.download
 )
 
 # native herwig++ tests (not all of them are run)
