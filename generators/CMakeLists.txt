@@ -466,10 +466,16 @@ LCGPackage_Add(
 
 foreach(v ${thepeg_native_version})
   LCG_add_test(thepeg-${v}.genser-scripts-setupThePEG
-    PRE_COMMAND ${CMAKE_COMMAND} -E make_directory thepeg/${v}
+    PRE_COMMAND ${CMAKE_COMMAND} -E remove_directory thepeg/${v}
+        COMMAND ${CMAKE_COMMAND}
+                -Ddistr=${CMAKE_SOURCE_DIR}/generators/lhapdf6sets
+                -Drepo=http://www.hepforge.org/archive/lhapdf/pdfsets/${pdf_version}
+                -DPDFsets=cteq6l1
+                -Ddst_dir=${CMAKE_BINARY_DIR}/generators/thepeg/${v}
+                -P ${CMAKE_CURRENT_SOURCE_DIR}/lhapdf6sets/pdfsets.cmake
     TEST_COMMAND ${CMAKE_COMMAND} -E chdir thepeg/${v} ${SH_SHELL} -c "source ${thepeg-${v}_home}/thepegenv-genser.sh
       setupThePEG ${thepeg-${v}_home}/share/ThePEG/MultiLEP.in"
-    ENVIRONMENT LHAPDF_DATA_PATH=${lhapdf_home}/share/LHAPDF:${CMAKE_INSTALL_PREFIX}/lhapdf6sets/current/share/LHAPDF
+    ENVIRONMENT LHAPDF_DATA_PATH=${lhapdf_home}/share/LHAPDF:${CMAKE_INSTALL_PREFIX}/lhapdf6sets/current/share/LHAPDF:${CMAKE_BINARY_DIR}/generators/thepeg/${v}
     DEPENDS lhapdf6sets.download
   )
   LCG_add_test(thepeg-${v}.genser-scripts-runThePEG
