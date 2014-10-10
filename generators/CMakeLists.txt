@@ -31,8 +31,11 @@ foreach(v ${rivet_native_version})
 endforeach()
 
 foreach(v ${lhapdf_native_version})
-    set(lhapdf5_home ${CMAKE_INSTALL_PREFIX}/${lhapdf_directory_name}/${v}/${LCG_system})
-    set(lhapdfvers ${v})
+  set(lhapdf5_home ${CMAKE_INSTALL_PREFIX}/${lhapdf_directory_name}/${v}/${LCG_system})
+  set(lhapdfvers ${v})
+  if(v VERSION_EQUAL 6.0.0 OR v VERSION_GREATER 6.0.0)
+    set(lhapdf6vers ${v})
+  endif()
 endforeach()
 
 foreach(v ${pythia8_native_version})
@@ -105,8 +108,8 @@ LCGPackage_Add(
 
 )
 
-list(GET lhapdf_native_version -1 pdf_version_full)
-string(REGEX MATCH "[0-9]+.[0-9]+" pdf_version "${pdf_version_full}")
+#list(GET lhapdf_native_version -1 pdf_version_full)
+string(REGEX MATCH "[0-9]+.[0-9]+" pdf_version "${lhapdf6vers}")
 LCG_add_test(lhapdf6sets.download
    PRE_COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_INSTALL_PREFIX}/lhapdf6sets/current
        COMMAND ${CMAKE_COMMAND} -E echo "Download LHAPDF6 PDF sets (version ${pdf_version}) ..."
