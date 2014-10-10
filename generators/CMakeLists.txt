@@ -1515,7 +1515,7 @@ foreach(i WW HJ W_ew-BW Wbb Wj HJJ ZZ W_ew-BMNNP Dijet gg_H VBF_H Z W hvq Zj ST_
   LCG_add_test(powheg-box-${v}.native-${i}
     TEST_COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/powheg-box/tests/runtest.sh ${powheg-box-${v}_home}/bin ${powheg-box-${v}_home}/../share/sources ${i}
     ENVIRONMENT
-      ${library_path}=${lhapdf5_home}/lib:${fastjet_home}/lib:$ENV{${library_path}}
+      ${library_path}=${lhapdf_home}/lib:${fastjet_home}/lib:$ENV{${library_path}}
       LHAPATH=${lhapdfsets_home}/../share/PDFsets
       LHAPDF_DATA_PATH=${lhapdf_home}/share/LHAPDF:${CMAKE_INSTALL_PREFIX}/lhapdf6sets/current/share/LHAPDF
     DEPENDS lhapdf6sets.download
