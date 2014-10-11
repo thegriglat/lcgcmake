@@ -27,6 +27,7 @@ string(REPLACE "opt" "dbg" LCG_platform_dbg ${LCG_platform})
 foreach(v ${rivet_native_version})
   if(v VERSION_EQUAL 2.0.0 OR v VERSION_GREATER 2.0.0)
     set(rivet2_home ${CMAKE_INSTALL_PREFIX}/${rivet_directory_name}/${v}/${LCG_system})
+    set(rivet2_work_version ${v})
   endif()
 endforeach()
 
@@ -1724,7 +1725,8 @@ endif()
 
 ### tests of generators using rivet 2
 
-LCG_add_test(rivet-tests.genser-buildanalysis
+if(rivet2_work_version VERSION_EQUAL 2.2.0 OR rivet2_work_version VERSION_GREATER 2.2.0)
+ LCG_add_test(rivet-tests.genser-buildanalysis
   TEST_COMMAND $ENV{SHELL} -c "source ${rivet2_home}/rivetenv.${shell_ext}
          rivet-buildplugin RivetGENSER_MC_ZJETS.so ${CMAKE_SOURCE_DIR}/generators/rivetgenser/GENSER_MC_ZJETS.cc"
        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/generators/rivetgenser/GENSER_MC_ZJETS.info ${CMAKE_BINARY_DIR}/generators
@@ -1732,9 +1734,11 @@ LCG_add_test(rivet-tests.genser-buildanalysis
   ENVIRONMENT
     ${library_path}=${GSL_home}/lib:$ENV{${library_path}}
     PATH=${Python_home}/bin:$ENV{PATH}
-)
+ )
+endif()
 
 foreach(v ${pythia8_native_version})
+ if(rivet2_work_version VERSION_EQUAL 2.2.0 OR rivet2_work_version VERSION_GREATER 2.2.0)
  LCG_add_test(
   pythia8-${v}.genser-zjetsgenser-rivet
   PRE_COMMAND $ENV{SHELL} -c "cat ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/pythia8-zjets-rivet.params | sed \"s/Main:numberOfEvents.*/Main:numberOfEvents = ${rivettests_stat_size}/g\" | cat > ${CMAKE_BINARY_DIR}/generators/pythia8/tests/pythia8-${v}.zjetsgenser-rivet.params"
@@ -1752,6 +1756,7 @@ foreach(v ${pythia8_native_version})
   TIMEOUT ${timeout}
   DEPENDS rivet-tests.genser-prepare_references rivet-tests.genser-buildanalysis pythia8-${v}.build
  )
+ endif()
 
  LCG_add_test(
   pythia8-${v}.genser-zjets-rivet
