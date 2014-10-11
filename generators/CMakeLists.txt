@@ -902,19 +902,20 @@ LCGPackage_Add(
 )
 
 foreach(version ${evtgen_native_version})
-LCG_add_test(evtgen-${version}.genser-test TEST_COMMAND evtgen-${version}/tests/evtgen_test1 ${evtgen-${version}_home}/share/DECAY_2010.DEC ${evtgen-${version}_home}/share/evt.pdl ${CMAKE_CURRENT_SOURCE_DIR}/evtgen/tests/DDALITZ.DEC 10000
-                          BINARY_DIR evtgen-${version}/tests
-                          SOURCE_DIR evtgen/tests
-                          BUILD evtgen_test1
-                          BUILD_OPTIONS -DCMAKE_MODULE_PATH=${CMAKE_SOURCE_DIR}/cmake/modules
-                                        -DMYADDMODULEPATH=${cmaketools_home}/modules
-                                        -DROOTSYS=${ROOT_home}
-                                        -DEVTGEN_ROOT_DIR=${evtgen-${version}_home} -DPYTHIA8_ROOT_DIR=${pythia8-${evtgen_${version}_pythia8}_home}
-                                        -DPHOTOSPP_ROOT_DIR=${photos++_home} -DTAUOLAPP_ROOT_DIR=${tauola++-${evtgen_${version}_tauola++}_home}
-                                        -DHEPMC_ROOT_DIR=${HepMC_home}
-                          ENVIRONMENT ${library_path}=${evtgen-${version}_home}/lib:${photos++_home}/lib:${pythia8-${evtgen_${version}_pythia8}_home}/lib:${HepMC_home}/lib:${ROOT_home}/lib:$ENV{${library_path}} 
-                                      PYTHIA8DATA=${pythia8-${evtgen_${version}_pythia8}_home}/xmldoc)
-
+  LCG_add_test(evtgen-${version}.genser-test TEST_COMMAND evtgen-${version}/tests/evtgen_test1 ${evtgen-${version}_home}/share/DECAY_2010.DEC ${evtgen-${version}_home}/share/evt.pdl ${CMAKE_CURRENT_SOURCE_DIR}/evtgen/tests/DDALITZ.DEC 10000
+    BINARY_DIR evtgen-${version}/tests
+    SOURCE_DIR evtgen/tests
+    BUILD evtgen_test1
+    BUILD_OPTIONS -DCMAKE_MODULE_PATH=${CMAKE_SOURCE_DIR}/cmake/modules
+                  -DMYADDMODULEPATH=${cmaketools_home}/modules
+                  -DROOTSYS=${ROOT_home}
+                  -DEVTGEN_ROOT_DIR=${evtgen-${version}_home} -DPYTHIA8_ROOT_DIR=${pythia8-${evtgen_${version}_pythia8}_home}
+                  -DPHOTOSPP_ROOT_DIR=${photos++_home} -DTAUOLAPP_ROOT_DIR=${tauola++-${evtgen_${version}_tauola++}_home}
+                  -DHEPMC_ROOT_DIR=${HepMC_home}
+                  IF DEFINED root6_used THEN -DCMAKE_CXX_FLAGS=-std=c++11 ENDIF
+    ENVIRONMENT ${library_path}=${evtgen-${version}_home}/lib:${photos++_home}/lib:${pythia8-${evtgen_${version}_pythia8}_home}/lib:${HepMC_home}/lib:${ROOT_home}/lib:$ENV{${library_path}} 
+                PYTHIA8DATA=${pythia8-${evtgen_${version}_pythia8}_home}/xmldoc
+  )
 endforeach()
 
 foreach(version ${evtgen_native_version})
