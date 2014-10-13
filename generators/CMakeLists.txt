@@ -57,11 +57,6 @@ else()
   set (shell_ext "sh")
 endif()
 
-### Process -std=c++11 flag
-if (${ROOT_native_version} VERSION_GREATER 6 OR ${ROOT_native_version} VERSION_EQUAL 6 OR ${ROOT_native_version} MATCHES "^v6[.]*")
-  set(root6_used "YES")
-endif()
-
 #---lhapdfsets--------------------------------------------------------------------------------------
 message(STATUS "PDFsets to download: ${PDFsets}")
 LCGPackage_Add(
@@ -917,7 +912,7 @@ foreach(version ${evtgen_native_version})
                   -DEVTGEN_ROOT_DIR=${evtgen-${version}_home} -DPYTHIA8_ROOT_DIR=${pythia8-${evtgen_${version}_pythia8}_home}
                   -DPHOTOSPP_ROOT_DIR=${photos++_home} -DTAUOLAPP_ROOT_DIR=${tauola++-${evtgen_${version}_tauola++}_home}
                   -DHEPMC_ROOT_DIR=${HepMC_home}
-                  IF DEFINED root6_used THEN -DCMAKE_CXX_FLAGS=-std=c++11 ENDIF
+                  IF LCG_CPP11 THEN -DCMAKE_CXX_FLAGS=-std=c++11 ENDIF
     ENVIRONMENT ${library_path}=${evtgen-${version}_home}/lib:${photos++_home}/lib:${pythia8-${evtgen_${version}_pythia8}_home}/lib:${HepMC_home}/lib:${ROOT_home}/lib:$ENV{${library_path}} 
                 PYTHIA8DATA=${pythia8-${evtgen_${version}_pythia8}_home}/xmldoc
   )
@@ -1214,7 +1209,7 @@ LCGPackage_Add(
   CONFIGURE_COMMAND <VOID>
   BUILD_COMMAND make VERBOSE=1 HepMCdir=${HepMC_home} FastJetdir=${fastjet_home} ROOTSYS=${ROOT_home} CLHEPdir=${CLHEP_home} 
 			${library_path}=${CLHEP_home}/lib:$ENV{${library_path}}
-            IF DEFINED root6_used THEN
+            IF LCG_CPP11 THEN
               "CXXFLAGS=-fPIC -std=c++11"
             ENDIF
   INSTALL_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/lib <INSTALL_DIR>/lib
@@ -1239,7 +1234,7 @@ LCG_add_test(hepmcanalysis-${v}.build
    -DROOTSYS=${ROOT_home}
    -DLHAPDF_ROOT_DIR=${lhapdf_home}
    -DCLHEP_ROOT_DIR=${CLHEP_home}	
-  IF DEFINED root6_used THEN -DCMAKE_CXX_FLAGS=-std=c++11 ENDIF
+  IF LCG_CPP11 THEN -DCMAKE_CXX_FLAGS=-std=c++11 ENDIF
   ENVIRONMENT ${library_path}=${ROOT_home}/lib:${fastjet_home}/lib:${CLHEP_home}/lib:${HepMC_home}/lib:${pythia6_home}/lib:$ENV{${library_path}})
  
 
@@ -1285,7 +1280,7 @@ LCG_add_test(mctester-${v}.build
    -DPYTHIA8_ROOT_DIR=${pythia8_home}
    -DHEPMC_ROOT_DIR=${HepMC_home}
    -DROOTSYS=${ROOT_home}
-  IF DEFINED root6_used THEN -DCMAKE_CXX_FLAGS=-std=c++11 ENDIF
+  IF LCG_CPP11 THEN -DCMAKE_CXX_FLAGS=-std=c++11 ENDIF
    ENVIRONMENT ${library_path}=${mctester-${v}_home}/lib:${pythia8_home}/lib:${HepMC_home}/lib:$ENV{${library_path}})
   
 LCG_add_test(mctester-${v}.native-pythia
@@ -1491,7 +1486,7 @@ if(NOT APPLE)    #  (installation fails on MacOSX)
                -D__PYTHIA__=ON -D__SIBYLL__=ON  -D__PHOJET__=ON
                -D__DPMJET__=ON -D__QGSJETII04__=ON
      ENDIF
-     IF DEFINED root6_used THEN
+     IF LCG_CPP11 THEN
                -DCMAKE_CXX_FLAGS=-std=c++11
      ENDIF
     DEPENDS HepMC Boost ROOT
