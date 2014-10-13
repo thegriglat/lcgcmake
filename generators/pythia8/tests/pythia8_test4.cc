@@ -7,7 +7,11 @@
 //pythia header files
 #ifdef PYTHIA8NEWVERS
   #include "Pythia8/Pythia.h"
-  #include "Pythia8/Pythia8ToHepMC.h"
+  #ifdef PYTHIA8200
+    #include "Pythia8Plugins/HepMC2.h"
+  #else
+    #include "Pythia8/Pythia8ToHepMC.h"
+  #endif
 #else
   #include "Pythia.h"
   #include "HepMCInterface.h"
@@ -98,7 +102,13 @@ int main(int argc, char* argv[])
   pythia.readString("24:onMode = off");
   pythia.readString("24:onIfAny = 15");
   //pythia.readString("23:onIfMatch = 15 -15");
-  pythia.init( -2212, -2212, 14000.0); //proton proton collisions
+  //proton proton collisions:
+#ifdef PYTHIA8200
+  pythia.readString("Beams:eCM = 14000.");
+  pythia.init();
+#else
+  pythia.init( 2212, 2212, 14000.);
+#endif
 
   // Event loop -----------------------------------------------------
 
@@ -145,5 +155,9 @@ int main(int argc, char* argv[])
   ofstream testi("testi_pythia8.dat");
   testi << "pythia8_test4 1  " << rpyt << "    " << erpyt << " " << std::endl;
 
-  pythia.statistics();
+#ifdef PYTHIA8200
+  pythia.stat();
+#else
+  pythia.statistics();  
+#endif
 }

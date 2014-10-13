@@ -18,7 +18,13 @@ int main() {
   pythia.readString("PhaseSpace:pTHatMin = 20.");  
   pythia.readString("Next:numberShowEvent = 0");
 
+#ifdef PYTHIA8200
+  pythia.readString("Beams:eCM = 14000.");
+  pythia.init();
+#else
   pythia.init( 2212, 2212, 14000.);
+#endif
+
   Hist mult("charged multiplicity", 100, -0.5, 799.5);
   int ntotCharged = 0;
   const int nEvent=1000;
@@ -37,7 +43,11 @@ int main() {
     nCharged_sv[iEvent] = nCharged;
   // End of event loop. Statistics. Histogram. Done.
   }
-  pythia.statistics();
+#ifdef PYTHIA8200
+  pythia.stat();
+#else
+  pythia.statistics();  
+#endif
   cout << mult; 
   ofstream testi("testi_pythia8.dat");
   double val, errval;

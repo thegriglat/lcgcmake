@@ -10,7 +10,11 @@
 //
 #ifdef PYTHIA8NEWVERS
   #include "Pythia8/Pythia.h"
-  #include "Pythia8/Pythia8ToHepMC.h"
+  #ifdef PYTHIA8200
+    #include "Pythia8Plugins/HepMC2.h"
+  #else
+    #include "Pythia8/Pythia8ToHepMC.h"
+  #endif
 #else
   #include "Pythia.h"
   #include "HepMCInterface.h" 
@@ -53,7 +57,13 @@ int main() {
   myLHA.openLHEF("Zg_pythia8.lhe");
 
   //LHC initialization.
+
+#ifdef PYTHIA8200
+  pythia.readString("Beams:eCM = 14000.");
+  pythia.init();
+#else
   pythia.init( 2212, 2212, 14000.);
+#endif
 
   // Choose decay modes for Z0 : switch off everything but Z0 -> leptons.
   pythia.readString("23:onMode = off");
@@ -162,7 +172,11 @@ int main() {
   }
 
   // Final statistics.
-  pythia.statistics();
+#ifdef PYTHIA8200
+  pythia.stat();
+#else
+  pythia.statistics();  
+#endif
 
   // Update the cross section info based on Monte Carlo integration during run.
   myLHA.updateSigma();

@@ -2,7 +2,11 @@
 
 #ifdef PYTHIA8NEWVERS
   #include "Pythia8/Pythia.h"
-  #include "Pythia8/Pythia8ToHepMC.h"
+  #ifdef PYTHIA8200
+    #include "Pythia8Plugins/HepMC2.h"
+  #else
+    #include "Pythia8/Pythia8ToHepMC.h"
+  #endif
 #else
   #include "Pythia.h"
   #include "HepMCInterface.h"
@@ -113,9 +117,11 @@ int main(int argc, char* argv[])
   }
   
   // End of event loop. Statistics. 
+#ifdef PYTHIA8200
+  pythia.stat();
+#else
   pythia.statistics();
-
+#endif
   // Done.
   return 0;
 }
-

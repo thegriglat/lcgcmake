@@ -8,7 +8,11 @@
 //
 #ifdef PYTHIA8NEWVERS
   #include "Pythia8/Pythia.h"
-  #include "Pythia8/Pythia8ToHepMC.h"
+  #ifdef PYTHIA8200
+    #include "Pythia8Plugins/HepMC2.h"
+  #else
+    #include "Pythia8/Pythia8ToHepMC.h"
+  #endif
 #else
   #include "Pythia.h"
   #include "HepMCInterface.h"
@@ -52,7 +56,13 @@ int main() {
   bool showAllSettings = settings.flag("Main:showAllSettings");
   bool showAllParticleData = settings.flag("Main:showAllParticleData");
 
+#ifdef PYTHIA8200
+  pythia.settings.mode("Beams:frameType", 4);
+  pythia.settings.word("Beams:LHEF", "Zg_pythia8.lhe");
+  pythia.init();
+#else
   pythia.init("Zg_pythia8.lhe");
+#endif
 
   // Choose decay modes for Z0 : switch off everything but Z0 -> leptons.
   pythia.readString("23:onMode = off");
@@ -105,7 +115,11 @@ int main() {
   }
 
   // Final statistics.
-  pythia.statistics();
+#ifdef PYTHIA8200
+  pythia.stat();
+#else
+  pythia.statistics();  
+#endif
 
   ofstream testi("testi_pythia8.dat");
   double val, errval;
