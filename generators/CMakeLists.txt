@@ -261,14 +261,22 @@ LCG_add_test(pythia8-${v}.genser-main14_genser
   TEST_COMMAND pythia8/tests/${v}/pythia8_main14_genser ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/ref-pythia8-186-main14-xsec-x86_64-slc6-gcc48-opt.dat
   ENVIRONMENT
     ${library_path}=${pythia8-${v}_home}/lib:${HepMC_home}/lib:$ENV{${library_path}}
-    PYTHIA8DATA=${pythia8-${v}_home}/xmldoc
+    IF v VERSION_LESS 200 THEN
+      PYTHIA8DATA=${pythia8-${v}_home}/xmldoc
+    ELSE
+      PYTHIA8DATA=${pythia8-${v}_home}/share/Pythia8/xmldoc
+    ENDIF
   DEPENDS pythia8-${v}.build)
 
 LCG_add_test(pythia8-${v}.native-main01
   TEST_COMMAND pythia8/tests/${v}/native-main01
   ENVIRONMENT
     ${library_path}=${pythia8-${v}_home}/lib:$ENV{${library_path}}
-    PYTHIA8DATA=${pythia8-${v}_home}/xmldoc
+    IF v VERSION_LESS 200 THEN
+      PYTHIA8DATA=${pythia8-${v}_home}/xmldoc
+    ELSE
+      PYTHIA8DATA=${pythia8-${v}_home}/share/Pythia8/xmldoc
+    ENDIF
   DEPENDS pythia8-${v}.build)
 
 LCG_add_test(pythia8-${v}.genser-test1
@@ -1781,7 +1789,11 @@ foreach(v ${pythia8_native_version})
   ENVIRONMENT PATH=${Python_home}/bin:$ENV{PATH}
               ${library_path}=${Python_home}/lib:${GSL_home}/lib:${rivet2_home}/lib:${yoda_home}/lib:${HepMC_home}/lib:${fastjet_home}/lib:${yamlcpp_home}/lib:${ROOT_home}/lib:${pythia8_home}/lib:$ENV{${library_path}}
               PYTHONPATH=${Python_home}/bin:${rivet2_home}/lib/python${Python_config_version_twodigit}/site-packages/:${yoda_home}/lib/python${Python_config_version_twodigit}/site-packages/:${ROOT_home}/lib:$ENV{PYTHONPATH}
-              PYTHIA8DATA=${pythia8-${v}_home}/xmldoc
+              IF v VERSION_LESS 200 THEN
+                PYTHIA8DATA=${pythia8-${v}_home}/xmldoc
+              ELSE
+                PYTHIA8DATA=${pythia8-${v}_home}/share/Pythia8/xmldoc
+              ENDIF
               RIVET_ANALYSIS_PATH=${CMAKE_BINARY_DIR}/generators
   POST_COMMAND ${CMAKE_COMMAND} -DAIDA2ROOT=${AIDA2ROOT} -DPython_cmd=${Python_cmd} -Dyoda_home=${yoda_home} -DINPUT=${CMAKE_BINARY_DIR}/generators/pythia8-${v}.genser-zjetsgenser-rivet.yoda -P ${CMAKE_SOURCE_DIR}/cmake/scripts/yoda2root.cmake
        COMMAND ${CMAKE_SOURCE_DIR}/generators/reference/riv2html.sh ${rivet2_home} pythia8 ${v} zjetsgenser ${LCG_VERSION} ${LCG_platform}
@@ -1799,7 +1811,11 @@ foreach(v ${pythia8_native_version})
   ENVIRONMENT PATH=${Python_home}/bin:$ENV{PATH}
                    ${library_path}=${Python_home}/lib:${GSL_home}/lib:${rivet2_home}/lib:${yoda_home}/lib:${HepMC_home}/lib:${fastjet_home}/lib:${yamlcpp_home}/lib:${ROOT_home}/lib:${pythia8_home}/lib:$ENV{${library_path}}
                    PYTHONPATH=${Python_home}/bin:${rivet2_home}/lib/python${Python_config_version_twodigit}/site-packages/:${yoda_home}/lib/python${Python_config_version_twodigit}/site-packages/:${ROOT_home}/lib:$ENV{PYTHONPATH}
-            PYTHIA8DATA=${pythia8-${v}_home}/xmldoc
+              IF v VERSION_LESS 200 THEN
+                PYTHIA8DATA=${pythia8-${v}_home}/xmldoc
+              ELSE
+                PYTHIA8DATA=${pythia8-${v}_home}/share/Pythia8/xmldoc
+              ENDIF
   POST_COMMAND ${CMAKE_COMMAND} -DAIDA2ROOT=${AIDA2ROOT} -DPython_cmd=${Python_cmd} -Dyoda_home=${yoda_home} -DINPUT=${CMAKE_BINARY_DIR}/generators/pythia8-${v}.genser-zjets-rivet.yoda -P ${CMAKE_SOURCE_DIR}/cmake/scripts/yoda2root.cmake
        COMMAND ${CMAKE_SOURCE_DIR}/generators/reference/riv2html.sh ${rivet2_home} pythia8 ${v} zjets ${LCG_VERSION} ${LCG_platform}
        COMMAND ${Python_cmd} ${CMAKE_SOURCE_DIR}/generators/reference/reference.py ${CMAKE_BINARY_DIR}/generators/pythia8.genser-zjets-rivet.root ${CMAKE_BINARY_DIR}/generators/pythia8-${v}.genser-zjets-rivet.root "Path=XS,jet_HT" "limit=0.05,0.10"
