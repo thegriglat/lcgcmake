@@ -32,10 +32,15 @@ foreach(v ${rivet_native_version})
 endforeach()
 
 foreach(v ${lhapdf_native_version})
-  set(lhapdf5_home ${CMAKE_INSTALL_PREFIX}/${lhapdf_directory_name}/${v}/${LCG_system})
   set(lhapdfvers ${v})
   if(v VERSION_EQUAL 6.0.0 OR v VERSION_GREATER 6.0.0)
+    set(lhapdf6_home ${CMAKE_INSTALL_PREFIX}/${lhapdf_directory_name}/${v}/${LCG_system})
     set(lhapdf6vers ${v})
+    set(lhapdf6dependency lhapdf-${v})
+  else()
+    set(lhapdf5_home ${CMAKE_INSTALL_PREFIX}/${lhapdf_directory_name}/${v}/${LCG_system})    
+    set(lhapdf5vers ${v})
+    set(lhapdf5dependency lhapdf-${v})  
   endif()
 endforeach()
 
@@ -215,7 +220,7 @@ LCGPackage_Add(
     CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --with-hepmc=${HepMC_home} --enable-shared --lcgplatform=${LCG_platform}
   ENDIF
   IF <pythia8_<NATIVE_VERSION>_author> MATCHES "HEAD$" OR <pythia8_<NATIVE_VERSION>_author> MATCHES "^2[0-9][0-9]" THEN
-    CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --with-hepmc2=${HepMC_home} --with-lhapdf6=${lhapdf_home} --with-boost=${Boost_home} --enable-shared
+    CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --with-hepmc2=${HepMC_home} --with-lhapdf6=${lhapdf6_home} --with-lhapdf5=${lhapdf5_home} --with-boost=${Boost_home} --enable-shared
   ENDIF
   BUILD_COMMAND ${MAKE}
   IF <pythia8_<NATIVE_VERSION>_author> MATCHES "HEAD81" OR <pythia8_<NATIVE_VERSION>_author> MATCHES "^1[0-9][0-9]" THEN
@@ -235,7 +240,7 @@ LCGPackage_Add(
     DEPENDS HepMC lhapdf fastjet
   ENDIF
   IF <pythia8_<NATIVE_VERSION>_author> MATCHES "HEAD$" OR <pythia8_<NATIVE_VERSION>_author> MATCHES "^2[0-9][0-9]" THEN
-    DEPENDS HepMC lhapdf Boost
+    DEPENDS HepMC ${lhapdf5dependency} ${lhapdf6dependency} Boost
   ENDIF
 )
 
