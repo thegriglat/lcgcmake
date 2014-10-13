@@ -202,25 +202,41 @@ LCGPackage_Add(
 #---pythia8------------------------------------------------------------------------------------------
 LCGPackage_Add(
   pythia8
-  IF <pythia8_<NATIVE_VERSION>_author> VERSION_EQUAL "HEAD" THEN
+  IF <pythia8_<NATIVE_VERSION>_author> MATCHES "HEAD81" THEN
     SVN_REPOSITORY https://pythia8.hepforge.org/svn/pythia81/trunk
-  ELSE
+  ENDIF
+  IF <pythia8_<NATIVE_VERSION>_author> MATCHES "HEAD$" THEN
+    SVN_REPOSITORY https://pythia8.hepforge.org/svn/pythia82/trunk
+  ENDIF
+  IF <pythia8_<NATIVE_VERSION>_author> MATCHES "[0-9][0-9][0-9]" THEN
     URL ${gen_url}/pythia8<pythia8_<NATIVE_VERSION>_author>.tgz
   ENDIF
-  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --with-hepmc=${HepMC_home} --enable-shared --lcgplatform=${LCG_platform}
+  IF <pythia8_<NATIVE_VERSION>_author> MATCHES "HEAD81" OR <pythia8_<NATIVE_VERSION>_author> MATCHES "^1[0-9][0-9]" THEN
+    CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --with-hepmc=${HepMC_home} --enable-shared --lcgplatform=${LCG_platform}
+  ENDIF
+  IF <pythia8_<NATIVE_VERSION>_author> MATCHES "HEAD$" OR <pythia8_<NATIVE_VERSION>_author> MATCHES "^2[0-9][0-9]" THEN
+    CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --with-hepmc2=${HepMC_home} --with-lhapdf6=${lhapdf_home} --with-boost=${Boost_home} --enable-shared
+  ENDIF
   BUILD_COMMAND ${MAKE}
-  INSTALL_COMMAND $ENV{SHELL} -c "sed -i -e 's/cp -r/cp -rf/g' <SOURCE_DIR>/Makefile"
-          COMMAND ${CMAKE_COMMAND} -E chdir <SOURCE_DIR> ${MAKE} install
-          COMMAND ${CMAKE_COMMAND} -E create_symlink sources/xmldoc <INSTALL_DIR>/../share/xmldoc
+  IF <pythia8_<NATIVE_VERSION>_author> MATCHES "HEAD81" OR <pythia8_<NATIVE_VERSION>_author> MATCHES "^1[0-9][0-9]" THEN
+    INSTALL_COMMAND $ENV{SHELL} -c "sed -i -e 's/cp -r/cp -rf/g' <SOURCE_DIR>/Makefile"
+            COMMAND ${CMAKE_COMMAND} -E chdir <SOURCE_DIR> ${MAKE} install
+            COMMAND ${CMAKE_COMMAND} -E create_symlink sources/xmldoc <INSTALL_DIR>/../share/xmldoc
+  ENDIF
   BUILD_IN_SOURCE 1
-  CONFIGURE_EXAMPLES_COMMAND <SOURCE_DIR>/examples/configure
-                             --with-pythia8=<INSTALL_DIR>
-                             --with-lhapdf=${lhapdf_home}/lib/archive
-                             --with-fastjet=${fastjet_home}
-  BUILD_EXAMPLES_COMMAND ${MAKE} -C <SOURCE_DIR>/examples main01 main03
-  INSTALL_EXAMPLES_COMMAND ${CMAKE_COMMAND} -E make_directory <INSTALL_DIR>/bin
-                   COMMAND ${CMAKE_COMMAND} -E chdir <SOURCE_DIR>/examples cp bin/main01.exe bin/main03.exe main03.cmnd <INSTALL_DIR>/bin
-  DEPENDS HepMC lhapdf fastjet
+  IF <pythia8_<NATIVE_VERSION>_author> MATCHES "HEAD81" OR <pythia8_<NATIVE_VERSION>_author> MATCHES "^1[0-9][0-9]" THEN
+    CONFIGURE_EXAMPLES_COMMAND <SOURCE_DIR>/examples/configure
+                               --with-pythia8=<INSTALL_DIR>
+                               --with-lhapdf=${lhapdf_home}/lib/archive
+                               --with-fastjet=${fastjet_home}
+    BUILD_EXAMPLES_COMMAND ${MAKE} -C <SOURCE_DIR>/examples main01 main03
+    INSTALL_EXAMPLES_COMMAND ${CMAKE_COMMAND} -E make_directory <INSTALL_DIR>/bin
+                     COMMAND ${CMAKE_COMMAND} -E chdir <SOURCE_DIR>/examples cp bin/main01.exe bin/main03.exe main03.cmnd <INSTALL_DIR>/bin
+    DEPENDS HepMC lhapdf fastjet
+  ENDIF
+  IF <pythia8_<NATIVE_VERSION>_author> MATCHES "HEAD$" OR <pythia8_<NATIVE_VERSION>_author> MATCHES "^2[0-9][0-9]" THEN
+    DEPENDS HepMC lhapdf Boost
+  ENDIF
 )
 
 foreach(v ${pythia8_native_version})
@@ -385,23 +401,6 @@ foreach(v ${hepmc3_native_version})
  )
 
 endforeach()
-
-
-
-#---pythia82------------------------------------------------------------------------------------------
-LCGPackage_Add(
-  pythia82
-  IF <pythia82_<NATIVE_VERSION>_author> VERSION_EQUAL "HEAD" THEN
-    SVN_REPOSITORY https://pythia8.hepforge.org/svn/pythia82/trunk
-  ELSE
-    URL ${gen_url}/pythia8<pythia82_<NATIVE_VERSION>_author>.tgz
-  ENDIF
-  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --with-hepmc2=${HepMC_home} --with-lhapdf6=${lhapdf_home} --with-boost=${Boost_home} --enable-shared
-  BUILD_COMMAND ${MAKE}
-  BUILD_IN_SOURCE 1
-  DEPENDS HepMC lhapdf Boost
-)
-
 
 #---vincia------------------------------------------------------------------------------------------
 
