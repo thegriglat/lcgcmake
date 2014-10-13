@@ -83,23 +83,25 @@ int main() {
 
   // Extract settings to be used in the main program.
   int nEvent = settings.mode("Main:numberOfEvents");
-  int nList = settings.mode("Main:numberToList");
-  int nShow = settings.mode("Main:timesToShow");
+  //int nList = settings.mode("Main:numberToList");
+  int nList = 1;
+  //int nShow = settings.mode("Main:timesToShow");
+  int nShow = 100;
   int nAbort = settings.mode("Main:timesAllowErrors");
-  bool showChangedSettings = settings.flag("Main:showChangedSettings");
-  bool showAllSettings = settings.flag("Main:showAllSettings");
+  bool showChangedSettings = settings.flag("Init:showChangedSettings");
+  //bool showAllSettings = settings.flag("Main:showAllSettings");
   bool showAllParticleData = settings.flag("Main:showAllParticleData");
 
   // List changed data.
-  if (showChangedSettings) settings.listChanged();
-  if (showAllSettings) settings.listAll();
+  //if (showChangedSettings) settings.listChanged();
+  //if (showAllSettings) settings.listAll();
 
   // List particle data.  
 //  if (showAllParticleData) ParticleDataTable::listAll();
   if (showAllParticleData) pythia.particleData.listAll();
 
   // Begin event loop.
-  int nShowPace = max(1,nEvent/nShow); 
+  int nShowPace = max(1,nEvent/nShow);
   int iAbort = 0; 
   double pdevmaxz=0.;
   double pdevmaxxy=0.;

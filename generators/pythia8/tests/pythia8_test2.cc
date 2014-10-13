@@ -49,8 +49,8 @@ int main() {
 
   // Extract settings to be used in the main program.
   int nEvent = settings.mode("Main:numberOfEvents");
-  int nList = settings.mode("Main:numberToList");
-  int nShow = settings.mode("Main:timesToShow");
+  int nList = settings.mode("Next:numberShowEvent");
+  int nShow = settings.mode("Next:numberCount");
   int nAbort = settings.mode("Main:timesAllowErrors");
   bool showChangedSettings = settings.flag("Main:showChangedSettings");
   bool showAllSettings = settings.flag("Main:showAllSettings");
@@ -76,7 +76,7 @@ int main() {
   if (showAllParticleData) pythia.particleData.listAll();
 
   // Begin event loop.
-  int nShowPace = max(1,nEvent/nShow); 
+  int nShowPace = max(1,nShow);
   int iAbort = 0; 
   for (int iEvent = 0; iEvent < nEvent; ++iEvent) {
     if (iEvent%nShowPace == 0) cout << " Now begin event " 

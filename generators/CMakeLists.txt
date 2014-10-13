@@ -276,7 +276,11 @@ LCG_add_test(pythia8-${v}.genser-test1
   POST_COMMAND ${CMAKE_COMMAND} -E copy pythia8/tests/${v}/testi_pythia8.dat pythia8/tests/${v}/test_pythia8.dat
   ENVIRONMENT
     ${library_path}=${pythia8-${v}_home}/lib:${HepMC_home}/lib:$ENV{${library_path}}
-    PYTHIA8DATA=${pythia8-${v}_home}/xmldoc
+    IF v VERSION_LESS 200 THEN
+      PYTHIA8DATA=${pythia8-${v}_home}/xmldoc
+    ELSE
+      PYTHIA8DATA=${pythia8-${v}_home}/share/Pythia8/xmldoc
+    ENDIF
   DEPENDS pythia8-${v}.build)
 
 LCG_add_test(pythia8-${v}.genser-test2
@@ -285,7 +289,11 @@ LCG_add_test(pythia8-${v}.genser-test2
   POST_COMMAND $ENV{SHELL} -c "cat pythia8/tests/${v}/testi_pythia8.dat >> pythia8/tests/${v}/test_pythia8.dat"
   ENVIRONMENT
     ${library_path}=${pythia8-${v}_home}/lib:${HepMC_home}/lib:$ENV{${library_path}}
-    PYTHIA8DATA=${pythia8-${v}_home}/xmldoc
+    IF v VERSION_LESS 200 THEN
+      PYTHIA8DATA=${pythia8-${v}_home}/xmldoc
+    ELSE
+      PYTHIA8DATA=${pythia8-${v}_home}/share/Pythia8/xmldoc
+    ENDIF
   DEPENDS pythia8-${v}.build pythia8-${v}.genser-test1)
 
 LCG_add_test(pythia8-${v}.genser-test3
@@ -293,7 +301,11 @@ LCG_add_test(pythia8-${v}.genser-test3
   POST_COMMAND $ENV{SHELL} -c "cat pythia8/tests/${v}/testi_pythia8.dat >> pythia8/tests/${v}/test_pythia8.dat"
   ENVIRONMENT
     ${library_path}=${pythia8-${v}_home}/lib:${HepMC_home}/lib:$ENV{${library_path}}
-    PYTHIA8DATA=${pythia8-${v}_home}/xmldoc
+    IF v VERSION_LESS 200 THEN
+      PYTHIA8DATA=${pythia8-${v}_home}/xmldoc
+    ELSE
+      PYTHIA8DATA=${pythia8-${v}_home}/share/Pythia8/xmldoc
+    ENDIF
   DEPENDS pythia8-${v}.build pythia8-${v}.genser-test1)
 
 LCG_add_test(pythia8-${v}.genser-test4
@@ -301,7 +313,11 @@ LCG_add_test(pythia8-${v}.genser-test4
   POST_COMMAND $ENV{SHELL} -c "cat pythia8/tests/${v}/testi_pythia8.dat >> pythia8/tests/${v}/test_pythia8.dat"
   ENVIRONMENT
     ${library_path}=${pythia8-${v}_home}/lib:${HepMC_home}/lib:$ENV{${library_path}}
-    PYTHIA8DATA=${pythia8-${v}_home}/xmldoc
+    IF v VERSION_LESS 200 THEN
+      PYTHIA8DATA=${pythia8-${v}_home}/xmldoc
+    ELSE
+      PYTHIA8DATA=${pythia8-${v}_home}/share/Pythia8/xmldoc
+    ENDIF
   DEPENDS pythia8-${v}.build pythia8-${v}.genser-test1)
 
 LCG_add_test(pythia8-${v}.compare
