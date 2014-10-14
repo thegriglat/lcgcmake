@@ -16,14 +16,26 @@ int main() {
   pythia.readString("WeakBosonAndParton:qqbar2gmZg = on");
   pythia.readString("WeakBosonAndParton:qg2gmZq = on");
   pythia.readString("PhaseSpace:pTHatMin = 20.");
+  pythia.readString("Tune:ee = 3");
+  pythia.readString("Tune:pp = 5");
+
+#ifdef PYTHIA8200
+  pythia.readString("PDF:pSet = LHAPDF6:CT10");
+#else
   pythia.readString("PDF:useLHAPDF = on");
   pythia.readString("PDF:LHAPDFset = CT10");
+#endif
 
   // suppress full listing of first events in pythia8 > 160
   pythia.readString("Next:numberShowEvent = 0");
 
   //LHC initialization.
+#ifdef PYTHIA8200
+  pythia.readString("Beams:eCM = 14000.");
+  pythia.init();
+#else
   pythia.init( 2212, 2212, 14000.);
+#endif
 
   // Choose decay modes for Z0 : switch off everything but Z0 -> leptons.
   pythia.readString("23:onMode = off");
@@ -38,10 +50,10 @@ int main() {
 
   // Extract settings to be used in the main program.
   int nEvent = settings.mode("Main:numberOfEvents");
-  int nList = settings.mode("Main:numberToList");
-  int nShow = settings.mode("Main:timesToShow");
+  int nList = settings.mode("Next:numberShowEvent");
+  int nShow = settings.mode("Next:numberCount");
   int nAbort = settings.mode("Main:timesAllowErrors");
-  bool showChangedSettings = settings.flag("Main:showChangedSettings");
+  bool showChangedSettings = settings.flag("Init:showChangedSettings");
   bool showAllSettings = settings.flag("Main:showAllSettings");
   bool showAllParticleData = settings.flag("Main:showAllParticleData");
 
@@ -50,11 +62,10 @@ int main() {
   if (showAllSettings) settings.listAll();
 
   // List particle data.  
-//  if (showAllParticleData) ParticleDataTable::listAll();
   if (showAllParticleData) pythia.particleData.listAll();
 
   // Begin event loop.
-  int nShowPace = max(1,nEvent/nShow); 
+  int nShowPace = max(1,nShow);
   int iAbort = 0; 
   double pdevmaxz=0.;
   double pdevmaxxy=0.;
@@ -107,7 +118,11 @@ int main() {
   }
 
   // Final statistics.
+#ifdef PYTHIA8200
+  pythia.stat();
+#else
   pythia.statistics();
+#endif
 
   nFinAverage /= ((double)nEvent);
   nChAverage /= ((double)nEvent);

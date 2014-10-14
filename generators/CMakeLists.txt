@@ -202,6 +202,8 @@ LCGPackage_Add(
   ENDIF
 )
 
+#FIXME: lhapdf6 does not depend on yaml-cpp starting from the version 6.1.0; to be removed for the version next to 6.1.4
+
 #---lhapdf5 and lhapdf6 moved after pythia8 tests
 
 #---pythia8------------------------------------------------------------------------------------------
@@ -388,7 +390,8 @@ foreach(v ${lhapdf_native_version})
       SOURCE_DIR lhapdf6/tests/pyt8
       BUILD lhapdf6_pyt8
       BUILD_OPTIONS
-       -DCMAKE_MODULE_PATH=${cmaketools_home}/modules
+       -DCMAKE_MODULE_PATH=${CMAKE_SOURCE_DIR}/cmake/modules
+       -DCMAKE_MODULE_PATH2=${cmaketools_home}/modules
        -DLHAPDF6_ROOT_DIR=${lhapdf-${v}_home}
        -DBOOST_ROOT=${Boost_home}
        -DBoost_INCLUDE_DIR=${Boost_home_include}
@@ -397,7 +400,11 @@ foreach(v ${lhapdf_native_version})
       ENVIRONMENT
         ${library_path}=${lhapdf-${v}_home}/lib:${pythia8_home}/lib:${Boost_home}/lib:${yamlcpp_home}/lib:$ENV{${library_path}}
         LHAPDF_DATA_PATH=${lhapdf-${v}_home}/share/LHAPDF:${CMAKE_INSTALL_PREFIX}/lhapdf6sets/current/share/LHAPDF
-        PYTHIA8DATA=${pythia8_home}/xmldoc
+        IF pythia8_work_version MATCHES "HEAD81" OR pythia8_work_version MATCHES "^1[0-9][0-9]" THEN
+          PYTHIA8DATA=${pythia8_home}/xmldoc
+        ELSE
+          PYTHIA8DATA=${pythia8_home}/share/Pythia8/xmldoc
+        ENDIF
       POST_COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/chi.c .
            COMMAND ${CMAKE_COMMAND} -E copy testi_lhapdf6.dat test_lhapdf6.dat
            COMMAND ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/cmpr.sh lhapdf6 ${CMAKE_SOURCE_DIR}/generators/lhapdf6/tests/pyt8/reference.dat ${v} ${LCG_VERSION} ${LCG_platform}

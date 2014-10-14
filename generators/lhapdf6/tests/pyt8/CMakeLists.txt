@@ -1,9 +1,13 @@
 cmake_minimum_required(VERSION 2.8 FATAL_ERROR)
 project(lhapdf6-tests CXX)
 
-list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/../../../cmake/modules)
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH2})
 
 find_package(Pythia8 REQUIRED)
+
+if(NOT (PYTHIA8_VERSION VERSION_LESS 200))
+  add_definitions(-DPYTHIA8200)
+endif()
 
 find_package(Lhapdf6 REQUIRED)
 find_package(Yamlcpp REQUIRED)
