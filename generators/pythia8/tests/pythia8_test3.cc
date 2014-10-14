@@ -17,6 +17,8 @@ int main() {
   pythia.readString("HardQCD:all = on");    
   pythia.readString("PhaseSpace:pTHatMin = 20.");  
   pythia.readString("Next:numberShowEvent = 0");
+  pythia.readString("Tune:ee = 3");
+  pythia.readString("Tune:pp = 5");
 
 #ifdef PYTHIA8200
   pythia.readString("Beams:eCM = 14000.");

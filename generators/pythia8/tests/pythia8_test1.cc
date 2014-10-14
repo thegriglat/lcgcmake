@@ -47,6 +47,8 @@ int main() {
   pythia.readString("WeakBosonAndParton:qqbar2gmZg = on");
   pythia.readString("WeakBosonAndParton:qg2gmZq = on");
   pythia.readString("PhaseSpace:pTHatMin = 20.");
+  pythia.readString("Tune:ee = 3");
+  pythia.readString("Tune:pp = 5");
 
   // suppress full listing of first events in pythia8 > 160
   pythia.readString("Next:numberShowEvent = 0");
@@ -83,25 +85,22 @@ int main() {
 
   // Extract settings to be used in the main program.
   int nEvent = settings.mode("Main:numberOfEvents");
-  //int nList = settings.mode("Main:numberToList");
-  int nList = 1;
-  //int nShow = settings.mode("Main:timesToShow");
-  int nShow = 100;
+  int nList = settings.mode("Next:numberShowEvent");
+  int nShow = settings.mode("Next:numberCount");
   int nAbort = settings.mode("Main:timesAllowErrors");
   bool showChangedSettings = settings.flag("Init:showChangedSettings");
-  //bool showAllSettings = settings.flag("Main:showAllSettings");
+  bool showAllSettings = settings.flag("Main:showAllSettings");
   bool showAllParticleData = settings.flag("Main:showAllParticleData");
 
   // List changed data.
-  //if (showChangedSettings) settings.listChanged();
-  //if (showAllSettings) settings.listAll();
+  if (showChangedSettings) settings.listChanged();
+  if (showAllSettings) settings.listAll();
 
   // List particle data.  
-//  if (showAllParticleData) ParticleDataTable::listAll();
   if (showAllParticleData) pythia.particleData.listAll();
 
   // Begin event loop.
-  int nShowPace = max(1,nEvent/nShow);
+  int nShowPace = max(1,nShow);
   int iAbort = 0; 
   double pdevmaxz=0.;
   double pdevmaxxy=0.;

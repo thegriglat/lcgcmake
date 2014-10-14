@@ -261,7 +261,7 @@ LCG_add_test(pythia8-${v}.genser-main14_genser
   TEST_COMMAND pythia8/tests/${v}/pythia8_main14_genser ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/ref-pythia8-186-main14-xsec-x86_64-slc6-gcc48-opt.dat
   ENVIRONMENT
     ${library_path}=${pythia8-${v}_home}/lib:${HepMC_home}/lib:$ENV{${library_path}}
-    IF v VERSION_LESS 200 THEN
+    IF v MATCHES "HEAD81" OR v MATCHES "^1[0-9][0-9]" THEN
       PYTHIA8DATA=${pythia8-${v}_home}/xmldoc
     ELSE
       PYTHIA8DATA=${pythia8-${v}_home}/share/Pythia8/xmldoc
@@ -272,7 +272,7 @@ LCG_add_test(pythia8-${v}.native-main01
   TEST_COMMAND pythia8/tests/${v}/native-main01
   ENVIRONMENT
     ${library_path}=${pythia8-${v}_home}/lib:$ENV{${library_path}}
-    IF v VERSION_LESS 200 THEN
+    IF v MATCHES "HEAD81" OR v MATCHES "^1[0-9][0-9]" THEN
       PYTHIA8DATA=${pythia8-${v}_home}/xmldoc
     ELSE
       PYTHIA8DATA=${pythia8-${v}_home}/share/Pythia8/xmldoc
@@ -284,7 +284,7 @@ LCG_add_test(pythia8-${v}.genser-test1
   POST_COMMAND ${CMAKE_COMMAND} -E copy pythia8/tests/${v}/testi_pythia8.dat pythia8/tests/${v}/test_pythia8.dat
   ENVIRONMENT
     ${library_path}=${pythia8-${v}_home}/lib:${HepMC_home}/lib:$ENV{${library_path}}
-    IF v VERSION_LESS 200 THEN
+    IF v MATCHES "HEAD81" OR v MATCHES "^1[0-9][0-9]" THEN
       PYTHIA8DATA=${pythia8-${v}_home}/xmldoc
     ELSE
       PYTHIA8DATA=${pythia8-${v}_home}/share/Pythia8/xmldoc
@@ -297,7 +297,7 @@ LCG_add_test(pythia8-${v}.genser-test2
   POST_COMMAND $ENV{SHELL} -c "cat pythia8/tests/${v}/testi_pythia8.dat >> pythia8/tests/${v}/test_pythia8.dat"
   ENVIRONMENT
     ${library_path}=${pythia8-${v}_home}/lib:${HepMC_home}/lib:$ENV{${library_path}}
-    IF v VERSION_LESS 200 THEN
+    IF v MATCHES "HEAD81" OR v MATCHES "^1[0-9][0-9]" THEN
       PYTHIA8DATA=${pythia8-${v}_home}/xmldoc
     ELSE
       PYTHIA8DATA=${pythia8-${v}_home}/share/Pythia8/xmldoc
@@ -309,7 +309,7 @@ LCG_add_test(pythia8-${v}.genser-test3
   POST_COMMAND $ENV{SHELL} -c "cat pythia8/tests/${v}/testi_pythia8.dat >> pythia8/tests/${v}/test_pythia8.dat"
   ENVIRONMENT
     ${library_path}=${pythia8-${v}_home}/lib:${HepMC_home}/lib:$ENV{${library_path}}
-    IF v VERSION_LESS 200 THEN
+    IF v MATCHES "HEAD81" OR v MATCHES "^1[0-9][0-9]" THEN
       PYTHIA8DATA=${pythia8-${v}_home}/xmldoc
     ELSE
       PYTHIA8DATA=${pythia8-${v}_home}/share/Pythia8/xmldoc
@@ -321,7 +321,7 @@ LCG_add_test(pythia8-${v}.genser-test4
   POST_COMMAND $ENV{SHELL} -c "cat pythia8/tests/${v}/testi_pythia8.dat >> pythia8/tests/${v}/test_pythia8.dat"
   ENVIRONMENT
     ${library_path}=${pythia8-${v}_home}/lib:${HepMC_home}/lib:$ENV{${library_path}}
-    IF v VERSION_LESS 200 THEN
+    IF v MATCHES "HEAD81" OR v MATCHES "^1[0-9][0-9]" THEN
       PYTHIA8DATA=${pythia8-${v}_home}/xmldoc
     ELSE
       PYTHIA8DATA=${pythia8-${v}_home}/share/Pythia8/xmldoc
@@ -1789,7 +1789,7 @@ foreach(v ${pythia8_native_version})
   ENVIRONMENT PATH=${Python_home}/bin:$ENV{PATH}
               ${library_path}=${Python_home}/lib:${GSL_home}/lib:${rivet2_home}/lib:${yoda_home}/lib:${HepMC_home}/lib:${fastjet_home}/lib:${yamlcpp_home}/lib:${ROOT_home}/lib:${pythia8_home}/lib:$ENV{${library_path}}
               PYTHONPATH=${Python_home}/bin:${rivet2_home}/lib/python${Python_config_version_twodigit}/site-packages/:${yoda_home}/lib/python${Python_config_version_twodigit}/site-packages/:${ROOT_home}/lib:$ENV{PYTHONPATH}
-              IF v VERSION_LESS 200 THEN
+              IF v MATCHES "HEAD81" OR v MATCHES "^1[0-9][0-9]" THEN
                 PYTHIA8DATA=${pythia8-${v}_home}/xmldoc
               ELSE
                 PYTHIA8DATA=${pythia8-${v}_home}/share/Pythia8/xmldoc
@@ -1811,7 +1811,7 @@ foreach(v ${pythia8_native_version})
   ENVIRONMENT PATH=${Python_home}/bin:$ENV{PATH}
                    ${library_path}=${Python_home}/lib:${GSL_home}/lib:${rivet2_home}/lib:${yoda_home}/lib:${HepMC_home}/lib:${fastjet_home}/lib:${yamlcpp_home}/lib:${ROOT_home}/lib:${pythia8_home}/lib:$ENV{${library_path}}
                    PYTHONPATH=${Python_home}/bin:${rivet2_home}/lib/python${Python_config_version_twodigit}/site-packages/:${yoda_home}/lib/python${Python_config_version_twodigit}/site-packages/:${ROOT_home}/lib:$ENV{PYTHONPATH}
-              IF v VERSION_LESS 200 THEN
+              IF v MATCHES "HEAD81" OR v MATCHES "^1[0-9][0-9]" THEN
                 PYTHIA8DATA=${pythia8-${v}_home}/xmldoc
               ELSE
                 PYTHIA8DATA=${pythia8-${v}_home}/share/Pythia8/xmldoc
