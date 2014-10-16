@@ -48,8 +48,11 @@ def create_package_from_file(directory, filename, packages):
    elif name == "hepmc3":
       pass
    else:
-     packages[name] = PackageInfo(name,destination,hash,version,directory,dependencies)
-
+     if "MCGenerators" in directory:
+       packages[name+hash] = PackageInfo(name,destination,hash,version,directory,dependencies)
+     else:  
+       packages[name] = PackageInfo(name,destination,hash,version,directory,dependencies)
+     
 
 #########################
 if __name__ == "__main__":
