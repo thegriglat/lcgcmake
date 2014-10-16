@@ -1,0 +1,11 @@
+--- configure.orig	2014-10-16 11:13:39.000000000 +0200
++++ configure	2014-10-16 11:15:33.000000000 +0200
+@@ -236,7 +236,7 @@
+ configure_package "ROOT" "/afs/cern.ch/sw/lcg/releases/ROOT"\
+     "bin" "include" "lib" "rootcint,root-config" "TH1D.h" "Cint" ""
+ configure_package "BOOST" "/afs/cern.ch/sw/lcg/releases/Boost"\
+-    "bin" "include" "lib" "" "" "boost_iostreams" ""
++    "bin" "include" "lib" "" "" "" ""
+ configure_package "GZIP" "" "" "include" "lib" "" "zlib.h" "z" "BOOST"
+ 
+ # Check package dependencies (order does not matter).
