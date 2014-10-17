@@ -142,7 +142,6 @@ LCG_external_package(xrootd            3.2.7                                    
 set(MCGENPATH  MCGenerators_lcgcmt${heptools_version})
 
 #---Additional External packages------(Generators)-----------------
-LCG_external_package(powheg-box         r2092         ${MCGENPATH}/powheg-box   )
 
 LCG_external_package(lhapdf            5.8.8          ${MCGENPATH}/lhapdf       )
 LCG_external_package(lhapdf            5.8.9          ${MCGENPATH}/lhapdf       )
@@ -157,6 +156,8 @@ LCG_external_package(lhapdfsets        5.9.0          lhapdfsets   )
 LCG_external_package(lhapdf6           6.0.5          ${MCGENPATH}/lhapdf6       )
 LCG_external_package(lhapdf6           6.0.3          ${MCGENPATH}/lhapdf6       )
 LCG_external_package(lhapdf6sets       6.0.0          lhapdf6sets   )
+
+LCG_external_package(powheg-box         r2092         ${MCGENPATH}/powheg-box   )
 
 LCG_external_package(pythia8           185            ${MCGENPATH}/pythia8      author=185     )
 LCG_external_package(pythia8           183            ${MCGENPATH}/pythia8      author=183     )

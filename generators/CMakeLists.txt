@@ -32,17 +32,10 @@ foreach(v ${rivet_native_version})
 endforeach()
 
 foreach(v ${lhapdf_native_version})
-  set(lhapdfvers ${v})
   if(v VERSION_EQUAL 6.0.0 OR v VERSION_GREATER 6.0.0)
-    set(lhapdf6_home ${CMAKE_INSTALL_PREFIX}/${lhapdf_directory_name}/${v}/${LCG_system})
-    set(lhapdf6vers ${v})
-    set(lhapdf6dependency lhapdf-${v})
-    set(lhapdfname lhapdf6)
+    set(lhapdf6_latest_version ${v})
   else()
-    set(lhapdf5_home ${CMAKE_INSTALL_PREFIX}/${lhapdf_directory_name}/${v}/${LCG_system})    
-    set(lhapdf5vers ${v})
-    set(lhapdf5dependency lhapdf-${v})  
-    set(lhapdfname lhapdf5)
+    set(lhapdf5_latest_version ${v})
   endif()
 endforeach()
 
@@ -109,8 +102,8 @@ LCGPackage_Add(
 
 )
 
-#list(GET lhapdf_native_version -1 pdf_version_full)
-string(REGEX MATCH "[0-9]+.[0-9]+" pdf_version "${lhapdf6vers}")
+list(GET lhapdf_native_version -1 pdf_version_full)
+string(REGEX MATCH "[0-9]+.[0-9]+" pdf_version "${pdf_version_full}")
 LCG_add_test(lhapdf6sets.download
    PRE_COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_INSTALL_PREFIX}/lhapdf6sets/current
        COMMAND ${CMAKE_COMMAND} -E echo "Download LHAPDF6 PDF sets (version ${pdf_version}) ..."
@@ -224,7 +217,7 @@ LCGPackage_Add(
     CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --with-hepmc=${HepMC_home} --enable-shared --lcgplatform=${LCG_platform}
   ENDIF
   IF <pythia8_<NATIVE_VERSION>_author> MATCHES "HEAD$" OR <pythia8_<NATIVE_VERSION>_author> MATCHES "^2[0-9][0-9]" THEN
-    CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --with-hepmc2=${HepMC_home} --with-${lhapdfname}=${lhapdf_home} --with-boost=${Boost_home} --enable-shared
+    CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --with-hepmc2=${HepMC_home} --with-<pythia8_<NATIVE_VERSION>_lhapdf_family>=<lhapdf-<pythia8_<NATIVE_VERSION>_lhapdf>_home> --with-boost=${Boost_home} --enable-shared
   ENDIF
   BUILD_COMMAND ${MAKE}
   IF <pythia8_<NATIVE_VERSION>_author> MATCHES "HEAD81" OR <pythia8_<NATIVE_VERSION>_author> MATCHES "^1[0-9][0-9]" THEN
@@ -236,15 +229,15 @@ LCGPackage_Add(
   IF <pythia8_<NATIVE_VERSION>_author> MATCHES "HEAD81" OR <pythia8_<NATIVE_VERSION>_author> MATCHES "^1[0-9][0-9]" THEN
     CONFIGURE_EXAMPLES_COMMAND <SOURCE_DIR>/examples/configure
                                --with-pythia8=<INSTALL_DIR>
-                               --with-lhapdf=${lhapdf_home}/lib/archive
+                               --with-lhapdf=<lhapdf-<pythia8_<NATIVE_VERSION>_lhapdf>_home>/lib/archive
                                --with-fastjet=${fastjet_home}
     BUILD_EXAMPLES_COMMAND ${MAKE} -C <SOURCE_DIR>/examples main01 main03
     INSTALL_EXAMPLES_COMMAND ${CMAKE_COMMAND} -E make_directory <INSTALL_DIR>/bin
                      COMMAND ${CMAKE_COMMAND} -E chdir <SOURCE_DIR>/examples cp bin/main01.exe bin/main03.exe main03.cmnd <INSTALL_DIR>/bin
-    DEPENDS HepMC lhapdf fastjet
+    DEPENDS HepMC lhapdf-<pythia8_<NATIVE_VERSION>_lhapdf> fastjet
   ENDIF
   IF <pythia8_<NATIVE_VERSION>_author> MATCHES "HEAD$" OR <pythia8_<NATIVE_VERSION>_author> MATCHES "^2[0-9][0-9]" THEN
-    DEPENDS HepMC lhapdf Boost
+    DEPENDS HepMC lhapdf-<pythia8_<NATIVE_VERSION>_lhapdf> Boost
   ENDIF
 )
 
@@ -487,15 +480,15 @@ LCGPackage_Add(
   CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR>
                                 --with-hepmc=${HepMC_home}
                                 IF <VERSION> VERSION_LESS 1.9.0 THEN
-                                   --with-LHAPDF=${lhapdf_home}/lib
+                                   --with-LHAPDF=<lhapdf-<thepeg_<NATIVE_VERSION>_lhapdf>_home>/lib
                                 ELSE
-                                   --with-lhapdf=${lhapdf_home}
+                                   --with-LHAPDF=<lhapdf-<thepeg_<NATIVE_VERSION>_lhapdf>_home>/lib
                                 ENDIF
                                 --with-gsl=${GSL_home} --without-javagui CFLAGS=-O2 CXXFLAGS=-O2 FFLAGS=-O2
-  BUILD_COMMAND ${MAKE} all ${library_path}=${lhapdf_home}:${lhapdf_home}/lib:$ENV{${library_path}}
-  INSTALL_COMMAND make install-strip ${library_path}=${lhapdf_home}:${lhapdf_home}/lib:$ENV{${library_path}}
+  BUILD_COMMAND ${MAKE} all ${library_path}=<lhapdf-<thepeg_<NATIVE_VERSION>_lhapdf>_home>:<lhapdf-<thepeg_<NATIVE_VERSION>_lhapdf>_home>/lib:$ENV{${library_path}}
+  INSTALL_COMMAND make install-strip ${library_path}=<lhapdf-<thepeg_<NATIVE_VERSION>_lhapdf>_home>:<lhapdf-<thepeg_<NATIVE_VERSION>_lhapdf>_home>/lib:$ENV{${library_path}}
   BUILD_IN_SOURCE 1
-  DEPENDS HepMC GSL lhapdf
+  DEPENDS HepMC GSL lhapdf-<thepeg_<NATIVE_VERSION>_lhapdf>
 )
 
 if (NOT shell_ext MATCHES "csh")
@@ -510,7 +503,7 @@ foreach(v ${thepeg_native_version})
                 -P ${CMAKE_CURRENT_SOURCE_DIR}/lhapdf6sets/pdfsets.cmake
     TEST_COMMAND ${CMAKE_COMMAND} -E chdir thepeg/${v} $ENV{SHELL} -c "source ${thepeg-${v}_home}/thepegenv-genser.sh
       setupThePEG ${thepeg-${v}_home}/share/ThePEG/MultiLEP.in"
-    ENVIRONMENT LHAPDF_DATA_PATH=${lhapdf_home}/share/LHAPDF:${CMAKE_INSTALL_PREFIX}/lhapdf6sets/current/share/LHAPDF:${CMAKE_BINARY_DIR}/generators/thepeg/${v}
+    ENVIRONMENT LHAPDF_DATA_PATH=${lhapdf-${thepeg_${v}_lhapdf}_home}/share/LHAPDF:${CMAKE_INSTALL_PREFIX}/lhapdf6sets/current/share/LHAPDF:${CMAKE_BINARY_DIR}/generators/thepeg/${v}
     DEPENDS lhapdf6sets.download
   )
   LCG_add_test(thepeg-${v}.genser-scripts-runThePEG
@@ -560,7 +553,7 @@ LCG_add_test(herwigpp-${v}.native-LHC
 			       COMMAND cat LHC.log	
                           BINARY_DIR herwig++/tests
                           SOURCE_DIR herwig++/tests
-                          ENVIRONMENT ${library_path}=${herwig++-${v}_home}/lib:${thepeg-${herwig++_${v}_thepeg}_home}/lib/ThePEG:${HepMC_home}/lib:${lhapdf_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:$ENV{${library_path}})
+                          ENVIRONMENT ${library_path}=${herwig++-${v}_home}/lib:${thepeg-${herwig++_${v}_thepeg}_home}/lib/ThePEG:${HepMC_home}/lib:${lhapdf-${thepeg_${herwig++_${v}_thepeg}_lhapdf}_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:$ENV{${library_path}})
 
 LCG_add_test(herwigpp-${v}.native-TVT 
 			  TEST_COMMAND ${herwig++-${v}_home}/bin/Herwig++ read ${herwig++-${v}_home}/../share/sources/src/TVT.in 
@@ -569,7 +562,7 @@ LCG_add_test(herwigpp-${v}.native-TVT
                                COMMAND cat TVT.log  
                           BINARY_DIR herwig++/tests
                           SOURCE_DIR herwig++/tests
-                          ENVIRONMENT ${library_path}=${herwig++-${v}_home}/lib:${thepeg-${herwig++_${v}_thepeg}_home}/lib/ThePEG:${HepMC_home}/lib:${lhapdf_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:$ENV{${library_path}})
+                          ENVIRONMENT ${library_path}=${herwig++-${v}_home}/lib:${thepeg-${herwig++_${v}_thepeg}_home}/lib/ThePEG:${HepMC_home}/lib:${lhapdf-${thepeg_${herwig++_${v}_thepeg}_lhapdf}_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:$ENV{${library_path}})
 
 LCG_add_test(herwigpp-${v}.genser-LHC-W
   TEST_COMMAND ${herwig++-${v}_home}/bin/Herwig++ read ${CMAKE_SOURCE_DIR}/generators/herwig++/tests/LHC-W.in --repo=${herwig++-${v}_home}/share/Herwig++/HerwigDefaults.rpo
@@ -578,8 +571,8 @@ LCG_add_test(herwigpp-${v}.genser-LHC-W
        COMMAND cat LHC-W.log
   BINARY_DIR herwig++/tests
   SOURCE_DIR herwig++/tests
-  ENVIRONMENT ${library_path}=${herwig++-${v}_home}/lib:${thepeg-${herwig++_${v}_thepeg}_home}/lib/ThePEG:${HepMC_home}/lib:${lhapdf_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:$ENV{${library_path}}
-  LHAPDF_DATA_PATH=${lhapdf_home}/share/LHAPDF:${CMAKE_INSTALL_PREFIX}/lhapdf6sets/current/share/LHAPDF
+  ENVIRONMENT ${library_path}=${herwig++-${v}_home}/lib:${thepeg-${herwig++_${v}_thepeg}_home}/lib/ThePEG:${HepMC_home}/lib:${lhapdf-${thepeg_${herwig++_${v}_thepeg}_lhapdf}_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:$ENV{${library_path}}
+  LHAPDF_DATA_PATH=${lhapdf-${thepeg_${herwig++_${v}_thepeg}_lhapdf}_home}/share/LHAPDF:${CMAKE_INSTALL_PREFIX}/lhapdf6sets/current/share/LHAPDF
   DEPENDS lhapdf6sets.download
 )
 
@@ -588,13 +581,13 @@ LCG_add_test(herwigpp-${v}.genser-LHC-W
 LCG_add_test(herwigpp-${v}.native-LEP-VV 
       TEST_COMMAND ${CMAKE_COMMAND} -E chdir ${PROJECT_BINARY_DIR}/generators/herwig++-${v}/src/herwig++/${v}/Tests make -j1 test-LEP-VV REPO=${herwig++-${v}_home}/share/Herwig++/HerwigDefaults.rpo
            COMMAND ${CMAKE_COMMAND} -E chdir ${PROJECT_BINARY_DIR}/generators/herwig++-${v}/src/herwig++/${v}/Tests cat LEP-VV.log       
-      ENVIRONMENT ${library_path}=${herwig++-${v}_home}/lib:${thepeg-${herwig++_${v}_thepeg}_home}/lib/ThePEG:${HepMC_home}/lib:${lhapdf_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:$ENV{${library_path}})
+      ENVIRONMENT ${library_path}=${herwig++-${v}_home}/lib:${thepeg-${herwig++_${v}_thepeg}_home}/lib/ThePEG:${HepMC_home}/lib:${lhapdf-${thepeg_${herwig++_${v}_thepeg}_lhapdf}_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:$ENV{${library_path}})
  
 foreach(herwig-leptest LEP-VH LEP-VBF LEP-BB LEP-Quarks LEP-Leptons LEP-default LEP-Powheg)
 LCG_add_test(herwigpp-${v}.native-${herwig-leptest}
       TEST_COMMAND ${CMAKE_COMMAND} -E chdir ${PROJECT_BINARY_DIR}/generators/herwig++-${v}/src/herwig++/${v}/Tests make -j1 test-${herwig-leptest} REPO=${herwig++-${v}_home}/share/Herwig++/HerwigDefaults.rpo
            COMMAND ${CMAKE_COMMAND} -E chdir ${PROJECT_BINARY_DIR}/generators/herwig++-${v}/src/herwig++/${v}/Tests cat ${herwig-leptest}.log       
-      ENVIRONMENT ${library_path}=${herwig++-${v}_home}/lib:${thepeg-${herwig++_${v}_thepeg}_home}/lib/ThePEG:${HepMC_home}/lib:${lhapdf_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:$ENV{${library_path}}
+      ENVIRONMENT ${library_path}=${herwig++-${v}_home}/lib:${thepeg-${herwig++_${v}_thepeg}_home}/lib/ThePEG:${HepMC_home}/lib:${lhapdf-${thepeg_${herwig++_${v}_thepeg}_lhapdf}_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:$ENV{${library_path}}
       DEPENDS herwigpp-${v}.native-LEP-VV)
 endforeach()
 endforeach()
@@ -605,12 +598,12 @@ endforeach()
 LCGPackage_Add(
   tauola++
   URL ${gen_url}/TAUOLA.<NATIVE_VERSION>-LHC.tar.gz
-  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --with-pic --with-hepmc=${HepMC_home} --with-tau-spinner --with-lhapdf=${lhapdf_home} CFLAGS=-O2 CPPFLAGS=-I${Boost_home_include} FFLAGS=-O2 F77=${CMAKE_Fortran_COMPILER}
+  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --with-pic --with-hepmc=${HepMC_home} --with-tau-spinner --with-lhapdf=<lhapdf-<tauola++_<NATIVE_VERSION>_lhapdf>_home> CFLAGS=-O2 CPPFLAGS=-I${Boost_home_include} FFLAGS=-O2 F77=${CMAKE_Fortran_COMPILER}
   INSTALL_COMMAND  make install
           COMMAND  ${CMAKE_COMMAND} -E create_symlink tauola++ <INSTALL_DIR>/../../../tauolapp
 #          COMMAND ${CMAKE_COMMAND} -DINSTALL_DIR=<INSTALL_DIR> -P ${CMAKE_SOURCE_DIR}/cmake/scripts/StripLib.cmake
   BUILD_IN_SOURCE 1
-  DEPENDS HepMC lhapdf
+  DEPENDS HepMC lhapdf-<tauola++_<NATIVE_VERSION>_lhapdf>
 )
 
 foreach(v ${tauola++_native_version})
@@ -1142,16 +1135,16 @@ LCGPackage_Add(
   CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR>
      --enable-shared --enable-static --enable-binreloc --enable-analysis
      --enable-pythia --enable-hepevtsize=<sherpa_<NATIVE_VERSION>_hepevt>
-     --enable-lhapdf=${lhapdf_home}
+     --enable-lhapdf=<lhapdf-<sherpa_<NATIVE_VERSION>_lhapdf>_home>
      --enable-hepmc2=${HepMC_home}
      --enable-openloops=.
      --enable-lhole
      --with-sqlite3=${sqlite_home}  "CFLAGS=-O2 -g0" "CXXFLAGS=-O2 -g0" "FFLAGS=-O2 -g0"
 #Boost includes below are necessary only for sherpa 1 series
-  BUILD_COMMAND ${MAKE} LIBRARY_PATH=${lhapdf_home}/lib CPPFLAGS=-I${Boost_home_include} CPATH=${Boost_home_include} 
-  INSTALL_COMMAND make install LIBRARY_PATH=${lhapdf_home}/lib
+  BUILD_COMMAND ${MAKE} LIBRARY_PATH=<lhapdf-<sherpa_<NATIVE_VERSION>_lhapdf>_home>/lib CPPFLAGS=-I${Boost_home_include} CPATH=${Boost_home_include} 
+  INSTALL_COMMAND make install LIBRARY_PATH=<lhapdf-<sherpa_<NATIVE_VERSION>_lhapdf>_home>/lib
   BUILD_IN_SOURCE 1
-  DEPENDS lhapdf HepMC sqlite
+  DEPENDS lhapdf-<sherpa_<NATIVE_VERSION>_lhapdf> HepMC sqlite
 )
 
 #---Sherpa with MPI support------------------------------------------------------------------------------------------
@@ -1161,17 +1154,17 @@ LCGPackage_Add(
   CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR>
      --enable-shared --enable-static --enable-binreloc --enable-analysis
      --enable-pythia --enable-hepevtsize=<sherpa-openmpi_<NATIVE_VERSION>_hepevt>
-     --enable-lhapdf=${lhapdf_home}
+     --enable-lhapdf=<lhapdf-<sherpa-openmpi_<NATIVE_VERSION>_lhapdf>_home>
      --enable-hepmc2=${HepMC_home}
      --enable-blackhat=${blackhat_home}
      --enable-openloops=.
      --enable-lhole
      --enable-mpi
      --with-sqlite3=${sqlite_home}  "CFLAGS=-O2 -g0" "CXXFLAGS=-O2 -g0" "FFLAGS=-O2 -g0" PATH=${openmpi_home}/bin:$ENV{PATH} ${library_path}=${openmpi_home}/lib:$ENV{${library_path}} LIBRARY_PATH=${openmpi_home}/lib
-  BUILD_COMMAND ${MAKE} PATH=${openmpi_home}/bin:$ENV{PATH} LIBRARY_PATH=${lhapdf_home}/lib ${library_path}=${openmpi_home}/lib:${blackhat_home}/lib:$ENV{${library_path}} CPPFLAGS=-I${Boost_home_include}
-  INSTALL_COMMAND make install LIBRARY_PATH=${lhapdf_home}/lib PATH=${openmpi_home}/bin:$ENV{PATH} LIBRARY_PATH=${lhapdf_home}/lib ${library_path}=${openmpi_home}/lib:${blackhat_home}/lib:$ENV{${library_path}}
+  BUILD_COMMAND ${MAKE} PATH=${openmpi_home}/bin:$ENV{PATH} LIBRARY_PATH=<lhapdf-<sherpa-openmpi_<NATIVE_VERSION>_lhapdf>_home>/lib ${library_path}=${openmpi_home}/lib:${blackhat_home}/lib:$ENV{${library_path}} CPPFLAGS=-I${Boost_home_include}
+  INSTALL_COMMAND make install LIBRARY_PATH=<lhapdf-<sherpa-openmpi_<NATIVE_VERSION>_lhapdf>_home>/lib PATH=${openmpi_home}/bin:$ENV{PATH} ${library_path}=${openmpi_home}/lib:${blackhat_home}/lib:$ENV{${library_path}}
   BUILD_IN_SOURCE 1
-  DEPENDS lhapdf HepMC sqlite openmpi blackhat
+  DEPENDS lhapdf-<sherpa-openmpi_<NATIVE_VERSION>_lhapdf> HepMC sqlite openmpi blackhat
 )
 
 
@@ -1181,17 +1174,17 @@ LCGPackage_Add(
   CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR>
      --enable-shared --enable-static --enable-binreloc --enable-analysis
      --enable-pythia --enable-hepevtsize=<sherpa-mpich2_<NATIVE_VERSION>_hepevt>
-     --enable-lhapdf=${lhapdf_home}
+     --enable-lhapdf=<lhapdf-<sherpa-mpich2_<NATIVE_VERSION>_lhapdf>_home>
      --enable-hepmc2=${HepMC_home}
      --enable-blackhat=${blackhat_home}
      --enable-openloops=.
      --enable-lhole
      --enable-mpi
      --with-sqlite3=${sqlite_home} "CFLAGS=-O2 -g0 -fPIC" "CXXFLAGS=-O2 -g0 -fPIC" "FFLAGS=-O2 -g0 -fPIC" PATH=${mpich2_home}/bin:$ENV{PATH} ${library_path}=${mpich2_home}/lib:$ENV{${library_path}} LIBRARY_PATH=${mpich2_home}/lib
-  BUILD_COMMAND ${MAKE} PATH=${mpich2_home}/bin:$ENV{PATH} LIBRARY_PATH=${lhapdf_home}/lib ${library_path}=${mpich2_home}/lib:${blackhat_home}/lib:$ENV{${library_path}} CPPFLAGS=-I${Boost_home_include}
-  INSTALL_COMMAND make install LIBRARY_PATH=${lhapdf_home}/lib PATH=${mpich2_home}/bin:$ENV{PATH} ${library_path}=${mpich2_home}/lib:${blackhat_home}/lib:$ENV{${library_path}} 
+BUILD_COMMAND ${MAKE} PATH=${mpich2_home}/bin:$ENV{PATH} LIBRARY_PATH=<lhapdf-<sherpa-mpich2_<NATIVE_VERSION>_lhapdf>_home>/lib ${library_path}=${mpich2_home}/lib:${blackhat_home}/lib:$ENV{${library_path}} CPPFLAGS=-I${Boost_home_include}
+  INSTALL_COMMAND make install LIBRARY_PATH=<lhapdf-<sherpa-mpich2_<NATIVE_VERSION>_lhapdf>_home>/lib PATH=${mpich2_home}/bin:$ENV{PATH} ${library_path}=${mpich2_home}/lib:${blackhat_home}/lib:$ENV{${library_path}} 
   BUILD_IN_SOURCE 1
-  DEPENDS lhapdf HepMC sqlite mpich2 blackhat
+  DEPENDS lhapdf-<sherpa-mpich2_<NATIVE_VERSION>_lhapdf> HepMC sqlite mpich2 blackhat
 )
 
 
@@ -1202,7 +1195,7 @@ LCG_add_test(sherpa-${v}.native-LHC_Z
       COMMAND ${CMAKE_COMMAND} -E make_directory sherpa/native-LHC_Z/${v}
   TEST_COMMAND ${CMAKE_COMMAND} -E chdir sherpa/native-LHC_Z/${v} ${sherpa-${v}_home}/bin/Sherpa -j20 -f ${CMAKE_SOURCE_DIR}/generators/sherpa/tests/LHC_Z.dat
   ENVIRONMENT
-    ${library_path}=${sherpa-${v}_home}/lib/SHERPA-MC:${HepMC_home}/lib:${lhapdf_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:${sqlite_home}/lib:$ENV{${library_path}}
+  ${library_path}=${sherpa-${v}_home}/lib/SHERPA-MC:${HepMC_home}/lib:${lhapdf-${sherpa_${v}_lhapdf}_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:${sqlite_home}/lib:$ENV{${library_path}}
     PATH=${sqlite_home}/bin:$ENV{PATH}
     PWD=.
 )
@@ -1211,14 +1204,14 @@ LCG_add_test(sherpa-${v}.genser-LHC_Z_lhapdf
   PRE_COMMAND ${CMAKE_COMMAND} -E remove_directory sherpa/genser-LHC_Z_lhapdf/${v}
       COMMAND ${CMAKE_COMMAND} -E make_directory sherpa/genser-LHC_Z_lhapdf/${v}
       COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/generators/sherpa/tests/LHC_Z_lhapdf.dat sherpa/genser-LHC_Z_lhapdf/LHC_Z_lhapdf.dat
-      IF ${lhapdfvers} VERSION_LESS 6.0 THEN
+      IF ${sherpa_${v}_lhapdf} VERSION_LESS 6.0 THEN
         COMMAND $ENV{SHELL} -c "sed -i -e 's/CT10/CT10.LHgrid/g' sherpa/genser-LHC_Z_lhapdf/LHC_Z_lhapdf.dat"
       ENDIF
   TEST_COMMAND ${CMAKE_COMMAND} -E chdir sherpa/genser-LHC_Z_lhapdf/${v} ${sherpa-${v}_home}/bin/Sherpa -f ${CMAKE_BINARY_DIR}/generators/sherpa/genser-LHC_Z_lhapdf/LHC_Z_lhapdf.dat
   ENVIRONMENT
-    ${library_path}=${sherpa-${v}_home}/lib/SHERPA-MC:${HepMC_home}/lib:${lhapdf_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:${sqlite_home}/lib:$ENV{${library_path}}
-    LHAPDF_DATA_PATH=${lhapdf_home}/share/LHAPDF:${CMAKE_INSTALL_PREFIX}/lhapdf6sets/current/share/LHAPDF
-    LHAPATH=${lhapdf_home}/../share/PDFsets
+    ${library_path}=${sherpa-${v}_home}/lib/SHERPA-MC:${HepMC_home}/lib:${lhapdf-${sherpa_${v}_lhapdf}_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:${sqlite_home}/lib:$ENV{${library_path}}
+    LHAPDF_DATA_PATH=${lhapdf-${sherpa_${v}_lhapdf}_home}/share/LHAPDF:${CMAKE_INSTALL_PREFIX}/lhapdf6sets/current/share/LHAPDF
+    LHAPATH=${lhapdf-${sherpa_${v}_lhapdf}_home}/../share/PDFsets
     PATH=${sqlite_home}/bin:$ENV{PATH}
     PWD=.
     DEPENDS lhapdf6sets.download
@@ -1231,7 +1224,7 @@ LCG_add_test(sherpa-${v}.native-LHC_ZJets
       COMMAND ${CMAKE_COMMAND} -E make_directory sherpa/native-LHC_ZJets/${v}
   TEST_COMMAND ${CMAKE_COMMAND} -E chdir sherpa/native-LHC_ZJets/${v} ${sherpa-${v}_home}/bin/Sherpa -j20 -f ${CMAKE_SOURCE_DIR}/generators/sherpa/tests/LHC_ZJets.dat
   ENVIRONMENT
-    ${library_path}=${sherpa-${v}_home}/lib/SHERPA-MC:${HepMC_home}/lib:${lhapdf_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:${sqlite_home}/lib:$ENV{${library_path}}
+    ${library_path}=${sherpa-${v}_home}/lib/SHERPA-MC:${HepMC_home}/lib:${lhapdf-${sherpa_${v}_lhapdf}_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:${sqlite_home}/lib:$ENV{${library_path}}
     PATH=${sqlite_home}/bin:$ENV{PATH}
     PWD=.
   
@@ -1553,10 +1546,10 @@ if(NOT APPLE)    #  (installation fails on MacOSX)
   CONFIGURE_COMMAND ./configure  
     --prefix=<INSTALL_DIR>
     --fastjet=${fastjet_home}
-    --lhapdf=${lhapdf_home}
+    --lhapdf=<lhapdf-<powheg-box_<NATIVE_VERSION>_lhapdf>_home>
   BUILD_COMMAND ${MAKE} CPATH=${Boost_home_include} 
   BUILD_IN_SOURCE 1
-  DEPENDS fastjet lhapdf
+  DEPENDS fastjet lhapdf-<powheg-box_<NATIVE_VERSION>_lhapdf>
  )
 
 foreach(v ${powheg-box_native_version})
@@ -1565,9 +1558,9 @@ foreach(i WW HJ W_ew-BW Wbb Wj HJJ ZZ W_ew-BMNNP Dijet gg_H VBF_H Z W hvq Zj ST_
   LCG_add_test(powheg-box-${v}.native-${i}
     TEST_COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/powheg-box/tests/runtest.sh ${powheg-box-${v}_home}/bin ${powheg-box-${v}_home}/../share/sources ${i}
     ENVIRONMENT
-      ${library_path}=${lhapdf_home}/lib:${fastjet_home}/lib:$ENV{${library_path}}
+      ${library_path}=${lhapdf-${powheg-box_${v}_lhapdf}_home}/lib:${fastjet_home}/lib:$ENV{${library_path}}
       LHAPATH=${lhapdfsets_home}/../share/PDFsets
-      LHAPDF_DATA_PATH=${lhapdf_home}/share/LHAPDF:${CMAKE_INSTALL_PREFIX}/lhapdf6sets/current/share/LHAPDF
+      LHAPDF_DATA_PATH=${lhapdf-${powheg-box_${v}_lhapdf}_home}/share/LHAPDF:${CMAKE_INSTALL_PREFIX}/lhapdf6sets/current/share/LHAPDF
     DEPENDS lhapdf6sets.download
   )
 endforeach()
@@ -1583,12 +1576,12 @@ LCGPackage_Add(
   URL ${gen_url}/Sacrifice-${sacrifice_native_version}.tar.gz
   CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR>
 		--with-HepMC=${HepMC_home} --with-pythia=${pythia8_sacrifice_home}
-                --with-LHAPDF=${lhapdf_home} --with-photos=${photos++_home}
+                --with-LHAPDF=<lhapdf-<sacrifice_<NATIVE_VERSION>_lhapdf>_home> --with-photos=${photos++_home}
                 --with-boost=${Boost_home} --with-MCUtils
   BUILD_COMMAND ${MAKE}
   INSTALL_COMMAND ${MAKE} install 
   BUILD_IN_SOURCE 1
-  DEPENDS pythia8-<sacrifice_<VERSION>_pythia8>  Boost HepMC lhapdf photos++
+  DEPENDS pythia8-<sacrifice_<VERSION>_pythia8>  Boost HepMC lhapdf-<sacrifice_<NATIVE_VERSION>_lhapdf> photos++
 )
 
 foreach(v ${sacrifice_native_version})
@@ -1596,15 +1589,15 @@ if (NOT shell_ext MATCHES "csh")
 LCG_add_test(sacrifice-${v}.genser-scripts
   TEST_COMMAND $ENV{SHELL} -c "source ${sacrifice-${v}_home}/sacrificeenv-genser.sh
     run-pythia  --collision-energy 8000 -i ${CMAKE_SOURCE_DIR}/generators/sacrifice/AU2-CT10.params -n 1000 --photos"
-  ENVIRONMENT LHAPDF_DATA_PATH=${lhapdf_home}/share/LHAPDF:${CMAKE_INSTALL_PREFIX}/lhapdf6sets/current/share/LHAPDF
+  ENVIRONMENT LHAPDF_DATA_PATH=${lhapdf-${sacrifice_${v}_lhapdf}_home}/share/LHAPDF:${CMAKE_INSTALL_PREFIX}/lhapdf6sets/current/share/LHAPDF
   DEPENDS lhapdf6sets.download
 )
 endif()
 LCG_add_test(sacrifice-${v}.genser-AU2-CT10
    TEST_COMMAND ${sacrifice-${v}_home}/bin/run-pythia  --collision-energy 8000 -i ${CMAKE_SOURCE_DIR}/generators/sacrifice/AU2-CT10.params -n 1000 --photos 
-   ENVIRONMENT ${library_path}=${photos++_home}/lib:${lhapdf_home}/lib:${HepMC_home}/lib:${pythia8-${sacrifice_${v}_pythia8}_home}/lib:$ENV{${library_path}}
+   ENVIRONMENT ${library_path}=${photos++_home}/lib:${lhapdf-${sacrifice_${v}_lhapdf}_home}/lib:${HepMC_home}/lib:${pythia8-${sacrifice_${v}_pythia8}_home}/lib:$ENV{${library_path}}
 	       LHAPATH=${lhapdfsets_home}/../share/lhapdf/PDFsets
-               LHAPDF_DATA_PATH=${lhapdf_home}/share/LHAPDF:${CMAKE_INSTALL_PREFIX}/lhapdf6sets/current/share/LHAPDF
+               LHAPDF_DATA_PATH=${lhapdf-${sacrifice_${v}_lhapdf}_home}/share/LHAPDF:${CMAKE_INSTALL_PREFIX}/lhapdf6sets/current/share/LHAPDF
    DEPENDS lhapdf6sets.download
    )
 endforeach()
@@ -1732,14 +1725,14 @@ LCGPackage_Add(
   URL ${gen_url}/fastnlo_toolkit-<NATIVE_VERSION>.tar.gz
   CONFIGURE_COMMAND ./configure
       --prefix=<INSTALL_DIR>
-      --with-lhapdf=${lhapdf_home}
+      --with-lhapdf=<lhapdf-<fastnlo_toolkit_<NATIVE_VERSION>_lhapdf>_home>
       --with-fastjet=${fastjet_home}
       --with-yoda=${yoda_home}
   #    --enable-pyext   # need to specify swig package if this option is switched on!
   BUILD_COMMAND ${MAKE} CPATH=${Boost_home_include} 
   INSTALL_COMMAND ${MAKE} install
   BUILD_IN_SOURCE 1
-  DEPENDS lhapdf yoda fastjet
+  DEPENDS lhapdf-<fastnlo_toolkit_<NATIVE_VERSION>_lhapdf> yoda fastjet
 )
 
 # List of .tab files is available on http://fastnlo.hepforge.org/scenarios/tables-lhc.html
@@ -1756,14 +1749,14 @@ if (NOT shell_ext MATCHES "csh")
 foreach(v ${fastnlo_toolkit_native_version})
  foreach(fnlotest "example" "yodaout" "cppread")
   LCG_add_test(fastnlo_toolkit-${v}.native-fnlo-tk-${fnlotest}
-  IF ${lhapdfvers} VERSION_LESS 6.0 THEN
+  IF ${fastnlo_toolkit_${v}_lhapdf} VERSION_LESS 6.0 THEN
        TEST_COMMAND $ENV{SHELL} -c "source ${fastnlo_toolkit-${v}_home}/fastnlo_toolkitenv-genser.sh \n fnlo-tk-${fnlotest} ${fastnlo_toolkit_tabfile} CT10nnlo.LHgrid"
   ELSE
        TEST_COMMAND $ENV{SHELL} -c "source ${fastnlo_toolkit-${v}_home}/fastnlo_toolkitenv-genser.sh \n fnlo-tk-${fnlotest} ${fastnlo_toolkit_tabfile} CT10nnlo"
   ENDIF     
   ENVIRONMENT 
-     LHAPDF_DATA_PATH=${lhapdf_home}/share/LHAPDF:${CMAKE_INSTALL_PREFIX}/lhapdf6sets/current/share/LHAPDF
-     LHAPATH=${lhapdf_home}/../share/PDFsets
+     LHAPDF_DATA_PATH=${lhapdf-${fastnlo_toolkit_${v}_lhapdf}_home}/share/LHAPDF:${CMAKE_INSTALL_PREFIX}/lhapdf6sets/current/share/LHAPDF
+     LHAPATH=${lhapdf-${fastnlo_toolkit_${v}_lhapdf}_home}/../share/PDFsets
 
   DEPENDS fastnlo_toolkit.download lhapdf6sets.download
   )
@@ -1879,7 +1872,7 @@ LCG_add_test(herwigpp-${v}.genser-ttbar-rivet
        COMMAND cat LHC-ttbar-${v}.log
        BINARY_DIR herwig++/tests
        SOURCE_DIR herwig++/tests
-  ENVIRONMENT ${library_path}=${Python_home}/lib:${herwig++-${v}_home}/lib/Herwig++:${thepeg-${herwig++_${v}_thepeg}_home}/lib/ThePEG:${HepMC_home}/lib:${lhapdf_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:${rivet2_home}/lib:${yoda_home}/lib:${yamlcpp_home}/lib:${ROOT_home}/lib:$ENV{${library_path}}
+  ENVIRONMENT ${library_path}=${Python_home}/lib:${herwig++-${v}_home}/lib/Herwig++:${thepeg-${herwig++_${v}_thepeg}_home}/lib/ThePEG:${HepMC_home}/lib:${lhapdf-${thepeg_${herwig++_${v}_thepeg}_lhapdf}_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:${rivet2_home}/lib:${yoda_home}/lib:${yamlcpp_home}/lib:${ROOT_home}/lib:$ENV{${library_path}}
               PYTHONPATH=${Python_home}/bin:${agile_home}/lib/python${Python_config_version_twodigit}/site-packages:${yoda_home}/lib/python${Python_config_version_twodigit}/site-packages/:${ROOT_home}/lib:$ENV{PYTHONPATH}
               PATH=${agile_home}/bin:${Python_home}/bin:$ENV{PATH}
   POST_COMMAND ${CMAKE_COMMAND} -DAIDA2ROOT=${AIDA2ROOT} -DPython_cmd=${Python_cmd} -Dyoda_home=${yoda_home} -DINPUT=${CMAKE_BINARY_DIR}/generators/herwigpp-${v}.genser-ttbar-rivet.yoda -P ${CMAKE_SOURCE_DIR}/cmake/scripts/yoda2root.cmake
@@ -1897,11 +1890,11 @@ LCG_add_test(herwigpp-${v}.genser-zjets-rivet
        COMMAND cat LHC-zjets-${v}.log
        BINARY_DIR herwig++/tests
        SOURCE_DIR herwig++/tests
-  ENVIRONMENT ${library_path}=${Python_home}/lib:${herwig++-${v}_home}/lib/Herwig++:${thepeg-${herwig++_${v}_thepeg}_home}/lib/ThePEG:${HepMC_home}/lib:${lhapdf_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:${rivet2_home}/lib:${yoda_home}/lib:${yamlcpp_home}/lib:${ROOT_home}/lib:$ENV{${library_path}}
+  ENVIRONMENT ${library_path}=${Python_home}/lib:${herwig++-${v}_home}/lib/Herwig++:${thepeg-${herwig++_${v}_thepeg}_home}/lib/ThePEG:${HepMC_home}/lib:${lhapdf-${thepeg_${herwig++_${v}_thepeg}_lhapdf}_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:${rivet2_home}/lib:${yoda_home}/lib:${yamlcpp_home}/lib:${ROOT_home}/lib:$ENV{${library_path}}
               PYTHONPATH=${Python_home}/bin:${agile_home}/lib/python${Python_config_version_twodigit}/site-packages:${yoda_home}/lib/python${Python_config_version_twodigit}/site-packages/:${ROOT_home}/lib:$ENV{PYTHONPATH}
               PATH=${agile_home}/bin:${Python_home}/bin:$ENV{PATH}
               LHAPATH=${lhapdfsets_home}/../share/lhapdf/PDFsets
-              LHAPDF_DATA_PATH=${lhapdf_home}/share/LHAPDF:${CMAKE_INSTALL_PREFIX}/lhapdf6sets/current/share/LHAPDF
+              LHAPDF_DATA_PATH=${lhapdf-${herwig++_${v}_lhapdf}_home}/share/LHAPDF:${CMAKE_INSTALL_PREFIX}/lhapdf6sets/current/share/LHAPDF
   POST_COMMAND ${CMAKE_COMMAND} -DAIDA2ROOT=${AIDA2ROOT} -DPython_cmd=${Python_cmd} -Dyoda_home=${yoda_home} -DINPUT=${CMAKE_BINARY_DIR}/generators/herwigpp-${v}.genser-zjets-rivet.yoda -P ${CMAKE_SOURCE_DIR}/cmake/scripts/yoda2root.cmake
        COMMAND ${Python_cmd} ${CMAKE_SOURCE_DIR}/generators/reference/reference.py ${CMAKE_BINARY_DIR}/generators/herwigpp.genser-zjets-rivet.root ${CMAKE_BINARY_DIR}/generators/herwigpp-${v}.genser-zjets-rivet.root "Path=XS,jet_HT" "limit=0.05,0.10"
   DEPENDS rivet-tests.genser-prepare_references lhapdf6sets.download
@@ -1917,7 +1910,7 @@ if (${v} MATCHES "^2.[.]*")
   TEST_COMMAND ${CMAKE_COMMAND} -E chdir sherpa/zjets/${v} ${sherpa-${v}_home}/bin/Sherpa -f ${CMAKE_BINARY_DIR}/generators/sherpa-${v}.genser-zjets-rivet.dat -e ${rivettests_stat_size}
        COMMAND ${rivet2_home}/bin/rivet -a MC_GENERIC -a MC_IDENTIFIED -a MC_XS -a MC_ZJETS --histo-file=sherpa-${v}.genser-zjets-rivet.yoda sherpa/zjets/${v}/sherpa-${v}_zjets.hepmc2g
   ENVIRONMENT PATH=${agile_home}/bin:${Python_home}/bin:${rivet2_home}/bin:{yoda_home}/bin:$ENV{PATH}
-              ${library_path}=${sherpa-${v}_home}/lib/SHERPA-MC:${HepMC_home}/lib:${lhapdf_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:${Python_home}/lib:${rivet2_home}/lib:${yoda_home}/lib:${yamlcpp_home}/lib:${ROOT_home}/lib:$ENV{${library_path}}
+              ${library_path}=${sherpa-${v}_home}/lib/SHERPA-MC:${HepMC_home}/lib:${lhapdf-${sherpa_${v}_lhapdf}_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:${Python_home}/lib:${rivet2_home}/lib:${yoda_home}/lib:${yamlcpp_home}/lib:${ROOT_home}/lib:$ENV{${library_path}}
               PYTHONPATH=${Python_home}/bin:${yoda_home}/lib/python${Python_config_version_twodigit}/site-packages/:${ROOT_home}/lib:${rivet2_home}/lib/python${Python_config_version_twodigit}/site-packages/:$ENV{PYTHONPATH}
               PWD=.
   POST_COMMAND ${CMAKE_COMMAND} -DAIDA2ROOT=${AIDA2ROOT} -DPython_cmd=${Python_cmd} -Dyoda_home=${yoda_home} -DINPUT=${CMAKE_BINARY_DIR}/generators/sherpa-${v}.genser-zjets-rivet.yoda -P ${CMAKE_SOURCE_DIR}/cmake/scripts/yoda2root.cmake
@@ -1932,7 +1925,7 @@ else()
   TEST_COMMAND ${CMAKE_COMMAND} -E chdir sherpa/zjets/${v} ${sherpa-${v}_home}/bin/Sherpa -f ${CMAKE_BINARY_DIR}/generators/sherpa-${v}.genser-zjets-rivet.dat  -e ${rivettests_stat_size}
        COMMAND ${rivet2_home}/bin/rivet -a MC_GENERIC -a MC_IDENTIFIED -a MC_XS -a MC_ZJETS --histo-file=sherpa-${v}.genser-zjets-rivet.yoda sherpa/zjets/${v}/sherpa-${v}_zjets.hepmc2g
   ENVIRONMENT PATH=${agile_home}/bin:${Python_home}/bin:${rivet2_home}/bin:{yoda_home}/bin:$ENV{PATH}
-              ${library_path}=${sherpa-${v}_home}/lib/SHERPA-MC:${HepMC_home}/lib:${lhapdf_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:${Python_home}/lib:${rivet2_home}/lib:${yoda_home}/lib:${yamlcpp_home}/lib:${ROOT_home}/lib:$ENV{${library_path}}
+              ${library_path}=${sherpa-${v}_home}/lib/SHERPA-MC:${HepMC_home}/lib:${lhapdf-${sherpa_${v}_lhapdf}_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:${Python_home}/lib:${rivet2_home}/lib:${yoda_home}/lib:${yamlcpp_home}/lib:${ROOT_home}/lib:$ENV{${library_path}}
               PYTHONPATH=${Python_home}/bin:${yoda_home}/lib/python${Python_config_version_twodigit}/site-packages/:${ROOT_home}/lib:${rivet2_home}/lib/python${Python_config_version_twodigit}/site-packages/:$ENV{PYTHONPATH}
               PWD=.
   POST_COMMAND ${CMAKE_COMMAND} -DAIDA2ROOT=${AIDA2ROOT} -DPython_cmd=${Python_cmd} -Dyoda_home=${yoda_home} -DINPUT=${CMAKE_BINARY_DIR}/generators/sherpa-${v}.genser-zjets-rivet.yoda -P ${CMAKE_SOURCE_DIR}/cmake/scripts/yoda2root.cmake
@@ -2036,6 +2029,4 @@ LCG_add_test(test-test PRE_COMMAND /bin/echo pre-comand 1
                            COMMAND /bin/echo test-command 3
                       POST_COMMAND /bin/echo post-command 1
                            COMMAND date )
-
-
 

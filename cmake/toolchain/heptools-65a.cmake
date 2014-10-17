@@ -149,7 +149,6 @@ endif()
 set(MCGENPATH  MCGenerators_lcgcmt${heptools_version})
 #set(MCGENPATH  MCGenerators_test)
 
-LCG_external_package(powheg-box         r2092         ${MCGENPATH}/powheg-box   )
 
 LCG_external_package(lhapdf            5.8.8          ${MCGENPATH}/lhapdf       )
 LCG_external_package(lhapdf            5.8.9          ${MCGENPATH}/lhapdf       )
@@ -164,6 +163,8 @@ LCG_external_package(lhapdf6           6.0.5          ${MCGENPATH}/lhapdf6      
 LCG_external_package(lhapdf6           6.0.2          ${MCGENPATH}/lhapdf6       )
 LCG_external_package(lhapdf6           6.0.3          ${MCGENPATH}/lhapdf6       )
 LCG_external_package(lhapdf6sets       6.0.0          lhapdf6sets   )
+
+LCG_external_package(powheg-box         r2092         ${MCGENPATH}/powheg-box   )
 
 LCG_external_package(pythia8           183            ${MCGENPATH}/pythia8      author=183     )
 LCG_external_package(pythia8           175.lhetau     ${MCGENPATH}/pythia8      author=175     )

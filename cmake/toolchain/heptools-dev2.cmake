@@ -159,7 +159,6 @@ endif()
 
 set(MCGENPATH  MCGenerators)
 
-LCG_external_package(powheg-box         r2092         ${MCGENPATH}/powheg-box       )
 
 LCG_external_package(madgraph5amc       2.1.2          ${MCGENPATH}/madgraph5amc )
 
@@ -170,6 +169,8 @@ LCG_external_package(lhapdfsets        5.9.1          lhapdfsets   )
 
 #LCG_external_package(lhapdf6sets       6.1.2          lhapdf6sets   )
 #LCG_external_package(lhapdf6sets       6.1.3          lhapdf6sets   )
+
+LCG_external_package(powheg-box         r2092         ${MCGENPATH}/powheg-box       )
 
 LCG_external_package(pythia8           175            ${MCGENPATH}/pythia8   )
 LCG_external_package(pythia8           HEAD            ${MCGENPATH}/pythia8 )

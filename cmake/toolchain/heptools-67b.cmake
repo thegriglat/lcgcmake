@@ -167,7 +167,6 @@ LCG_external_package(cmaketools        1.1                                      
 
 set(MCGENPATH  MCGenerators_lcgcmt${heptools_version})
 
-LCG_external_package(powheg-box         r2092         ${MCGENPATH}/powheg-box   )
 
 LCG_external_package(lhapdf            5.8.8          ${MCGENPATH}/lhapdf       )
 LCG_external_package(lhapdf            5.9.1          ${MCGENPATH}/lhapdf       )
@@ -181,6 +180,8 @@ LCG_external_package(lhapdf6           6.1.3          ${MCGENPATH}/lhapdf6      
 LCG_external_package(lhapdf6           6.1.4          ${MCGENPATH}/lhapdf6       )
 LCG_external_package(lhapdf6           6.0.5          ${MCGENPATH}/lhapdf6       ) 
 LCG_external_package(lhapdf6sets       6.0.0          lhapdf6sets   )
+
+LCG_external_package(powheg-box         r2092         ${MCGENPATH}/powheg-box   )
 
 LCG_external_package(pythia8           175.lhetau     ${MCGENPATH}/pythia8      author=175     )
 LCG_external_package(pythia8           175            ${MCGENPATH}/pythia8      )
