@@ -475,7 +475,7 @@ endfunction()
 #----------------------------------------------------------------------------------------------------
 function(LCG_append_depends name var)
   list(APPEND ${var} ${name})
-  foreach(p ${${name}_dependencies})
+  foreach(p ${${name}-dependencies})
     LCG_append_depends(${p} ${var})
   endforeach()
   list(REMOVE_DUPLICATES ${var})
