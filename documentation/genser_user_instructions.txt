@@ -76,6 +76,55 @@ https://svnweb.cern.ch/trac/lcgsoft/browser/trunk/lcgcmake/documentation/ctests.
 
 
 =============================
+ LHAPDF6 - LHAPDF5 switching
+=============================
+It is possible to specify required version of lhapdf in toolchain file. For this use option lhapdf=(lhapdf6|lhapdf5|<lhapdf version>).
+The following examples show allowed syntax (thepeg is used as example, of course):
+  LCG_external_package(thepeg            1.9.2p1           ${MCGENPATH}/thepeg  author=1.9.2 lhapdf=lhapdf6)
+  LCG_external_package(thepeg            1.9.2p1           ${MCGENPATH}/thepeg  author=1.9.2 lhapdf=lhapdf5)
+  LCG_external_package(thepeg            1.9.2p1           ${MCGENPATH}/thepeg  author=1.9.2 lhapdf=6.1.4)
+  LCG_external_package(thepeg            1.9.2p1           ${MCGENPATH}/thepeg  author=1.9.2)
+
+If lhapdf= option is not specified will be used the latest lhapdf version.
+
+For all generators cmake creates <package>_<version>_lhapdf and <package>_<version>_lhapdf_family variables. 
+  <package>_<version>_lhapdf        is version of lhapdf for <package>-<version>
+  <package>_<version>_lhapdf_family is "lhapdf6" or "lhapdf5" depending on <package>_<version>_lhapdf value.
+
+Inside LCGPackage_Add command you should use variables quoted in <,> brackets (as they aren't accesible before initialising). For example:
+    LCGPackage_Add(
+    sherpa
+    URL ${gen_url}/SHERPA-MC-<sherpa_<NATIVE_VERSION>_author>.tar.gz
+    CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR>
+       --enable-shared --enable-static --enable-binreloc --enable-analysis
+       --enable-pythia --enable-hepevtsize=<sherpa_<NATIVE_VERSION>_hepevt>
+->     --enable-lhapdf=<lhapdf-<sherpa_<NATIVE_VERSION>_lhapdf>_home>
+       --enable-hepmc2=${HepMC_home}
+       --enable-openloops=.
+       --enable-lhole
+       --with-sqlite3=${sqlite_home}  "CFLAGS=-O2 -g0" "CXXFLAGS=-O2 -g0" "FFLAGS=-O2 -g0"
+    BUILD_COMMAND ${MAKE} LIBRARY_PATH=<lhapdf-<sherpa_<NATIVE_VERSION>_lhapdf>_home>/lib CPPFLAGS=-I${Boost_home_include} CPATH=${Boost_home_include} 
+    INSTALL_COMMAND make install LIBRARY_PATH=<lhapdf-<sherpa_<NATIVE_VERSION>_lhapdf>_home>/lib
+    BUILD_IN_SOURCE 1
+    DEPENDS lhapdf-<sherpa_<NATIVE_VERSION>_lhapdf> HepMC sqlite
+  )
+  
+  In this example <lhapdf-<sherpa_<NATIVE_VERSION>_lhapdf>_home> means "home directory of lhapdf which version is equal sherpa_<NATIVE_VERSION>_lhapdf"
+
+Outside LCGPackage_Add command is possible to use usual cmake variable syntax. For example:
+  LCG_add_test(sherpa-${v}.native-LHC_Z
+    PRE_COMMAND ${CMAKE_COMMAND} -E remove_directory sherpa/native-LHC_Z/${v}
+        COMMAND ${CMAKE_COMMAND} -E make_directory sherpa/native-LHC_Z/${v}
+    TEST_COMMAND ${CMAKE_COMMAND} -E chdir sherpa/native-LHC_Z/${v} ${sherpa-${v}_home}/bin/Sherpa -j20 -f ${CMAKE_SOURCE_DIR}/generators/sherpa/tests/LHC_Z.dat
+    ENVIRONMENT
+->  ${library_path}=${sherpa-${v}_home}/lib/SHERPA-MC:${HepMC_home}/lib:${lhapdf-${sherpa_${v}_lhapdf}_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:${sqlite_home}/lib:$ENV{${library_path}}
+      PATH=${sqlite_home}/bin:$ENV{PATH}
+      PWD=.  )
+  
+  ${lhapdf-${sherpa_${v}_lhapdf}_home} is home directory for lhapdf required by sherpa with version ${v}.
+
+
+=============================
 Usage of the LCGSoft CMake system
 =============================
 
