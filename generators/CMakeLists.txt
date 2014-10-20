@@ -484,9 +484,9 @@ LCGPackage_Add(
   CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR>
                                 --with-hepmc=${HepMC_home}
                                 IF <VERSION> VERSION_LESS 1.9.0 THEN
-                                   --with-LHAPDF=<lhapdf-<thepeg_<NATIVE_VERSION>_lhapdf>_home>/lib
+                                   --with-LHAPDF=<lhapdf-<thepeg_<NATIVE_VERSION>_lhapdf>_home>
                                 ELSE
-                                   --with-LHAPDF=<lhapdf-<thepeg_<NATIVE_VERSION>_lhapdf>_home>/lib
+                                   --with-lhapdf=<lhapdf-<thepeg_<NATIVE_VERSION>_lhapdf>_home>
                                 ENDIF
                                 --with-gsl=${GSL_home} --without-javagui CFLAGS=-O2 CXXFLAGS=-O2 FFLAGS=-O2
   BUILD_COMMAND ${MAKE} all ${library_path}=<lhapdf-<thepeg_<NATIVE_VERSION>_lhapdf>_home>:<lhapdf-<thepeg_<NATIVE_VERSION>_lhapdf>_home>/lib:$ENV{${library_path}}
