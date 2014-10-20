@@ -103,6 +103,10 @@ LCGPackage_Add(
 )
 
 list(GET lhapdf_native_version -1 pdf_version_full)
+# compatibily with toolchains with unmerged lhapdf
+if (pdf_version_full VERSION_LESS 6)
+  list(GET lhapdf6_native_version -1 pdf_version_full)
+endif()
 string(REGEX MATCH "[0-9]+.[0-9]+" pdf_version "${pdf_version_full}")
 LCG_add_test(lhapdf6sets.download
    PRE_COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_INSTALL_PREFIX}/lhapdf6sets/current
