@@ -241,7 +241,7 @@ LCGPackage_Add(
     DEPENDS HepMC lhapdf-<pythia8_<NATIVE_VERSION>_lhapdf> fastjet
   ENDIF
   IF <pythia8_<NATIVE_VERSION>_author> MATCHES "HEAD$" OR <pythia8_<NATIVE_VERSION>_author> MATCHES "^2[0-9][0-9]" THEN
-    DEPENDS HepMC lhapdf-<pythia8_<NATIVE_VERSION>_lhapdf> Boost
+    DEPENDS HepMC lhapdf-<pythia8_<NATIVE_VERSION>_lhapdf>
   ENDIF
 )
 
