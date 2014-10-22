@@ -34,8 +34,10 @@ This file describes how to install generators to MCGenerators trees:
    cd to it.
 
 6. Create the summary files for a release
-  /afs/cern.ch/sw/lcg/app/spi/tools/LCGRPM/package/extract_LCG_summary.py . <platform> <release version> UPGRADE
-    # /afs/cern.ch/sw/lcg/app/spi/tools/LCGRPM/package/extract_LCG_summary.py . x86_64-slc6-gcc48-opt 69root6 UPGRADE
+   .../lcgcmake/cdash/extract_LCG_summary.py . <platform> <release version>
+   (old location of this script: /afs/cern.ch/sw/lcg/app/spi/tools/LCGRPM/package/extract_LCG_summary.py)
+    # .../lcgcmake/cdash/extract_LCG_summary.py/extract_LCG_summary.py . x86_64-slc6-gcc48-opt 69root6
+
   The files LCG_*.txt should be created. (contrib, generators, externals)
 
 7. Create RPM spec file
@@ -57,6 +59,7 @@ This file describes how to install generators to MCGenerators trees:
 
 9. Copy rpm
    cp -v -i /tmp/sftnight/rpmbuild/RPMS/noarch/*.rpm /afs/cern.ch/sw/lcg/external/rpms/lcg/
+   .../lcgcmake/cdash/copyRPMS.py           
 
 10. Update rpm database (use createrepo or createrepo_c)
    createrepo_c --workers=20 /afs/cern.ch/sw/lcg/external/rpms/lcg/
