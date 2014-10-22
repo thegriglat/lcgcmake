@@ -243,6 +243,9 @@ LCGPackage_Add(
   IF <pythia8_<NATIVE_VERSION>_author> MATCHES "HEAD$" OR <pythia8_<NATIVE_VERSION>_author> MATCHES "^2[0-9][0-9]" THEN
     DEPENDS HepMC lhapdf-<pythia8_<NATIVE_VERSION>_lhapdf>
   ENDIF
+  IF ( <pythia8_<NATIVE_VERSION>_author> MATCHES "HEAD$" OR <pythia8_<NATIVE_VERSION>_author> MATCHES "^2[0-9][0-9]" ) AND <pythia8_<NATIVE_VERSION>_lhapdf> VERSION_GREATER 5.9.9 THEN
+    Boost
+  ENDIF
 )
 
 foreach(v ${pythia8_native_version})
