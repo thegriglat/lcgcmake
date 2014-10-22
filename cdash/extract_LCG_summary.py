@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-import os, sys
+import os, sys, shutil
 
 # name-hash; package name; version; hash; full directory name; comma separated dependencies
 #  COMPILER: GNU 4.8.1, HOSTNAME: lcgapp07.cern.ch, HASH: 9ccc5, DESTINATION: CASTOR, NAME: CASTOR, VERSION: 2.1.13-6,
@@ -58,10 +58,10 @@ def create_package_from_file(directory, filename, packages):
 if __name__ == "__main__":
 
   options = sys.argv
-  if len(options) != 4:
-    print "Please provide DIR, PLATFORM and LCG_version as command line parameters"
+  if len(options) != 5:
+    print "Please provide DIR, PLATFORM, LCG_version and whether it is RELEASE or UPGRADE as command line parameters"
     sys.exit()  
-  name, thedir, platform, version = options
+  name, thedir, platform, version, mode = options
 
   packages = {}
   # collect all .buildinfo_<name>.txt files
@@ -82,11 +82,18 @@ if __name__ == "__main__":
   # now remove all subpackages in dependencies and replace them by real packages
   for name, package in packages.iteritems():
     if package.is_subpackage == False:
+      toremove = set()
+      toadd = set()
       for dep in package.dependencies:
         if packages.has_key(dep):
           if packages[dep].is_subpackage:
-            package.dependencies.remove(dep)
-            package.dependencies.add(packages[dep].destination)
+            toremove.add(dep)
+            toadd.add(packages[dep].destination)
+      for dep in toremove:
+         package.dependencies.remove(dep)
+      for dep in toadd:
+         package.dependencies.add(dep)
+
     # make sure that a meta-package doesn't depend on itself   
     package.dependencies.discard(name)    
 
@@ -107,3 +114,28 @@ if __name__ == "__main__":
      if result != "" and "MCGenerators" in result: #TODO: HACK
        thefile.write(result+"\n")
   thefile.close()
+
+  # and in case of adding generators afterwards we want to have a merged file as well
+  if mode == "UPGRADE":
+    oldfile = open("/afs/cern.ch/sw/lcg/releases/LCG_%s/LCG_generators_%s.txt" %(version,platform), "r")
+    thefile = open(thedir+"/LCG_generators_%s.txt" %platform, "w")
+    for line in oldfile.readlines():
+      thefile.write(line)
+    for name,package in packages.iteritems():
+       result = package.compile_summary()
+       if result != "" and "MCGenerators" in result: #TODO: HACK
+         thefile.write(result+"\n")
+    thefile.close()
+    oldfile = open("/afs/cern.ch/sw/lcg/releases/LCG_%s/LCG_externals_%s.txt" %(version,platform), "r")
+    thefile = open(thedir+"/LCG_externals_%s.txt" %platform, "w")
+    for line in oldfile.readlines():
+      thefile.write(line)
+    for name,package in packages.iteritems():
+       result = package.compile_summary()
+       if result != "" and "MCGenerators" not in result: #TODO: HACK
+         thefile.write(result+"\n")
+    thefile.close()
+
+
+  # add the contrib file to 'thedir'
+  shutil.copyfile("/afs/cern.ch/sw/lcg/releases/LCG_contrib_%s.txt" %platform,"%s/LCG_contrib_%s.txt"%(thedir,platform))
