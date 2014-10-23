@@ -256,6 +256,7 @@ macro(LCGPackage_Add name)
           COMMAND ${CMAKE_COMMAND} -DINSTALL_DIR=${${dest_name}_home}/logs -DLOGS_DIR=${CMAKE_CURRENT_BINARY_DIR}/${targetname}/src/${targetname}-stamp
                                    -P ${CMAKE_SOURCE_DIR}/cmake/scripts/InstallLogFiles.cmake
           COMMAND ${CMAKE_COMMAND} -DNAME=${name} -DINSTALL_DIR=${${dest_name}_home} -DBUILDINFO=${${dest_name}_buildinfo} -P ${CMAKE_SOURCE_DIR}/cmake/scripts/InstallBuildinfoFile.cmake
+          COMMAND ${CMAKE_COMMAND} -DINSTALL_DIR=${${dest_name}_home} -DFULL_VERSION=${${name}_full_version} -P ${CMAKE_SOURCE_DIR}/cmake/scripts/InstallVersionFile.cmake
           DEPENDEES install)
 
       #---Add extra steps eventually------------------------------------------------------------------
@@ -296,11 +297,10 @@ macro(LCGPackage_Add name)
 
       #---Adding extra step to build the binary tarball-----------------------------------------------
       if (LCG_TARBALL_INSTALL)	
-      	if(NOT ARG_DEST_NAME)  # Only if is not installed grouped with other packages
+        if(NOT ARG_DEST_NAME)  # Only if is not installed grouped with other packages
        	 get_filename_component(n_name ${${name}_directory_name} NAME)
-       	 ExternalProject_Add_Step(${targetname} package COMMENT "Creating binary tarball and version.txt file for '${targetname}'"
+       	 ExternalProject_Add_Step(${targetname} package COMMENT "Creating binary tarball for '${targetname}'"
                   COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_INSTALL_PREFIX}/${${name}_directory_name}/../distribution/${name}
-                  COMMAND ${CMAKE_COMMAND} -DINSTALL_DIR=${${dest_name}_home} -DFULL_VERSION=${${name}_full_version} -P ${CMAKE_SOURCE_DIR}/cmake/scripts/InstallVersionFile.cmake
                   COMMAND ${CMAKE_COMMAND} -E chdir ${${dest_name}_home}/../../..
                   ${CMAKE_TAR} -czf ${CMAKE_INSTALL_PREFIX}/${${name}_directory_name}/../distribution/${name}/${name}-${version}-${LCG_system}.tgz ${n_name}/${version}/${LCG_system}
           DEPENDEES strip_rpath install_logs)
