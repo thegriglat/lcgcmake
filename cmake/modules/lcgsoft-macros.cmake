@@ -370,6 +370,7 @@ macro(LCGPackage_Add name)
 
     set(${name}-${version}_home ${${name}_home} PARENT_SCOPE)
     set(${targetname}_dependencies ${${targetname}_dependencies} PARENT_SCOPE)
+    set(${targetname}-dependencies ${${targetname}-dependencies} PARENT_SCOPE)
     set(${targetname}_hash ${${targetname}_hash} PARENT_SCOPE)    
 
   endforeach()
@@ -391,6 +392,7 @@ macro(LCGPackage_Add name)
 
   #--- export the dependencies to the outside files--------------------------------------------------
   set(${targetname}_dependencies ${${targetname}_dependencies} PARENT_SCOPE)
+  set(${targetname}-dependencies ${${targetname}-dependencies} PARENT_SCOPE)
 
   #---End if the main if --------------------------------------------------------------------------
   endif(DEFINED ${name}_native_version)
