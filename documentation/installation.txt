@@ -34,8 +34,10 @@ This file describes how to install generators to MCGenerators trees:
    cd to it.
 
 6. Create the summary files for a release
-   .../lcgcmake/cdash/extract_LCG_summary.py . <platform> <release version>
+   .../lcgcmake/cdash/extract_LCG_summary.py . <platform> <release version> UPGRADE
    (old location of this script: /afs/cern.ch/sw/lcg/app/spi/tools/LCGRPM/package/extract_LCG_summary.py)
+   (alternatives for the last argument: UPGRADE or RELEASE)
+   (example is below)
     # .../lcgcmake/cdash/extract_LCG_summary.py/extract_LCG_summary.py . x86_64-slc6-gcc48-opt 69root6
 
   The files LCG_*.txt should be created. (contrib, generators, externals)
