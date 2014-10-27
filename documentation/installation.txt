@@ -60,9 +60,10 @@ This file describes how to install generators to MCGenerators trees:
    rpmbuild -bb generators.spec
 
 9. Copy rpm
+   cp -v -i /tmp/sftnight/rpmbuild/RPMS/noarch/*.rpm /afs/cern.ch/sw/lcg/external/rpms/lcg/
+   There is a script .../lcgcmake/cdash/copyRPMS.py, but it does not deal with LCG_Generators:
    export TMP_RPM_AREA=/tmp/sftnight    (temporary build area from above)
    .../lcgcmake/cdash/copyRPMS.py
-   (old command was cp -v -i /tmp/sftnight/rpmbuild/RPMS/noarch/*.rpm /afs/cern.ch/sw/lcg/external/rpms/lcg/)
 
 10. Update rpm database (use createrepo or createrepo_c) (this requires permissions, to be done from sftnight)
    createrepo_c --workers=20 /afs/cern.ch/sw/lcg/external/rpms/lcg/
