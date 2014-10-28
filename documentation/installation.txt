@@ -30,8 +30,10 @@ This file describes how to install generators to MCGenerators trees:
 
 1. Steps 1-4 from the instruction above.
 
-5. Build generators in temporary location (e.g. /afs/cern.ch/sw/lcg/external/MCGenerators_test1/) and
-   cd to it.
+5. Build generators in a temporary location (e.g. /afs/cern.ch/sw/lcg/external/MCGenerators_test1/)
+   If you add a generator version, build it against existing AFS installation, e.g. /afs/cern.ch/sw/lcg/releases/LCG_70
+   If you reinstall a generator or a version, use argument -DLCG_IGNORE='generatorname1;generatorname2'
+   cd to the temporary location above
 
 6. Create the summary files for a release
    .../lcgcmake/cdash/extract_LCG_summary.py . <platform> <release version> UPGRADE
@@ -41,6 +43,12 @@ This file describes how to install generators to MCGenerators trees:
     # .../lcgcmake/cdash/extract_LCG_summary.py/extract_LCG_summary.py . x86_64-slc6-gcc48-opt 69root6
 
   The files LCG_*.txt should be created. (contrib, generators, externals)
+
+  As the system is not finished, the following hand procedure is now to be made (once per XX, after LCG_XX installation):
+  cd /afs/cern.ch/sw/lcg/releases/LCG_XX
+  cp *.txt *.txt.old
+  mv *.txt.installed *.txt (only generators is usually sufficient)
+  add headers to *.txt as they are in *.txt.old
 
 7. Create RPM spec file
   a) Determine the current release number
@@ -59,13 +67,13 @@ This file describes how to install generators to MCGenerators trees:
 8. Make rpm
    rpmbuild -bb generators.spec
 
-9. Copy rpm
+9. Copy rpm (this requires permissions, to be done from sftnight)
    cp -v -i TMPRPM/rpmbuild/RPMS/noarch/*.rpm /afs/cern.ch/sw/lcg/external/rpms/lcg/
    There is a script .../lcgcmake/cdash/copyRPMS.py, but it does not deal with LCG_Generators:
    export TMP_RPM_AREA=TMPRPM    (temporary build area from above)
    .../lcgcmake/cdash/copyRPMS.py
 
-10. Update rpm database (use createrepo or createrepo_c) (this requires permissions, to be done from sftnight)
+10. Update rpm database (use createrepo or createrepo_c) (this requires permissions, to be done from sftnight) (takes about 10 mins)
    createrepo_c --workers=20 /afs/cern.ch/sw/lcg/external/rpms/lcg/
 
 11. Install to AFS
