@@ -40,11 +40,12 @@ This file describes how to install generators to MCGenerators trees:
    (old location of this script: /afs/cern.ch/sw/lcg/app/spi/tools/LCGRPM/package/extract_LCG_summary.py)
    (alternatives for the last argument: UPGRADE or RELEASE)
    (example is below)
-    # .../lcgcmake/cdash/extract_LCG_summary.py/extract_LCG_summary.py . x86_64-slc6-gcc48-opt 69root6
+    # .../lcgcmake/cdash/extract_LCG_summary.py/extract_LCG_summary.py . x86_64-slc6-gcc48-opt 69root6 UPGRADE
 
   The files LCG_*.txt should be created. (contrib, generators, externals)
 
-  As the system is not finished, the following hand procedure is now to be made (once per XX, after LCG_XX installation):
+  As the system was not finished, the following hand procedure was to be made (once per XX, after LCG_XX installation):
+  (this is already made in 70 and 70root6)
   cd /afs/cern.ch/sw/lcg/releases/LCG_XX
   cp *.txt *.txt.old
   mv *.txt.installed *.txt (only generators is usually sufficient)
@@ -59,21 +60,24 @@ This file describes how to install generators to MCGenerators trees:
        LCG_generators_69root6_x86_64_slc6_gcc48_opt-1.0.0-8.noarch.rpm
                                                         -> <- is release number
      Use next release number (9 in this case)
-  b) Prepare temporary build directory TMPRPM (for example /tmp/sftnight)
-     rm -rf TMPRPM/*
+  b) Prepare temporary build directory TMPRPM (for example TMPRPM=/tmp/sftnight)
+     rm -rf ${TMPRPM}/*
   c) Produce .spec file
-     /afs/cern.ch/sw/lcg/app/spi/tools/LCGRPM/package/createLCGRPMSpec.py LCG_generators_x86_64-slc6-gcc48-opt.txt -b TMPRPM -o generators.spec --release <release number>
+     /afs/cern.ch/sw/lcg/app/spi/tools/LCGRPM/package/createLCGRPMSpec.py LCG_generators_x86_64-slc6-gcc48-opt.txt -b ${TMPRPM} -o generators.spec --release <release number>
 
 8. Make rpm
    rpmbuild -bb generators.spec
 
-9. Copy rpm (this requires permissions, to be done from sftnight)
-   cp -v -i TMPRPM/rpmbuild/RPMS/noarch/*.rpm /afs/cern.ch/sw/lcg/external/rpms/lcg/
-   There is a script .../lcgcmake/cdash/copyRPMS.py, but it does not deal with LCG_Generators:
-   export TMP_RPM_AREA=TMPRPM    (temporary build area from above)
+   comment: if you substitute some generators version, at this point you will have an error because of duplicate generator.
+            You should remove the old one from the txt file obtained at step 6 and repeat step 7
+
+9. Copy rpm (this step and steps 10 - 11 require permissions, to be done from sftnight)
+   cp -v -i ${TMPRPM}/rpmbuild/RPMS/noarch/*.rpm /afs/cern.ch/sw/lcg/external/rpms/lcg/
+   There is a script .../lcgcmake/cdash/copyRPMS.py, but it does not deal with LCG_Generators, so not to be used for now:
+   export TMP_RPM_AREA=${TMPRPM}    (temporary build area from above)
    .../lcgcmake/cdash/copyRPMS.py
 
-10. Update rpm database (use createrepo or createrepo_c) (this requires permissions, to be done from sftnight) (takes about 10 mins)
+10. Update rpm database (use createrepo or createrepo_c) (takes about 10 mins)
    createrepo_c --workers=20 /afs/cern.ch/sw/lcg/external/rpms/lcg/
 
 11. Install to AFS
@@ -89,3 +93,5 @@ This file describes how to install generators to MCGenerators trees:
 12. Check that the new generators are installed on AFS
 
 13. If the installation is successfull, mail to genser-announce@cern.ch.
+
+In case of questions or problems mail to Benedikt.Hegner@cern.ch and genser-dev
