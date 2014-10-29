@@ -425,8 +425,8 @@ foreach(v ${hepmc3_native_version})
       ${library_path}=${hepmc3_home}/lib:$ENV{${library_path}}
   )
 
-  LCG_add_test(hepmc3-${v}.native-hepevt_wrapper_test
-    TEST_COMMAND ${hepmc3_home}/bin/hepevt_wrapper_test
+  LCG_add_test(hepmc3-${v}.native-hepevt_wrapper_example
+    TEST_COMMAND ${hepmc3_home}/bin/hepevt_wrapper_example
   )
 
 
@@ -1647,22 +1647,37 @@ LCGPackage_Add(
 
 if (madgraph5amc_native_version)
 
-LCG_add_test(madgraph5amc_copy
-  TEST_COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/generators/mgcopy
-       COMMAND ${CMAKE_COMMAND} -E copy_directory ${madgraph5amc_home} ${CMAKE_BINARY_DIR}/generators/mgcopy
-)         
+#LCG_add_test(madgraph5amc_copy
+#  TEST_COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/generators/mgcopy
+#       COMMAND ${CMAKE_COMMAND} -E copy_directory ${madgraph5amc_home} ${CMAKE_BINARY_DIR}/generators/mgcopy
+#)         
 
 #LCG_add_test(madgraph5amc_testmanager
 #  TEST_COMMAND ${Python_cmd} ${CMAKE_BINARY_DIR}/generators/mgcopy/tests/test_manager.py
 #  DEPENDS madgraph5amc_copy
 #)
 
+#LCG_add_test(madgraph5amc_zjetsLO
+#  TEST_COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/generators/mgwork
+#       COMMAND $ENV{SHELL} -c "cd ${CMAKE_BINARY_DIR}/generators/mgwork
+#           ${CMAKE_BINARY_DIR}/generators/mgcopy/bin/mg5_aMC ${CMAKE_SOURCE_DIR}/generators/madgraph5amc/tests/cardsLO.dat
+#           ${CMAKE_BINARY_DIR}/generators/mgwork/MYPROC/bin/generate_events"
+#  DEPENDS madgraph5amc_copy
+#)
+
 LCG_add_test(madgraph5amc_zjetsLO
   TEST_COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/generators/mgwork
        COMMAND $ENV{SHELL} -c "cd ${CMAKE_BINARY_DIR}/generators/mgwork
-           ${CMAKE_BINARY_DIR}/generators/mgcopy/bin/mg5_aMC ${CMAKE_SOURCE_DIR}/generators/madgraph5amc/tests/cardsLO.dat
-           ${CMAKE_BINARY_DIR}/generators/mgwork/MYPROC/bin/generate_events"
-  DEPENDS madgraph5amc_copy
+           ${madgraph5amc_home}/bin/mg5_aMC ${CMAKE_SOURCE_DIR}/generators/madgraph5amc/tests/cardsLO.dat
+           ${CMAKE_BINARY_DIR}/generators/mgwork/MYPROC/bin/generate_events < ${CMAKE_SOURCE_DIR}/generators/madgraph5amc/tests/cardsLO1"
+)
+
+LCG_add_test(madgraph5amc_zjetsLOLHAPDF
+  TEST_COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/generators/mgwork1
+       COMMAND $ENV{SHELL} -c "cd ${CMAKE_BINARY_DIR}/generators/mgwork1
+           ${madgraph5amc_home}/bin/mg5_aMC ${CMAKE_SOURCE_DIR}/generators/madgraph5amc/tests/cardsLO.dat
+           ${CMAKE_SOURCE_DIR}/generators/madgraph5amc/tests/modify.sh ${CMAKE_BINARY_DIR}/generators/mgwork/MYPROC/Cards ${lhapdf_home}/bin/lhapdf-config
+           ${CMAKE_BINARY_DIR}/generators/mgwork/MYPROC/bin/generate_events < ${CMAKE_SOURCE_DIR}/generators/madgraph5amc/tests/cardsLO1"
 )
 
 LCG_add_test(madgraph5amc_zjetsLO_hadronize
