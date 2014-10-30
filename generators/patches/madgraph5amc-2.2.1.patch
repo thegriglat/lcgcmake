@@ -1,0 +1,22 @@
+--- madgraph/interface/common_run_interface.py.old	2014-10-30 21:42:55.000000000 +0100
++++ madgraph/interface/common_run_interface.py	2014-10-30 21:45:33.000000000 +0100
+@@ -2058,7 +2058,11 @@
+     def get_lhapdf_pdfsetsdir(self):
+         lhapdf_version = self.get_lhapdf_version()
+ 
+-        if lhapdf_version.startswith('5.'):
++        # check if the LHAPDF_DATA_PATH variable is defined
++        if 'LHAPDF_DATA_PATH' in os.environ.keys() and os.environ['LHAPDF_DATA_PATH']:
++            datadir = os.environ['LHAPDF_DATA_PATH']
++
++        elif lhapdf_version.startswith('5.'):
+             datadir = subprocess.Popen([self.options['lhapdf'], '--pdfsets-path'],
+                          stdout = subprocess.PIPE).stdout.read().strip()
+ 
+@@ -2885,4 +2889,4 @@
+             except:
+                 import internal.madweight.Cards as mwcards
+             self.mw_card = mwcards.Card(pjoin(self.me_dir,'Cards','MadWeight_card.dat'))
+- 
+\ No newline at end of file
++ 
