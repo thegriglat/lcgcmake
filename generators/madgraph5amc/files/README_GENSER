@@ -21,8 +21,15 @@ define vl~ = ve~ vm~ vt~
 generate p p > Z j j
 output MYPROC
 
-In this file only the last two line are important and specify the process you want
-(see the detailed documentation) and your working directory
+
+In this file only the last two lines are important and specify the process you want
+(see the detailed documentation) and your work directory (here MYPROC)
+
+
+Run the preparation for generation:
+
+madgraph5amclocation/bin/mg5_aMC cardsXX
+
 
 If you want to use PDF from lhapdf, then:
 
