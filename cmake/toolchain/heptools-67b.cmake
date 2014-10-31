@@ -167,6 +167,7 @@ LCG_external_package(cmaketools        1.1                                      
 
 set(MCGENPATH  MCGenerators_lcgcmt${heptools_version})
 
+LCG_external_package(madgraph5amc       2.2.1          ${MCGENPATH}/madgraph5amc )
 
 LCG_external_package(lhapdf            5.8.8          ${MCGENPATH}/lhapdf       )
 LCG_external_package(lhapdf            5.9.1          ${MCGENPATH}/lhapdf       )
