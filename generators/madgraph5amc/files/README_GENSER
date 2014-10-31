@@ -22,8 +22,8 @@ generate p p > Z j j
 output MYPROC
 
 
-In this file only the last two lines are important and specify the process you want
-(see the detailed documentation) and your work directory (here MYPROC)
+In this file normally only the last two lines are to be changed, they specify
+the process you want (see the detailed documentation) and your work directory (here MYPROC)
 
 
 Run the preparation for generation:
@@ -39,10 +39,11 @@ If you want to use PDF from lhapdf, then:
     lhapdf = pdlabel
     10800 = lhaid    
  3. set variable LHAPDF_DATA_PATH to the PDF sets location if it is different
-    from lhapdflocation/share/LHAPDF
+    from lhapdflocation/share/LHAPDF (this step 3 of instruction is valid only for lhapdf6)
+    on CERN AFS the location is /afs/cern.ch/sw/lcg/external/lhapdfsets/current
 
  The numerical identifyer of the PDF set can be taken from
- lhapdflocation/share/LHAPDF/pdfsets.index
+ lhapdflocation/share/LHAPDF/pdfsets.index (or pdfsets.index in the above sets location)
 
 
 Eventually change other parameters

@@ -1641,71 +1641,57 @@ LCGPackage_Add(
           COMMAND ${CMAKE_COMMAND} -E copy <INSTALL_DIR>/doc.tgz <INSTALL_DIR>/../share/
           COMMAND ${CMAKE_COMMAND} -E remove <INSTALL_DIR>/doc.tgz
           COMMAND ${CMAKE_COMMAND} -E remove_directory <INSTALL_DIR>/doc
+          COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/generators/madgraph5amc/files/README_GENSER <INSTALL_DIR>/../share/
   BUILD_IN_SOURCE 1
   DEPENDS Python
 )
 
-if (madgraph5amc_native_version)
-
-#LCG_add_test(madgraph5amc_copy
-#  TEST_COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/generators/mgcopy
-#       COMMAND ${CMAKE_COMMAND} -E copy_directory ${madgraph5amc_home} ${CMAKE_BINARY_DIR}/generators/mgcopy
-#)         
+foreach(v ${madgraph5amc_native_version})
 
 #LCG_add_test(madgraph5amc_testmanager
-#  TEST_COMMAND ${Python_cmd} ${CMAKE_BINARY_DIR}/generators/mgcopy/tests/test_manager.py
-#  DEPENDS madgraph5amc_copy
+#  TEST_COMMAND ${Python_cmd} ${madgraph5amc-${v}_home}/tests/test_manager.py
 #)
 
-#LCG_add_test(madgraph5amc_zjetsLO
-#  TEST_COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/generators/mgwork
-#       COMMAND $ENV{SHELL} -c "cd ${CMAKE_BINARY_DIR}/generators/mgwork
-#           ${CMAKE_BINARY_DIR}/generators/mgcopy/bin/mg5_aMC ${CMAKE_SOURCE_DIR}/generators/madgraph5amc/tests/cardsLO.dat
-#           ${CMAKE_BINARY_DIR}/generators/mgwork/MYPROC/bin/generate_events"
-#  DEPENDS madgraph5amc_copy
-#)
-
-LCG_add_test(madgraph5amc_zjetsLO
-  TEST_COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/generators/mgwork
-       COMMAND $ENV{SHELL} -c "cd ${CMAKE_BINARY_DIR}/generators/mgwork
-           ${madgraph5amc_home}/bin/mg5_aMC ${CMAKE_SOURCE_DIR}/generators/madgraph5amc/tests/cardsLO.dat
+LCG_add_test(madgraph5amc-${v}_zjetsLO
+  TEST_COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/generators/mgwork_${v}
+       COMMAND $ENV{SHELL} -c "cd ${CMAKE_BINARY_DIR}/generators/mgwork_${v}
+           ${madgraph5amc-${v}_home}/bin/mg5_aMC ${CMAKE_SOURCE_DIR}/generators/madgraph5amc/tests/cardsLO.dat
            MYPROC/bin/generate_events < ${CMAKE_SOURCE_DIR}/generators/madgraph5amc/tests/cardsLO1"
 )
 
-LCG_add_test(madgraph5amc_zjetsLOLHAPDF
-  TEST_COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/generators/mgwork1
-       COMMAND $ENV{SHELL} -c "cd ${CMAKE_BINARY_DIR}/generators/mgwork1
-           ${madgraph5amc_home}/bin/mg5_aMC ${CMAKE_SOURCE_DIR}/generators/madgraph5amc/tests/cardsLO.dat
-           ${CMAKE_SOURCE_DIR}/generators/madgraph5amc/tests/modify.sh ${CMAKE_BINARY_DIR}/generators/mgwork1/MYPROC/Cards ${lhapdf_home}/bin/lhapdf-config
+LCG_add_test(madgraph5amc-${v}_zjetsLOLHAPDF
+  TEST_COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/generators/mgwork1_${v}
+       COMMAND $ENV{SHELL} -c "cd ${CMAKE_BINARY_DIR}/generators/mgwork1_${v}
+           ${madgraph5amc-${v}_home}/bin/mg5_aMC ${CMAKE_SOURCE_DIR}/generators/madgraph5amc/tests/cardsLO.dat
+           ${CMAKE_SOURCE_DIR}/generators/madgraph5amc/tests/modify.sh MYPROC/Cards ${lhapdf_home}/bin/lhapdf-config
            MYPROC/bin/generate_events < ${CMAKE_SOURCE_DIR}/generators/madgraph5amc/tests/cardsLO1"
   ENVIRONMENT
      LHAPDF_DATA_PATH=${CMAKE_INSTALL_PREFIX}/lhapdf6sets/current/share/LHAPDF
   DEPENDS lhapdf6sets.download
 )
 
-LCG_add_test(madgraph5amc_zjetsLO_hadronize
-  PRE_COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/generators/mgwork/hadronization
-      COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/pythia8_test2.cmnd ${CMAKE_BINARY_DIR}/generators/mgwork/hadronization
-      COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_BINARY_DIR}/generators/mgwork/MYPROC/Events/run_01/unweighted_events.lhe.gz ${CMAKE_BINARY_DIR}/generators/mgwork/hadronization/Zg_pythia8_mg.lhe.gz
-      COMMAND ${CMAKE_COMMAND} -E remove -f ${CMAKE_BINARY_DIR}/generators/mgwork/hadronization/Zg_pythia8_mg.lhe
-      COMMAND ${CMAKE_COMMAND} -E chdir ${CMAKE_BINARY_DIR}/generators/mgwork/hadronization gunzip Zg_pythia8_mg.lhe.gz
-      COMMAND $ENV{SHELL} -c "cat ${CMAKE_BINARY_DIR}/generators/mgwork/hadronization/Zg_pythia8_mg.lhe | sed '/LesHouchesEvents/s/3.0/1.0/' > ${CMAKE_BINARY_DIR}/generators/mgwork/hadronization/Zg_pythia8.lhe"
-  TEST_COMMAND ${CMAKE_COMMAND} -E chdir ${CMAKE_BINARY_DIR}/generators/mgwork/hadronization ${CMAKE_BINARY_DIR}/generators/pythia8/tests/${pythia8_work_version}/pythia8_genser_test2
+LCG_add_test(madgraph5amc-${v}_zjetsLO_hadronize
+  PRE_COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/generators/mgwork_${v}/hadronization
+      COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/pythia8_test2.cmnd ${CMAKE_BINARY_DIR}/generators/mgwork_${v}/hadronization
+      COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_BINARY_DIR}/generators/mgwork_${v}/MYPROC/Events/run_01/unweighted_events.lhe.gz ${CMAKE_BINARY_DIR}/generators/mgwork_${v}/hadronization/Zg_pythia8_mg.lhe.gz
+      COMMAND ${CMAKE_COMMAND} -E remove -f ${CMAKE_BINARY_DIR}/generators/mgwork_${v}/hadronization/Zg_pythia8_mg.lhe
+      COMMAND ${CMAKE_COMMAND} -E chdir ${CMAKE_BINARY_DIR}/generators/mgwork_${v}/hadronization gunzip Zg_pythia8_mg.lhe.gz
+      COMMAND $ENV{SHELL} -c "cat ${CMAKE_BINARY_DIR}/generators/mgwork_${v}/hadronization/Zg_pythia8_mg.lhe | sed '/LesHouchesEvents/s/3.0/1.0/' > ${CMAKE_BINARY_DIR}/generators/mgwork_${v}/hadronization/Zg_pythia8.lhe"
+  TEST_COMMAND ${CMAKE_COMMAND} -E chdir ${CMAKE_BINARY_DIR}/generators/mgwork_${v}/hadronization ${CMAKE_BINARY_DIR}/generators/pythia8/tests/${pythia8_work_version}/pythia8_genser_test2
   ENVIRONMENT
     ${library_path}=${pythia8-${pythia8_work_version}_home}/lib:${HepMC_home}/lib:$ENV{${library_path}}
     PYTHIA8DATA=${pythia8-${pythia8_work_version}_home}/xmldoc
-  DEPENDS pythia8-${pythia8_work_version}.build madgraph5amc_zjetsLO
+  DEPENDS pythia8-${pythia8_work_version}.build madgraph5amc-${v}_zjetsLO
 )
 
-#substitute {madgraph5amc_native_version} below by {v} when there will be several versions
-LCG_add_test(madgraph5amc_compare
-  TEST_COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/chi.c ${CMAKE_BINARY_DIR}/generators/mgwork/hadronization/.
-       COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_BINARY_DIR}/generators/mgwork/hadronization/testi_pythia8.dat ${CMAKE_BINARY_DIR}/generators/mgwork/hadronization/test_madgraph5amc.dat
-       COMMAND ${CMAKE_COMMAND} -E chdir ${CMAKE_BINARY_DIR}/generators/mgwork/hadronization ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/cmpr.sh madgraph5amc ${CMAKE_SOURCE_DIR}/generators/madgraph5amc/tests/reference.dat ${madgraph5amc_native_version} ${LCG_VERSION} ${LCG_platform}
-  DEPENDS madgraph5amc_zjetsLO_hadronize
+LCG_add_test(madgraph5amc-${v}_compare
+  TEST_COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/chi.c ${CMAKE_BINARY_DIR}/generators/mgwork_${v}/hadronization/.
+       COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_BINARY_DIR}/generators/mgwork_${v}/hadronization/testi_pythia8.dat ${CMAKE_BINARY_DIR}/generators/mgwork_${v}/hadronization/test_madgraph5amc.dat
+       COMMAND ${CMAKE_COMMAND} -E chdir ${CMAKE_BINARY_DIR}/generators/mgwork_${v}/hadronization ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/cmpr.sh madgraph5amc ${CMAKE_SOURCE_DIR}/generators/madgraph5amc/tests/reference.dat ${v} ${LCG_VERSION} ${LCG_platform}
+  DEPENDS madgraph5amc-${v}_zjetsLO_hadronize
 )
 
-endif()
+endforeach()
 
 #--- JHU -------------------------------------------------------------------------------------------
 LCGPackage_Add(
