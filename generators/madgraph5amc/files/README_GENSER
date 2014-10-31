@@ -1,0 +1,49 @@
+Prepare the file with the name cardsXX with following content:
+
+#************************************************************
+#*                                                          *
+#*               Command File for MadGraph5_aMC@NLO         *
+#*                                                          *
+#*     run as ./bin/mg5_aMC  filename                       *
+#*                                                          *
+#************************************************************
+set group_subprocesses Auto
+set ignore_six_quark_processes False
+set gauge unitary
+set complex_mass_scheme False
+import model sm
+define p = g u c d s u~ c~ d~ s~
+define j = g u c d s u~ c~ d~ s~
+define l+ = e+ mu+
+define l- = e- mu-
+define vl = ve vm vt
+define vl~ = ve~ vm~ vt~
+generate p p > Z j j
+output MYPROC
+
+In this file only the last two line are important and specify the process you want
+(see the detailed documentation) and your working directory
+
+If you want to use PDF from lhapdf, then:
+
+ 1. modify the file MYPROC/Cards/me5configuration.txt, put there the line
+    lhapdf = lhapdflocation/bin/lhapdf-config
+ 2. modify the file MYPROC/Cards/run_card.dat, put there the lines
+    lhapdf = pdlabel
+    10800 = lhaid    
+ 3. set variable LHAPDF_DATA_PATH to the PDF sets location if it is different
+    from lhapdflocation/share/LHAPDF
+
+ The numerical identifyer of the PDF set can be taken from
+ lhapdflocation/share/LHAPDF/pdfsets.index
+
+
+Eventually change other parameters
+
+
+Run the events generation:
+
+MYPROC/bin/generate_events
+
+
+The result will be in MYPROC/Events
