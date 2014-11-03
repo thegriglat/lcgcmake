@@ -162,6 +162,28 @@ LCGPackage_Add(
   DEPENDS Python Boost cython
 )
 
+#---heputils-------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  heputils
+  URL ${gen_url}/heputils-<NATIVE_VERSION>.tar.gz
+  CONFIGURE_COMMAND <VOID>
+  BUILD_COMMAND <VOID>
+  INSTALL_COMMAND make install PREFIX=<INSTALL_DIR>
+  BUILD_IN_SOURCE 1
+# if we add tests then probably it should depend on Boost and fastjet
+)
+
+#---mcutils-------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  mcutils
+  URL ${gen_url}/mcutils-<NATIVE_VERSION>.tar.gz
+  CONFIGURE_COMMAND <VOID>
+  BUILD_COMMAND <VOID>
+  INSTALL_COMMAND make install PREFIX=<INSTALL_DIR>
+  BUILD_IN_SOURCE 1
+  DEPENDS heputils
+)
+
 
 #---lhapdf------------------------------------------------------------------------------------------
 LCGPackage_Add(
