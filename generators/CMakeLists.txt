@@ -1689,7 +1689,7 @@ LCG_add_test(madgraph5amc-${v}_zjetsLOLHAPDF
            MYPROC/bin/generate_events < ${CMAKE_SOURCE_DIR}/generators/madgraph5amc/tests/cardsLO1"
   ENVIRONMENT
      LHAPDF_DATA_PATH=${CMAKE_INSTALL_PREFIX}/lhapdf6sets/current/share/LHAPDF
-  DEPENDS lhapdf6sets.download
+  DEPENDS lhapdf6sets.download madgraph5amc-${v}_zjetsLO
 )
 
 LCG_add_test(madgraph5amc-${v}_zjetsLO_hadronize
