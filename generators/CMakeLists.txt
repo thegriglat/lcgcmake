@@ -1674,6 +1674,7 @@ foreach(v ${madgraph5amc_native_version})
 #  TEST_COMMAND ${Python_cmd} ${madgraph5amc-${v}_home}/tests/test_manager.py
 #)
 
+#Remark: madgraph5amc depends on lcgcmake python but works below with system python.
 LCG_add_test(madgraph5amc-${v}_zjetsLO
   TEST_COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/generators/mgwork_${v}
        COMMAND $ENV{SHELL} -c "cd ${CMAKE_BINARY_DIR}/generators/mgwork_${v}
@@ -1689,7 +1690,7 @@ LCG_add_test(madgraph5amc-${v}_zjetsLOLHAPDF
            MYPROC/bin/generate_events < ${CMAKE_SOURCE_DIR}/generators/madgraph5amc/tests/cardsLO1"
   ENVIRONMENT
      LHAPDF_DATA_PATH=${CMAKE_INSTALL_PREFIX}/lhapdf6sets/current/share/LHAPDF
-  DEPENDS lhapdf6sets.download madgraph5amc-${v}_zjetsLO
+  DEPENDS lhapdf6sets.download
 )
 
 LCG_add_test(madgraph5amc-${v}_zjetsLO_hadronize
