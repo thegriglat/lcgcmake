@@ -39,6 +39,8 @@ namespace Rivet {
       _h_Z_pt = bookHisto1D("Z_pt", logspace(10, 10., 1000.));
       _h_jet_mult = bookHisto1D("jet_mult", 10, -0.5, 9.5);
       _h_jet_mult_norm = bookHisto1D("jet_mult_norm", 10, -0.5, 9.5);
+      _h_jet1_pt = bookHisto1D("jet1_pt", logspace(10, 10., 1000.));
+      _h_jet2_pt = bookHisto1D("jet2_pt", logspace(10, 10., 1000.));
 
     }
 
@@ -59,8 +61,13 @@ namespace Rivet {
       _h_jet_mult_norm->fill((double)(jets.size()), weight);
 
       if (jets.size() > 0) { 
+        _h_jet1_pt->fill(jets[0].pt(), weight);
         //_h_Z_jet1_deta->fill(zmom.eta()-jets[0].eta(), weight);
         //_h_Z_jet1_dR->fill(deltaR(zmom, jets[0].momentum()), weight);
+      }
+
+      if (jets.size() > 1) {
+        _h_jet2_pt->fill(jets[1].pt(), weight);
       }
 
     }
@@ -90,8 +97,9 @@ namespace Rivet {
     Histo1DPtr _h_Z_pt;
     Histo1DPtr _h_jet_mult;
     Histo1DPtr _h_jet_mult_norm;
+    Histo1DPtr _h_jet1_pt;
+    Histo1DPtr _h_jet2_pt;
     //@}
-
 
   };
 
