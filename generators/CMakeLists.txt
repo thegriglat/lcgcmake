@@ -95,11 +95,10 @@ LCGPackage_Add(
           COMMAND ${CMAKE_COMMAND}
            -Ddistr=<SOURCE_DIR>
            -Drepo=http://www.hepforge.org/archive/lhapdf/pdfsets/<NATIVE_VERSION>
-           -DPDFsets=${PDFsets}
+           -DPDFS=${PDFsets}
            -Ddst_dir=<INSTALL_DIR>/../share/LHAPDF
            -P ${CMAKE_CURRENT_SOURCE_DIR}/lhapdf6sets/pdfsets.cmake
           COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/lhapdf6sets/mktarball.sh <INSTALL_DIR> <NATIVE_VERSION>
-
 )
 
 list(GET lhapdf_native_version -1 pdf_version_full)
@@ -527,7 +526,7 @@ foreach(v ${thepeg_native_version})
         COMMAND ${CMAKE_COMMAND}
                 -Ddistr=${CMAKE_SOURCE_DIR}/generators/lhapdf6sets
                 -Drepo=http://www.hepforge.org/archive/lhapdf/pdfsets/${pdf_version}
-                -DPDFsets=cteq6l1
+                -DPDFS=cteq6l1
                 -Ddst_dir=${CMAKE_BINARY_DIR}/generators/thepeg/${v}
                 -P ${CMAKE_CURRENT_SOURCE_DIR}/lhapdf6sets/pdfsets.cmake
     TEST_COMMAND ${CMAKE_COMMAND} -E chdir thepeg/${v} $ENV{SHELL} -c "source ${thepeg-${v}_home}/thepegenv-genser.sh
