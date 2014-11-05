@@ -1121,7 +1121,7 @@ LCG_add_test(rivet-${v}.genser-scripts-rivet
 )
 LCG_add_test(rivet-${v}.genser-scripts-rivet-mkhtml
   TEST_COMMAND $ENV{SHELL} -c "source ${rivet-${v}_home}/rivetenv-genser.sh
-      rivet-mkhtml -o rivet-mkhtml-${v} ${CMAKE_SOURCE_DIR}/generators/reference/pythia6_riv2_zjets.yoda ${CMAKE_SOURCE_DIR}/generators/reference/pythia8_riv2_zjets.yoda"
+      rivet-mkhtml -o rivet-mkhtml-${v} ${CMAKE_SOURCE_DIR}/generators/reference/pythia6_riv2_zjets.yoda ${CMAKE_SOURCE_DIR}/generators/reference/pythia8_riv2_zjetsgenser.yoda"
 )
 endif()
 endforeach()
