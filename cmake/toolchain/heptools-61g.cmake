@@ -142,6 +142,9 @@ set(MCGENPATH  MCGenerators_lcgcmt${heptools_version})
 
 #---Additional External packages------(Generators)-----------------
 
+LCG_external_package(heputils       1.0.0          ${MCGENPATH}/heputils )
+LCG_external_package(mcutils        1.1.0          ${MCGENPATH}/mcutils )
+
 LCG_external_package(lhapdf            5.9.1          ${MCGENPATH}/lhapdf       )
 LCG_external_package(lhapdfsets        5.9.1          lhapdfsets   )
 
