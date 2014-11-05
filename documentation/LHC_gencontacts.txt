@@ -9,7 +9,7 @@ ATLAS:
 Andy Buckley                 a.g.buckley@gmail.com
 Ewelina Lobodzinska          ewelina.maria.lobodzinska@cern.ch
 James Monk                   james.william.monk@cern.ch
-Thorsten Kuhl                Thorsten.Kuhl@cern.ch
+Monica D'Onofrio             Monica.D'Onofrio@cern.ch
 
 LHCb:
 
