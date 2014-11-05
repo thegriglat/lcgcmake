@@ -170,11 +170,10 @@ set(MCGENPATH  MCGenerators_lcgcmt${heptools_version})
 LCG_external_package(heputils       1.0.0          ${MCGENPATH}/heputils )
 LCG_external_package(mcutils        1.1.0          ${MCGENPATH}/mcutils )
 
-#LCG_external_package(lhapdf            5.9.1          ${MCGENPATH}/lhapdf       )
-
-#LCG_external_package(lhapdfsets        5.9.1          lhapdfsets   )
-
+LCG_external_package(lhapdf           5.9.1          ${MCGENPATH}/lhapdf       )
 LCG_external_package(lhapdf           6.1.4          ${MCGENPATH}/lhapdf       )
+
+LCG_external_package(lhapdfsets        5.9.1          lhapdfsets   )
 
 LCG_external_package(madgraph5amc       2.2.1          ${MCGENPATH}/madgraph5amc )
 
