@@ -524,7 +524,7 @@ foreach(v ${thepeg_native_version})
   LCG_add_test(thepeg-${v}.genser-scripts-setupThePEG
     PRE_COMMAND ${CMAKE_COMMAND} -E make_directory thepeg/${v}
     TEST_COMMAND ${CMAKE_COMMAND} -E chdir thepeg/${v} $ENV{SHELL} -c "source ${thepeg-${v}_home}/thepegenv-genser.sh
-      setupThePEG ${thepeg-${v}_home}/share/ThePEG/TestLHAPDF.in"
+      setupThePEG ${thepeg-${v}_home}/share/ThePEG/MultiLEP.in"
     ENVIRONMENT LHAPDF_DATA_PATH=${lhapdf-${thepeg_${v}_lhapdf}_home}/share/LHAPDF:${CMAKE_INSTALL_PREFIX}/lhapdf6sets/current/share/LHAPDF
     DEPENDS lhapdf6sets.download
   )
