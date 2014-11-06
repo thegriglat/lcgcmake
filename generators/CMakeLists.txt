@@ -439,27 +439,29 @@ endforeach()
 
 # HepMC 3 test - hepmc3
 
-foreach(v ${hepmc3_native_version})
-  LCG_add_test(hepmc3-${v}.native-basic_tree
-    TEST_COMMAND ${hepmc3_home}/bin/basic_tree.exe
+foreach(hmc3variant hepmc3 hepmc3-cxx11)
+foreach(v ${${hmc3variant}_native_version})
+  LCG_add_test(${hmc3variant}-${v}.native-basic_tree
+    TEST_COMMAND ${${hmc3variant}_home}/bin/basic_tree.exe
     ENVIRONMENT
-      ${library_path}=${hepmc3_home}/lib:$ENV{${library_path}}
+      ${library_path}=${${hmc3variant}_home}/lib:$ENV{${library_path}}
   )
 
-  LCG_add_test(hepmc3-${v}.native-hepevt_wrapper_example
-    TEST_COMMAND ${hepmc3_home}/bin/hepevt_wrapper_example.exe
+  LCG_add_test(${hmc3variant}-${v}.native-hepevt_wrapper_example
+    TEST_COMMAND ${${hmc3variant}_home}/bin/hepevt_wrapper_example.exe
   )
 
-
- LCG_add_test(hepmc3-${v}.native-pythia8_example
-  PRE_COMMAND  ${CMAKE_COMMAND} -E copy ${hepmc3_home}/bin/pythia8_ee_to_Z_to_tautau.conf .
-  TEST_COMMAND ${hepmc3_home}/bin/pythia8_example.exe pythia8_ee_to_Z_to_tautau.conf
+ LCG_add_test(${hmc3variant}-${v}.native-pythia8_example
+  PRE_COMMAND  ${CMAKE_COMMAND} -E copy ${${hmc3variant}_home}/bin/pythia8_ee_to_Z_to_tautau.conf .
+  TEST_COMMAND ${${hmc3variant}_home}/bin/pythia8_example.exe pythia8_ee_to_Z_to_tautau.conf
   ENVIRONMENT
     PYTHIA8DATA=${pythia8_home}/xmldoc
-    ${library_path}=${hepmc3_home}/lib:${pythia8_home}/lib:$ENV{${library_path}}
+    ${library_path}=${${hmc3variant}_home}/lib:${pythia8_home}/lib:$ENV{${library_path}}
  )
 
 endforeach()
+endforeach()
+
 
 #---vincia------------------------------------------------------------------------------------------
 

@@ -205,6 +205,19 @@ LCGPackage_Add(
   DEPENDS Boost pythia8
 )
 
+LCGPackage_Add(
+  hepmc3-cxx11
+  ${hepmc3_source_command}
+  CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
+             -DHEPMC_ENABLE_CPP11=ON
+             -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+             -DHEPMC_BUILD_EXAMPLES=ON
+             -DPYTHIA8_ROOT_DIR=${pythia8_home}
+  BUILD_COMMAND ${MAKE}
+  DEPENDS pythia8
+)
+
+
 #---HepPDT-------------------------------------------------------------------------------------------
 LCGPackage_Add(
   HepPDT
