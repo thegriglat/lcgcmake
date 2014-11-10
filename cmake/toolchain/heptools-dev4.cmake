@@ -208,8 +208,6 @@ LCG_external_package(rivet             1.9.0          ${MCGENPATH}/rivet        
 LCG_external_package(rivet             2.1.2          ${MCGENPATH}/rivet        yoda=1.1.0      )
 LCG_external_package(rivet             2.2.0          ${MCGENPATH}/rivet        yoda=1.3.0      )
 
-
-LCG_external_package(sherpa            1.4.5.2        ${MCGENPATH}/sherpa         author=1.4.5 hepevt=10000 )
 LCG_external_package(sherpa            2.1.1          ${MCGENPATH}/sherpa         author=2.1.1 hepevt=10000)
 
 LCG_external_package(qd                2.3.13          ${MCGENPATH}/qd         )
