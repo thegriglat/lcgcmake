@@ -146,6 +146,8 @@ endif()
 
 set(MCGENPATH  MCGenerators)
 
+LCG_external_package(heputils       1.0.0          ${MCGENPATH}/heputils )
+LCG_external_package(mcutils        1.1.0          ${MCGENPATH}/mcutils )
 
 LCG_external_package(madgraph5amc       2.1.2          ${MCGENPATH}/madgraph5amc )
 
