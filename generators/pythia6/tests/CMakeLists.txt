@@ -18,3 +18,6 @@ target_link_libraries(pythia6_orig_test1 ${PYTHIA6_LIBRARIES} ${HEPMC_LIBRARY} $
 add_executable(pythia6_genser_test1 pythia6_genser_test1.cc ../../pythia8/tests/analyserhepmc/AnalyserHepMC.cc 
 ../../pythia8/tests/analyserhepmc/LeptonAnalyserHepMC.cc ../../pythia8/tests/analyserhepmc/JetInputHepMC.cc)
 target_link_libraries(pythia6_genser_test1 ${PYTHIA6_LIBRARIES} ${HEPMC_LIBRARIES} ${HEPMC_fio_LIBRARY} ${FASTJET_LIBRARIES})
+
+add_executable(pythia6_genser_outhepmc pythia6_genser_outhepmc.cc)
+target_link_libraries(pythia6_genser_outhepmc ${PYTHIA6_LIBRARIES} ${HEPMC_LIBRARIES} ${HEPMC_fio_LIBRARY})
