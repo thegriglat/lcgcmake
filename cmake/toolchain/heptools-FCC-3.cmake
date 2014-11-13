@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 2.8.5)
 # Declare the version of HEP Tools we use
 # (must be done before including heptools-common to allow evolution of the
 # structure)
-set(heptools_version  FCC-2)
+set(heptools_version  FCC-3)
 
 include(${CMAKE_CURRENT_LIST_DIR}/heptools-common.cmake)
 
@@ -12,12 +12,8 @@ include(${CMAKE_CURRENT_LIST_DIR}/heptools-common.cmake)
 
 
 # Application Area Projects
-LCG_AA_project(COOL  COOL_2_9_2)
-LCG_AA_project(CORAL CORAL_2_4_2)
 LCG_AA_project(RELAX RELAX_1_3_0p)
 LCG_AA_project(ROOT  5.34.19)
-
-LCG_AA_project(LCGCMT LCGCMT_preview) #TODO: to be fixed
 LCG_external_package(Geant4 9.6.p03 CLHEP=2.1.4.1)
 
 # Externals
@@ -27,7 +23,6 @@ LCG_external_package(blas              20110419                                 
 LCG_external_package(Boost             1.55.0                                   )
 LCG_external_package(CLHEP             2.1.4.1                   clhep          )
 LCG_external_package(cmaketools        1.1                                      )
-LCG_external_package(cmt               v1r20p20090520                           )
 LCG_external_package(coin3d            3.1.3p2                                  )
 LCG_external_package(coverage          3.5.2                                    )
 LCG_external_package(CppUnit           1.12.1_p1                 author=1.12.1  )
@@ -145,10 +140,6 @@ endif()
 #---Additional External packages------(Generators)-----------------
 
 set(MCGENPATH  MCGenerators)
-
-
-#LCG_external_package(powheg-box         r2092         ${MCGENPATH}/powheg-box       )
-
     LCG_external_package(lhapdf            5.9.1          ${MCGENPATH}/lhapdf       )
     LCG_external_package(lhapdfsets        5.9.1          lhapdfsets   )
     LCG_external_package(lhapdf6           6.1.3          ${MCGENPATH}/lhapdf6       )
@@ -187,12 +178,7 @@ set(MCGENPATH  MCGenerators)
     LCG_external_package(pyquen            1.5.1          ${MCGENPATH}/pyquen author=1_5)
     LCG_external_package(baurmc            1.0            ${MCGENPATH}/baurmc       )
     LCG_external_package(professor         1.3.3          ${MCGENPATH}/professor       )
-
-if(${LCG_COMP}${LCG_COMPVERS} STRGREATER gcc45)
-  LCG_external_package(madgraph5v2       2.0.0.beta3    ${MCGENPATH}/madgraph5       )
-endif()
-
-LCG_external_package(jhu               3.1.8          ${MCGENPATH}/jhu       )
+    LCG_external_package(jhu               3.1.8          ${MCGENPATH}/jhu       )
 
 # Prepare the search paths according to the versions above
 LCG_prepare_paths()
