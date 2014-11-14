@@ -30,9 +30,18 @@
 
 using namespace std;
  
-int main() { 
 
-  unsigned int Nevt = 1000;
+int main(int argc, char* argv[])
+{
+  // Check that correct number of command-line arguments
+  if (argc != 3) {
+    cerr << " Unexpected number of command-line arguments. \n You are"
+         << " expected to provide Nevents and output file name. \n"
+         << " Program stopped! " << endl;
+    return 1;
+  }
+
+  unsigned int Nevt = atoi(argv[1]);
   unsigned int i;
 
   //........................................HEPEVT
@@ -48,7 +57,7 @@ int main() {
   HepMC::HEPEVT_Wrapper::set_sizeof_real(8);
     
   // Specify file where HepMC events will be stored.
-  HepMC::IO_GenEvent ascii_io("hepmcoutzjets_pythia6.dat", std::ios::out);
+  HepMC::IO_GenEvent ascii_io(argv[2], std::ios::out);
 
   //........................................PYTHIA INITIALIZATIONS
   // (Some platforms may require the initialization of pythia PYDATA block 

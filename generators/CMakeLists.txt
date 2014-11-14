@@ -1855,7 +1855,9 @@ foreach (v ${pythia6_native_version})
 
  LCG_add_test(
   pythia6-${v}.genser-zjetsgenser-rivet
-  TEST_COMMAND ${agile_home}/bin/agile-runmc Pythia6:${v_test_version} -o pythia6-${v}.genser-zjets.hepmc.dat --paramfile=${CMAKE_SOURCE_DIR}/generators/agile_configs/pythia6-zjets-13tev.params -n ${rivettests_stat_size}
+  TEST_COMMAND pythia6/tests/${v}/pythia6_genser_outhepmc ${rivettests_stat_size} pythia6-${v}.genser-zjets.hepmc.dat
+       COMMAND $ENV{SHELL} -c "cat pythia6-${v}.genser-zjets.hepmc.dat | sed 's/U MEV MM/U GEV MM/' > pythia6-${v}.genser-zjets.hepmc.datNEW"
+       COMMAND $ENV{SHELL} -c "mv pythia6-${v}.genser-zjets.hepmc.datNEW pythia6-${v}.genser-zjets.hepmc.dat"
        COMMAND ${rivet2_home}/bin/rivet -a MC_XS -a GENSER_MC_ZJETS --histo-file=pythia6-${v}.genser-zjetsgenser-rivet.yoda pythia6-${v}.genser-zjets.hepmc.dat
   ENVIRONMENT PATH=${agile_home}/bin:${Python_home}/bin:$ENV{PATH}
               ${library_path}=${Python_home}/lib:${GSL_home}/lib:${rivet2_home}/lib:${yoda_home}/lib:${HepMC_home}/lib:${fastjet_home}/lib:${yamlcpp_home}/lib:${agile_home}/lib:${HepMC_home}/lib:${ROOT_home}/lib:$ENV{${library_path}}
