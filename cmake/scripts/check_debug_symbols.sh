@@ -10,10 +10,10 @@
 ROOT_PATH=$1
 OS=$(uname)
 if [ "Darwin" == $OS ];then
-  filepattern="-name *.dylib"
+  filepattern="-name '*.dylib'"
   chkcmd="mac_check"
 else
-  filepattern="-name *.so"
+  filepattern="-name '*.so'"
   chkcmd="slc_check"
 fi
 
@@ -30,7 +30,8 @@ exitcode=0
 if echo ${ROOT_PATH} | grep -q '\-opt'; then
     echo "The following libraries have debug symbols:"
     for dirs in $(find $ROOT_PATH -maxdepth 4 -type d); do
-      for name in $([ -d "$dirs/lib" ] && find $dirs/lib -type f $filepattern) $([ -d "$dirs/bin" ] && find $dirs/bin -type f $filepattern); do
+      for name in $([ -d "$dirs/lib" ] && find "$dirs/lib" -type f $filepattern) \
+                  $([ -d "$dirs/bin" ] && find "$dirs/bin" -type f $filepattern); do
         $chkcmd $name | wc -l | grep -q -w 0
         if [ $? -ne 0 ];then
             echo "WARNING: File $name contains debug symbols."
@@ -41,7 +42,8 @@ if echo ${ROOT_PATH} | grep -q '\-opt'; then
 elif echo ${ROOT_PATH} | grep -q '\-dbg'; then
     echo "The following libraries don't have debug symbols:"
     for dirs in $(find $ROOT_PATH -maxdepth 4 -type d); do
-      for name in $([ -d "$dirs/lib" ] && find $dirs/lib -type f $filepattern | grep '\-dbg') $([ -d "$dirs/bin" ] && find $dirs/bin -type f $filepattern | grep '\-dbg'); do
+      for name in $([ -d "$dirs/lib" ] && find $dirs/lib -type f $filepattern | grep '\-dbg') \
+                  $([ -d "$dirs/bin" ] && find $dirs/bin -type f $filepattern | grep '\-dbg'); do
         $chkcmd $name | wc -l | grep -q -w 0 && echo "WARNING: File $name doesn't contain debug symbols."
       done
     done
