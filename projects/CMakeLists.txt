@@ -295,7 +295,7 @@ LCGPackage_add(
              -DEXPAT_INCLUDE_DIR=${expat_home}/include
              IF LCG_CPP11 THEN  -DGEANT4_BUILD_CXXSTD=c++11  ENDIF
   BUILD_COMMAND ${MAKE}
-  DEPENDS CLHEP XercesC expat
+  DEPENDS CLHEP-<Geant4_<VERSION>_CLHEP> XercesC expat
 )
 
 #---DD4hep-----------------------------------------------------------------------------------------------
