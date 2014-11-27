@@ -20,7 +20,6 @@ LCG_AA_project(LCGCMT LCGCMT_${heptools_version})
 LCG_AA_project(HepMC 2.06.09)
 
 # Externals
-LCG_external_package(hepmc3            githead                                  )
 LCG_external_package(4suite            1.0.2p1                                  )
 LCG_external_package(AIDA              3.2.1                                    )
 LCG_external_package(blas              20110419                                 )
