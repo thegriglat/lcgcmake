@@ -43,8 +43,6 @@ LCG_external_package(genshi            0.6                                      
 LCG_external_package(graphviz          2.28.0                                   )
 LCG_external_package(GSL               1.10                                     )
 LCG_external_package(HepMC             2.06.09                                  )
-LCG_external_package(hepmc3            githead                                  )
-LCG_external_package(hepmc3-cxx11      githead.cxx11             hepmc3         )
 LCG_external_package(HepPDT            2.06.01                                  )
 LCG_external_package(ipython           0.12.1                                   )
 LCG_external_package(json              2.5.2                                    )
