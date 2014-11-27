@@ -206,7 +206,7 @@ LCGPackage_Add(
           COMMAND ${CMAKE_COMMAND} -E remove -f <INSTALL_DIR>/../share/PDFsets.index
           COMMAND ${CMAKE_COMMAND} -E create_symlink lhapdf/PDFsets.index <INSTALL_DIR>/../share/PDFsets.index
     BUILD_IN_SOURCE 1
-    DEPENDS lhapdfsets 
+    DEPENDS lhapdfsets-<NATIVE_VERSION>
  ELSE
     URL ${gen_url}/LHAPDF-<NATIVE_VERSION>.tar.gz
       CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --with-boost=${Boost_home} --with-yaml-cpp=${yamlcpp_home}
