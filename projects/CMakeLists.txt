@@ -243,7 +243,7 @@ LCGPackage_add(
   BUILD_COMMAND     ${CMT_make_cmd}
   INSTALL_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/../${LCG_system} <INSTALL_DIR>
           COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/../include <INSTALL_DIR>/../include
-  DEPENDS LCGCMT CORAL ROOT
+  DEPENDS LCGCMT CORAL ROOT GCCXML
 )
 
 
