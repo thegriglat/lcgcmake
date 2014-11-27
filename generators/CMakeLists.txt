@@ -192,7 +192,7 @@ LCGPackage_Add(
     PATCH_COMMAND patch -p0 < ${CMAKE_CURRENT_SOURCE_DIR}/patches/lhapdf-getdata.patch
         CONFIGURE_COMMAND ./configure
       --prefix=<INSTALL_DIR>
-      --datadir=<lhapdfsets_home>/../share
+      --datadir=${CMAKE_INSTALL_PREFIX}/lhapdfsets/<VERSION>/share
       --enable-low-memory
       --disable-pyext
       --disable-doxygen
