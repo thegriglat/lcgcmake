@@ -198,7 +198,6 @@ LCG_external_package(agile             1.4.1          ${MCGENPATH}/agile        
 LCG_external_package(photos++          3.52           ${MCGENPATH}/photos++     )
 LCG_external_package(photos++          3.56           ${MCGENPATH}/photos++     )
 
-LCG_external_package(photos            215.5          ${MCGENPATH}/photos       ) 
 LCG_external_package(photos            215.4          ${MCGENPATH}/photos       ) 
 
 LCG_external_package(evtgen            1.2.0          ${MCGENPATH}/evtgen         tag=R01-02-00 pythia8=175 tauola++=1.1.1a)
