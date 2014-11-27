@@ -49,7 +49,6 @@ LCG_external_package(HepPDT            2.06.01                                  
 LCG_external_package(ipython           0.12.1                                   )
 LCG_external_package(json              2.5.2                                    )
 LCG_external_package(lapack            3.5.0                                    )
-LCG_external_package(LCIO              v02-04-03                                )
 LCG_external_package(lcov              1.9                                      )
 LCG_external_package(libsvm            2.86                                     )
 LCG_external_package(libtool           1.5.26                                   )
