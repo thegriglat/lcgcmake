@@ -103,7 +103,7 @@ else()
                -Dgsl_shared=ON
                -Dkrb5=ON
                -Dgenvector=ON
-               IF <VERSION> MATCHES "^v6-|^6[.]"
+               IF <VERSION> MATCHES "^v6-|^6[.]" THEN
                  -Dvc=ON
                ENDIF
                -Dldap=ON
