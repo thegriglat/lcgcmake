@@ -103,7 +103,9 @@ else()
                -Dgsl_shared=ON
                -Dkrb5=ON
                -Dgenvector=ON
-               -Dvc=ON
+               IF <VERSION> MATCHES "^v6-|^6[.]"
+                 -Dvc=ON
+               ENDIF
                -Dldap=ON
                -Dmathmore=ON -DGSL_DIR=${GSL_home}
                -Dmemstat=ON
