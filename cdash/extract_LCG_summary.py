@@ -17,7 +17,6 @@ class PackageInfo(object):
         self.is_subpackage = False
      else:
         self.is_subpackage = True
-
    def compile_summary(self):
      #create dependency string 
      if self.is_subpackage:
@@ -72,23 +71,24 @@ if __name__ == "__main__":
               a = open(fullname).read() 
               create_package_from_file(root,fullname,packages)
 
-  print packages             
+#  print packages             
   # now compile entire dependency lists
   # every dependency of a subpackage is forwarded to the real package
   for name,package in packages.iteritems():
      if package.is_subpackage == True:
         packages[package.destination].dependencies.update(package.dependencies) 
-
   # now remove all subpackages in dependencies and replace them by real packages
   for name, package in packages.iteritems():
     if package.is_subpackage == False:
       toremove = set()
       toadd = set()
       for dep in package.dependencies:
-        if packages.has_key(dep):
-          if packages[dep].is_subpackage:
+        depname = dep.split("-")[0]
+        if packages.has_key(depname):
+          if packages[depname].is_subpackage:
             toremove.add(dep)
-            toadd.add(packages[dep].destination)
+            destination = packages[depname].destination
+            toadd.add("%s-%s"%(destination,packages[destination].hash))
       for dep in toremove:
          package.dependencies.remove(dep)
       for dep in toadd:
