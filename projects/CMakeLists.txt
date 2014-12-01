@@ -201,9 +201,9 @@ LCGPackage_Add(
 LCGPackage_Add(
   LCGCMT
   IF ${heptools_version} MATCHES "root6|dev4" THEN
-    SVN_REPOSITORY http://svn.cern.ch/guest/lcgsoft/tags/LCGCMT-cmake_root6/lcgcmt --quiet
+    URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/LCGCMT-cmake_root6.tar.gz
   ELSE
-    SVN_REPOSITORY http://svn.cern.ch/guest/lcgsoft/tags/LCGCMT-cmake/lcgcmt --quiet
+    URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/LCGCMT-cmake.tar.gz
   ENDIF
   UPDATE_COMMAND ${Python_cmd} ${CMAKE_SOURCE_DIR}/cmake/scripts/create_LCGCMT.py ${CMAKE_BINARY_DIR}/dependencies.json <SOURCE_DIR>/LCG_Configuration/cmt/requirements
   CONFIGURE_COMMAND <VOID>
