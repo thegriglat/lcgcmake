@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+set -x
+#------------------------------------------------------------------
+svnrep=http://svn.cern.ch/guest/lcgsoft
+
+
+rm -rf workdir
+mkdir workdir
+cd workdir
+for tag in LCGCMT-cmake_root6 LCGCMT-cmake
+do
+  svn co $svnrep/tags/$tag/lcgcmt --quiet $tag
+  tar --exclude=.svn -czf $tag.tar.gz $tag
+  cp  $tag.tar.gz /afs/cern.ch/sw/lcg/external/tarFiles/.
+done
+
