@@ -6,7 +6,7 @@
 #  $3: slotname
 BUILDTYPE="$1"
 COMPILER_VER="$2"
-SLOTNAME=$3""
+SLOTNAME="$3"
 
 # A few default parameters of the build
 export LC_CTYPE=en_US.UTF-8
@@ -24,7 +24,7 @@ export INSTALLDIR=
 export LCG_IGNORE=
 export TEST_LABELS=
 export LCG_TARBALL_INSTALL="false"
-export SLOTNAME="dev4"
+export SLOTNAME=$SLOTNAME
 export TEST_LABELS="Nightly|PhysicsCheck"
 
 export BUILDTYPE
