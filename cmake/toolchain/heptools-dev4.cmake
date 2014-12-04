@@ -62,7 +62,7 @@ LCG_external_package(libsvm            2.86                                     
 LCG_external_package(libtool           1.5.26                                   )
 LCG_external_package(lxml              2.3                                      )
 LCG_external_package(matplotlib        1.3.1                                    )
-LCG_external_package(minuit            5.27.02                                  )
+#LCG_external_package(minuit            5.27.02                                  )
 LCG_external_package(mock              0.8.0                                    )
 LCG_external_package(multiprocessing   2.6.2.1                                  )
 LCG_external_package(mysql             5.5.27                                   )
