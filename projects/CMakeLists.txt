@@ -262,10 +262,6 @@ add_custom_target(GAUDI-externals
                  COMMENT "Target to build all externals packages needed by Gaudi"
                  DEPENDS ${GAUDI-dependencies})
 
-add_custom_target(install-GAUDI-externals
-                 COMMENT "Target to install all externals packages needed by Gaudi"
-                 DEPENDS ${GAUDI-installs} )
-
 
 #---LCIO-----------------------------------------------------------------------------------------------
 LCGPackage_add(
