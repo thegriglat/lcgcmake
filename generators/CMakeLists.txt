@@ -466,7 +466,7 @@ foreach(v ${${hmc3variant}_native_version})
 
  LCG_add_test(${hmc3variant}-${v}.native-pythia8_example
   PRE_COMMAND  ${CMAKE_COMMAND} -E copy ${${hmc3variant}_home}/bin/pythia8_ee_to_Z_to_tautau.conf .
-  TEST_COMMAND ${${hmc3variant}_home}/bin/pythia8_example.exe pythia8_ee_to_Z_to_tautau.conf
+  TEST_COMMAND ${${hmc3variant}_home}/bin/pythia8_example.exe pythia8_ee_to_Z_to_tautau.conf hepmc3-output.${v}.output
   ENVIRONMENT
     PYTHIA8DATA=${pythia8_home}/xmldoc
     ${library_path}=${${hmc3variant}_home}/lib:${pythia8_home}/lib:$ENV{${library_path}}
