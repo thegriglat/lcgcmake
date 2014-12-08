@@ -135,14 +135,27 @@ set(cython_pythonpath ${cython_home}/lib/python${Python_config_version_twodigit}
 LCGPackage_Add(
   yamlcpp
   URL ${gen_url}/yaml-cpp-${yamlcpp_native_version}.tar.gz
-  CMAKE_ARGS -DBOOST_ROOT=${Boost_home} -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR> -DBUILD_SHARED_LIBS=ON
+  CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR> -DBUILD_SHARED_LIBS=ON
   BUILD_IN_SOURCE 1
   INSTALL_COMMAND make install  
   COMMAND ${CMAKE_COMMAND} -E create_symlink yamlcpp <INSTALL_DIR>/../../../yaml-cpp
-
 )
 
+foreach(v ${yamlcpp_native_version})
+LCG_add_test(yamlcpp-${v}.build
+  BINARY_DIR yamlcpp/tests/${v}
+  SOURCE_DIR yamlcpp/tests
+  BUILD all
+  BUILD_OPTIONS -DCMAKE_MODULE_PATH=${CMAKE_SOURCE_DIR}/cmake/modules
+                -DCMAKE_MODULE_PATH2=${cmaketools_home}/modules
+                -DYAMLCPP_ROOT_DIR=${yamlcpp-${v}_home}
+  ENVIRONMENT ${library_path}=${yamlcpp-${v}_home}/lib:$ENV{${library_path}})
 
+LCG_add_test(yamlcpp-${v}.genser-produce-yaml
+  TEST_COMMAND yamlcpp/tests/${v}/produce-yaml
+  ENVIRONMENT ${library_path}=${yamlcpp-${v}_home}/lib:$ENV{${library_path}}
+  DEPENDS yamlcpp-${v}.build)
+endforeach()
 #---Yoda-------------------------------------------------------------------------------------------
 LCGPackage_Add(
   yoda
