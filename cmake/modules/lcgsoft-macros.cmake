@@ -321,28 +321,14 @@ macro(LCGPackage_Add name)
         set(output_name "${name}-env.sh")
       endif()
       if (EXISTS "${CMAKE_SOURCE_DIR}/generators/environment/${name}.template")
-        # use template if it exists
-        set (template_name "${CMAKE_SOURCE_DIR}/generators/environment/${name}.template")
-        set (_args "-D${name}_version=${version}" "-D${name}_home=${${name}_home}")
+        set (append_template_name "${CMAKE_SOURCE_DIR}/generators/environment/${name}.template")
       else()
-        # else use common template
-        # Available variables
-        # - this_package      = name of installed package
-        # - this_version      = version of installed package
-        # - dependencies      = space-separated list of dependencies
-        set (template_name "${CMAKE_SOURCE_DIR}/generators/environment/common.template")
-        string(REPLACE ";" " " deps "${${targetname}-dependencies}")
-        set (_args "-Dthis_package=${name}" "-Dthis_version=${version}" "-Ddependencies='${deps}'")
+        set (append_template_name)
       endif()
-      # Common variables
-      list(APPEND _args "-DTARGET=${${name}_home}/${output_name}" "-DTEMPLATE=${template_name}" "-Dgcc_source=${gcc_source}/../setup.sh" "-Dplatform=${LCG_platform}")
-      # process dependencies
-      foreach(dep ${${targetname}-dependencies})
-        if(dep MATCHES "${dependency_split_pattern}")
-          list (APPEND _args "-D${CMAKE_MATCH_1}_version=${CMAKE_MATCH_2}")
-          list (APPEND _args "-D${CMAKE_MATCH_1}_home=${${CMAKE_MATCH_1}-${CMAKE_MATCH_2}_home}")
-        endif()
-      endforeach()
+      set (template_name "${CMAKE_SOURCE_DIR}/generators/environment/common.template")
+      string(REPLACE ";" " " deps "${${targetname}-dependencies}")
+      set (_args "-Dthis_package=${name}" "-Dthis_version=${version}" "-Ddependencies='${deps}'" "-Dappend_template_name='${append_template_name}'")
+      list(APPEND _args "-DTARGET=${${name}_home}/${output_name}" "-DTEMPLATE=${template_name}" "-Dgcc_source=${gcc_source}/../setup.sh")
       ExternalProject_Add_Step(${targetname} setup_environment COMMENT "Installing environment for ${name}"
           COMMAND ${CMAKE_COMMAND} ${_args} -P ${CMAKE_SOURCE_DIR}/cmake/scripts/provide-environment.cmake
           DEPENDEES install_logs

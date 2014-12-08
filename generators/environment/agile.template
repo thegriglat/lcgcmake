@@ -1,29 +1,3 @@
-#!/bin/sh
-
-### Parameters
-PYTHON_VERSION=%Python_version%
-HEPMC_VERSION=%HepMC_version%
-SWIG_VERSION=%swig_version%
 SWIG_AUTHOR_VERSION=$(echo $SWIG_VERSION | sed 's@\([0-9]*\)\.\([0-9]*\)\.\([0-9]*\).*@\1.\2.\3@')
-AGILE_VERSION=%agile_version%
-
-[ ! "Darwin" = $(uname -s) ] && source %gcc_source%
-
-### End parameters
-
-PYTHON_VERSION_SHORT=$(echo $PYTHON_VERSION | awk -F'.' '{print $1"."$2}')
-scriptdir=$(cd "$(dirname -- "${BASH_SOURCE:-$0}")" && pwd)
-LCGDIR="$(cd $scriptdir;pwd | awk -F'/MCGenerators' '{print $1}')"
-MCGEN="$LCGDIR/$(cd $scriptdir;pwd | awk -F"$LCGDIR" '{print $2}' | awk -F'/' '{print $2}')"
-PLATFORM=$(basename $scriptdir)
-
-AGILE_HOME=$MCGEN/agile/$AGILE_VERSION/$PLATFORM
-HEPMC_HOME=$LCGDIR/HepMC/$HEPMC_VERSION/$PLATFORM
-PYTHON_HOME=$LCGDIR/Python/$PYTHON_VERSION/$PLATFORM
-SWIG_HOME=$LCGDIR/swig/$SWIG_VERSION/$PLATFORM
-
 export AGILE_GEN_PATH=${AGILE_HOME}/../../..
 export SWIG_LIB=${SWIG_HOME}/share/swig/${SWIG_AUTHOR_VERSION}
-export LD_LIBRARY_PATH=${AGILE_HOME}/lib:${PYTHON_HOME}/lib:${HEPMC_HOME}/lib:$LD_LIBRARY_PATH
-export PATH=${PYTHON_HOME}/bin:$AGILE_HOME/bin:$PATH
-[ "Darwin" = $(uname -s) ] && export DYLD_LIBRARY_PATH=$LD_LIBRARY_PATH

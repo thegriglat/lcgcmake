@@ -16,11 +16,13 @@ MCGEN="$LCGDIR/$(cd $scriptdir;pwd | awk -F"$LCGDIR" '{print $2}' | awk -F'/' '{
 PLATFORM=$(basename $scriptdir)
 
 # === Detemine THIS_HOME
+pkg_upper_home=$(echo $THIS_PACKAGE | tr '[:lower:]' '[:upper:]' | sed 's/+/P/g')_HOME
 if [ -d "$LCGDIR/$THIS_PACKAGE/$THIS_VERSION/$PLATFORM" ]; then
   THIS_HOME="$LCGDIR/$THIS_PACKAGE/$THIS_VERSION/$PLATFORM"
 else
   THIS_HOME="$MCGEN/$THIS_PACKAGE/$THIS_VERSION/$PLATFORM"
 fi
+eval export $pkg_upper_home="$THIS_HOME"
 [ -d "$THIS_HOME" ] || echo "Cannot find $THIS_HOME"
 
 echo "== $THIS_PACKAGE-$THIS_VERSION =="
@@ -88,4 +90,4 @@ for i in $(echo $PYTHONPATH|tr ":" "\n"|sort|uniq);do PYTHONPATH_NEW="${PYTHONPA
 [ "Darwin" = $(uname -s) ] && export DYLD_LIBRARY_PATH=$LD_LIBRARY_PATH
 
 # === Clear environment
-unset PATH_NEW LD_LIBRARY_PATH_NEW PYTHONPATH_NEW THIS_HOME THIS_VERSION THIS_PACKAGE THIS_DEPENDS scriptdir MCGEN
+unset PATH_NEW LD_LIBRARY_PATH_NEW PYTHONPATH_NEW THIS_HOME THIS_VERSION THIS_PACKAGE THIS_DEPENDS scriptdir MCGEN pkg_upper_home

@@ -1,64 +1,9 @@
-#!/bin/bash
-## These variables need to exist
-
-[ ! "Darwin" = $(uname -s) ] && source %gcc_source%
-
-RIVET_VERSION=%rivet_version%
-# The following lines set yoda environment for different rivet versions
-echo "%yoda_version%" | grep -q "%yoda_version" && YODA_VERSION="" || YODA_VERSION=%yoda_version%
-
-HEPMC_VERSION=%HepMC_version%
-GSL_VERSION=%GSL_version%
-FASTJET_VERSION=%fastjet_version%
-PYTHON_VERSION=%Python_version%
-echo "%yamlcpp_version%" | grep -q "%yamlcpp_version" && YAMLCPP_VERSION="" || YAMLCPP_VERSION=%yamlcpp_version%
-
-
-DIR="$( cd "$( dirname "${BASH_SOURCE:-$0}" )" && pwd )"
-
-LCGDIR=$(echo ${DIR} | awk -F'/MCGenerators' '{print $1}')
-
-MCGDIR=$LCGDIR/$(cd $DIR;pwd | awk -F"$LCGDIR" '{print $2}' | awk -F'/' '{print $2}')
-PLATFORM=$(basename $DIR)
-
-
-prefix=${DIR}
-exec_prefix=${prefix}
-datarootdir=${prefix}/share
-
-# PATHS and PYTHON paths
-YODA_PYTHONPATH=${MCGDIR}/yoda/${YODA_VERSION}/${PLATFORM}/lib/python2.7/site-packages
-YODA_PATH=${MCGDIR}/yoda/${YODA_VERSION}/${PLATFORM}/bin
-YODA_LD_LIBRARY_PATH=${MCGDIR}/yoda/${YODA_VERSION}/${PLATFORM}/lib
-
-RIVET_PYTHONPATH=${MCGDIR}/rivet/${RIVET_VERSION}/${PLATFORM}/lib/python2.7/site-packages
-RIVET_PATH=${MCGDIR}/rivet/${RIVET_VERSION}/${PLATFORM}/bin
-RIVET_LD_LIBRARY_PATH=${MCGDIR}/rivet/${RIVET_VERSION}/${PLATFORM}/lib
-
-FASTJET_LD_LIBRARY_PATH=${LCGDIR}/fastjet/${FASTJET_VERSION}/${PLATFORM}/lib
-
-GSL_LIBRARY_PATH=${LCGDIR}/GSL/${GSL_VERSION}/${PLATFORM}/lib
-
-HEPMC_LIBRARY_PATH=${LCGDIR}/HepMC/${HEPMC_VERSION}/${PLATFORM}/lib
-
-PYTHON_PATH=${LCGDIR}/Python/${PYTHON_VERSION}/${PLATFORM}/bin
-PYTHON_LIBRARY_PATH=${LCGDIR}/Python/${PYTHON_VERSION}/${PLATFORM}/lib
-
-YAMLCPP_LIBRARY_PATH=${MCGDIR}/yamlcpp/${YAMLCPP_VERSION}/${PLATFORM}/lib
-
-export PATH=${PYTHON_PATH}:${RIVET_PATH}:${YODA_PATH}:$PATH
-export LD_LIBRARY_PATH=${PYTHON_LIBRARY_PAT}:${YODA_LD_LIBRARY_PATH}:${RIVET_LD_LIBRARY_PATH}:${FASTJET_LD_LIBRARY_PATH}:${GSL_LIBRARY_PATH}:${HEPMC_LIBRARY_PATH}:${YAMLCPP_LIBRARY_PATH}:${LD_LIBRARY_PATH}
-[ "Darwin" = $(uname -s ) ] && export DYLD_LIBRARY_PATH=$LD_LIBRARY_PATH
-export PYTHONPATH=${RIVET_PYTHONPATH}:${YODA_PYTHONPATH}:$PYTHONPATH
-
-export TEXMFHOME="${MCGDIR}/rivet/${RIVET_VERSION}/${PLATFORM}/share/Rivet/texmf:$TEXMFHOME"
-export HOMETEXMF="${MCGDIR}/rivet/${RIVET_VERSION}/${PLATFORM}/share/Rivet/texmf:$HOMETEXMF"
-export TEXMFCNF="${MCGDIR}/rivet/${RIVET_VERSION}/${PLATFORM}/share/Rivet/texmf/cnf:$TEXMFCNF"
-export TEXINPUTS="${MCGDIR}/rivet/${RIVET_VERSION}/${PLATFORM}/share/Rivet/texmf/tex:$TEXINPUTS"
-export LATEXINPUTS="${MCGDIR}/rivet/${RIVET_VERSION}/${PLATFORM}/share/Rivet/texmf/tex:$LATEXINPUTS"
+export TEXMFHOME="${RIVET_HOME}/share/Rivet/texmf:$TEXMFHOME"
+export HOMETEXMF="${RIVET_HOME}/share/Rivet/texmf:$HOMETEXMF"
+export TEXMFCNF="${RIVET_HOME}/share/Rivet/texmf/cnf:$TEXMFCNF"
+export TEXINPUTS="${RIVET_HOME}/share/Rivet/texmf/tex:$TEXINPUTS"
+export LATEXINPUTS="${RIVET_HOME}/share/Rivet/texmf/tex:$LATEXINPUTS"
 
 if (complete &> /dev/null); then
-    test -e "${MCGDIR}/rivet/${RIVET_VERSION}/${PLATFORM}/Rivet/rivet-completion" && source "${MCGDIR}/rivet/${RIVET_VERSION}/${PLATFORM}/Rivet/rivet-completion"
+    test -e "${RIVET_HOME}/Rivet/rivet-completion" && source "${RIVET_HOME}/Rivet/rivet-completion"
 fi
-
-unset YODA_PYTHONPATH
