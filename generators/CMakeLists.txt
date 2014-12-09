@@ -2073,6 +2073,10 @@ LCG_add_test(debug-symbols-test
              TEST_COMMAND ${CMAKE_SOURCE_DIR}/cmake/scripts/check_debug_symbols.sh ${CMAKE_INSTALL_PREFIX}
 )
 
+LCG_add_test(permissions-test
+  TEST_COMMAND ${CMAKE_SOURCE_DIR}/cmake/scripts/check_permissions.sh ${CMAKE_INSTALL_PREFIX}
+)
+
 #---test of the test infrasgtructure---------------------------------------------------------------
 LCG_add_test(test-test PRE_COMMAND /bin/echo pre-comand 1
                            COMMAND /bin/echo pre-comand 2
