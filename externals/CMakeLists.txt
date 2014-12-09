@@ -592,7 +592,7 @@ LCGPackage_Add(
 LCGPackage_Add(
   mpich2
   URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/mpich2-${mpich2_native_version}.tar.gz
-  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --enable-shared --enable-sharedlibs=gcc "CFLAGS=-O2 -g0 -fPIC"
+  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --enable-shared --enable-sharedlibs=gcc --with-pm=mpd "CFLAGS=-O2 -g0 -fPIC"
   BUILD_COMMAND ${MAKE} all
   BUILD_IN_SOURCE 1
 )

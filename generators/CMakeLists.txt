@@ -1248,6 +1248,20 @@ BUILD_COMMAND ${MAKE} PATH=${mpich2_home}/bin:$ENV{PATH} LIBRARY_PATH=<lhapdf-<s
 )
 
 
+set( v ${sherpa-mpich2_native_version})
+LCG_add_test(sherpa-mpixx.native-LHC_Z
+  PRE_COMMAND ${CMAKE_COMMAND} -E remove_directory sherpa-mpi/native-LHC_Z/${v}
+      COMMAND ${CMAKE_COMMAND} -E make_directory sherpa-mpi/native-LHC_Z/${v}
+      COMMAND $ENV{SHELL} -c  "cd ${HOME} && touch .mpd.conf &&  chmod 600 .mpd.conf"
+ TEST_COMMAND ${CMAKE_COMMAND} -E chdir sherpa-mpi/native-LHC_Z/${v} ${mpich2_home}/bin/mpd --daemon
+    COMMAND ${mpich2_home}/bin/mpirun -n 5 ${sherpa-mpich2-${v}_home}/bin/Sherpa -f ${CMAKE_SOURCE_DIR}/generators/sherpa/tests/LHC_Z.dat
+    COMMAND ${mpich2_home}/bin/mpdallexit
+  ENVIRONMENT
+  ${library_path}=${sherpa-mpich2-${v}_home}/lib/SHERPA-MC:${HepMC_home}/lib:${lhapdf-${sherpa_mpich2-${v}_lhapdf}_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:${sqlite_home}/lib:${mpich2_home}/lib:$ENV{${library_path}}
+    PATH=${sqlite_home}/bin:$ENV{PATH}
+    PWD=.
+)
+
 # $PWD is needed because Sherpa uses this variable to know current directory
 foreach(v ${sherpa_native_version})
 LCG_add_test(sherpa-${v}.native-LHC_Z
