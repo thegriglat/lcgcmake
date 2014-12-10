@@ -5,8 +5,11 @@
 #  $2: compiler version
 #  $3: slotname
 BUILDTYPE="$1"
-COMPILER="$2"
-SLOTNAME="$3"
+shift
+COMPILER="$1"
+shift
+SLOTNAME="$1"
+shift
 
 # A few default parameters of the build
 export LC_CTYPE=en_US.UTF-8
@@ -40,7 +43,7 @@ rm -rf /tmp/the.lock
 
 # setup compiler-------------------------------------------------
 if [ "${LABEL}" == "slc6" ];then
-  export PATH=/afs/cern.ch/sw/lcg/contrib/CMake/3.0.0/Linux-i386/bin:${PATH}
+  export PATH=/afs/cern.ch/sw/lcg/contrib/CMake/2.8.9/Linux-i386/bin:${PATH}
 fi
 
 if [[ $COMPILER == *gcc* ]];then
@@ -48,7 +51,7 @@ if [[ $COMPILER == *gcc* ]];then
   gcc48version=4.8
   gcc49version=4.9
   COMPILERversion=${COMPILER}version
-  source /afs/cern.ch/sw/lcg/contrib/gcc/${!COMPILERversion}/${ARCH}-${LABEL}/setup.sh
+  . /afs/cern.ch/sw/lcg/contrib/gcc/${!COMPILERversion}/${ARCH}-${LABEL}/setup.sh
   export FC=gfortran
   export CXX=`which g++`
   export CC=`which gcc`
@@ -60,7 +63,7 @@ elif [[ $COMPILER == *clang* ]];then
   clang34gcc=48
   clang35gcc=49
   GCCversion=${COMPILER}gcc
-  source /afs/cern.ch/sw/lcg/external/llvm/${!COMPILERversion}/${ARCH}-${LABEL}/setup.sh
+  . /afs/cern.ch/sw/lcg/external/llvm/${!COMPILERversion}/${ARCH}-${LABEL}/setup.sh
   export CC=`which clang`
   export CXX=`which clang++`
 elif [[ $COMPILER == *native* ]];then
