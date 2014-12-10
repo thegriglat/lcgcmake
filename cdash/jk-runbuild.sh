@@ -5,7 +5,7 @@
 #  $2: compiler version
 #  $3: slotname
 BUILDTYPE="$1"
-COMPILER_VER="$2"
+COMPILER="$2"
 SLOTNAME="$3"
 
 # A few default parameters of the build
@@ -64,7 +64,7 @@ elif [[ $COMPILER == *clang* ]];then
   export CC=`which clang`
   export CXX=`which clang++`
 elif [[ $COMPILER == *native* ]];then
-
+  echo nothing
 fi
 #------------------------------------------------------------------
 export BUILD_PREFIX=${WORKDIR}
