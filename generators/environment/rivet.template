@@ -5,5 +5,5 @@ export TEXINPUTS="${RIVET_HOME}/share/Rivet/texmf/tex:$TEXINPUTS"
 export LATEXINPUTS="${RIVET_HOME}/share/Rivet/texmf/tex:$LATEXINPUTS"
 
 if (complete &> /dev/null); then
-    test -e "${RIVET_HOME}/Rivet/rivet-completion" && source "${RIVET_HOME}/Rivet/rivet-completion"
+    test -e "${RIVET_HOME}/share/Rivet/rivet-completion" && source "${RIVET_HOME}/share/Rivet/rivet-completion"
 fi

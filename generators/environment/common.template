@@ -1,12 +1,13 @@
 #!/bin/sh
 
 # === Parameters
+# They will be replaced during installation process
 THIS_PACKAGE=%this_package%
+THIS_PACKAGE_INSTDIR=%this_package_instdir%
 THIS_VERSION=%this_version%
 THIS_DEPENDS="%dependencies%"
 
 [ ! "Darwin" = $(uname -s) ] && source %gcc_source%
-
 # === End parameters
 
 # === Determine common parameters ...
@@ -16,14 +17,22 @@ MCGEN="$LCGDIR/$(cd $scriptdir;pwd | awk -F"$LCGDIR" '{print $2}' | awk -F'/' '{
 PLATFORM=$(basename $scriptdir)
 
 # === Detemine THIS_HOME
+unset THIS_HOME
+# name of <PACKAGE>_HOME variable, e.g. RIVET_HOME
 pkg_upper_home=$(echo $THIS_PACKAGE | tr '[:lower:]' '[:upper:]' | sed 's/+/P/g')_HOME
-if [ -d "$LCGDIR/$THIS_PACKAGE/$THIS_VERSION/$PLATFORM" ]; then
-  THIS_HOME="$LCGDIR/$THIS_PACKAGE/$THIS_VERSION/$PLATFORM"
-else
-  THIS_HOME="$MCGEN/$THIS_PACKAGE/$THIS_VERSION/$PLATFORM"
-fi
+# try to find home directory
+for p in $MCGEN/$THIS_PACKAGE_INSTDIR  \
+         $LCGDIR/$THIS_PACKAGE_INSTDIR \
+         $(dirname $LCGDIR)/$THIS_PACKAGE_INSTDIR 
+         do
+  if [ ! -d "$THIS_HOME" -a -d "$p/$THIS_VERSION/$PLATFORM" ] ;then
+    THIS_HOME="$p/$THIS_VERSION/$PLATFORM"
+  fi
+done
+
+[ ! -d "$THIS_HOME" ] && echo "Cannot find $THIS_HOME"
+# export <PACKAGE>_HOME
 eval export $pkg_upper_home="$THIS_HOME"
-[ -d "$THIS_HOME" ] || echo "Cannot find $THIS_HOME"
 
 echo "== $THIS_PACKAGE-$THIS_VERSION =="
 echo "  home: $THIS_HOME"
@@ -58,16 +67,22 @@ done
 # === Process dependencies
 sources=""
 for pkg in $(echo $THIS_DEPENDS | tr ' ' '\n');do
-  pkg_name=$(echo $pkg | cut -d- -f 1 )
+  unset pkg_name pkg_version pkg_home_top source_name
+  # get package name and version. Substitute _- in package name to . (any symbol) 
+  pkg_name=$(echo $pkg | cut -d- -f 1 | sed -e "s@[_-]@.@g")
   pkg_version=$(echo $pkg | cut -d- -f 2-)
-  if [ -d "$LCGDIR/$pkg_name/$pkg_version/$PLATFORM" ]; then
-    pkg_home="$LCGDIR/$pkg_name/$pkg_version/$PLATFORM"
-    source_name="${pkg_name}-env.sh"
+  # try to find home directory for package
+  for pkg_home_top in $(find $LCGDIR $(dirname $LCGDIR) -maxdepth 2 -type d | grep -i "$pkg_name" | sed -e "s@/$pkg_version@@g"); do
+    [ -d "$pkg_home_top/$pkg_version/$PLATFORM" ] && pkg_home="$pkg_home_top/$pkg_version/$PLATFORM"
+  done
+  # set source file name
+  if $(echo "$pkg_home" | grep -q MCGenerators ); then
+    source_name=$(ls $pkg_home | grep "${pkg_name}env-genser.sh")
   else
-    pkg_home="$MCGEN/$pkg_name/$pkg_version/$PLATFORM"
-    source_name="${pkg_name}env-genser.sh"
+    source_name=$(ls $pkg_home | grep "${pkg_name}-env.sh")
   fi
   [ -d "$pkg_home" ] || echo "  Cannot determine home directory for $pkg"
+  # add files to source stack
   if [ -e "$pkg_home/${source_name}" ]; then
     sources="$sources $pkg_home/${source_name}"
   else
@@ -91,3 +106,4 @@ for i in $(echo $PYTHONPATH|tr ":" "\n"|sort|uniq);do PYTHONPATH_NEW="${PYTHONPA
 
 # === Clear environment
 unset PATH_NEW LD_LIBRARY_PATH_NEW PYTHONPATH_NEW THIS_HOME THIS_VERSION THIS_PACKAGE THIS_DEPENDS scriptdir MCGEN pkg_upper_home
+

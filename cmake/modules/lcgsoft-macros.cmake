@@ -327,7 +327,8 @@ macro(LCGPackage_Add name)
       endif()
       set (template_name "${CMAKE_SOURCE_DIR}/generators/environment/common.template")
       string(REPLACE ";" " " deps "${${targetname}-dependencies}")
-      set (_args "-Dthis_package=${name}" "-Dthis_version=${version}" "-Ddependencies='${deps}'" "-Dappend_template_name='${append_template_name}'")
+      string(REPLACE "${CMAKE_INSTALL_PREFIX}" "" this_package_instdir "${${name}_directory_name}")
+      set (_args "-Dthis_package=${name}" "-Dthis_package_instdir=${this_package_instdir}" "-Dthis_version=${version}" "-Ddependencies='${deps}'" "-Dappend_template_name='${append_template_name}'")
       list(APPEND _args "-DTARGET=${${name}_home}/${output_name}" "-DTEMPLATE=${template_name}" "-Dgcc_source=${gcc_source}/../setup.sh")
       ExternalProject_Add_Step(${targetname} setup_environment COMMENT "Installing environment for ${name}"
           COMMAND ${CMAKE_COMMAND} ${_args} -P ${CMAKE_SOURCE_DIR}/cmake/scripts/provide-environment.cmake
