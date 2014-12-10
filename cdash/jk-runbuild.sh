@@ -39,11 +39,11 @@ rm -rf $WORKDIR/*
 rm -rf /tmp/the.lock
 
 # setup compiler-------------------------------------------------
-if [ "${LABEL}" == "slc6" ] then
+if [ "${LABEL}" == "slc6" ];then
   export PATH=/afs/cern.ch/sw/lcg/contrib/CMake/3.0.0/Linux-i386/bin:${PATH}
 fi
 
-if [[ $COMPILER == *gcc* ]] then
+if [[ $COMPILER == *gcc* ]];then
   gcc47version=4.7
   gcc48version=4.8
   gcc49version=4.9
@@ -52,7 +52,7 @@ if [[ $COMPILER == *gcc* ]] then
   export FC=gfortran
   export CXX=`which g++`
   export CC=`which gcc`
-elif [[ $COMPILER == *clang* ]] then
+elif [[ $COMPILER == *clang* ]];then
   clang34version=3.4
   clang35version=3.5
   clang36version=3.6
@@ -63,7 +63,7 @@ elif [[ $COMPILER == *clang* ]] then
   source /afs/cern.ch/sw/lcg/external/llvm/${!COMPILERversion}/${ARCH}-${LABEL}/setup.sh
   export CC=`which clang`
   export CXX=`which clang++`
-elif [[ $COMPILER == *native* ]] then
+elif [[ $COMPILER == *native* ]];then
 
 fi
 #------------------------------------------------------------------
