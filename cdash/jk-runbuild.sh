@@ -8,12 +8,11 @@ BUILDTYPE="$1"
 COMPILER_VER="$2"
 SLOTNAME="$3"
 
-
 # A few default parameters of the build
 export LC_CTYPE=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 
-#set up the build variables
+# Set up the build variables
 export CTEST_SITE=cdash.cern.ch
 export WORKDIR=/build/$SLOTNAME
 export PDFSETS=ct10
@@ -33,27 +32,42 @@ export MODE=$SLOTNAME
 export LCG_VERSION=$SLOTNAME
 
 THIS=$(dirname $0)
+ARCH=$(uname -m)
 
 # clean up the WORKDIR
 rm -rf $WORKDIR/*
 rm -rf /tmp/the.lock
 
-#
-echo "Running build of lcgcmake version $SLOTNAME on ${COMPILER_VER}-${BUILDTYPE}."
+# setup compiler-------------------------------------------------
+if [[ $COMPILER == *gcc* ]] then
+  gcc47version=4.7
+  gcc48version=4.8
+  gcc49version=4.9
+  COMPILERversion=${COMPILER}version
+  source /afs/cern.ch/sw/lcg/contrib/gcc/${!COMPILERversion}/${ARCH}-${LABEL}/setup.sh
+  export FC=gfortran
+  export CXX=`which g++`
+  export CC=`which gcc`
+elif [[ $COMPILER == *clang* ]] then
+  clang34version=3.4
+  clang35version=3.5
+  clang36version=3.6
+  COMPILERversion=${COMPILER}version
+  clang34gcc=48
+  clang35gcc=49
+  GCCversion=${COMPILER}gcc
+source /afs/cern.ch/sw/lcg/external/llvm/${!COMPILERversion}/${ARCH}-${LABEL}/setup.sh
+  export CC=`which clang`
+  export CXX=`which clang++`
+elif [[ $COMPILER == *native* ]] then
 
-# $THIS/clean_disk.py $WORKDIR/lcg-builds
-
-if [ ! -f "$THIS/ec-slc6-$COMPILER_VER" ]; then
-  echo "Invalid compiler version, there is no configuration script for \'$COMPILER_VER\'"
-exit 1
 fi
+#------------------------------------------------------------------
+export BUILD_PREFIX=${WORKDIR}
 
-printenv
+# print environment -----------------------------------------------
+env | sort | sed 's/:/:?     /g' | tr '?' '\n'
 
-if "$THIS/ec-slc6-$COMPILER_VER" ; then
-:
-else
-echo "CTEST driven build failed with exit status $?"
-fi
+# do the build-----------------------------------------------------
+ctest -V -S ${THIS}/lcgcmake-build.cmake
 
-echo "Build finished: `date`"
