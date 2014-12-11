@@ -16,8 +16,8 @@ set(CTEST_CONFIGURATION_TYPE ${CTEST_BUILD_CONFIGURATION})
 
 #---Set the source and build directory--------------------------------------
 set(CTEST_BUILD_PREFIX "$ENV{BUILD_PREFIX}")
-set(CTEST_SOURCE_DIRECTORY "${CTEST_BUILD_PREFIX}/lcgcmake-$ENV{VERSION}")
-set(CTEST_BINARY_DIRECTORY "${CTEST_BUILD_PREFIX}/${CTEST_BUILD_NAME}")
+set(CTEST_SOURCE_DIRECTORY "${CTEST_BUILD_PREFIX}/${CTEST_BUILD_NAME}-source")
+set(CTEST_BINARY_DIRECTORY "${CTEST_BUILD_PREFIX}/${CTEST_BUILD_NAME}-build")
 
 #---Set the install directory----------------------------------------------- 
 # if $INSTALLDIR is given, use that one, otherwise derive from binary dir

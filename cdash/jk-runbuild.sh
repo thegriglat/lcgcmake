@@ -38,7 +38,13 @@ THIS=$(dirname $0)
 ARCH=$(uname -m)
 
 # clean up the WORKDIR
-rm -rf $WORKDIR/*
+# temporary
+rm -rf $WORKDIR/*-dbg
+rm -rf $WORKDIR/*-opt
+rm -rf $WORKDIR/*-trunk
+#
+rm -rf $WORKDIR/*-build
+rm -rf $WORKDIR/*-install
 rm -rf /tmp/the.lock
 
 # setup compiler-------------------------------------------------
@@ -76,5 +82,5 @@ export BUILD_PREFIX=${WORKDIR}
 env | sort | sed 's/:/:?     /g' | tr '?' '\n'
 
 # do the build-----------------------------------------------------
-ctest -VV -S ${THIS}/lcgcmake-build.cmake
+ctest -V -S ${THIS}/lcgcmake-build.cmake
 
