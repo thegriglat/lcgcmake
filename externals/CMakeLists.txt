@@ -122,7 +122,7 @@ LCGPackage_Add(
   CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix <INSTALL_DIR> ${GSL_config_options} CC=${CMAKE_C_COMPILER} CFLAGS=-O2
   BUILD_COMMAND ${MAKE}
   INSTALL_COMMAND ${MAKE} install
-          COMMAND $ENV{SHELL} -c "rm -f <INSTALL_DIR>/lib/*.la"
+          COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/GSL_postinstall.sh <INSTALL_DIR>
   BUILD_IN_SOURCE 1 )
 
 #---CLHEP--------------------------------------------------------------------------------------------
