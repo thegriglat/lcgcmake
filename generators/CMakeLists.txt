@@ -1241,7 +1241,7 @@ LCGPackage_Add(
      --enable-lhole
      --enable-mpi   
      --with-sqlite3=${sqlite_home} "CFLAGS=-O2 -g0 -fPIC" "CXXFLAGS=-O2 -g0
--fPIC" "FFLAGS=-O2 -g0 -fPIC" CC=mpic CXX=mpic++  PATH=${mpich2_home}/bin:$ENV{PATH} ${library_path}=${mpich2_home}/lib:$ENV{${library_path}} LIBRARY_PATH=${mpich2_home}/lib
+-fPIC" "FFLAGS=-O2 -g0 -fPIC" CC=mpicc CXX=mpic++  PATH=${mpich2_home}/bin:$ENV{PATH} ${library_path}=${mpich2_home}/lib:$ENV{${library_path}} LIBRARY_PATH=${mpich2_home}/lib
 BUILD_COMMAND ${MAKE} PATH=${mpich2_home}/bin:$ENV{PATH} LIBRARY_PATH=<lhapdf-<sherpa-mpich2_<NATIVE_VERSION>_lhapdf>_home>/lib ${library_path}=${mpich2_home}/lib:${blackhat_home}/lib:$ENV{${library_path}} CPPFLAGS=-I${Boost_home_include}
   INSTALL_COMMAND make install LIBRARY_PATH=<lhapdf-<sherpa-mpich2_<NATIVE_VERSION>_lhapdf>_home>/lib PATH=${mpich2_home}/bin:$ENV{PATH} ${library_path}=${mpich2_home}/lib:${blackhat_home}/lib:$ENV{${library_path}} 
   BUILD_IN_SOURCE 1
