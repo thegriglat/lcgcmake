@@ -239,6 +239,17 @@ LCGPackage_Add(
 
 #---lhapdf5 and lhapdf6 moved after pythia8 tests
 
+#---Protos------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  protos
+  URL ${gen_url}/Protos<VERSION>.tar.gz
+  CONFIGURE_COMMAND <VOID>
+  BUILD_COMMAND ${MAKE} FC=gfortran LIBRARY_PATH=<lhapdf-<protos_<VERSION>_lhapdf>_home>/lib
+  INSTALL_COMMAND ${MAKE} INSTALL_DIR=<INSTALL_DIR>/bin install
+  BUILD_IN_SOURCE 1
+  DEPENDS lhapdf-<protos_<VERSION>_lhapdf>
+)
+
 #---pythia8------------------------------------------------------------------------------------------
 LCGPackage_Add(
   pythia8

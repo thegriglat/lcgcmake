@@ -1,0 +1,217 @@
+--- Makefile	2011-03-15 10:10:59.000000001 +0100
++++ Makefile	2014-12-09 09:31:26.000000001 +0100
+@@ -119,4 +119,9 @@
+ 	rm -f lib64/*
+ 	rm -f events/*
+ 	
++install:
++	mkdir -p $(INSTALL_DIR)
++	for i in Red White Rose Green Triada unw DATA events ; do \
++	rsync -a --exclude='*.o' --exclude='*.f' --exclude='Makefile' $$i/ $(INSTALL_DIR)/$$i ; \
++	done
+  
+--- compile.mk	2011-03-15 10:11:13.000000001 +0100
++++ compile.mk	2014-12-11 11:11:26.000000001 +0100
+@@ -1,3 +1,6 @@
+-FC = g77
+-FFLAGS =-fno-f90 -Wunused -ffast-math -O2 -march=nocona -mfpmath=sse -mmmx -msse -msse2 -m64
+-
++FC ?= g77
++ifeq ($(FC), g77)
++FFLAGS = -fno-f90 -Wunused -ffast-math -O2 -march=nocona -mfpmath=sse -mmmx -msse -msse2 -m64
++else
++FFLAGS = -fbackslash -Wunused -O2
++endif
+ 
+--- Triada/triM/init.f	2014-12-10 09:49:10.000000001 +0100
++++ Triada/triM/init.f	2014-12-10 09:49:40.000000001 +0100
+@@ -319,7 +319,7 @@
+ 500   FORMAT (' _____    _           _       ')
+ 501   FORMAT ('|_   _|  (_)         | |      ')
+ 502   FORMAT ('  | |_ __ _  __ _  __| | __ _ ')
+-503   FORMAT ('  | | \'__| |/ _` |/ _` |/ _` |')
++503   FORMAT ('  | | ''__| |/ _` |/ _` |/ _` |')
+ 504   FORMAT ('  | | |  | | (_| | (_| | (_| |')
+ 505   FORMAT ('  \\_/_|  |_|\\__,_|\\__,_|\\__,_|')
+ 970   FORMAT ('PDF set ',I5,' selected')
+--- Triada/triD/init.f	2014-12-10 09:54:39.000000001 +0100
++++ Triada/triD/init.f	2014-12-10 09:55:17.000000001 +0100
+@@ -358,7 +358,7 @@
+ 500   FORMAT (' _____    _           _       ')
+ 501   FORMAT ('|_   _|  (_)         | |      ')
+ 502   FORMAT ('  | |_ __ _  __ _  __| | __ _ ')
+-503   FORMAT ('  | | \'__| |/ _` |/ _` |/ _` |')
++503   FORMAT ('  | | ''__| |/ _` |/ _` |/ _` |')
+ 504   FORMAT ('  | | |  | | (_| | (_| | (_| |')
+ 505   FORMAT ('  \\_/_|  |_|\\__,_|\\__,_|\\__,_|')
+ 970   FORMAT ('PDF set ',I5,' selected')
+--- Triada/isoNE/init.f	2014-12-10 09:58:41.000000001 +0100
++++ Triada/isoNE/init.f	2014-12-10 09:59:11.000000001 +0100
+@@ -359,7 +359,7 @@
+ 500   FORMAT (' _____    _           _       ')
+ 501   FORMAT ('|_   _|  (_)         | |      ')
+ 502   FORMAT ('  | |_ __ _  __ _  __| | __ _ ')
+-503   FORMAT ('  | | \'__| |/ _` |/ _` |/ _` |')
++503   FORMAT ('  | | ''__| |/ _` |/ _` |/ _` |')
+ 504   FORMAT ('  | | |  | | (_| | (_| | (_| |')
+ 505   FORMAT ('  \\_/_|  |_|\\__,_|\\__,_|\\__,_|')
+ 970   FORMAT ('PDF set ',I5,' selected')
+--- Triada/isoE/init.f	2014-12-10 10:01:51.000000001 +0100
++++ Triada/isoE/init.f	2014-12-10 10:02:17.000000001 +0100
+@@ -315,7 +315,7 @@
+ 500   FORMAT (' _____    _           _       ')
+ 501   FORMAT ('|_   _|  (_)         | |      ')
+ 502   FORMAT ('  | |_ __ _  __ _  __| | __ _ ')
+-503   FORMAT ('  | | \'__| |/ _` |/ _` |/ _` |')
++503   FORMAT ('  | | ''__| |/ _` |/ _` |/ _` |')
+ 504   FORMAT ('  | | |  | | (_| | (_| | (_| |')
+ 505   FORMAT ('  \\_/_|  |_|\\__,_|\\__,_|\\__,_|')
+ 970   FORMAT ('PDF set ',I5,' selected')
+--- Triada/Zp/init.f	2014-12-10 10:04:31.000000001 +0100
++++ Triada/Zp/init.f	2014-12-10 10:17:59.000000001 +0100
+@@ -425,26 +425,26 @@
+ 500   FORMAT (' _____    _           _       ')
+ 501   FORMAT ('|_   _|  (_)         | |      ')
+ 502   FORMAT ('  | |_ __ _  __ _  __| | __ _ ')
+-503   FORMAT ('  | | \'__| |/ _` |/ _` |/ _` |')
++503   FORMAT ('  | | ''__| |/ _` |/ _` |/ _` |')
+ 504   FORMAT ('  | | |  | | (_| | (_| | (_| |')
+ 505   FORMAT ('  \\_/_|  |_|\\__,_|\\__,_|\\__,_|')
+-700   FORMAT ('Z\' model from file')
+-710   FORMAT ('Model: Z\'_lambda')
+-720   FORMAT ('Model: Z\'_chi')
+-730   FORMAT ('Model: Z\'_psi')
+-790   FORMAT ('Z\' model not implemented')
++700   FORMAT ('Z'' model from file')
++710   FORMAT ('Model: Z''_lambda')
++720   FORMAT ('Model: Z''_chi')
++730   FORMAT ('Model: Z''_psi')
++790   FORMAT ('Z'' model not implemented')
+ 970   FORMAT ('PDF set ',I5,' selected')
+ 973   FORMAT ('alphas_MZ = ',F6.4,' from PDF set')
+ 985   FORMAT ('Please open some decay channel for heavy leptons!')
+ 999   FORMAT ('')
+ 1000  FORMAT ('---------------------------------------')
+-1050  FORMAT ('Calculating Z\' -> NN production')
++1050  FORMAT ('Calculating Z'' -> NN production')
+ 1100  FORMAT ('mN = ',F6.1,'   GN = ',F9.6)
+-1150  FORMAT ('MZ\' = ',F6.1,'   GZ\' = ',F5.2)      
+-1160  FORMAT ('Br(Z\' -> uu) = ',F5.4,'   Br(Z\' -> dd) = ',F5.4,
+-     &  '   Br(Z\' -> tt) = ',F5.4)
+-1170  FORMAT ('Br(Z\' -> ee) = ',F5.4,'   Br(Z\' -> vv) = ',F5.4,
+-     &  '   Br(Z\' -> NN) = ',F5.4)
++1150  FORMAT ('MZ'' = ',F6.1,'   GZ'' = ',F5.2)      
++1160  FORMAT ('Br(Z'' -> uu) = ',F5.4,'   Br(Z'' -> dd) = ',F5.4,
++     &  '   Br(Z'' -> tt) = ',F5.4)
++1170  FORMAT ('Br(Z'' -> ee) = ',F5.4,'   Br(Z'' -> vv) = ',F5.4,
++     &  '   Br(Z'' -> NN) = ',F5.4)
+ 1201  FORMAT ('BR(Z -> vv) = ',F5.3,'  BR(Z -> ll) = ',F5.3)
+ 1202  FORMAT ('BR(Z -> uu) = ',F5.3,'  BR(Z -> dd) = ',F5.3)
+ 1203  FORMAT ('BR(E -> Wv) = ',F5.3,
+--- Triada/Wp/init.f	2014-12-10 10:23:46.000000001 +0100
++++ Triada/Wp/init.f	2014-12-10 10:25:35.000000001 +0100
+@@ -351,7 +351,7 @@
+ 500   FORMAT (' _____    _           _       ')
+ 501   FORMAT ('|_   _|  (_)         | |      ')
+ 502   FORMAT ('  | |_ __ _  __ _  __| | __ _ ')
+-503   FORMAT ('  | | \'__| |/ _` |/ _` |/ _` |')
++503   FORMAT ('  | | ''__| |/ _` |/ _` |/ _` |')
+ 504   FORMAT ('  | | |  | | (_| | (_| | (_| |')
+ 505   FORMAT ('  \\_/_|  |_|\\__,_|\\__,_|\\__,_|')
+ 970   FORMAT ('PDF set ',I5,' selected')
+@@ -359,11 +359,11 @@
+ 985   FORMAT ('Please open some decay channel for heavy leptons!')
+ 999   FORMAT ('')
+ 1000  FORMAT ('---------------------------------------')
+-1050  FORMAT ('Calculating W\' -> lN production')
++1050  FORMAT ('Calculating W'' -> lN production')
+ 1100  FORMAT ('mN = ',F6.1,'   GN = ',F9.6)
+-1150  FORMAT ('MW\' = ',F6.1,'   GW\' = ',F5.2)      
+-1160  FORMAT ('Br(W\' -> ud) = ',F5.4,'   Br(W\' -> tb) = ',F5.4)
+-1170  FORMAT ('Br(W\' -> Nl) = ',F5.4)
++1150  FORMAT ('MW'' = ',F6.1,'   GW'' = ',F5.2)      
++1160  FORMAT ('Br(W'' -> ud) = ',F5.4,'   Br(W'' -> tb) = ',F5.4)
++1170  FORMAT ('Br(W'' -> Nl) = ',F5.4)
+ 1201  FORMAT ('BR(Z -> vv) = ',F5.3,'  BR(Z -> ll) = ',F5.3)
+ 1202  FORMAT ('BR(Z -> uu) = ',F5.3,'  BR(Z -> dd) = ',F5.3)
+ 1204  FORMAT ('BR(N -> Wl)  = ',F5.3,
+--- Triada/DD4l/init.f	2014-12-10 10:33:02.000000001 +0100
++++ Triada/DD4l/init.f	2014-12-10 10:33:28.000000001 +0100
+@@ -275,7 +275,7 @@
+ 500   FORMAT (' _____    _           _       ')
+ 501   FORMAT ('|_   _|  (_)         | |      ')
+ 502   FORMAT ('  | |_ __ _  __ _  __| | __ _ ')
+-503   FORMAT ('  | | \'__| |/ _` |/ _` |/ _` |')
++503   FORMAT ('  | | ''__| |/ _` |/ _` |/ _` |')
+ 504   FORMAT ('  | | |  | | (_| | (_| | (_| |')
+ 505   FORMAT ('  \\_/_|  |_|\\__,_|\\__,_|\\__,_|')
+ 970   FORMAT ('PDF set ',I5,' selected')
+--- Triada/DD4l/evtgen.f	2014-12-11 08:36:00.000000001 +0100
++++ Triada/DD4l/evtgen.f	2014-12-11 08:37:37.000000001 +0100
+@@ -158,7 +158,7 @@
+       ENDDO
+       WTFS=WTFS*WTch(ICH)
+       IL1=(ICH-1)/3+1
+-      IL2=MOD(ICH-1,3)+1
++      IL2=MOD(ICH-1,3.0)+1
+ 
+       countL(IL1,IL2)=countL(IL1,IL2)+1d0
+ 
+@@ -169,7 +169,7 @@
+       ENDDO
+       WTFS=WTFS*WTch(ICH)
+       IL3=(ICH-1)/3+1
+-      IL4=MOD(ICH-1,3)+1
++      IL4=MOD(ICH-1,3.0)+1
+ 
+       countL(IL3,IL4)=countL(IL3,IL4)+1d0
+       
+--- unw/formats.f	2014-12-11 08:52:55.000000001 +0100
++++ unw/formats.f	2014-12-11 08:56:22.000000001 +0100
+@@ -496,10 +496,10 @@
+         STOP
+       ENDIF
+ 
+-      CHL1=-SIGN(1d0,IDL1)
++      CHL1=-SIGN(1,IDL1)
+       IF ( (ABS(IDL1) .EQ. 12) .OR. (ABS(IDL1) .EQ. 14)
+      &  .OR. (ABS(IDL1) .EQ. 16)) CHL1=0
+-      CHL2=-SIGN(1d0,IDL2)
++      CHL2=-SIGN(1,IDL2)
+       IF ( (ABS(IDL2) .EQ. 12) .OR. (ABS(IDL2) .EQ. 14)
+      &  .OR. (ABS(IDL2) .EQ. 16)) CHL2=0
+ 
+@@ -822,10 +822,10 @@
+         STOP
+       ENDIF
+ 
+-      CHL1=-SIGN(1d0,IDL1)
++      CHL1=-SIGN(1,IDL1)
+       IF ( (ABS(IDL1) .EQ. 12) .OR. (ABS(IDL1) .EQ. 14)
+      &  .OR. (ABS(IDL1) .EQ. 16)) CHL1=0
+-      CHL2=-SIGN(1d0,IDL2)
++      CHL2=-SIGN(1,IDL2)
+       IF ( (ABS(IDL2) .EQ. 12) .OR. (ABS(IDL2) .EQ. 14)
+      &  .OR. (ABS(IDL2) .EQ. 16)) CHL2=0
+ 
+@@ -1127,16 +1127,16 @@
+         STOP
+       ENDIF
+ 
+-      CHL1=-SIGN(1d0,IDL1)
++      CHL1=-SIGN(1,IDL1)
+       IF ( (ABS(IDL1) .EQ. 12) .OR. (ABS(IDL1) .EQ. 14)
+      &  .OR. (ABS(IDL1) .EQ. 16)) CHL1=0
+-      CHL2=-SIGN(1d0,IDL2)
++      CHL2=-SIGN(1,IDL2)
+       IF ( (ABS(IDL2) .EQ. 12) .OR. (ABS(IDL2) .EQ. 14)
+      &  .OR. (ABS(IDL2) .EQ. 16)) CHL2=0
+-      CHL3=-SIGN(1d0,IDL3)
++      CHL3=-SIGN(1,IDL3)
+       IF ( (ABS(IDL3) .EQ. 12) .OR. (ABS(IDL3) .EQ. 14)
+      &  .OR. (ABS(IDL3) .EQ. 16)) CHL3=0
+-      CHL4=-SIGN(1d0,IDL4)
++      CHL4=-SIGN(1,IDL4)
+       IF ( (ABS(IDL4) .EQ. 12) .OR. (ABS(IDL4) .EQ. 14)
+      &  .OR. (ABS(IDL4) .EQ. 16)) CHL4=0
+ 
