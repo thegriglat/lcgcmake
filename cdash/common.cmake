@@ -22,7 +22,7 @@ set(CTEST_BINARY_DIRECTORY "${CTEST_BUILD_PREFIX}/${CTEST_BUILD_NAME}-build")
 #---Set the install directory----------------------------------------------- 
 # if $INSTALLDIR is given, use that one, otherwise derive from binary dir
 if("$ENV{INSTALLDIR}" STREQUAL "")
-  set(CTEST_INSTALL_DIRECTORY "${CTEST_BINARY_DIRECTORY}-install")
+  set(CTEST_INSTALL_DIRECTORY "${CTEST_BUILD_PREFIX}/${CTEST_BUILD_NAME}-install")
 else()
   set(CTEST_INSTALL_DIRECTORY "$ENV{INSTALLDIR}")
 endif()
