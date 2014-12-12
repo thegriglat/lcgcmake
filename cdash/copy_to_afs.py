@@ -138,8 +138,11 @@ if __name__ == "__main__":
     package_source = os.path.join(sourcedir,package)
     package_destination = os.path.join(targetdir,package)
     print "Copying %s to %s" %(package_source,package_destination)
-    shutil.copytree(package_source,package_destination)
-  
+    try: 
+      shutil.copytree(package_source,package_destination)
+    except:
+      print "ERROR: Copying of %s failed." %(package)  
+
   #create InstallArea for ATLAS
   createInstallArea(targetdir,platform,"LCGCMT_%s"%slotname) 
     
