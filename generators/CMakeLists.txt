@@ -1725,12 +1725,14 @@ LCG_add_test(madgraph5amc-${v}_zjetsLO
   TEST_COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/generators/mgwork_${v}
        COMMAND $ENV{SHELL} -c "cd ${CMAKE_BINARY_DIR}/generators/mgwork_${v}
            ${madgraph5amc-${v}_home}/bin/mg5_aMC ${CMAKE_SOURCE_DIR}/generators/madgraph5amc/tests/cardsLO.dat
+           mkdir -p .test
            MYPROC/bin/generate_events < ${CMAKE_SOURCE_DIR}/generators/madgraph5amc/tests/cardsLO1"
 )
 
 LCG_add_test(madgraph5amc-${v}_zjetsLOLHAPDF
   TEST_COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/generators/mgwork1_${v}
        COMMAND $ENV{SHELL} -c "cd ${CMAKE_BINARY_DIR}/generators/mgwork1_${v}
+           mkdir -p .test
            ${madgraph5amc-${v}_home}/bin/mg5_aMC ${CMAKE_SOURCE_DIR}/generators/madgraph5amc/tests/cardsLO.dat
            ${CMAKE_SOURCE_DIR}/generators/madgraph5amc/tests/modify.sh MYPROC/Cards ${lhapdf_home}/bin/lhapdf-config
            MYPROC/bin/generate_events < ${CMAKE_SOURCE_DIR}/generators/madgraph5amc/tests/cardsLO1"
