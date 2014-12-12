@@ -147,7 +147,7 @@ if __name__ == "__main__":
   createInstallArea(targetdir,platform,"LCGCMT_%s"%slotname) 
     
   #create release summary file for LHCb
-  command = "%s/lcg-scripts/extract_LCG_summary.py %s %s %s" %(workdir,targetdir,platform,slotname)
+  command = "%s/lcg-scripts/extract_LCG_summary.py %s %s %s RELEASE" %(workdir,targetdir,platform,slotname)
   print subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).stdout.read()
 
   #create symlink to gcc
