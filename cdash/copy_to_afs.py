@@ -3,14 +3,19 @@
 
 import os
 import datetime
+import shutil
 import subprocess
 import sys
+from optparse import OptionParser
 
 def today():
     return datetime.date.today().strftime('%a')
 
-def get_platform():
-    return subprocess.Popen("cd /ec/lcg-scripts/; cmake -P /ec/lcg-scripts/get_platform.cmake; cd $OLDPWD", shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).stdout.read().rstrip()
+def get_platform(workdir):
+    """Guess the platform from the directories WORKDIR."""
+    for item in os.listdir(workdir):
+      if "-install" in item:
+        return item.split("-install")[0]
 
 # part to handle an InstallArea inside LCGCMT with the following structure:
 # LCGCMT/<version>/InstallArea/<platform>/
@@ -37,7 +42,6 @@ def identifyBin(root,aFile,platform):
       if platform in root:
         return True
     return False
-
 
 def createInstallArea(basepath,platform,lcgversion):
   # create InstallArea dirs
@@ -84,26 +88,63 @@ def createInstallArea(basepath,platform,lcgversion):
 ##########################
 if __name__ == "__main__":
 
-  # first we check whether we want to do anything at all
-  slotname = os.environ.get('SLOTNAME')
-  if slotname in (None, "none") :
-    print "skipping AFS install step"
-    sys.exit(0)
-  lcgversion = os.environ.get('LCG_VERSION')  
+  # extract command line parameters
+  usage = "usage: %prog slotname workdir"
+  parser = OptionParser(usage)
+  (options, args) = parser.parse_args()    
+  if len(args) == 0:
+    # option for backwards compatibility; to be dropped once dev2 and dev4 use new scripts
+    slotname = os.environ.get('SLOTNAME')
+    workdir = os.environ['WORKDIR']
+    if slotname in (None, "none") :
+      print "skipping AFS install step"
+      sys.exit(0)
+  elif len(args) != 2:
+    parser.error("incorrect number of arguments")
+  else:
+    slotname = args[0]
+    workdir =  args[1]
+
+  platform = get_platform(workdir)
 
   # define source and target  
-  workdir = os.environ['WORKDIR']
-  sourcedir = "%s/%s-install" %(workdir,get_platform())
+  sourcedir = "%s/%s-install" %(workdir,platform)
   targetdir = "/afs/cern.ch/sw/lcg/app/nightlies/%s/%s" %(slotname,today())
-  command = "rsync -au --no-g %s/ %s" %(sourcedir,targetdir)
-  print "Executing %s" %command
-  print subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).stdout.read()
 
+  # find out which directories to copy
+  dirs_to_copy=[]
+  for name in os.listdir(sourcedir):
+    fullname = os.path.join(sourcedir,name)
+    if name in ["MCGenerators","Grid"]:
+      for package in os.listdir(fullname):
+        packagedir = os.path.join(fullname,package)
+        for versiondir in os.listdir(packagedir):
+          relative_platformdir = os.path.join(name,package,versiondir,platform)
+          dirs_to_copy.append(relative_platformdir)
+    elif name in ["distribution","lhapdf6sets","lhapdfsets"]:
+      pass # => is blacklisted 
+    elif os.path.isdir(fullname):
+      for versiondir in os.listdir(fullname):
+        relative_platformdir = os.path.join(name,versiondir,platform)
+        dirs_to_copy.append(relative_platformdir)
+
+  # actual copy operation
+  print "Start copying %i packages" %len(dirs_to_copy)
+  counter = 0
+  total = len(dirs_to_copy)
+  for package in dirs_to_copy:
+    counter += 1
+    print "Copying %s to AFS. [%i / %i]" %(package, counter, total)
+    package_source = os.path.join(sourcedir,package)
+    package_destination = os.path.join(targetdir,package)
+    print "Copying %s to %s" %(package_source,package_destination)
+    shutil.copytree(package_source,package_destination)
+  
   #create InstallArea for ATLAS
-  createInstallArea(targetdir,get_platform(),"LCGCMT_%s"%lcgversion ) #TODO: make version dynamic 
+  createInstallArea(targetdir,platform,"LCGCMT_%s"%slotname) 
     
   #create release summary file for LHCb
-  command = "/ec/lcg-scripts/extract_LCG_summary.py %s %s %s" %(targetdir,get_platform(),lcgversion)
+  command = "%s/lcg-scripts/extract_LCG_summary.py %s %s %s" %(workdir,targetdir,platform,slotname)
   print subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).stdout.read()
 
   #create symlink to gcc
@@ -111,7 +152,7 @@ if __name__ == "__main__":
   print subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).stdout.read()
 
   # declare as done
-  command = "touch %s/isDone-%s" %(targetdir,get_platform())
+  command = "touch %s/isDone-%s" %(targetdir,platform)
   print subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).stdout.read()
 
     
