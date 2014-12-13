@@ -11,8 +11,9 @@ rm $1/bin/python-config.bak
 if [ ! "Darwin" = $(uname -s) ];then
   nam=$(basename `readlink -f $1/bin/python`)
 else
-  nam=$(basename `python -c "import os,sys; print os.path.realpath(sys.argv[1])" $1/bin/python`)
+  nam=$(basename `$1/bin/python -c "import os,sys; print os.path.realpath(sys.argv[1])" $1/bin/python`)
 fi
-sed -i.bak '1iimport os; installdir=os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))' $1/lib/$nam/_sysconfigdata.py
-sed -i.bak "s:'$1:installdir + ':g" $1/lib/$nam/_sysconfigdata.py
+sed -i.bak -e '1i\
+import os; installdir=os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))' $1/lib/$nam/_sysconfigdata.py
+sed -i.bak -e "s:'$1:installdir + ':g" $1/lib/$nam/_sysconfigdata.py
 
