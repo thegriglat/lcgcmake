@@ -144,7 +144,7 @@ if __name__ == "__main__":
       print "ERROR: Copying of %s failed." %(package)  
 
   # copy LCGCMT explicitly
-  command = "rsync -au --no-g %s/LCGCMT/ %s/LCGCMT" %(sourcedir,slotname, targetdir,slotname)
+  command = "rsync -au --no-g %s/LCGCMT/ %s/LCGCMT" %(sourcedir, targetdir)
   print subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).stdout.read()  
 
   #create InstallArea for ATLAS
