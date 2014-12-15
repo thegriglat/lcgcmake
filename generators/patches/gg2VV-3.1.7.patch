@@ -1,0 +1,35 @@
+--- Jamrules	2014-05-15 19:58:15.000000001 +0200
++++ Jamrules	2014-12-13 22:08:46.000000001 +0100
+@@ -6,8 +6,8 @@
+ #PROCMACRO = PROCMACRO_ZAZA2l2l ;
+ #PROCMACRO = PROCMACRO_ZAZA4l ;
+ 
+-COMPILER = intel ;
+-#COMPILER = gcc ;
++#COMPILER = intel ;
++COMPILER = gcc ;
+ 
+ PRECISION = double ;
+ #PRECISION = quadruple ;
+@@ -16,16 +16,16 @@
+ OPTIM = ;         # unset built-in OPTIM
+ #OPTIM = -g ; FOPTIM = -g ;    # debugging
+ 
+-LIB_TOPDIR ?= /afs/cern.ch/user/n/nkauer/libraries ;
++#LIB_TOPDIR ?= /afs/cern.ch/user/n/nkauer/libraries ;
+ #LIB_TOPDIR ?= /afs/cern.ch/user/n/nkauer/libraries_slc5 ;
+ 
+-LHAPDF_TOPDIR ?= $(LIB_TOPDIR)/$(COMPILER)/lhapdf ;
++#LHAPDF_TOPDIR ?= $(LIB_TOPDIR)/$(COMPILER)/lhapdf ;
+ 
+-OMNIORB_TOPDIR ?= $(LIB_TOPDIR)/$(COMPILER)/omniORB ;
++#OMNIORB_TOPDIR ?= $(LIB_TOPDIR)/$(COMPILER)/omniORB ;
+ 
+-LOOPTOOLS_TOPDIR ?= $(LIB_TOPDIR)/$(COMPILER)/LoopTools ;
++#LOOPTOOLS_TOPDIR ?= $(LIB_TOPDIR)/$(COMPILER)/LoopTools ;
+ 
+-LONG_BIT ?= 32 ;     # .bashrc: export LONG_BIT=`getconf LONG_BIT`
++LONG_BIT ?= 64 ;     # .bashrc: export LONG_BIT=`getconf LONG_BIT`
+ 
+ if $(LONG_BIT) = 32 {
+   LIBSUBDIR ?= lib ;
