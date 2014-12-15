@@ -681,3 +681,35 @@ LCGPackage_Add(
   URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/xrootd-${xrootd_native_version}.tar.gz
   CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR> -DENABLE_PERL=FALSE -DENABLE_FUSE=FALSE -DENABLE_CRYPTO=TRUE -DENABLE_KRB5=TRUE -DENABLE_READLINE=TRUE
 )
+
+
+#---ftjam------------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  ftjam
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/ftjam-${ftjam_native_version}.zip
+  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR>
+  BUILD_COMMAND make 
+  INSTALL_COMMAND make install
+  BUILD_IN_SOURCE 1
+)
+
+#---LoopTools------------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  looptools
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/LoopTools-${looptools_native_version}.tar.gz
+  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR>
+  BUILD_COMMAND make 
+  INSTALL_COMMAND make install
+  BUILD_IN_SOURCE 1
+)
+
+#---omniORB------------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  omniorb
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/omniORB-${omniorb_native_version}.tar.bz2
+  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR>
+  BUILD_COMMAND make 
+  INSTALL_COMMAND make install
+  BUILD_IN_SOURCE 1
+)
+
