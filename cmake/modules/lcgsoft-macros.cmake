@@ -335,6 +335,15 @@ macro(LCGPackage_Add name)
           DEPENDEES install_logs
       )
 
+      # Process .post-install.sh scripts
+      set (post-install_name "${CMAKE_SOURCE_DIR}/cmake/scripts/post-install.sh")
+      ExternalProject_Add_Step(${targetname}  copy_post-install COMMENT "Copy .post-install.sh file for ${name}"
+          COMMAND ${CMAKE_COMMAND} -E copy ${post-install_name} ${${name}_home}/.post-install.sh
+          COMMAND $ENV{SHELL} -c "chmod +x ${${name}_home}/.post-install.sh"
+          COMMAND $ENV{SHELL} -c "${post-install_name} generate ${${name}_home}"
+          DEPENDEES install_logs
+      )
+
       #---Adding clean targets--------------------------------------------------------------------------
       if(LCG_SAFE_INSTALL)
         add_custom_target(clean-${targetname} COMMAND ${CMAKE_COMMAND} -E remove_directory ${CMAKE_CURRENT_BINARY_DIR}/${targetname}
