@@ -1815,10 +1815,10 @@ endforeach()
 #---LoopTools------------------------------------------------------------------------------------------------
 LCGPackage_Add(
   looptools
-  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/LoopTools-${looptools_native_version}.tar.gz
+  URL ${gen_url}/LoopTools-<VERSION>.tar.gz
   CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR>
-  BUILD_COMMAND make 
-  INSTALL_COMMAND make install
+  BUILD_COMMAND ${MAKE}
+  INSTALL_COMMAND ${MAKE} install
   BUILD_IN_SOURCE 1
 )
 
