@@ -18,7 +18,7 @@ LCG_AA_project(RELAX RELAX-root6)
 LCG_AA_project(ROOT  v6-02-00-patches)
 LCG_AA_project(LCGCMT LCGCMT_${heptools_version})
 LCG_AA_project(HepMC 2.06.09)
-LCG_external_package(Geant4 9.6.p03 CLHEP=2.1.4.1)
+#LCG_external_package(Geant4 9.6.p03 CLHEP=2.1.4.1)
 
 # Externals
 LCG_external_package(hepmc3            githead                                  )
