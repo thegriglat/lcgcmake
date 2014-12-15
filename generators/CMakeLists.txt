@@ -1812,6 +1812,16 @@ LCG_add_test(jhu-${v}.native-testC
 endforeach()
 
 
+#---LoopTools------------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  looptools
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/LoopTools-${looptools_native_version}.tar.gz
+  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR>
+  BUILD_COMMAND make 
+  INSTALL_COMMAND make install
+  BUILD_IN_SOURCE 1
+)
+
 #--- gg2VV -----------------------------------------------------------------------------------
 
 LCGPackage_Add(

@@ -693,16 +693,6 @@ LCGPackage_Add(
   BUILD_IN_SOURCE 1
 )
 
-#---LoopTools------------------------------------------------------------------------------------------------
-LCGPackage_Add(
-  looptools
-  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/LoopTools-${looptools_native_version}.tar.gz
-  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR>
-  BUILD_COMMAND make 
-  INSTALL_COMMAND make install
-  BUILD_IN_SOURCE 1
-)
-
 #---omniORB------------------------------------------------------------------------------------------------
 LCGPackage_Add(
   omniorb
