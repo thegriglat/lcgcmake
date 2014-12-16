@@ -117,7 +117,6 @@ endif()
 LCG_external_package(mpich2            1.5                                      )
 
 LCG_external_package(ftjam             2.5.2                                  )
-LCG_external_package(looptools         2.8                                    )
 LCG_external_package(omniorb           4.2.0                                  )
 
 #---EMI-2 grid externals and other binary packages---------------------
@@ -243,6 +242,8 @@ LCG_external_package(jhu               3.1.8          ${MCGENPATH}/jhu       )
 #LCG_external_package(vincia            HEAD          ${MCGENPATH}/vincia       )
 LCG_external_package(fastnlo_toolkit   2.3.1pre-1871  ${MCGENPATH}/fastnlo_toolkit )
 LCG_external_package(gg2VV              3.1.7         ${MCGENPATH}/gg2VV)
+LCG_external_package(looptools         2.8            ${MCGENPATH}/looptools)
+
 
 # Prepare the search paths according to the versions above
 LCG_prepare_paths()
