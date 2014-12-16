@@ -242,9 +242,9 @@ LCGPackage_Add(
 #---Protos------------------------------------------------------------------------------------------
 LCGPackage_Add(
   protos
-  URL ${gen_url}/Protos<VERSION>.tar.gz
+  URL ${gen_url}/Protos<protos_<VERSION>_author>.tar.gz
   CONFIGURE_COMMAND <VOID>
-  BUILD_COMMAND ${MAKE} FC=gfortran LIBRARY_PATH=<lhapdf-<protos_<VERSION>_lhapdf>_home>/lib
+  BUILD_COMMAND ${MAKE} FC=<protos_<VERSION>_FC> LIBRARY_PATH=<lhapdf-<protos_<VERSION>_lhapdf>_home>/lib
   INSTALL_COMMAND ${MAKE} INSTALL_DIR=<INSTALL_DIR>/bin install
   BUILD_IN_SOURCE 1
   DEPENDS lhapdf-<protos_<VERSION>_lhapdf>
