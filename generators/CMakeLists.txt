@@ -58,7 +58,7 @@ else()
 endif()
 
 #---lhapdfsets--------------------------------------------------------------------------------------
-message(STATUS "PDFsets to download: ${PDFsets}")
+message(STATUS "PDFsets to download                    : ${PDFsets}")
 LCGPackage_Add(
   lhapdfsets
   URL ${gen_url}/lhapdf-<NATIVE_VERSION>.tar.gz

@@ -201,7 +201,7 @@ function(lcg_get_target_platform)
       endif()
       set(tag_source default)
     endif()
-    message(STATUS "Target binary tag from ${tag_source}: ${tag}")
+    message(STATUS "Target binary tag from ${tag_source}:        : ${tag}")
     set(BINARY_TAG ${tag} CACHE STRING "Platform id for the produced binaries.")
   endif()
   # Split the target binary tag
@@ -296,15 +296,16 @@ function(lcg_get_target_platform)
   mark_as_advanced(LCG_platform LCG_system)
 
   # Report the platform ids.
-  message(STATUS "Target system: ${LCG_TARGET}")
-  message(STATUS "Build type: ${LCG_BUILD_TYPE}")
+  message(STATUS "Hostname                               : $ENV{HOSTNAME}")
+  message(STATUS "Target system                          : ${LCG_TARGET}")
+  message(STATUS "Build type                             : ${LCG_BUILD_TYPE}")
 
   if(NOT LCG_HOST_SYSTEM STREQUAL LCG_TARGET)
-    message(STATUS "Host system: ${LCG_HOST_SYSTEM}")
+    message(STATUS "Host system                            : ${LCG_HOST_SYSTEM}")
   endif()
 
   if(NOT LCG_TARGET STREQUAL LCG_SYSTEM)
-    message(STATUS "Use LCG system: ${LCG_SYSTEM}")
+    message(STATUS "Use LCG system                         : ${LCG_SYSTEM}")
   endif()
 
   # copy variables to parent scope
