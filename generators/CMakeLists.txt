@@ -1832,11 +1832,20 @@ LCGPackage_Add(
   BUILD_COMMAND ${CMAKE_COMMAND} -E chdir gg2VV $ENV{SHELL} -c "PATH=${omniorb_home}/bin:$ENV{PATH} TOPDIR=${CMAKE_BINARY_DIR}/generators/gg2VV-<NATIVE_VERSION>/src/gg2VV/<NATIVE_VERSION> LIB_TOPDIR=<INSTALL_DIR> LHAPDF_TOPDIR=${lhapdf_home} OMNIORB_TOPDIR=${omniorb_home} LOOPTOOLS_TOPDIR=${looptools_home} ${ftjam_home}/bin/jam "
   INSTALL_COMMAND ${CMAKE_COMMAND} -E make_directory <INSTALL_DIR>/bin
           COMMAND ${CMAKE_COMMAND} -E copy gg2VV/gg2VV <INSTALL_DIR>/bin
-          COMMAND ${CMAKE_COMMAND} -E make_directory <INSTALL_DIR>/lhapdf-pdfsets
-          COMMAND ${CMAKE_COMMAND} -E chdir <INSTALL_DIR>/lhapdf-pdfsets ${lhapdf-${lhapdf6_latest_version}_home}/bin/lhapdf get MSTW2008lo68cl
   BUILD_IN_SOURCE 1
   DEPENDS ftjam looptools omniorb lhapdf-${lhapdf6_latest_version}
 )
+
+foreach(v ${gg2VV_native_version})
+  LCG_add_test(gg2VV-${v}.native
+    TEST_COMMAND ${gg2VV-${v}_home}/bin/gg2VV
+    ENVIRONMENT
+       LHAPATH=${CMAKE_INSTALL_PREFIX}/lhapdf6sets/current/share/LHAPDF
+    DEPENDS lhapdf6sets.download
+  )
+endforeach()
+
+
 
 #--- fastnlo_toolkit -------------------------------------------------------------------------------
 LCGPackage_Add(
