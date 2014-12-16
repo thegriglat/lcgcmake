@@ -250,6 +250,13 @@ LCGPackage_Add(
   DEPENDS lhapdf-<protos_<VERSION>_lhapdf>
 )
 
+foreach(v ${protos_native_version})
+  LCG_add_test(protos-${v}.native-Protos-tb
+    TEST_COMMAND ${CMAKE_COMMAND} -E chdir ${protos-${v}_home}/bin/Red/tb ./Protos-tb
+    ENVIRONMENT ${library_path}=${lhapdf-${protos_${v}_lhapdf}_home}/lib:$ENV{${library_path}}
+  )
+endforeach()
+
 #---pythia8------------------------------------------------------------------------------------------
 LCGPackage_Add(
   pythia8
