@@ -18,6 +18,6 @@ endif()
 # Reset the cache variable to have proper documentation.
 set(CMAKE_TOOLCHAIN_FILE ${CMAKE_TOOLCHAIN_FILE}
     CACHE FILEPATH "The CMake toolchain file" FORCE)
-message(STATUS "Using toolchain file:       ${CMAKE_TOOLCHAIN_FILE}")
+message(STATUS "Using toolchain file                  : ${CMAKE_TOOLCHAIN_FILE}")
 
 include(${CMAKE_TOOLCHAIN_FILE})

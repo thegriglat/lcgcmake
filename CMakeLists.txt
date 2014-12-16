@@ -15,11 +15,12 @@ set(LCG_TARBALL_INSTALL   OFF   CACHE BOOL "Turn ON/OFF creation/installation of
 set(VALIDATION         OFF      CACHE BOOL "Enable validation settings.")
 
 #---Report the values of the options-----------------------------------------------------------------------------------
-message(STATUS "Target installation prefix: ${CMAKE_INSTALL_PREFIX}")
-message(STATUS "Existing LCG installations: ${LCG_INSTALL_PREFIX}")
-message(STATUS "Safe installation: ${LCG_SAFE_INSTALL}")
+message(STATUS "Hostname                              : $ENV{HOSTNAME}")
+message(STATUS "Target installation prefix            : ${CMAKE_INSTALL_PREFIX}")
+message(STATUS "Existing LCG installations            : ${LCG_INSTALL_PREFIX}")
+message(STATUS "Safe installation                     : ${LCG_SAFE_INSTALL}")
 message(STATUS "Source and binary tarball installation: ${LCG_TARBALL_INSTALL}")
-message(STATUS "Validation mode: ${VALIDATION}")
+message(STATUS "Validation mode                       : ${VALIDATION}")
 
 include(${CMAKE_SOURCE_DIR}/toolchain.cmake)
 include(lcgsoft-macros)
