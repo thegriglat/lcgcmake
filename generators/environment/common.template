@@ -73,7 +73,10 @@ for pkg in $(echo $THIS_DEPENDS | tr ' ' '\n');do
   pkg_version=$(echo $pkg | cut -d- -f 2-)
   # try to find home directory for package
   for pkg_home_top in $(find $LCGDIR $(dirname $LCGDIR) -maxdepth 2 -type d | grep -i "$pkg_name" | sed -e "s@/$pkg_version@@g"); do
-    [ -d "$pkg_home_top/$pkg_version/$PLATFORM" ] && pkg_home="$pkg_home_top/$pkg_version/$PLATFORM"
+    if [ -d "$pkg_home_top/$pkg_version/$PLATFORM" ]; then
+       pkg_home="$pkg_home_top/$pkg_version/$PLATFORM"
+       break
+    fi
   done
   # set source file name
   if $(echo "$pkg_home" | grep -q MCGenerators ); then
@@ -83,7 +86,7 @@ for pkg in $(echo $THIS_DEPENDS | tr ' ' '\n');do
   fi
   [ -d "$pkg_home" ] || echo "  Cannot determine home directory for $pkg"
   # add files to source stack
-  if [ -e "$pkg_home/${source_name}" ]; then
+  if [ -f "$pkg_home/${source_name}" ]; then
     sources="$sources $pkg_home/${source_name}"
   else
     echo "  Cannot source $pkg_home/${source_name}"
