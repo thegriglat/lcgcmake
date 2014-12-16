@@ -1745,14 +1745,12 @@ LCG_add_test(madgraph5amc-${v}.genser-zjetsLO
        COMMAND $ENV{SHELL} -c "cat ${CMAKE_SOURCE_DIR}/generators/madgraph5amc/tests/cardsLO.dat >> ${CMAKE_BINARY_DIR}/generators/madgraph5amc/${v}/cardsLO.dat"
   TEST_COMMAND $ENV{SHELL} -c "cd ${CMAKE_BINARY_DIR}/generators/madgraph5amc/${v}/LO
            ${Python_cmd} ${madgraph5amc-${v}_home}/bin/mg5_aMC ${CMAKE_BINARY_DIR}/generators/madgraph5amc/${v}/cardsLO.dat
-           mkdir -p .test
            MYPROC/bin/generate_events < ${CMAKE_SOURCE_DIR}/generators/madgraph5amc/tests/cardsLO1"
 )
 
 LCG_add_test(madgraph5amc-${v}.genser-zjetsLOLHAPDF
   TEST_COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/generators/madgraph5amc/${v}/LOLHAPDF
        COMMAND $ENV{SHELL} -c "cd ${CMAKE_BINARY_DIR}/generators/madgraph5amc/${v}/LOLHAPDF
-           mkdir -p .test
            ${Python_cmd} ${madgraph5amc-${v}_home}/bin/mg5_aMC ${CMAKE_SOURCE_DIR}/generators/madgraph5amc/tests/cardsLO.dat
            sed -i.bck -e 's@.*lhapdf = lhapdf-config@ lhapdf = ${lhapdf_home}/bin/lhapdf-config@' MYPROC/Cards/me5_configuration.txt
            sed -i.bck -e '/= pdlabel/s@^.*$@ lhapdf = pdlabel@' -e '/= lhaid/s@^.*$@ 10800 = lhaid@' MYPROC/Cards/run_card.dat
