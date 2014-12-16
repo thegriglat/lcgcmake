@@ -1739,9 +1739,12 @@ foreach(v ${madgraph5amc_native_version})
 #)
 
 LCG_add_test(madgraph5amc-${v}.genser-zjetsLO
-  TEST_COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/generators/madgraph5amc/${v}/LO
-       COMMAND $ENV{SHELL} -c "cd ${CMAKE_BINARY_DIR}/generators/madgraph5amc/${v}/LO
-           ${Python_cmd} ${madgraph5amc-${v}_home}/bin/mg5_aMC ${CMAKE_SOURCE_DIR}/generators/madgraph5amc/tests/cardsLO.dat
+   PRE_COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/generators/madgraph5amc/${v}/LO
+       COMMAND $ENV{SHELL} -c "echo set fastjet ${fastjet_home}/bin/fastjet-config > ${CMAKE_BINARY_DIR}/generators/madgraph5amc/${v}/cardsLO.dat"
+       COMMAND $ENV{SHELL} -c "echo set lhapdf ${lhapdf_home}/bin/lhapdf-config >> ${CMAKE_BINARY_DIR}/generators/madgraph5amc/${v}/cardsLO.dat"
+       COMMAND $ENV{SHELL} -c "cat ${CMAKE_SOURCE_DIR}/generators/madgraph5amc/tests/cardsLO.dat >> ${CMAKE_BINARY_DIR}/generators/madgraph5amc/${v}/cardsLO.dat"
+  TEST_COMMAND $ENV{SHELL} -c "cd ${CMAKE_BINARY_DIR}/generators/madgraph5amc/${v}/LO
+           ${Python_cmd} ${madgraph5amc-${v}_home}/bin/mg5_aMC ${CMAKE_BINARY_DIR}/generators/madgraph5amc/${v}/cardsLO.dat
            mkdir -p .test
            MYPROC/bin/generate_events < ${CMAKE_SOURCE_DIR}/generators/madgraph5amc/tests/cardsLO1"
 )
