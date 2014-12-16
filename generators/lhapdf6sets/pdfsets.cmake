@@ -23,8 +23,12 @@ endif()
 file(MAKE_DIRECTORY ${pdf_dir})
 
 # download PDF sets
-message(STATUS "the following command will be executed: ${distr}/bin/lhapdf-getdata --force --repo=${repo} --dest=${pdf_dir} ${PDFS}  ")
-execute_process(COMMAND ${distr}/bin/lhapdf-getdata --untar --force --repo=${repo} --dest=${pdf_dir} ${PDFS} cteq6l1 RESULT_VARIABLE code)
+string (REPLACE " " ";" PDFS "${PDFS}")
+foreach (p ${PDFS})
+  message(STATUS "the following command will be executed: ${distr}/bin/lhapdf-getdata --force --repo=${repo} --dest=${pdf_dir} ${p}")
+  execute_process(COMMAND ${distr}/bin/lhapdf-getdata --untar --force --repo=${repo} --dest=${pdf_dir} ${p} RESULT_VARIABLE code)
+endforeach()
+
 execute_process(COMMAND ${distr}/bin/lhapdf-getdata --force --repo=${repo} --dest=${pdf_dir} pdfsets.index RESULT_VARIABLE code)
 
 if(NOT code EQUAL 0)

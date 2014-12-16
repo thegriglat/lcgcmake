@@ -113,7 +113,7 @@ LCG_add_test(lhapdf6sets.download
   TEST_COMMAND ${CMAKE_COMMAND}
                -Ddistr=${CMAKE_SOURCE_DIR}/generators/lhapdf6sets
                -Drepo=http://www.hepforge.org/archive/lhapdf/pdfsets/${pdf_version}
-               -DPDFS=${PDFsets}
+               "-DPDFS=${PDFsets} cteq6l1 MSTW2008lo68cl"
                -Ddst_dir=${CMAKE_INSTALL_PREFIX}/lhapdf6sets/current/share/LHAPDF
                -P ${CMAKE_CURRENT_SOURCE_DIR}/lhapdf6sets/pdfsets.cmake
 )
