@@ -49,7 +49,7 @@ rm -rf $WORKDIR/*-install
 rm -rf /tmp/the.lock
 
 # setup compiler-------------------------------------------------
-if [ "${LABEL}" == "slc6" ];then
+if [[ $LABEL == *slc6* ]];then
   export PATH=/afs/cern.ch/sw/lcg/contrib/CMake/2.8.9/Linux-i386/bin:${PATH}
 fi
 
