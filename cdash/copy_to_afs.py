@@ -134,19 +134,20 @@ if __name__ == "__main__":
   total = len(dirs_to_copy)
   for package in dirs_to_copy:
     counter += 1
-    print "[%i/%i] Copying %s to %s" %(counter, total, package, targetdir)
     package_source = os.path.join(sourcedir,package)
     package_destination = os.path.join(targetdir,package)
     if os.path.isdir(package_destination):
       shutil.rmtree(package_destination)
     if os.path.islink(package_source):
+      print "[%i/%i] Linking %s to %s" %(counter, total, package, targetdir)
       try:
         os.symlink(os.readlink(package_source), package_destination)
       except (IOError, os.error) as why:
         print str(why)
       except:
-        print "ERROR: Copying link %s failed." %(package)
+        print "ERROR: Linking %s failed." %(package)
     else:
+      print "[%i/%i] Copying %s to %s" %(counter, total, package, targetdir)
       try:
         shutil.copytree(package_source, package_destination, symlinks=True)
       except (IOError, os.error) as why:
