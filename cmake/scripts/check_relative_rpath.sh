@@ -16,7 +16,7 @@ function check_rpath(){
 
 file=$1
 
-file $file | grep -v -q ELF && exit $KEEP
+file -L $file | grep -v -q ELF && exit $KEEP
 
 if echo $file | grep -E -q "\.so"; then
     exit $REMOVE
