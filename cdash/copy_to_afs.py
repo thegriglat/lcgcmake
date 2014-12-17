@@ -139,7 +139,7 @@ if __name__ == "__main__":
     package_destination = os.path.join(targetdir,package)
     if os.path.isdir(package_destination):
       shutil.rmtree(package_destination)
-    if os.path.islink(package_source)
+    if os.path.islink(package_source):
       try:
         os.symlink(os.readlink(package_source), package_destination)
       except (IOError, os.error) as why:
