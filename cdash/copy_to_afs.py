@@ -134,12 +134,17 @@ if __name__ == "__main__":
   total = len(dirs_to_copy)
   for package in dirs_to_copy:
     counter += 1
-    print "Copying %s to AFS. [%i / %i]" %(package, counter, total)
+    print "[%i/%i] Copying %s to %s" %(counter, total, package, targetdir)
     package_source = os.path.join(sourcedir,package)
     package_destination = os.path.join(targetdir,package)
-    print "Copying %s to %s" %(package_source,package_destination)
+    if os.path.isdir(package_destination):
+      shutil.rmtree(package_destination)
     try: 
-      shutil.copytree(package_source,package_destination)
+      shutil.copytree(package_source, package_destination, symlinks=True)
+    except (IOError, os.error) as why:
+      print str(why)
+    except shutil.Error as err:
+      print err
     except:
       print "ERROR: Copying of %s failed." %(package)  
 
