@@ -52,9 +52,13 @@ int main() {
   int nList = settings.mode("Next:numberShowEvent");
   int nShow = settings.mode("Next:numberCount");
   int nAbort = settings.mode("Main:timesAllowErrors");
-  bool showChangedSettings = settings.flag("Main:showChangedSettings");
-  bool showAllSettings = settings.flag("Main:showAllSettings");
-  bool showAllParticleData = settings.flag("Main:showAllParticleData");
+  //bool showChangedSettings = settings.flag("Init:showChangedSettings");
+  //bool showAllSettings = settings.flag("Init:showAllSettings");
+  //bool showAllParticleData = settings.flag("Init:showAllParticleData");
+
+  // Choose decay modes for Z0 : switch off everything but Z0 -> leptons.
+  pythia.readString("23:onMode = off");
+  pythia.readString("23:onIfAny = 11 13 15");
 
 #ifdef PYTHIA8200
   pythia.settings.mode("Beams:frameType", 4);
@@ -64,16 +68,10 @@ int main() {
   pythia.init("Zg_pythia8.lhe");
 #endif
 
-  // Choose decay modes for Z0 : switch off everything but Z0 -> leptons.
-  pythia.readString("23:onMode = off");
-  pythia.readString("23:onIfAny = 11 13 15");
-
-  // List changed data.
-  if (showChangedSettings) settings.listChanged();
-  if (showAllSettings) settings.listAll();
-
-  // List particle data.  
-  if (showAllParticleData) pythia.particleData.listAll();
+  // List data and particle data. Commented out because by default are listed at the init step
+  //if (showChangedSettings) settings.listChanged();
+  //if (showAllSettings) settings.listAll();
+  //if (showAllParticleData) pythia.particleData.listAll();
 
   // Begin event loop.
   int nShowPace = max(1,nShow);
