@@ -240,7 +240,7 @@ LCG_external_package(jhu               3.1.8          ${MCGENPATH}/jhu       )
 #LCG_external_package(vincia            HEAD          ${MCGENPATH}/vincia       )
 LCG_external_package(fastnlo_toolkit   2.3.1pre-1871  ${MCGENPATH}/fastnlo_toolkit )
 
-LCG_external_package(protos            2.2-g77        ${MCGENPATH}/protos  lhapdf=lhapdf5 author=2.2 FC=g77 )
+#LCG_external_package(protos            2.2-g77        ${MCGENPATH}/protos  lhapdf=lhapdf5 author=2.2 FC=g77 )
 LCG_external_package(protos            2.2-gfortran   ${MCGENPATH}/protos  lhapdf=lhapdf5 author=2.2 FC=gfortran )
 
 LCG_external_package(gg2VV              3.1.7         ${MCGENPATH}/gg2VV)
