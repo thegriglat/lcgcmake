@@ -139,14 +139,22 @@ if __name__ == "__main__":
     package_destination = os.path.join(targetdir,package)
     if os.path.isdir(package_destination):
       shutil.rmtree(package_destination)
-    try: 
-      shutil.copytree(package_source, package_destination, symlinks=True)
-    except (IOError, os.error) as why:
-      print str(why)
-    except shutil.Error as err:
-      print err
-    except:
-      print "ERROR: Copying of %s failed." %(package)  
+    if os.path.islink(package_source)
+      try:
+        os.symlink(os.readlink(package_source), package_destination)
+      except (IOError, os.error) as why:
+        print str(why)
+      except:
+        print "ERROR: Copying link %s failed." %(package)
+    else:
+      try:
+        shutil.copytree(package_source, package_destination, symlinks=True)
+      except (IOError, os.error) as why:
+        print str(why)
+      except shutil.Error as err:
+        print err
+      except:
+        print "ERROR: Copying of %s failed." %(package)
 
   # copy LCGCMT explicitly
   command = "rsync -au --no-g %s/LCGCMT/ %s/LCGCMT" %(sourcedir, targetdir)
