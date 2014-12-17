@@ -698,7 +698,7 @@ LCGPackage_Add(
   omniorb
   URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/omniORB-${omniorb_native_version}.tar.bz2
   CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR>
-  BUILD_COMMAND ${MAKE} CPPFLAGS=-I${Python_path}/include
+  BUILD_COMMAND ${MAKE} CPPFLAGS=-I${Python_home}/include
   INSTALL_COMMAND ${MAKE} install
   BUILD_IN_SOURCE 1
   DEPENDS Python
