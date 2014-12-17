@@ -136,8 +136,12 @@ if __name__ == "__main__":
     counter += 1
     package_source = os.path.join(sourcedir,package)
     package_destination = os.path.join(targetdir,package)
-    if os.path.isdir(package_destination):
+    # clean the destination
+    if os.path.islink(package_destination):
+      os.unlink(package_destination)
+    elif os.path.isdir(package_destination):
       shutil.rmtree(package_destination)
+
     if os.path.islink(package_source):
       print "[%i/%i] Linking %s to %s" %(counter, total, package, targetdir)
       try:
