@@ -141,9 +141,16 @@ if __name__ == "__main__":
       os.unlink(package_destination)
     elif os.path.isdir(package_destination):
       shutil.rmtree(package_destination)
-
+    # link or copy to destination
     if os.path.islink(package_source):
       print "[%i/%i] Linking %s to %s" %(counter, total, package, targetdir)
+      try:
+        os.makedirs(os.path.dirname(package_destination))
+      except OSError as exc:
+        if exc.errno == errno.EEXIST and os.path.isdir(os.path.dirname(package_destination)):
+          pass
+        else:
+          print "ERROR: Makedirs %s failed." %(os.path.dirname(package_destination))
       try:
         os.symlink(os.readlink(package_source), package_destination)
       except (IOError, os.error) as why:
