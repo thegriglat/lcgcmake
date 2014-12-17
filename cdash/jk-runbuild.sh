@@ -24,7 +24,6 @@ export TARGET=all
 
 export CLEAN_INSTALLDIR="false"
 export INSTALLDIR=
-export LCG_IGNORE=
 export TEST_LABELS=
 export LCG_TARBALL_INSTALL="false"
 export SLOTNAME=$SLOTNAME
@@ -32,7 +31,9 @@ export TEST_LABELS="Nightly|PhysicsCheck"
 
 export BUILDTYPE
 export MODE=$SLOTNAME
-export LCG_VERSION=$SLOTNAME
+if [ x$LCG_VERSION = x ]; then
+  export LCG_VERSION=$SLOTNAME
+fi
 
 THIS=$(dirname $0)
 ARCH=$(uname -m)
