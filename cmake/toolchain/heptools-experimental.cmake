@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 2.8.5)
 # Declare the version of HEP Tools we use
 # (must be done before including heptools-common to allow evolution of the
 # structure)
-set(heptools_version  dev2)
+set(heptools_version  experimental)
 
 include(${CMAKE_CURRENT_LIST_DIR}/heptools-common.cmake)
 
@@ -12,21 +12,22 @@ include(${CMAKE_CURRENT_LIST_DIR}/heptools-common.cmake)
 
 
 # Application Area Projects
-LCG_AA_project(COOL  COOL-preview)
-LCG_AA_project(CORAL CORAL-preview)
-LCG_AA_project(RELAX RELAX_1_3_0p)
-LCG_AA_project(ROOT  v5-34-00-patches)
+LCG_AA_project(COOL  COOL_3_0-preview)
+LCG_AA_project(CORAL CORAL_3_0-preview)
+LCG_AA_project(RELAX RELAX-root6)
+LCG_AA_project(ROOT  v6-02-00-patches)
 LCG_AA_project(LCGCMT LCGCMT_${heptools_version})
-LCG_external_package(Geant4 9.6.p03 CLHEP=2.1.4.1)
+LCG_AA_project(HepMC 2.06.09)
+#LCG_external_package(Geant4 9.6.p03 CLHEP=2.1.4.1)
 
 # Externals
+LCG_external_package(hepmc3            githead                                  )
 LCG_external_package(4suite            1.0.2p1                                  )
 LCG_external_package(AIDA              3.2.1                                    )
 LCG_external_package(blas              20110419                                 )
 LCG_external_package(Boost             1.55.0                                   )
 LCG_external_package(CLHEP             2.1.4.1                   clhep          )
 LCG_external_package(CLHEP             1.9.4.7                   clhep          )
-#LCG_external_package(cmake             2.8.9                                    )
 LCG_external_package(cmaketools        1.1                                      )
 LCG_external_package(cmt               v1r20p20090520                           )
 LCG_external_package(coin3d            3.1.3p2                                  )
@@ -36,7 +37,6 @@ LCG_external_package(cx_oracle         5.1.1                                    
 if(NOT ${LCG_OS} STREQUAL mac)
   LCG_external_package(Davix             0.3.1                                  )
 endif()
-LCG_external_package(DD4hep            v00-07                                   )
 LCG_external_package(doxygen           1.8.2                                    ) 
 LCG_external_package(expat             2.0.1                                    )
 LCG_external_package(fastjet           3.1.0                                    )
@@ -46,14 +46,10 @@ LCG_external_package(GCCXML            0.9.0_20131026            gccxml         
 LCG_external_package(genshi            0.6                                      )
 LCG_external_package(graphviz          2.28.0                                   )
 LCG_external_package(GSL               1.10                                     )
-LCG_external_package(HepMC             2.06.09                                  )
-LCG_external_package(hepmc3            githead                                  )
-LCG_external_package(hepmc3-cxx11      githead.cxx11             hepmc3         )
 LCG_external_package(HepPDT            2.06.01                                  )
 LCG_external_package(ipython           0.12.1                                   )
 LCG_external_package(json              2.5.2                                    )
 LCG_external_package(lapack            3.5.0                                    )
-LCG_external_package(LCIO              v02-04-03                                )
 LCG_external_package(lcov              1.9                                      )
 LCG_external_package(libsvm            2.86                                     )
 LCG_external_package(libtool           1.5.26                                   )
@@ -78,9 +74,9 @@ LCG_external_package(pygsi             0.5                                      
 LCG_external_package(pylint            1.2.1                                    )
 LCG_external_package(pyminuit          0.0.1                                    )
 LCG_external_package(pyparsing         1.5.6                                    )
-LCG_external_package(pytz              2014.7                                   )
 LCG_external_package(pyqt              4.9.5                                    )
 LCG_external_package(pytest            2.2.4                                    )
+LCG_external_package(pytz              2014.7                                   )
 LCG_external_package(Python            2.7.6                                    )
 LCG_external_package(PythonFWK         2.7.6                  Python            )
 LCG_external_package(pytools           1.8                                      )
@@ -115,6 +111,10 @@ if(NOT ${LCG_OS} STREQUAL mac)
 endif()
 
 LCG_external_package(mpich2            1.5                                      )
+LCG_external_package(ftjam             2.5.2                                  )
+LCG_external_package(omniorb           4.2.0                                  )
+
+
 
 #---EMI-2 grid externals and other binary packages---------------------
 if(NOT ${LCG_OS} STREQUAL mac)
@@ -155,6 +155,7 @@ set(MCGENPATH  MCGenerators)
 LCG_external_package(heputils       1.0.0          ${MCGENPATH}/heputils )
 LCG_external_package(mcutils        1.1.0          ${MCGENPATH}/mcutils )
 
+LCG_external_package(madgraph5amc       2.2.2          ${MCGENPATH}/madgraph5amc )
 LCG_external_package(madgraph5amc       2.2.1          ${MCGENPATH}/madgraph5amc )
 LCG_external_package(madgraph5amc       2.1.2          ${MCGENPATH}/madgraph5amc )
 
@@ -238,6 +239,12 @@ LCG_external_package(jhu               3.1.8          ${MCGENPATH}/jhu       )
 
 #LCG_external_package(vincia            HEAD          ${MCGENPATH}/vincia       )
 LCG_external_package(fastnlo_toolkit   2.3.1pre-1871  ${MCGENPATH}/fastnlo_toolkit )
+
+LCG_external_package(protos            2.2-g77        ${MCGENPATH}/protos  lhapdf=lhapdf5 author=2.2 FC=g77 )
+LCG_external_package(protos            2.2-gfortran   ${MCGENPATH}/protos  lhapdf=lhapdf5 author=2.2 FC=gfortran )
+
+LCG_external_package(gg2VV              3.1.7         ${MCGENPATH}/gg2VV)
+LCG_external_package(looptools         2.8            ${MCGENPATH}/looptools)
 
 
 # Prepare the search paths according to the versions above
