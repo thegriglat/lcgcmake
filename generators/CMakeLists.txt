@@ -1757,7 +1757,7 @@ LCG_add_test(madgraph5amc-${v}.genser-zjetsLOLHAPDF
            MYPROC/bin/generate_events < ${CMAKE_SOURCE_DIR}/generators/madgraph5amc/tests/cardsLO1"
   ENVIRONMENT
      LHAPDF_DATA_PATH=${CMAKE_INSTALL_PREFIX}/lhapdf6sets/current/share/LHAPDF
-  DEPENDS lhapdf6sets.download
+  DEPENDS lhapdf6sets.download madgraph5amc-${v}.genser-zjetsLO
 )
 
 LCG_add_test(madgraph5amc-${v}.genser-zjetsLO_hadronize
@@ -1771,7 +1771,7 @@ LCG_add_test(madgraph5amc-${v}.genser-zjetsLO_hadronize
   ENVIRONMENT
     ${library_path}=${pythia8-${pythia8_work_version}_home}/lib:${HepMC_home}/lib:$ENV{${library_path}}
     PYTHIA8DATA=${pythia8-${pythia8_work_version}_home}/xmldoc
-  DEPENDS pythia8-${pythia8_work_version}.build madgraph5amc-${v}.genser-zjetsLO
+  DEPENDS pythia8-${pythia8_work_version}.build madgraph5amc-${v}.genser-zjetsLOLHAPDF
 )
 
 LCG_add_test(madgraph5amc-${v}_compare
