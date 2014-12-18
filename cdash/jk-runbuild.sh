@@ -50,7 +50,7 @@ rm -rf /tmp/the.lock
 
 # setup compiler-------------------------------------------------
 if [[ $LABEL == *slc6* ]];then
-  export PATH=/afs/cern.ch/sw/lcg/contrib/CMake/2.8.9/Linux-i386/bin:${PATH}
+  export PATH=/afs/cern.ch/sw/lcg/contrib/CMake/2.8.12.2/Linux-i386/bin:${PATH}
   LABEL=slc6
 fi
 
