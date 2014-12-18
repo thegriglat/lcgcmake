@@ -6,6 +6,7 @@ import datetime
 import shutil
 import subprocess
 import sys
+import errno
 from optparse import OptionParser
 
 def today():
