@@ -47,10 +47,11 @@ def identifyBin(root,aFile,platform):
 def createInstallArea(basepath,platform,lcgversion):
   # create InstallArea dirs
   installarea = os.path.join(basepath,"LCGCMT",lcgversion,"InstallArea",platform)
-  if not os.path.exists(installarea):
-    os.makedirs(installarea)
-    os.makedirs(os.path.join(installarea,"lib"))
-    os.makedirs(os.path.join(installarea,"bin"))
+  if os.path.exists(installarea):
+    shutil.rmtree(installarea)
+  os.makedirs(installarea)
+  os.makedirs(os.path.join(installarea,"lib"))
+  os.makedirs(os.path.join(installarea,"bin"))
   print installarea, "created"
 
   # collect all libs and bins for the given platform
