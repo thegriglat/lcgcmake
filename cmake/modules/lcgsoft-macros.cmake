@@ -213,6 +213,7 @@ macro(LCGPackage_Add name)
               COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_INSTALL_PREFIX}/${${dest_name}_directory_name}/../distribution/${name}
               COMMAND ${CMAKE_COMMAND} -E chdir <SOURCE_DIR>/../.. ${CMAKE_COMMAND} -E tar cfz ${CMAKE_INSTALL_PREFIX}/${${dest_name}_directory_name}/../distribution/${name}/${name}-${version}-src.tgz ${name}
 	      COMMAND ${CMAKE_COMMAND} -E remove -f ${CMAKE_INSTALL_PREFIX}/${${dest_name}_directory_name}/${dest_version}/lock.txt
+          COMMAND ${CMAKE_COMMAND} -E touch ${CMAKE_BINARY_DIR}/timestamps/${targetname}-start.timestamp
           DEPENDERS configure
           DEPENDEES update patch)
          else()
@@ -222,6 +223,7 @@ macro(LCGPackage_Add name)
               COMMAND lockfile -l 300 ${CMAKE_INSTALL_PREFIX}/${${dest_name}_directory_name}/${dest_version}/lock.txt
               COMMAND ${CMAKE_COMMAND} -DSRC=<SOURCE_DIR> -DDST=${CMAKE_INSTALL_PREFIX}/${${dest_name}_directory_name}/${dest_version}/share/sources/${curr_name} -P ${CMAKE_SOURCE_DIR}/cmake/scripts/copy.cmake
               COMMAND ${CMAKE_COMMAND} -E remove -f ${CMAKE_INSTALL_PREFIX}/${${dest_name}_directory_name}/${dest_version}/lock.txt
+          COMMAND ${CMAKE_COMMAND} -E touch ${CMAKE_BINARY_DIR}/timestamps/${targetname}-start.timestamp
           DEPENDERS configure
           DEPENDEES update patch)
          endif()
@@ -343,7 +345,8 @@ macro(LCGPackage_Add name)
           COMMAND ${CMAKE_COMMAND} -E copy ${post-install_name} ${${name}_home}/.post-install.sh
           COMMAND $ENV{SHELL} -c "chmod +x ${${name}_home}/.post-install.sh"
           COMMAND $ENV{SHELL} -c "${post-install_name} generate ${${name}_home}"
-          DEPENDEES install_logs
+          COMMAND ${CMAKE_COMMAND} -E touch ${CMAKE_BINARY_DIR}/timestamps/${targetname}-stop.timestamp
+          DEPENDEES setup_environment
       )
 
       #---Adding clean targets--------------------------------------------------------------------------

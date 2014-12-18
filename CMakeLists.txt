@@ -41,6 +41,8 @@ if(NOT "$ENV{CXXFLAGS}" STREQUAL "")
   set(libtoolpatch CXX=$ENV{CXX}\ $ENV{CXXFLAGS})
 endif()
 
+file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/timestamps)
+
 add_subdirectory(externals)
 add_subdirectory(gridexternals)
 add_subdirectory(projects)

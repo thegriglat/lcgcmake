@@ -2134,6 +2134,10 @@ LCG_add_test(permissions-test
   TEST_COMMAND ${CMAKE_SOURCE_DIR}/cmake/scripts/check_permissions.sh ${CMAKE_INSTALL_PREFIX}
 )
 
+LCG_add_test(report.build_time
+  TEST_COMMAND ${CMAKE_SOURCE_DIR}/cmake/scripts/report_build_time.sh ${CMAKE_BINARY_DIR}/timestamps
+)
+
 #---test of the test infrasgtructure---------------------------------------------------------------
 LCG_add_test(test-test PRE_COMMAND /bin/echo pre-comand 1
                            COMMAND /bin/echo pre-comand 2
