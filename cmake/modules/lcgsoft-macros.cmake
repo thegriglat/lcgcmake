@@ -113,7 +113,7 @@ macro(LCGPackage_Add name)
     list(FIND LCG_IGNORE ${name} lcg_ignore)
 
     #---Check if the package is already existing in the installation area(s)
-    if(lcg_ignore EQUAL -1 AND
+    if(lcg_ignore EQUAL -1 AND NOT ARG_BUNDLE_PACKAGE AND
        (${${targetname}_version_checked} OR (EXISTS ${LCG_INSTALL_PREFIX}/${install_path_hash} AND NOT EXISTS ${LCG_INSTALL_PREFIX}/${install_path_hash}/version.txt)) )
       set(${name}_home ${CMAKE_INSTALL_PREFIX}/${install_path})
       set(${targetname}_home ${${name}_home})
