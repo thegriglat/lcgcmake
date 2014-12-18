@@ -18,22 +18,23 @@ export LC_ALL=en_US.UTF-8
 # Set up the build variables
 export CTEST_SITE=cdash.cern.ch
 export WORKDIR=/build/$SLOTNAME
-export PDFSETS=ct10
-export VERSION=trunk
-export TARGET=all
-
-export CLEAN_INSTALLDIR="false"
 export INSTALLDIR=
-export TEST_LABELS=
+export PDFSETS=ct10
+export CLEAN_INSTALLDIR="false"
 export LCG_TARBALL_INSTALL="false"
 export SLOTNAME=$SLOTNAME
-export TEST_LABELS="Nightly|PhysicsCheck"
-
 export BUILDTYPE
-export MODE=$SLOTNAME
-if [ x$LCG_VERSION = x ]; then
-  export LCG_VERSION=$SLOTNAME
+if  [[ $SLOTNAME == dev* ]]; then
+  export MODE=$SLOTNAME
+elif [ -z $SLOTNAME ] ; then
+  export MODE=Release
+else
+  export MODE=Experimental
 fi
+if [ -z $VERSION ]; then export VERSION=trunk; fi
+if [ -z $TARGET ]; then export TARGET=all; fi
+if [ -z $TEST_LABELS ]; then export TEST_LABELS="Nightly|PhysicsCheck"; fi
+if [ -z $LCG_VERSION ]; then export LCG_VERSION=$SLOTNAME; fi
 
 THIS=$(dirname $0)
 ARCH=$(uname -m)

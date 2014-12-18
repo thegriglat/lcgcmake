@@ -2127,11 +2127,13 @@ if (VALIDATION)
 endif()
 
 LCG_add_test(debug-symbols-test 
-             TEST_COMMAND ${CMAKE_SOURCE_DIR}/cmake/scripts/check_debug_symbols.sh ${CMAKE_INSTALL_PREFIX}
+  TEST_COMMAND ${CMAKE_SOURCE_DIR}/cmake/scripts/check_debug_symbols.sh ${CMAKE_INSTALL_PREFIX}
+  LABELS Nightly Release
 )
 
 LCG_add_test(permissions-test
   TEST_COMMAND ${CMAKE_SOURCE_DIR}/cmake/scripts/check_permissions.sh ${CMAKE_INSTALL_PREFIX}
+  LABELS Nightly Release
 )
 
 LCG_add_test(report.build_time
