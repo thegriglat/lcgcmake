@@ -27,13 +27,13 @@ if("$ENV{TEST_LABELS}" STREQUAL "")
 else()
   set(CTEST_LABELS $ENV{TEST_LABELS})
 endif()
-
+set(ignore $ENV{LCG_IGNORE})
 set(options -DLCG_VERSION=$ENV{LCG_VERSION}
             -DCMAKE_INSTALL_PREFIX=${CTEST_INSTALL_DIRECTORY}
             -DPDFsets=$ENV{PDFSETS}
             -DLCG_INSTALL_PREFIX=$ENV{LCG_INSTALL_PREFIX}
             -DLCG_SAFE_INSTALL=ON
-            -DLCG_IGNORE="$ENV{LCG_IGNORE}"
+            -DLCG_IGNORE="${ignore}"
             -DLCG_TARBALL_INSTALL=$ENV{LCG_TARBALL_INSTALL} )
 
 set(lcg_ignore ${})
