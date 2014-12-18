@@ -13,7 +13,7 @@ set(LCG_IGNORE         ""       CACHE STRING "List of packages to be ignored fro
 set(LCG_INSTALL_PREFIX ""       CACHE PATH "Existing LCG installation path prefix.")
 set(LCG_TARBALL_INSTALL   OFF   CACHE BOOL "Turn ON/OFF creation/installation of tarballs")
 set(VALIDATION         OFF      CACHE BOOL "Enable validation settings.")
-string(REPLACE " " ";" LCG_IGNORE ${LCG_IGNORE})
+string(REPLACE " " ";" LCG_IGNORE "${LCG_IGNORE}")
 
 #---Report the values of the options-----------------------------------------------------------------------------------
 message(STATUS "Target installation prefix             : ${CMAKE_INSTALL_PREFIX}")
