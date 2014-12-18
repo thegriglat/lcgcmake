@@ -14,6 +14,8 @@ set(LCG_INSTALL_PREFIX ""       CACHE PATH "Existing LCG installation path prefi
 set(LCG_TARBALL_INSTALL   OFF   CACHE BOOL "Turn ON/OFF creation/installation of tarballs")
 set(VALIDATION         OFF      CACHE BOOL "Enable validation settings.")
 
+set(LCG_IGNORE ${LCG_IGNORE})  # convert into a list
+
 #---Report the values of the options-----------------------------------------------------------------------------------
 message(STATUS "Target installation prefix             : ${CMAKE_INSTALL_PREFIX}")
 message(STATUS "Existing LCG installations             : ${LCG_INSTALL_PREFIX}")
