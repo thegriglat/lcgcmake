@@ -72,10 +72,9 @@ for pkg in $(echo $THIS_DEPENDS | tr ' ' '\n');do
   pkg_name=$(echo $pkg | cut -d- -f 1 | sed -e "s@[_-]@.@g")
   pkg_version=$(echo $pkg | cut -d- -f 2-)
   # try to find home directory for package
-  for pkg_home_top in $(find $LCGDIR $(dirname $LCGDIR) -maxdepth 2 -type d | grep -i "$pkg_name" | sed -e "s@/$pkg_version@@g"); do
+  for pkg_home_top in $(find $LCGDIR $(dirname $LCGDIR) -maxdepth 3 -type d | grep -i "$pkg_name" | sed -e "s@/$pkg_version@@g"); do
     if [ -d "$pkg_home_top/$pkg_version/$PLATFORM" ]; then
        pkg_home="$pkg_home_top/$pkg_version/$PLATFORM"
-       break
     fi
   done
   # set source file name
