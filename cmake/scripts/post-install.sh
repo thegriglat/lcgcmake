@@ -9,7 +9,9 @@ if [ "generate" = "$1" ]; then
   list_file="$pkg_home/$listname"
   # save OLDINSTALLDIR
   echo $pkg_home > $list_file
-  find $pkg_home -type f ! -path '*share/LHAPDF*' -o -path '*share/sources*' | grep -v "$pkg_home/logs" | while read name; do
+  find $pkg_home -type f ! -path '*share/LHAPDF*'  \
+                        -o -path '*share/sources*' \
+                        -o -path '*datafiles*' -prune | grep -v "$pkg_home/logs" | while read name; do
     # check that file is not binary
     if perl -E 'exit((-B $ARGV[0])?1:0);' "$name"; then
       grep -q -- "$pkg_home" "$name" && echo $name | sed -e "s@$pkg_home/@@g" >> $list_file
