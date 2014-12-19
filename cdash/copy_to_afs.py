@@ -72,18 +72,18 @@ def createInstallArea(basepath,platform,lcgversion):
     destination = os.path.relpath(value)
     if not os.path.exists(key):
       os.symlink(destination,key)
-      print "Creating %s" %(destination)
+      #print "Creating %s" %(destination)
       # special hack for ATLAS and Boost
       if "libboost" in key and "-d-" in key:
         newname = key.replace("-d-","-")
         os.symlink(destination,newname)
-        print "Creating %s" %(destination)
+        #print "Creating %s" %(destination)
   os.chdir(os.path.join(installarea,"bin"))
   for key, value in bins.iteritems():
     destination = os.path.relpath(value)
     if not os.path.exists(key):   
        os.symlink(destination,key)
-       print "Creating %s" %(destination) 
+       #print "Creating %s" %(destination)
 
 
 
@@ -183,8 +183,8 @@ if __name__ == "__main__":
   print subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).stdout.read()
 
   #create symlink to gcc
-  command = "ln -s /afs/cern.ch/sw/lcg/contrib/gcc %s/gcc" %targetdir
-  print subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).stdout.read()
+  if not os.path.exists(targetdir+'/gcc'):
+    os.symlink('/afs/cern.ch/sw/lcg/contrib/gcc',targetdir+'/gcc')
 
   # declare as done
   command = "touch %s/isDone-%s" %(targetdir,platform)
