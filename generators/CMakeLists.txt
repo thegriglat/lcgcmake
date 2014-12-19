@@ -1,6 +1,10 @@
 #---Options-----------------------------------------------------------------------------------------
 set(PDFsets "--all" CACHE STRING "The PDFsets to be downloaded for the 'lhspdfsets' package (default --all)")
 
+if(${PDFsets} STREQUAL "minimal")
+  set(PDFsets "MSTW2008lo68cl cteq6l1 cteq6ll" CACHE STRING "Minimal PDFsets kit for the tests" FORCE)
+endif()
+
 if (VALIDATION)
   set (timeout 90000)
   set (rivettests_stat_size  100000)
@@ -71,7 +75,7 @@ LCGPackage_Add(
            -Ddistr=<SOURCE_DIR>
 #           -Drepo=http://www.hepforge.org/archive/lhapdf/pdfsets/<NATIVE_VERSION>
 	   -Drepo=http://cern.ch/service-spi/external/tarFiles/MCGeneratorsTarFiles/LHAPDF5SETS/<NATIVE_VERSION>
-           -DPDFsets=${PDFsets}
+           "-DPDFsets=${PDFsets}"
            -Ddst_dir=<INSTALL_DIR>/../share/lhapdf
            -P ${CMAKE_CURRENT_SOURCE_DIR}/lhapdf/pdfsets.cmake
           COMMAND ${CMAKE_COMMAND} -E remove -f <INSTALL_DIR>/../share/PDFsets
@@ -95,7 +99,7 @@ LCGPackage_Add(
           COMMAND ${CMAKE_COMMAND}
            -Ddistr=<SOURCE_DIR>
            -Drepo=http://www.hepforge.org/archive/lhapdf/pdfsets/<NATIVE_VERSION>
-           -DPDFS=${PDFsets}
+           "-DPDFS=${PDFsets}"
            -Ddst_dir=<INSTALL_DIR>/../share/LHAPDF
            -P ${CMAKE_CURRENT_SOURCE_DIR}/lhapdf6sets/pdfsets.cmake
           COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/lhapdf6sets/mktarball.sh <INSTALL_DIR> <NATIVE_VERSION>
@@ -113,7 +117,7 @@ LCG_add_test(lhapdf6sets.download
   TEST_COMMAND ${CMAKE_COMMAND}
                -Ddistr=${CMAKE_SOURCE_DIR}/generators/lhapdf6sets
                -Drepo=http://www.hepforge.org/archive/lhapdf/pdfsets/${pdf_version}
-               "-DPDFS=${PDFsets} cteq6l1 MSTW2008lo68cl"
+               "-DPDFS=${PDFsets}"
                -Ddst_dir=${CMAKE_INSTALL_PREFIX}/lhapdf6sets/current/share/LHAPDF
                -P ${CMAKE_CURRENT_SOURCE_DIR}/lhapdf6sets/pdfsets.cmake
 )
@@ -253,7 +257,8 @@ LCGPackage_Add(
 foreach(v ${protos_native_version})
   LCG_add_test(protos-${v}.native-Protos-tb
     TEST_COMMAND ${CMAKE_COMMAND} -E chdir ${protos-${v}_home}/bin/Red/tb ./Protos-tb
-    ENVIRONMENT ${library_path}=${lhapdf-${protos_${v}_lhapdf}_home}/lib:$ENV{${library_path}}
+    ENVIRONMENT ${library_path}=${lhapdf-${protos_${v}_lhapdf}_home}/lib:$ENV{${library_path}} LHAPATH=${lhapdf-${protos_${v}_lhapdf}_home}/../share/lhapdf/PDFsets
+    DEPENDS lhapdfsets
   )
 endforeach()
 

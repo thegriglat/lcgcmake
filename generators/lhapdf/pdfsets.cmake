@@ -21,7 +21,11 @@ endif()
 file(MAKE_DIRECTORY ${pdf_dir})
 
 # download PDF sets
-execute_process(COMMAND ${distr}/bin/lhapdf-getdata --force --repo=${repo} --dest=${pdf_dir} ${PDFsets} RESULT_VARIABLE code)
+string (REPLACE " " ";" PDFsets "${PDFsets}")
+foreach (p ${PDFsets})
+  message(STATUS "the following command will be executed: ${distr}/bin/lhapdf-getdata --force --repo=${repo} --dest=${pdf_dir} ${p}")
+  execute_process(COMMAND ${distr}/bin/lhapdf-getdata --force --repo=${repo} --dest=${pdf_dir} ${p} RESULT_VARIABLE code)
+endforeach()
 
 if(NOT code EQUAL 0)
   message(FATAL_ERROR "ERROR: failed to download PDF sets")
