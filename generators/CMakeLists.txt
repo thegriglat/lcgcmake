@@ -1195,7 +1195,7 @@ LCG_add_test(blackhat-${v}.build
   BUILD_OPTIONS -DCMAKE_MODULE_PATH=${CMAKE_SOURCE_DIR}/cmake/modules
                 -DBLACKHAT_ROOT_DIR=${blackhat-${v}_home}
                 -DQD_ROOT_DIR=${qd_home}
-  ENVIRONMENT ${library_path}=${blackhat-${v}_home}/lib:${qd_home}/lib:$ENV{${library_path}}
+#  ENVIRONMENT ${library_path}=${blackhat-${v}_home}/lib:${qd_home}/lib:$ENV{${library_path}}
   )
 
 LCG_add_test(blackhat-${v}.native-cpp_example
@@ -1204,7 +1204,7 @@ LCG_add_test(blackhat-${v}.native-cpp_example
   DEPENDS blackhat-${v}.build
   )
 
-LCG_add_test(blackhat.-${v}.native-fortran_example
+LCG_add_test(blackhat-${v}.native-fortran_example
   TEST_COMMAND ${CMAKE_COMMAND} -E chdir blackhat/tests/${v} ./fortran_example
   ENVIRONMENT ${library_path}=${blackhat-${v}_home}/lib/blackhat:${qd_home}/lib:$ENV{${library_path}}
   DEPENDS blackhat-${v}.build
