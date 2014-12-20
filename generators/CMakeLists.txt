@@ -1,9 +1,12 @@
 #---Options-----------------------------------------------------------------------------------------
 set(PDFsets "--all" CACHE STRING "The PDFsets to be downloaded for the 'lhspdfsets' package (default --all)")
 
-if(${PDFsets} STREQUAL "minimal")
-  set(PDFsets "ct10 MSTW2008lo68cl cteq6ll" CACHE STRING "Minimal PDFsets kit for the tests" FORCE)
+set (minimal_PDF_set "ct10 MSTW2008lo68cl cteq6ll")
+if(${PDFsets} MATCHES "minimal")
+  string (REPLACE "minimal" "${minimal_PDF_set}" PDFsets "${PDFsets}")
+  set(PDFsets "${PDFsets}" CACHE STRING "Minimal PDFsets kit for the tests" FORCE)
 endif()
+message(STATUS "PDFsets to download                    : ${PDFsets}")
 
 if (VALIDATION)
   set (timeout 90000)
@@ -62,7 +65,6 @@ else()
 endif()
 
 #---lhapdfsets--------------------------------------------------------------------------------------
-message(STATUS "PDFsets to download                    : ${PDFsets}")
 LCGPackage_Add(
   lhapdfsets
   URL ${gen_url}/lhapdf-<NATIVE_VERSION>.tar.gz
