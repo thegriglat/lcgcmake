@@ -49,8 +49,9 @@ rm -rf $WORKDIR/*-build
 rm -rf $WORKDIR/*-install
 rm -rf /tmp/the.lock
 
+platform=`$THIS/getPlatform.py`
 # setup compiler-------------------------------------------------
-if [[ $LABEL == *slc6* ]];then
+if [[ $platform == *slc6* ]];then
   export PATH=/afs/cern.ch/sw/lcg/contrib/CMake/2.8.12.2/Linux-i386/bin:${PATH}
   LABEL=slc6
 fi

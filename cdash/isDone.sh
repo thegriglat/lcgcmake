@@ -8,10 +8,9 @@
 isdone=$1
 
 arch=`uname -p`
+this=$(dirname $0)
 
-if [[ $LABEL == *slc6* ]]; then
-  LABEL=slc6
-fi
+platform=`$this/getPlatform.py`
 
 if [ $BUILDTYPE == Release ]; then
   bt=opt
@@ -21,7 +20,7 @@ else
   bt=unk
 fi
 
-platform=$arch-$LABEL-$COMPILER-$bt
+fullplatform=$platform-$bt
 today=$(date +%a)
 nightdir=/afs/cern.ch/sw/lcg/app/nightlies
 donefile=$nightdir/$SLOT/$today/isDone-$platform

@@ -12,6 +12,8 @@ elif system == 'Linux' :
    dist = platform.linux_distribution()
    if re.search('SLC', dist[0]):
       osvers = 'slc' + dist[1].split('.')[0]
+   elif re.search('CentOS', dist[0]):
+      osvers = 'cc' + dist[1].split('.')[0]
    elif re.search('Ubuntu', dist[0]):
       osvers = 'ubuntu' + dist[1].split('.')[0]
    elif re.search('Fedora', dist[0]):
