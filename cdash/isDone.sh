@@ -23,7 +23,7 @@ fi
 fullplatform=$platform-$bt
 today=$(date +%a)
 nightdir=/afs/cern.ch/sw/lcg/app/nightlies
-donefile=$nightdir/$SLOT/$today/isDone-$platform
+donefile=$nightdir/$SLOT/$today/isDone-$fullplatform
 
 if [ $isdone == 1 ]; then
   touch $donefile
