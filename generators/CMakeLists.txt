@@ -2,7 +2,7 @@
 set(PDFsets "--all" CACHE STRING "The PDFsets to be downloaded for the 'lhspdfsets' package (default --all)")
 
 if(${PDFsets} STREQUAL "minimal")
-  set(PDFsets "ct10 MSTW2008lo68cl cteq6l1 cteq6ll" CACHE STRING "Minimal PDFsets kit for the tests" FORCE)
+  set(PDFsets "ct10 MSTW2008lo68cl cteq6ll" CACHE STRING "Minimal PDFsets kit for the tests" FORCE)
 endif()
 
 if (VALIDATION)
