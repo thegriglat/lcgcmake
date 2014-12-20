@@ -1845,6 +1845,7 @@ LCGPackage_Add(
   BUILD_COMMAND ${CMAKE_COMMAND} -E chdir gg2VV $ENV{SHELL} -c "PATH=${omniorb_home}/bin:$ENV{PATH} TOPDIR=${CMAKE_BINARY_DIR}/generators/gg2VV-<NATIVE_VERSION>/src/gg2VV/<NATIVE_VERSION> LIB_TOPDIR=<INSTALL_DIR> LHAPDF_TOPDIR=${lhapdf_home} OMNIORB_TOPDIR=${omniorb_home} LOOPTOOLS_TOPDIR=${looptools_home} ${ftjam_home}/bin/jam "
   INSTALL_COMMAND ${CMAKE_COMMAND} -E make_directory <INSTALL_DIR>/bin
           COMMAND ${CMAKE_COMMAND} -E copy gg2VV/gg2VV <INSTALL_DIR>/bin
+          COMMAND $ENV{SHELL} -c "chmod 755 <INSTALL_DIR>/bin/gg2VV"
   BUILD_IN_SOURCE 1
   DEPENDS ftjam looptools omniorb lhapdf-${lhapdf6_latest_version}
 )
