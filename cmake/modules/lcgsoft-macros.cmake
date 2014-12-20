@@ -95,13 +95,19 @@ macro(LCGPackage_Add name)
     endif()
 
     #---Install path----------------------------------------------------------------------------------
+    #   we support both with the hash and without
     set(install_path ${${dest_name}_directory_name}/${dest_version}/${LCG_system})
-    set(install_path_hash ${${dest_name}_directory_name}/${dest_version}-${${dest_name}-${dest_version}_hash}/${LCG_system})
+    if(EXISTS ${LCG_INSTALL_PREFIX}/${${dest_name}_directory_name}/${dest_version}-${${dest_name}-${dest_version}_hash}/${LCG_system})
+      set(lcg_install_path ${${dest_name}_directory_name}/${dest_version}-${${dest_name}-${dest_version}_hash}/${LCG_system})
+    else()
+      set(lcg_install_path ${install_path})
+    endif()
+
 
     #---Check if the version file is already existing in the installation area(s)---------------------
     #   The checking is different for bundled packages (i.e. ARG_DEST_NAME)
     set(${targetname}_version_checked 0)
-    set(${targetname}_version_file ${LCG_INSTALL_PREFIX}/${install_path_hash}/version.txt)
+    set(${targetname}_version_file ${LCG_INSTALL_PREFIX}/${lcg_install_path}/version.txt)
     if(EXISTS ${${targetname}_version_file})
       file(STRINGS ${${targetname}_version_file} full_version)
       if(full_version STREQUAL ${${name}_full_version} OR  ARG_DEST_NAME)
@@ -114,13 +120,13 @@ macro(LCGPackage_Add name)
 
     #---Check if the package is already existing in the installation area(s)
     if(lcg_ignore EQUAL -1 AND NOT ARG_BUNDLE_PACKAGE AND
-       (${${targetname}_version_checked} OR (EXISTS ${LCG_INSTALL_PREFIX}/${install_path_hash} AND NOT EXISTS ${LCG_INSTALL_PREFIX}/${install_path_hash}/version.txt)) )
+       (${${targetname}_version_checked} OR (EXISTS ${LCG_INSTALL_PREFIX}/${lcg_install_path} AND NOT EXISTS ${LCG_INSTALL_PREFIX}/${lcg_install_path}/version.txt)) )
       set(${name}_home ${CMAKE_INSTALL_PREFIX}/${install_path})
       set(${targetname}_home ${${name}_home})
       add_custom_target(${targetname} ALL DEPENDS ${${targetname}-dependencies} ${CMAKE_INSTALL_PREFIX}/${install_path})
       add_custom_command(OUTPUT  ${CMAKE_INSTALL_PREFIX}/${install_path}
-                         COMMAND ${CMAKE_COMMAND} -E make_directory  ${CMAKE_INSTALL_PREFIX}/${${dest_name}_directory_name}/${dest_version}
-                         COMMAND ${CMAKE_COMMAND} -E create_symlink ${LCG_INSTALL_PREFIX}/${install_path_hash} ${CMAKE_INSTALL_PREFIX}/${install_path}
+                         COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_INSTALL_PREFIX}/${${dest_name}_directory_name}/${dest_version}
+                         COMMAND ${CMAKE_COMMAND} -E create_symlink ${LCG_INSTALL_PREFIX}/${lcg_install_path} ${CMAKE_INSTALL_PREFIX}/${install_path}
                          COMMENT "${targetname} package already existing in ${LCG_INSTALL_PREFIX}/${install_path}. Making a soft-link.")
       add_custom_target(clean-${targetname} COMMAND ${CMAKE_COMMAND} -E remove ${CMAKE_INSTALL_PREFIX}/${install_path}
                                             COMMENT "Deleting soft-link for package ${targetname}")
