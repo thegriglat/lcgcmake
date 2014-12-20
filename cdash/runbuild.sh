@@ -15,7 +15,7 @@ export LC_ALL=en_US.UTF-8
 #set up the build variables                                                                                      
 export CTEST_SITE=cdash.cern.ch
 export WORKDIR=/build/$SLOTNAME
-export PDFSETS=ct10
+export PDFSETS=minimal
 export VERSION=trunk
 export TARGET=all
 
