@@ -1273,7 +1273,7 @@ BUILD_COMMAND ${MAKE} PATH=${mpich2_home}/bin:$ENV{PATH} LIBRARY_PATH=<lhapdf-<s
 
 
 set( v ${sherpa-mpich2_native_version})
-LCG_add_test(sherpa-mpixx.native-LHC_Z
+LCG_add_test(sherpa-mpich2.native-LHC_Z
   PRE_COMMAND ${CMAKE_COMMAND} -E remove_directory sherpa-mpi/native-LHC_Z/${v}
       COMMAND ${CMAKE_COMMAND} -E make_directory sherpa-mpi/native-LHC_Z/${v}
       COMMAND $ENV{SHELL} -c  "cd ${HOME} && touch .mpd.conf &&  chmod 600 .mpd.conf"
