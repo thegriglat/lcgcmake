@@ -32,7 +32,7 @@ if echo ${ROOT_PATH} | grep -q '\-opt'; then
       for name in $([ -d "$dirs/lib" ] && find "$dirs/lib" -name '*\.so' -o -name '*\.dylib') \
                   $([ -d "$dirs/bin" ] && find "$dirs/bin" ); do
         let "idx = $idx + 1"
-        if [ ! -z "$($chkcmd $name)" ]; then
+        if file $name 2>/dev/null | grep -q ELF && [ ! -z "$($chkcmd $name)" ]; then
             echo "WARNING: File $name contains debug symbols."
             echo "$name" | grep -q -i MCGenerators && echo "$name" | grep -q -v site-packages && exitcode=1
         fi
@@ -44,9 +44,12 @@ elif echo ${ROOT_PATH} | grep -q '\-dbg'; then
       for name in $([ -d "$dirs/lib" ] && find $dirs/lib -name '*\.so' -o -name '*\.dylib' | grep '\-dbg') \
                   $([ -d "$dirs/bin" ] && find $dirs/bin | grep '\-dbg'); do
         let "idx = $idx + 1"
-        [ -z "$($chkcmd $name)" ] && echo "WARNING: File $name doesn't contain debug symbols."
+        if file $name 2>/dev/null | grep -q ELF && [ -z "$($chkcmd $name)" ] ; then
+          echo "WARNING: File $name doesn't contain debug symbols."
+        fi
       done
     done
 fi
 echo "$idx files checked"
+echo "Exiting with code $exitcode ..."
 exit $exitcode
