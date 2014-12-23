@@ -57,7 +57,7 @@ def createInstallArea(basepath,platform,lcgversion):
   # collect all libs and bins for the given platform
   libs = {}
   bins = {}
-  for root, dirs, files in os.walk(basepath):
+  for root, dirs, files in os.walk(basepath,followlinks=True):
      # remove blacklisted subdirs
      removeBlackListed(dirs)
      for afile in files:
@@ -72,18 +72,18 @@ def createInstallArea(basepath,platform,lcgversion):
     destination = os.path.relpath(value)
     if not os.path.exists(key):
       os.symlink(destination,key)
-      #print "Creating %s" %(destination)
+      print "Creating %s" %(destination)
       # special hack for ATLAS and Boost
       if "libboost" in key and "-d-" in key:
         newname = key.replace("-d-","-")
         os.symlink(destination,newname)
-        #print "Creating %s" %(destination)
+        print "Creating %s" %(destination)
   os.chdir(os.path.join(installarea,"bin"))
   for key, value in bins.iteritems():
     destination = os.path.relpath(value)
     if not os.path.exists(key):   
        os.symlink(destination,key)
-       #print "Creating %s" %(destination)
+       print "Creating %s" %(destination)
 
 
 
