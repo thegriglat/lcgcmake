@@ -663,7 +663,9 @@ LCGPackage_Add(
   CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --with-pic --with-hepmc=${HepMC_home} --with-tau-spinner --with-lhapdf=<lhapdf-<tauola++_<NATIVE_VERSION>_lhapdf>_home> CFLAGS=-O2 CPPFLAGS=-I${Boost_home_include} FFLAGS=-O2 F77=${CMAKE_Fortran_COMPILER}
   INSTALL_COMMAND  make install
           COMMAND  ${CMAKE_COMMAND} -E create_symlink tauola++ <INSTALL_DIR>/../../../tauolapp
-#          COMMAND ${CMAKE_COMMAND} -DINSTALL_DIR=<INSTALL_DIR> -P ${CMAKE_SOURCE_DIR}/cmake/scripts/StripLib.cmake
+  IF NOT CMAKE_BUILD_TYPE MATCHES Deb THEN
+          COMMAND ${CMAKE_COMMAND} -DINSTALL_DIR=<INSTALL_DIR> -P ${CMAKE_SOURCE_DIR}/cmake/scripts/StripLib.cmake
+  ENDIF
   BUILD_IN_SOURCE 1
   DEPENDS HepMC lhapdf-<tauola++_<NATIVE_VERSION>_lhapdf>
 )
