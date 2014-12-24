@@ -1857,8 +1857,9 @@ LCGPackage_Add(
 foreach(v ${gg2VV_native_version})
   LCG_add_test(gg2VV-${v}.native
     TEST_COMMAND ${gg2VV-${v}_home}/bin/gg2VV
-    ENVIRONMENT
-       LHAPATH=${CMAKE_INSTALL_PREFIX}/lhapdf6sets/current/share/LHAPDF ${library_path}=${lhapdf-${lhapdf6_latest_version}_home}/lib:${library_path}
+    ENVIRONMENT LHAPATH=${CMAKE_INSTALL_PREFIX}/lhapdf6sets/current/share/LHAPDF
+                ${library_path}=${lhapdf-${lhapdf6_latest_version}_home}/lib:${omniorb_home}/lib:$ENV{${library_path}}
+    TIMEOUT 3000
     DEPENDS lhapdf6sets.download
   )
 endforeach()
