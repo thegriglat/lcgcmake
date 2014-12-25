@@ -428,7 +428,7 @@ endforeach()
 
 foreach(v ${lhapdf_native_version})
   if(v VERSION_GREATER 5.9.9)
-    LCG_add_test(lhapdf6-${v}.native-testpdf
+    LCG_add_test(lhapdf-${v}.native-testpdf
       TEST_COMMAND lhapdf6/tests/${v}/native-testpdf CT10 1
       BINARY_DIR lhapdf6/tests/${v}
       SOURCE_DIR lhapdf6/tests
@@ -445,7 +445,7 @@ foreach(v ${lhapdf_native_version})
       DEPENDS lhapdf6sets.download
     )
 
-    LCG_add_test(lhapdf6-${v}.genser-pythia8
+    LCG_add_test(lhapdf-${v}.genser-pythia8
       TEST_COMMAND lhapdf6/tests/pyt8/${v}/lhapdf6_pyt8
       BINARY_DIR lhapdf6/tests/pyt8/${v}
       SOURCE_DIR lhapdf6/tests/pyt8
