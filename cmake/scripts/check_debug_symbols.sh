@@ -33,11 +33,16 @@ if echo ${ROOT_PATH} | grep -q '\-opt'; then
                   $([ -d "$dirs/bin" ] && find "$dirs/bin" ); do
         let "idx = $idx + 1"
         if file $name 2>/dev/null | grep -q ELF && [ ! -z "$($chkcmd $name)" ]; then
-            echo "WARNING: File $name contains debug symbols."
-            echo "$name" | grep -q -i MCGenerators && echo "$name" | grep -q -v site-packages && exitcode=1
+            if echo "$name" | grep -q -i MCGenerators && echo "$name" | grep -q -v site-packages; then
+              exitcode=1
+              status="CRITICAL"
+            else
+              status="WARNING"
+            fi
+            echo "$status: File $name contains debug symbols."
         fi
       done
-    done
+    done | sort
 elif echo ${ROOT_PATH} | grep -q '\-dbg'; then
     echo "The following libraries don't have debug symbols:"
     for dirs in $(find $ROOT_PATH -maxdepth 4 -type d); do
@@ -48,7 +53,7 @@ elif echo ${ROOT_PATH} | grep -q '\-dbg'; then
           echo "WARNING: File $name doesn't contain debug symbols."
         fi
       done
-    done
+    done | sort
 fi
 echo "$idx files checked"
 echo "Exiting with code $exitcode ..."
