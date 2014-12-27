@@ -246,12 +246,12 @@ LCGPackage_Add(
 LCGPackage_Add(
   lhapdf6
     URL ${gen_url}/LHAPDF-<NATIVE_VERSION>.tar.gz
-      CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --with-boost=${Boost_home} --with-yaml-              cpp=${yamlcpp_home}
+      CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --with-boost=${Boost_home} --with-yaml-cpp=${yamlcpp_home}
         PYTHON=${Python_home}/bin/python
         CYTHON=${cython_home}/bin/cython
         PYTHONPATH=${cython_pythonpath}  CFLAGS=-O2 CXXFLAGS=-O2 FCFLAGS=-O2 LDFLAGS=-O2
     BUILD_COMMAND ${MAKE} all
-      ${library_path}=${yamlcpp_home}/lib:$ENV{${library_path}} PYTHONPATH=${cython_pythonpath}                   LIBRARY_PATH=${Python_home}/lib
+      ${library_path}=${yamlcpp_home}/lib:$ENV{${library_path}} PYTHONPATH=${cython_pythonpath}  LIBRARY_PATH=${Python_home}/lib
     INSTALL_COMMAND make install PYTHONPATH=${cython_pythonpath} LIBRARY_PATH=${Python_home}/lib
             COMMAND ${CMAKE_COMMAND} -DINSTALL_DIR=<INSTALL_DIR> -P ${CMAKE_SOURCE_DIR}/cmake/scripts/StripLib.cmake
     BUILD_IN_SOURCE 1
