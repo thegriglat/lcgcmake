@@ -2138,7 +2138,7 @@ if (VALIDATION)
 endif()
 
 LCG_add_test(debug-symbols-test 
-  TEST_COMMAND ${CMAKE_SOURCE_DIR}/cmake/scripts/check_debug_symbols.sh ${CMAKE_INSTALL_PREFIX}
+  TEST_COMMAND ${CMAKE_SOURCE_DIR}/cmake/scripts/check_debug_symbols.sh ${CMAKE_INSTALL_PREFIX} ${LCG_BUILD_TYPE}
   LABELS Nightly Release
 )
 
@@ -2149,6 +2149,7 @@ LCG_add_test(permissions-test
 
 LCG_add_test(report.build_time
   TEST_COMMAND ${CMAKE_SOURCE_DIR}/cmake/scripts/report_build_time.sh ${CMAKE_BINARY_DIR}/timestamps
+  LABELS Nightly Release
 )
 
 #---test of the test infrasgtructure---------------------------------------------------------------
@@ -2164,5 +2165,8 @@ LCG_add_test(test-test PRE_COMMAND /bin/echo pre-comand 1
                            ENDIF
                            COMMAND /bin/echo test-command 3
                       POST_COMMAND /bin/echo post-command 1
-                           COMMAND date )
+                           COMMAND date 
+  LABELS Nightly Release
+)
+
 
