@@ -13,7 +13,8 @@ if [ ! "Darwin" = $(uname -s) ];then
 else
   nam=$(basename `$1/bin/python -c "import os,sys; print os.path.realpath(sys.argv[1])" $1/bin/python`)
 fi
-sed -i.bak -e '1i\
+if [ -e "$1/lib/$nam/_sysconfigdata.py" ]; then
+  sed -i.bak -e '1i\
 import os; installdir=os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))' $1/lib/$nam/_sysconfigdata.py
-sed -i.bak -e "s:'$1:installdir + ':g" $1/lib/$nam/_sysconfigdata.py
-
+  sed -i.bak -e "s:'$1:installdir + ':g" $1/lib/$nam/_sysconfigdata.py
+fi
