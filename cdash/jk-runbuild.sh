@@ -39,7 +39,7 @@ if [ -z $LCG_VERSION ]; then export LCG_VERSION=$SLOTNAME; fi
 THIS=$(dirname $0)
 ARCH=$(uname -m)
 
-if [[ $THIS == /tmp/hudson* ]]; then
+if [[ $THIS == /tmp ]]; then
   THIS=$WORKSPACE
 fi
 
