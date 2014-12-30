@@ -40,7 +40,7 @@ THIS=$(dirname $0)
 ARCH=$(uname -m)
 
 if [[ $THIS == /tmp ]]; then
-  THIS=$WORKSPACE
+  THIS=$WORKSPACE/lcg-builds
 fi
 
 # clean up the WORKDIR
