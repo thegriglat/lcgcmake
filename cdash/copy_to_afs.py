@@ -31,6 +31,12 @@ def removeBlackListed(dirs):
       except ValueError:
         pass
 
+def ensureProperCompiler(root, dirs, compilerdir):
+    """remove all gcc compilers except for what is given by CXX in the environment """    
+    compilervers = compilerdir.split("gcc")[1].split("/")[1]
+    if "/gcc/" in root and not compilervers in root:
+      dirs[:] = []
+ 
 def identifyLib(root,aFile,platform):
     if (root.endswith("lib") or root.endswith("lib64")):
       if ".so" in aFile or aFile.endswith("rootmap"):
@@ -44,7 +50,7 @@ def identifyBin(root,aFile,platform):
         return True
     return False
 
-def createInstallArea(basepath,platform,lcgversion):
+def createInstallArea(basepath,platform,lcgversion,compilerdir):
   # create InstallArea dirs
   installarea = os.path.join(basepath,"LCGCMT",lcgversion,"InstallArea",platform)
   if os.path.exists(installarea):
@@ -58,8 +64,8 @@ def createInstallArea(basepath,platform,lcgversion):
   libs = {}
   bins = {}
   for root, dirs, files in os.walk(basepath,followlinks=True):
-     # remove blacklisted subdirs
      removeBlackListed(dirs)
+     ensureProperCompiler(root,dirs,compilerdir)
      for afile in files:
        if identifyLib(root,afile,platform): 
          libs[afile] = os.path.join(root,afile)
@@ -85,8 +91,6 @@ def createInstallArea(basepath,platform,lcgversion):
        os.symlink(destination,key)
        print "Creating %s" %(destination)
 
-
-
 ##########################
 if __name__ == "__main__":
 
@@ -109,6 +113,8 @@ if __name__ == "__main__":
 
   thisdir = os.path.dirname(os.path.abspath(__file__))
   platform = get_platform(workdir)
+  compiler = os.environ['CXX']
+  compilerdir = compiler.split("bin")[0]
 
   # define source and target  
   sourcedir = "%s/%s-install" %(workdir,platform)
@@ -176,7 +182,7 @@ if __name__ == "__main__":
   print subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).stdout.read()  
 
   #create InstallArea for ATLAS
-  createInstallArea(targetdir,platform,"LCGCMT_%s"%slotname) 
+  createInstallArea(targetdir,platform,"LCGCMT_%s"%slotname,compilerdir) 
     
   #create release summary file for LHCb
   command = "%s/extract_LCG_summary.py %s %s %s RELEASE" %(thisdir,targetdir,platform,slotname)
