@@ -162,7 +162,7 @@ endif()
 #---cmaketool----------------------------------------------------------------------------------------
 LCGPackage_Add(
   cmaketools
-  SVN_REPOSITORY  http://svn.cern.ch/guest/cmaketools/tags/${cmaketools_native_version}
+  SVN_REPOSITORY  http://svn.cern.ch/guest/cmaketools/tags/${cmaketools_native_version} --quiet
   UPDATE_COMMAND <VOID>
   CONFIGURE_COMMAND <VOID>
   BUILD_COMMAND <VOID>
@@ -172,7 +172,7 @@ LCGPackage_Add(
 #---RELAX---------------------------------------------------------------------------------------------
 LCGPackage_Add(
   RELAX
-  SVN_REPOSITORY http://svn.cern.ch/guest/relax/tags/${RELAX_native_version}/relax
+  SVN_REPOSITORY http://svn.cern.ch/guest/relax/tags/${RELAX_native_version}/relax --quiet
   UPDATE_COMMAND <VOID>
   CMAKE_ARGS -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
              -DCMAKE_MODULE_PATH=${cmaketools_home}/modules
@@ -266,7 +266,7 @@ add_custom_target(GAUDI-externals
 #---LCIO-----------------------------------------------------------------------------------------------
 LCGPackage_add(
   LCIO
-  SVN_REPOSITORY svn://svn.freehep.org/lcio/tags/<LCIO_native_version>
+  SVN_REPOSITORY svn://svn.freehep.org/lcio/tags/<LCIO_native_version> --quiet
   UPDATE_COMMAND <VOID>
   CMAKE_ARGS -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
              -DLCIO_GENERATE_HEADERS=off 
@@ -305,7 +305,7 @@ endif()
 
 LCGPackage_add(
   DD4hep
-  SVN_REPOSITORY http://svnsrv.desy.de/public/aidasoft/DD4hep/tags/<DD4hep_native_version>
+  SVN_REPOSITORY http://svnsrv.desy.de/public/aidasoft/DD4hep/tags/<DD4hep_native_version>  --quiet
   UPDATE_COMMAND <VOID>
   CMAKE_ARGS -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} 
              -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>

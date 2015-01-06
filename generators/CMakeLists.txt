@@ -285,10 +285,10 @@ endforeach()
 LCGPackage_Add(
   pythia8
   IF <pythia8_<NATIVE_VERSION>_author> MATCHES "HEAD81" THEN
-    SVN_REPOSITORY https://pythia8.hepforge.org/svn/pythia81/trunk
+    SVN_REPOSITORY https://pythia8.hepforge.org/svn/pythia81/trunk --quiet
   ENDIF
   IF <pythia8_<NATIVE_VERSION>_author> MATCHES "HEAD$" THEN
-    SVN_REPOSITORY https://pythia8.hepforge.org/svn/pythia82/trunk
+    SVN_REPOSITORY https://pythia8.hepforge.org/svn/pythia82/trunk --quiet
   ENDIF
   IF <pythia8_<NATIVE_VERSION>_author> MATCHES "[0-9][0-9][0-9]" THEN
     URL ${gen_url}/pythia8<pythia8_<NATIVE_VERSION>_author>.tgz
@@ -523,7 +523,7 @@ endforeach()
 LCGPackage_Add(
   vincia
   IF <NATIVE_VERSION> VERSION_EQUAL "HEAD" THEN
-    SVN_REPOSITORY https://vincia.hepforge.org/svn/trunk
+    SVN_REPOSITORY https://vincia.hepforge.org/svn/trunk --quiet
   ELSE
     URL ${gen_url}/vincia-<NATIVE_VERSION>.tgz
   ENDIF
