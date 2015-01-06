@@ -130,20 +130,7 @@ macro(LCGPackage_Add name)
                          COMMENT "${targetname} package already existing in ${LCG_INSTALL_PREFIX}/${install_path}. Making a soft-link.")
       add_custom_target(clean-${targetname} COMMAND ${CMAKE_COMMAND} -E remove ${CMAKE_INSTALL_PREFIX}/${install_path}
                                             COMMENT "Deleting soft-link for package ${targetname}")
-
-    elseif(lcg_ignore EQUAL -1 AND EXISTS ${LCG_INSTALL_PREFIX}/../app/releases/${install_path})
-      get_filename_component(_path ${LCG_INSTALL_PREFIX} PATH)
-      set(_path ${_path}/app/releases/${install_path})
-      if(${name} STREQUAL ROOT)  # ROOT in LCG installations is special
-        set(_path ${_path}/root)
-      endif()
-      set(${name}_home ${_path})
-      set(${targetname}_home ${${name}_home})
-      add_custom_target(${targetname} ALL COMMENT "${targetname} package already existing in ${_path}. Using it directly.")
-      add_custom_target(clean-${targetname} COMMENT "${targetname} nothing to be done")
-
     else()
-
       #---Set home and install name-------------------------------------------------------------------
       set(${name}_home            ${CMAKE_INSTALL_PREFIX}/${${name}_directory_name}/${version}/${LCG_system})
       set(${name}-${version}_home ${CMAKE_INSTALL_PREFIX}/${${name}_directory_name}/${version}/${LCG_system})
