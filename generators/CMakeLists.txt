@@ -2156,7 +2156,7 @@ endif()
 
 LCG_add_test(debug-symbols-test 
   TEST_COMMAND ${CMAKE_SOURCE_DIR}/cmake/scripts/check_debug_symbols.sh ${CMAKE_INSTALL_PREFIX} ${LCG_BUILD_TYPE}
-  LABELS Nightly Release
+  LABELS Nightly
 )
 
 LCG_add_test(permissions-test
