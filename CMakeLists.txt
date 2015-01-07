@@ -32,6 +32,21 @@ mark_as_advanced(env_cmd)
 set(EXEC ${env_cmd})
 set(MAKE ${CMAKE_SOURCE_DIR}/cmake/scripts/make_verbose $(MAKE))
 
+string(TOUPPER "${CMAKE_BUILD_TYPE}" _build_type_upper)
+if (_build_type_upper)
+  set (_flag_suffix "_${_build_type_upper}")
+endif()
+message (STATUS "Common compiler flags: ")
+get_cmake_property(_variableNames VARIABLES)
+foreach (_variableName ${_variableNames})
+  if (_variableName MATCHES "CMAKE_([CF].*)_FLAGS${_flag_suffix}" AND NOT _variableName MATCHES "INIT" AND NOT _variableName MATCHES "COMPILER")
+    string (REGEX MATCH "CMAKE_([CF].*)_FLAGS${_flag_suffix}" _compiler "${_variableName}")
+    set (_compiler "${CMAKE_MATCH_1}")
+    message(STATUS "  ${_compiler} : ${${_variableName}}")
+  endif()
+endforeach()
+
+
 #---Enable (the defintion) of tests by default-------------------------------------------------------------------------
 enable_testing()
 include(CTest)
