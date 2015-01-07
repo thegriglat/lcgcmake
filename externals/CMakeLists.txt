@@ -8,11 +8,16 @@ LCGPackage_Add(
 #  DEPENDS Python
 )
 
+if(APPLE)
+  execute_process(COMMAND sw_vers -productVersion
+                  COMMAND cut -d . -f 1-2
+                  OUTPUT_VARIABLE MACOSX_VERSION OUTPUT_STRIP_TRAILING_WHITESPACE)
+endif()
+
 #---PythonFWK (only for MAC) --------------------------------------------------------------------------------------------
 LCGPackage_set_home(Python)
 if (APPLE)
-  string(REGEX REPLACE "([0-9]+)([0-9])" \\1.\\2 macvers ${LCG_HOST_OSVERS})
-  set(Python_config_options MACOSX_DEPLOYMENT_TARGET=${macvers})
+  set(Python_config_options MACOSX_DEPLOYMENT_TARGET=${MACOSX_VERSION})
   LCGPackage_Add(
     PythonFWK
     URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/Python-${Python_native_version}.tgz
@@ -39,8 +44,7 @@ endif()
 if(LCG_TARGET MATCHES "slc" OR LCG_TARGET MATCHES "ubuntu")
   set(Python_config_options --enable-shared "LDFLAGS=-Wl,-rpath,'$$ORIGIN/../lib'")
 elseif(LCG_TARGET MATCHES "mac")
-  string(REGEX REPLACE "([0-9]+)([0-9])" \\1.\\2 macvers ${LCG_HOST_OSVERS})
-  set(Python_config_options --enable-shared MACOSX_DEPLOYMENT_TARGET=${macvers} LDFLAGS=-L/usr/local/lib)
+  set(Python_config_options --enable-shared MACOSX_DEPLOYMENT_TARGET=${MACOSX_VERSION} LDFLAGS=-L/usr/local/lib)
   set(Python_deps PythonFWK)
 else()
   set(Python_config_options --enable-shared)
