@@ -334,10 +334,21 @@ macro(LCGPackage_Add name)
 
       # Process .post-install.sh scripts
       set (post-install_name "${CMAKE_SOURCE_DIR}/cmake/scripts/post-install.sh")
-      ExternalProject_Add_Step(${targetname}  copy_post-install COMMENT "Copy .post-install.sh file for ${name}"
+      set (path_map)
+      foreach (dep ${${targetname}-dependencies};${targetname})
+        string(REGEX MATCH "${dependency_split_pattern}" dep_zero "${dep}")
+        set (dep_name    "${CMAKE_MATCH_1}")
+        set (dep_version "${CMAKE_MATCH_2}") 
+        if (${LCG_VERSION} VERSION_GREATER 68 OR ${LCG_VERSION} MATCHES "root6")
+          set (path_map "${${dep}_home}:${${dep_name}_directory_name}/${dep_version}-${${dep}_hash}/${LCG_system} ${path_map}")
+        else ()
+          set (path_map "${${dep}_home}:${${dep_name}_directory_name}/${dep_version}/${LCG_system} ${path_map}")
+        endif() 
+      endforeach()
+      ExternalProject_Add_Step(${targetname}  copy_post-install COMMENT "Copy .post-install.sh file for ${targetname}"
           COMMAND ${CMAKE_COMMAND} -E copy ${post-install_name} ${${name}_home}/.post-install.sh
           COMMAND $ENV{SHELL} -c "chmod +x ${${name}_home}/.post-install.sh"
-          COMMAND $ENV{SHELL} -c "${post-install_name} generate ${${name}_home}"
+          COMMAND $ENV{SHELL} -c "${post-install_name} generate ${CMAKE_INSTALL_PREFIX} ${${targetname}_home}  '${path_map}'"
           COMMAND ${CMAKE_COMMAND} -E touch ${CMAKE_BINARY_DIR}/timestamps/${targetname}-stop.timestamp
           DEPENDEES setup_environment
       )
