@@ -122,6 +122,7 @@ LCG_add_test(lhapdf6sets.download
                "-DPDFS=${PDFsets}"
                -Ddst_dir=${CMAKE_INSTALL_PREFIX}/lhapdf6sets/current/share/LHAPDF
                -P ${CMAKE_CURRENT_SOURCE_DIR}/lhapdf6sets/pdfsets.cmake
+  LABELS Nightly Release
 )
 
 
@@ -155,12 +156,16 @@ LCG_add_test(yamlcpp-${v}.build
   BUILD_OPTIONS -DCMAKE_MODULE_PATH=${CMAKE_SOURCE_DIR}/cmake/modules
                 -DCMAKE_MODULE_PATH2=${cmaketools_home}/modules
                 -DYAMLCPP_ROOT_DIR=${yamlcpp-${v}_home}
-  ENVIRONMENT ${library_path}=${yamlcpp-${v}_home}/lib:$ENV{${library_path}})
+  ENVIRONMENT ${library_path}=${yamlcpp-${v}_home}/lib:$ENV{${library_path}}
+  LABELS Nightly Release
+)
 
 LCG_add_test(yamlcpp-${v}.genser-produce-yaml
   TEST_COMMAND yamlcpp/tests/${v}/produce-yaml
   ENVIRONMENT ${library_path}=${yamlcpp-${v}_home}/lib:$ENV{${library_path}}
-  DEPENDS yamlcpp-${v}.build)
+  DEPENDS yamlcpp-${v}.build
+  LABELS Nightly Release
+)
 endforeach()
 #---Yoda-------------------------------------------------------------------------------------------
 LCGPackage_Add(
@@ -278,6 +283,7 @@ foreach(v ${protos_native_version})
     TEST_COMMAND ${CMAKE_COMMAND} -E chdir ${protos-${v}_home}/bin/Red/tb ./Protos-tb
     ENVIRONMENT ${library_path}=${lhapdf-${protos_${v}_lhapdf}_home}/lib:$ENV{${library_path}} LHAPATH=${lhapdf-${protos_${v}_lhapdf}_home}/../share/lhapdf/PDFsets
     DEPENDS lhapdfsets
+    LABELS Nightly Release
   )
 endforeach()
 
@@ -500,10 +506,12 @@ foreach(v ${${hmc3variant}_native_version})
     TEST_COMMAND ${${hmc3variant}_home}/bin/basic_tree.exe
     ENVIRONMENT
       ${library_path}=${${hmc3variant}_home}/lib:$ENV{${library_path}}
+    LABELS Nightly Release
   )
 
   LCG_add_test(${hmc3variant}-${v}.native-hepevt_wrapper_example
     TEST_COMMAND ${${hmc3variant}_home}/bin/hepevt_wrapper_example.exe
+    LABELS Nightly Release
   )
 
  LCG_add_test(${hmc3variant}-${v}.native-pythia8_example
@@ -512,6 +520,7 @@ foreach(v ${${hmc3variant}_native_version})
   ENVIRONMENT
     PYTHIA8DATA=${pythia8_home}/xmldoc
     ${library_path}=${${hmc3variant}_home}/lib:${pythia8_home}/lib:$ENV{${library_path}}
+  LABELS Nightly Release
  )
 
 endforeach()
@@ -539,6 +548,7 @@ if (vincia_native_version)
 
 LCG_add_test( vincia-pretest
     TEST_COMMAND ${CMAKE_COMMAND} -E copy_directory ${vincia_home}/tunes ${vincia_home}/bin/tunes
+    LABELS Nightly Release
 )
 
 #foreach( vinciatest vincia01.exe vincia02.exe vincia03-root.exe vincia04-root.exe vincia05-root.exe vincia06.exe vincia07-root.exe vincia08-root.exe vincia09-root.exe vincia10-root.exe vincia_test_LHE.exe)
@@ -551,6 +561,7 @@ LCG_add_test(${vinciatest}
     PYTHIA8DATA=${pythia8_home}/xmldoc
     VINCIADATA=${vincia_home}/settings/xmldoc
     DEPENDS vincia-pretest
+    LABELS Nightly Release
 )
 endforeach()
 
@@ -584,12 +595,14 @@ foreach(v ${thepeg_native_version})
       setupThePEG ${thepeg-${v}_home}/share/ThePEG/MultiLEP.in"
     ENVIRONMENT LHAPDF_DATA_PATH=${lhapdf-${thepeg_${v}_lhapdf}_home}/share/LHAPDF:${CMAKE_INSTALL_PREFIX}/lhapdf6sets/current/share/LHAPDF
     DEPENDS lhapdf6sets.download
+    LABELS Nightly Release
   )
   LCG_add_test(thepeg-${v}.genser-scripts-runThePEG
     TEST_COMMAND ${CMAKE_COMMAND} -E chdir thepeg/${v} $ENV{SHELL} -c "source ${thepeg-${v}_home}/thepegenv-genser.sh
       runThePEG MultiLEP.run"
     POST_COMMAND ${CMAKE_COMMAND} -E chdir thepeg/${v} cat MultiLEP.out
     DEPENDS thepeg-${v}.genser-scripts-setupThePEG
+    LABELS Nightly Release
   )
 endforeach()
 endif()
@@ -632,7 +645,9 @@ LCG_add_test(herwigpp-${v}.native-LHC
 			       COMMAND cat LHC.log	
                           BINARY_DIR herwig++/tests
                           SOURCE_DIR herwig++/tests
-                          ENVIRONMENT ${library_path}=${herwig++-${v}_home}/lib:${thepeg-${herwig++_${v}_thepeg}_home}/lib/ThePEG:${HepMC_home}/lib:${lhapdf-${thepeg_${herwig++_${v}_thepeg}_lhapdf}_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:$ENV{${library_path}})
+                          ENVIRONMENT ${library_path}=${herwig++-${v}_home}/lib:${thepeg-${herwig++_${v}_thepeg}_home}/lib/ThePEG:${HepMC_home}/lib:${lhapdf-${thepeg_${herwig++_${v}_thepeg}_lhapdf}_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:$ENV{${library_path}}
+  LABELS Nightly Release
+)
 
 LCG_add_test(herwigpp-${v}.native-TVT 
 			  TEST_COMMAND ${herwig++-${v}_home}/bin/Herwig++ read ${herwig++-${v}_home}/../share/sources/src/TVT.in 
@@ -641,7 +656,9 @@ LCG_add_test(herwigpp-${v}.native-TVT
                                COMMAND cat TVT.log  
                           BINARY_DIR herwig++/tests
                           SOURCE_DIR herwig++/tests
-                          ENVIRONMENT ${library_path}=${herwig++-${v}_home}/lib:${thepeg-${herwig++_${v}_thepeg}_home}/lib/ThePEG:${HepMC_home}/lib:${lhapdf-${thepeg_${herwig++_${v}_thepeg}_lhapdf}_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:$ENV{${library_path}})
+                          ENVIRONMENT ${library_path}=${herwig++-${v}_home}/lib:${thepeg-${herwig++_${v}_thepeg}_home}/lib/ThePEG:${HepMC_home}/lib:${lhapdf-${thepeg_${herwig++_${v}_thepeg}_lhapdf}_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:$ENV{${library_path}}
+  LABELS Nightly Release
+)
 
 LCG_add_test(herwigpp-${v}.genser-LHC-W
   TEST_COMMAND ${herwig++-${v}_home}/bin/Herwig++ read ${CMAKE_SOURCE_DIR}/generators/herwig++/tests/LHC-W.in --repo=${herwig++-${v}_home}/share/Herwig++/HerwigDefaults.rpo
@@ -653,6 +670,7 @@ LCG_add_test(herwigpp-${v}.genser-LHC-W
   ENVIRONMENT ${library_path}=${herwig++-${v}_home}/lib:${thepeg-${herwig++_${v}_thepeg}_home}/lib/ThePEG:${HepMC_home}/lib:${lhapdf-${thepeg_${herwig++_${v}_thepeg}_lhapdf}_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:$ENV{${library_path}}
   LHAPDF_DATA_PATH=${lhapdf-${thepeg_${herwig++_${v}_thepeg}_lhapdf}_home}/share/LHAPDF:${CMAKE_INSTALL_PREFIX}/lhapdf6sets/current/share/LHAPDF
   DEPENDS lhapdf6sets.download
+  LABELS Nightly Release
 )
 
 # native herwig++ tests (not all of them are run)
@@ -660,14 +678,18 @@ LCG_add_test(herwigpp-${v}.genser-LHC-W
 LCG_add_test(herwigpp-${v}.native-LEP-VV 
       TEST_COMMAND ${CMAKE_COMMAND} -E chdir ${PROJECT_BINARY_DIR}/generators/herwig++-${v}/src/herwig++/${v}/Tests make -j1 test-LEP-VV REPO=${herwig++-${v}_home}/share/Herwig++/HerwigDefaults.rpo
            COMMAND ${CMAKE_COMMAND} -E chdir ${PROJECT_BINARY_DIR}/generators/herwig++-${v}/src/herwig++/${v}/Tests cat LEP-VV.log       
-      ENVIRONMENT ${library_path}=${herwig++-${v}_home}/lib:${thepeg-${herwig++_${v}_thepeg}_home}/lib/ThePEG:${HepMC_home}/lib:${lhapdf-${thepeg_${herwig++_${v}_thepeg}_lhapdf}_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:$ENV{${library_path}})
+      ENVIRONMENT ${library_path}=${herwig++-${v}_home}/lib:${thepeg-${herwig++_${v}_thepeg}_home}/lib/ThePEG:${HepMC_home}/lib:${lhapdf-${thepeg_${herwig++_${v}_thepeg}_lhapdf}_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:$ENV{${library_path}}
+  LABELS Nightly Release
+)
  
 foreach(herwig-leptest LEP-VH LEP-VBF LEP-BB LEP-Quarks LEP-Leptons LEP-default LEP-Powheg)
 LCG_add_test(herwigpp-${v}.native-${herwig-leptest}
       TEST_COMMAND ${CMAKE_COMMAND} -E chdir ${PROJECT_BINARY_DIR}/generators/herwig++-${v}/src/herwig++/${v}/Tests make -j1 test-${herwig-leptest} REPO=${herwig++-${v}_home}/share/Herwig++/HerwigDefaults.rpo
            COMMAND ${CMAKE_COMMAND} -E chdir ${PROJECT_BINARY_DIR}/generators/herwig++-${v}/src/herwig++/${v}/Tests cat ${herwig-leptest}.log       
       ENVIRONMENT ${library_path}=${herwig++-${v}_home}/lib:${thepeg-${herwig++_${v}_thepeg}_home}/lib/ThePEG:${HepMC_home}/lib:${lhapdf-${thepeg_${herwig++_${v}_thepeg}_lhapdf}_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:$ENV{${library_path}}
-      DEPENDS herwigpp-${v}.native-LEP-VV)
+      DEPENDS herwigpp-${v}.native-LEP-VV
+      LABELS Nightly Release
+)
 endforeach()
 endforeach()
 
@@ -792,6 +814,7 @@ if (NOT shell_ext MATCHES "csh")
 LCG_add_test(agile-${v}.genser-scripts-pythia6
   TEST_COMMAND $ENV{SHELL} -c "source ${agile-${v}_home}/agileenv-genser.sh
     agile-runmc Pythia6:${pythia6_test_version} -o agile-scripts-hepmc-${v}.dat"
+  LABELS Nightly Release
 )
 endif()
 
@@ -800,6 +823,7 @@ LCG_add_test(agile-${v}.native-test_pythia6 TEST_COMMAND ${agile-${v}_home}/bin/
                                           ${library_path}=${agile-${v}_home}/lib:${HepMC_home}/lib:$ENV{${library_path}}
                                           PYTHONPATH=${agile-${v}_home}/lib/python${Python_config_version_twodigit}/site-packages:$ENV{PYTHONPATH}
                                           AGILE_GEN_PATH=${agile-${v}_home}/../../..
+  LABELS Nightly Release
                               )
 endforeach()
 
@@ -827,7 +851,9 @@ LCG_add_test(photos-${v}.genser-test TEST_COMMAND photos/tests/${v}/photos_test1
                                         -DPYTHIA6_ROOT_DIR=${pythia6_home}
                                         -DCMAKE_MODULE_PATH=${cmaketools_home}/modules
                           FAILREGEX "Fatal error"
-                          ENVIRONMENT ${library_path}=${photos-${v}_home}/lib:${pythia6_home}/lib:$ENV{${library_path}})
+                          ENVIRONMENT ${library_path}=${photos-${v}_home}/lib:${pythia6_home}/lib:$ENV{${library_path}}
+  LABELS Nightly Release
+)
 endforeach()
 
 endif()
@@ -854,17 +880,20 @@ foreach (v ${professor_native_version})
 LCG_add_test(professor-${v}.genser-import
   TEST_COMMAND ${Python_cmd} -c "import professor.user as prof;"
   ENVIRONMENT PYTHONPATH=${pyanalysis_home}/lib/python${Python_config_version_twodigit}/site-packages:${professor-${v}_home}/lib/python${Python_config_version_twodigit}/site-packages ${library_path}=${ROOT_home}/lib:$ENV{${library_path}}
+  LABELS Nightly Release
 )
 
 LCG_add_test(professor-${v}.genser-executable
   TEST_COMMAND ${professor-${v}_home}/bin/prof-interpolate -h
   ENVIRONMENT PYTHONPATH=${pyanalysis_home}/lib/python${Python_config_version_twodigit}/site-packages:${professor-${v}_home}/lib/python${Python_config_version_twodigit}/site-packages ${library_path}=${ROOT_home}/lib:${Python_home}/lib:$ENV{${library_path}} PATH=${Python_home}/bin:$ENV{PATH}
+  LABELS Nightly Release
 )
 
 if (NOT shell_ext MATCHES "csh")
 LCG_add_test(professor-${v}.genser-scripts-executable
   TEST_COMMAND $ENV{SHELL} -c "source ${professor-${v}_home}/professorenv-genser.sh
                prof-interpolate -h"
+  LABELS Nightly Release
 )
 endif()
 
@@ -890,7 +919,9 @@ LCG_add_test(pyquen-${v}.genser-test1
    -DPYQUEN_ROOT_DIR=${pyquen-${v}_home}
    -DPYTHIA6_ROOT_DIR=${pythia6_home}
    -DCMAKE_MODULE_PATH=${cmaketools_home}/modules
-  ENVIRONMENT ${library_path}=${pyquen-${v}_home}/lib:${pythia6_home}/lib:$ENV{${library_path}})
+  ENVIRONMENT ${library_path}=${pyquen-${v}_home}/lib:${pythia6_home}/lib:$ENV{${library_path}}
+  LABELS Nightly Release
+)
 endforeach()
 
 #---hydjet--------------------------------------------------------------------------------------
@@ -917,7 +948,9 @@ LCG_add_test(hydjet-${v}.genser-test
    -DPYTHIA6_ROOT_DIR=${pythia6_home}
    -DPYQUEN_ROOT_DIR=${pyquen_home}
    -DCMAKE_MODULE_PATH=${cmaketools_home}/modules
-  ENVIRONMENT ${library_path}=${hydjet-${v}_home}/lib:${pyquen_home}/lib:${pythia6_home}/lib:$ENV{${library_path}})
+  ENVIRONMENT ${library_path}=${hydjet-${v}_home}/lib:${pyquen_home}/lib:${pythia6_home}/lib:$ENV{${library_path}}
+  LABELS Nightly Release
+)
 endforeach()
 
 #---photos++------------------------------------------------------------------------------------------
@@ -1052,6 +1085,7 @@ if (NOT shell_ext MATCHES "csh")
     PRE_COMMAND ${CMAKE_COMMAND} -E make_directory yoda/tests/${v}
     TEST_COMMAND ${CMAKE_COMMAND} -E chdir yoda/tests/${v} $ENV{SHELL} -c "source ${yoda-${v}_home}/yodaenv-genser.sh
       yoda2${f} ${CMAKE_SOURCE_DIR}/generators/reference/sherpa_riv2.yoda"
+    LABELS Nightly Release
   )
   endforeach()
  endforeach()
@@ -1127,6 +1161,7 @@ LCG_add_test(
        TEST_COMMAND  ${rivet-${v}_home}/bin/rivet --ignore-beams -a ATLAS_2012_I1083318 ${CMAKE_SOURCE_DIR}/generators/rivet/tests/data.hepmc
        ENVIRONMENT ${library_path}=${Python_home}/lib:${GSL_home}/lib:${rivet-${v}_home}/lib:${yoda-${rivet_${v}_yoda}_home}/lib:${HepMC_home}/lib:${fastjet_home}/lib:${yamlcpp_home}/lib:$ENV{${library_path}}
                    PATH=${Python_home}/bin:$ENV{PATH}
+  LABELS Nightly Release
 )
 
 LCG_add_test(
@@ -1135,6 +1170,7 @@ LCG_add_test(
                     rivet --ignore-beams -a ATLAS_2012_I1083318 ${CMAKE_SOURCE_DIR}/generators/rivet/tests/data.hepmc"
        ENVIRONMENT PATH=${Python_home}/bin:$ENV{PATH}
                    ${library_path}=${Python_home}/lib:${GSL_home}/lib:$ENV{${library_path}}
+  LABELS Nightly Release
 )
 else()
 LCG_add_test(rivet-${v}.native-MC_DIJET
@@ -1143,37 +1179,45 @@ LCG_add_test(rivet-${v}.native-MC_DIJET
   ENVIRONMENT
     ${library_path}=${GSL_home}/lib:$ENV{${library_path}}
     PATH=${Python_home}/bin:$ENV{PATH}
+  LABELS Nightly Release
 )
 endif()
 
 if (NOT shell_ext MATCHES "csh")
 LCG_add_test(rivet-${v}.genser-scripts-source
   TEST_COMMAND $ENV{SHELL} -c "source ${rivet-${v}_home}/rivetenv-genser.sh"
+  LABELS Nightly Release
 )
 LCG_add_test(rivet-${v}.genser-scripts-mkanalysis
   TEST_COMMAND $ENV{SHELL} -c "source ${rivet-${v}_home}/rivetenv-genser.sh
       rivet-mkanalysis ATLAS_2010_S8591806"
+  LABELS Nightly Release
 )
 LCG_add_test(rivet-${v}.genser-scripts-buildplugin
   TEST_COMMAND $ENV{SHELL} -c "source ${rivet-${v}_home}/rivetenv-genser.sh
       rivet-buildplugin RivetATLAS_2010_S8591806.so ATLAS_2010_S8591806.cc"
+  LABELS Nightly Release
   DEPENDS rivet-${v}.genser-scripts-mkanalysis
 )
 LCG_add_test(rivet-${v}.genser-scripts-findid
   TEST_COMMAND $ENV{SHELL} -c "source ${rivet-${v}_home}/rivetenv-genser.sh
       rivet-findid 1003.0694"
+  LABELS Nightly Release
 )
 LCG_add_test(rivet-${v}.genser-scripts-which
   TEST_COMMAND $ENV{SHELL} -c "source ${rivet-${v}_home}/rivetenv-genser.sh
       which rivet-which && rivet-which ATLAS_2010_S8591806* || echo rivet-which is not available for this rivet version"
+  LABELS Nightly Release
 )
 LCG_add_test(rivet-${v}.genser-scripts-rivet
   TEST_COMMAND $ENV{SHELL} -c "source ${rivet-${v}_home}/rivetenv-genser.sh
       rivet -a MC_WJETS -H data-${v}.yoda ${CMAKE_SOURCE_DIR}/generators/rivet/tests/data.hepmc"
+  LABELS Nightly Release
 )
 LCG_add_test(rivet-${v}.genser-scripts-rivet-mkhtml
   TEST_COMMAND $ENV{SHELL} -c "source ${rivet-${v}_home}/rivetenv-genser.sh
       rivet-mkhtml -o rivet-mkhtml-${v} ${CMAKE_SOURCE_DIR}/generators/reference/pythia6_riv2_zjetsgenser.yoda ${CMAKE_SOURCE_DIR}/generators/reference/pythia8_riv2_zjetsgenser.yoda"
+  LABELS Nightly Release
 )
 endif()
 endforeach()
@@ -1305,6 +1349,7 @@ LCG_add_test(sherpa-mpich2.native-LHC_Z
   ${library_path}=${sherpa-mpich2-${v}_home}/lib/SHERPA-MC:${HepMC_home}/lib:${lhapdf-${sherpa_mpich2-${v}_lhapdf}_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:${sqlite_home}/lib:${mpich2_home}/lib:$ENV{${library_path}}
     PATH=${sqlite_home}/bin:$ENV{PATH}
     PWD=.
+  LABELS Nightly Release
 )
 
 # $PWD is needed because Sherpa uses this variable to know current directory
@@ -1317,6 +1362,7 @@ LCG_add_test(sherpa-${v}.native-LHC_Z
   ${library_path}=${sherpa-${v}_home}/lib/SHERPA-MC:${HepMC_home}/lib:${lhapdf-${sherpa_${v}_lhapdf}_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:${sqlite_home}/lib:$ENV{${library_path}}
     PATH=${sqlite_home}/bin:$ENV{PATH}
     PWD=.
+  LABELS Nightly Release
 )
 
 LCG_add_test(sherpa-${v}.genser-LHC_Z_lhapdf
@@ -1334,9 +1380,8 @@ LCG_add_test(sherpa-${v}.genser-LHC_Z_lhapdf
     PATH=${sqlite_home}/bin:$ENV{PATH}
     PWD=.
     DEPENDS lhapdf6sets.download
+  LABELS Nightly Release
 )
-
-
 
 LCG_add_test(sherpa-${v}.native-LHC_ZJets
   PRE_COMMAND ${CMAKE_COMMAND} -E remove_directory sherpa/native-LHC_ZJets/${v}
@@ -1346,7 +1391,7 @@ LCG_add_test(sherpa-${v}.native-LHC_ZJets
     ${library_path}=${sherpa-${v}_home}/lib/SHERPA-MC:${HepMC_home}/lib:${lhapdf-${sherpa_${v}_lhapdf}_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:${sqlite_home}/lib:$ENV{${library_path}}
     PATH=${sqlite_home}/bin:$ENV{PATH}
     PWD=.
-  
+  LABELS Nightly Release
 )
 endforeach()
 
@@ -1486,7 +1531,9 @@ foreach(v ${starlight_native_version})
 LCG_add_test(starlight-${v}.native-slight
   PRE_COMMAND ${CMAKE_COMMAND} -E remove -f slight.in
       COMMAND ${CMAKE_COMMAND} -E create_symlink ${starlight-${v}_home}/../share/sources/config/slight.in.new slight.in
-  TEST_COMMAND ${starlight-${v}_home}/bin/starlight)
+  TEST_COMMAND ${starlight-${v}_home}/bin/starlight
+  LABELS Nightly Release
+)
 endforeach()
 
 #---HERWIG----------------------------------------------------------------------------------------
@@ -1610,11 +1657,13 @@ foreach(v ${crmcold_native_version})
     LCG_add_test(crmcold-${v}.genser-scripts
       TEST_COMMAND $ENV{SHELL} -c "source ${crmcold-${v}_home}/crmcoldenv-genser.sh
         crmc -T 1 -c ${crmcold-${v}_home}/crmc.param"
+      LABELS Nightly Release
     )
    endif()
     LCG_add_test(crmcold-${v}.native-crmc
       TEST_COMMAND ${crmcold-${v}_home}/bin/crmc -T 1 -c ${crmcold-${v}_home}/crmc.param
       ENVIRONMENT ${library_path}=${HepMC_home}/lib:$ENV{${library_path}}
+      LABELS Nightly Release
     )
   endif()
 endforeach()
@@ -1646,11 +1695,13 @@ foreach(v ${crmc_native_version})
   LCG_add_test(crmc-${v}.genser-scripts
     TEST_COMMAND $ENV{SHELL} -c "source ${crmc-${v}_home}/crmcenv-genser.sh
       crmc -T 1 -c ${crmc-${v}_home}/crmc.param"
+      LABELS Nightly Release
   )
  endif()
   LCG_add_test(crmc-${v}.native-crmc
     TEST_COMMAND ${crmc-${v}_home}/bin/crmc -T 1 -c ${crmc-${v}_home}/crmc.param
     ENVIRONMENT ${library_path}=${crmc-${v}_home}/lib:${ROOT_home}/lib:${HepMC_home}/lib:${Boost_home}/lib:$ENV{${library_path}}	
+    LABELS Nightly Release
   )
 endforeach()
 endif()
@@ -1681,6 +1732,7 @@ foreach(i WW HJ W_ew-BW Wbb Wj HJJ ZZ W_ew-BMNNP Dijet gg_H VBF_H Z W hvq Zj ST_
       LHAPATH=${lhapdfsets_home}/../share/PDFsets
       LHAPDF_DATA_PATH=${lhapdf-${powheg-box_${v}_lhapdf}_home}/share/LHAPDF:${CMAKE_INSTALL_PREFIX}/lhapdf6sets/current/share/LHAPDF
     DEPENDS lhapdf6sets.download
+    LABELS Nightly Release
   )
 endforeach()
 endforeach()
@@ -1710,6 +1762,7 @@ LCG_add_test(sacrifice-${v}.genser-scripts
     run-pythia  --collision-energy 8000 -i ${CMAKE_SOURCE_DIR}/generators/sacrifice/AU2-CT10.params -n 1000 --photos"
   ENVIRONMENT LHAPDF_DATA_PATH=${lhapdf-${sacrifice_${v}_lhapdf}_home}/share/LHAPDF:${CMAKE_INSTALL_PREFIX}/lhapdf6sets/current/share/LHAPDF
   DEPENDS lhapdf6sets.download
+  LABELS Nightly Release
 )
 endif()
 LCG_add_test(sacrifice-${v}.genser-AU2-CT10
@@ -1718,6 +1771,7 @@ LCG_add_test(sacrifice-${v}.genser-AU2-CT10
 	       LHAPATH=${lhapdfsets_home}/../share/lhapdf/PDFsets
                LHAPDF_DATA_PATH=${lhapdf-${sacrifice_${v}_lhapdf}_home}/share/LHAPDF:${CMAKE_INSTALL_PREFIX}/lhapdf6sets/current/share/LHAPDF
    DEPENDS lhapdf6sets.download
+   LABELS Nightly Release
    )
 endforeach()
 
@@ -1772,6 +1826,7 @@ LCG_add_test(madgraph5amc-${v}.genser-zjetsLO
   TEST_COMMAND $ENV{SHELL} -c "cd ${CMAKE_BINARY_DIR}/generators/madgraph5amc/${v}/LO
            ${Python_cmd} ${madgraph5amc-${v}_home}/bin/mg5_aMC ${CMAKE_BINARY_DIR}/generators/madgraph5amc/${v}/cardsLO.dat
            MYPROC/bin/generate_events < ${CMAKE_SOURCE_DIR}/generators/madgraph5amc/tests/cardsLO1"
+  LABELS Nightly Release
 )
 
 LCG_add_test(madgraph5amc-${v}.genser-zjetsLOLHAPDF
@@ -1784,6 +1839,7 @@ LCG_add_test(madgraph5amc-${v}.genser-zjetsLOLHAPDF
   ENVIRONMENT
      LHAPDF_DATA_PATH=${CMAKE_INSTALL_PREFIX}/lhapdf6sets/current/share/LHAPDF
   DEPENDS lhapdf6sets.download madgraph5amc-${v}.genser-zjetsLO
+  LABELS Nightly Release
 )
 
 LCG_add_test(madgraph5amc-${v}.genser-zjetsLO_hadronize
@@ -1798,6 +1854,7 @@ LCG_add_test(madgraph5amc-${v}.genser-zjetsLO_hadronize
     ${library_path}=${pythia8-${pythia8_work_version}_home}/lib:${HepMC_home}/lib:$ENV{${library_path}}
     PYTHIA8DATA=${pythia8-${pythia8_work_version}_home}/xmldoc
   DEPENDS pythia8-${pythia8_work_version}.build madgraph5amc-${v}.genser-zjetsLOLHAPDF
+  LABELS Nightly Release
 )
 
 LCG_add_test(madgraph5amc-${v}_compare
@@ -1805,6 +1862,7 @@ LCG_add_test(madgraph5amc-${v}_compare
        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_BINARY_DIR}/generators/madgraph5amc/${v}/hadronization/testi_pythia8.dat ${CMAKE_BINARY_DIR}/generators/madgraph5amc/${v}/hadronization/test_madgraph5amc.dat
        COMMAND ${CMAKE_COMMAND} -E chdir ${CMAKE_BINARY_DIR}/generators/madgraph5amc/${v}/hadronization ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/cmpr.sh madgraph5amc ${CMAKE_SOURCE_DIR}/generators/madgraph5amc/tests/reference.dat ${v} ${LCG_VERSION} ${LCG_platform}
   DEPENDS madgraph5amc-${v}.genser-zjetsLO_hadronize
+  LABELS Nightly Release
 )
 
 endforeach()
@@ -1831,18 +1889,25 @@ LCG_add_test(jhu-${v}.genser-scripts
   TEST_COMMAND $ENV{SHELL} -c "source ${jhu-${v}_home}/jhuenv-genser.sh
     cd \$JHU_HOME
     JHUGen VegasNc0=100000 VegasNc1=500000 VegasNc2=100"
+  LABELS Nightly Release
 )
 endif()
 LCG_add_test(jhu-${v}.native-JHUGen
   PRE_COMMAND ${CMAKE_COMMAND} -E remove -f pdfs
       COMMAND ${CMAKE_COMMAND} -E create_symlink ${jhu-${v}_home}/pdfs pdfs
-  TEST_COMMAND ${jhu-${v}_home}/bin/JHUGen VegasNc0=100000 VegasNc1=500000 VegasNc2=100)
+  TEST_COMMAND ${jhu-${v}_home}/bin/JHUGen VegasNc0=100000 VegasNc1=500000 VegasNc2=100
+  LABELS Nightly Release
+)
 
 LCG_add_test(jhu-${v}.native-testF
-  TEST_COMMAND ${jhu-${v}_home}/bin/testF)
+  TEST_COMMAND ${jhu-${v}_home}/bin/testF
+  LABELS Nightly Release
+)
 
 LCG_add_test(jhu-${v}.native-testC
-  TEST_COMMAND ${jhu-${v}_home}/bin/testC)
+  TEST_COMMAND ${jhu-${v}_home}/bin/testC
+  LABELS Nightly Release
+)
 endforeach()
 
 
@@ -1878,6 +1943,7 @@ foreach(v ${gg2VV_native_version})
                 ${library_path}=${lhapdf-${lhapdf6_latest_version}_home}/lib:${omniorb_home}/lib:$ENV{${library_path}}
     TIMEOUT 3000
     DEPENDS lhapdf6sets.download
+    LABELS Nightly Release
   )
 endforeach()
 
@@ -1907,7 +1973,9 @@ if (UNIX AND fastnlo_toolkit_native_version)
 set(fastnlo_toolkit_tabfile "fnl2222b_I1087342.tab")
 LCG_add_test(fastnlo_toolkit.download
   TEST_COMMAND $ENV{SHELL} -c "wget -q -O ${fastnlo_toolkit_tabfile}.gz http://fastnlo.hepforge.org/scenarios/tables-v21/${fastnlo_toolkit_tabfile}.gz
-              gzip -df ${fastnlo_toolkit_tabfile}.gz")
+              gzip -df ${fastnlo_toolkit_tabfile}.gz"
+    LABELS Nightly Release
+)
 
 if (NOT shell_ext MATCHES "csh")
 foreach(v ${fastnlo_toolkit_native_version})
@@ -1921,8 +1989,8 @@ foreach(v ${fastnlo_toolkit_native_version})
   ENVIRONMENT 
      LHAPDF_DATA_PATH=${lhapdf-${fastnlo_toolkit_${v}_lhapdf}_home}/share/LHAPDF:${CMAKE_INSTALL_PREFIX}/lhapdf6sets/current/share/LHAPDF
      LHAPATH=${lhapdf-${fastnlo_toolkit_${v}_lhapdf}_home}/../share/PDFsets
-
   DEPENDS fastnlo_toolkit.download lhapdf6sets.download
+  LABELS Nightly Release
   )
  endforeach()
 endforeach()
@@ -1941,6 +2009,7 @@ if(rivet2_work_version VERSION_EQUAL 2.2.0 OR rivet2_work_version VERSION_GREATE
   ENVIRONMENT
     ${library_path}=${GSL_home}/lib:$ENV{${library_path}}
     PATH=${Python_home}/bin:$ENV{PATH}
+  LABELS Nightly Release
  )
 endif()
 
@@ -1966,6 +2035,7 @@ foreach(v ${pythia8_native_version})
        COMMAND ${Python_cmd} ${CMAKE_SOURCE_DIR}/generators/reference/reference.py ${CMAKE_BINARY_DIR}/generators/pythia8.genser-zjetsgenser-rivet.root ${CMAKE_BINARY_DIR}/generators/pythia8-${v}.genser-zjetsgenser-rivet.root "Path=XS,Z_pt,jet_mult,jet_mult_norm,jet1_pt,jet2_pt" "limit=0.05,0.1,0.1,0.1,0.1,0.1"
   TIMEOUT ${timeout}
   DEPENDS rivet-tests.genser-prepare_references rivet-tests.genser-buildanalysis pythia8-${v}.build
+  LABELS Nightly Release
  )
  endif()
 endforeach()
@@ -1986,6 +2056,7 @@ foreach (v ${pythia6_native_version})
        COMMAND ${Python_cmd} ${CMAKE_SOURCE_DIR}/generators/reference/reference.py ${CMAKE_BINARY_DIR}/generators/pythia6.genser-ttbar-rivet.root ${CMAKE_BINARY_DIR}/generators/pythia6-${v}.genser-ttbar-rivet.root "Path=XS,jet_HT,jet_mult" "limit=0.05,0.10,0.10"
   TIMEOUT ${timeout}
   DEPENDS rivet-tests.genser-prepare_references
+  LABELS Nightly Release
  )
 
  LCG_add_test(
@@ -2024,6 +2095,7 @@ LCG_add_test(herwigpp-${v}.genser-ttbar-rivet
        COMMAND ${Python_cmd} ${CMAKE_SOURCE_DIR}/generators/reference/reference.py ${CMAKE_BINARY_DIR}/generators/herwigpp.genser-ttbar-rivet.root ${CMAKE_BINARY_DIR}/generators/herwigpp-${v}.genser-ttbar-rivet.root "Path=XS,jet_HT,jet_mult" "limit=0.05,0.10,0.10"
   DEPENDS rivet-tests.genser-prepare_references
   TIMEOUT ${timeout}
+  LABELS Nightly Release
 )
   
 LCG_add_test(herwigpp-${v}.genser-zjets-rivet
@@ -2044,6 +2116,7 @@ LCG_add_test(herwigpp-${v}.genser-zjets-rivet
        COMMAND ${Python_cmd} ${CMAKE_SOURCE_DIR}/generators/reference/reference.py ${CMAKE_BINARY_DIR}/generators/herwigpp.genser-zjets-rivet.root ${CMAKE_BINARY_DIR}/generators/herwigpp-${v}.genser-zjets-rivet.root "Path=XS,jet_HT" "limit=0.05,0.10"
   DEPENDS rivet-tests.genser-prepare_references lhapdf6sets.download
   TIMEOUT ${timeout}
+  LABELS Nightly Release
 )
 endforeach()
 
@@ -2062,6 +2135,7 @@ if (${v} MATCHES "^2.[.]*")
        COMMAND ${Python_cmd} ${CMAKE_SOURCE_DIR}/generators/reference/reference.py ${CMAKE_BINARY_DIR}/generators/sherpa.genser-zjets-rivet.root ${CMAKE_BINARY_DIR}/generators/sherpa-${v}.genser-zjets-rivet.root "Path=XS,jet_HT" "limit=0.05,0.10"
   DEPENDS rivet-tests.genser-prepare_references
   TIMEOUT ${timeout}
+  LABELS Nightly Release
  )
 else()
  LCG_add_test(sherpa-${v}.genser-zjets-rivet
@@ -2077,6 +2151,7 @@ else()
        COMMAND ${Python_cmd} ${CMAKE_SOURCE_DIR}/generators/reference/reference.py ${CMAKE_BINARY_DIR}/generators/sherpa.genser-zjets-rivet.root ${CMAKE_BINARY_DIR}/generators/sherpa-${v}.genser-zjets-rivet.root "Path=XS,jet_HT" "limit=0.0001,0.10"
   DEPENDS rivet-tests.genser-prepare_references
   TIMEOUT ${timeout}
+  LABELS Nightly Release
  )
 #COMMAND ${rivet2_home}/bin/rivet -a MC_XS -a MC_ZJETS -H sherpa.genser-zjets-rivet_zjets_i.yoda sherpa_zjets.hepmc2g
 endif()
@@ -2099,6 +2174,7 @@ LCG_add_test(
        COMMAND ${Python_cmd} ${CMAKE_SOURCE_DIR}/generators/reference/reference.py ${CMAKE_BINARY_DIR}/generators/herwig.genser-zjets-rivet.root ${CMAKE_BINARY_DIR}/generators/herwig-${v}.genser-zjets-rivet.root "Path=XS,jet_HT" "limit=0.05,0.10"
   DEPENDS rivet-tests.genser-prepare_references 
   TIMEOUT ${timeout}
+  LABELS Nightly Release
 )
 endforeach()
 
@@ -2118,7 +2194,7 @@ LCG_add_test(
   POST_COMMAND ${CMAKE_COMMAND} -DAIDA2ROOT=${AIDA2ROOT} -DPython_cmd=${Python_cmd} -Dyoda_home=${yoda_home} -DINPUT=${CMAKE_BINARY_DIR}/generators/alpgen-${v}.genser-zjets-rivet.yoda -P ${CMAKE_SOURCE_DIR}/cmake/scripts/yoda2root.cmake
        COMMAND ${Python_cmd} ${CMAKE_SOURCE_DIR}/generators/reference/reference.py ${CMAKE_BINARY_DIR}/generators/alpgen.genser-zjets-rivet.root ${CMAKE_BINARY_DIR}/generators/alpgen-${v}.genser-zjets-rivet.root "Path=XS,jet_HT" "limit=0.05,0.10"
   DEPENDS alpgen-${v}.native-examples rivet-tests.genser-prepare_references
-  
+  LABELS Nightly Release
 )
 endforeach()
 
@@ -2142,6 +2218,7 @@ LCG_add_test(rivet-tests.genser-prepare_references
   ENVIRONMENT PATH=${Python_home}/bin:$ENV{PATH}
               ${library_path}=${Python_home}/lib:${rivet2_home}/lib:${yoda_home}/lib:${ROOT_home}/lib:$ENV{${library_path}}
               PYTHONPATH=${Python_home}/bin:${rivet2_home}/lib/python${Python_config_version_twodigit}/site-packages/:${yoda_home}/lib/python${Python_config_version_twodigit}/site-packages/:${ROOT_home}/lib:$ENV{PYTHONPATH}
+  LABELS Nightly Release
 )
 
 if (VALIDATION)
