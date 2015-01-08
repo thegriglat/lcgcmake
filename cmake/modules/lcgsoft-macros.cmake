@@ -327,7 +327,7 @@ macro(LCGPackage_Add name)
       string(REPLACE "${CMAKE_INSTALL_PREFIX}" "" this_package_instdir "${${name}_directory_name}")
       set (_args "-Dthis_package=${name}" "-Dthis_package_instdir=${this_package_instdir}" "-Dthis_version=${version}" "-Ddependencies='${deps}'" "-Dappend_template_name='${append_template_name}'")
       list(APPEND _args "-DTARGET=${${name}_home}/${output_name}" "-DTEMPLATE=${template_name}" "-Dgcc_source=${gcc_source}/../setup.sh")
-      ExternalProject_Add_Step(${targetname} setup_environment COMMENT "Installing environment for ${name}"
+      ExternalProject_Add_Step(${targetname} setup_environment COMMENT "Installing environment for ${targetname}"
           COMMAND ${CMAKE_COMMAND} ${_args} -P ${CMAKE_SOURCE_DIR}/cmake/scripts/provide-environment.cmake
           DEPENDEES install_logs
       )
@@ -345,7 +345,7 @@ macro(LCGPackage_Add name)
           set (path_map "${${dep}_home}:${${dep_name}_directory_name}/${dep_version}/${LCG_system} ${path_map}")
         endif() 
       endforeach()
-      ExternalProject_Add_Step(${targetname}  copy_post-install COMMENT "Copy .post-install.sh file for ${targetname}"
+      ExternalProject_Add_Step(${targetname}  copy_post-install COMMENT "Copying .post-install.sh file for ${targetname}"
           COMMAND ${CMAKE_COMMAND} -E copy ${post-install_name} ${${name}_home}/.post-install.sh
           COMMAND $ENV{SHELL} -c "chmod +x ${${name}_home}/.post-install.sh"
           COMMAND $ENV{SHELL} -c "${post-install_name} generate ${CMAKE_INSTALL_PREFIX} ${${targetname}_home}  '${path_map}'"
