@@ -1401,8 +1401,9 @@ LCGPackage_Add(
   URL ${gen_url}/HepMCAnalysis-<hepmcanalysis_<NATIVE_VERSION>_author>.tgz
   UPDATE_COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/hepmcanalysis/files <SOURCE_DIR>
   CONFIGURE_COMMAND <VOID>
-  BUILD_COMMAND make VERBOSE=1 HepMCdir=${HepMC_home} FastJetdir=${fastjet_home} ROOTSYS=${ROOT_home} CLHEPdir=${CLHEP_home} 
+  BUILD_COMMAND ${MAKE} HepMCdir=${HepMC_home} FastJetdir=${fastjet_home} ROOTSYS=${ROOT_home} CLHEPdir=${CLHEP_home} 
 			${library_path}=${CLHEP_home}/lib:$ENV{${library_path}}
+            LIBRARY_PATH=${fastjet_home}/lib:$ENV{LIBRARY_PATH}
             IF LCG_CPP11 THEN
               "CXXFLAGS=-fPIC -std=c++11"
             ENDIF
