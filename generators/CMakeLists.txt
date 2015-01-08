@@ -242,7 +242,8 @@ LCGPackage_Add(
     INSTALL_COMMAND make install PYTHONPATH=${cython_pythonpath} LIBRARY_PATH=${Python_home}/lib
           COMMAND ${CMAKE_COMMAND} -DINSTALL_DIR=<INSTALL_DIR> -P ${CMAKE_SOURCE_DIR}/cmake/scripts/StripLib.cmake
     BUILD_IN_SOURCE 1
-    DEPENDS Boost yamlcpp Python cython
+    DEPENDS Boost Python cython
+    IF <VERSION> VERSION_LESS 6.1.5 THEN yamlcpp ENDIF
   ENDIF
 )
 
@@ -260,10 +261,9 @@ LCGPackage_Add(
     INSTALL_COMMAND make install PYTHONPATH=${cython_pythonpath} LIBRARY_PATH=${Python_home}/lib
             COMMAND ${CMAKE_COMMAND} -DINSTALL_DIR=<INSTALL_DIR> -P ${CMAKE_SOURCE_DIR}/cmake/scripts/StripLib.cmake
     BUILD_IN_SOURCE 1
-    DEPENDS Boost yamlcpp Python cython
+    DEPENDS Boost Python cython
+    IF <VERSION> VERSION_LESS 6.1.5 THEN yamlcpp ENDIF
 )
-
-#FIXME: lhapdf6 does not depend on yaml-cpp starting from the version 6.1.0; to be removed for the version next to 6.1.4
 
 #---lhapdf5 and lhapdf6 moved after pythia8 tests
 
