@@ -62,7 +62,7 @@ else:
 
 #---Determine build type-------------------------------------------
 if os.getenv('BUILDTYPE'):
-   buildtype = os.getenv('COMPILER')
+   buildtype = os.getenv('BUILDTYPE')
 else:
    buildtype = 'Release'
 
