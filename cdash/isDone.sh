@@ -12,18 +12,9 @@ this=$(dirname $0)
 
 platform=`$this/getPlatform.py`
 
-if [ $BUILDTYPE == Release ]; then
-  bt=opt
-elif [ $BUILDTYPE == Debug ]; then
-  bt=dbg
-else
-  bt=unk
-fi
-
-fullplatform=$platform-$bt
 today=$(date +%a)
 nightdir=/afs/cern.ch/sw/lcg/app/nightlies
-donefile=$nightdir/$SLOT/$today/isDone-$fullplatform
+donefile=$nightdir/$SLOT/$today/isDone-$platform
 
 if [ $isdone == 1 ]; then
   touch $donefile

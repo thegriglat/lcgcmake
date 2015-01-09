@@ -60,4 +60,14 @@ else:
   else:
      compiler = 'unk-cmp'
 
-print '%s-%s-%s' %  (arch, osvers, compiler)
+#---Determine build type-------------------------------------------
+if os.getenv('BUILDTYPE'):
+   buildtype = os.getenv('COMPILER')
+else:
+   buildtype = 'Release'
+
+if buildtype == 'Release' : bt = 'opt'
+elif buildtype == 'Debug' : bt = 'dbg'
+else bt = 'unk'
+
+print '%s-%s-%s-%s' %  (arch, osvers, compiler, bt)

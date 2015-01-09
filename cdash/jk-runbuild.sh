@@ -6,9 +6,11 @@
 
 THIS=$(dirname $0)
 
+PLATFORM=`$THIS/getPlatform.py`
+
 # clean up the WORKDIR ------------------------------------------
-rm -rf $WORKDIR/*-build
-rm -rf $WORKDIR/*-install
+rm -rf $WORKDIR/$PLATFORM-build
+rm -rf $WORKDIR/$PLATFORM-install
 rm -rf /tmp/the.lock
 
 # print environment -----------------------------------------------
