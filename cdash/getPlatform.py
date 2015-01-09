@@ -68,6 +68,6 @@ else:
 
 if buildtype == 'Release' : bt = 'opt'
 elif buildtype == 'Debug' : bt = 'dbg'
-else bt = 'unk'
+else : bt = 'unk'
 
 print '%s-%s-%s-%s' %  (arch, osvers, compiler, bt)
