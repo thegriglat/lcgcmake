@@ -1,11 +1,4 @@
 cmake_minimum_required(VERSION 2.6 FATAL_ERROR)
-
-add_definitions(-DCMAKE_Fortran_FLAGS=                "${CMAKE_Fortran_FLAGS} -fPIC  -O2")
-add_definitions(-DCMAKE_Fortran_FLAGS_DEBUG=          "${CMAKE_Fortran_FLAGS_DEBUG} -fPIC -g -fno-automatic")
-add_definitions(-DCMAKE_Fortran_FLAGS_MINSIZEREL=     "${CMAKE_Fortran_FLAGS_MINSIZEREL} -fPIC -Os -DNDEBUG -fno-automatic")
-add_definitions(-DCMAKE_Fortran_FLAGS_RELEASE=        "${CMAKE_Fortran_FLAGS_RELEASE} -fPIC -O2 -DNDEBUG -fno-automatic")
-add_definitions(-DCMAKE_Fortran_FLAGS_RELWITHDEBINFO= "${CMAKE_Fortran_FLAGS_RELWITHDEBINFO} -fPIC -O2 -g -fno-automatic")
-
 project(hydjet Fortran)
 
 #---Compilation and Link options----------------------------------------------
