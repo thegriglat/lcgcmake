@@ -10,7 +10,7 @@ from optparse import OptionParser
 usage = "usage: %prog localarea remotearea"
 parser = OptionParser(usage)
 (options, args) = parser.parse_args()    
-if len(args) != 1:
+if len(args) != 2:
     parser.error("incorrect number of arguments.")
 else:
     localarea = args[0]   #where RPMS have been build 
