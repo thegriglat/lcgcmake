@@ -1,6 +1,6 @@
 #!/bin/bash
 # The following variables are expected:
-#  SLOT:      Nightly slot name
+#  SLOTNAME:  Nightly slot name
 #  LABEL:     Worker node label (e.g. slc6)
 #  COMPILER:  Compiler and version
 #  BUILDTYPE: Build type (e.g. Release)
@@ -14,7 +14,7 @@ platform=`$this/getPlatform.py`
 
 today=$(date +%a)
 nightdir=/afs/cern.ch/sw/lcg/app/nightlies
-donefile=$nightdir/$SLOT/$today/isDone-$platform
+donefile=$nightdir/$SLOTNAME/$today/isDone-$platform
 
 if [ $isdone == 1 ]; then
   touch $donefile

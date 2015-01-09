@@ -5,6 +5,9 @@
 #  $2: compiler version
 #  $3: slotname
 
+THIS=$(dirname ${BASH_SOURCE[0]})
+ARCH=$(uname -m)
+
 if [ $# -ge 3 ]; then
   BUILDTYPE=$1; shift
   COMPILER=$1; shift
@@ -25,27 +28,22 @@ export INSTALLDIR=
 export PDFSETS=minimal
 export CLEAN_INSTALLDIR="false"
 export LCG_TARBALL_INSTALL="false"
-export SLOTNAME=$SLOTNAME
+export SLOTNAME
 export BUILDTYPE
+export COMPILER
+export PLATFORM=`$THIS/getPlatform.py`
 
 if [[ $SLOTNAME == dev* ]]; then export MODE=$SLOTNAME
-elif [ -z $SLOTNAME ]; then export MODE=Release
-else export MODE=Experimental; fi
+elif [ -z $SLOTNAME ];      then export MODE=Experimental
+else                             export MODE=Release; fi
 
-if [ -z $VERSION ]; then export VERSION=trunk; fi
-if [ -z $TARGET ]; then export TARGET=all; fi
+if [ -z $VERSION ];     then export VERSION=trunk; fi
+if [ -z $TARGET ];      then export TARGET=all; fi
 if [ -z $TEST_LABELS ]; then export TEST_LABELS="Nightly|PhysicsCheck"; fi
 if [ -z $LCG_VERSION ]; then export LCG_VERSION=$SLOTNAME; fi
 
-THIS=$(dirname $0)
-ARCH=$(uname -m)
-
-# for testing puposes--------------------------------------------------------------
-if [[ $THIS == /tmp ]]; then THIS=$WORKSPACE/lcg-scripts; fi
-
 # setup cmake for slc6 nodes ------------------------------------------------------
-platform=`$THIS/getPlatform.py`
-if [[ $platform == *slc6* ]]; then
+if [[ $PLATFORM == *slc6* ]]; then
   export PATH=/afs/cern.ch/sw/lcg/contrib/CMake/2.8.12.2/Linux-i386/bin:${PATH}
   LABEL=slc6
 fi
