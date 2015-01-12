@@ -1,0 +1,45 @@
+==================================================
+How to use testtoolchain.py and checkLCGrelease.py
+==================================================
+
+The script  "testtoolchain.py" checks correctness of links inside of releases in accordance with toolchain file.
+The other script "checkLCGrelease.py" checks correctness and existences of links and directories for releases in
+correspondence with txt files that were generated  during creation of releases. 
+
+Suppose we will use the directory /tmp (it can be any directory with full rights)for checkout from svn:
+
+cd /tmp
+svn co svn+ssh://svn.cern.ch/reps/lcgsoft/trunk/lcgcmake
+
+Here we take
+     /tmp/lcgcmake-build as build path,
+     /tmp/lcgcmake-install-opt as installation path,
+     x86_64-slc6-gcc48-opt as platform (which means that we configure gcc as gcc 4.8.X),
+     LCG_70root6 as release.
+
+
+After installation of releases or for checking existed releases we can use utility's as followed:
+
+=====================================
+Example of use testtoolchain.py: 
+=====================================
+python /tmp/lcgcmake/cmake/scripts/testtoolchain.py /tmp/lcgcmake/cmake/toolchain . x86_64-slc6-gcc48-opt 70root6
+
+Parameters:
+1: /tmp/lcgcmake/cmake/toolchain - directory where toolchain files are
+2: . - directory where uotput file with name like: tlchn_LCG70root6_x86_64-slc6-gcc48-opt.txt will be stored (in this case in current directory)
+3: x86_64-slc6-gcc48-opt - platform (can be x86_64-slc6-gcc48-dbg or i686-slc6-gcc48-opt)
+4: 70root6 - release
+5:(optional) - put a directory if releases are not in /afs/cern.ch/sw/lcg/releases/
+
+=====================================
+Example of use checkLCGrelease.py:
+=====================================
+python /tmp/lcgcmake/cmake/scripts/checkLCGrelease.py . x86_64-slc6-gcc48-opt 70root6
+
+Parameters:
+1: . - directory where uotput file with name like: test_LCG_70root6_plt_x86_64-slc6-gcc48-opt.txt will be stored (in this case in current directory)
+2: x86_64-slc6-gcc48-opt - platform
+3: 70root6 - release
+4:(optional) - put a directory if releases are not in /afs/cern.ch/sw/lcg/releases/
+
