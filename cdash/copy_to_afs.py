@@ -12,12 +12,6 @@ from optparse import OptionParser
 def today():
     return datetime.date.today().strftime('%a')
 
-def get_platform(workdir):
-    """Guess the platform from the directories WORKDIR."""
-    for item in os.listdir(workdir):
-      if "-install" in item:
-        return item.split("-install")[0]
-
 # part to handle an InstallArea inside LCGCMT with the following structure:
 # LCGCMT/<version>/InstallArea/<platform>/
 #    bin/
@@ -112,7 +106,7 @@ if __name__ == "__main__":
     workdir =  args[1]
 
   thisdir = os.path.dirname(os.path.abspath(__file__))
-  platform = get_platform(workdir)
+  platform = os.environ['PLATFORM']
   compiler = os.environ['CXX']
   compilerdir = compiler.split("bin")[0]
 
@@ -191,10 +185,6 @@ if __name__ == "__main__":
   #create symlink to gcc
   if not os.path.exists(targetdir+'/gcc'):
     os.symlink('/afs/cern.ch/sw/lcg/contrib/gcc',targetdir+'/gcc')
-
-  # declare as done
-  command = "touch %s/isDone-%s" %(targetdir,platform)
-  print subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).stdout.read()
 
     
   
