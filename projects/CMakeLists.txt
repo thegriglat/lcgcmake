@@ -228,7 +228,7 @@ set(CMT_make_cmd
 LCGPackage_add(
   CORAL
   SVN_REPOSITORY http://svn.cern.ch/guest/lcgcoral/coral/tags/${CORAL_native_version} --quiet
-  UPDATE_COMMAND <VOID>
+  UPDATE_COMMAND sed -r "s/ LCGCMT_[^ ]+/ LCGCMT_${heptools_version}/" -i cmt/project.cmt
   CONFIGURE_COMMAND <VOID>
   BUILD_COMMAND     ${CMT_make_cmd}
   INSTALL_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/../${LCG_system} <INSTALL_DIR>
@@ -253,7 +253,7 @@ LCG_add_test(coral-tests
 LCGPackage_add(
   COOL
   SVN_REPOSITORY http://svn.cern.ch/guest/lcgcool/cool/tags/${COOL_native_version} --quiet
-  UPDATE_COMMAND <VOID>
+  UPDATE_COMMAND sed -r "s/ LCGCMT_[^ ]+/ LCGCMT_${heptools_version}/" -i cmt/project.cmt
   CONFIGURE_COMMAND <VOID>
   BUILD_COMMAND     ${CMT_make_cmd}
   INSTALL_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/../${LCG_system} <INSTALL_DIR>
