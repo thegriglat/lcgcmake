@@ -236,6 +236,19 @@ LCGPackage_add(
   DEPENDS cmt LCGCMT Boost CppUnit sqlite XercesC oracle mysql QMtest tcmalloc Frontier_Client Python
 )
 
+ExternalProject_Get_Property(CORAL-${CORAL_native_version} SOURCE_DIR)
+LCG_add_test(coral-tests
+  ENVIRONMENT             CMTSITE=CERN
+                          CMTCONFIG=${LCG_system}
+                          CMTPROJECTPATH=${CMAKE_INSTALL_PREFIX}:${LCGCMT_pos}
+                          CMTROOT=${CMTROOT}
+                          CMTBIN=${CMAKE_SYSTEM_NAME}-${CMAKE_SYSTEM_PROCESSOR}
+                          CMT=${CMTROOT}/${CMAKE_SYSTEM_NAME}-${CMAKE_SYSTEM_PROCESSOR}/cmt
+  TEST_COMMAND            ${SOURCE_DIR}/run_nightly_tests.sh
+  LABELS Nightly Release
+)
+
+
 #---COOL-----------------------------------------------------------------------------------------------
 LCGPackage_add(
   COOL
@@ -247,7 +260,17 @@ LCGPackage_add(
           COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/../include <INSTALL_DIR>/../include
   DEPENDS LCGCMT CORAL ROOT GCCXML
 )
-
+ExternalProject_Get_Property(COOL-${COOL_native_version} SOURCE_DIR)
+LCG_add_test(cool-tests
+  ENVIRONMENT             CMTSITE=CERN
+                          CMTCONFIG=${LCG_system}
+                          CMTPROJECTPATH=${CMAKE_INSTALL_PREFIX}:${LCGCMT_pos}
+                          CMTROOT=${CMTROOT}
+                          CMTBIN=${CMAKE_SYSTEM_NAME}-${CMAKE_SYSTEM_PROCESSOR}
+                          CMT=${CMTROOT}/${CMAKE_SYSTEM_NAME}-${CMAKE_SYSTEM_PROCESSOR}/cmt
+  TEST_COMMAND            ${SOURCE_DIR}/run_nightly_tests.sh
+  LABELS Nightly Release
+)
 
 #---GaudiDeps------------------------------------------------------------------------------------------
 set(GAUDI-dependencies AIDA Boost Python GSL ROOT QMtest CLHEP HepMC HepPDT RELAX
