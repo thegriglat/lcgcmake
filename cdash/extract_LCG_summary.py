@@ -64,11 +64,10 @@ if __name__ == "__main__":
 
   packages = {}
   # collect all .buildinfo_<name>.txt files
-  for root, dirs, files in os.walk(thedir):
+  for root, dirs, files in os.walk(thedir,followlinks=True):
       for afile in files:
           if afile.endswith('.txt') and afile.startswith(".buildinfo") and platform in root:
               fullname = os.path.join(root, afile)
-              a = open(fullname).read() 
               create_package_from_file(root,fullname,packages)
 
 #  print packages             
