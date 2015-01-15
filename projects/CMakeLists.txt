@@ -228,7 +228,8 @@ set(CMT_make_cmd
 LCGPackage_add(
   CORAL
   SVN_REPOSITORY http://svn.cern.ch/guest/lcgcoral/coral/tags/${CORAL_native_version} --quiet
-  UPDATE_COMMAND sed -r "s/ LCGCMT_[^ ]+/ LCGCMT_${heptools_version}/" -i cmt/project.cmt
+  #UPDATE_COMMAND sed -r "s/ LCGCMT_[^ ]+/ LCGCMT_${heptools_version}/" -i cmt/project.cmt
+  UPDATE_COMMAND <VOID>
   CONFIGURE_COMMAND <VOID>
   BUILD_COMMAND     ${CMT_make_cmd}
   INSTALL_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/../${LCG_system} <INSTALL_DIR>
@@ -240,20 +241,20 @@ ExternalProject_Get_Property(CORAL-${CORAL_native_version} SOURCE_DIR)
 LCG_add_test(coral-tests
   ENVIRONMENT             CMTSITE=CERN
                           CMTCONFIG=${LCG_system}
-                          CMTPROJECTPATH=${CMAKE_INSTALL_PREFIX}:${LCGCMT_pos}
+                          CMTPATH=${SOURCE_DIR}:${LCGCMT_pos}
                           CMTROOT=${CMTROOT}
                           CMTBIN=${CMAKE_SYSTEM_NAME}-${CMAKE_SYSTEM_PROCESSOR}
                           CMT=${CMTROOT}/${CMAKE_SYSTEM_NAME}-${CMAKE_SYSTEM_PROCESSOR}/cmt
   TEST_COMMAND            ${SOURCE_DIR}/run_nightly_tests.sh
   LABELS Nightly Release
 )
-
-
+unset(SOURCE_DIR)
 #---COOL-----------------------------------------------------------------------------------------------
 LCGPackage_add(
   COOL
   SVN_REPOSITORY http://svn.cern.ch/guest/lcgcool/cool/tags/${COOL_native_version} --quiet
-  UPDATE_COMMAND sed -r "s/ LCGCMT_[^ ]+/ LCGCMT_${heptools_version}/" -i cmt/project.cmt
+  #UPDATE_COMMAND sed -r "s/ LCGCMT_[^ ]+/ LCGCMT_${heptools_version}/" -i cmt/project.cmt
+  UPDATE_COMMAND <VOID>
   CONFIGURE_COMMAND <VOID>
   BUILD_COMMAND     ${CMT_make_cmd}
   INSTALL_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/../${LCG_system} <INSTALL_DIR>
@@ -264,13 +265,14 @@ ExternalProject_Get_Property(COOL-${COOL_native_version} SOURCE_DIR)
 LCG_add_test(cool-tests
   ENVIRONMENT             CMTSITE=CERN
                           CMTCONFIG=${LCG_system}
-                          CMTPROJECTPATH=${CMAKE_INSTALL_PREFIX}:${LCGCMT_pos}
+                          CMTPATH=${SOURCE_DIR}:${LCGCMT_pos}
                           CMTROOT=${CMTROOT}
                           CMTBIN=${CMAKE_SYSTEM_NAME}-${CMAKE_SYSTEM_PROCESSOR}
                           CMT=${CMTROOT}/${CMAKE_SYSTEM_NAME}-${CMAKE_SYSTEM_PROCESSOR}/cmt
   TEST_COMMAND            ${SOURCE_DIR}/run_nightly_tests.sh
   LABELS Nightly Release
 )
+unset(SOURCE_DIR)
 
 #---GaudiDeps------------------------------------------------------------------------------------------
 set(GAUDI-dependencies AIDA Boost Python GSL ROOT QMtest CLHEP HepMC HepPDT RELAX
