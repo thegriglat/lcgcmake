@@ -127,7 +127,7 @@ macro(LCGPackage_Add name)
       add_custom_command(OUTPUT  ${CMAKE_INSTALL_PREFIX}/${install_path}
                          COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_INSTALL_PREFIX}/${${dest_name}_directory_name}/${dest_version}
                          COMMAND ${CMAKE_COMMAND} -E create_symlink ${LCG_INSTALL_PREFIX}/${lcg_install_path} ${CMAKE_INSTALL_PREFIX}/${install_path}
-                         COMMENT "${targetname} package already existing in ${LCG_INSTALL_PREFIX}/${install_path}. Making a soft-link.")
+                         COMMENT "${targetname} package already existing in ${LCG_INSTALL_PREFIX}/${lcg_install_path}. Making a soft-link.")
       add_custom_target(clean-${targetname} COMMAND ${CMAKE_COMMAND} -E remove ${CMAKE_INSTALL_PREFIX}/${install_path}
                                             COMMENT "Deleting soft-link for package ${targetname}")
     else()
