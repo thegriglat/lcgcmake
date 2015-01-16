@@ -22,13 +22,17 @@ if [ "generate" = "$1" ]; then
   # proceed depends
   for map in $(echo "$path_map"); do
     old_install_path="$(echo $map | cut -d: -f1)"
+    old_real_install_path="$(cd $old_install_path; pwd -P)"
     new_directory_name="$(echo $map | cut -d: -f2)"
+    echo "$old_real_install_path->$new_directory_name"
     echo "$old_install_path->$new_directory_name"
     # find files
     cat $tmp_file_list | while read name; do
       # check that file is not binary
       if perl -E 'exit((-B $ARGV[0])?1:0);' "$name"; then
-        grep -q -- "$old_install_path" "$name" && echo $name | sed -e "s@$pkg_home/@@g"
+        if grep -q -- "$old_install_path" "$name" || grep -q -- "$old_real_install_path" "$name";then
+          echo $name | sed -e "s@$pkg_home/@@g"
+        fi
       fi
     done
   done >> $tmp_file 
