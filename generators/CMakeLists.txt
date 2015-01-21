@@ -520,41 +520,19 @@ endforeach()
 
 #---vincia------------------------------------------------------------------------------------------
 
+set(pythia8_v_home <pythia8-<vincia_<NATIVE_VERSION>_pythia8>_home>)
+
 LCGPackage_Add(
   vincia
-  IF <NATIVE_VERSION> VERSION_EQUAL "HEAD" THEN
-    SVN_REPOSITORY https://vincia.hepforge.org/svn/trunk --quiet
-  ELSE
-    URL ${gen_url}/vincia-<NATIVE_VERSION>.tgz
-  ENDIF
-  UPDATE_COMMAND ${CMAKE_COMMAND} -DSRC=${CMAKE_CURRENT_SOURCE_DIR}/vincia/files -DDST=<SOURCE_DIR> -P ${CMAKE_SOURCE_DIR}/cmake/scripts/copy.cmake
-  CMAKE_ARGS -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
--DCMAKE_INSTALL_PREFIX=<INSTALL_DIR> -DPYTHIA8_ROOT_DIR=${pythia8_home}
--DROOTSYS=${ROOT_home} -DFASTJET_ROOT_DIR=${fastjet_home}
-
-  DEPENDS ROOT pythia8 fastjet 
+  URL ${gen_url}/vincia-<NATIVE_VERSION>.tgz
+  CONFIGURE_COMMAND $ENV{SHELL} -c "cp -rf ${pythia8_v_home}/config.mk <SOURCE_DIR>/"
+            COMMAND $ENV{SHELL} -c "sed -i.bak -e 's/make -C$(PYTHIA8)//g' -e 's/make -C$(PY8DIR)//g' <SOURCE_DIR>/Makefile" 
+  BUILD_COMMAND make PYTHIA8=${pythia8_v_home} PY8DIR=${pythia8_v_home}
+  INSTALL_COMMAND ${CMAKE_COMMAND} -DSRC=<SOURCE_DIR>/lib -DDST=<INSTALL_DIR>/lib -P ${CMAKE_SOURCE_DIR}/cmake/scripts/copy.cmake
+          COMMAND ${CMAKE_COMMAND} -DSRC=<SOURCE_DIR>/bin -DDST=<INSTALL_DIR>/bin -P ${CMAKE_SOURCE_DIR}/cmake/scripts/copy.cmake
+  BUILD_IN_SOURCE 1
+  DEPENDS pythia8-<vincia_<VERSION>_pythia8>  
 )
-
-if (vincia_native_version)
-
-LCG_add_test( vincia-pretest
-    TEST_COMMAND ${CMAKE_COMMAND} -E copy_directory ${vincia_home}/tunes ${vincia_home}/bin/tunes
-)
-
-#foreach( vinciatest vincia01.exe vincia02.exe vincia03-root.exe vincia04-root.exe vincia05-root.exe vincia06.exe vincia07-root.exe vincia08-root.exe vincia09-root.exe vincia10-root.exe vincia_test_LHE.exe)
-#  vincia02.exe vincia06.exe vincia07-root.exe vincia09-root.exe vincia_test_LHE.exe)
-foreach( vinciatest vincia01.exe )
-LCG_add_test(${vinciatest}
-    TEST_COMMAND ${CMAKE_COMMAND} -E chdir ${vincia_home}/bin/ ./${vinciatest} 
-    ENVIRONMENT
-    ${library_path}=${pythia8_home}/lib:${fastjet_home}/lib:${vincia_home}/lib:${ROOT_home}/lib:$ENV{${library_path}}
-    PYTHIA8DATA=${pythia8_home}/xmldoc
-    VINCIADATA=${vincia_home}/settings/xmldoc
-    DEPENDS vincia-pretest
-)
-endforeach()
-
-endif()
 
 #---ThePEG------------------------------------------------------------------------------------------
 
