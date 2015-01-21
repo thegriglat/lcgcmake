@@ -237,6 +237,7 @@ LCGPackage_add(
   DEPENDS cmt LCGCMT Boost CppUnit sqlite XercesC oracle mysql QMtest tcmalloc Frontier_Client Python
 )
 
+if (NOT CORAL_lcg_exists)
 ExternalProject_Get_Property(CORAL-${CORAL_native_version} SOURCE_DIR)
 LCG_add_test(coral-tests
   ENVIRONMENT             CMTSITE=CERN
@@ -249,6 +250,7 @@ LCG_add_test(coral-tests
   LABELS Nightly Release
 )
 unset(SOURCE_DIR)
+endif()
 #---COOL-----------------------------------------------------------------------------------------------
 LCGPackage_add(
   COOL
@@ -261,6 +263,8 @@ LCGPackage_add(
           COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/../include <INSTALL_DIR>/../include
   DEPENDS LCGCMT CORAL ROOT GCCXML
 )
+
+if (NOT COOL_lcg_exists)
 ExternalProject_Get_Property(COOL-${COOL_native_version} SOURCE_DIR)
 LCG_add_test(cool-tests
   ENVIRONMENT             CMTSITE=CERN
@@ -273,7 +277,7 @@ LCG_add_test(cool-tests
   LABELS Nightly Release
 )
 unset(SOURCE_DIR)
-
+endif()
 #---GaudiDeps------------------------------------------------------------------------------------------
 set(GAUDI-dependencies AIDA Boost Python GSL ROOT QMtest CLHEP HepMC HepPDT RELAX
                        GCCXML tbb XercesC uuid LCGCMT CppUnit tcmalloc)
