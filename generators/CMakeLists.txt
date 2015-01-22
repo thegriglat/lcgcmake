@@ -530,6 +530,10 @@ LCGPackage_Add(
   BUILD_COMMAND make PYTHIA8=${pythia8_v_home} PY8DIR=${pythia8_v_home}
   INSTALL_COMMAND ${CMAKE_COMMAND} -DSRC=<SOURCE_DIR>/lib -DDST=<INSTALL_DIR>/lib -P ${CMAKE_SOURCE_DIR}/cmake/scripts/copy.cmake
           COMMAND ${CMAKE_COMMAND} -DSRC=<SOURCE_DIR>/bin -DDST=<INSTALL_DIR>/bin -P ${CMAKE_SOURCE_DIR}/cmake/scripts/copy.cmake
+          COMMAND ${CMAKE_COMMAND} -DSRC=<SOURCE_DIR>/tunes -DDST=<INSTALL_DIR>/tunes -P ${CMAKE_SOURCE_DIR}/cmake/scripts/copy.cmake
+          COMMAND ${CMAKE_COMMAND} -DSRC=<SOURCE_DIR>/include -DDST=<INSTALL_DIR>/include -P ${CMAKE_SOURCE_DIR}/cmake/scripts/copy.cmake
+          COMMAND ${CMAKE_COMMAND} -DSRC=<SOURCE_DIR>/data -DDST=<INSTALL_DIR>/data -P ${CMAKE_SOURCE_DIR}/cmake/scripts/copy.cmake
+          COMMAND ${CMAKE_COMMAND} -DSRC=<SOURCE_DIR>/antennae -DDST=<INSTALL_DIR>/antennae -P ${CMAKE_SOURCE_DIR}/cmake/scripts/copy.cmake
   BUILD_IN_SOURCE 1
   DEPENDS pythia8-<vincia_<VERSION>_pythia8>  
 )
