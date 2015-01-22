@@ -524,7 +524,7 @@ set(pythia8_v_home <pythia8-<vincia_<NATIVE_VERSION>_pythia8>_home>)
 
 LCGPackage_Add(
   vincia
-  URL ${gen_url}/vincia-<NATIVE_VERSION>.tgz
+  URL ${gen_url}/vincia-<vincia_<NATIVE_VERSION>_author>.tgz
   CONFIGURE_COMMAND $ENV{SHELL} -c "cp -rf ${pythia8_v_home}/config.mk <SOURCE_DIR>/"
             COMMAND $ENV{SHELL} -c "sed -i.bak -e 's/make -C$(PYTHIA8)//g' -e 's/make -C$(PY8DIR)//g' <SOURCE_DIR>/Makefile" 
   BUILD_COMMAND make PYTHIA8=${pythia8_v_home} PY8DIR=${pythia8_v_home}

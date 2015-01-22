@@ -197,10 +197,10 @@ LCG_external_package(pythia8           186            ${MCGENPATH}/pythia8      
 LCG_external_package(pythia8           201            ${MCGENPATH}/pythia8      )
 LCG_external_package(pythia8           180            ${MCGENPATH}/pythia8      )
 
-LCG_external_package(vincia            1.1.00          ${MCGENPATH}/vincia pythia8=176)
-LCG_external_package(vincia            1.1.01          ${MCGENPATH}/vincia pythia8=180)
-LCG_external_package(vincia            1.1.02          ${MCGENPATH}/vincia pythia8=185)
-LCG_external_package(vincia            1.1.03          ${MCGENPATH}/vincia pythia8=185)
+LCG_external_package(vincia            1.100          ${MCGENPATH}/vincia pythia8=176 author=1.1.00 )
+LCG_external_package(vincia            1.101          ${MCGENPATH}/vincia pythia8=180 author=1.1.01 )
+LCG_external_package(vincia            1.102          ${MCGENPATH}/vincia pythia8=185 author=1.1.02 )
+LCG_external_package(vincia            1.103          ${MCGENPATH}/vincia pythia8=185 author=1.1.03 )
 
 LCG_external_package(sacrifice         0.9.9          ${MCGENPATH}/sacrifice  pythia8=185 )
 
@@ -232,7 +232,7 @@ LCG_external_package(agile             1.4.0          ${MCGENPATH}/agile        
 LCG_external_package(photos++          3.56           ${MCGENPATH}/photos++      author=3.56 )
 LCG_external_package(photos++          3.55           ${MCGENPATH}/photos++      author=3.55 )
 LCG_external_package(photos++          3.52           ${MCGENPATH}/photos++      author=3.52 )
-LCG_external_package(photos++          3.54a           ${MCGENPATH}/photos++     author=3.54 )
+LCG_external_package(photos++          3.54a          ${MCGENPATH}/photos++      author=3.54 )
 LCG_external_package(photos++          3.54           ${MCGENPATH}/photos++      author=3.54 )
 LCG_external_package(photos            215.4          ${MCGENPATH}/photos       ) 
 
