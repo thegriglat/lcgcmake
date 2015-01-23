@@ -197,10 +197,10 @@ LCG_external_package(pythia8           186            ${MCGENPATH}/pythia8      
 LCG_external_package(pythia8           201            ${MCGENPATH}/pythia8      )
 LCG_external_package(pythia8           180            ${MCGENPATH}/pythia8      )
 
-LCG_external_package(vincia            1.100          ${MCGENPATH}/vincia pythia8=176 author=1.1.00 )
-LCG_external_package(vincia            1.101          ${MCGENPATH}/vincia pythia8=180 author=1.1.01 )
-LCG_external_package(vincia            1.102          ${MCGENPATH}/vincia pythia8=185 author=1.1.02 )
-LCG_external_package(vincia            1.103          ${MCGENPATH}/vincia pythia8=185 author=1.1.03 )
+LCG_external_package(vincia            1.1.00          ${MCGENPATH}/vincia pythia8=176)
+LCG_external_package(vincia            1.1.01          ${MCGENPATH}/vincia pythia8=180)
+LCG_external_package(vincia            1.1.02          ${MCGENPATH}/vincia pythia8=185)
+LCG_external_package(vincia            1.1.03          ${MCGENPATH}/vincia pythia8=185)
 
 LCG_external_package(sacrifice         0.9.9          ${MCGENPATH}/sacrifice  pythia8=185 )
 
