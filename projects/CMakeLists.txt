@@ -237,7 +237,7 @@ LCGPackage_add(
   DEPENDS cmt LCGCMT Boost CppUnit sqlite XercesC oracle mysql QMtest tcmalloc Frontier_Client Python
 )
 
-if (NOT CORAL_lcg_exists)
+if (NOT CORAL_lcg_exists AND ${heptools_version} MATCHES "dev.+")
 ExternalProject_Get_Property(CORAL-${CORAL_native_version} SOURCE_DIR)
 LCG_add_test(coral-tests
   ENVIRONMENT             CMTSITE=CERN
@@ -264,7 +264,7 @@ LCGPackage_add(
   DEPENDS LCGCMT CORAL ROOT GCCXML
 )
 
-if (NOT COOL_lcg_exists)
+if (NOT COOL_lcg_exists  AND ${heptools_version} MATCHES "dev.+")
 ExternalProject_Get_Property(COOL-${COOL_native_version} SOURCE_DIR)
 LCG_add_test(cool-tests
   ENVIRONMENT             CMTSITE=CERN
