@@ -33,9 +33,10 @@ export BUILDTYPE
 export COMPILER
 export PLATFORM=`$THIS/getPlatform.py`
 
-if [[ $SLOTNAME == dev* ]]; then export MODE=$SLOTNAME
-elif [ -z $SLOTNAME ];      then export MODE=Experimental
-else                             export MODE=Release; fi
+if   [[ $SLOTNAME == dev* ]]; then export MODE=$SLOTNAME
+elif [[ $SLOTNAME == exp* ]]; then export MODE=Experimental
+elif [ -z $SLOTNAME ];        then export MODE=Experimental
+else                               export MODE=Release; fi
 
 if [ -z $VERSION ];     then export VERSION=trunk; fi
 if [ -z $TARGET ];      then export TARGET=all; fi

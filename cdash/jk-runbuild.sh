@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -x
 
 # This script assumes a full set on environment variables setup by executing jk-setup.sh
 #  CTEST_SITE, WORKDIR, PDFSETS, BUILDTYPE, etc.
@@ -17,5 +17,5 @@ rm -rf /tmp/the.lock
 env | sort | sed 's/:/:?     /g' | tr '?' '\n'
 
 # do the build-----------------------------------------------------
-ctest -VV -S $THIS/lcgcmake-build.cmake
+ctest -V -S $THIS/lcgcmake-build.cmake
 
