@@ -1918,11 +1918,12 @@ endif(UNIX AND fastnlo_toolkit_native_version)
 if(rivet2_work_version VERSION_EQUAL 2.2.0 OR rivet2_work_version VERSION_GREATER 2.2.0)
  LCG_add_test(rivet-tests.genser-buildanalysis
   TEST_COMMAND $ENV{SHELL} -c "source ${rivet2_home}/rivetenv.${shell_ext}
-         rivet-buildplugin RivetGENSER_MC_ZJETS.so ${CMAKE_SOURCE_DIR}/generators/rivetgenser/GENSER_MC_ZJETS.cc"
+       rivet-buildplugin RivetGENSER_MC_ZJETS.so ${CMAKE_SOURCE_DIR}/generators/rivetgenser/GENSER_MC_ZJETS.cc"
        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/generators/rivetgenser/GENSER_MC_ZJETS.info ${CMAKE_BINARY_DIR}/generators
        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/generators/rivetgenser/GENSER_MC_ZJETS.plot ${CMAKE_BINARY_DIR}/generators
   ENVIRONMENT
     ${library_path}=${GSL_home}/lib:$ENV{${library_path}}
+    LIBRARY_PATH=${fastjet_home}/lib:$ENV{LIBRARY_PATH}
     PATH=${Python_home}/bin:$ENV{PATH}
  )
 endif()
@@ -1963,7 +1964,7 @@ foreach (v ${pythia6_native_version})
        COMMAND ${rivet2_home}/bin/rivet -a MC_GENERIC -a MC_IDENTIFIED -a MC_XS -a MC_TTBAR --histo-file=pythia6-${v}.genser-ttbar-rivet.yoda pythia6-${v}.genser-ttbar.hepmc.dat
   ENVIRONMENT PATH=${agile_home}/bin:${Python_home}/bin:$ENV{PATH}
               ${library_path}=${Python_home}/lib:${GSL_home}/lib:${rivet2_home}/lib:${yoda_home}/lib:${HepMC_home}/lib:${fastjet_home}/lib:${yamlcpp_home}/lib:${agile_home}/lib:${HepMC_home}/lib:${ROOT_home}/lib:$ENV{${library_path}}
-              PYTHONPATH=${Python_home}/bin:${agile_home}/lib/python${Python_config_version_twodigit}/site-packages:${yoda_home}/lib/python${Python_config_version_twodigit}/site-packages/:${ROOT_home}/lib:$ENV{PYTHONPATH}
+              PYTHONPATH=${Python_home}/bin:${agile_home}/lib/python${Python_config_version_twodigit}/site-packages:${yoda_home}/lib/python${Python_config_version_twodigit}/site-packages/:${rivet2_home}/lib/python${Python_config_version_twodigit}/site-packages:${ROOT_home}/lib:$ENV{PYTHONPATH}
               AGILE_GEN_PATH=${agile_home}/../../..
   POST_COMMAND ${CMAKE_COMMAND} -DAIDA2ROOT=${AIDA2ROOT} -DPython_cmd=${Python_cmd} -Dyoda_home=${yoda_home} -DINPUT=${CMAKE_BINARY_DIR}/generators/pythia6-${v}.genser-ttbar-rivet.yoda -P ${CMAKE_SOURCE_DIR}/cmake/scripts/yoda2root.cmake
        COMMAND ${Python_cmd} ${CMAKE_SOURCE_DIR}/generators/reference/reference.py ${CMAKE_BINARY_DIR}/generators/pythia6.genser-ttbar-rivet.root ${CMAKE_BINARY_DIR}/generators/pythia6-${v}.genser-ttbar-rivet.root "Path=XS,jet_HT,jet_mult" "limit=0.05,0.10,0.10"
@@ -1979,7 +1980,7 @@ foreach (v ${pythia6_native_version})
        COMMAND ${rivet2_home}/bin/rivet -a MC_XS -a GENSER_MC_ZJETS --histo-file=pythia6-${v}.genser-zjetsgenser-rivet.yoda pythia6-${v}.genser-zjets.hepmc.dat
   ENVIRONMENT PATH=${agile_home}/bin:${Python_home}/bin:$ENV{PATH}
               ${library_path}=${Python_home}/lib:${GSL_home}/lib:${rivet2_home}/lib:${yoda_home}/lib:${HepMC_home}/lib:${fastjet_home}/lib:${yamlcpp_home}/lib:${agile_home}/lib:${HepMC_home}/lib:${ROOT_home}/lib:$ENV{${library_path}}
-              PYTHONPATH=${Python_home}/bin:${agile_home}/lib/python${Python_config_version_twodigit}/site-packages:${yoda_home}/lib/python${Python_config_version_twodigit}/site-packages/:${ROOT_home}/lib:$ENV{PYTHONPATH}
+              PYTHONPATH=${Python_home}/bin:${agile_home}/lib/python${Python_config_version_twodigit}/site-packages:${rivet2_home}/lib/python${Python_config_version_twodigit}/site-packages:${yoda_home}/lib/python${Python_config_version_twodigit}/site-packages/:${ROOT_home}/lib:$ENV{PYTHONPATH}
               AGILE_GEN_PATH=${agile_home}/../../..
               RIVET_ANALYSIS_PATH=${CMAKE_BINARY_DIR}/generators
   POST_COMMAND ${CMAKE_COMMAND} -DAIDA2ROOT=${AIDA2ROOT} -DPython_cmd=${Python_cmd} -Dyoda_home=${yoda_home} -DINPUT=${CMAKE_BINARY_DIR}/generators/pythia6-${v}.genser-zjetsgenser-rivet.yoda -P ${CMAKE_SOURCE_DIR}/cmake/scripts/yoda2root.cmake
@@ -2126,16 +2127,6 @@ LCG_add_test(rivet-tests.genser-prepare_references
               ${library_path}=${Python_home}/lib:${rivet2_home}/lib:${yoda_home}/lib:${ROOT_home}/lib:$ENV{${library_path}}
               PYTHONPATH=${Python_home}/bin:${rivet2_home}/lib/python${Python_config_version_twodigit}/site-packages/:${yoda_home}/lib/python${Python_config_version_twodigit}/site-packages/:${ROOT_home}/lib:$ENV{PYTHONPATH}
 )
-
-if (VALIDATION)
-  execute_process(COMMAND date "+%F" OUTPUT_VARIABLE date)
-  set (path2database "/afs/cern.ch/user/s/sftnight/public/genservis.db")
-  LCG_add_test(rivet-tests.copy2database
-    TEST_COMMAND ${CMAKE_SOURCE_DIR}/generators/reference/push2database.sh -P ${CMAKE_BINARY_DIR}/generators -r LCG_${LCG_VERSION} -p ${LCG_platform} -c "${rivettests_stat_size} ${date}" -d ${path2database}
-  )
-  set(date)
-  set(path2database)
-endif()
 
 LCG_add_test(debug-symbols-test 
   TEST_COMMAND ${CMAKE_SOURCE_DIR}/cmake/scripts/check_debug_symbols.sh ${CMAKE_INSTALL_PREFIX} ${LCG_BUILD_TYPE}
