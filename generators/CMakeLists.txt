@@ -1890,8 +1890,7 @@ if (UNIX AND fastnlo_toolkit_native_version)
 # CMS inclusive forward jets 2011 (anti-kT R=0.5; pT, eta); LO, NLO; RIVET_ID: CMS_2012_I1087342
 set(fastnlo_toolkit_tabfile "fnl2222b_I1087342.tab")
 LCG_add_test(fastnlo_toolkit.download
-  TEST_COMMAND $ENV{SHELL} -c "wget -q -O ${fastnlo_toolkit_tabfile}.gz http://fastnlo.hepforge.org/scenarios/tables-v21/${fastnlo_toolkit_tabfile}.gz
-              gzip -df ${fastnlo_toolkit_tabfile}.gz")
+  TEST_COMMAND $ENV{SHELL} -c "curl http://fastnlo.hepforge.org/scenarios/tables-v21/${fastnlo_toolkit_tabfile}.gz | gzip -d | cat > ${fastnlo_toolkit_tabfile}")
 
 if (NOT shell_ext MATCHES "csh")
 foreach(v ${fastnlo_toolkit_native_version})
