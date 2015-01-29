@@ -5,6 +5,11 @@ set(Exec_cmd ${env_cmd})
 set (Lock_cmd ${CMAKE_SOURCE_DIR}/pyexternals/CreateLockFile)
 set (Unlock_cmd ${CMAKE_SOURCE_DIR}/pyexternals/DeleteLockFile)
 
+#---Addtional deopendencies to matplotlib-----------------
+if(heptools_version MATCHES dev3)
+  set(matplotlib_extra_deps python_dateutil six tornado backports certifi)
+endif()
+
 #=================================================================================================================
 #---pygraphics----------------------------------------------------------------------------------------------------
 # This is a bundle where all the sub-packages will be installed
@@ -500,7 +505,7 @@ LCGPackage_Add(
   BUILD_COMMAND <VOID>
   INSTALL_COMMAND ${CMAKE_SOURCE_DIR}/pyexternals/Python_postinstall.sh <INSTALL_DIR>
   BUNDLE_PACKAGE 1
-  DEPENDS lxml sqlalchemy genshi 4suite cx_oracle ipython json mock multiprocessing setuptools python_dateutil backports six tornado certifi mysql_python processing py py2neo pyxml storm pytest pylint nose coverage stomppy
+  DEPENDS lxml sqlalchemy genshi 4suite cx_oracle ipython json mock multiprocessing setuptools mysql_python processing py py2neo pyxml storm pytest pylint nose coverage stomppy ${matplotlib_extra_deps}
 )
 
 #=================================================================================================================
@@ -568,7 +573,7 @@ LCGPackage_Add(
           COMMAND ${Unlock_cmd}
   BUILD_IN_SOURCE 1
   DEST_NAME pyanalysis
-  DEPENDS Python numpy pyparsing nose python_dateutil six tornado backports certifi
+  DEPENDS Python numpy pyparsing nose ${matplotlib_extra_deps}
 )
 
 #---pyminuit---------------------------------------------------------------------------------------------------------
