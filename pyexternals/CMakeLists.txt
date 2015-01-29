@@ -524,7 +524,7 @@ LCGPackage_Add(
   DEPENDS pydot pyparsing sip pyqt
 )
 
----libsvm------------------------------------------------------------------------------------------------------
+#---libsvm------------------------------------------------------------------------------------------------------
 LCGPackage_Add(
   libsvm
   URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/libsvm-${libsvm_native_version}.tar.gz
