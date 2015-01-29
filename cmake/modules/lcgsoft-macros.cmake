@@ -138,6 +138,7 @@ macro(LCGPackage_Add name)
       if(${name} STREQUAL ROOT)  # ROOT in LCG installations is special
         set(_path ${_path}/root)
       endif()
+      set(${name}_lcg_exists ON)
       set(${name}_home ${_path})
       set(${targetname}_home ${${name}_home})
       add_custom_target(${targetname} ALL COMMENT "${targetname} package already existing in ${_path}. Using it directly.")
