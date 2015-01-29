@@ -235,11 +235,18 @@ LCG_external_package(hydjet++          2.1            ${MCGENPATH}/hydjet++ auth
 LCG_external_package(alpgen            2.1.4          ${MCGENPATH}/alpgen author=214 )
 LCG_external_package(pyquen            1.5.1          ${MCGENPATH}/pyquen author=1_5)
 LCG_external_package(baurmc            1.0            ${MCGENPATH}/baurmc       )
-LCG_external_package(professor         1.3.3          ${MCGENPATH}/professor       )
+LCG_external_package(professor         1.4.0          ${MCGENPATH}/professor       )
+
+
 
 LCG_external_package(jhu               3.1.8          ${MCGENPATH}/jhu       )
 
 #LCG_external_package(vincia            HEAD          ${MCGENPATH}/vincia       )
+LCG_external_package(vincia            1.1.00          ${MCGENPATH}/vincia pythia8=176)
+LCG_external_package(vincia            1.1.01          ${MCGENPATH}/vincia pythia8=180)
+LCG_external_package(vincia            1.1.02          ${MCGENPATH}/vincia pythia8=185)
+LCG_external_package(vincia            1.1.03          ${MCGENPATH}/vincia pythia8=185)
+
 LCG_external_package(fastnlo_toolkit   2.3.1pre-1871  ${MCGENPATH}/fastnlo_toolkit )
 
 #LCG_external_package(protos            2.2-g77        ${MCGENPATH}/protos  lhapdf=lhapdf5 author=2.2 FC=g77 )
