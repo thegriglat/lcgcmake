@@ -1,710 +1,599 @@
-#---sqlite-----------------------------------------------------------------------------------------------
+#---General parameters--------------------------------------------------------------------------------------------
+set(Python_cmd ${Python_home}/bin/python)
+set(PythonFW_cmd ${Python_home}/Library/Frameworks/Python.framework/Versions/Current/bin/python)
+set(Exec_cmd ${env_cmd})
+set (Lock_cmd ${CMAKE_SOURCE_DIR}/pyexternals/CreateLockFile)
+set (Unlock_cmd ${CMAKE_SOURCE_DIR}/pyexternals/DeleteLockFile)
+
+#=================================================================================================================
+#---pytools----------------------------------------------------------------------------------------------------
+# This is only a placeholder where all the sub-packages will be installed
+#=================================================================================================================
+LCGPackage_set_home(pytools)
+
+#---lxml---------------------------------------------------------------------------------------------------------
 LCGPackage_Add(
-  sqlite
-  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/sqlite-autoconf-${sqlite_native_version}.tar.gz
-  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR>
-  BUILD_COMMAND  make
+  lxml
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/lxml-${lxml_native_version}.tar.gz
+  CONFIGURE_COMMAND <VOID>
+  BUILD_COMMAND ${Python_cmd} setup.py build
+  INSTALL_COMMAND ${Lock_cmd}
+          COMMAND ${Python_cmd} setup.py install --prefix <INSTALL_DIR>
+          COMMAND ${Unlock_cmd}
   BUILD_IN_SOURCE 1
-#  DEPENDS Python
-)
-
-if(APPLE)
-  execute_process(COMMAND sw_vers -productVersion
-                  COMMAND cut -d . -f 1-2
-                  OUTPUT_VARIABLE MACOSX_VERSION OUTPUT_STRIP_TRAILING_WHITESPACE)
-endif()
-
-#---PythonFWK (only for MAC) --------------------------------------------------------------------------------------------
-LCGPackage_set_home(Python)
-if (APPLE)
-  set(Python_config_options MACOSX_DEPLOYMENT_TARGET=${MACOSX_VERSION})
-  LCGPackage_Add(
-    PythonFWK
-    URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/Python-${Python_native_version}.tgz
-    CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix=<INSTALL_DIR> DYNLOADFILE=dynload_shlib.o 
-                                             --enable-framework=<INSTALL_DIR>/Library/Frameworks 
-                                             --exec-prefix=<INSTALL_DIR>/Library/Frameworks/Python.framework/Versions/Current 
-                                             --enable-unicode=ucs4 ${Python_config_options}
-    BUILD_COMMAND ${MAKE} -j1
-    INSTALL_COMMAND ${MAKE} -j1 install
-	          COMMAND rm -rf <INSTALL_DIR>/bin
-    DEST_NAME Python
-  )
-endif()
-
-if(APPLE)
-  set(library_path DYLD_LIBRARY_PATH)
-else()
-  set(library_path LD_LIBRARY_PATH)
-endif()
-
-
-
-#---Python--------------------------------------------------------------------------------------------
-if(LCG_TARGET MATCHES "slc" OR LCG_TARGET MATCHES "ubuntu")
-  set(Python_config_options --enable-shared "LDFLAGS=-Wl,-rpath,'$$ORIGIN/../lib'")
-elseif(LCG_TARGET MATCHES "mac")
-  set(Python_config_options --enable-shared MACOSX_DEPLOYMENT_TARGET=${MACOSX_VERSION} LDFLAGS=-L/usr/local/lib)
-  set(Python_deps PythonFWK)
-else()
-  set(Python_config_options --enable-shared)
-endif()
-if(LCG_TARGET MATCHES "slc6")
-  set(Python_config_options --disable-ipv6 ${Python_config_options})
-endif()
-if(LCG_TARGET MATCHES "icc" AND LCG_TARGET MATCHES "slc6")
-  set(Python_config_options --disable-ipv6 --without-gcc --with-cxx-main=${CMAKE_CXX_COMPILER}  ${Python_config_options})
-endif()
-
-LCGPackage_Add(
-  Python
-  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/Python-${Python_native_version}.tgz
-  CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix=<INSTALL_DIR> --enable-unicode=ucs4 ${Python_config_options} CPPFLAGS=-I${sqlite_home}/include
-  INSTALL_COMMAND ${MAKE} -j1 install
-          COMMAND ${CMAKE_SOURCE_DIR}/externals/Python_postinstall.sh <INSTALL_DIR> 
-  DEPENDS ${Python_deps} sqlite
-)
-
-#---Boost--------------------------------------------------------------------------------------------
-file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/user-config.jam "# \n")  # Start with an empty config file
-if(APPLE)
-  set(Boost_toolset darwin)
-  if(Boost_config_version VERSION_GREATER 1.54.0)
-    set(Boost_bootstrap_options --with-python-root=${Python_home} --without-libraries=log)
-  else()
-    set(Boost_bootstrap_options --with-python-root=${Python_home})
-  endif()
-else()
-  set(Boost_toolset gcc)
-  set(Boost_bootstrap_options --with-python=${Python_home}/bin/python)
-  if(LCG_TARGET MATCHES "icc" AND LCG_TARGET MATCHES "slc6")
-    set(Boost_toolset intel-linux)
-  else()
-    set(Boost_toolset gcc)
-  endif()
-endif()
-
-if(CMAKE_BUILD_TYPE STREQUAL Debug)
-  set(Boost_jam_options -j4 variant=debug   --layout=versioned)
-else()
-  set(Boost_jam_options -j4 variant=release --layout=versioned)
-endif()
-
-set(Boost_compile_options)
-if(LCG_TARGET MATCHES i686 AND LCG_CPP11)
-  file(APPEND ${CMAKE_CURRENT_BINARY_DIR}/user-config.jam "using ${Boost_toolset} : : :  <linkflags>-m32 <compileflags>-m32 -std=gnu++0x ;\n")
-elseif(LCG_TARGET MATCHES i686)
-  file(APPEND ${CMAKE_CURRENT_BINARY_DIR}/user-config.jam "using ${Boost_toolset} : : :  <linkflags>-m32 <compileflags>-m32 ;\n")
-elseif(LCG_TARGET MATCHES "gcc([0-9]+)" AND LCG_CPP11)
-  file(APPEND ${CMAKE_CURRENT_BINARY_DIR}/user-config.jam "using ${Boost_toolset} : : ${CMAKE_CXX_COMPILER} : <compileflags>-std=gnu++0x ;\n")
-elseif(LCG_TARGET MATCHES "gcc([0-9]+)")
-  file(APPEND ${CMAKE_CURRENT_BINARY_DIR}/user-config.jam "using ${Boost_toolset} : : ${CMAKE_CXX_COMPILER} ;\n")
-endif()
-
-string(REPLACE "." "_" Boost_file_version ${Boost_config_version})
-
-LCGPackage_Add(
-  Boost
-  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/boost_${Boost_file_version}.tar.gz
-  CONFIGURE_COMMAND <SOURCE_DIR>/bootstrap.sh ${Boost_bootstrap_options} --with-toolset=${Boost_toolset}
-  BUILD_COMMAND <SOURCE_DIR>/b2 ${Boost_jam_options} ${Boost_compile_options} --debug-configuration 
-                --toolset=${Boost_toolset} --user-config=${CMAKE_CURRENT_BINARY_DIR}/user-config.jam
-  INSTALL_COMMAND <SOURCE_DIR>/b2 ${Boost_jam_options} ${Boost_compile_options} --toolset=${Boost_toolset}
-                --prefix=<INSTALL_DIR> install --user-config=${CMAKE_CURRENT_BINARY_DIR}/user-config.jam
-  BUILD_IN_SOURCE 1
+  DEST_NAME pytools
   DEPENDS Python
 )
 
-#---GSL----------------------------------------------------------------------------------------------
-if(LCG_TARGET MATCHES "x86_64|slc")
-  set(GSL_config_options -with-pic)
-endif()
-
+#---sqlarchemy---------------------------------------------------------------------------------------------------
 LCGPackage_Add(
-  GSL
-  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/gsl-${GSL_native_version}.tar.gz
-  CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix <INSTALL_DIR> ${GSL_config_options} CC=${CMAKE_C_COMPILER} CFLAGS=-O2
-  BUILD_COMMAND ${MAKE}
-  INSTALL_COMMAND ${MAKE} install
-          COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/GSL_postinstall.sh <INSTALL_DIR>
-  BUILD_IN_SOURCE 1 )
-
-#---CLHEP--------------------------------------------------------------------------------------------
-if(LCG_TARGET MATCHES "slc")
-  set(CLHEP_config_options  LDFLAGS=-Wl,--hash-style=sysv)
-endif()
-LCGPackage_Add(
-  CLHEP
-  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/clhep-<NATIVE_VERSION>.tgz
-  IF <VERSION> VERSION_LESS 2.1.0 THEN
-    CONFIGURE_COMMAND <SOURCE_DIR>/CLHEP/configure --prefix <INSTALL_DIR> ${CLHEP_config_options}
-  ELSE
-    CONFIGURE_COMMAND ${CMAKE_COMMAND} -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR> 
-                                       -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} 
-                                       <SOURCE_DIR>/CLHEP
-  ENDIF
-)
-
-#---Davix--------------------------------------------------------------------------------------------
-LCGPackage_Add(
-  Davix
-  URL http://grid-deployment.web.cern.ch/grid-deployment/dms/lcgutil/tar/davix/davix-<NATIVE_VERSION>.tar.gz
-  CONFIGURE_COMMAND ${CMAKE_COMMAND} -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
-                                       -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
-                                       -DBOOST_ROOT:PATHNAME=${Boost_home}
-                                       -DBOOST_INCLUDEDIR=${Boost_home}/include
-                                       -DBOOST_LIBRARYDIR=${Boost_home}/lib 
-                                       -DBoost_NO_BOOST_CMAKE=True
-                                       <SOURCE_DIR>
-  DEPENDS Boost
-)
-
-#---HepMC--------------------------------------------------------------------------------------------
-if(LCG_TARGET MATCHES i686)
-  set(HepMC_config_options --build=i686-unknown-linux-gnu)
-endif()
-if( ${HepMC_native_version} VERSION_EQUAL githead)
-  set(HepMC_source_command GIT_REPOSITORY http://git.cern.ch/pub/HepMC UPDATE_COMMAND <VOID>) 
-else()
-  set(HepMC_source_command URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/HepMC-${HepMC_native_version}.tar.gz)
-endif()
-
-LCGPackage_set_home(cmaketools)
-
-LCGPackage_Add(
-  HepMC
-  ${HepMC_source_command}
-  CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
-             -Dmomentum:STRING=MEV
-             -Dlength:STRING=MM
-             -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
-  BUILD_COMMAND ${MAKE}
-)
-
-foreach(v ${HepMC_native_version})
-  LCG_add_test(HepMC-${v}.test
-    TEST_COMMAND ${CMAKE_COMMAND} -E chdir ${PROJECT_BINARY_DIR}/externals/HepMC-${v}/src/HepMC-${v}-build/test ctest
-  )
-endforeach()
-
-
-if( hepmc3_native_version MATCHES "githead")
-  set(hepmc3_source_command GIT_REPOSITORY https://:@git.cern.ch/kerberos/hepmc3)
-else()
-  set(hepmc3_source_command URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/MCGeneratorsTarFiles/hepmc3-${hepmc3_native_version}.tgz)
-endif()
-
-#---Forward declarations----------------------------------------------------------------------------
-LCGPackage_set_home(pythia8)
-
-LCGPackage_Add(
-  hepmc3
-  ${hepmc3_source_command}
-  CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
-             -DBOOST_ROOT=${Boost_home}
-             -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
-             -DHEPMC_BUILD_EXAMPLES=ON
-             -DPYTHIA8_ROOT_DIR=${pythia8_home}
-  BUILD_COMMAND ${MAKE}
-  DEPENDS Boost pythia8
-)
-
-LCGPackage_Add(
-  hepmc3-cxx11
-  ${hepmc3_source_command}
-  CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
-             -DHEPMC_ENABLE_CPP11=ON
-             -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
-             -DHEPMC_BUILD_EXAMPLES=ON
-             -DPYTHIA8_ROOT_DIR=${pythia8_home}
-  BUILD_COMMAND ${MAKE}
-  DEPENDS pythia8
-)
-
-
-#---HepPDT-------------------------------------------------------------------------------------------
-LCGPackage_Add(
-  HepPDT
-  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/HepPDT-${HepPDT_native_version}.tar.gz
-  CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix <INSTALL_DIR>  CXX=${CMAKE_CXX_COMPILER}
-)
-
-#---pcre----------------------------------------------------------------------------------------------
-LCGPackage_Add(
-  pcre
-  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/pcre-<VERSION>.tar.gz
-  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR>
+  sqlalchemy
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/SQLAlchemy-${sqlalchemy_native_version}.tar.gz
+  CONFIGURE_COMMAND <VOID>
+  BUILD_COMMAND ${Python_cmd} setup.py build
+  INSTALL_COMMAND ${Lock_cmd}
+          COMMAND ${Python_cmd} setup.py install --prefix <INSTALL_DIR>
+          COMMAND ${Unlock_cmd}
   BUILD_IN_SOURCE 1
+  DEST_NAME pytools
+  DEPENDS Python
 )
 
-#---Swig--------------------------------------------------------------------------------------------
+#---genshi------------------------------------------------------------------------------------------------------
 LCGPackage_Add(
-  swig
-  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/swig-<VERSION>.tar.gz
-  IF <VERSION> VERSION_LESS 2.0.0 THEN
-    CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix=<INSTALL_DIR>
-  ELSE
-    CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix=<INSTALL_DIR> --with-pcre-prefix=${pcre_home} PCRE_LIBS=${pcre_home}/lib/libpcre.a
-    BUILD_COMMAND ${MAKE} CPPFLAGS=-I${pcre_home}/include
-    INSTALL_COMMAND ${MAKE} install
-    DEPENDS pcre
-  ENDIF
- )
-
-#---FastJet-----------------------------------------------------------------------------------------
-LCGPackage_Add(
-  fastjet
-  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/fastjet-${fastjet_native_version}.tar.gz
-  CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix=<INSTALL_DIR> --enable-shared --enable-allplugins
+  genshi
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/Genshi-${genshi_native_version}.tar.gz
+  CONFIGURE_COMMAND <VOID>
+  BUILD_COMMAND ${Python_cmd} setup.py build
+  INSTALL_COMMAND ${Lock_cmd} 
+          COMMAND ${Python_cmd} setup.py install --prefix <INSTALL_DIR>
+          COMMAND ${Unlock_cmd}
+  BUILD_IN_SOURCE 1
+  DEST_NAME pytools
+  DEPENDS Python
 )
 
-#---AIDA--------------------------------------------------------------------------------------------
+#---4suite------------------------------------------------------------------------------------------------------
 LCGPackage_Add(
-  AIDA
-  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/aida-${AIDA_native_version}-src.tar.gz
+  4suite
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/4Suite-XML-${4suite_native_version}.tar.gz
+  CONFIGURE_COMMAND <VOID>
+  BUILD_COMMAND ${Python_cmd} setup.py build
+  INSTALL_COMMAND ${Lock_cmd}
+          COMMAND ${Python_cmd} setup.py install --prefix <INSTALL_DIR>
+          COMMAND ${Unlock_cmd}
+  BUILD_IN_SOURCE 1
+  DEST_NAME pytools
+  DEPENDS Python
+)
+
+#---cx_oracle------------------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  cx_oracle
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/cx_Oracle-${cx_oracle_native_version}.tar.gz
+  CONFIGURE_COMMAND <VOID>
+  BUILD_COMMAND ${Exec_cmd} ORACLE_HOME=${oracle_home} ${Python_cmd} setup.py build
+  INSTALL_COMMAND ${Lock_cmd}
+          COMMAND ${Exec_cmd} ORACLE_HOME=${oracle_home} ${Python_cmd} setup.py install --prefix <INSTALL_DIR>
+          COMMAND ${Unlock_cmd}
+  BUILD_IN_SOURCE 1
+  DEST_NAME pytools
+  DEPENDS Python oracle
+)
+
+#---ipython------------------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  ipython
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/ipython-${ipython_native_version}.tar.gz
+  CONFIGURE_COMMAND <VOID>
+  BUILD_COMMAND ${Python_cmd} setup.py build
+  INSTALL_COMMAND ${Lock_cmd}
+          COMMAND ${Python_cmd} setup.py install --prefix <INSTALL_DIR>
+          COMMAND ${Unlock_cmd}
+  BUILD_IN_SOURCE 1
+  DEST_NAME pytools
+  DEPENDS Python
+)
+
+#---json------------------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  json
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/simplejson-${json_native_version}.tar.gz
+  CONFIGURE_COMMAND <VOID>
+  BUILD_COMMAND ${Python_cmd} setup.py build
+  INSTALL_COMMAND ${Lock_cmd}
+          COMMAND ${Python_cmd} setup.py install --prefix <INSTALL_DIR>
+          COMMAND ${Unlock_cmd}
+  BUILD_IN_SOURCE 1
+  DEST_NAME pytools
+  DEPENDS Python
+)
+
+#---mock------------------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  mock
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/mock-${mock_native_version}.tar.gz
+  CONFIGURE_COMMAND <VOID>
+  BUILD_COMMAND ${Python_cmd} setup.py build
+  INSTALL_COMMAND ${Lock_cmd}
+          COMMAND ${Python_cmd} setup.py install --prefix <INSTALL_DIR>
+          COMMAND ${Unlock_cmd}
+  BUILD_IN_SOURCE 1
+  DEST_NAME pytools
+  DEPENDS Python
+)
+
+#---multiprocessing------------------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  multiprocessing
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/multiprocessing-${multiprocessing_native_version}.tar.gz
+  CONFIGURE_COMMAND <VOID>
+  BUILD_COMMAND ${Python_cmd} setup.py build
+  INSTALL_COMMAND ${Lock_cmd}
+          COMMAND ${Python_cmd} setup.py install --prefix <INSTALL_DIR>
+          COMMAND ${Unlock_cmd}
+  BUILD_IN_SOURCE 1
+  DEST_NAME pytools
+  DEPENDS Python
+)
+
+#---setuptools------------------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  setuptools
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/setuptools-${setuptools_native_version}.tar.gz
+  CONFIGURE_COMMAND <VOID>
+  BUILD_COMMAND ${CMAKE_COMMAND} -E  make_directory <INSTALL_DIR>/lib/python${Python_config_version_twodigit}/site-packages/
+        COMMAND ${Python_cmd} setup.py build
+  INSTALL_COMMAND ${Lock_cmd}
+          COMMAND ${Exec_cmd} PYTHONPATH=${pytools_home}/lib/python${Python_config_version_twodigit}/site-packages
+                  ${Python_cmd} setup.py install --prefix <INSTALL_DIR>
+          COMMAND ${Unlock_cmd} 
+  BUILD_IN_SOURCE 1
+  DEST_NAME pytools
+  DEPENDS Python
+)
+
+#---mysql_python------------------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  mysql_python
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/MySQL-python-${mysql_python_native_version}.tar.gz
+  CONFIGURE_COMMAND <VOID>
+  BUILD_COMMAND ${Exec_cmd} PATH=${mysql_home}/bin:$ENV{PATH} 
+                            PYTHONPATH=${pytools_home}/lib/python${Python_config_version_twodigit}/site-packages
+                ${Python_cmd} setup.py build
+  INSTALL_COMMAND ${Lock_cmd}
+          COMMAND ${Exec_cmd} PATH=${mysql_home}/bin:$ENV{PATH} 
+                              PYTHONPATH=${pytools_home}/lib/python${Python_config_version_twodigit}/site-packages
+                  ${Python_cmd} setup.py install --prefix <INSTALL_DIR>
+          COMMAND ${Unlock_cmd}
+  BUILD_IN_SOURCE 1
+  DEST_NAME pytools 
+  DEPENDS Python setuptools mysql
+)
+
+#---processing------------------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  processing
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/processing-${processing_native_version}.zip
+  CONFIGURE_COMMAND <VOID>
+  BUILD_COMMAND ${Python_cmd} setup.py build
+  INSTALL_COMMAND ${Lock_cmd}
+          COMMAND ${Python_cmd} setup.py install --prefix <INSTALL_DIR>
+          COMMAND ${Unlock_cmd}
+  BUILD_IN_SOURCE 1
+  DEST_NAME pytools
+  DEPENDS Python
+)
+
+#---py------------------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  py
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/py-${py_native_version}.zip
+  CONFIGURE_COMMAND <VOID>
+  BUILD_COMMAND ${Python_cmd} setup.py build
+  INSTALL_COMMAND ${Lock_cmd}
+          COMMAND ${Exec_cmd} PYTHONPATH=${pytools_home}/lib/python${Python_config_version_twodigit}/site-packages
+                              ${Python_cmd} setup.py install --prefix <INSTALL_DIR>
+          COMMAND ${Unlock_cmd}
+  BUILD_IN_SOURCE 1
+  DEST_NAME pytools
+  DEPENDS Python setuptools 
+)
+
+#---py2neo---------------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  py2neo
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/py2neo-${py2neo_native_version}.tar.gz
+  CONFIGURE_COMMAND <VOID>
+  BUILD_COMMAND ${Python_cmd} setup.py build
+  INSTALL_COMMAND ${Lock_cmd}
+          COMMAND ${Exec_cmd} PYTHONPATH=${pytools_home}/lib/python${Python_config_version_twodigit}/site-packages
+                              ${Python_cmd} setup.py install --prefix <INSTALL_DIR>
+          COMMAND ${Unlock_cmd}
+  BUILD_IN_SOURCE 1
+  DEST_NAME pytools
+  DEPENDS Python
+)
+
+#---pyxml------------------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  pyxml
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/PyXML-${pyxml_native_version}.tar.gz
+  CONFIGURE_COMMAND <VOID>
+  BUILD_COMMAND ${Python_cmd} setup.py build
+  INSTALL_COMMAND ${Lock_cmd}
+          COMMAND ${Python_cmd} setup.py install --prefix <INSTALL_DIR>
+          COMMAND ${Unlock_cmd}
+  BUILD_IN_SOURCE 1
+  DEST_NAME pytools
+  DEPENDS Python
+)
+
+#---strom------------------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  storm
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/storm-${storm_native_version}.tar.bz2
+  CONFIGURE_COMMAND <VOID>
+  BUILD_COMMAND ${Python_cmd} setup.py build
+  INSTALL_COMMAND ${Lock_cmd}
+          COMMAND ${Python_cmd} setup.py install --prefix <INSTALL_DIR>
+          COMMAND ${Unlock_cmd}
+  BUILD_IN_SOURCE 1
+  DEST_NAME pytools
+  DEPENDS Python
+)
+
+#---pytest------------------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  pytest
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/pytest-${pytest_native_version}.zip
+  CONFIGURE_COMMAND <VOID>
+  BUILD_COMMAND ${Python_cmd} setup.py build
+  INSTALL_COMMAND ${Lock_cmd}
+          COMMAND ${Exec_cmd} PYTHONPATH=${pytools_home}/lib/python${Python_config_version_twodigit}/site-packages
+                  ${Python_cmd} setup.py install --prefix <INSTALL_DIR>
+          COMMAND ${Unlock_cmd}
+  BUILD_IN_SOURCE 1
+  DEST_NAME pytools
+  DEPENDS Python
+)
+
+#---pylint------------------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  pylint
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/pylint-${pylint_native_version}.tar.gz
+  CONFIGURE_COMMAND <VOID>
+  BUILD_COMMAND ${Python_cmd} setup.py build
+  INSTALL_COMMAND ${Lock_cmd}
+          COMMAND ${Exec_cmd} PYTHONPATH=${pytools_home}/lib/python${Python_config_version_twodigit}/site-packages
+                  ${Python_cmd} setup.py install --prefix <INSTALL_DIR>
+          COMMAND ${Unlock_cmd}
+  BUILD_IN_SOURCE 1
+  DEST_NAME pytools
+  DEPENDS Python
+)
+
+#---nose------------------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  nose
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/nose-${nose_native_version}.tar.gz
+  CONFIGURE_COMMAND <VOID>
+  BUILD_COMMAND ${Python_cmd} setup.py build
+  INSTALL_COMMAND ${Lock_cmd}
+          COMMAND ${Exec_cmd} PYTHONPATH=${pytools_home}/lib/python${Python_config_version_twodigit}/site-packages
+                  ${Python_cmd} setup.py install --prefix <INSTALL_DIR>
+          COMMAND ${Unlock_cmd}
+  BUILD_IN_SOURCE 1
+  DEST_NAME pytools
+  DEPENDS Python
+)
+
+#---coverage------------------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  coverage
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/coverage-${coverage_native_version}.tar.gz
+  CONFIGURE_COMMAND <VOID>
+  BUILD_COMMAND ${Exec_cmd} PYTHONPATH=${pytools_home}/lib/python${Python_config_version_twodigit}/site-packages
+                ${Python_cmd} setup.py build
+  INSTALL_COMMAND ${Lock_cmd}
+          COMMAND ${Exec_cmd} PYTHONPATH=${pytools_home}/lib/python${Python_config_version_twodigit}/site-packages
+                  ${Python_cmd} setup.py install --prefix <INSTALL_DIR>
+          COMMAND ${Unlock_cmd}
+  BUILD_IN_SOURCE 1
+  DEST_NAME pytools
+  DEPENDS Python setuptools
+)
+
+#---stomppy------------------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  stomppy
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/stomp.py-${stomppy_native_version}.tar.gz
+  CONFIGURE_COMMAND <VOID>
+  BUILD_COMMAND ${Exec_cmd} PYTHONPATH=${pytools_home}/lib/python${Python_config_version_twodigit}/site-packages
+                ${Python_cmd} setup.py build
+  INSTALL_COMMAND ${Lock_cmd}
+          COMMAND ${Exec_cmd} PYTHONPATH=${pytools_home}/lib/python${Python_config_version_twodigit}/site-packages
+                  ${Python_cmd} setup.py install --prefix <INSTALL_DIR>
+          COMMAND ${Unlock_cmd}
+  BUILD_IN_SOURCE 1
+  DEST_NAME pytools
+  DEPENDS Python
+)
+
+
+LCGPackage_Add(
+  pytools
+  DOWNLOAD_COMMAND <VOID>
   CONFIGURE_COMMAND <VOID>
   BUILD_COMMAND <VOID>
-  INSTALL_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR> <INSTALL_DIR>
+  INSTALL_COMMAND ${CMAKE_SOURCE_DIR}/pyexternals/Python_postinstall.sh <INSTALL_DIR>
+  BUNDLE_PACKAGE 1
+  DEPENDS lxml sqlalchemy genshi 4suite cx_oracle ipython json mock multiprocessing setuptools mysql_python processing py py2neo pyxml storm pytest pylint nose coverage stomppy
 )
 
-#---QMtest--------------------------------------------------------------------------------------------
+#=================================================================================================================
+#---pyanalysis----------------------------------------------------------------------------------------------------
+# This is only a placeholder where all the sub-packages will be installed
+#=================================================================================================================
+LCGPackage_set_home(pyanalysis)
+
+#---numpy---------------------------------------------------------------------------------------------------------
 LCGPackage_Add(
-  QMtest
-  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/qmtest-${QMtest_config_version}.tar.gz
-  UPDATE_COMMAND ${CMAKE_COMMAND} -E chdir <SOURCE_DIR>/qm/test/classes echo need to change some files
+  numpy
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/numpy-${numpy_native_version}.tar.gz
   CONFIGURE_COMMAND <VOID>
-  BUILD_COMMAND ${Python_home}/bin/python setup.py build
-  INSTALL_COMMAND ${Python_home}/bin/python setup.py install --prefix=<INSTALL_DIR>
-          COMMAND ${CMAKE_SOURCE_DIR}/externals/qmtest_postinstall.sh <INSTALL_DIR>
+  BUILD_COMMAND ${Python_cmd} setup.py build
+  INSTALL_COMMAND ${Lock_cmd}
+          COMMAND ${Python_cmd} setup.py install --prefix <INSTALL_DIR>
+          COMMAND ${Unlock_cmd}
   BUILD_IN_SOURCE 1
+  DEST_NAME pyanalysis
   DEPENDS Python
 )
 
-#---XercesC-------------------------------------------------------------------------------------------
-if(LCG_TARGET MATCHES "i686")
-  set (xerces_config_opts --disable-sse2)
-endif()
-
+#---scipy---------------------------------------------------------------------------------------------------------
 LCGPackage_Add(
-  XercesC
-  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/xerces-c-<XercesC_<NATIVE_VERSION>_author>.tar.gz
-  CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix=<INSTALL_DIR> ${xerces_config_opts}
-)
-
-#---tbb-----------------------------------------------------------------------------------------------
-if(CMAKE_CXX_COMPILER_ID MATCHES Clang)
-  set(tbb_build_options)       # Use default compiler
-else()
-  set(tbb_build_options CPLUS=${CMAKE_CXX_COMPILER} CONLY=${CMAKE_C_COMPILER})
-endif()
-
-LCGPackage_Add(
-  tbb
-  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/tbb${tbb_native_version}oss_src.tgz
+  scipy
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/scipy-${scipy_native_version}.tar.gz
   CONFIGURE_COMMAND <VOID>
-  BUILD_COMMAND make ${tbb_build_options}
-  INSTALL_COMMAND ${CMAKE_COMMAND} -Dinstall_dir=<INSTALL_DIR> -Dsource_dir=<SOURCE_DIR> -P ${CMAKE_SOURCE_DIR}/cmake/scripts/InstallTBB.cmake 
+  BUILD_COMMAND ${Exec_cmd} PYTHONPATH=${pyanalysis_home}/lib/python${Python_config_version_twodigit}/site-packages
+                            BLAS=${blas_home}/lib/libBLAS.a LAPACK=${lapack_home}/lib/libLAPACK.a
+                ${Python_cmd} setup.py build
+  INSTALL_COMMAND ${Lock_cmd}
+          COMMAND ${Exec_cmd} PYTHONPATH=${pyanalysis_home}/lib/python${Python_config_version_twodigit}/site-packages
+                              BLAS=${blas_home}/lib/libBLAS.a LAPACK=${lapack_home}/lib/libLAPACK.a
+                  ${Python_cmd} setup.py install --prefix <INSTALL_DIR>
+          COMMAND ${Unlock_cmd}
   BUILD_IN_SOURCE 1
+  DEST_NAME pyanalysis
+  DEPENDS Python numpy blas lapack
 )
 
-#---GCCXML--------------------------------------------------------------------------------------------
+#---sympy---------------------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  sympy
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/sympy-${sympy_native_version}.tar.gz
+  CONFIGURE_COMMAND <VOID>
+  BUILD_COMMAND ${Python_cmd} setup.py build
+  INSTALL_COMMAND ${Lock_cmd}
+          COMMAND ${Python_cmd} setup.py install --prefix <INSTALL_DIR>
+          COMMAND ${Unlock_cmd}
+  BUILD_IN_SOURCE 1
+  DEST_NAME pyanalysis
+  DEPENDS Python
+)
+
+#---matplotlib----------------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  matplotlib
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/matplotlib-${matplotlib_native_version}.tar.gz
+  CONFIGURE_COMMAND <VOID>
+  BUILD_COMMAND ${Exec_cmd} PYTHONPATH=${pyanalysis_home}/lib/python${Python_config_version_twodigit}/site-packages:${pytools_home}/lib/python${Python_config_version_twodigit}/site-packages
+                ${Python_cmd} setup.py build
+  INSTALL_COMMAND ${Lock_cmd}
+          COMMAND ${Exec_cmd} PYTHONPATH=${pyanalysis_home}/lib/python${Python_config_version_twodigit}/site-packages:${pytools_home}/lib/python${Python_config_version_twodigit}/site-packages
+                  ${Python_cmd} setup.py install --prefix <INSTALL_DIR>
+          COMMAND ${Unlock_cmd}
+  BUILD_IN_SOURCE 1
+  DEST_NAME pyanalysis
+  DEPENDS Python numpy nose
+)
+
+#---pyminuit---------------------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  pyminuit
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/pyminuit2-${pyminuit_native_version}.tar.gz
+  CONFIGURE_COMMAND <VOID>
+  BUILD_COMMAND ${Exec_cmd} PATH=${ROOT_home}/bin:$ENV{PATH} ${Python_cmd} setup.py build
+  INSTALL_COMMAND ${Lock_cmd}
+          COMMAND ${Python_cmd} setup.py install --prefix <INSTALL_DIR>
+          COMMAND ${Unlock_cmd} 
+  BUILD_IN_SOURCE 1
+  DEST_NAME pyanalysis
+  DEPENDS Python ROOT
+)
+
+#---pytz-------------------------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  pytz
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/pytz-${pytz_native_version}.tar.gz
+  CONFIGURE_COMMAND <VOID>
+  BUILD_COMMAND ${Exec_cmd} PATH=${ROOT_home}/bin:$ENV{PATH} ${Python_cmd} setup.py build
+  INSTALL_COMMAND ${Lock_cmd}
+          COMMAND ${Python_cmd} setup.py install --prefix <INSTALL_DIR>
+          COMMAND ${Unlock_cmd}
+  BUILD_IN_SOURCE 1
+  DEST_NAME pyanalysis
+  DEPENDS Python 
+)
+
+#---Add the dependencies now----------------------------------------------------------------------------------------
+LCGPackage_Add(
+  pyanalysis
+  DOWNLOAD_COMMAND <VOID>
+  CONFIGURE_COMMAND <VOID>
+  BUILD_COMMAND <VOID>
+  INSTALL_COMMAND ${CMAKE_SOURCE_DIR}/pyexternals/Python_postinstall.sh <INSTALL_DIR>
+  BUNDLE_PACKAGE 1
+  DEPENDS matplotlib numpy scipy sympy pyminuit pytz
+)
+
+
+#=================================================================================================================
+#---pygraphics----------------------------------------------------------------------------------------------------
+# This is a bundle where all the sub-packages will be installed
+# First we define all sub-packages and in the end the master-package
+#=================================================================================================================
+LCGPackage_set_home(pygraphics)
+
+#---pydot------------------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  pydot
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/pydot-${pydot_native_version}.tar.gz
+  CONFIGURE_COMMAND <VOID>
+  BUILD_COMMAND ${Python_cmd} setup.py build
+  INSTALL_COMMAND ${Lock_cmd}
+          COMMAND ${Python_cmd} setup.py install --prefix <INSTALL_DIR>
+          COMMAND ${Unlock_cmd}
+  BUILD_IN_SOURCE 1
+  DEST_NAME pygraphics
+  DEPENDS Python
+)
+
+#---pyparsing------------------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  pyparsing
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/pyparsing-${pyparsing_native_version}.tar.gz
+  CONFIGURE_COMMAND <VOID>
+  BUILD_COMMAND ${Python_cmd} setup.py build
+  INSTALL_COMMAND ${Lock_cmd}
+          COMMAND ${Python_cmd} setup.py install --prefix <INSTALL_DIR>
+          COMMAND ${Unlock_cmd}
+  BUILD_IN_SOURCE 1
+  DEST_NAME pygraphics
+  DEPENDS Python
+)
+
+#---sip------------------------------------------------------------------------------------------------------
+if(LCG_TARGET MATCHES i386-mac)
+  set(sip_compile_options -p darwin-g++ CFLAGS=-m32 CXXFLAGS=-m32 CC=gcc CXX=g++ LINK=g++)
+elseif(LCG_TARGET MATCHES x86_64-mac)
+  set(sip_compile_options --arch=x86_64)
+elseif(LCG_TARGET MATCHES slc|ubuntu AND LCG_TARGET MATCHES x86_64)
+  set(sip_compile_options -p linux-g++-64)
+elseif(LCG_TARGET MATCHES slc|ubuntu AND LCG_TARGET MATCHES i686)
+  set(sip_compile_options -p linux-g++-32)
+endif()
+if (APPLE) 
+  set (Python_cmd_sip ${PythonFW_cmd})
+else()
+  set (Python_cmd_sip ${Python_cmd})
+endif()
+LCGPackage_Add(
+  sip
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/sip-${sip_native_version}.tar.gz
+  CONFIGURE_COMMAND ${Python_cmd_sip} configure.py -b <INSTALL_DIR>/bin 
+                                               -d <INSTALL_DIR>/lib/python${Python_config_version_twodigit}/site-packages 
+                                               -e <INSTALL_DIR>/include/python${Python_config_version_twodigit} 
+                                               -v ${sip_home}/share/sip ${sip_compile_options}
+  BUILD_IN_SOURCE 1
+  DEST_NAME pygraphics
+  DEPENDS Python
+)
+#---pyqt------------------------------------------------------------------------------------------------------
 if(APPLE)
-  set(GCCXML_config_options -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++) # problems compiling with clang
-endif()
-LCGPackage_Add(
-  GCCXML
-  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/gccxml-${GCCXML_native_version}.tar.gz
-  CMAKE_ARGS -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR> ${GCCXML_config_options}
-  INSTALL_COMMAND ${MAKE} -j1 install
-          COMMAND ${CMAKE_SOURCE_DIR}/externals/GCCXML_postinstall.sh <INSTALL_DIR>
-)
-
-#---uuid--------------------------------------------------------------------------------------------
-if(APPLE)
-  set(uuid_config_options  --enable-bsd-shlibs --build=x86_64-apple-darwin10.8.0)
+  set(pyqt_platform mac)
+  set(Python_cmd_pyqt ${PythonFW_cmd})
 else()
-  set(uuid_config_options  --enable-elf-shlibs )
+  set(pyqt_platform x11)
+  set(Python_cmd_pyqt ${Python_cmd})
 endif()
-
 LCGPackage_Add(
-  uuid
-  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/e2fsprogs-${uuid_native_version}.tar.gz
-  CONFIGURE_COMMAND ./configure --prefix <INSTALL_DIR> ${uuid_config_options}
-  BUILD_COMMAND make -j1 -C lib/uuid
-  INSTALL_COMMAND ${CMAKE_COMMAND} -E make_directory <INSTALL_DIR>/lib
-          COMMAND make -j1 -C lib/uuid install
+  pyqt
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/PyQt-${pyqt_platform}-gpl-${pyqt_native_version}.tar.gz
+  CONFIGURE_COMMAND ${Exec_cmd} PYTHONPATH=${pygraphics_home}/lib/python${Python_config_version_twodigit}/site-packages
+                    ${Python_cmd_pyqt} configure.py -b <INSTALL_DIR>/bin
+                                               -d <INSTALL_DIR>/lib/python${Python_config_version_twodigit}/site-packages
+                                               -l ${Python_home}/include/python${Python_config_version_twodigit} 
+                                               -m ${Python_home}/lib/python${Python_config_version_twodigit}/config
+                                               -q ${Qt_home}/bin/qmake 
+                                               -v <INSTALL_DIR>/share/sip/PyQt4
+                                               -p <INSTALL_DIR>/plugins --verbose --confirm-license
+
   BUILD_IN_SOURCE 1
+  DEST_NAME pygraphics
+  DEPENDS Python Qt sip
 )
 
-#---CppUnit--------------------------------------------------------------------------------------------
 LCGPackage_Add(
-  CppUnit
-  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/cppunit-<CppUnit_<NATIVE_VERSION>_author>.tar.gz
-  CONFIGURE_COMMAND ./configure --prefix <INSTALL_DIR> ${libtoolpatch}
-            COMMAND echo to ignore the status code
-  BUILD_IN_SOURCE 1
-)
-
-#---tcmalloc--------------------------------------------------------------------------------------------
-if(NOT APPLE) # There are problems building on MacOSX
-  if(LCG_TARGET MATCHES "x86_64")
-    set(tcmalloc_config_options "--enable-frame-pointers")
-  endif()
-  LCGPackage_Add(
-    tcmalloc
-    URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/google-perftools-${tcmalloc_native_version}.tar.gz
-    CONFIGURE_COMMAND ./configure --prefix <INSTALL_DIR> ${tcmalloc_config_options}
-    BUILD_IN_SOURCE 1
-  )
-else()
-  add_custom_target(tcmalloc ALL COMMENT "Dummy tcmalloc target")
-endif()
-
-#---graphviz--------------------------------------------------------------------------------------------
-if(LCG_TARGET MATCHES mac108)
-  set (graphviz_config_opts -with-pic -enable-swig=no --with-qt=no --with-included-ltdl)
-else ()
-  set(graphviz_config_opts -with-pic -enable-swig=no --with-qt=no )
-endif()
-if(LCG_TARGET MATCHES "i686")
-  list(APPEND graphviz_config_opts --build=i686-unknown-linux-gnu)
-endif()
-if (LCG_TARGET MATCHES "icc" AND LCG_TARGET MATCHES "slc6")
-   set(graphviz_config_opts CC=gcc CXX=g++)
-endif()
-if(LCG_OS STREQUAL mac AND LCG_OSVERS VERSION_EQUAL 108)
-  set(graphviz_build_opts CFLAGS=-I/usr/X11/include)
-endif()
-LCGPackage_Add(
-  graphviz
-  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/graphviz-${graphviz_native_version}.tar.gz
-  CONFIGURE_COMMAND ./configure --prefix <INSTALL_DIR> ${graphviz_config_opts}
-  BUILD_COMMAND make ${graphviz_build_opts}
-  BUILD_IN_SOURCE 1
-)
-
-#---mysql------------------------------------------------------------------------------------------------
-LCGPackage_Add(
-  mysql
-  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/mysql-${mysql_native_version}.tar.gz
-  CMAKE_ARGS -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
-             -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
-)
-
-#---blas------------------------------------------------------------------------------------------------
-LCGPackage_Add(
-  blas
-  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/blas-${blas_native_version}.tgz
+  pygraphics
+  DOWNLOAD_COMMAND <VOID>
   CONFIGURE_COMMAND <VOID>
-  BUILD_COMMAND make FORTRAN=${CMAKE_Fortran_COMPILER}  "OPTS=-O3 -fPIC"  BLASLIB=libBLAS.a
-  INSTALL_COMMAND ${CMAKE_COMMAND} -E make_directory <INSTALL_DIR>/lib
-          COMMAND ${CMAKE_COMMAND} -E copy <SOURCE_DIR>/libBLAS.a <INSTALL_DIR>/lib/.
-  BUILD_IN_SOURCE 1
-
+  BUILD_COMMAND <VOID>
+  INSTALL_COMMAND <VOID>
+  BUNDLE_PACKAGE 1
+  DEPENDS pydot pyparsing sip pyqt
 )
 
-#---lapack------------------------------------------------------------------------------------------------
-if (LCG_TARGET MATCHES "icc" AND LCG_TARGET MATCHES "slc6")
-   set(lapack_fortran_compiler  gfortran )
-else()
-   set(lapack_fortran_compiler ${CMAKE_Fortran_COMPILER} )
-endif()
-
+#---libsvm------------------------------------------------------------------------------------------------------
 LCGPackage_Add(
-  lapack
-  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/lapack-${lapack_native_version}.tgz
-  UPDATE_COMMAND ${CMAKE_COMMAND} -E touch <SOURCE_DIR>/make.inc
+  libsvm
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/libsvm-${libsvm_native_version}.tar.gz
   CONFIGURE_COMMAND <VOID>
-  BUILD_COMMAND make FORTRAN=${lapack_fortran_compiler} 
-                     "OPTS=-O3 -fPIC"  "DRVOPTS=-O3 -fPIC" "NOOPT=-fPIC"
-                     LOADER=${lapack_fortran_compiler} TIMER=INT_ETIME
-                     ARCH=ar ARCHFLAGS=cr RANLIB=ranlib
-                     BLASLIB=${blas_home}/lib/libBLAS.a LAPACKLIB=libLAPACK.a
-                     SHELL=/bin/sh
-                     TMGLIB=tmglib.a EIGSRCLIB=eigsrc.a LINSRCLIB=linsrc.a
-                     lapacklib
- INSTALL_COMMAND ${CMAKE_COMMAND} -E make_directory <INSTALL_DIR>/lib
-         COMMAND ${CMAKE_COMMAND} -E copy <SOURCE_DIR>/libLAPACK.a <INSTALL_DIR>/lib/.
+  BUILD_COMMAND make
+        COMMAND make PYTHON_INCLUDEDIR=${Python_home}/include/python${Python_config_version_twodigit} 
+                     -C python all LDFLAGS=\ -shared\ -L${Python_home}/lib\ -lpython${Python_config_version_twodigit}
+  INSTALL_COMMAND ${Lock_cmd}
+          COMMAND ${CMAKE_COMMAND} -E make_directory <INSTALL_DIR>/bin
+          COMMAND cp svm-train svm-predict svm-scale <INSTALL_DIR>/bin
+          COMMAND ${CMAKE_COMMAND} -E make_directory <INSTALL_DIR>/include
+          COMMAND ${CMAKE_COMMAND} -E copy svm.h <INSTALL_DIR>/include
+          COMMAND ${CMAKE_COMMAND} -E make_directory <INSTALL_DIR>/src
+          COMMAND ${CMAKE_COMMAND} -E copy svm.cpp <INSTALL_DIR>/src
+          COMMAND ${CMAKE_COMMAND} -E make_directory <INSTALL_DIR>/python
+          COMMAND cp python/svmc.so python/svm.py python/svm_test.py python/README <INSTALL_DIR>/python
+          COMMAND cp -r README tools <INSTALL_DIR>
+          COMMAND ${Unlock_cmd}
   BUILD_IN_SOURCE 1
-  DEPENDS blas
+  DEPENDS Python 
 )
 
-#---Qt---------------------------------------------------------------------------------------------------
-if(LCG_TARGET MATCHES mac)
-  set(Qt_extra_config_opts -no-pch)
-endif()
-if(LCG_TARGET MATCHES "icc" AND LCG_TARGET MATCHES "slc6")
-  set(Qt_extra_config_opts -platform linux-icc -L/afs/cern.ch/sw/IntelSoftware/linux/x86_64/xe2013/composer_xe_2013_sp1.1.106/compiler/lib/intel64)
-endif()
-
+#---minuit------------------------------------------------------------------------------------------------------
 LCGPackage_Add(
-  Qt
-  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/qt-everywhere-opensource-src-${Qt_native_version}.tar.gz
-  CONFIGURE_COMMAND ./configure ${Qt_extra_config_opts} -no-separate-debug-info -release --prefix=<INSTALL_DIR> 
-                    -nomake examples -nomake demos --opensource --confirm-license -fast -qt3support
-  INSTALL_COMMAND ${MAKE} -j1 install
-          COMMAND ${CMAKE_SOURCE_DIR}/externals/Qt_postinstall.sh <INSTALL_DIR> 
-  BUILD_IN_SOURCE 1
-)
-
-#---qwt--------------------------------------------------------------------------------------------------
-LCGPackage_Add(
-  qwt
-  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/qwt-${qwt_native_version}.tar.bz2
-  CONFIGURE_COMMAND ${Qt_home}/bin/qmake QWT_INSTALL_PREFIX=<INSTALL_DIR>
-  BUILD_IN_SOURCE 1
-  DEPENDS Qt
-)
-#---coin3d-----------------------------------------------------------------------------------------------
-if(LCG_TARGET MATCHES "mac")
-  set(coin3d_config_opts --without-framework)
-endif()
-
-LCGPackage_Add(
-  coin3d
-  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/Coin-${coin3d_native_version}.tar.gz
-  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --enable-debug=no --enable-symbols=no ${coin3d_config_opts} ${libtoolpatch}
-  BUILD_COMMAND  make
-  BUILD_IN_SOURCE 1
-)
-
-#---doxygen----------------------------------------------------------------------------------------------
-LCGPackage_Add(
-  doxygen
-  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/doxygen-${doxygen_native_version}.src.tar.gz
-  CONFIGURE_COMMAND ./configure --dot ${graphviz_home}/bin/dot --prefix <INSTALL_DIR>
-  BUILD_IN_SOURCE 1
-  DEPENDS graphviz
-)
-
-#---expat------------------------------------------------------------------------------------------------
-LCGPackage_Add(
-  expat
-  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/expat-${expat_native_version}.tar.gz
+  minuit
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/Minuit2-${minuit_native_version}.tar.gz
   CONFIGURE_COMMAND ./configure --prefix <INSTALL_DIR>
-  BUILD_COMMAND ${MAKE} CFLAGS=-fPIC
   BUILD_IN_SOURCE 1
+  DEPENDS Python pyanalysis
 )
 
-#---pacparser------------------------------------------------------------------------------------------------
+#---pygsi-------------------------------------------------------------------------------------------------------
 LCGPackage_Add(
-  pacparser
-  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/pacparser-${pacparser_native_version}.tar.gz
+  pygsi
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/pygsi-${pygsi_native_version}.tar.gz
   CONFIGURE_COMMAND <VOID>
-  BUILD_COMMAND  make -j1 -C src
-  INSTALL_COMMAND make -j1 PREFIX=<INSTALL_DIR> -C src install
+  BUILD_COMMAND ${Lock_cmd}
+	COMMAND ${Exec_cmd} PYTHONPATH=${pytools_home}/lib/python${Python_config_version_twodigit}/site-packages
+                  ${Python_cmd} setup.py build
+	COMMAND ${Unlock_cmd}
+  INSTALL_COMMAND mkdir -p <INSTALL_DIR>/lib/python${Python_config_version_twodigit}/site-packages/
+          COMMAND ${Exec_cmd} PYTHONPATH=${pytools_home}/lib/python${Python_config_version_twodigit}/site-packages:<INSTALL_DIR>/lib/python${Python_config_version_twodigit}/site-packages ${Python_cmd} setup.py install --prefix <INSTALL_DIR>
   BUILD_IN_SOURCE 1
+  DEPENDS Python pytools
 )
 
-
-
-#---Frontier_Client--------------------------------------------------------------------------------------
-# Frontier_Client depends on additional package - pacparser
-# starting on version 2.8.6
-
-set(dep_Frontier_Client expat)
-if( ${Frontier_Client_native_version} VERSION_GREATER 2.8.6 )
-      set(dep_Frontier_Client expat pacparser)
-endif()
-
+#---xroot_python------------------------------------------------------------------------------------------------
 LCGPackage_Add(
-  Frontier_Client
-  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/frontier_client__${Frontier_Client_native_version}__src.tar.gz
+  xrootd_python
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/xrootd-python-${xrootd_python_native_version}.tar.gz
   CONFIGURE_COMMAND <VOID>
-  BUILD_COMMAND make -j1 dist PACPARSER_DIR=${pacparser_home} EXPAT_DIR=${expat_home} ${library_path}=${expat_home}/lib:$ENV{${library_path}}
-  INSTALL_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/dist <INSTALL_DIR>
+  BUILD_COMMAND ${Lock_cmd}  
+        COMMAND ${Exec_cmd} XRD_LIBDIR=${xrootd_home}/${LCG_LIBDIR_DEFAULT}
+                              XRD_INCDIR=${xrootd_home}/include/xrootd
+                  ${Python_cmd} setup.py build
+        COMMAND ${Unlock_cmd}
+  INSTALL_COMMAND mkdir -p <INSTALL_DIR>/lib/python${Python_config_version_twodigit}/site-packages/
+          COMMAND ${Python_cmd} setup.py install --prefix <INSTALL_DIR>
   BUILD_IN_SOURCE 1
-  DEPENDS ${dep_Frontier_Client}
+  DEPENDS Python xrootd
 )
-
-#---lcov-------------------------------------------------------------------------------------------------
-if(NOT APPLE) # There are problems building on MacOSX
-  LCGPackage_Add(
-    lcov
-    URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/lcov-${lcov_native_version}.tar.gz
-    CONFIGURE_COMMAND <VOID>
-    BUILD_COMMAND  <VOID>
-    INSTALL_COMMAND make install PREFIX=<INSTALL_DIR>
-          COMMAND ${CMAKE_COMMAND} -E copy_directory <INSTALL_DIR>/usr/bin <INSTALL_DIR>/bin
-          COMMAND ${CMAKE_COMMAND} -E copy_directory <INSTALL_DIR>/usr/share/man <INSTALL_DIR>/man 
-          COMMAND ${CMAKE_COMMAND} -E remove_directory <INSTALL_DIR>/usr/share
-          COMMAND ${CMAKE_COMMAND} -E remove_directory <INSTALL_DIR>/usr/
-    BUILD_IN_SOURCE 1
-  ) 
-endif()
-
-#---soqt-------------------------------------------------------------------------------------------------
-LCGPackage_Add(
-  soqt
-  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/SoQt-${soqt_native_version}.tar.gz
-  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --enable-debug=no --enable-symbols=no --with-coin=${coin3d_home} --with-qt=${Qt_home} QTDIR=${Qt_home}
-  BUILD_COMMAND  make CONFIG_QTLIBS='-lQt3Support -lQtCore' QTDIR=${Qt_home} COINDIR=${coin3d_home} 
-  BUILD_IN_SOURCE 1
-  DEPENDS coin3d Qt
-)
-
-#---libtool----------------------------------------------------------------------------------------------
-LCGPackage_Add(
-  libtool
-  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/libtool-${libtool_native_version}.tar.gz
-  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR>
-  BUILD_IN_SOURCE 1
-)
-
-#---libunwind--------------------------------------------------------------------------------------------
-LCGPackage_Add(
-  libunwind
-  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/libunwind-${libunwind_native_version}.tar.gz
-  CONFIGURE_COMMAND autoreconf -i
-            COMMAND ./configure --prefix=<INSTALL_DIR> CC=${CMAKE_C_COMPILER} CXX=${CMAKE_CXX_COMPILER}
-  BUILD_COMMAND  make CFLAGS=-fPIC
-  BUILD_IN_SOURCE 1
-)
-
-#---neurobayes-------------------------------------------------------------------------------------------
-LCGPackage_Add(
-  neurobayes
-  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/neurobayes-${neurobayes_native_version}.tar.gz
-  CONFIGURE_COMMAND <VOID>
-  BUILD_COMMAND <VOID>
-  INSTALL_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR> <INSTALL_DIR>
-  BUILD_IN_SOURCE 1
-  BINARY_PACKAGE 1
-)
-
-#---neurobayes_expert------------------------------------------------------------------------------------
-LCGPackage_Add(
-  neurobayes_expert
-  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/neurobayes_expert-${neurobayes_expert_native_version}.tar.gz
-  CONFIGURE_COMMAND <VOID>
-  BUILD_COMMAND <VOID>
-  INSTALL_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR> <INSTALL_DIR>
-  BUILD_IN_SOURCE 1
-  BINARY_PACKAGE 1
-)
-
-#---openmpi-----------------------------------------------------------------------------------------------
-LCGPackage_Add(
-  openmpi
-  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/openmpi-${openmpi_native_version}.tar.gz
-  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR>
-  BUILD_COMMAND ${MAKE} 
-  BUILD_IN_SOURCE 1
-)
-
-
-LCGPackage_Add(
-  mpich2
-  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/mpich2-${mpich2_native_version}.tar.gz
-  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --enable-shared --enable-sharedlibs=gcc --with-pm=mpd "CFLAGS=-O2 -g0 -fPIC"
-  BUILD_COMMAND ${MAKE} all
-  BUILD_IN_SOURCE 1
-)
-
-
-
-
-#---oracle-----------------------------------------------------------------------------------------------
-LCGPackage_Add(
-  oracle
-  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/oracle-${oracle_native_version}-${LCG_ARCH}.tar.gz
-  CONFIGURE_COMMAND <VOID>
-  BUILD_COMMAND <VOID>
-  INSTALL_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR> <INSTALL_DIR>
-  BUILD_IN_SOURCE 1
-  BINARY_PACKAGE 1
-)
-
-#---fftw------------------------------------------------------------------------------------------------
-LCGPackage_Add(
-  fftw
-  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/fftw-${fftw_native_version}.tar.gz
-  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR>  --enable-shared
-  BUILD_COMMAND make CFLAGS=-fPIC
-  BUILD_IN_SOURCE 1
-)
-
-#---igprof----------------------------------------------------------------------------------------------
-LCGPackage_Add(
-  igprof
-  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/igprof-${igprof_native_version}.tar.gz
-  CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR> 
-             -DUNWIND_INCLUDE_DIR:PATH=${libunwind_home}/include
-             -DUNWIND_LIBRARY:FILEPATH=${libunwind_home}/lib/libunwind.so
-             -DCMAKE_CXX_FLAGS=-Wno-unused-variable
-  DEPENDS libunwind
-)
-
-#---valgrind--------------------------------------------------------------------------------------------
-if(LCG_TARGET MATCHES mac108)
-  set (valgrind_build_opts CFLAGS=-Wno-error=unused-command-line-argument-hard-error-in-future)
-endif()
-LCGPackage_Add(
-  valgrind
-  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/valgrind-${valgrind_native_version}.tar.bz2
-  CONFIGURE_COMMAND chmod +x ./configure 
-            COMMAND ./configure --prefix=<INSTALL_DIR> 
-  BUILD_COMMAND make ${valgrind_build_opts}
-  BUILD_IN_SOURCE 1
-)
-
-#---vdt-------------------------------------------------------------------------------------------------
-LCGPackage_Add(
-  vdt
-  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/vdt-${vdt_native_version}.tar.gz
-  CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
-  BUILD_IN_SOURCE 1
-)
-
-# Depends on KDE; bad idea to have it as part of the externals
-#---kcachegrind------------------------------------------------------------------------------------------
-#LCGPackage_Add(
-#  kcachegrind
-#  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/kcachegrind-${kcachegrind_native_version}.tar.gz
-#  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR>
-#  BUILD_IN_SOURCE 1
-#)
-
-
-#---xqilla----------------------------------------------------------------------------------------------
-set(xqilla_CXXFLAGS "${CMAKE_CXX_FLAGS} -fpermissive")
-LCGPackage_Add(
-  xqilla
-  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/XQilla-${xqilla_native_version}.tar.gz
-  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> 
-                                --with-xerces=${XercesC_home} 
-                                --disable-rpath
-  BUILD_COMMAND make CXXFLAGS=${xqilla_CXXFLAGS}
-  BUILD_IN_SOURCE 1
-  DEPENDS XercesC
-)
-
-#---xrootd----------------------------------------------------------------------------------------------
-LCGPackage_Add(
-  xrootd
-  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/xrootd-${xrootd_native_version}.tar.gz
-  CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR> -DENABLE_PERL=FALSE -DENABLE_FUSE=FALSE -DENABLE_CRYPTO=TRUE -DENABLE_KRB5=TRUE -DENABLE_READLINE=TRUE
-)
-
-
-#---ftjam------------------------------------------------------------------------------------------------
-LCGPackage_Add(
-  ftjam
-  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/ftjam-${ftjam_native_version}.zip
-  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR>
-  BUILD_COMMAND ${MAKE}
-  INSTALL_COMMAND ${MAKE} install
-  BUILD_IN_SOURCE 1
-)
-
-#---omniORB------------------------------------------------------------------------------------------------
-LCGPackage_Add(
-  omniorb
-  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/omniORB-${omniorb_native_version}.tar.bz2
-  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR>
-  BUILD_COMMAND ${MAKE} CPPFLAGS=-I${Python_home}/include
-  INSTALL_COMMAND ${MAKE} install
-  BUILD_IN_SOURCE 1
-  DEPENDS Python
-)
-
