@@ -83,7 +83,7 @@ LCGPackage_Add(
 )
 
 #---ipython------------------------------------------------------------------------------------------------------
-CGPackage_Add(
+LCGPackage_Add(
   ipython
   URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/ipython-${ipython_native_version}.tar.gz
   CONFIGURE_COMMAND <VOID>
