@@ -71,5 +71,7 @@ elif [[ $COMPILER == *clang* ]]; then
   export CC=`which clang`
   export CXX=`which clang++`
 elif [[ $COMPILER == *native* ]]; then
-  echo nothing
+  export CC=`which cc`
+  export CXX=`which c++`
+  export FC=`which gfortran`
 fi
