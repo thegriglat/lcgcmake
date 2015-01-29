@@ -7,30 +7,27 @@ LCGPackage_Add(
   BUILD_IN_SOURCE 1
 #  DEPENDS Python
 )
-#---gmp-----------------------------------------------------------------------------------------------
-LCGPackage_Add(
-  gmp
-  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/gmp-${gmp_native_version}.tar.bz2
-  CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix=<INSTALL_DIR> --enable-shared
-  BUILD_COMMAND  make
-  INSTALL_COMMAND make check
 
-)
+if(APPLE)
+  execute_process(COMMAND sw_vers -productVersion
+                  COMMAND cut -d . -f 1-2
+                  OUTPUT_VARIABLE MACOSX_VERSION OUTPUT_STRIP_TRAILING_WHITESPACE)
+endif()
+
 #---PythonFWK (only for MAC) --------------------------------------------------------------------------------------------
 LCGPackage_set_home(Python)
 if (APPLE)
-  string(REGEX REPLACE "([0-9]+)([0-9])" \\1.\\2 macvers ${LCG_HOST_OSVERS})
-  set(Python_config_options MACOSX_DEPLOYMENT_TARGET=${macvers})
+  set(Python_config_options MACOSX_DEPLOYMENT_TARGET=${MACOSX_VERSION})
   LCGPackage_Add(
     PythonFWK
     URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/Python-${Python_native_version}.tgz
-    CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix=<INSTALL_DIR> DYNLOADFILE=dynload_shlib.o
-                                             --enable-framework=<INSTALL_DIR>/Library/Frameworks
-                                             --exec-prefix=<INSTALL_DIR>/Library/Frameworks/Python.framework/Versions/Current
+    CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix=<INSTALL_DIR> DYNLOADFILE=dynload_shlib.o 
+                                             --enable-framework=<INSTALL_DIR>/Library/Frameworks 
+                                             --exec-prefix=<INSTALL_DIR>/Library/Frameworks/Python.framework/Versions/Current 
                                              --enable-unicode=ucs4 ${Python_config_options}
     BUILD_COMMAND ${MAKE} -j1
     INSTALL_COMMAND ${MAKE} -j1 install
-                  COMMAND rm -rf <INSTALL_DIR>/bin
+	          COMMAND rm -rf <INSTALL_DIR>/bin
     DEST_NAME Python
   )
 endif()
@@ -47,8 +44,7 @@ endif()
 if(LCG_TARGET MATCHES "slc" OR LCG_TARGET MATCHES "ubuntu")
   set(Python_config_options --enable-shared "LDFLAGS=-Wl,-rpath,'$$ORIGIN/../lib'")
 elseif(LCG_TARGET MATCHES "mac")
-  string(REGEX REPLACE "([0-9]+)([0-9])" \\1.\\2 macvers ${LCG_HOST_OSVERS})
-  set(Python_config_options --enable-shared MACOSX_DEPLOYMENT_TARGET=${macvers} LDFLAGS=-L/usr/local/lib)
+  set(Python_config_options --enable-shared MACOSX_DEPLOYMENT_TARGET=${MACOSX_VERSION} LDFLAGS=-L/usr/local/lib)
   set(Python_deps PythonFWK)
 else()
   set(Python_config_options --enable-shared)
@@ -65,7 +61,7 @@ LCGPackage_Add(
   URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/Python-${Python_native_version}.tgz
   CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix=<INSTALL_DIR> --enable-unicode=ucs4 ${Python_config_options} CPPFLAGS=-I${sqlite_home}/include
   INSTALL_COMMAND ${MAKE} -j1 install
-          COMMAND ${CMAKE_SOURCE_DIR}/externals/Python_postinstall.sh <INSTALL_DIR>
+          COMMAND ${CMAKE_SOURCE_DIR}/externals/Python_postinstall.sh <INSTALL_DIR> 
   DEPENDS ${Python_deps} sqlite
 )
 
@@ -111,7 +107,7 @@ LCGPackage_Add(
   Boost
   URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/boost_${Boost_file_version}.tar.gz
   CONFIGURE_COMMAND <SOURCE_DIR>/bootstrap.sh ${Boost_bootstrap_options} --with-toolset=${Boost_toolset}
-  BUILD_COMMAND <SOURCE_DIR>/b2 ${Boost_jam_options} ${Boost_compile_options} --debug-configuration
+  BUILD_COMMAND <SOURCE_DIR>/b2 ${Boost_jam_options} ${Boost_compile_options} --debug-configuration 
                 --toolset=${Boost_toolset} --user-config=${CMAKE_CURRENT_BINARY_DIR}/user-config.jam
   INSTALL_COMMAND <SOURCE_DIR>/b2 ${Boost_jam_options} ${Boost_compile_options} --toolset=${Boost_toolset}
                 --prefix=<INSTALL_DIR> install --user-config=${CMAKE_CURRENT_BINARY_DIR}/user-config.jam
@@ -130,7 +126,7 @@ LCGPackage_Add(
   CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix <INSTALL_DIR> ${GSL_config_options} CC=${CMAKE_C_COMPILER} CFLAGS=-O2
   BUILD_COMMAND ${MAKE}
   INSTALL_COMMAND ${MAKE} install
-          COMMAND $ENV{SHELL} -c "rm -f <INSTALL_DIR>/lib/*.la"
+          COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/GSL_postinstall.sh <INSTALL_DIR>
   BUILD_IN_SOURCE 1 )
 
 #---CLHEP--------------------------------------------------------------------------------------------
@@ -143,8 +139,8 @@ LCGPackage_Add(
   IF <VERSION> VERSION_LESS 2.1.0 THEN
     CONFIGURE_COMMAND <SOURCE_DIR>/CLHEP/configure --prefix <INSTALL_DIR> ${CLHEP_config_options}
   ELSE
-    CONFIGURE_COMMAND ${CMAKE_COMMAND} -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
-                                       -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+    CONFIGURE_COMMAND ${CMAKE_COMMAND} -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR> 
+                                       -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} 
                                        <SOURCE_DIR>/CLHEP
   ENDIF
 )
@@ -157,7 +153,7 @@ LCGPackage_Add(
                                        -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
                                        -DBOOST_ROOT:PATHNAME=${Boost_home}
                                        -DBOOST_INCLUDEDIR=${Boost_home}/include
-                                       -DBOOST_LIBRARYDIR=${Boost_home}/lib
+                                       -DBOOST_LIBRARYDIR=${Boost_home}/lib 
                                        -DBoost_NO_BOOST_CMAKE=True
                                        <SOURCE_DIR>
   DEPENDS Boost
@@ -168,7 +164,7 @@ if(LCG_TARGET MATCHES i686)
   set(HepMC_config_options --build=i686-unknown-linux-gnu)
 endif()
 if( ${HepMC_native_version} VERSION_EQUAL githead)
-  set(HepMC_source_command GIT_REPOSITORY http://git.cern.ch/pub/HepMC UPDATE_COMMAND <VOID>)
+  set(HepMC_source_command GIT_REPOSITORY http://git.cern.ch/pub/HepMC UPDATE_COMMAND <VOID>) 
 else()
   set(HepMC_source_command URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/HepMC-${HepMC_native_version}.tar.gz)
 endif()
@@ -226,7 +222,6 @@ LCGPackage_Add(
 )
 
 
-
 #---HepPDT-------------------------------------------------------------------------------------------
 LCGPackage_Add(
   HepPDT
@@ -256,7 +251,7 @@ LCGPackage_Add(
   ENDIF
  )
 
----FastJet-----------------------------------------------------------------------------------------
+#---FastJet-----------------------------------------------------------------------------------------
 LCGPackage_Add(
   fastjet
   URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/fastjet-${fastjet_native_version}.tar.gz
@@ -286,10 +281,14 @@ LCGPackage_Add(
 )
 
 #---XercesC-------------------------------------------------------------------------------------------
+if(LCG_TARGET MATCHES "i686")
+  set (xerces_config_opts --disable-sse2)
+endif()
+
 LCGPackage_Add(
   XercesC
   URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/xerces-c-<XercesC_<NATIVE_VERSION>_author>.tar.gz
-  CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix=<INSTALL_DIR>
+  CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix=<INSTALL_DIR> ${xerces_config_opts}
 )
 
 #---tbb-----------------------------------------------------------------------------------------------
@@ -304,7 +303,7 @@ LCGPackage_Add(
   URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/tbb${tbb_native_version}oss_src.tgz
   CONFIGURE_COMMAND <VOID>
   BUILD_COMMAND make ${tbb_build_options}
-  INSTALL_COMMAND ${CMAKE_COMMAND} -Dinstall_dir=<INSTALL_DIR> -Dsource_dir=<SOURCE_DIR> -P ${CMAKE_SOURCE_DIR}/cmake/scripts/InstallTBB.cmake
+  INSTALL_COMMAND ${CMAKE_COMMAND} -Dinstall_dir=<INSTALL_DIR> -Dsource_dir=<SOURCE_DIR> -P ${CMAKE_SOURCE_DIR}/cmake/scripts/InstallTBB.cmake 
   BUILD_IN_SOURCE 1
 )
 
@@ -384,7 +383,6 @@ LCGPackage_Add(
   BUILD_IN_SOURCE 1
 )
 
-
 #---mysql------------------------------------------------------------------------------------------------
 LCGPackage_Add(
   mysql
@@ -405,7 +403,6 @@ LCGPackage_Add(
 
 )
 
-
 #---lapack------------------------------------------------------------------------------------------------
 if (LCG_TARGET MATCHES "icc" AND LCG_TARGET MATCHES "slc6")
    set(lapack_fortran_compiler  gfortran )
@@ -418,7 +415,7 @@ LCGPackage_Add(
   URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/lapack-${lapack_native_version}.tgz
   UPDATE_COMMAND ${CMAKE_COMMAND} -E touch <SOURCE_DIR>/make.inc
   CONFIGURE_COMMAND <VOID>
-  BUILD_COMMAND make FORTRAN=${lapack_fortran_compiler}
+  BUILD_COMMAND make FORTRAN=${lapack_fortran_compiler} 
                      "OPTS=-O3 -fPIC"  "DRVOPTS=-O3 -fPIC" "NOOPT=-fPIC"
                      LOADER=${lapack_fortran_compiler} TIMER=INT_ETIME
                      ARCH=ar ARCHFLAGS=cr RANLIB=ranlib
@@ -443,10 +440,10 @@ endif()
 LCGPackage_Add(
   Qt
   URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/qt-everywhere-opensource-src-${Qt_native_version}.tar.gz
-  CONFIGURE_COMMAND ./configure ${Qt_extra_config_opts} -no-separate-debug-info -release --prefix=<INSTALL_DIR>
+  CONFIGURE_COMMAND ./configure ${Qt_extra_config_opts} -no-separate-debug-info -release --prefix=<INSTALL_DIR> 
                     -nomake examples -nomake demos --opensource --confirm-license -fast -qt3support
   INSTALL_COMMAND ${MAKE} -j1 install
-          COMMAND ${CMAKE_SOURCE_DIR}/externals/Qt_postinstall.sh <INSTALL_DIR>
+          COMMAND ${CMAKE_SOURCE_DIR}/externals/Qt_postinstall.sh <INSTALL_DIR> 
   BUILD_IN_SOURCE 1
 )
 
@@ -519,7 +516,8 @@ LCGPackage_Add(
   BUILD_IN_SOURCE 1
   DEPENDS ${dep_Frontier_Client}
 )
----lcov-------------------------------------------------------------------------------------------------
+
+#---lcov-------------------------------------------------------------------------------------------------
 if(NOT APPLE) # There are problems building on MacOSX
   LCGPackage_Add(
     lcov
@@ -528,11 +526,11 @@ if(NOT APPLE) # There are problems building on MacOSX
     BUILD_COMMAND  <VOID>
     INSTALL_COMMAND make install PREFIX=<INSTALL_DIR>
           COMMAND ${CMAKE_COMMAND} -E copy_directory <INSTALL_DIR>/usr/bin <INSTALL_DIR>/bin
-          COMMAND ${CMAKE_COMMAND} -E copy_directory <INSTALL_DIR>/usr/share/man <INSTALL_DIR>/man
+          COMMAND ${CMAKE_COMMAND} -E copy_directory <INSTALL_DIR>/usr/share/man <INSTALL_DIR>/man 
           COMMAND ${CMAKE_COMMAND} -E remove_directory <INSTALL_DIR>/usr/share
           COMMAND ${CMAKE_COMMAND} -E remove_directory <INSTALL_DIR>/usr/
     BUILD_IN_SOURCE 1
-  )
+  ) 
 endif()
 
 #---soqt-------------------------------------------------------------------------------------------------
@@ -540,7 +538,7 @@ LCGPackage_Add(
   soqt
   URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/SoQt-${soqt_native_version}.tar.gz
   CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --enable-debug=no --enable-symbols=no --with-coin=${coin3d_home} --with-qt=${Qt_home} QTDIR=${Qt_home}
-  BUILD_COMMAND  make CONFIG_QTLIBS='-lQt3Support -lQtCore' QTDIR=${Qt_home} COINDIR=${coin3d_home}
+  BUILD_COMMAND  make CONFIG_QTLIBS='-lQt3Support -lQtCore' QTDIR=${Qt_home} COINDIR=${coin3d_home} 
   BUILD_IN_SOURCE 1
   DEPENDS coin3d Qt
 )
@@ -585,12 +583,12 @@ LCGPackage_Add(
   BINARY_PACKAGE 1
 )
 
----openmpi-----------------------------------------------------------------------------------------------
+#---openmpi-----------------------------------------------------------------------------------------------
 LCGPackage_Add(
   openmpi
   URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/openmpi-${openmpi_native_version}.tar.gz
   CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR>
-  BUILD_COMMAND ${MAKE}
+  BUILD_COMMAND ${MAKE} 
   BUILD_IN_SOURCE 1
 )
 
@@ -598,7 +596,7 @@ LCGPackage_Add(
 LCGPackage_Add(
   mpich2
   URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/mpich2-${mpich2_native_version}.tar.gz
-  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --enable-shared --enable-sharedlibs=gcc "CFLAGS=-O2 -g0 -fPIC"
+  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --enable-shared --enable-sharedlibs=gcc --with-pm=mpd "CFLAGS=-O2 -g0 -fPIC"
   BUILD_COMMAND ${MAKE} all
   BUILD_IN_SOURCE 1
 )
@@ -616,6 +614,7 @@ LCGPackage_Add(
   BUILD_IN_SOURCE 1
   BINARY_PACKAGE 1
 )
+
 #---fftw------------------------------------------------------------------------------------------------
 LCGPackage_Add(
   fftw
@@ -629,7 +628,7 @@ LCGPackage_Add(
 LCGPackage_Add(
   igprof
   URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/igprof-${igprof_native_version}.tar.gz
-  CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
+  CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR> 
              -DUNWIND_INCLUDE_DIR:PATH=${libunwind_home}/include
              -DUNWIND_LIBRARY:FILEPATH=${libunwind_home}/lib/libunwind.so
              -DCMAKE_CXX_FLAGS=-Wno-unused-variable
@@ -643,8 +642,8 @@ endif()
 LCGPackage_Add(
   valgrind
   URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/valgrind-${valgrind_native_version}.tar.bz2
-  CONFIGURE_COMMAND chmod +x ./configure
-            COMMAND ./configure --prefix=<INSTALL_DIR>
+  CONFIGURE_COMMAND chmod +x ./configure 
+            COMMAND ./configure --prefix=<INSTALL_DIR> 
   BUILD_COMMAND make ${valgrind_build_opts}
   BUILD_IN_SOURCE 1
 )
@@ -672,8 +671,8 @@ set(xqilla_CXXFLAGS "${CMAKE_CXX_FLAGS} -fpermissive")
 LCGPackage_Add(
   xqilla
   URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/XQilla-${xqilla_native_version}.tar.gz
-  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR>
-                                --with-xerces=${XercesC_home}
+  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> 
+                                --with-xerces=${XercesC_home} 
                                 --disable-rpath
   BUILD_COMMAND make CXXFLAGS=${xqilla_CXXFLAGS}
   BUILD_IN_SOURCE 1
@@ -686,3 +685,26 @@ LCGPackage_Add(
   URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/xrootd-${xrootd_native_version}.tar.gz
   CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR> -DENABLE_PERL=FALSE -DENABLE_FUSE=FALSE -DENABLE_CRYPTO=TRUE -DENABLE_KRB5=TRUE -DENABLE_READLINE=TRUE
 )
+
+
+#---ftjam------------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  ftjam
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/ftjam-${ftjam_native_version}.zip
+  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR>
+  BUILD_COMMAND ${MAKE}
+  INSTALL_COMMAND ${MAKE} install
+  BUILD_IN_SOURCE 1
+)
+
+#---omniORB------------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  omniorb
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/omniORB-${omniorb_native_version}.tar.bz2
+  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR>
+  BUILD_COMMAND ${MAKE} CPPFLAGS=-I${Python_home}/include
+  INSTALL_COMMAND ${MAKE} install
+  BUILD_IN_SOURCE 1
+  DEPENDS Python
+)
+
