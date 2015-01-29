@@ -71,6 +71,8 @@ elif [[ $COMPILER == *clang* ]]; then
   export CC=`which clang`
   export CXX=`which clang++`
 elif [[ $COMPILER == *native* ]]; then
+  export LIBRARY_PATH=/usr/local/gfortran/lib
+  export PATH=${PATH}:/usr/local/bin:/opt/X11/bin
   export CC=`which cc`
   export CXX=`which c++`
   export FC=`which gfortran`
