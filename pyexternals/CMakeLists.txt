@@ -45,14 +45,13 @@ LCGPackage_Add(
   URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/Genshi-${genshi_native_version}.tar.gz
   CONFIGURE_COMMAND <VOID>
   BUILD_COMMAND ${Python_cmd} setup.py build
-  INSTALL_COMMAND ${Lock_cmd}
+  INSTALL_COMMAND ${Lock_cmd} 
           COMMAND ${Python_cmd} setup.py install --prefix <INSTALL_DIR>
           COMMAND ${Unlock_cmd}
   BUILD_IN_SOURCE 1
   DEST_NAME pytools
   DEPENDS Python
 )
-
 
 #---4suite------------------------------------------------------------------------------------------------------
 LCGPackage_Add(
@@ -124,7 +123,6 @@ LCGPackage_Add(
   DEPENDS Python
 )
 
-
 #---multiprocessing------------------------------------------------------------------------------------------------------
 LCGPackage_Add(
   multiprocessing
@@ -149,7 +147,7 @@ LCGPackage_Add(
   INSTALL_COMMAND ${Lock_cmd}
           COMMAND ${Exec_cmd} PYTHONPATH=${pytools_home}/lib/python${Python_config_version_twodigit}/site-packages
                   ${Python_cmd} setup.py install --prefix <INSTALL_DIR>
-          COMMAND ${Unlock_cmd}
+          COMMAND ${Unlock_cmd} 
   BUILD_IN_SOURCE 1
   DEST_NAME pytools
   DEPENDS Python
@@ -160,16 +158,16 @@ LCGPackage_Add(
   mysql_python
   URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/MySQL-python-${mysql_python_native_version}.tar.gz
   CONFIGURE_COMMAND <VOID>
-  BUILD_COMMAND ${Exec_cmd} PATH=${mysql_home}/bin:$ENV{PATH}
+  BUILD_COMMAND ${Exec_cmd} PATH=${mysql_home}/bin:$ENV{PATH} 
                             PYTHONPATH=${pytools_home}/lib/python${Python_config_version_twodigit}/site-packages
                 ${Python_cmd} setup.py build
   INSTALL_COMMAND ${Lock_cmd}
-          COMMAND ${Exec_cmd} PATH=${mysql_home}/bin:$ENV{PATH}
+          COMMAND ${Exec_cmd} PATH=${mysql_home}/bin:$ENV{PATH} 
                               PYTHONPATH=${pytools_home}/lib/python${Python_config_version_twodigit}/site-packages
                   ${Python_cmd} setup.py install --prefix <INSTALL_DIR>
           COMMAND ${Unlock_cmd}
   BUILD_IN_SOURCE 1
-  DEST_NAME pytools
+  DEST_NAME pytools 
   DEPENDS Python setuptools mysql
 )
 
@@ -187,6 +185,20 @@ LCGPackage_Add(
   DEPENDS Python
 )
 
+#---py------------------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  py
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/py-${py_native_version}.zip
+  CONFIGURE_COMMAND <VOID>
+  BUILD_COMMAND ${Python_cmd} setup.py build
+  INSTALL_COMMAND ${Lock_cmd}
+          COMMAND ${Exec_cmd} PYTHONPATH=${pytools_home}/lib/python${Python_config_version_twodigit}/site-packages
+                              ${Python_cmd} setup.py install --prefix <INSTALL_DIR>
+          COMMAND ${Unlock_cmd}
+  BUILD_IN_SOURCE 1
+  DEST_NAME pytools
+  DEPENDS Python setuptools 
+)
 
 #---py2neo---------------------------------------------------------------------------------------------------
 LCGPackage_Add(
@@ -395,7 +407,7 @@ LCGPackage_Add(
   BUILD_COMMAND ${Exec_cmd} PATH=${ROOT_home}/bin:$ENV{PATH} ${Python_cmd} setup.py build
   INSTALL_COMMAND ${Lock_cmd}
           COMMAND ${Python_cmd} setup.py install --prefix <INSTALL_DIR>
-          COMMAND ${Unlock_cmd}
+          COMMAND ${Unlock_cmd} 
   BUILD_IN_SOURCE 1
   DEST_NAME pyanalysis
   DEPENDS Python ROOT
@@ -412,7 +424,7 @@ LCGPackage_Add(
           COMMAND ${Unlock_cmd}
   BUILD_IN_SOURCE 1
   DEST_NAME pyanalysis
-  DEPENDS Python
+  DEPENDS Python 
 )
 
 #---Add the dependencies now----------------------------------------------------------------------------------------
@@ -425,7 +437,6 @@ LCGPackage_Add(
   BUNDLE_PACKAGE 1
   DEPENDS matplotlib numpy scipy sympy pyminuit pytz
 )
-
 
 
 #=================================================================================================================
@@ -473,7 +484,7 @@ elseif(LCG_TARGET MATCHES slc|ubuntu AND LCG_TARGET MATCHES x86_64)
 elseif(LCG_TARGET MATCHES slc|ubuntu AND LCG_TARGET MATCHES i686)
   set(sip_compile_options -p linux-g++-32)
 endif()
-if (APPLE)
+if (APPLE) 
   set (Python_cmd_sip ${PythonFW_cmd})
 else()
   set (Python_cmd_sip ${Python_cmd})
@@ -481,9 +492,9 @@ endif()
 LCGPackage_Add(
   sip
   URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/sip-${sip_native_version}.tar.gz
-  CONFIGURE_COMMAND ${Python_cmd_sip} configure.py -b <INSTALL_DIR>/bin
-                                               -d <INSTALL_DIR>/lib/python${Python_config_version_twodigit}/site-packages
-                                               -e <INSTALL_DIR>/include/python${Python_config_version_twodigit}
+  CONFIGURE_COMMAND ${Python_cmd_sip} configure.py -b <INSTALL_DIR>/bin 
+                                               -d <INSTALL_DIR>/lib/python${Python_config_version_twodigit}/site-packages 
+                                               -e <INSTALL_DIR>/include/python${Python_config_version_twodigit} 
                                                -v ${sip_home}/share/sip ${sip_compile_options}
   BUILD_IN_SOURCE 1
   DEST_NAME pygraphics
@@ -503,9 +514,9 @@ LCGPackage_Add(
   CONFIGURE_COMMAND ${Exec_cmd} PYTHONPATH=${pygraphics_home}/lib/python${Python_config_version_twodigit}/site-packages
                     ${Python_cmd_pyqt} configure.py -b <INSTALL_DIR>/bin
                                                -d <INSTALL_DIR>/lib/python${Python_config_version_twodigit}/site-packages
-                                               -l ${Python_home}/include/python${Python_config_version_twodigit}
+                                               -l ${Python_home}/include/python${Python_config_version_twodigit} 
                                                -m ${Python_home}/lib/python${Python_config_version_twodigit}/config
-                                               -q ${Qt_home}/bin/qmake
+                                               -q ${Qt_home}/bin/qmake 
                                                -v <INSTALL_DIR>/share/sip/PyQt4
                                                -p <INSTALL_DIR>/plugins --verbose --confirm-license
 
@@ -530,7 +541,7 @@ LCGPackage_Add(
   URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/libsvm-${libsvm_native_version}.tar.gz
   CONFIGURE_COMMAND <VOID>
   BUILD_COMMAND make
-        COMMAND make PYTHON_INCLUDEDIR=${Python_home}/include/python${Python_config_version_twodigit}
+        COMMAND make PYTHON_INCLUDEDIR=${Python_home}/include/python${Python_config_version_twodigit} 
                      -C python all LDFLAGS=\ -shared\ -L${Python_home}/lib\ -lpython${Python_config_version_twodigit}
   INSTALL_COMMAND ${Lock_cmd}
           COMMAND ${CMAKE_COMMAND} -E make_directory <INSTALL_DIR>/bin
@@ -544,7 +555,7 @@ LCGPackage_Add(
           COMMAND cp -r README tools <INSTALL_DIR>
           COMMAND ${Unlock_cmd}
   BUILD_IN_SOURCE 1
-  DEPENDS Python
+  DEPENDS Python 
 )
 
 #---minuit------------------------------------------------------------------------------------------------------
@@ -562,9 +573,9 @@ LCGPackage_Add(
   URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/pygsi-${pygsi_native_version}.tar.gz
   CONFIGURE_COMMAND <VOID>
   BUILD_COMMAND ${Lock_cmd}
-        COMMAND ${Exec_cmd} PYTHONPATH=${pytools_home}/lib/python${Python_config_version_twodigit}/site-packages
+	COMMAND ${Exec_cmd} PYTHONPATH=${pytools_home}/lib/python${Python_config_version_twodigit}/site-packages
                   ${Python_cmd} setup.py build
-        COMMAND ${Unlock_cmd}
+	COMMAND ${Unlock_cmd}
   INSTALL_COMMAND mkdir -p <INSTALL_DIR>/lib/python${Python_config_version_twodigit}/site-packages/
           COMMAND ${Exec_cmd} PYTHONPATH=${pytools_home}/lib/python${Python_config_version_twodigit}/site-packages:<INSTALL_DIR>/lib/python${Python_config_version_twodigit}/site-packages ${Python_cmd} setup.py install --prefix <INSTALL_DIR>
   BUILD_IN_SOURCE 1
@@ -576,7 +587,7 @@ LCGPackage_Add(
   xrootd_python
   URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/xrootd-python-${xrootd_python_native_version}.tar.gz
   CONFIGURE_COMMAND <VOID>
-  BUILD_COMMAND ${Lock_cmd}
+  BUILD_COMMAND ${Lock_cmd}  
         COMMAND ${Exec_cmd} XRD_LIBDIR=${xrootd_home}/${LCG_LIBDIR_DEFAULT}
                               XRD_INCDIR=${xrootd_home}/include/xrootd
                   ${Python_cmd} setup.py build
