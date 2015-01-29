@@ -9,6 +9,9 @@ from optparse import OptionParser
 # extract command line parameters
 usage = "usage: %prog localarea remotearea"
 parser = OptionParser(usage)
+parser.add_option("-g", "--do_generators",
+                  action="store_true", dest="do_generators", default=False,
+                  help="Whether generators are being synced")
 (options, args) = parser.parse_args()    
 if len(args) != 2:
     parser.error("incorrect number of arguments.")
@@ -31,3 +34,10 @@ for item in newrpms:
   if item.split("-1.0.0")[0] not in existingrpms:
     shutil.copy2(join(buildarea,item), remotearea)
     print "Copied %s to %s" %(item, remotearea)
+
+# in case we upgrade generators we have to explicitly override LCG_generators_XYZ_ and LCGMeta_XYZ_generators
+if options.do_generators:
+  for item in newrpms:
+    if item.startswith("LCGMeta") or item.startswith("LCG_generators"):
+      shutil.copy2(join(buildarea,item), remotearea)
+      print "Copied %s to %s" %(item, remotearea)    
