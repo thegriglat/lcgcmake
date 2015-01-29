@@ -62,7 +62,7 @@ macro(LCGPackage_Add name)
         list(APPEND ${targetname}_dependencies ${dep})
       endforeach()
     endif()
-#---Get list of dependencies as package-version
+    #---Get list of dependencies as package-version
     if(ARG_DEPENDS)
       set (${targetname}-dependencies)
       foreach(dep ${ARG_DEPENDS})

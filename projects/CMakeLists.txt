@@ -200,7 +200,7 @@ LCGPackage_Add(
 #---LCGCMT--------------------------------------------------------------------------------------------
 LCGPackage_Add(
   LCGCMT
-  IF ${heptools_version} MATCHES "root6|dev4|dev3" THEN
+  IF ${heptools_version} MATCHES "root6|dev4|dev3|experimental" THEN
     URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/LCGCMT-cmake_root6.tar.gz
   ELSE
     URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/LCGCMT-cmake.tar.gz
