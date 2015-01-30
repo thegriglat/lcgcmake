@@ -67,7 +67,7 @@ add_subdirectory(generators)
 
 if (VALIDATION)
   add_custom_target(validation.pre_builds DEPENDS rivet ROOT lhapdf Python HepMC agile cmaketools)
-  add_custom_target(validation.pre_tests COMMAND ctest -R lhapdf6sets.download COMMAND ctest -R rivet-tests.genser-prepare_references COMMAND ctest -R rivet-tests.genser-prepare_references DEPENDS validation.pre_builds)
+  add_custom_target(validation.pre_tests COMMAND ctest -R lhapdf6sets.download COMMAND ctest -R rivet-tests.genser-prepare_references COMMAND ctest -R rivet-tests.genser-buildanalysis DEPENDS validation.pre_builds)
   foreach(pkg sherpa pythia8 pythia6 herwig herwig++)
     set (_deplist)
     foreach(v ${${pkg}_native_version})
