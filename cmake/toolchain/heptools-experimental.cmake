@@ -170,6 +170,7 @@ LCG_external_package(powheg-box         r2092         ${MCGENPATH}/powheg-box   
 LCG_external_package(pythia8           HEAD           ${MCGENPATH}/pythia8 )
 LCG_external_package(pythia8           HEAD81         ${MCGENPATH}/pythia8 )
 LCG_external_package(pythia8           175            ${MCGENPATH}/pythia8 )
+LCG_external_package(pythia8           176            ${MCGENPATH}/pythia8 )
 LCG_external_package(pythia8           180            ${MCGENPATH}/pythia8 )
 LCG_external_package(pythia8           185            ${MCGENPATH}/pythia8 )
 LCG_external_package(pythia8           201            ${MCGENPATH}/pythia8 )
@@ -243,7 +244,7 @@ LCG_external_package(professor         1.4.0          ${MCGENPATH}/professor    
 LCG_external_package(jhu               3.1.8          ${MCGENPATH}/jhu       )
 
 #LCG_external_package(vincia            HEAD          ${MCGENPATH}/vincia       )
-LCG_external_package(vincia            1.1.00          ${MCGENPATH}/vincia pythia8=175)
+LCG_external_package(vincia            1.1.00          ${MCGENPATH}/vincia pythia8=176)
 LCG_external_package(vincia            1.1.01          ${MCGENPATH}/vincia pythia8=180)
 LCG_external_package(vincia            1.1.02          ${MCGENPATH}/vincia pythia8=185)
 LCG_external_package(vincia            1.1.03          ${MCGENPATH}/vincia pythia8=185)
