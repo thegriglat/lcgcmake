@@ -41,7 +41,7 @@ endif()
 
 
 #---Python--------------------------------------------------------------------------------------------
-if(LCG_TARGET MATCHES "slc" OR LCG_TARGET MATCHES "cc" LCG_TARGET MATCHES "ubuntu")
+if(LCG_TARGET MATCHES "slc" OR LCG_TARGET MATCHES "cc" OR LCG_TARGET MATCHES "ubuntu")
   set(Python_config_options --enable-shared "LDFLAGS=-Wl,-rpath,'$$ORIGIN/../lib'")
 elseif(LCG_TARGET MATCHES "mac")
   set(Python_config_options --enable-shared MACOSX_DEPLOYMENT_TARGET=${MACOSX_VERSION} LDFLAGS=-L/usr/local/lib)
