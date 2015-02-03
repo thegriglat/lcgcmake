@@ -219,6 +219,7 @@ LCG_external_package(herwig            6.521.2        ${MCGENPATH}/herwig       
 
 LCG_external_package(crmcold           v3400          ${MCGENPATH}/crmc         )
 LCG_external_package(crmc              1.4            ${MCGENPATH}/crmc         )
+LCG_external_package(crmc              1.5.3          ${MCGENPATH}/crmc         )
 LCG_external_package(cython            0.19.1         ${MCGENPATH}/cython       )
 LCG_external_package(yamlcpp           0.3.0          ${MCGENPATH}/yamlcpp      )
 
