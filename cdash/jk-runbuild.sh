@@ -17,5 +17,5 @@ rm -rf /tmp/the.lock
 env | sort | sed 's/:/:?     /g' | tr '?' '\n'
 
 # do the build-----------------------------------------------------
-ctest -V -S $THIS/lcgcmake-build.cmake
+ctest -VV -S $THIS/lcgcmake-build.cmake
 
