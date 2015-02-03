@@ -204,7 +204,7 @@ macro(LCGPackage_Add name)
         if(indx EQUAL -1)
           ExternalProject_Add_Step(${targetname} check_install_dir
                                    COMMAND test ! -d ${${dest_name}_home}
-                                   COMMENT "Checking that install directory '${${dest_name}_home}' does not exists.\n"
+                                   COMMENT "Checking that install directory '${${dest_name}_home}' does not exist.\n"
                                    DEPENDERS download)
         endif()
       endif()
