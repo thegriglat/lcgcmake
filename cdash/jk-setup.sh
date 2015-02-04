@@ -24,7 +24,7 @@ export LC_ALL=en_US.UTF-8
 # Set up the build variables-------------------------------------------------------
 export CTEST_SITE=cdash.cern.ch
 export WORKDIR=/build/$SLOTNAME
-export INSTALLDIR=
+#export INSTALLDIR=
 export PDFSETS=minimal
 export CLEAN_INSTALLDIR="false"
 export LCG_TARBALL_INSTALL="false"
