@@ -13,6 +13,82 @@ if(APPLE)
                   COMMAND cut -d . -f 1-2
                   OUTPUT_VARIABLE MACOSX_VERSION OUTPUT_STRIP_TRAILING_WHITESPACE)
 endif()
+#---odcb-----------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  libiodbc
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/libiodbc-${libiodbc_native_version}.tar.gz
+  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR>
+  BUILD_COMMAND  make
+  INSTALL_COMMAND make install -i
+  BUILD_IN_SOURCE 1
+)
+#---odcb-----------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  libaio
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/libaio-${libaio_native_version}.tar.gz
+  CONFIGURE_COMMAND <VOID>
+  BUILD_COMMAND  <VOID>
+  INSTALL_COMMAND make prefix=<INSTALL_DIR> install
+  BUILD_IN_SOURCE 1
+)
+#---openldap-----------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  openldap
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/openldap-${openldap_native_version}.tgz
+  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR>
+  BUILD_COMMAND  make
+  INSTALL_COMMAND make install -i
+  BUILD_IN_SOURCE 1
+)
+#---postgresql-----------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  postgresql
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/postgresql-${postgresql_native_version}.tar.gz
+  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --without-readline
+  BUILD_COMMAND  make -i
+  INSTALL_COMMAND make install -i
+  BUILD_IN_SOURCE 1
+)
+#---cfitsio-----------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  cfitsio
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/cfitsio${cfitsio_native_version}.tar.gz
+  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR>
+  BUILD_COMMAND  make
+  INSTALL_COMMAND make install
+  BUILD_IN_SOURCE 1
+)
+#---globus-------------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  globus
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/globus_toolkit-${globus_native_version}-${LCG_ARCH}-unknown-linux-gnu-Build-16.tar.gz
+  CONFIGURE_COMMAND <VOID>
+  BUILD_COMMAND <VOID>
+  INSTALL_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR> <INSTALL_DIR>
+  BUILD_IN_SOURCE 1
+  BINARY_PACKAGE 1
+)
+#---gsoap-----------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  gsoap
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/gsoap_${gsoap_native_version}.tar.gz
+  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR>
+  BUILD_COMMAND  make
+  INSTALL_COMMAND make install
+  BUILD_IN_SOURCE 1
+)
+
+#---csgi-gsoap-----------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  cgsigsoap
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/CGSI-gSOAP-${cgsigsoap_native_version}.el6.${LCG_ARCH}.tar.gz
+  CONFIGURE_COMMAND <VOID>
+  BUILD_COMMAND <VOID>
+  INSTALL_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR> <INSTALL_DIR>
+  BUILD_IN_SOURCE 1
+  BINARY_PACKAGE 1
+
+)
 
 #---PythonFWK (only for MAC) --------------------------------------------------------------------------------------------
 LCGPackage_set_home(Python)
