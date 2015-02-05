@@ -220,6 +220,15 @@ LCGPackage_Add(
                                        <SOURCE_DIR>/CLHEP
   ENDIF
 )
+#---EIGEN----------------------------------------------------
+LCGPackage_Add(
+  eigen
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/eigen-<eigen_native_version>.tar.gz
+
+  CONFIGURE_COMMAND ${CMAKE_COMMAND} -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR> -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} <SOURCE_DIR>
+  INSTALL_COMMAND ${MAKE} install				       
+)
+
 
 #---Davix--------------------------------------------------------------------------------------------
 LCGPackage_Add(
