@@ -1749,7 +1749,8 @@ foreach(v ${madgraph5amc_native_version})
 #)
 
 LCG_add_test(madgraph5amc-${v}.genser-zjetsLO
-   PRE_COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/generators/madgraph5amc/${v}/LO
+  PRE_COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/generators/madgraph5amc/${v}/LO
+#        The two lines below will not work for madgraph5amc installed in readonly location
        COMMAND $ENV{SHELL} -c "echo set fastjet ${fastjet_home}/bin/fastjet-config > ${CMAKE_BINARY_DIR}/generators/madgraph5amc/${v}/cardsLO.dat"
        COMMAND $ENV{SHELL} -c "echo set lhapdf ${lhapdf_home}/bin/lhapdf-config >> ${CMAKE_BINARY_DIR}/generators/madgraph5amc/${v}/cardsLO.dat"
        COMMAND $ENV{SHELL} -c "cat ${CMAKE_SOURCE_DIR}/generators/madgraph5amc/tests/cardsLO.dat >> ${CMAKE_BINARY_DIR}/generators/madgraph5amc/${v}/cardsLO.dat"
@@ -1776,11 +1777,20 @@ LCG_add_test(madgraph5amc-${v}.genser-zjetsLO_hadronize
       COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_BINARY_DIR}/generators/madgraph5amc/${v}/LO/MYPROC/Events/run_01/unweighted_events.lhe.gz ${CMAKE_BINARY_DIR}/generators/madgraph5amc/${v}/hadronization/Zg_pythia8_mg.lhe.gz
       COMMAND ${CMAKE_COMMAND} -E remove -f ${CMAKE_BINARY_DIR}/generators/madgraph5amc/${v}/hadronization/Zg_pythia8_mg.lhe
       COMMAND ${CMAKE_COMMAND} -E chdir ${CMAKE_BINARY_DIR}/generators/madgraph5amc/${v}/hadronization gunzip Zg_pythia8_mg.lhe.gz
-      COMMAND $ENV{SHELL} -c "cat ${CMAKE_BINARY_DIR}/generators/madgraph5amc/${v}/hadronization/Zg_pythia8_mg.lhe | sed '/LesHouchesEvents/s/3.0/1.0/' > ${CMAKE_BINARY_DIR}/generators/madgraph5amc/${v}/hadronization/Zg_pythia8.lhe"
- TEST_COMMAND ${CMAKE_COMMAND} -E chdir ${CMAKE_BINARY_DIR}/generators/madgraph5amc/${v}/hadronization ${CMAKE_BINARY_DIR}/generators/pythia8/tests/${pythia8_work_version}/pythia8_genser_test2
+#       Old pythia8 does not accept lhe version 3.0:
+      IF pythia8_work_version MATCHES "HEAD" OR pythia8_work_version VERSION_GREATER 204 THEN
+        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_BINARY_DIR}/generators/madgraph5amc/${v}/hadronization/Zg_pythia8_mg.lhe ${CMAKE_BINARY_DIR}/generators/madgraph5amc/${v}/hadronization/Zg_pythia8.lhe
+      ELSE
+        COMMAND $ENV{SHELL} -c "cat ${CMAKE_BINARY_DIR}/generators/madgraph5amc/${v}/hadronization/Zg_pythia8_mg.lhe | sed '/LesHouchesEvents/s/3.0/1.0/' > ${CMAKE_BINARY_DIR}/generators/madgraph5amc/${v}/hadronization/Zg_pythia8.lhe"
+      ENDIF
+  TEST_COMMAND ${CMAKE_COMMAND} -E chdir ${CMAKE_BINARY_DIR}/generators/madgraph5amc/${v}/hadronization ${CMAKE_BINARY_DIR}/generators/pythia8/tests/${pythia8_work_version}/pythia8_genser_test2
   ENVIRONMENT
     ${library_path}=${pythia8-${pythia8_work_version}_home}/lib:${HepMC_home}/lib:$ENV{${library_path}}
-    PYTHIA8DATA=${pythia8-${pythia8_work_version}_home}/xmldoc
+    IF pythia8_work_version MATCHES "HEAD81" OR pythia8_work_version MATCHES "^1[0-9][0-9]" THEN
+      PYTHIA8DATA=${pythia8_home}/xmldoc
+    ELSE
+      PYTHIA8DATA=${pythia8_home}/share/Pythia8/xmldoc
+    ENDIF
   DEPENDS pythia8-${pythia8_work_version}.build madgraph5amc-${v}.genser-zjetsLOLHAPDF
 )
 
