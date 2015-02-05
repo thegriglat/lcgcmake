@@ -12,10 +12,12 @@ include(${CMAKE_CURRENT_LIST_DIR}/heptools-common.cmake)
 
 
 # Application Area Projects
+LCG_AA_project(LCGCMT  LCGCMT_64b)
 LCG_AA_project(COOL  COOL_2_8_15)
 LCG_AA_project(CORAL CORAL_2_3_24)
 LCG_AA_project(RELAX RELAX_1_3_0i)
 LCG_AA_project(ROOT  5.34.03)
+
 
 # Compilers
 LCG_compiler(gcc43 gcc 4.3.5)
@@ -133,6 +135,8 @@ LCG_external_package(xrootd            3.2.4                                    
 LCG_external_package(swig              1.3.40         author=1.3.40             )
 LCG_external_package(py2neo            1.4.6                                    )
 
+LCG_external_package(pytz              2014.7                                   )
+
 set(MCGENPATH  MCGenerators_lcgcmt64b)
 
 LCG_external_package(lhapdf            5.8.9          ${MCGENPATH}/lhapdf       )
@@ -144,7 +148,7 @@ LCG_external_package(pythia8           175            ${MCGENPATH}/pythia8      
 LCG_external_package(pythia8           176            ${MCGENPATH}/pythia8      )
 
 LCG_external_package(thepeg            1.8.2          ${MCGENPATH}/thepeg       )
-LCG_external_package(herwig++          2.6.3          ${MCGENPATH}/herwig++     )
+LCG_external_package(herwig++          2.6.3          ${MCGENPATH}/herwig++   thepeg=1.8.2  )
 LCG_external_package(tauola++          1.1.1a         ${MCGENPATH}/tauola++     )
 LCG_external_package(pythia6           427            ${MCGENPATH}/pythia6        author=6.4.27 hepevt=4000   )
 LCG_external_package(pythia6           427.2          ${MCGENPATH}/pythia6        author=6.4.27 hepevt=10000  )
@@ -159,15 +163,15 @@ LCG_external_package(photos            215.4          ${MCGENPATH}/photos     )
 #LCG_external_package(evtgen            1.2.0          ${MCGENPATH}/evtgen         tag=R01-02-00 p8vers=176 )
 #LCG_external_package(evtgen            1.2.0-175      ${MCGENPATH}/evtgen         tag=R01-02-00 p8vers=175 )
 
-LCG_external_package(evtgen            1.1.0-t1.1.1          ${MCGENPATH}/evtgen         tag=R01-01-00 p8vers=175 tvers=1.1.1)
-LCG_external_package(evtgen            1.1.0-176-t1.1.1      ${MCGENPATH}/evtgen         tag=R01-01-00 p8vers=176 tvers=1.1.1)
-LCG_external_package(evtgen            1.2.0-t1.1.1          ${MCGENPATH}/evtgen         tag=R01-02-00 p8vers=176 tvers=1.1.1)
-LCG_external_package(evtgen            1.2.0-175-t1.1.1      ${MCGENPATH}/evtgen         tag=R01-02-00 p8vers=175 tvets=1.1.1)
+#LCG_external_package(evtgen            1.1.0-t1.1.1          ${MCGENPATH}/evtgen         tag=R01-01-00 pythia8=175 tauola++=1.1.1)
+#LCG_external_package(evtgen            1.1.0-176-t1.1.1      ${MCGENPATH}/evtgen         tag=R01-01-00 pythia8=176 tauola++=1.1.1)
+#LCG_external_package(evtgen            1.2.0-t1.1.1          ${MCGENPATH}/evtgen         tag=R01-02-00 pythia8=176 tuaola++=1.1.1)
+#LCG_external_package(evtgen            1.2.0-175-t1.1.1      ${MCGENPATH}/evtgen         tag=R01-02-00 pythia8=175 tauola++=1.1.1)
 
-if(NOT ${LCG_OS}${LCG_OSVERS} STREQUAL mac109) # rivet 2 does not work yet with mac109
-  LCG_external_package(rivet             2.0.0b1          ${MCGENPATH}/rivet2        )
-endif()
-LCG_external_package(rivet             1.8.3          ${MCGENPATH}/rivet        )
+#if(NOT ${LCG_OS}${LCG_OSVERS} STREQUAL mac109) # rivet 2 does not work yet with mac109
+#  LCG_external_package(rivet             2.0.0b1          ${MCGENPATH}/rivet2        )
+#endif()
+#LCG_external_package(rivet             1.8.3          ${MCGENPATH}/rivet        )
 LCG_external_package(sherpa            1.4.3          ${MCGENPATH}/sherpa         author=1.4.3 hepevt=4000  )
 LCG_external_package(sherpa            1.4.3.2        ${MCGENPATH}/sherpa         author=1.4.3 hepevt=10000 )
 LCG_external_package(hepmcanalysis     3.4.14         ${MCGENPATH}/hepmcanalysis  author=00-03-04-14        )
@@ -177,6 +181,10 @@ LCG_external_package(starlight         r43            ${MCGENPATH}/starlight    
 #LCG_external_package(herwig            6.520         ${MCGENPATH}/herwig       )
 LCG_external_package(herwig            6.520.2        ${MCGENPATH}/herwig       )
 LCG_external_package(crmc              v3400          ${MCGENPATH}/crmc         )
+LCG_external_package(crmc              1.4            ${MCGENPATH}/crmc         )
+LCG_external_package(crmc              1.5.3          ${MCGENPATH}/crmc         )
+
+
 LCG_external_package(cython            0.19           ${MCGENPATH}/cython       )
 LCG_external_package(yamlcpp           0.3.0          ${MCGENPATH}/yaml-cpp     )
 LCG_external_package(yoda              1.0.0          ${MCGENPATH}/yoda         )
