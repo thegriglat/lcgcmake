@@ -430,21 +430,6 @@ LCGPackage_Add(
   BUILD_IN_SOURCE 1
 )
 
-#---tcmalloc--------------------------------------------------------------------------------------------
-if(NOT APPLE) # There are problems building on MacOSX
-  if(LCG_TARGET MATCHES "x86_64")
-    set(tcmalloc_config_options "--enable-frame-pointers")
-  endif()
-  LCGPackage_Add(
-    tcmalloc
-    URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/google-perftools-${tcmalloc_native_version}.tar.gz
-    CONFIGURE_COMMAND ./configure --prefix <INSTALL_DIR> ${tcmalloc_config_options}
-    BUILD_IN_SOURCE 1
-  )
-else()
-  add_custom_target(tcmalloc ALL COMMENT "Dummy tcmalloc target")
-endif()
-
 #---graphviz--------------------------------------------------------------------------------------------
 if(LCG_TARGET MATCHES mac108)
   set (graphviz_config_opts -with-pic -enable-swig=no --with-qt=no --with-included-ltdl)
@@ -645,6 +630,23 @@ LCGPackage_Add(
   BUILD_COMMAND  make CFLAGS=-fPIC
   BUILD_IN_SOURCE 1
 )
+#---tcmalloc--------------------------------------------------------------------------------------------
+if(NOT APPLE) # There are problems building on MacOSX
+  if(LCG_TARGET MATCHES "x86_64")
+    set(tcmalloc_config_options --enable-frame-pointers --enable-libunwind)
+  endif()
+  LCGPackage_Add(
+    tcmalloc
+    URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/gperftools-${tcmalloc_native_version}.tar.gz
+    CONFIGURE_COMMAND ./configure --prefix <INSTALL_DIR> ${tcmalloc_config_options}
+    BUILD_COMMAND make
+    INSTALL_COMMAND ${MAKE} install
+    BUILD_IN_SOURCE 1
+    DEPENDS libunwind
+  )
+else()
+  add_custom_target(tcmalloc ALL COMMENT "Dummy tcmalloc target")
+endif()
 
 #---neurobayes-------------------------------------------------------------------------------------------
 LCGPackage_Add(
