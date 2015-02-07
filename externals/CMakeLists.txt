@@ -633,7 +633,7 @@ LCGPackage_Add(
 #---tcmalloc--------------------------------------------------------------------------------------------
 if(NOT APPLE) # There are problems building on MacOSX
   if(LCG_TARGET MATCHES "x86_64")
-    set(tcmalloc_config_options --enable-frame-pointers --enable-libunwind)
+    set(tcmalloc_config_options --enable-frame-pointers)
   endif()
   LCGPackage_Add(
     tcmalloc
@@ -642,7 +642,6 @@ if(NOT APPLE) # There are problems building on MacOSX
     BUILD_COMMAND make
     INSTALL_COMMAND ${MAKE} install
     BUILD_IN_SOURCE 1
-    DEPENDS libunwind
   )
 else()
   add_custom_target(tcmalloc ALL COMMENT "Dummy tcmalloc target")
