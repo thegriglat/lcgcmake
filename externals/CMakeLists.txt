@@ -633,14 +633,12 @@ LCGPackage_Add(
 #---tcmalloc--------------------------------------------------------------------------------------------
 if(NOT APPLE) # There are problems building on MacOSX
   if(LCG_TARGET MATCHES "x86_64")
-    set(tcmalloc_config_options --enable-frame-pointers)
+    set(tcmalloc_config_options "--enable-frame-pointers")
   endif()
   LCGPackage_Add(
     tcmalloc
-    URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/gperftools-${tcmalloc_native_version}.tar.gz
+    URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/google-perftools-${tcmalloc_native_version}.tar.gz
     CONFIGURE_COMMAND ./configure --prefix <INSTALL_DIR> ${tcmalloc_config_options}
-    BUILD_COMMAND make
-    INSTALL_COMMAND ${MAKE} install
     BUILD_IN_SOURCE 1
   )
 else()
