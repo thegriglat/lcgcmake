@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 2.8.5)
 # Declare the version of HEP Tools we use
 # (must be done before including heptools-common to allow evolution of the
 # structure)
-set(heptools_version  rootext)
+set(heptools_version  74root6)
 
 include(${CMAKE_CURRENT_LIST_DIR}/heptools-common.cmake)
 
@@ -15,9 +15,10 @@ include(${CMAKE_CURRENT_LIST_DIR}/heptools-common.cmake)
 LCG_AA_project(COOL  COOL_3_0_2)
 LCG_AA_project(CORAL CORAL_3_0_2)
 LCG_AA_project(RELAX RELAX_1_4_2)
-LCG_AA_project(ROOT  6.02.04)
+LCG_AA_project(ROOT  6.02.05)
 LCG_AA_project(LCGCMT LCGCMT_${heptools_version})
 LCG_AA_project(HepMC 2.06.09)
+#LCG_external_package(Geant4 9.6.p03 CLHEP=2.1.4.1)
 
 # Externals
 LCG_external_package(libiodbc          3.52.9                                   )
@@ -29,10 +30,12 @@ LCG_external_package(gsoap             2.7.15                                   
 LCG_external_package(cgsigsoap         1.3.5-2                                  )
 LCG_external_package(libaio            0.3.110-1                                )
 
+LCG_external_package(hepmc3            githead                                  )
 LCG_external_package(4suite            1.0.2p1                                  )
 LCG_external_package(AIDA              3.2.1                                    )
 LCG_external_package(blas              20110419                                 )
 LCG_external_package(Boost             1.55.0                                   )
+LCG_external_package(CLHEP             2.1.4.1                   clhep          )
 LCG_external_package(CLHEP             1.9.4.7                   clhep          )
 LCG_external_package(cmaketools        1.1                                      )
 LCG_external_package(cmt               v1r20p20090520                           )
@@ -44,6 +47,7 @@ if(NOT ${LCG_OS} STREQUAL mac)
   LCG_external_package(Davix             0.3.1                                  )
 endif()
 LCG_external_package(doxygen           1.8.2                                    ) 
+LCG_external_package(eigen             3.2.4                                    )
 LCG_external_package(expat             2.0.1                                    )
 LCG_external_package(fastjet           3.1.1                                    )
 LCG_external_package(fftw              3.1.2                     fftw3          )
@@ -61,7 +65,6 @@ LCG_external_package(libsvm            2.86                                     
 LCG_external_package(libtool           1.5.26                                   )
 LCG_external_package(lxml              2.3                                      )
 LCG_external_package(matplotlib        1.3.1                                    )
-LCG_external_package(minuit            5.27.02                                  )
 LCG_external_package(mock              0.8.0                                    )
 LCG_external_package(multiprocessing   2.6.2.1                                  )
 LCG_external_package(mysql             5.5.27                                   )
@@ -158,15 +161,14 @@ set(MCGENPATH  MCGenerators)
 LCG_external_package(heputils       1.0.0          ${MCGENPATH}/heputils )
 LCG_external_package(mcutils        1.1.0          ${MCGENPATH}/mcutils )
 
+LCG_external_package(madgraph5amc       2.2.2          ${MCGENPATH}/madgraph5amc )
 LCG_external_package(madgraph5amc       2.2.1          ${MCGENPATH}/madgraph5amc )
 LCG_external_package(madgraph5amc       2.1.2          ${MCGENPATH}/madgraph5amc )
 
-LCG_external_package(lhapdf            5.8.8          ${MCGENPATH}/lhapdf       )
 LCG_external_package(lhapdf            5.9.1          ${MCGENPATH}/lhapdf       )
-LCG_external_package(lhapdf            6.1.5          ${MCGENPATH}/lhapdf       )
 LCG_external_package(lhapdf            6.1.4          ${MCGENPATH}/lhapdf       )
+LCG_external_package(lhapdf            6.1.5          ${MCGENPATH}/lhapdf       )
 
-LCG_external_package(lhapdfsets        5.8.8          lhapdfsets   )
 LCG_external_package(lhapdfsets        5.9.1          lhapdfsets   )
 
 LCG_external_package(powheg-box         r2092         ${MCGENPATH}/powheg-box       )
@@ -174,6 +176,7 @@ LCG_external_package(powheg-box         r2092         ${MCGENPATH}/powheg-box   
 LCG_external_package(pythia8           175            ${MCGENPATH}/pythia8 )
 LCG_external_package(pythia8           185            ${MCGENPATH}/pythia8 )
 LCG_external_package(pythia8           201            ${MCGENPATH}/pythia8 )
+LCG_external_package(pythia8           205            ${MCGENPATH}/pythia8 )
 LCG_external_package(pythia8           186            ${MCGENPATH}/pythia8 )
 
 LCG_external_package(sacrifice         0.9.9          ${MCGENPATH}/sacrifice pythia8=186)
@@ -187,7 +190,6 @@ LCG_external_package(tauola++          1.1.4          ${MCGENPATH}/tauola++     
 LCG_external_package(tauola++          1.1.5          ${MCGENPATH}/tauola++     )
 
 LCG_external_package(pythia6           429.2          ${MCGENPATH}/pythia6    author=6.4.28 hepevt=10000  )
-LCG_external_package(pythia6           427.2          ${MCGENPATH}/pythia6    author=6.4.27 hepevt=10000  )
 LCG_external_package(pythia6           428.2          ${MCGENPATH}/pythia6    author=6.4.28 hepevt=10000  )
 
 LCG_external_package(agile             1.4.1          ${MCGENPATH}/agile        )
@@ -195,7 +197,7 @@ LCG_external_package(agile             1.4.1          ${MCGENPATH}/agile        
 LCG_external_package(photos++          3.52           ${MCGENPATH}/photos++     )
 LCG_external_package(photos++          3.56           ${MCGENPATH}/photos++     )
 
-LCG_external_package(photos            215.4          ${MCGENPATH}/photos       )
+LCG_external_package(photos            215.4          ${MCGENPATH}/photos       ) 
 
 LCG_external_package(evtgen            1.2.0          ${MCGENPATH}/evtgen         tag=R01-02-00 pythia8=175 tauola++=1.1.1a)
 LCG_external_package(evtgen            1.3.0          ${MCGENPATH}/evtgen         tag=R01-03-00 pythia8=186 tauola++=1.1.4)
@@ -223,6 +225,7 @@ LCG_external_package(herwig            6.521.2        ${MCGENPATH}/herwig       
 
 LCG_external_package(crmcold           v3400          ${MCGENPATH}/crmc         )
 LCG_external_package(crmc              1.4            ${MCGENPATH}/crmc         )
+LCG_external_package(crmc              1.5.3          ${MCGENPATH}/crmc         )
 LCG_external_package(cython            0.19.1         ${MCGENPATH}/cython       )
 LCG_external_package(yamlcpp           0.3.0          ${MCGENPATH}/yamlcpp      )
 
@@ -244,7 +247,6 @@ LCG_external_package(jhu               3.1.8          ${MCGENPATH}/jhu       )
 
 #LCG_external_package(vincia            HEAD          ${MCGENPATH}/vincia       )
 LCG_external_package(fastnlo_toolkit   2.3.1pre-1871  ${MCGENPATH}/fastnlo_toolkit )
-
 
 # Prepare the search paths according to the versions above
 LCG_prepare_paths()
