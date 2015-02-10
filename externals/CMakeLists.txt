@@ -637,7 +637,11 @@ if(NOT APPLE) # There are problems building on MacOSX
   endif()
   LCGPackage_Add(
     tcmalloc
-    URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/google-perftools-${tcmalloc_native_version}.tar.gz
+    IF <VERSION> VERSION_GREATER 2.0 THEN
+      URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/gperftools-${tcmalloc_native_version}.tar.gz
+    ELSE
+      URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/google-perftools-${tcmalloc_native_version}.tar.gz
+    ENDIF
     CONFIGURE_COMMAND ./configure --prefix <INSTALL_DIR> ${tcmalloc_config_options}
     BUILD_IN_SOURCE 1
   )
