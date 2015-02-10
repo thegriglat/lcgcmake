@@ -5,6 +5,13 @@ set(Exec_cmd ${env_cmd})
 set (Lock_cmd ${CMAKE_SOURCE_DIR}/pyexternals/CreateLockFile)
 set (Unlock_cmd ${CMAKE_SOURCE_DIR}/pyexternals/DeleteLockFile)
 
+#---Addtional deopendencies to matplotlib-----------------
+if(heptools_version MATCHES experimental)
+  set(matplotlib_extra_deps python_dateutil pyparsing six tornado backports certifi)
+endif()
+
+
+
 #=================================================================================================================
 #---pytools----------------------------------------------------------------------------------------------------
 # This is only a placeholder where all the sub-packages will be installed
@@ -288,6 +295,84 @@ LCGPackage_Add(
   DEPENDS Python
 )
 
+#---python-dateutil------------------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  python_dateutil
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/python-dateutil-${python_dateutil_native_version}.tar.gz
+  CONFIGURE_COMMAND <VOID>
+  BUILD_COMMAND ${Exec_cmd} PYTHONPATH=${pytools_home}/lib/python${Python_config_version_twodigit}/site-packages
+                ${Python_cmd} setup.py build
+  INSTALL_COMMAND ${Lock_cmd}
+          COMMAND ${Exec_cmd} PYTHONPATH=${pytools_home}/lib/python${Python_config_version_twodigit}/site-packages
+                  ${Python_cmd} setup.py install --prefix <INSTALL_DIR>
+          COMMAND ${Unlock_cmd}
+  BUILD_IN_SOURCE 1
+  DEST_NAME pytools
+  DEPENDS Python setuptools
+)
+#---six------------------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  six
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/six-${six_native_version}.tar.gz
+  CONFIGURE_COMMAND <VOID>
+  BUILD_COMMAND ${Exec_cmd} PYTHONPATH=${pytools_home}/lib/python${Python_config_version_twodigit}/site-packages
+                ${Python_cmd} setup.py build
+  INSTALL_COMMAND ${Lock_cmd}
+          COMMAND ${Exec_cmd} PYTHONPATH=${pytools_home}/lib/python${Python_config_version_twodigit}/site-packages
+                  ${Python_cmd} setup.py install --prefix <INSTALL_DIR>
+          COMMAND ${Unlock_cmd}
+  BUILD_IN_SOURCE 1
+  DEST_NAME pytools
+  DEPENDS Python setuptools
+)
+#---tornado------------------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  tornado
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/tornado-${tornado_native_version}.tar.gz
+  CONFIGURE_COMMAND <VOID>
+  BUILD_COMMAND ${Exec_cmd} PYTHONPATH=${pytools_home}/lib/python${Python_config_version_twodigit}/site-packages
+                ${Python_cmd} setup.py build
+  INSTALL_COMMAND ${Lock_cmd}
+          COMMAND ${Exec_cmd} PYTHONPATH=${pytools_home}/lib/python${Python_config_version_twodigit}/site-packages
+                  ${Python_cmd} setup.py install --prefix <INSTALL_DIR>
+          COMMAND ${Unlock_cmd}
+  BUILD_IN_SOURCE 1
+  DEST_NAME pytools
+  DEPENDS Python setuptools
+)
+#---certifi------------------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  certifi
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/certifi-${certifi_native_version}.tar.gz
+  CONFIGURE_COMMAND <VOID>
+  BUILD_COMMAND ${Exec_cmd} PYTHONPATH=${pytools_home}/lib/python${Python_config_version_twodigit}/site-packages
+                ${Python_cmd} setup.py build
+  INSTALL_COMMAND ${Lock_cmd}
+          COMMAND ${Exec_cmd} PYTHONPATH=${pytools_home}/lib/python${Python_config_version_twodigit}/site-packages
+                  ${Python_cmd} setup.py install --prefix <INSTALL_DIR>
+          COMMAND ${Unlock_cmd}
+  BUILD_IN_SOURCE 1
+  DEST_NAME pytools
+  DEPENDS Python setuptools
+)
+#---backports------------------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  backports
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/backports.ssl_match_hostname-${backports_native_version}.tar.gz
+  CONFIGURE_COMMAND <VOID>
+  BUILD_COMMAND ${Exec_cmd} PYTHONPATH=${pytools_home}/lib/python${Python_config_version_twodigit}/site-packages
+                ${Python_cmd} setup.py build
+  INSTALL_COMMAND ${Lock_cmd}
+          COMMAND ${Exec_cmd} PYTHONPATH=${pytools_home}/lib/python${Python_config_version_twodigit}/site-packages
+                  ${Python_cmd} setup.py install --prefix <INSTALL_DIR>
+          COMMAND ${Unlock_cmd}
+  BUILD_IN_SOURCE 1
+  DEST_NAME pytools
+  DEPENDS Python setuptools
+)
+
+
+
 #---coverage------------------------------------------------------------------------------------------------------
 LCGPackage_Add(
   coverage
@@ -328,7 +413,7 @@ LCGPackage_Add(
   BUILD_COMMAND <VOID>
   INSTALL_COMMAND ${CMAKE_SOURCE_DIR}/pyexternals/Python_postinstall.sh <INSTALL_DIR>
   BUNDLE_PACKAGE 1
-  DEPENDS lxml sqlalchemy genshi 4suite cx_oracle ipython json mock multiprocessing setuptools mysql_python processing py py2neo pyxml storm pytest pylint nose coverage stomppy
+  DEPENDS lxml sqlalchemy genshi 4suite cx_oracle ipython json mock multiprocessing setuptools mysql_python processing py py2neo pyxml storm pytest pylint nose coverage stomppy ${matplotlib_extra_deps}
 )
 
 #=================================================================================================================
@@ -396,7 +481,7 @@ LCGPackage_Add(
           COMMAND ${Unlock_cmd}
   BUILD_IN_SOURCE 1
   DEST_NAME pyanalysis
-  DEPENDS Python numpy nose
+  DEPENDS Python numpy nose ${matplotlib_extra_deps}
 )
 
 #---pyminuit---------------------------------------------------------------------------------------------------------
