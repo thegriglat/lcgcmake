@@ -579,7 +579,7 @@ LCGPackage_Add(
           COMMAND ${Unlock_cmd}
   BUILD_IN_SOURCE 1
   DEST_NAME pyanalysis
-  DEPENDS Python numpy nose ${matplotlib_extra_deps}
+  DEPENDS Python numpy nose pyparsing ${matplotlib_extra_deps}
 )
 
 #---pyminuit---------------------------------------------------------------------------------------------------------
