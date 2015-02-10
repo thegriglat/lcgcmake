@@ -59,7 +59,7 @@ include_path none
 
 apply_tag ROOT_GE_5_15
 apply_tag ROOT_GE_5_19
-
+apply_tag LCG_nightlies
 macro LCG_config_version   "%s"
 macro uuid_config_version "dummy"
 %s
