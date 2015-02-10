@@ -7,7 +7,7 @@ set (Unlock_cmd ${CMAKE_SOURCE_DIR}/pyexternals/DeleteLockFile)
 
 #---Addtional deopendencies to matplotlib-----------------
 if((heptools_version MATCHES experimental) OR (heptools_version MATCHES dev2) OR (heptools_version MATCHES dev3) OR (heptools_version MATCHES dev4))
-  set(matplotlib_extra_deps python_dateutil pyparsing six tornado backports certifi)
+  set(matplotlib_extra_deps python_dateutil six tornado backports certifi)
 endif()
 
 
@@ -23,20 +23,6 @@ LCGPackage_set_home(pygraphics)
 LCGPackage_Add(
   pydot
   URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/pydot-${pydot_native_version}.tar.gz
-  CONFIGURE_COMMAND <VOID>
-  BUILD_COMMAND ${Python_cmd} setup.py build
-  INSTALL_COMMAND ${Lock_cmd}
-          COMMAND ${Python_cmd} setup.py install --prefix <INSTALL_DIR>
-          COMMAND ${Unlock_cmd}
-  BUILD_IN_SOURCE 1
-  DEST_NAME pygraphics
-  DEPENDS Python
-)
-
-#---pyparsing------------------------------------------------------------------------------------------------------
-LCGPackage_Add(
-  pyparsing
-  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/pyparsing-${pyparsing_native_version}.tar.gz
   CONFIGURE_COMMAND <VOID>
   BUILD_COMMAND ${Python_cmd} setup.py build
   INSTALL_COMMAND ${Lock_cmd}
@@ -105,7 +91,7 @@ LCGPackage_Add(
   BUILD_COMMAND <VOID>
   INSTALL_COMMAND <VOID>
   BUNDLE_PACKAGE 1
-  DEPENDS pydot pyparsing sip pyqt
+  DEPENDS pydot sip pyqt
 )
 
 
@@ -422,6 +408,20 @@ LCGPackage_Add(
   DEST_NAME pytools
   DEPENDS Python setuptools
 )
+#---pyparsing------------------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  pyparsing
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/pyparsing-${pyparsing_native_version}.tar.gz
+  CONFIGURE_COMMAND <VOID>
+  BUILD_COMMAND ${Python_cmd} setup.py build
+  INSTALL_COMMAND ${Lock_cmd}
+          COMMAND ${Python_cmd} setup.py install --prefix <INSTALL_DIR>
+          COMMAND ${Unlock_cmd}
+  BUILD_IN_SOURCE 1
+  DEST_NAME pytools
+  DEPENDS Python
+)
+
 #---tornado------------------------------------------------------------------------------------------------------
 LCGPackage_Add(
   tornado
@@ -510,7 +510,7 @@ LCGPackage_Add(
   BUILD_COMMAND <VOID>
   INSTALL_COMMAND ${CMAKE_SOURCE_DIR}/pyexternals/Python_postinstall.sh <INSTALL_DIR>
   BUNDLE_PACKAGE 1
-  DEPENDS lxml sqlalchemy genshi 4suite cx_oracle ipython json mock multiprocessing setuptools mysql_python processing py py2neo pyxml storm pytest pylint nose coverage stomppy ${matplotlib_extra_deps}
+  DEPENDS lxml sqlalchemy genshi 4suite cx_oracle ipython json mock multiprocessing setuptools mysql_python processing py py2neo pyxml storm pytest pylint nose coverage stomppy pyparsing ${matplotlib_extra_deps}
 )
 
 #=================================================================================================================
