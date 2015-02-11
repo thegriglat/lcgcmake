@@ -45,7 +45,7 @@ LCGPackage_Add(
   postgresql
   URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/postgresql-${postgresql_native_version}.tar.gz
   CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR>
-  BUILD_COMMAND  gmake -j8
+  BUILD_COMMAND  gmake 
   INSTALL_COMMAND gmake install
   BUILD_IN_SOURCE 1
 )
