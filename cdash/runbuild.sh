@@ -39,9 +39,9 @@ rm -rf /tmp/the.lock
 echo "Running build of lcgcmake version $SLOTNAME on ${COMPILER_VER}-${BUILDTYPE}."
 
 # fetch the building scripts; multiple times because of CERN svn instability
-svn co svn+ssh://svn.cern.ch/reps/lcgsoft/trunk/lcgcmake/cdash $WORKDIR/lcg-scripts; 
-svn co svn+ssh://svn.cern.ch/reps/lcgsoft/trunk/lcgcmake/cdash $WORKDIR/lcg-scripts;
-svn co svn+ssh://svn.cern.ch/reps/lcgsoft/trunk/lcgcmake/cdash $WORKDIR/lcg-scripts;
+svn co http://svn.cern.ch/guest/lcgsoft/trunk/lcgcmake/cdash $WORKDIR/lcg-scripts; 
+svn co http://svn.cern.ch/guest/lcgsoft/trunk/lcgcmake/cdash $WORKDIR/lcg-scripts;
+svn co http://svn.cern.ch/guest/lcgsoft/trunk/lcgcmake/cdash $WORKDIR/lcg-scripts;
 # $WORKDIR/lcg-scripts/clean_disk.py $WORKDIR/lcg-builds
 
 if [ ! -f "$WORKDIR/lcg-scripts/ec-slc6-$COMPILER_VER" ]; then
