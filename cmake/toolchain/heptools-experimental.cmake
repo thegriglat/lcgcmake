@@ -125,7 +125,7 @@ LCG_external_package(omniorb           4.2.0                                  )
 #---EMI-2 grid externals and other binary packages---------------------
 if(NOT ${LCG_OS} STREQUAL mac)
   LCG_external_package(libunwind       5c2cade                                  )
-  LCG_external_package(igprof          5.9.11                                    )
+  LCG_external_package(igprof          5.9.14                                    )
 endif()
 if(${LCG_OS} STREQUAL slc)
   if (NOT ${LCG_HOST_ARCH} STREQUAL i686)
@@ -254,9 +254,6 @@ LCG_external_package(professor         1.4.0          ${MCGENPATH}/professor    
 LCG_external_package(jhu               3.1.8          ${MCGENPATH}/jhu       )
 
 #LCG_external_package(vincia            HEAD          ${MCGENPATH}/vincia       )
-LCG_external_package(vincia            1.1.00          ${MCGENPATH}/vincia pythia8=176)
-LCG_external_package(vincia            1.1.01          ${MCGENPATH}/vincia pythia8=180)
-LCG_external_package(vincia            1.1.02          ${MCGENPATH}/vincia pythia8=185)
 LCG_external_package(vincia            1.1.03          ${MCGENPATH}/vincia pythia8=185)
 
 LCG_external_package(fastnlo_toolkit   2.3.1pre-1871  ${MCGENPATH}/fastnlo_toolkit )
