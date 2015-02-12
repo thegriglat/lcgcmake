@@ -72,10 +72,14 @@ elif [[ $COMPILER == *clang* ]]; then
   . /afs/cern.ch/sw/lcg/external/llvm/${!COMPILERversion}/${ARCH}-${LABEL}/setup.sh
   export CC=`which clang`
   export CXX=`which clang++`
-elif [[ $COMPILER == *native* ]]; then
+elif [[ $COMPILER == *native* && $PLATFORM == *mac* ]]; then
   export LIBRARY_PATH=/usr/local/gfortran/lib
   export PATH=${PATH}:/usr/local/bin:/opt/X11/bin
   export CC=`which clang`
   export CXX=`which clang++`
+  export FC=`which gfortran`
+elif [[ $PLATFORM == *native*]]; then
+  export CC=`which gcc`
+  export CXX=`which g++`
   export FC=`which gfortran`
 fi
