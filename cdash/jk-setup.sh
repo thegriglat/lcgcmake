@@ -78,7 +78,7 @@ elif [[ $COMPILER == *native* && $PLATFORM == *mac* ]]; then
   export CC=`which clang`
   export CXX=`which clang++`
   export FC=`which gfortran`
-elif [[ $PLATFORM == *native*]]; then
+elif [[ $PLATFORM == *native* ]]; then
   export CC=`which gcc`
   export CXX=`which g++`
   export FC=`which gfortran`
