@@ -91,6 +91,11 @@ if __name__ == "__main__":
   # extract command line parameters
   usage = "usage: %prog slotname workdir"
   parser = OptionParser(usage)
+  parser.add_option('-b', '--basepath', action='store', 
+                     dest='basepath', help='basepath to copy to',
+                     default="/afs/cern.ch/sw/lcg/app/nightlies" 
+                    )
+
   (options, args) = parser.parse_args()    
   if len(args) == 0:
     # option for backwards compatibility; to be dropped once dev2 and dev4 use new scripts
@@ -112,7 +117,7 @@ if __name__ == "__main__":
 
   # define source and target  
   sourcedir = "%s/%s-install" %(workdir,platform)
-  targetdir = "/afs/cern.ch/sw/lcg/app/nightlies/%s/%s" %(slotname,today())
+  targetdir = os.path.join(options.basepath,slotname,today())
 
   # find out which directories to copy
   dirs_to_copy=[]
