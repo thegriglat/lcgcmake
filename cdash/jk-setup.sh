@@ -21,6 +21,8 @@ fi
 export LC_CTYPE=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 
+export VERBOSE=1
+
 # Set up the build variables-------------------------------------------------------
 export CTEST_SITE=cdash.cern.ch
 export WORKDIR=/build/$SLOTNAME
