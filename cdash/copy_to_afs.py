@@ -91,8 +91,8 @@ if __name__ == "__main__":
   # extract command line parameters
   usage = "usage: %prog slotname workdir"
   parser = OptionParser(usage)
-  parser.add_option('-b', '--basepath', action='store', 
-                     dest='basepath', help='basepath to copy to',
+  parser.add_option('-t', '--targetbase', action='store', 
+                     dest='targetbase', help='basepath to copy to',
                      default="/afs/cern.ch/sw/lcg/app/nightlies" 
                     )
 
@@ -117,7 +117,7 @@ if __name__ == "__main__":
 
   # define source and target  
   sourcedir = "%s/%s-install" %(workdir,platform)
-  targetdir = os.path.join(options.basepath,slotname,today())
+  targetdir = os.path.join(options.targetbase,slotname,today())
 
   # find out which directories to copy
   dirs_to_copy=[]
