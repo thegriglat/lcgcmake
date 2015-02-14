@@ -26,7 +26,7 @@ else:
    osvers = 'unk-os'
 
 #---Determine the compiler and version--------------------------------
-if os.getenv('COMPILER'):
+if os.getenv('COMPILER') and not os.getenv("CC"):
   compiler = os.getenv('COMPILER')
 else:
   if os.getenv('CC'):
@@ -42,12 +42,12 @@ else:
     patt = re.compile('.*Version ([0-9]+)[.].*')
     mobj = patt.match(versioninfo)
     compiler = 'vc' + str(int(mobj.group(1))-6)
-  elif ccommand == 'gcc':
+  elif ccommand.endswith('gcc'):
      versioninfo = os.popen(ccommand + ' -dumpversion').read()
      patt = re.compile('([0-9]+)\\.([0-9]+)')
      mobj = patt.match(versioninfo)
      compiler = 'gcc' + mobj.group(1) + mobj.group(2)
-  elif ccommand == 'clang':
+  elif ccommand.endswith('clang'):
      versioninfo = os.popen4(ccommand + ' -v')[1].read()
      patt = re.compile('.*version ([0-9]+)[.]([0-9]+)')
      mobj = patt.match(versioninfo)
