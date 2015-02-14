@@ -635,6 +635,9 @@ if(NOT APPLE) # There are problems building on MacOSX
   if(LCG_TARGET MATCHES "x86_64")
     set(tcmalloc_config_options "--enable-frame-pointers")
   endif()
+  if(LCG_TARGET MATCHES "ubuntu")
+    set(tcmalloc_config_options ${tcmalloc_config_options} "CXXFLAGS=-fpermissive")
+  endif()
   LCGPackage_Add(
     tcmalloc
     IF <VERSION> VERSION_GREATER 2.0 THEN
