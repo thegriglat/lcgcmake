@@ -20,14 +20,15 @@
  #
  # Don't link with standard libraries, because those may mention
  # libunwind already.
---- tests/Makefile.am.orig	2015-02-14 01:11:34.000000001 +0100
-+++ tests/Makefile.am	2015-02-14 01:12:21.000000001 +0100
-@@ -108,7 +108,7 @@
+--- tests/Makefile.am.orig	2011-05-07 05:19:36.000000000 +0200
++++ tests/Makefile.am	2015-02-14 11:09:07.059556494 +0100
+@@ -107,7 +107,7 @@
+ Gtest_trace_SOURCES = Gtest-trace.c ident.c
  Ltest_trace_SOURCES = Ltest-trace.c ident.c
  
- LIBUNWIND = $(top_builddir)/src/libunwind-$(arch).la
--LIBUNWIND_ptrace = $(top_builddir)/src/libunwind-ptrace.a
-+LIBUNWIND_ptrace = $(top_builddir)/src/libunwind-ptrace.a $(LIBUNWIND_local)
+-LIBUNWIND = $(top_builddir)/src/libunwind-$(arch).la
++LIBUNWIND = $(top_builddir)/src/libunwind-$(arch).la $(LIBUNWIND_local)
+ LIBUNWIND_ptrace = $(top_builddir)/src/libunwind-ptrace.a
  
  if USE_ELF32
- LIBUNWIND_ELF = $(top_builddir)/src/libunwind-elf32.la
+
