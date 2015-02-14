@@ -1,0 +1,5 @@
+mkdir lcgcmake-build
+cd lcgcmake-build
+version=<some version>
+unset CMTCONFIG
+cmake -DCMAKE_INSTALL_PREFIX=<somewhere>/releases/LCG_${version} -DLCG_VERSION=${version} ../lcgcmake
