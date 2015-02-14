@@ -1,0 +1,11 @@
+--- CMakeLists.txt.orig	2015-02-14 01:05:46.000000001 +0100
++++ CMakeLists.txt	2015-02-14 01:06:34.000000001 +0100
+@@ -80,7 +80,7 @@
+ SET(CMAKE_C_FLAGS "${CMAKE_ANSI_FLAGS} ${CMAKE_C_FLAGS}")
+ SET(CMAKE_REQUIRED_FLAGS ${CMAKE_ANSI_FLAGS})
+ IF(CMAKE_COMPILER_IS_GNUCC)
+-  ADD_DEFINITIONS(-ansi -pedantic -W -Wall -Wno-long-long -Werror)
++  ADD_DEFINITIONS(-ansi -pedantic -W -Wall -Wno-long-long -Wno-unused-result -Werror)
+ ENDIF()
+ 
+ IF(UNIX)
