@@ -123,7 +123,7 @@ LCG_external_package(omniorb           4.2.0                                  )
 
 
 #---EMI-2 grid externals and other binary packages---------------------
-if(NOT ${LCG_OS} STREQUAL mac)
+if(NOT ${LCG_OS} MATCHES "mac")
   LCG_external_package(libunwind       5c2cade                                  )
   LCG_external_package(igprof          5.9.14                                    )
 endif()
