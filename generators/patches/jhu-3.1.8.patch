@@ -26,7 +26,7 @@
     tmp=(*r1);
 --- JHUGenerator/makefile.orig	2013-09-04 18:09:12.000000000 +0200
 +++ JHUGenerator/makefile	2013-09-04 18:53:38.000000000 +0200
-@@ -1,22 +1,21 @@
+@@ -1,21 +1,20 @@
 -Here = $(PWD)
 -ModuleDir = $(Here)/modules
 -ObjectDir = $(Here)/objects
@@ -56,13 +56,12 @@
 + fcomp = gfortran $(OptOpts) -ffree-line-length-none -I$(VegasDir) -J$(ModuleDir) -Dcompiler=2
  endif
  
- 
---- JHUGenME/makefile.orig       2013-09-06 18:41:29.000000000 +0200
-+++ JHUGenME/makefile    2013-09-06 18:42:20.000000000 +0200
-@@ -1,11 +1,11 @@
+--- JHUGenME/makefile.orig	2013-06-18 15:36:49.000000000 +0200
++++ JHUGenME/makefile	2015-02-14 12:23:14.538116477 +0100
+@@ -1,14 +1,14 @@
 -Comp = gfort
 +Comp?= gfortran
-
+ 
  ifeq ($(Comp),ifort)
  fcomp = ifort -fpp -O2 -vec-report0 -Dcompiler=1
  # fcomp = ifort -fpp -O0 -vec-report0 -Dcompiler=1
@@ -72,6 +71,9 @@
 +ifeq ($(Comp),gfortran)
 +fcomp = gfortran -O3 -ffree-line-length-none -Dcompiler=2
  endif
-
- ccomp = gcc
+ 
+-ccomp = gcc
++ccomp = gcc -Wl,--no-as-needed
+ 
+ 
  
