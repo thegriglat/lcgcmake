@@ -285,6 +285,7 @@ LCGPackage_Add(
           COMMAND ${Exec_cmd} PYTHONPATH=${pytools_home}/lib/python${Python_config_version_twodigit}/site-packages
                   ${Python_cmd} setup.py install --prefix <INSTALL_DIR>
           COMMAND ${Unlock_cmd}
+          COMMAND $ENV{SHELL} -c "chmod -R 755 <INSTALL_DIR>/share/sources/six"
   BUILD_IN_SOURCE 1
   DEST_NAME pytools
   DEPENDS Python setuptools
