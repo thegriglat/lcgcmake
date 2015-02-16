@@ -29,6 +29,7 @@ LCG_external_package(globus            6.0                                      
 LCG_external_package(gsoap             2.7.15                                   )
 LCG_external_package(cgsigsoap         1.3.5-2                                  )
 LCG_external_package(libaio            0.3.110-1                                )
+LCG_external_package(jemalloc          3.6.0                                    )
 
 LCG_external_package(hepmc3            githead                                  )
 LCG_external_package(4suite            1.0.2p1                                  )

@@ -22,6 +22,16 @@ LCGPackage_Add(
   INSTALL_COMMAND make install -i
   BUILD_IN_SOURCE 1
 )
+#---jemalloc-----------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  jemalloc
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/jemalloc-${jemalloc_native_version}.tar.gz
+  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR>
+  BUILD_COMMAND  make
+  INSTALL_COMMAND make install
+  BUILD_IN_SOURCE 1
+)
+
 #---odcb-----------------------------------------------------------------------------------------------
 LCGPackage_Add(
   libaio
