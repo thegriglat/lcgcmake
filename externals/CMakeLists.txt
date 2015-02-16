@@ -25,7 +25,7 @@ LCGPackage_Add(
 #---jemalloc-----------------------------------------------------------------------------------------------
 LCGPackage_Add(
   jemalloc
-  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/jemalloc-${jemalloc_native_version}.tar.gz
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/jemalloc-${jemalloc_native_version}.tar.bz2
   CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR>
   BUILD_COMMAND  make
   INSTALL_COMMAND make install
