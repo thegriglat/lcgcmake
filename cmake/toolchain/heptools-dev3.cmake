@@ -21,7 +21,7 @@ LCG_AA_project(HepMC 2.06.09)
 LCG_external_package(Geant4 9.6.p03 CLHEP=2.1.4.1)
 
 # Externals
-LCG_external_package(hepmc3            githead                                  )
+#LCG_external_package(hepmc3            githead                                  )
 LCG_external_package(4suite            1.0.2p1                                  )
 LCG_external_package(AIDA              3.2.1                                    )
 LCG_external_package(backports         3.4.0.2                                  )
