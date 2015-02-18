@@ -34,6 +34,11 @@ target_link_libraries(pythia8_genser_test1 ${PYTHIA8_LIBRARIES} ${HEPMC_LIBRARIE
 add_executable(pythia8 pythia8.cc)
 target_link_libraries(pythia8 ${PYTHIA8_LIBRARIES} ${HEPMC_LIBRARIES} ${FASTJET_LIBRARIES})
 
+if(${PYTHIA8_VERSION} MATCHES "^2[0-9][0-9]" OR ${PYTHIA8_VERSION} MATCHES "HEAD")
+  add_executable(pythia8_genser_test1_lhapdf pythia8_test1_lhapdf.cc analyserhepmc/AnalyserHepMC.cc analyserhepmc/LeptonAnalyserHepMC.cc analyserhepmc/JetInputHepMC.cc)
+  target_link_libraries(pythia8_genser_test1_lhapdf ${PYTHIA8_LIBRARIES} ${HEPMC_LIBRARIES} ${FASTJET_LIBRARIES})
+endif()
+
 add_executable(pythia8_genser_test2 pythia8_test2.cc analyserhepmc/AnalyserHepMC.cc analyserhepmc/LeptonAnalyserHepMC.cc analyserhepmc/JetInputHepMC.cc)
 target_link_libraries(pythia8_genser_test2 ${PYTHIA8_LIBRARIES} ${HEPMC_LIBRARIES} ${FASTJET_LIBRARIES})
 
