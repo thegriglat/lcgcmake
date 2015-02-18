@@ -30,7 +30,7 @@ This file describes how to install generators to MCGenerators trees:
 
 1. Steps 1-4 from the instruction above.
 
-5. Build generators in a temporary location (e.g. /afs/cern.ch/sw/lcg/external/MCGenerators_test1/)
+5. Build generators in your AFS working directory location (for example, /afs/cern.ch/work/d/dkonst/GENSERTMP/)
    If you add a generator version, build it against existing AFS installation, e.g. /afs/cern.ch/sw/lcg/releases/LCG_70
    If you reinstall a generator or a version, use argument -DLCG_IGNORE='generatorname1;generatorname2'
    cd to the temporary location above
@@ -43,13 +43,6 @@ This file describes how to install generators to MCGenerators trees:
     # .../lcgcmake/cdash/extract_LCG_summary.py . x86_64-slc6-gcc48-opt 69root6 UPGRADE
 
   The files LCG_*.txt should be created. (contrib, generators, externals)
-
-  As the system was not finished, the following hand procedure was to be made (once per XX, after LCG_XX installation):
-  (this is already made in 70 and 70root6)
-  cd /afs/cern.ch/sw/lcg/releases/LCG_XX
-  cp *.txt *.txt.old
-  mv *.txt.installed *.txt (only generators is usually sufficient)
-  add headers to *.txt as they are in *.txt.old
 
 7. Create RPM spec file
   a) Determine the current release number
@@ -71,11 +64,11 @@ This file describes how to install generators to MCGenerators trees:
    comment: if you substitute some generators version, at this point you will have an error because of duplicate generator.
             You should remove the old one from the txt file obtained at step 6 and repeat step 7
 
-9. Copy rpm (this step and steps 10 - 11 require permissions, to be done from sftnight)
-   cp -v -i ${TMPRPM}/rpmbuild/RPMS/noarch/*.rpm /afs/cern.ch/sw/lcg/external/rpms/lcg/
-   There is a script .../lcgcmake/cdash/copyRPMS.py, but it does not deal with LCG_Generators, so not to be used for now:
+9. Copy rpm (this step require permissions, to be done from sftnight)
+   There is a script .../lcgcmake/cdash/copyRPMS.py to copy only necessary or updated rpms.
    export TMP_RPM_AREA=${TMPRPM}    (temporary build area from above)
-   .../lcgcmake/cdash/copyRPMS.py
+   .../lcgcmake/cdash/copyRPMS.py 
+   use -g option for generators (see code of copyRMS.py) 
 
 10. Update rpm database (use createrepo or createrepo_c) (takes about 10 mins)
    createrepo_c --workers=20 /afs/cern.ch/sw/lcg/external/rpms/lcg/
@@ -88,7 +81,7 @@ This file describes how to install generators to MCGenerators trees:
        /afs/cern.ch/sw/lcg/app/spi/tools/LCGRPM/install/lcg_install.sh list | grep LCG_generators_69root6
      Install
       /afs/cern.ch/sw/lcg/app/spi/tools/LCGRPM/install/lcg_install.sh --rpmupdate install LCG_generators_69root6_x86_64_slc6_gcc48_opt-1.0.0-9
-  c) If the error is occurred try to install target package (LCG_68_root6_lhapdf6_6.1.4_x86_64_slc6_gcc48_opt-1.0.0-11 for example) instead of full generators set (LCG_generators_68_root6_x86_64_slc6_gcc48_opt-1.0.0-11)
+  (please use with caution: If the error is occurred try to install target package (LCG_68_root6_lhapdf6_6.1.4_x86_64_slc6_gcc48_opt-1.0.0-11 for example) instead of full generators set (LCG_generators_68_root6_x86_64_slc6_gcc48_opt-1.0.0-11)
 
 12. Check that the new generators are installed on AFS
 
