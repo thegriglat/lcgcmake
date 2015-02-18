@@ -413,6 +413,18 @@ LCG_add_test(pythia8-${v}.compare
   TEST_COMMAND ${CMAKE_COMMAND} -E chdir pythia8/tests/${v} ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/cmpr.sh pythia8 ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/reference.dat ${v} ${LCG_VERSION} ${LCG_platform}
   DEPENDS pythia8-${v}.genser-test2 pythia8-${v}.genser-test3 pythia8-${v}.genser-test4)
 
+if(${v} MATCHES "^2[0-9][0-9]" OR ${v} MATCHES "HEAD")
+  LCG_add_test(pythia8-${v}.genser-test1-lhapdf
+    TEST_COMMAND ${CMAKE_COMMAND} -E chdir pythia8/tests/${v} ./pythia8_genser_test1_lhapdf
+    POST_COMMAND ${CMAKE_COMMAND} -E copy pythia8/tests/${v}/testi_pythia8.dat pythia8/tests/${v}/test_pythia8_lhapdf.dat
+    ENVIRONMENT
+      ${library_path}=${pythia8-${v}_home}/lib:${HepMC_home}/lib:${lhapdf_home}/lib:${Boost_home}/lib:${yamlcpp_home}/lib:$ENV{${library_path}}
+      LHAPDF_DATA_PATH=${lhapdf_home}/share/LHAPDF:${CMAKE_INSTALL_PREFIX}/lhapdf6sets/current/share/LHAPDF
+      PYTHIA8DATA=${pythia8-${v}_home}/share/Pythia8/xmldoc
+    DEPENDS pythia8-${v}.build lhapdf6sets.download
+  )
+endif()
+
 endforeach()
 
 
