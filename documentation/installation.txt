@@ -65,10 +65,9 @@ This file describes how to install generators to MCGenerators trees:
             You should remove the old one from the txt file obtained at step 6 and repeat step 7
 
 9. Copy rpm (this step require permissions, to be done from sftnight)
-   There is a script .../lcgcmake/cdash/copyRPMS.py to copy only necessary or updated rpms.
+   There is a script .../lcgcmake/cdash/copyRPMS.py to copy only necessary or updated rpms (major update of the script made 29.01.2015)
    export TMP_RPM_AREA=${TMPRPM}    (temporary build area from above)
-   .../lcgcmake/cdash/copyRPMS.py 
-   use -g option for generators (see code of copyRMS.py) 
+   .../lcgcmake/cdash/copyRPMS.py --do_generators $TMP_RPM_AREA /afs/cern.ch/sw/lcg/tmp/incoming_rpms
 
 10. Update rpm database (use createrepo or createrepo_c) (takes about 10 mins)
    createrepo_c --workers=20 /afs/cern.ch/sw/lcg/external/rpms/lcg/
