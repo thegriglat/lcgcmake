@@ -12,7 +12,7 @@ mkbinaries:
 	export PATH=${FASTJET}/bin:${LHAPDF}/bin:$${PATH} && \
 	for i in $(PROCESSES) ; do \
 	  echo "=> Making $$i ..." && \
-	  $(MAKE) -C $$i pwhg_main FC=$(FC) COMPILER=$(FC) || exit 1 ; \
+	  $(MAKE) -C $$i pwhg_main FC=gfortran COMPILER=gfortran || exit 1 ; \
 	done
 
 mksetup:
