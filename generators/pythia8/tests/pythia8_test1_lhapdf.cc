@@ -53,6 +53,7 @@ int main() {
   pythia.readString("PDF:useLHAPDF = on");
   pythia.readString("PDF:LHAPDFset = CT10");
 #endif
+  //pythia.readString("Main:numberOfEvents = 10000"); // default is 1000
 
   // suppress full listing of first events in pythia8 > 160
   pythia.readString("Next:numberShowEvent = 0");
