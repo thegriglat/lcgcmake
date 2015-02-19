@@ -413,7 +413,7 @@ LCG_add_test(pythia8-${v}.compare
   TEST_COMMAND ${CMAKE_COMMAND} -E chdir pythia8/tests/${v} ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/cmpr.sh pythia8 ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/reference.dat ${v} ${LCG_VERSION} ${LCG_platform}
   DEPENDS pythia8-${v}.genser-test2 pythia8-${v}.genser-test3 pythia8-${v}.genser-test4)
 
-if(${v} MATCHES "^2[0-9][0-9]" OR ${v} MATCHES "HEAD")
+if(${v} MATCHES "^2[0-9][0-9]" OR ${v} MATCHES "HEAD$")
   LCG_add_test(pythia8-${v}.genser-test1-lhapdf
     TEST_COMMAND ${CMAKE_COMMAND} -E chdir pythia8/tests/${v} ./pythia8_genser_test1_lhapdf
     POST_COMMAND ${CMAKE_COMMAND} -E copy pythia8/tests/${v}/testi_pythia8.dat pythia8/tests/${v}/test_pythia8_lhapdf.dat
