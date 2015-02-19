@@ -54,12 +54,15 @@ if [[ $PLATFORM == *slc6* || $PLATFORM == *cc7* ]]; then
 fi
 
 # setup compiler-------------------------------------------------------------------
+export FC=gfortran
 if [[ $COMPILER == *gcc* ]]; then
   gcc47version=4.7
   gcc48version=4.8
   gcc49version=4.9
   COMPILERversion=${COMPILER}version
-  . /afs/cern.ch/sw/lcg/contrib/gcc/${!COMPILERversion}/${ARCH}-${LABEL}/setup.sh
+  if [ -d /afs/cern.ch/sw/lcg/contrib/gcc ]; then
+    . /afs/cern.ch/sw/lcg/contrib/gcc/${!COMPILERversion}/${ARCH}-${LABEL}/setup.sh
+  fi
   export FC=gfortran
   export CXX=`which g++`
   export CC=`which gcc`
@@ -71,7 +74,9 @@ elif [[ $COMPILER == *clang* ]]; then
   clang34gcc=48
   clang35gcc=49
   GCCversion=${COMPILER}gcc
-  . /afs/cern.ch/sw/lcg/external/llvm/${!COMPILERversion}/${ARCH}-${LABEL}/setup.sh
+  if [ -d /afs/cern.ch/sw/lcg/external/llvm ]; then
+   . /afs/cern.ch/sw/lcg/external/llvm/${!COMPILERversion}/${ARCH}-${LABEL}/setup.sh
+  fi
   export CC=`which clang`
   export CXX=`which clang++`
 elif [[ $COMPILER == *native* && $PLATFORM == *mac* ]]; then
