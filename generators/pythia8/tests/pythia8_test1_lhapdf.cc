@@ -109,7 +109,7 @@ int main() {
     if (!pythia.next()) {
       if (++iAbort < nAbort) continue;
       cout << " Event generation aborted prematurely, owing to error!\n"; 
-      break;
+      exit(1);
     }
  
     // List first few events, both hard process and complete events.

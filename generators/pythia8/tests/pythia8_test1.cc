@@ -114,7 +114,7 @@ int main() {
     if (!pythia.next()) {
       if (++iAbort < nAbort) continue;
       cout << " Event generation aborted prematurely, owing to error!\n"; 
-      break;
+      exit(1);
     }
  
     // Store event info in the LHAup object.
