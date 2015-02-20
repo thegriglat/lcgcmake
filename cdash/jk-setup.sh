@@ -54,7 +54,6 @@ if [[ $PLATFORM == *slc6* || $PLATFORM == *cc7* ]]; then
 fi
 
 # setup compiler-------------------------------------------------------------------
-export FC=gfortran
 if [[ $COMPILER == *gcc* ]]; then
   gcc47version=4.7
   gcc48version=4.8
