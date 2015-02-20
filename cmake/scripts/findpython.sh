@@ -1,5 +1,7 @@
 #!/bin/bash
 
+#deprecated script
+
 MY_LCG_PLATFORM=`$MCGREPLICA/.scripts/check_platform`
 #echo Your platform is: ${MY_LCG_PLATFORM}
 
