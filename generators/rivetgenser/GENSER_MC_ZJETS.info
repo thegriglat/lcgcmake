@@ -4,7 +4,7 @@ Summary: ZJETS analysis for the GENSER rivet tests
 Experiment: None
 Collider: None
 SpiresID: <Insert the Inspire ID>
-Status: UNVALIDATED
+Status: VALIDATED
 Authors:
  - Mikhail Kirsanov <Mikhail.Kirsanov@cern.ch>
 #References:
@@ -23,11 +23,8 @@ NeedCrossSection: no
 #PtCuts: <Insert list of kinematic pT cuts in GeV, e.g. [0, 20]>
 #NeedCrossSection: True
 Description:
-  '<Insert a fairly long description, including what is measured
-  and if possible what it is useful for in terms of MC validation
-  and tuning. Use LaTeX for maths like $\pT > 50\;\GeV$.
-  Use single quotes around the block if required (see http://www.yaml.org)>'
+  'The analysis looks for Z decaying to ee or mumu. If it is found jets are
+   reconstructed. Several Z and jets variables are histogrammed.'
 BibKey: 
 BibTeX: ''
 ToDo:
- - Implement the analysis, test it, remove this ToDo, and mark as VALIDATED :-)
