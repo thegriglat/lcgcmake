@@ -12,6 +12,7 @@ mkbinaries:
 	export PATH=${FASTJET}/bin:${LHAPDF}/bin:$${PATH} && \
 	for i in $(PROCESSES) ; do \
 	  echo "=> Making $$i ..." && \
+	  echo "=> FC = $(FC)" && \
 	  $(MAKE) -C $$i pwhg_main FC=$(FC) COMPILER=$(FC) || exit 1 ; \
 	done
 
