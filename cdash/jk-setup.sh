@@ -59,9 +59,7 @@ if [[ $COMPILER == *gcc* ]]; then
   gcc48version=4.8
   gcc49version=4.9
   COMPILERversion=${COMPILER}version
-  if [ -d /afs/cern.ch/sw/lcg/contrib/gcc ]; then
-    . /afs/cern.ch/sw/lcg/contrib/gcc/${!COMPILERversion}/${ARCH}-${LABEL}/setup.sh
-  fi
+  . /afs/cern.ch/sw/lcg/contrib/gcc/${!COMPILERversion}/${ARCH}-${LABEL}/setup.sh
   export FC=gfortran
   export CXX=`which g++`
   export CC=`which gcc`
@@ -73,9 +71,7 @@ elif [[ $COMPILER == *clang* ]]; then
   clang34gcc=48
   clang35gcc=49
   GCCversion=${COMPILER}gcc
-  if [ -d /afs/cern.ch/sw/lcg/external/llvm ]; then
-   . /afs/cern.ch/sw/lcg/external/llvm/${!COMPILERversion}/${ARCH}-${LABEL}/setup.sh
-  fi
+  . /afs/cern.ch/sw/lcg/external/llvm/${!COMPILERversion}/${ARCH}-${LABEL}/setup.sh
   export CC=`which clang`
   export CXX=`which clang++`
 elif [[ $COMPILER == *native* && $PLATFORM == *mac* ]]; then
