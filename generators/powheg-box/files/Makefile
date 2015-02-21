@@ -1,5 +1,13 @@
 include config.mk
 
+IFGF = $(shell echo ${FC} | grep gfortran)
+
+ifeq (x$(IFGF),x)
+  MYFC=$(FC)
+else
+  MYFC=gfortran
+endif
+
 BINDIR=bin
 DOCDIR=manuals
 PWD=$(shell pwd)
@@ -12,8 +20,8 @@ mkbinaries:
 	export PATH=${FASTJET}/bin:${LHAPDF}/bin:$${PATH} && \
 	for i in $(PROCESSES) ; do \
 	  echo "=> Making $$i ..." && \
-	  echo "=> FC = $(FC)" && \
-	  $(MAKE) -C $$i pwhg_main FC=$(FC) COMPILER=$(FC) || exit 1 ; \
+	  echo "=> FC = $(FC), MYFC = $(MYFC)" && \
+	  $(MAKE) -C $$i pwhg_main FC=$(MYFC) COMPILER=$(MYFC) || exit 1 ; \
 	done
 
 mksetup:
