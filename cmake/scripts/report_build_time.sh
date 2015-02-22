@@ -1,7 +1,7 @@
 #!/bin/sh
 
 tdir="$1"
-tmpfile=$(mktemp -t lcg)
+tmpfile=$(mktemp -t lcg.XXX)
 
 # get packages names
 find $tdir -name '*-start.timestamp' | awk -F'-start.timestamp' '{print $1}' | sed "s@$tdir/@@g" | xargs -n 1 -i{} echo {} >> $tmpfile
