@@ -12,8 +12,8 @@ if [ "generate" = "$1" ]; then
     shift
   done
   list_file="$pkg_home/$listname"
-  tmp_file=$(mktemp)
-  tmp_file_list=$(mktemp)
+  tmp_file=$(mktemp -t XXXXX)
+  tmp_file_list=$(mktemp -t XXXXX)
   
   # prepare list of files
   find $pkg_home -type f ! -path '*share/LHAPDF*'  \
@@ -64,7 +64,7 @@ echo
 
 cat $PREFIX/$listname | grep -v -- '->' | while read name; do
   echo "=== Patching $name ... ==="
-  old=$(mktemp)
+  old=$(mktemp -t XXXXX)
   cp -f "$PREFIX/$name" "$old"
   # patch files
   cat $PREFIX/$listname | grep -- '->' | while read line; do
