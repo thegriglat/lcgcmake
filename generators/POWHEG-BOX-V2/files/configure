@@ -1,0 +1,67 @@
+#!/bin/bash
+
+# default values:
+PREFIX=""
+DATADIR=""
+FASTJET=""
+LHAPDF=""
+
+# parse input parameters:
+for arg in $* ; do
+  option=${arg/=*/}
+  value=${arg/*=/}
+  
+  case "$option" in
+    "--help" )
+      echo "Usage: ./configure {options} , where options are:"
+      echo ""
+      echo "  --help            : prints this help"
+      echo "  --prefix=<path>   : installation path, the default is current dir"
+      echo "  --datadir=<path>  : share path, the default is <prefix>/share dir"
+      echo "  --fastjet=<path>  : path to the root dir of FastJet package, obligatory"
+      echo "  --lhapdf=<path>   : path to the root dir of LHAPDF package, obligatory"
+      echo ""
+      echo "  All paths should be absolute"
+      exit
+      ;;
+    
+    "--prefix"  ) PREFIX="$value"  ;;
+    "--datadir" ) DATADIR="$value" ;;
+    "--fastjet" ) FASTJET="$value" ;;
+    "--lhapdf"  ) LHAPDF="$value"  ;;
+    * )
+      echo "ERROR: unknown option: $option" >&2
+      exit 1
+      ;;
+  esac
+done
+
+# check obligatory parameters:
+if [ ! -d $FASTJET ] ; then
+  echo "ERROR: FastJet path do not exists" >&2
+  echo "       FASTJET=$FASTJET"
+  exit 1
+fi
+
+if [ ! -d $LHAPDF ] ; then
+  echo "ERROR: LHAPDF path do not exists" >&2
+  echo "       LHAPDF=$LHAPDF"
+  exit 1
+fi
+
+# check optional parameters:
+PREFIX=${PREFIX:-$(pwd)}           # if $PREFIX  is empty use current dir
+DATADIR=${DATADIR:-$PREFIX/share}  # if $DATADIR is empty use $PREFIX/share dir
+
+FC=${FC:-gfortran}                 # if $FC is empty use gfortran
+
+# generate config.mk file:
+{ echo "PREFIX = ${PREFIX}"
+  echo "DATADIR = ${DATADIR}"
+  echo "FASTJET = ${FASTJET}"
+  echo "LHAPDF = ${LHAPDF}"
+  echo "FC = ${FC}"
+} > config.mk
+
+echo "Configuration finished successfully:"
+cat config.mk
