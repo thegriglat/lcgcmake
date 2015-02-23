@@ -8,3 +8,14 @@
  #include <iomanip>
  #include <iostream>
  #include <sstream>
+--- Makefile.old	2015-02-23 16:33:06.450396216 +0100
++++ Makefile	2015-02-23 16:10:05.721804397 +0100
+@@ -264,7 +264,7 @@
+ 	fi
+ 
+ install: bin/crmc$(SYSTEM)
+-	if [[ "$(CRMCROOT)" != "$(PWD)" ]] ; then \
++	if [ "$(CRMCROOT)" != "$(PWD)" ] ; then \
+ 	 mkdir -p $(CRMCROOT)/bin $(CRMCROOT)/include && \
+ 	 cp -rf crmc.param tabs lib $(CRMCROOT)/ && \
+ 	 cp bin/crmc$(SYSTEM) $(CRMCROOT)/bin/crmc && \
