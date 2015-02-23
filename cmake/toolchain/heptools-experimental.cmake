@@ -174,6 +174,8 @@ LCG_external_package(lhapdf           6.1.5          ${MCGENPATH}/lhapdf       )
 LCG_external_package(lhapdfsets        5.9.1          lhapdfsets   )
 
 LCG_external_package(powheg-box         r2092         ${MCGENPATH}/powheg-box       )
+LCG_external_package(POWHEG-BOX-V2      r3033         ${MCGENPATH}/POWHEG-BOX-V2    )
+
 
 LCG_external_package(pythia8           HEAD           ${MCGENPATH}/pythia8 )
 LCG_external_package(pythia8           HEAD81         ${MCGENPATH}/pythia8 )

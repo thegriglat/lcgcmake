@@ -1661,6 +1661,23 @@ endif()
 #---powheg-box--------------------------------------------------------------------------------------
 if(NOT APPLE)    #  (installation fails on MacOSX)
  LCGPackage_Add(
+  POWHEG-BOX-V2
+  URL ${gen_url}/POWHEG-BOX-V2-<NATIVE_VERSION>.tar.gz
+  UPDATE_COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/POWHEG-BOX-V2/files <SOURCE_DIR>
+         COMMAND ${CMAKE_COMMAND} -E chdir <SOURCE_DIR> ./distr-cleanup.sh
+  CONFIGURE_COMMAND ./configure
+    --prefix=<INSTALL_DIR>
+    --fastjet=${fastjet_home}
+    --lhapdf=<lhapdf-<POWHEG-BOX-V2_<NATIVE_VERSION>_lhapdf>_home>
+  BUILD_COMMAND ${MAKE} CPATH=${Boost_home_include}
+  BUILD_IN_SOURCE 1
+  DEPENDS fastjet lhapdf-<POWHEG-BOX-V2_<NATIVE_VERSION>_lhapdf>
+ )
+endif()
+
+
+if(NOT APPLE)    #  (installation fails on MacOSX)
+ LCGPackage_Add(
   powheg-box
   URL ${gen_url}/powheg-box-<NATIVE_VERSION>.tgz
   UPDATE_COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/powheg-box/files <SOURCE_DIR>
