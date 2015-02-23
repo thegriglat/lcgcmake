@@ -7,7 +7,7 @@ THIS_PACKAGE_INSTDIR=%this_package_instdir%
 THIS_VERSION=%this_version%
 THIS_DEPENDS="%dependencies%"
 
-[ ! "Darwin" = $(uname -s) ] && source %gcc_source%
+[ -s %gcc_source% ] && source %gcc_source%
 # === End parameters
 
 # === Determine common parameters ...
