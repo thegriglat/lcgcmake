@@ -15,8 +15,8 @@ cp -r User-Processes-V2/* POWHEG-BOX-V2/
 
 5) create and upload tarball to generator source tarball repository:
 
-tar -cvzf POWHEG-BOX-V2-rXXXX.tar.gz POWHEG-BOX-V2 , where XXXX is svn revision.
-scp POWHEG-BOX-V2-rXXXX.tar.gz sftnight@lxplus:/afs/cern.ch/sw/lcg/external/tarFiles/MCGeneratorsTarFiles/
+tar -cvzf powheg-box-v2-rXXXX.tar.gz POWHEG-BOX-V2 , where XXXX is svn revision.
+scp powheg-box-v2-rXXXX.tar.gz sftnight@lxplus:/afs/cern.ch/sw/lcg/external/tarFiles/MCGeneratorsTarFiles/
 
 
 
