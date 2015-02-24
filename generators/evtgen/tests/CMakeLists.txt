@@ -19,5 +19,5 @@ include_directories(${EVTGEN_INCLUDE_DIR}
                     ${ROOT_INCLUDE_DIR})
 
 add_executable(evtgen_test1 evtgen_test1.cc)
-target_link_libraries(evtgen_test1 ${EVTGEN_LIBRARIES} ${TAUOLAPP_LIBRARIES} ${PHOTOSPP_LIBRARIES} ${HEPMC_LIBRARIES} ${PYTHIA8_LIBRARIES} ${ROOT_LIBRARIES})
+target_link_libraries(evtgen_test1 ${EVTGEN_LIBRARIES} ${TAUOLAPP_FORTRAN_LIBRARY} ${TAUOLAPP_INTERFACE_LIBRARY} ${PHOTOSPP_LIBRARIES} ${HEPMC_LIBRARIES} ${PYTHIA8_LIBRARIES} ${ROOT_LIBRARIES})
 
