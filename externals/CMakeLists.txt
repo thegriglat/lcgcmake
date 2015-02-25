@@ -32,6 +32,18 @@ LCGPackage_Add(
   BUILD_IN_SOURCE 1
 )
 
+#---vectorclass------------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  vectorclass
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/vectorclass-${vectorclass_native_version}.tar.gz
+  CONFIGURE_COMMAND <VOID>
+  BUILD_COMMAND <VOID>
+  INSTALL_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR> <INSTALL_DIR>
+  BUILD_IN_SOURCE 1
+  BINARY_PACKAGE 1
+)
+
+
 #---odcb-----------------------------------------------------------------------------------------------
 LCGPackage_Add(
   libaio
@@ -539,7 +551,7 @@ LCGPackage_Add(
   Qt5
   URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/qt-everywhere-opensource-src-${Qt5_native_version}.tar.gz
   CONFIGURE_COMMAND ./configure ${Qt5_extra_config_opts} -no-separate-debug-info -release --prefix=<INSTALL_DIR>
-                    -nomake examples -nomake tests --opensource --confirm-license
+                    -nomake examples -nomake tests --opensource --confirm-license -qt-xcb
   INSTALL_COMMAND ${MAKE} -j1 install
           COMMAND ${CMAKE_SOURCE_DIR}/externals/Qt_postinstall.sh <INSTALL_DIR>
   BUILD_IN_SOURCE 1
