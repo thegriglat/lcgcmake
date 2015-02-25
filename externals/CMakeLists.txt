@@ -526,6 +526,24 @@ LCGPackage_Add(
           COMMAND ${CMAKE_SOURCE_DIR}/externals/Qt_postinstall.sh <INSTALL_DIR> 
   BUILD_IN_SOURCE 1
 )
+#---Qt5---------------------------------------------------------------------------------------------------
+if(LCG_TARGET MATCHES mac)
+  set(Qt5_extra_config_opts -no-pch)
+endif()
+if(LCG_TARGET MATCHES "icc" AND LCG_TARGET MATCHES "slc6")
+  set(Qt5_extra_config_opts -platform linux-icc -L/afs/cern.ch/sw/IntelSoftware/linux/x86_64/xe2013/composer_xe_2013_sp1.1.106/compiler/\
+lib/intel64)
+endif()
+
+LCGPackage_Add(
+  Qt5
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/qt-everywhere-opensource-src-${Qt5_native_version}.tar.gz
+  CONFIGURE_COMMAND ./configure ${Qt5_extra_config_opts} -no-separate-debug-info -release --prefix=<INSTALL_DIR>
+                    -nomake examples -nomake demos --opensource --confirm-license -fast -qt3support
+  INSTALL_COMMAND ${MAKE} -j1 install
+          COMMAND ${CMAKE_SOURCE_DIR}/externals/Qt_postinstall.sh <INSTALL_DIR>
+  BUILD_IN_SOURCE 1
+)
 
 #---qwt--------------------------------------------------------------------------------------------------
 LCGPackage_Add(

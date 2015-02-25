@@ -10,6 +10,9 @@ if((heptools_version MATCHES experimental) OR (heptools_version MATCHES dev4) OR
   set(matplotlib_extra_deps python_dateutil six tornado backports certifi)
 endif()
 
+if(heptools_version MATCHES experimental)
+  set(pytools_extra_pkg pyzmq)    
+endif()
 #=================================================================================================================
 #---pygraphics----------------------------------------------------------------------------------------------------
 # This is a bundle where all the sub-packages will be installed
@@ -290,6 +293,23 @@ LCGPackage_Add(
   DEST_NAME pytools
   DEPENDS Python setuptools
 )
+#---pyzmq------------------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  pyzmq
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/pyzmq-${pyzmq_native_version}.tar.gz
+  CONFIGURE_COMMAND <VOID>
+  BUILD_COMMAND ${Exec_cmd} PYTHONPATH=${pytools_home}/lib/python${Python_config_version_twodigit}/site-packages
+                ${Python_cmd} setup.py build
+  INSTALL_COMMAND ${Lock_cmd}
+          COMMAND ${Exec_cmd} PYTHONPATH=${pytools_home}/lib/python${Python_config_version_twodigit}/site-packages
+                  ${Python_cmd} setup.py install --prefix <INSTALL_DIR>
+          COMMAND ${Unlock_cmd}
+
+  BUILD_IN_SOURCE 1
+  DEST_NAME pytools
+  DEPENDS Python setuptools
+)
+
 #---tornado------------------------------------------------------------------------------------------------------
 LCGPackage_Add(
   tornado
@@ -494,7 +514,7 @@ LCGPackage_Add(
   BUILD_COMMAND <VOID>
   INSTALL_COMMAND ${CMAKE_SOURCE_DIR}/pyexternals/Python_postinstall.sh <INSTALL_DIR>
   BUNDLE_PACKAGE 1
-  DEPENDS lxml sqlalchemy genshi 4suite cx_oracle ipython json mock multiprocessing setuptools mysql_python processing py py2neo pyxml storm pytest pylint nose coverage stomppy ${matplotlib_extra_deps}
+  DEPENDS lxml sqlalchemy genshi 4suite cx_oracle ipython json mock multiprocessing setuptools mysql_python processing py py2neo pyxml storm pytest pylint nose coverage stomppy ${matplotlib_extra_deps} ${pytools_extra_pkg}
 )
 
 #=================================================================================================================
