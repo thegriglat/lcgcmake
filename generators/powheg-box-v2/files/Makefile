@@ -12,7 +12,31 @@ BINDIR=bin
 DOCDIR=manuals
 PWD=$(shell pwd)
 # processes ST_wtch_DR and ST_wtch_DS do not compile (missing QCDloop code)
-PROCESSES=ZZ WZ
+PROCESSES=DMV DMGG DMS DMS_tloop gg_H_quark-mass-effects hvq \
+HZJ ttb_dec vbf_wp_wp Wbb_dec Wj Z ZZ ZZ WZ ggHZ HW ST_tch_4f VBF_Z_Z Wp_Wp_J_J Z2jet \
+HJ HWJ VBF_H W W_ew-BMNNP WW Z_ew-BMNNPV HJJ HZ trijet W2jet Wgamma WZ Zj
+
+# to be cleaned 
+
+# Wbbj - sometime fails with gfortran: internal compiler error: Killed (program f951 
+
+# disquark  - no Makefile
+
+# VBF_HJJJ: pwhg_analysis-dummy.f:10: Error: Can't open included file '../pwhg_book.h'
+
+#gg_H_MSSM
+#init_couplings.f:503:0: fatal error: SLHA.h: No such file or directory
+# #include "SLHA.h"
+# ^
+#compilation terminated.
+
+#gg_H_2HDM /usr/bin/ld: cannot find -lchaplin
+
+# dijet - pwhg_analysis.f:10: Error: Can't open included file '../pwhg_book.h'
+
+# ttH - takes ages to compile...(?)
+# dislepton-jet - takes ages to compile...(?)
+#
 
 all: mksetup mkbinaries
 
