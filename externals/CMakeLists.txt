@@ -532,8 +532,7 @@ if(LCG_TARGET MATCHES mac)
   set(Qt5_extra_config_opts -no-pch)
 endif()
 if(LCG_TARGET MATCHES "icc" AND LCG_TARGET MATCHES "slc6")
-  set(Qt5_extra_config_opts -platform linux-icc -L/afs/cern.ch/sw/IntelSoftware/linux/x86_64/xe2013/composer_xe_2013_sp1.1.106/compiler/\
-lib/intel64)
+  set(Qt5_extra_config_opts -platform linux-icc -L/afs/cern.ch/sw/IntelSoftware/linux/x86_64/xe2013/composer_xe_2013_sp1.1.106/compiler/lib/intel64)
 endif()
 
 LCGPackage_Add(
