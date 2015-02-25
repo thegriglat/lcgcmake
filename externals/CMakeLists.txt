@@ -283,8 +283,9 @@ foreach(v ${HepMC_native_version})
 endforeach()
 
 
+#set(hepmc3_source_command GIT_REPOSITORY https://:@git.cern.ch/kerberos/hepmc3)
 if( hepmc3_native_version MATCHES "githead")
-  set(hepmc3_source_command GIT_REPOSITORY https://:@git.cern.ch/kerberos/hepmc3)
+  set(hepmc3_source_command GIT_REPOSITORY http://git.cern.ch/cernpub/hepmc3)
 else()
   set(hepmc3_source_command URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/MCGeneratorsTarFiles/hepmc3-${hepmc3_native_version}.tgz)
 endif()
