@@ -88,7 +88,7 @@ LCG_external_package(pyxml             0.8.4p1                                  
 LCG_external_package(pyzmq             14.5.0                                   )
 LCG_external_package(QMtest            2.4.1                                    )
 LCG_external_package(Qt                4.8.6                     qt             )
-LCG_external_package(Qt5               5.3.2                    qt5             )
+LCG_external_package(Qt5               5.4.1                    qt5             )
 LCG_external_package(qwt               6.0.1                                    )
 LCG_external_package(scipy             0.10.0                                   )
 LCG_external_package(setuptools        0.6c11                                   )
