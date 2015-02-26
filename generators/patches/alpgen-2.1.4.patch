@@ -35,3 +35,10 @@ diff -Naur tmp/alplib/alputi.f tmp1/alplib/alputi.f
        CHARACTER*(*) LTIT,BTIT,SCA
        double precision hist
        CHARACTER*7  PLOT(4)
+--- examples/configure_simple.orig	2015-02-26 10:18:06.592116387 +0100
++++ examples/configure_simple	2015-02-26 10:18:31.564116645 +0100
+@@ -1,4 +1,4 @@
+-#!/bin/sh
++#!/bin/bash
+ #
+ # Configuration script, to be run before compilation
