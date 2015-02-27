@@ -8,7 +8,7 @@
 
 import sys
 import yoda
-
+import re
 
 def Check_Histos(RefFile, TestFile, component, limit = 0.9):
     """ Check Kolmogorov value between 'component' of Reference and Test file """
@@ -29,6 +29,7 @@ def Check_Histos(RefFile, TestFile, component, limit = 0.9):
         raise Exception("Cannot obtain " + component + " from files")
     if component == "XS":
         try:
+            print "-- One bin histo, simply calculate chi2"
             ValueRef = RefHist.GetBinContent(1)
             ValueTest = TestHist.GetBinContent(1)
             ErrRef = RefHist.GetBinError(1)
@@ -41,7 +42,19 @@ def Check_Histos(RefFile, TestFile, component, limit = 0.9):
             return False
     else:
         try:
-            hi = RefHist.KolmogorovTest(TestHist)
+            ifnorm = re.match("(.*_norm)", component)
+            if ifnorm:
+                print "-- Normalized histos, taking into account integrals"
+                hi = RefHist.KolmogorovTest(TestHist)
+                ErrRef = ROOT.Double(0.0)
+                ErrTest = ROOT.Double(0.0)
+                ValueRef = RefHist.IntegralAndError(1, -1, ErrRef)
+                ValueTest = TestHist.IntegralAndError(1, -1, ErrTest)
+                chi2 = (ValueTest-ValueRef)*(ValueTest-ValueRef)/(ErrRef*ErrRef+ErrTest*ErrTest)
+                print "chi2 =  " + str(chi2)
+                hi = hi * ROOT.TMath.Prob(chi2, 1)
+            else:
+                hi = RefHist.KolmogorovTest(TestHist)
         except:
             raise Exception("Cannot do Kolmogorov test")
             return False
