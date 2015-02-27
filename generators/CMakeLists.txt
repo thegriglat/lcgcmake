@@ -1994,7 +1994,7 @@ foreach(v ${pythia8_native_version})
               RIVET_ANALYSIS_PATH=${CMAKE_BINARY_DIR}/generators
   POST_COMMAND ${CMAKE_COMMAND} -DAIDA2ROOT=${AIDA2ROOT} -DPython_cmd=${Python_cmd} -Dyoda_home=${yoda_home} -DINPUT=${CMAKE_BINARY_DIR}/generators/pythia8-${v}.genser-zjetsgenser-rivet.yoda -P ${CMAKE_SOURCE_DIR}/cmake/scripts/yoda2root.cmake
        COMMAND ${CMAKE_SOURCE_DIR}/generators/reference/riv2html.sh ${rivet2_home} pythia8 ${v} zjetsgenser ${LCG_VERSION} ${LCG_platform}
-       COMMAND ${Python_cmd} ${CMAKE_SOURCE_DIR}/generators/reference/reference.py ${CMAKE_BINARY_DIR}/generators/pythia8.genser-zjetsgenser-rivet.root ${CMAKE_BINARY_DIR}/generators/pythia8-${v}.genser-zjetsgenser-rivet.root "Path=XS,Z_pt,jet_mult,jet_mult_norm,jet1_pt,jet2_pt" "limit=0.05,0.1,0.1,0.1,0.1,0.1"
+       COMMAND ${Python_cmd} ${CMAKE_SOURCE_DIR}/generators/reference/reference.py ${CMAKE_BINARY_DIR}/generators/pythia8.genser-zjetsgenser-rivet.root ${CMAKE_BINARY_DIR}/generators/pythia8-${v}.genser-zjetsgenser-rivet.root "Path=XS,Z_pt,jet_mult,jet_mult_norm,jet1_pt,jet2_pt" "limit=0.05,0.1,0.1,0.04,0.1,0.1"
   TIMEOUT ${timeout}
   DEPENDS rivet-tests.genser-prepare_references rivet-tests.genser-buildanalysis pythia8-${v}.build
  )
@@ -2032,7 +2032,7 @@ foreach (v ${pythia6_native_version})
               RIVET_ANALYSIS_PATH=${CMAKE_BINARY_DIR}/generators
   POST_COMMAND ${CMAKE_COMMAND} -DAIDA2ROOT=${AIDA2ROOT} -DPython_cmd=${Python_cmd} -Dyoda_home=${yoda_home} -DINPUT=${CMAKE_BINARY_DIR}/generators/pythia6-${v}.genser-zjetsgenser-rivet.yoda -P ${CMAKE_SOURCE_DIR}/cmake/scripts/yoda2root.cmake
        COMMAND ${CMAKE_SOURCE_DIR}/generators/reference/riv2html.sh ${rivet2_home} pythia6 ${v} zjetsgenser ${LCG_VERSION} ${LCG_platform}
-       COMMAND ${Python_cmd} ${CMAKE_SOURCE_DIR}/generators/reference/reference.py ${CMAKE_BINARY_DIR}/generators/pythia6.genser-zjetsgenser-rivet.root ${CMAKE_BINARY_DIR}/generators/pythia6-${v}.genser-zjetsgenser-rivet.root "Path=XS,Z_pt,jet_mult,jet_mult_norm,jet1_pt,jet2_pt" "limit=0.05,0.1,0.1,0.1,0.1,0.1"
+       COMMAND ${Python_cmd} ${CMAKE_SOURCE_DIR}/generators/reference/reference.py ${CMAKE_BINARY_DIR}/generators/pythia6.genser-zjetsgenser-rivet.root ${CMAKE_BINARY_DIR}/generators/pythia6-${v}.genser-zjetsgenser-rivet.root "Path=XS,Z_pt,jet_mult,jet_mult_norm,jet1_pt,jet2_pt" "limit=0.05,0.1,0.1,0.04,0.1,0.1"
   DEPENDS rivet-tests.genser-prepare_references rivet-tests.genser-buildanalysis
   TIMEOUT ${timeout}
  )
