@@ -1,7 +1,7 @@
 #!/bin/sh
 
 tdir="$1"
-tmpfile=$(mktemp -t XXXXX)
+tmpfile=$(mktemp -t lcg.XXX)
 format="-c %Y"
 ARCH="`uname`"
 if [ $ARCH = Darwin ]; then
