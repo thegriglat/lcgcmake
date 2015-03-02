@@ -95,6 +95,11 @@ LCG_external_package(pyxml             0.8.4p1                                  
 LCG_external_package(QMtest            2.4.1                                    )
 LCG_external_package(Qt                4.8.4                     qt             )
 LCG_external_package(qwt               6.0.1                                    )
+
+if(${LCG_OS}${LCG_OSVERS} STREQUAL slc6)
+    LCG_external_package(sas           0.1.2                                    )
+   endif()
+
 LCG_external_package(scipy             0.10.0                                   )
 LCG_external_package(setuptools        0.6c11                                   )
 LCG_external_package(sip               4.14                                     )

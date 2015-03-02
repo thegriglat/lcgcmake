@@ -426,6 +426,16 @@ LCGPackage_Add(
   INSTALL_COMMAND ${MAKE} -j1 install
           COMMAND ${CMAKE_SOURCE_DIR}/externals/GCCXML_postinstall.sh <INSTALL_DIR>
 )
+#---SAS--------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  sas
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/SAS-${sas_native_version}.tar.gz
+  CMAKE_ARGS -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR> -DLLVM_DEV_DIR=/afs/cern.ch/sw/lcg/external/llvm/3.5/x86_64-slc6
+  BUILD_COMMAND make
+  INSTALL_COMMAND ${CMAKE_COMMAND} -E make_directory <INSTALL_DIR>/lib
+          COMMAND ${CMAKE_COMMAND} -E copy_directory ./lib <INSTALL_DIR>/lib
+
+)
 
 #---uuid--------------------------------------------------------------------------------------------
 if(APPLE)
