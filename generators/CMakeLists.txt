@@ -13,7 +13,7 @@ if (VALIDATION)
   set (rivettests_stat_size  100000)
 else()
   set (timeout 1500)
-  set (rivettests_stat_size  20000)
+  set (rivettests_stat_size  1000)
 endif()
 #---General parameters------------------------------------------------------------------------------
 set (gen_url "http://service-spi.web.cern.ch/service-spi/external/tarFiles/MCGeneratorsTarFiles")
