@@ -261,12 +261,21 @@ process_tests () {
   process_tests | while read line ; do print_html $line >> $RESULTS ; done
   bottom_html
 
-  mkdir -p ${RESULTSTORE}/html
-  cp -f $RESULTS ${RESULTSTORE}/html/${NAMESTORAGE}
-  echo
-  echo html file with comparison is produced, its address is:
-  echo file://${RESULTSTORE}/html/${NAMESTORAGE}
-  echo
+  if [[ -d ${RESULTSTORE} ]] ; then
+    mkdir -p ${RESULTSTORE}/html
+    cp -f $RESULTS ${RESULTSTORE}/html/${NAMESTORAGE}
+    echo
+    echo html file with comparison is produced, its address is:
+    echo file://${RESULTSTORE}/html/${NAMESTORAGE}
+    echo
+  else
+    echo
+    echo AFS store is not available
+    echo to see html file with comparison login to ${HOSTNAME} , see file:
+    mylocation=$(pwd)
+    echo ${mylocation}/$RESULTS
+    echo
+  fi
 
 #fi
 
