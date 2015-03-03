@@ -2059,7 +2059,8 @@ foreach(v ${herwig++_native_version})
  )
   
  LCG_add_test(herwigpp-${v}.genser-zjetsgenser-rivet
-   PRE_COMMAND $ENV{SHELL} -c "cat ${CMAKE_SOURCE_DIR}/generators/herwig++/tests/LHC-zjets.in | sed '/HepMCFile:Filename/s/herwigpp_zjets.hepmc/herwigpp-${v}_zjets.hepmc/g' | sed 's/saverun LHC-zjets/saverun LHC-zjets-${v}/g' > ${CMAKE_BINARY_DIR}/generators/LHC-zjets-${v}.in"
+   PRE_COMMAND $ENV{SHELL} -c "test -s ${CMAKE_BINARY_DIR}/generators/herwigpp.genser-zjetsgenser-rivet.root"
+       COMMAND $ENV{SHELL} -c "cat ${CMAKE_SOURCE_DIR}/generators/herwig++/tests/LHC-zjets.in | sed '/HepMCFile:Filename/s/herwigpp_zjets.hepmc/herwigpp-${v}_zjets.hepmc/g' | sed 's/saverun LHC-zjets/saverun LHC-zjets-${v}/g' > ${CMAKE_BINARY_DIR}/generators/LHC-zjets-${v}.in"
    TEST_COMMAND ${herwig++-${v}_home}/bin/Herwig++ read ${CMAKE_BINARY_DIR}/generators/LHC-zjets-${v}.in
         COMMAND ${herwig++-${v}_home}/bin/Herwig++ run -N${rivettests_stat_size} LHC-zjets-${v}.run -d1
         COMMAND ${rivet2_home}/bin/rivet -a MC_XS -a GENSER_MC_ZJETS -H herwigpp-${v}.genser-zjetsgenser-rivet.yoda herwigpp-${v}_zjets.hepmc
