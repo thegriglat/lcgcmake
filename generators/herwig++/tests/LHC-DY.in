@@ -8,7 +8,7 @@
 ##################################################
 cd /Herwig/Generators
 set LHCGenerator:NumberOfEvents 100000
-set LHCGenerator:RandomNumberGenerator:Seed 31122004
+set LHCGenerator:RandomNumberGenerator:Seed 31122001
 set LHCGenerator:PrintEvent 0
 set LHCGenerator:MaxErrors 10000
 
@@ -36,21 +36,18 @@ set /Herwig/Particles/pbar-:PDF myPDFset
 ##################################################
 cd /Herwig/MatrixElements/
 
-# All, Z or Gamma, default All, small difference All <-> Z
-#set MEZJet:GammaZ Gamma
+set MEqq2gZ2ff:GammaZ Z
 
-insert SimpleQCD:MatrixElements[0] MEZJet
+# Drell-Yan Z/gamma
+insert SimpleQCD:MatrixElements[0] MEqq2gZ2ff
 
 # only Z/gamma -> l+ l- are allowed:
 set    SimpleQCD:MatrixElements[0]:Process 3 
 
-# Z pt cut, default 0.
-set /Herwig/Cuts/ZBosonKtCut:MinKT 20.0*GeV
-# Jet pt cut, default 20. (equivalent to above)
+# The cut below doesn't work for this ME because Z decay is in ME
+#set /Herwig/Cuts/ZBosonKtCut:MinKT 20.0*GeV
+# The cut below doesn't work for this ME
 #set /Herwig/Cuts/JetKtCut:MinKT 20.0*GeV
-
-# Lepton pair mass cut, default 20. (small effect)
-#set /Herwig/Cuts/MassCut:MinM 20.*GeV
 
 # Drell-Yan W
 #insert SimpleQCD:MatrixElements[0] MEqq2W2ff
