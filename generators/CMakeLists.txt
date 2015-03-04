@@ -1983,7 +1983,7 @@ foreach(v ${pythia8_native_version})
   PRE_COMMAND $ENV{SHELL} -c "cat ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/pythia8-zjets-rivet.params | sed \"s/Main:numberOfEvents.*/Main:numberOfEvents = ${rivettests_stat_size}/g\" | cat > ${CMAKE_BINARY_DIR}/generators/pythia8/tests/pythia8-${v}.zjetsgenser-rivet.params"
   TEST_COMMAND ${CMAKE_BINARY_DIR}/generators/pythia8/tests/${v}/pythia8 ${CMAKE_BINARY_DIR}/generators/pythia8/tests/pythia8-${v}.zjetsgenser-rivet.params pythia8-${v}.genser-zjetsgenser.hempc.dat
        COMMAND ${rivet2_home}/bin/rivet --show-analysis GENSER_MC_ZJETS
-       COMMAND ${rivet2_home}/bin/rivet -a MC_XS -a GENSER_MC_ZJETS --histo-file=pythia8-${v}.genser-zjetsgenser-rivet.yoda pythia8-${v}.genser-zjetsgenser.hempc.dat
+       COMMAND ${rivet2_home}/bin/rivet -a MC_XS -a GENSER_MC_ZJETS -a MC_GENERIC -a MC_IDENTIFIED --histo-file=pythia8-${v}.genser-zjetsgenser-rivet.yoda pythia8-${v}.genser-zjetsgenser.hempc.dat
   ENVIRONMENT PATH=${Python_home}/bin:$ENV{PATH}
               ${library_path}=${Python_home}/lib:${GSL_home}/lib:${rivet2_home}/lib:${yoda_home}/lib:${HepMC_home}/lib:${fastjet_home}/lib:${yamlcpp_home}/lib:${ROOT_home}/lib:${pythia8_home}/lib:$ENV{${library_path}}
               PYTHONPATH=${Python_home}/bin:${rivet2_home}/lib/python${Python_config_version_twodigit}/site-packages/:${yoda_home}/lib/python${Python_config_version_twodigit}/site-packages/:${ROOT_home}/lib:$ENV{PYTHONPATH}
@@ -2025,7 +2025,7 @@ foreach (v ${pythia6_native_version})
   TEST_COMMAND pythia6/tests/${v}/pythia6_genser_outhepmc ${rivettests_stat_size} pythia6-${v}.genser-zjets.hepmc.dat
        COMMAND $ENV{SHELL} -c "cat pythia6-${v}.genser-zjets.hepmc.dat | sed 's/U MEV MM/U GEV MM/' > pythia6-${v}.genser-zjets.hepmc.datNEW"
        COMMAND $ENV{SHELL} -c "mv pythia6-${v}.genser-zjets.hepmc.datNEW pythia6-${v}.genser-zjets.hepmc.dat"
-       COMMAND ${rivet2_home}/bin/rivet -a MC_XS -a GENSER_MC_ZJETS --histo-file=pythia6-${v}.genser-zjetsgenser-rivet.yoda pythia6-${v}.genser-zjets.hepmc.dat
+       COMMAND ${rivet2_home}/bin/rivet -a MC_XS -a GENSER_MC_ZJETS -a MC_GENERIC -a MC_IDENTIFIED --histo-file=pythia6-${v}.genser-zjetsgenser-rivet.yoda pythia6-${v}.genser-zjets.hepmc.dat
   ENVIRONMENT PATH=${agile_home}/bin:${Python_home}/bin:$ENV{PATH}
               ${library_path}=${Python_home}/lib:${GSL_home}/lib:${rivet2_home}/lib:${yoda_home}/lib:${HepMC_home}/lib:${fastjet_home}/lib:${yamlcpp_home}/lib:${agile_home}/lib:${HepMC_home}/lib:${ROOT_home}/lib:$ENV{${library_path}}
               PYTHONPATH=${Python_home}/bin:${agile_home}/lib/python${Python_config_version_twodigit}/site-packages:${rivet2_home}/lib/python${Python_config_version_twodigit}/site-packages:${yoda_home}/lib/python${Python_config_version_twodigit}/site-packages/:${ROOT_home}/lib:$ENV{PYTHONPATH}
@@ -2063,7 +2063,7 @@ foreach(v ${herwig++_native_version})
        COMMAND $ENV{SHELL} -c "cat ${CMAKE_SOURCE_DIR}/generators/herwig++/tests/LHC-zjets.in | sed '/HepMCFile:Filename/s/herwigpp_zjets.hepmc/herwigpp-${v}_zjets.hepmc/g' | sed 's/saverun LHC-zjets/saverun LHC-zjets-${v}/g' > ${CMAKE_BINARY_DIR}/generators/LHC-zjets-${v}.in"
    TEST_COMMAND ${herwig++-${v}_home}/bin/Herwig++ read ${CMAKE_BINARY_DIR}/generators/LHC-zjets-${v}.in
         COMMAND ${herwig++-${v}_home}/bin/Herwig++ run -N${rivettests_stat_size} LHC-zjets-${v}.run -d1
-        COMMAND ${rivet2_home}/bin/rivet -a MC_XS -a GENSER_MC_ZJETS -H herwigpp-${v}.genser-zjetsgenser-rivet.yoda herwigpp-${v}_zjets.hepmc
+        COMMAND ${rivet2_home}/bin/rivet -a MC_XS -a GENSER_MC_ZJETS -a MC_GENERIC -a MC_IDENTIFIED -H herwigpp-${v}.genser-zjetsgenser-rivet.yoda herwigpp-${v}_zjets.hepmc
         COMMAND cat LHC-zjets-${v}.out
         COMMAND cat LHC-zjets-${v}.log
         BINARY_DIR herwig++/tests
