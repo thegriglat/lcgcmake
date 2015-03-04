@@ -1666,6 +1666,14 @@ LCGPackage_Add(
  BUILD_IN_SOURCE 1
 )
 
+#---chaplin--------------------------------------------------------------------------------------
+LCGPackage_Add(
+ chaplin
+ URL ${gen_url}/chaplin-<chaplin_<NATIVE_VERSION>_author>.tar.gz
+ CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR>
+ BUILD_IN_SOURCE 1
+)
+
 #---powheg-box-v2--------------------------------------------------------------------------------------
 if(NOT APPLE)    #  (installation fails on MacOSX)
  LCGPackage_Add(
