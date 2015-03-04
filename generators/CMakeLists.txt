@@ -1658,6 +1658,14 @@ foreach(v ${crmc_native_version})
 endforeach()
 endif()
 
+#---FeynHiggs--------------------------------------------------------------------------------------
+LCGPackage_Add(
+ feynhiggs
+ URL ${gen_url}/FeynHiggs-<feynhiggs_<NATIVE_VERSION>_author>.tar.gz
+ CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR>
+ BUILD_IN_SOURCE 1
+)
+
 #---powheg-box-v2--------------------------------------------------------------------------------------
 if(NOT APPLE)    #  (installation fails on MacOSX)
  LCGPackage_Add(
