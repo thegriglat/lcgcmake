@@ -261,7 +261,7 @@ process_tests () {
   process_tests | while read line ; do print_html $line >> $RESULTS ; done
   bottom_html
 
-  if [[ -d ${RESULTSTORE} ]] ; then
+  if [[ -w ${RESULTSTORE} ]] ; then
     mkdir -p ${RESULTSTORE}/html
     cp -f $RESULTS ${RESULTSTORE}/html/${NAMESTORAGE}
     echo
@@ -270,7 +270,7 @@ process_tests () {
     echo
   else
     echo
-    echo AFS store is not available
+    echo AFS store is not available or not writable
     echo to see html file with comparison login to ${HOSTNAME} , see file:
     mylocation=$(pwd)
     echo ${mylocation}/$RESULTS
