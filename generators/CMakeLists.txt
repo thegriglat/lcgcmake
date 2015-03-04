@@ -2075,6 +2075,7 @@ foreach(v ${herwig++_native_version})
                LHAPDF_DATA_PATH=${lhapdf-${herwig++_${v}_lhapdf}_home}/share/LHAPDF:${CMAKE_INSTALL_PREFIX}/lhapdf6sets/current/share/LHAPDF
                RIVET_ANALYSIS_PATH=${CMAKE_BINARY_DIR}/generators
    POST_COMMAND ${CMAKE_COMMAND} -DAIDA2ROOT=${AIDA2ROOT} -DPython_cmd=${Python_cmd} -Dyoda_home=${yoda_home} -DINPUT=${CMAKE_BINARY_DIR}/generators/herwigpp-${v}.genser-zjetsgenser-rivet.yoda -P ${CMAKE_SOURCE_DIR}/cmake/scripts/yoda2root.cmake
+        COMMAND ${CMAKE_SOURCE_DIR}/generators/reference/riv2html.sh ${rivet2_home} herwigpp ${v} zjetsgenser ${LCG_VERSION} ${LCG_platform}
         COMMAND ${Python_cmd} ${CMAKE_SOURCE_DIR}/generators/reference/reference.py ${CMAKE_BINARY_DIR}/generators/herwigpp.genser-zjetsgenser-rivet.root ${CMAKE_BINARY_DIR}/generators/herwigpp-${v}.genser-zjetsgenser-rivet.root "Path=XS,Z_pt,jet_mult,jet_mult_norm,jet1_pt,jet2_pt" "limit=0.05,0.1,0.1,0.04,0.1,0.1"
    DEPENDS rivet-tests.genser-prepare_references lhapdf6sets.download
    TIMEOUT ${timeout}
