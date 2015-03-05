@@ -17,9 +17,27 @@ set(BLACKHAT_LIBRARY_DIR ${BLACKHAT_ROOT_DIR}/lib/blackhat)
 #file (GLOB blackhat_libraries ${BLACKHAT_ROOT_DIR}/lib/blackhat/*.so)
 #file (GLOB qd_libraries ${QD_ROOT_DIR}/lib/libqd.so)
 
+#Compose library list from the output of blackhat-config:
+
+execute_process(COMMAND ${BLACKHAT_ROOT_DIR}/bin/blackhat-config --libs OUTPUT_VARIABLE bliblist0)
+string(REGEX MATCHALL "-l[A-Za-z0-9_-]+" bliblist0 "${bliblist0}")
+list(REMOVE_ITEM bliblist0 "-lqd")
+set(BLIBLIST "")
+foreach(_c ${bliblist0})
+  string(REPLACE "-l" "${BLACKHAT_LIBRARY_DIR}/lib" _c ${_c})
+  list(APPEND BLIBLIST "${_c}.so")
+endforeach()
+message(STATUS "blackhat libraries list for linking: ${BLIBLIST}")
+
 file (GLOB test_files ${TEST_DIR}/*)
 file (COPY ${test_files} DESTINATION ./)
 
-target_link_libraries(cpp_example ${BLACKHAT_LIBRARY_DIR}/libInterface.so ${BLACKHAT_LIBRARY_DIR}/libassembly.so ${BLACKHAT_LIBRARY_DIR}/libOLA.so ${BLACKHAT_LIBRARY_DIR}/libCutPart.so ${BLACKHAT_LIBRARY_DIR}/libRatPart.so ${BLACKHAT_LIBRARY_DIR}/libratext.so ${BLACKHAT_LIBRARY_DIR}/libBH.so ${BLACKHAT_LIBRARY_DIR}/libAmpl_eval.so ${BLACKHAT_LIBRARY_DIR}/libRateval.so ${BLACKHAT_LIBRARY_DIR}/libCuteval.so ${BLACKHAT_LIBRARY_DIR}/libCut_wCI.so ${BLACKHAT_LIBRARY_DIR}/libBG.so ${BLACKHAT_LIBRARY_DIR}/libBHcore.so ${BLACKHAT_LIBRARY_DIR}/libIntegrals.so ${BLACKHAT_LIBRARY_DIR}/libSpinors.so ${QD_ROOT_DIR}/lib/libqd.so)
+#target_link_libraries(cpp_example ${BLACKHAT_LIBRARY_DIR}/libInterface.so ${BLACKHAT_LIBRARY_DIR}/libassembly.so ${BLACKHAT_LIBRARY_DIR}/libOLA.so
+# ${BLACKHAT_LIBRARY_DIR}/libCutPart.so ${BLACKHAT_LIBRARY_DIR}/libRatPart.so ${BLACKHAT_LIBRARY_DIR}/libratext.so ${BLACKHAT_LIBRARY_DIR}/libBH.so
+# ${BLACKHAT_LIBRARY_DIR}/libAmpl_eval.so ${BLACKHAT_LIBRARY_DIR}/libRateval.so ${BLACKHAT_LIBRARY_DIR}/libCuteval.so
+# ${BLACKHAT_LIBRARY_DIR}/libCut_wCI.so ${BLACKHAT_LIBRARY_DIR}/libBG.so ${BLACKHAT_LIBRARY_DIR}/libBHcore.so ${BLACKHAT_LIBRARY_DIR}/libIntegrals.so
+# ${BLACKHAT_LIBRARY_DIR}/libSpinors.so ${QD_ROOT_DIR}/lib/libqd.so)
 
-target_link_libraries(fortran_example ${BLACKHAT_LIBRARY_DIR}/libInterface.so ${BLACKHAT_LIBRARY_DIR}/libassembly.so ${BLACKHAT_LIBRARY_DIR}/libOLA.so ${BLACKHAT_LIBRARY_DIR}/libCutPart.so ${BLACKHAT_LIBRARY_DIR}/libRatPart.so ${BLACKHAT_LIBRARY_DIR}/libratext.so ${BLACKHAT_LIBRARY_DIR}/libBH.so ${BLACKHAT_LIBRARY_DIR}/libAmpl_eval.so ${BLACKHAT_LIBRARY_DIR}/libRateval.so ${BLACKHAT_LIBRARY_DIR}/libCuteval.so ${BLACKHAT_LIBRARY_DIR}/libCut_wCI.so ${BLACKHAT_LIBRARY_DIR}/libBG.so ${BLACKHAT_LIBRARY_DIR}/libBHcore.so ${BLACKHAT_LIBRARY_DIR}/libIntegrals.so ${BLACKHAT_LIBRARY_DIR}/libSpinors.so ${QD_ROOT_DIR}/lib/libqd.so)
+target_link_libraries(cpp_example ${BLIBLIST} ${QD_ROOT_DIR}/lib/libqd.so)
+
+target_link_libraries(fortran_example ${BLIBLIST} ${QD_ROOT_DIR}/lib/libqd.so)
