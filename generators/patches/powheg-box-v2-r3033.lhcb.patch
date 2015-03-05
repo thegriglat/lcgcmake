@@ -38,3 +38,15 @@
        end
  
 +
+--- gg_H_2HDM/Makefile.old	2015-03-05 09:49:29.256775414 +0100
++++ gg_H_2HDM/Makefile	2015-03-05 09:36:21.518443333 +0100
+@@ -10,7 +10,7 @@
+ ANALYSIS = default
+ ## For static linking uncomment the following
+ #STATIC= -static
+-LIBS+= -lchaplin
++LIBS+= -L$(CHAPLIN)/lib -lchaplin
+ #
+ ifeq ("$(COMPILER)","gfortran")	
+ F77= gfortran -fno-automatic 	
+

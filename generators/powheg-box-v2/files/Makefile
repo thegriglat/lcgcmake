@@ -14,7 +14,7 @@ PWD=$(shell pwd)
 # processes ST_wtch_DR and ST_wtch_DS do not compile (missing QCDloop code)
 PROCESSES=DMV DMGG DMS DMS_tloop gg_H_quark-mass-effects hvq \
 HZJ ttb_dec vbf_wp_wp Wbb_dec Wj Z ZZ ZZ WZ ggHZ HW ST_tch_4f VBF_Z_Z Wp_Wp_J_J Z2jet \
-HJ HWJ VBF_H W W_ew-BMNNP WW Z_ew-BMNNPV HJJ HZ trijet W2jet Wgamma WZ Zj
+HJ HWJ VBF_H W W_ew-BMNNP WW Z_ew-BMNNPV HJJ HZ trijet W2jet Wgamma WZ Zj gg_H_2HDM
 
 # to be cleaned 
 
@@ -30,8 +30,6 @@ HJ HWJ VBF_H W W_ew-BMNNP WW Z_ew-BMNNPV HJJ HZ trijet W2jet Wgamma WZ Zj
 # ^
 #compilation terminated.
 
-#gg_H_2HDM /usr/bin/ld: cannot find -lchaplin
-
 # dijet - pwhg_analysis.f:10: Error: Can't open included file '../pwhg_book.h'
 
 # ttH - takes ages to compile...(?)
@@ -45,7 +43,7 @@ mkbinaries:
 	for i in $(PROCESSES) ; do \
 	  echo "=> Making $$i ..." && \
 	  echo "=> FC = $(FC), MYFC = $(MYFC)" && \
-	  $(MAKE) -C $$i pwhg_main FC=$(MYFC) COMPILER=$(MYFC) || exit 1 ; \
+	  $(MAKE) -C $$i pwhg_main FC=$(MYFC) COMPILER=$(MYFC) CHAPLIN=$(CHAPLIN) || exit 1 ; \
 	done
 
 mksetup:
