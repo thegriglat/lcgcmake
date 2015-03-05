@@ -1,0 +1,70 @@
+--- WZ/init_processes.f.orig	2015-02-23 20:59:16.000000000 +0100
++++ WZ/init_processes.f	2015-02-23 20:59:27.000000000 +0100
+@@ -1,4 +1,4 @@
+-      subroutine init_processes
++      subroutine init_processes
+       implicit none
+       include 'nlegborn.h'
+       include 'constants.f'
+@@ -300,6 +300,10 @@
+          if(.not.islepton(idfz)) return
+          if(.not.(islepton(idfw).or.isnu(idfw))) return
+       endif
++      if(powheginput("#lbb").eq.1) then
++         if(abs(idfz).ne.5) return
++         if(idfw.ne.13.and.idaw.ne.-13) return
++      endif
+ c Enter here more conditions if you need them; recall that:
+ c idfz is the particle decay product of the Z (i.e. 11 for electron, etc.
+ c and idfz>0), and idfw is the particle decay product of the W
+@@ -324,3 +328,4 @@
+ 
+       end
+ 
++
+--- ZZ/init_processes.f.orig	2015-02-23 20:55:31.000000000 +0100
++++ ZZ/init_processes.f	2015-02-23 20:56:58.000000000 +0100
+@@ -235,6 +235,8 @@
+      2     return
+       if(powheginput("#only-tau").eq.1.and.(id1.ne.15.or.id2.ne.15))
+      2     return
++      if(powheginput("#lbb").eq.1.and.(id1.ne.13.or.id2.ne.5))
++     2     return
+ 
+ c Enter here more conditions if you need them; recall that:
+ c id1 is the particle decay product of one Z (i.e. 11 for electron, etc.
+@@ -260,3 +262,4 @@
+ 
+       end
+ 
++
+--- gg_H_2HDM/Makefile.old	2015-03-05 09:49:29.256775414 +0100
++++ gg_H_2HDM/Makefile	2015-03-05 09:36:21.518443333 +0100
+@@ -10,7 +10,7 @@
+ ANALYSIS = default
+ ## For static linking uncomment the following
+ #STATIC= -static
+-LIBS+= -lchaplin
++LIBS+= -L$(CHAPLIN)/lib -lchaplin
+ #
+ ifeq ("$(COMPILER)","gfortran")	
+ F77= gfortran -fno-automatic 	
+--- gg_H_MSSM/Makefile.old	2015-03-05 12:41:40.608521532 +0100
++++ gg_H_MSSM/Makefile	2015-03-05 12:45:15.902273820 +0100
+@@ -10,7 +10,7 @@
+ ANALYSIS = default
+ ## For static linking uncomment the following
+ #STATIC= -static
+-LIBS+= -lFH -lchaplin
++LIBS+= -L$(FEYNHIGGS)/lib64 -L$(CHAPLIN)/lib -lFH -lchaplin
+ #
+ ifeq ("$(COMPILER)","gfortran")	
+ F77= gfortran -fno-automatic
+@@ -69,7 +69,8 @@
+ INCLUDE1=$(PWD)/include
+ INCLUDE2=$(shell dirname $(PWD))/include
+ INCLUDE3 = /usr/local/include/
+-FF=$(F77) $(FFLAGS) $(FPE) $(OPT) $(DEBUG) -I$(INCLUDE0) -I$(INCLUDE0.1) -I$(INCLUDE1) -I$(INCLUDE2) -I$(INCLUDE3)
++INCLUDE4 = $(FEYNHIGGS)/include
++FF=$(F77) $(FFLAGS) $(FPE) $(OPT) $(DEBUG) -I$(INCLUDE0) -I$(INCLUDE0.1) -I$(INCLUDE1) -I$(INCLUDE2) -I$(INCLUDE3) -I$(INCLUDE4)
+

@@ -1686,6 +1686,7 @@ if(NOT APPLE)    #  (installation fails on MacOSX)
     --fastjet=${fastjet_home}
     --lhapdf=<lhapdf-<powheg-box-v2_<NATIVE_VERSION>_lhapdf>_home>
     --chaplin=${chaplin_home}
+    --feynhiggs=${feynhiggs_home}
   BUILD_COMMAND ${MAKE} CPATH=${Boost_home_include}
   BUILD_IN_SOURCE 1
   DEPENDS fastjet lhapdf-<powheg-box-v2_<NATIVE_VERSION>_lhapdf> chaplin
