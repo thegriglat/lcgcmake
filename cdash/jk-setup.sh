@@ -25,7 +25,8 @@ export VERBOSE=1
 
 # Set up the build variables-------------------------------------------------------
 export CTEST_SITE=cdash.cern.ch
-export WORKDIR=/build/$SLOTNAME
+#export WORKDIR=/build/$SLOTNAME
+export WORKDIR=$WORKSPACE
 if [ -z $INSTALLDIR ]; then
     export INSTALLDIR=
 fi
