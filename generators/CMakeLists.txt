@@ -1505,6 +1505,18 @@ LCGPackage_Add(
   BUILD_IN_SOURCE 1
 )
 
+foreach(v ${herwig_native_version})
+LCG_add_test(herwig-${v}.build
+  BINARY_DIR herwig/tests/${v}
+  SOURCE_DIR herwig/tests
+  BUILD all
+  BUILD_OPTIONS -DCMAKE_MODULE_PATH=${CMAKE_SOURCE_DIR}/cmake/modules
+                -DCMAKE_MODULE_PATH2=${cmaketools_home}/modules
+                -DHERWIG_ROOT_DIR=${herwig-${v}_home}
+                -DHEPMC_ROOT_DIR=${HepMC_home}
+)
+endforeach()
+
 #---tauola------------------------------------------------------------------------------------------
 if(NOT APPLE)    #  (installation fails on MacOSX)
   LCGPackage_Add(
@@ -2052,7 +2064,7 @@ foreach (v ${pythia6_native_version})
   POST_COMMAND ${CMAKE_COMMAND} -DAIDA2ROOT=${AIDA2ROOT} -DPython_cmd=${Python_cmd} -Dyoda_home=${yoda_home} -DINPUT=${CMAKE_BINARY_DIR}/generators/pythia6-${v}.genser-zjetsgenser-rivet.yoda -P ${CMAKE_SOURCE_DIR}/cmake/scripts/yoda2root.cmake
        COMMAND ${CMAKE_SOURCE_DIR}/generators/reference/riv2html.sh ${rivet2_home} pythia6 ${v} zjetsgenser ${LCG_VERSION} ${LCG_platform}
        COMMAND ${Python_cmd} ${CMAKE_SOURCE_DIR}/generators/reference/reference.py ${CMAKE_BINARY_DIR}/generators/pythia6.genser-zjetsgenser-rivet.root ${CMAKE_BINARY_DIR}/generators/pythia6-${v}.genser-zjetsgenser-rivet.root "Path=XS,Z_pt,jet_mult,jet_mult_norm,jet1_pt,jet2_pt" "limit=0.05,0.1,0.1,0.04,0.1,0.1"
-  DEPENDS rivet-tests.genser-prepare_references rivet-tests.genser-buildanalysis
+  DEPENDS pythia6-${v}.build rivet-tests.genser-prepare_references rivet-tests.genser-buildanalysis
   TIMEOUT ${timeout}
  )
 endforeach()
@@ -2136,23 +2148,40 @@ endif()
 endforeach()
 
 foreach(v ${herwig_native_version})
-string(REGEX MATCH "6.[0-9][0-9][0-9]" v_test_version ${v})
-LCG_add_test(
-  herwig-${v}.genser-zjets-rivet
-  TEST_COMMAND ${CMAKE_COMMAND} -E echo available generators for the given AGILE_GEN_PATH:
-       COMMAND ${agile_home}/bin/agile-runmc --list-gens
-       COMMAND ${CMAKE_COMMAND} -E echo
-       COMMAND ${agile_home}/bin/agile-runmc Herwig:${v_test_version} -o hepmcfile_herwig-${v}_zjets.dat --paramfile ${CMAKE_SOURCE_DIR}/generators/agile_configs/herwig-zjets-8tev.params -n ${rivettests_stat_size}
-       COMMAND ${rivet2_home}/bin/rivet -a MC_GENERIC -a MC_IDENTIFIED -a MC_XS -a MC_ZJETS -H herwig-${v}.genser-zjets-rivet.yoda hepmcfile_herwig-${v}_zjets.dat
-  ENVIRONMENT PATH=${agile_home}/bin:${Python_home}/bin:$ENV{PATH}
-              ${library_path}=${Python_home}/lib:${GSL_home}/lib:${rivet2_home}/lib:${yoda_home}/lib:${HepMC_home}/lib:${fastjet_home}/lib:${yamlcpp_home}/lib:${agile_home}/lib:${HepMC_home}/lib:${ROOT_home}/lib:$ENV{${library_path}}
-              PYTHONPATH=${Python_home}/bin:${agile_home}/lib/python${Python_config_version_twodigit}/site-packages:${yoda_home}/lib/python${Python_config_version_twodigit}/site-packages/:${ROOT_home}/lib:${rivet2_home}/lib/python${Python_config_version_twodigit}/site-packages:$ENV{PYTHONPATH}
-              AGILE_GEN_PATH=${agile_home}/../../..
-  POST_COMMAND ${CMAKE_COMMAND} -DAIDA2ROOT=${AIDA2ROOT} -DPython_cmd=${Python_cmd} -Dyoda_home=${yoda_home} -DINPUT=${CMAKE_BINARY_DIR}/generators/herwig-${v}.genser-zjets-rivet.yoda -P ${CMAKE_SOURCE_DIR}/cmake/scripts/yoda2root.cmake
-       COMMAND ${Python_cmd} ${CMAKE_SOURCE_DIR}/generators/reference/reference.py ${CMAKE_BINARY_DIR}/generators/herwig.genser-zjets-rivet.root ${CMAKE_BINARY_DIR}/generators/herwig-${v}.genser-zjets-rivet.root "Path=XS,jet_HT" "limit=0.05,0.10"
-  DEPENDS rivet-tests.genser-prepare_references 
+ string(REGEX MATCH "6.[0-9][0-9][0-9]" v_test_version ${v})
+ LCG_add_test(
+   herwig-${v}.genser-zjets-rivet
+   TEST_COMMAND ${CMAKE_COMMAND} -E echo available generators for the given AGILE_GEN_PATH:
+        COMMAND ${agile_home}/bin/agile-runmc --list-gens
+        COMMAND ${CMAKE_COMMAND} -E echo
+        COMMAND ${agile_home}/bin/agile-runmc Herwig:${v_test_version} -o hepmcfile_herwig-${v}_zjetsagile.dat --paramfile ${CMAKE_SOURCE_DIR}/generators/agile_configs/herwig-zjets-8tev.params -n ${rivettests_stat_size}
+        COMMAND ${rivet2_home}/bin/rivet -a MC_GENERIC -a MC_IDENTIFIED -a MC_XS -a MC_ZJETS -H herwig-${v}.genser-zjets-rivet.yoda hepmcfile_herwig-${v}_zjetsagile.dat
+   ENVIRONMENT PATH=${agile_home}/bin:${Python_home}/bin:$ENV{PATH}
+               ${library_path}=${Python_home}/lib:${GSL_home}/lib:${rivet2_home}/lib:${yoda_home}/lib:${HepMC_home}/lib:${fastjet_home}/lib:${yamlcpp_home}/lib:${agile_home}/lib:${HepMC_home}/lib:${ROOT_home}/lib:$ENV{${library_path}}
+               PYTHONPATH=${Python_home}/bin:${agile_home}/lib/python${Python_config_version_twodigit}/site-packages:${yoda_home}/lib/python${Python_config_version_twodigit}/site-packages/:${ROOT_home}/lib:${rivet2_home}/lib/python${Python_config_version_twodigit}/site-packages:$ENV{PYTHONPATH}
+               AGILE_GEN_PATH=${agile_home}/../../..
+   POST_COMMAND ${CMAKE_COMMAND} -DAIDA2ROOT=${AIDA2ROOT} -DPython_cmd=${Python_cmd} -Dyoda_home=${yoda_home} -DINPUT=${CMAKE_BINARY_DIR}/generators/herwig-${v}.genser-zjets-rivet.yoda -P ${CMAKE_SOURCE_DIR}/cmake/scripts/yoda2root.cmake
+        COMMAND ${Python_cmd} ${CMAKE_SOURCE_DIR}/generators/reference/reference.py ${CMAKE_BINARY_DIR}/generators/herwig.genser-zjets-rivet.root ${CMAKE_BINARY_DIR}/generators/herwig-${v}.genser-zjets-rivet.root "Path=XS,jet_HT" "limit=0.05,0.10"
+   DEPENDS rivet-tests.genser-prepare_references 
+   TIMEOUT ${timeout}
+ )
+
+ LCG_add_test(
+   herwig-${v}.genser-zjetsgenser-rivet
+   TEST_COMMAND herwig/tests/${v}/herwig_genser_outhepmc ${rivettests_stat_size} herwig-${v}.genser-zjets.hepmc.dat
+        COMMAND $ENV{SHELL} -c "cat herwig-${v}.genser-zjets.hepmc.dat | sed 's/U MEV MM/U GEV MM/' > herwig-${v}.genser-zjets.hepmc.datNEW"
+        COMMAND $ENV{SHELL} -c "mv herwig-${v}.genser-zjets.hepmc.datNEW herwig-${v}.genser-zjets.hepmc.dat"
+        COMMAND ${rivet2_home}/bin/rivet -a MC_XS -a GENSER_MC_ZJETS -a MC_GENERIC -a MC_IDENTIFIED --histo-file=herwig-${v}.genser-zjetsgenser-rivet.yoda herwig-${v}.genser-zjets.hepmc.dat
+   ENVIRONMENT PATH=${Python_home}/bin:$ENV{PATH}
+               ${library_path}=${Python_home}/lib:${GSL_home}/lib:${rivet2_home}/lib:${yoda_home}/lib:${HepMC_home}/lib:${fastjet_home}/lib:${yamlcpp_home}/lib:${HepMC_home}/lib:${ROOT_home}/lib:$ENV{${library_path}}
+               PYTHONPATH=${Python_home}/bin:${rivet2_home}/lib/python${Python_config_version_twodigit}/site-packages:${yoda_home}/lib/python${Python_config_version_twodigit}/site-packages/:${ROOT_home}/lib:$ENV{PYTHONPATH}
+               RIVET_ANALYSIS_PATH=${CMAKE_BINARY_DIR}/generators
+  POST_COMMAND ${CMAKE_COMMAND} -DAIDA2ROOT=${AIDA2ROOT} -DPython_cmd=${Python_cmd} -Dyoda_home=${yoda_home} -DINPUT=${CMAKE_BINARY_DIR}/generators/herwig-${v}.genser-zjetsgenser-rivet.yoda -P ${CMAKE_SOURCE_DIR}/cmake/scripts/yoda2root.cmake
+       COMMAND ${CMAKE_SOURCE_DIR}/generators/reference/riv2html.sh ${rivet2_home} herwig ${v} zjetsgenser ${LCG_VERSION} ${LCG_platform}
+       COMMAND ${Python_cmd} ${CMAKE_SOURCE_DIR}/generators/reference/reference.py ${CMAKE_BINARY_DIR}/generators/herwig.genser-zjetsgenser-rivet.root ${CMAKE_BINARY_DIR}/generators/herwig-${v}.genser-zjetsgenser-rivet.root "Path=XS,Z_pt,jet_mult,jet_mult_norm,jet1_pt,jet2_pt" "limit=0.05,0.1,0.1,0.04,0.1,0.1"
+  DEPENDS herwig-${v}.build rivet-tests.genser-prepare_references rivet-tests.genser-buildanalysis
   TIMEOUT ${timeout}
-)
+ )
 endforeach()
 
 
@@ -2177,7 +2206,8 @@ endforeach()
 
 LCG_add_test(rivet-tests.genser-prepare_references
   PRE_COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/generators/reference/alpgen_riv2.yoda ${CMAKE_BINARY_DIR}/generators/alpgen.genser-zjets-rivet.yoda
-       COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/generators/reference/herwig_riv2.yoda ${CMAKE_BINARY_DIR}/generators/herwig.genser-zjets-rivet.yoda
+       COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/generators/reference/herwig_riv2_zjets.yoda ${CMAKE_BINARY_DIR}/generators/herwig.genser-zjets-rivet.yoda
+       COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/generators/reference/herwig_riv2_zjetsgenser.yoda  ${CMAKE_BINARY_DIR}/generators/herwig.genser-zjetsgenser-rivet.yoda
        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/generators/reference/sherpa_riv2.yoda ${CMAKE_BINARY_DIR}/generators/sherpa.genser-zjets-rivet.yoda
        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/generators/reference/herwigpp_riv2_zjetsgenser.yoda ${CMAKE_BINARY_DIR}/generators/herwigpp.genser-zjetsgenser-rivet.yoda
        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/generators/reference/herwigpp_riv2_ttbar.yoda ${CMAKE_BINARY_DIR}/generators/herwigpp.genser-ttbar-rivet.yoda
@@ -2186,6 +2216,7 @@ LCG_add_test(rivet-tests.genser-prepare_references
        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/generators/reference/pythia8_riv2_zjetsgenser.yoda ${CMAKE_BINARY_DIR}/generators/pythia8.genser-zjetsgenser-rivet.yoda
   TEST_COMMAND ${CMAKE_COMMAND} -DAIDA2ROOT=${AIDA2ROOT} -DPython_cmd=${Python_cmd} -Dyoda_home=${yoda_home} -DINPUT=${CMAKE_BINARY_DIR}/generators/alpgen.genser-zjets-rivet.yoda -P ${CMAKE_SOURCE_DIR}/cmake/scripts/yoda2root.cmake
        COMMAND ${CMAKE_COMMAND} -DAIDA2ROOT=${AIDA2ROOT} -DPython_cmd=${Python_cmd} -Dyoda_home=${yoda_home} -DINPUT=${CMAKE_BINARY_DIR}/generators/herwig.genser-zjets-rivet.yoda -P ${CMAKE_SOURCE_DIR}/cmake/scripts/yoda2root.cmake
+       COMMAND ${CMAKE_COMMAND} -DAIDA2ROOT=${AIDA2ROOT} -DPython_cmd=${Python_cmd} -Dyoda_home=${yoda_home} -DINPUT=${CMAKE_BINARY_DIR}/generators/herwig.genser-zjetsgenser-rivet.yoda -P ${CMAKE_SOURCE_DIR}/cmake/scripts/yoda2root.cmake
        COMMAND ${CMAKE_COMMAND} -DAIDA2ROOT=${AIDA2ROOT} -DPython_cmd=${Python_cmd} -Dyoda_home=${yoda_home} -DINPUT=${CMAKE_BINARY_DIR}/generators/sherpa.genser-zjets-rivet.yoda -P ${CMAKE_SOURCE_DIR}/cmake/scripts/yoda2root.cmake
        COMMAND ${CMAKE_COMMAND} -DAIDA2ROOT=${AIDA2ROOT} -DPython_cmd=${Python_cmd} -Dyoda_home=${yoda_home} -DINPUT=${CMAKE_BINARY_DIR}/generators/herwigpp.genser-zjetsgenser-rivet.yoda -P ${CMAKE_SOURCE_DIR}/cmake/scripts/yoda2root.cmake
        COMMAND ${CMAKE_COMMAND} -DAIDA2ROOT=${AIDA2ROOT} -DPython_cmd=${Python_cmd} -Dyoda_home=${yoda_home} -DINPUT=${CMAKE_BINARY_DIR}/generators/herwigpp.genser-ttbar-rivet.yoda -P ${CMAKE_SOURCE_DIR}/cmake/scripts/yoda2root.cmake
