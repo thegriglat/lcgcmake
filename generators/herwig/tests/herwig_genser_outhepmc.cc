@@ -1,6 +1,5 @@
 //#@# This example uses HepMC event interface.
-//#@# 3: Z + jets total cross section [pb] at LHC 
-//#@# 4: Fraction of events with >=2 charged leptons + >=2 jets
+//#@# It simulates Z+jets and writes events in a file in HepMC format
 //
 //////////////////////////////////////////////////////////////////////////
 // Matt.Dobbs@Cern.CH, October 2002
@@ -28,10 +27,7 @@
 #include "HepMC/IO_HERWIG.h"
 #include "HepMC/GenEvent.h"
 #include "HepMC/HEPEVT_Wrapper.h"
-
-#include "ANHEPMC/JetableInputFromHepMC.h"
-#include "ANHEPMC/JetFinderUA.h"
-#include "ANHEPMC/LeptonAnalyserHepMC.h"
+#include "HepMC/IO_GenEvent.h"
 
 #ifdef _WIN32
   #define hwaend_          HWAEND
@@ -66,7 +62,7 @@
 #endif
 
 
-// The sccess to modbos like below is problematic since hepevt size is used
+// The access to modbos like below is problematic since hepevt size is used
 // in this common block, and it could be different
 //extern "C"
 //{
@@ -82,57 +78,65 @@
 
 using namespace std;
 
-int main() { 
+int main(int argc, char* argv[]) {
 
-unsigned int i, N_2lep_X, N_2lep_1jet, N_2lep_2jet;
+  // Check that correct number of command-line arguments
+  if (argc != 3) {
+    cerr << " Unexpected number of command-line arguments. \n You are"
+         << " expected to provide Nevents and output file name. \n"
+         << " Program stopped! " << endl;
+    return 1;
+  }
 
-JetableInputFromHepMC JI;
-JetFinderUA JF;
-LeptonAnalyserHepMC LA;
+  unsigned int i, N_2lep_X, N_2lep_1jet, N_2lep_2jet;
 
 //
-//........................................HEPEVT
-// herwig-6510-0 uses HEPEVT with 10000 entries and 8-byte floating point
+//  ........................................HEPEVT
+//  herwig-6510-0 uses HEPEVT with 10000 entries and 8-byte floating point
 //  numbers. We need to explicitly pass this information to the 
 //  HEPEVT_Wrapper.
 //
-HepMC::HEPEVT_Wrapper::set_max_number_entries(hwgethepevtsize_());
-HepMC::HEPEVT_Wrapper::set_sizeof_real(8);
+  HepMC::HEPEVT_Wrapper::set_max_number_entries(hwgethepevtsize_());
+  HepMC::HEPEVT_Wrapper::set_sizeof_real(8);
+
+  // Specify file where HepMC events will be stored.
+  HepMC::IO_GenEvent ascii_io(argv[2], std::ios::out);
+
 //
 //.......................................INITIALIZATIONS
 
-hwproc.PBEAM1 = 7000.; // energy of beam1
-hwproc.PBEAM2 = 7000.; // energy of beam2
-hwproc.IPROC  = 2150; // Z + jet production
+  hwproc.PBEAM1 = 6500.; // energy of beam1
+  hwproc.PBEAM2 = 6500.; // energy of beam2
+  hwproc.IPROC  = 2150; // Z + jet production
 
 // Assuming default PTMIN = 10 GeV
 
-hwproc.MAXEV  = 1000; // number of events
+  hwproc.MAXEV  = atoi(argv[1]); // number of events
 
 // tell it what the beam particles are:
-for (i = 0; i < 8; ++i ) {
+  for (i = 0; i < 8; ++i ) {
     hwbmch.PART1[i] = (i < 1) ? 'P' : ' ';
     hwbmch.PART2[i] = (i < 1) ? 'P' : ' ';
-}
-hwigin();    // INITIALISE OTHER COMMON BLOCKS
+  }
+  hwigin();    // INITIALISE OTHER COMMON BLOCKS
 //     Z decay modes, 5 e,mu, 15 e,mu,tau
 //hwbosc.MODBOS[1-1] = 5;
 //int imode=1, ivalue=15;
-int imode=1, ivalue=15; // Z --> e+ e- + mu+ mu-
-hwsetmodbos_(&imode, &ivalue); // should be after hwigin
-hwevnt.MAXPR = 0; // number of events to print
-hwuinc(); // compute parameter-dependent constants
-hweini(); // initialise elementary process
+  int imode=1, ivalue=15; // Z --> e+ e- + mu+ mu-
+  hwsetmodbos_(&imode, &ivalue); // should be after hwigin
+  hwevnt.MAXPR = 0; // number of events to print
+  hwuinc(); // compute parameter-dependent constants
+  hweini(); // initialise elementary process
 
 //........................................HepMC INITIALIZATIONS
 //
 // Instantiate an IO strategy for reading from HEPEVT.
-HepMC::IO_HERWIG hepevtio;
+  HepMC::IO_HERWIG hepevtio;
 //
 //........................................EVENT LOOP
-for (i = 1,  N_2lep_X = N_2lep_1jet = N_2lep_2jet = 0; i <= hwproc.MAXEV; i++) {
-    if (i % 50 == 1) 
-        std::cout << "Processing Event Number " << i << std::endl;
+  for (i = 1,  N_2lep_X = N_2lep_1jet = N_2lep_2jet = 0; i <= hwproc.MAXEV; i++) {
+    if (i % 50 == 1)
+      std::cout << "Processing Event Number " << i << std::endl;
 // initialise event
     hwuine();
 // generate hard subproces
@@ -154,55 +158,44 @@ for (i = 1,  N_2lep_X = N_2lep_1jet = N_2lep_2jet = 0; i <= hwproc.MAXEV; i++) {
 // finish event
     hwufne();
 
+// Make this call for the last event to have correct cross section in the output file:
+    if(i == hwproc.MAXEV) hwefin();
+
     HepMC::GenEvent* evt = hepevtio.read_next_event();
 
 // add some information to the event
     evt->set_event_number(i);
     evt->set_signal_process_id(20);
+    HepMC::GenCrossSection xsec;
+    //double cs = hwevnt.AVWGT; // cross section in pb
+    //double RNWGT = 1./(double)hwevnt.NWGTS;
+    //double SPWGT = sqrt(max(hwevnt.WSQSUM*RNWGT - hwevnt.AVWGT*hwevnt.AVWGT , 0.));
+    //double cserr = SPWGT*sqrt(RNWGT);
+    double cs = 1000.*hwgetcs_();
+    double cserr = 1000.*hwgetcserr_();
+    xsec.set_cross_section(cs, cserr);
+    evt->set_cross_section(xsec);
 
-// Analysing the event:
-    vector<JetableObject> objects = JI.readFromHepMC (evt);
-    vector<Jet> alljets = JF.findJets (objects);
-    vector<Jet>    jets = LA.removeLeptonsFromJets (alljets, evt);
-    if (LA.nIsolatedLeptons (evt) >= 2) {
-       N_2lep_X ++;
-       if (jets.size() >= 1)
-           N_2lep_1jet ++;
-       if (jets.size() >= 2)
-           N_2lep_2jet ++;
-      }
+    // write the event out to the ascii file
+    ascii_io << evt;
+
+// Printout:
     if (i <= hwevnt.MAXPR) {
-       std::cout << "\n\n This is the FIXED version of HEPEVT as "
-  	         << "coded in IO_HERWIG " << std::endl;
-       HepMC::HEPEVT_Wrapper::print_hepevt();
-       evt->print();
-      }
+      std::cout << "\n\n This is the FIXED version of HEPEVT as "
+                << "coded in IO_HERWIG " << std::endl;
+      HepMC::HEPEVT_Wrapper::print_hepevt();
+      evt->print();
+    }
 
-	// we also need to delete the created event from memory
+// we also need to delete the created event from memory
     delete evt;
- } // End of event loop
+  } // End of event loop
 
 //........................................TERMINATION
 
-double fr_2lep = (double)N_2lep_X / (double)hwproc.MAXEV;
-double err_fr_2lep = fr_2lep / sqrt((double)N_2lep_X);
-double fr_2lep_2jet = (double)N_2lep_2jet / (double)hwproc.MAXEV;
-double err_fr_2lep_2jet=0.;
-if(N_2lep_2jet) err_fr_2lep_2jet = fr_2lep_2jet / sqrt((double)N_2lep_2jet);
+  hwefin();
 
-ofstream testi("testi.dat");
+  cout << endl << "cs [pb] = " << 1000.*hwgetcs_()  << " +- " << 1000.*hwgetcserr_() << endl << endl;
 
-hwefin();
-
-//sigma is the total cross section in pb:
-double sigma = hwevnt.AVWGT;
-double RNWGT = 1./(double)hwevnt.NWGTS;
-double SPWGT = sqrt(max(hwevnt.WSQSUM*RNWGT - hwevnt.AVWGT*hwevnt.AVWGT , 0.));
-double err_sigma = SPWGT*sqrt(RNWGT);
-
-testi << "herwig_hepmc  3   " << hwgetcs_()  << "  " << hwgetcserr_() << endl
-      << "herwig_hepmc  4   " << fr_2lep_2jet << "  " << err_fr_2lep_2jet << endl;
-
-testi.close();
-return 0;
+  return 0;
 }
