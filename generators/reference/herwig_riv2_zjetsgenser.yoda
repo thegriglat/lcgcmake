@@ -1,3 +1,6 @@
+# Reference_info : obtained 06.03.2015 with herwig 6.521.2 on x86_64-slc6-gcc48-opt, experimental
+# Process Z + jets, Z->e,mu, 10000 events
+#
 # BEGIN YODA_HISTO1D /GENSER_MC_ZJETS/Z_pt
 Path=/GENSER_MC_ZJETS/Z_pt
 Title=

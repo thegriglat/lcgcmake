@@ -1,5 +1,6 @@
 # Reference_info : obtained 09.03.2015 with alpgen 2.1.4 and agile 1.4.1 on x86_64-slc6-gcc48-opt, experimental
-# Process Z + 2jets (steering file inputalpgen), warm 3x100000, 5000000, hadronized and read by rivet 10000 events
+# Process Z + 2jets, electrons (steering file inputalpgen), warm 3x100000, 5000000,
+# hadronized and read by rivet 10000 events
 #
 # BEGIN YODA_HISTO1D /GENSER_MC_ZJETS/Z_pt
 Path=/GENSER_MC_ZJETS/Z_pt

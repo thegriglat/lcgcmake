@@ -1,4 +1,4 @@
-# Reference_info : obtained 03.03.2015 with herwig++ 2.7.1 on x86_64-slc6-gcc48-opt
+# Reference_info : obtained 03.03.2015 with herwig++ 2.7.1 on x86_64-slc6-gcc48-opt experimental
 # Process MEZJet (steering file LHC-zjets.in), rndm seed 31122001, 10000 events
 #
 # BEGIN YODA_HISTO1D /GENSER_MC_ZJETS/Z_pt

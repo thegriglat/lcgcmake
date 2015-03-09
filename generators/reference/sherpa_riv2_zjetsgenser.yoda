@@ -1,3 +1,6 @@
+# Reference_info : obtained 06.03.2015 with sherpa 2.1.1 on x86_64-slc6-gcc48-opt, experimental
+# Process Z + 1 jet, electrons (steering file LHC_ZJets_riv2.dat), 10000 events
+#
 # BEGIN YODA_HISTO1D /GENSER_MC_ZJETS/Z_pt
 Path=/GENSER_MC_ZJETS/Z_pt
 Title=
