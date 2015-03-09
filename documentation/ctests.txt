@@ -8,7 +8,7 @@ is also put in this directory.
 
  The CMakeLists.txt for the test compilation uses the cmake system
 FindPackage. Some macros to find well known packages are defined
-in the standard cmake (see documentation). If the tested package
+in the standard cmake (see cmake documentation). If the tested package
 depends on some other package of GENSER or external, additional
 macros FindPackage are used, e.g. FindHepMC, FindThePEG. They can
 be defined in 2 places:
@@ -29,18 +29,17 @@ by
 
  ctest -VV -R genname
 
- Further increase of verbosity can be obtained by defining the
-corresponding variable inside lcgcmake/generators/"generator"/tests/CMakeLists.txt,
-there is an example in lhapdf6 test.
+ CMakeLists for the test compilation can be debugged using messages:
+message(STATUS "my message text ${LIBLIST}")
 
  It is recommended to avoid scripts in the ctests system
 
  Once the test is defined in lcgcmake/generators/CMakeLists, it will be run in
 the nightlies.
 
- The comparably long tests (physics tests should contain the following line:
-   LABELS PhysicsCheck
-
+ Tests can have labels: LABELS PhysicsCheck. This is not used now.
+It is possible to specify maximal time: TIMEOUT 3000
+Default time unit is seconds.
 
  CTESTS NAMING CONVENTION:
  Each test name contains
@@ -58,9 +57,11 @@ the nightlies.
  Physics rivet tests convention:
 
  1. Reference histograms are kept in lcgcmake/generators/reference
- 2. At the beginning of each reference yoda file there is a line like this:
-     #Reference made on 24.03.2014 by herwig++ 2.7.0 lcgcmt65 x86_64-slc5-gcc47-opt
-
+ 2. At the beginning of each reference yoda file there is a line like below,
+    with a keyword "Reference_info":
+   # Reference_info : obtained 09.03.2015 with alpgen 2.1.4 and agile 1.4.1 on x86_64-slc6-gcc48-opt, experimental
+   # Process Z + 2jets, electrons (steering file inputalpgen), warm 3x100000, 5000000,
+   # hadronized and read by rivet 10000 events
 
  Tools available for the histograms comparison:
 
