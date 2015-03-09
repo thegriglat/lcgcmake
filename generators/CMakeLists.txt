@@ -410,7 +410,7 @@ LCG_add_test(pythia8-${v}.genser-test4
 
 LCG_add_test(pythia8-${v}.compare
   PRE_COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/chi.c pythia8/tests/${v}/.
-  TEST_COMMAND ${CMAKE_COMMAND} -E chdir pythia8/tests/${v} ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/cmpr.sh pythia8 ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/reference.dat ${v} ${LCG_VERSION} ${LCG_platform}
+  TEST_COMMAND ${CMAKE_COMMAND} -E chdir pythia8/tests/${v} ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/cmpr.sh pythia8 ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/reference.dat ${v} ${LCG_VERSION} ${LCG_platform} ${CMAKE_SOURCE_DIR}/generators/pythia8/tests
   DEPENDS pythia8-${v}.genser-test2 pythia8-${v}.genser-test3 pythia8-${v}.genser-test4)
 
 if(${v} MATCHES "^2[0-9][0-9]" OR ${v} MATCHES "HEAD$")
@@ -426,7 +426,7 @@ if(${v} MATCHES "^2[0-9][0-9]" OR ${v} MATCHES "HEAD$")
   )
 
   LCG_add_test(pythia8-${v}.compare-lhapdf
-    TEST_COMMAND ${CMAKE_COMMAND} -E chdir pythia8/tests/${v} ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/cmpr.sh pythia8_lhapdf ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/reference_lhapdf.dat ${v} ${LCG_VERSION} ${LCG_platform}
+    TEST_COMMAND ${CMAKE_COMMAND} -E chdir pythia8/tests/${v} ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/cmpr.sh pythia8_lhapdf ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/reference_lhapdf.dat ${v} ${LCG_VERSION} ${LCG_platform} ${CMAKE_SOURCE_DIR}/generators/pythia8/tests
     DEPENDS pythia8-${v}.genser-test1-lhapdf pythia8-${v}.compare
   )
 
@@ -504,7 +504,7 @@ foreach(v ${lhapdf_native_version})
         ENDIF
       POST_COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/chi.c .
            COMMAND ${CMAKE_COMMAND} -E copy testi_lhapdf6.dat test_lhapdf6.dat
-           COMMAND ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/cmpr.sh lhapdf6 ${CMAKE_SOURCE_DIR}/generators/lhapdf6/tests/pyt8/reference.dat ${v} ${LCG_VERSION} ${LCG_platform}
+           COMMAND ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/cmpr.sh lhapdf6 ${CMAKE_SOURCE_DIR}/generators/lhapdf6/tests/pyt8/reference.dat ${v} ${LCG_VERSION} ${LCG_platform} ${CMAKE_SOURCE_DIR}/generators/lhapdf6/tests/pyt8
       DEPENDS lhapdf6sets.download
     )
   endif()
@@ -714,7 +714,7 @@ LCG_add_test(tauolapp-${v}.genser-test1-1_2000
     PYTHIA8DATA=${pythia8_home}/xmldoc
   POST_COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/chi.c .
        COMMAND ${CMAKE_COMMAND} -E copy tauolapp/tests/${v}/testi.dat test_tauolapp.dat
-       COMMAND ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/cmpr.sh tauolapp ${CMAKE_SOURCE_DIR}/generators/tauolapp/tests/reference.dat ${v} ${LCG_VERSION} ${LCG_platform}
+       COMMAND ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/cmpr.sh tauolapp ${CMAKE_SOURCE_DIR}/generators/tauolapp/tests/reference.dat ${v} ${LCG_VERSION} ${LCG_platform} ${CMAKE_SOURCE_DIR}/generators/tauolapp/tests
   DEPENDS tauolapp-${v}.build
   
 )
@@ -760,7 +760,7 @@ LCG_add_test(pythia6-${v}.genser-test
 
 LCG_add_test(pythia6-${v}.genser-compare
   PRE_COMMAND ${CMAKE_COMMAND} -E chdir pythia6/tests/${v} ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/chi.c .
-  TEST_COMMAND ${CMAKE_COMMAND} -E chdir pythia6/tests/${v} ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/cmpr.sh pythia6 ${CMAKE_SOURCE_DIR}/generators/pythia6/tests/reference.dat ${v} ${LCG_VERSION} ${LCG_platform}
+  TEST_COMMAND ${CMAKE_COMMAND} -E chdir pythia6/tests/${v} ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/cmpr.sh pythia6 ${CMAKE_SOURCE_DIR}/generators/pythia6/tests/reference.dat ${v} ${LCG_VERSION} ${LCG_platform} ${CMAKE_SOURCE_DIR}/generators/pythia6/tests
   DEPENDS pythia6-${v}.genser-test
   
 )
@@ -979,7 +979,7 @@ if ( NOT ${v} MATCHES "3.52")
     PYTHIA8DATA=${pythia8_home}/xmldoc
   POST_COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/chi.c photospp/tests/${v}/.
        COMMAND $ENV{SHELL} -c "cat photospp/tests/${v}/testi.dat >> photospp/tests/${v}/test_photospp.dat"
-       COMMAND ${CMAKE_COMMAND} -E chdir photospp/tests/${v} ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/cmpr.sh photospp ${CMAKE_SOURCE_DIR}/generators/photospp/tests/reference.dat ${v} ${LCG_VERSION} ${LCG_platform}
+       COMMAND ${CMAKE_COMMAND} -E chdir photospp/tests/${v} ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/cmpr.sh photospp ${CMAKE_SOURCE_DIR}/generators/photospp/tests/reference.dat ${v} ${LCG_VERSION} ${LCG_platform} ${CMAKE_SOURCE_DIR}/generators/photospp/tests
   DEPENDS photospp-${v}.build photospp-${v}.genser-test1
   
  )
@@ -1014,29 +1014,27 @@ LCGPackage_Add(
   DEPENDS HepMC pythia8-<evtgen_<VERSION>_pythia8> photos++ tauola++-<evtgen_<VERSION>_tauola++>
 )
 
-foreach(version ${evtgen_native_version})
-  LCG_add_test(evtgen-${version}.genser-test TEST_COMMAND evtgen-${version}/tests/evtgen_test1 ${evtgen-${version}_home}/share/DECAY_2010.DEC ${evtgen-${version}_home}/share/evt.pdl ${CMAKE_CURRENT_SOURCE_DIR}/evtgen/tests/DDALITZ.DEC 10000
-    BINARY_DIR evtgen-${version}/tests
+foreach(v ${evtgen_native_version})
+  LCG_add_test(evtgen-${v}.genser-test TEST_COMMAND evtgen-${v}/tests/evtgen_test1 ${evtgen-${v}_home}/share/DECAY_2010.DEC ${evtgen-${v}_home}/share/evt.pdl ${CMAKE_CURRENT_SOURCE_DIR}/evtgen/tests/DDALITZ.DEC 10000
+    BINARY_DIR evtgen-${v}/tests
     SOURCE_DIR evtgen/tests
     BUILD evtgen_test1
     BUILD_OPTIONS -DCMAKE_MODULE_PATH=${CMAKE_SOURCE_DIR}/cmake/modules
                   -DMYADDMODULEPATH=${cmaketools_home}/modules
                   -DROOTSYS=${ROOT_home}
-                  -DEVTGEN_ROOT_DIR=${evtgen-${version}_home} -DPYTHIA8_ROOT_DIR=${pythia8-${evtgen_${version}_pythia8}_home}
-                  -DPHOTOSPP_ROOT_DIR=${photos++_home} -DTAUOLAPP_ROOT_DIR=${tauola++-${evtgen_${version}_tauola++}_home}
+                  -DEVTGEN_ROOT_DIR=${evtgen-${v}_home} -DPYTHIA8_ROOT_DIR=${pythia8-${evtgen_${v}_pythia8}_home}
+                  -DPHOTOSPP_ROOT_DIR=${photos++_home} -DTAUOLAPP_ROOT_DIR=${tauola++-${evtgen_${v}_tauola++}_home}
                   -DHEPMC_ROOT_DIR=${HepMC_home}
                   IF LCG_CPP11 THEN -DCMAKE_CXX_FLAGS=-std=c++11 ENDIF
-    ENVIRONMENT ${library_path}=${evtgen-${version}_home}/lib:${photos++_home}/lib:${pythia8-${evtgen_${version}_pythia8}_home}/lib:${HepMC_home}/lib:${ROOT_home}/lib:$ENV{${library_path}} 
-                PYTHIA8DATA=${pythia8-${evtgen_${version}_pythia8}_home}/xmldoc
+    ENVIRONMENT ${library_path}=${evtgen-${v}_home}/lib:${photos++_home}/lib:${pythia8-${evtgen_${v}_pythia8}_home}/lib:${HepMC_home}/lib:${ROOT_home}/lib:$ENV{${library_path}} 
+                PYTHIA8DATA=${pythia8-${evtgen_${v}_pythia8}_home}/xmldoc
   )
-endforeach()
 
-foreach(version ${evtgen_native_version})
-  LCG_add_test(evtgen-${version}.compare
-    PRE_COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/chi.c .
-        COMMAND ${CMAKE_COMMAND} -E copy evtgen-${version}/tests/testi.dat test_evtgen-${version}.dat
-    TEST_COMMAND ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/cmpr.sh evtgen-${version} ${CMAKE_SOURCE_DIR}/generators/evtgen/tests/compare/reference.dat _ ${LCG_VERSION} ${LCG_platform}
-    DEPENDS evtgen-${version}.genser-test
+  LCG_add_test(evtgen-${v}.compare
+    PRE_COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/chi.c evtgen-${v}/tests/.
+        COMMAND ${CMAKE_COMMAND} -E copy evtgen-${v}/tests/testi.dat evtgen-${v}/tests/test_evtgen.dat
+    TEST_COMMAND ${CMAKE_COMMAND} -E chdir evtgen-${v}/tests ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/cmpr.sh evtgen ${CMAKE_SOURCE_DIR}/generators/evtgen/tests/compare/reference.dat ${v} ${LCG_VERSION} ${LCG_platform} ${CMAKE_SOURCE_DIR}/generators/evtgen/tests
+    DEPENDS evtgen-${v}.genser-test
     
   )
 endforeach()
@@ -1863,7 +1861,7 @@ LCG_add_test(madgraph5amc-${v}.genser-zjetsLO_hadronize
 LCG_add_test(madgraph5amc-${v}_compare
   TEST_COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/chi.c ${CMAKE_BINARY_DIR}/generators/madgraph5amc/${v}/hadronization/.
        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_BINARY_DIR}/generators/madgraph5amc/${v}/hadronization/testi_pythia8.dat ${CMAKE_BINARY_DIR}/generators/madgraph5amc/${v}/hadronization/test_madgraph5amc.dat
-       COMMAND ${CMAKE_COMMAND} -E chdir ${CMAKE_BINARY_DIR}/generators/madgraph5amc/${v}/hadronization ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/cmpr.sh madgraph5amc ${CMAKE_SOURCE_DIR}/generators/madgraph5amc/tests/reference.dat ${v} ${LCG_VERSION} ${LCG_platform}
+       COMMAND ${CMAKE_COMMAND} -E chdir ${CMAKE_BINARY_DIR}/generators/madgraph5amc/${v}/hadronization ${CMAKE_SOURCE_DIR}/generators/pythia8/tests/compare/cmpr.sh madgraph5amc ${CMAKE_SOURCE_DIR}/generators/madgraph5amc/tests/reference.dat ${v} ${LCG_VERSION} ${LCG_platform} ${CMAKE_SOURCE_DIR}/generators/pythia8
   DEPENDS madgraph5amc-${v}.genser-zjetsLO_hadronize
 )
 

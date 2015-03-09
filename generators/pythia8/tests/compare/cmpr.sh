@@ -8,12 +8,14 @@
 # 3 - generator version
 # 4 - LCG version
 # 5 - platform
+# 6 - location of test sources (to find test info)
 
 TEST_DAT=test_${1}.dat
 FORMAT="html"
 REFERENCE_DAT=$2
 RESULTS=test_${1}.html
 NAMESTORAGE=test_${1}_${3}_${4}_${5}.html
+SOURCEDIR=${6}
 
 RESULTSTORE=/afs/cern.ch/sw/lcg/external/MCGenerators_test/validation
 
@@ -260,6 +262,25 @@ process_tests () {
   top_html
   process_tests | while read line ; do print_html $line >> $RESULTS ; done
   bottom_html
+
+  echo "<h1>Test routines</h1>" >> $RESULTS
+
+  test_names=$(cat ${TEST_DAT} | cut -d ' ' -f 1 | sort -u)
+  #local svnweb="http://svnweb.cern.ch/world/wsvn/GENSER/validation/trunk/tests"
+
+  for name in ${test_names} ; do
+    echo "<h2 id=\"$name\" style=\"background: #EEE;\">${name}</h2>" >> $RESULTS
+
+    #echo -n "<p><b>Code</b>: "
+    #for f in ${name}.* ; do
+    #  echo -n "<a href=\"${svnweb}/${f}\">${f}</a> ";
+    #done
+    #echo "</p>"
+
+    echo "<p><b>Comments</b>:<br>" >> $RESULTS
+    sed '/#@#/!d;s/^.*#@#//;s/$/<br>/;' ${SOURCEDIR}/${name}.* >> $RESULTS
+    echo "</p>" >> $RESULTS
+  done
 
   if [[ -w ${RESULTSTORE} ]] ; then
     mkdir -p ${RESULTSTORE}/html

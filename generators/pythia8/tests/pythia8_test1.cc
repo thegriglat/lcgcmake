@@ -6,6 +6,9 @@
 //#@# 4: 0.01+(max. px, py nonconservation, GeV). The error is fixed
 //#@# 5: Average final state particles multiplicity
 //#@# 6: Average final state charged particles multiplicity
+//#@#
+//#@# Tune is fixed to the default tune in pythia8 1XX: Tune:ee = 3 Tune:pp = 5
+//#@#
 //#@# This test creates LHE file Zg_pythia8.lhe
 //
 #ifdef PYTHIA8NEWVERS

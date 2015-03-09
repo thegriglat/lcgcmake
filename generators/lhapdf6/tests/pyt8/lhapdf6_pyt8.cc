@@ -1,6 +1,8 @@
 // File: lhapdf6_pyt8.cc
 //
 //#@# 1: p p --> (Z,gamma* -> l+ l-) + jets cross section [mb] at LHC
+//#@#
+//#@# Tune is fixed to the default tune in pythia8 1XX: Tune:ee = 3 Tune:pp = 5
 //
 #include "Pythia8/Pythia.h"
 
@@ -136,7 +138,7 @@ int main() {
 
   errval = 0.;
   if(nEvent > 0) errval = val/sqrt( (double)(nEvent) );
-  testi << "pythia8_test1  1   " << val << " " << errval << " " << endl;
+  testi << "lhapdf6_pyt8 1   " << val << " " << errval << " " << endl;
 
   // Done.
   return 0;

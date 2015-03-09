@@ -6,7 +6,8 @@
 //#@# 4: 0.01+(max. px, py nonconservation, GeV). The error is fixed
 //#@# 5: Average final state particles multiplicity
 //#@# 6: Average final state charged particles multiplicity
-//#@#     This test runs with lhapdf set CT10 and uses default pythia8 tune
+//#@#
+//#@# This test runs with lhapdf set CT10 and uses default pythia8 tune
 //
 #ifdef PYTHIA8NEWVERS
   #include "Pythia8/Pythia.h"
