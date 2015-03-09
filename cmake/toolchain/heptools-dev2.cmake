@@ -90,6 +90,7 @@ LCG_external_package(PythonFWK         2.7.9                  Python            
 LCG_external_package(python_dateutil   2.4.0                                    )
 LCG_external_package(pytools           1.9                                      )
 LCG_external_package(pyxml             0.8.4p1                                  )
+LCG_external_package(pyzmq             14.5.0                                   )
 LCG_external_package(QMtest            2.4.1                                    )
 LCG_external_package(Qt                4.8.4                     qt             )
 LCG_external_package(Qt5               5.4.1                    qt5             )
