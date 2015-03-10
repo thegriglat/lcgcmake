@@ -13,7 +13,7 @@ if (VALIDATION)
   set (rivettests_stat_size  100000)
 else()
   set (timeout 1500)
-  set (rivettests_stat_size  1000)
+  set (rivettests_stat_size  10000)
 endif()
 #---General parameters------------------------------------------------------------------------------
 set (gen_url "http://service-spi.web.cern.ch/service-spi/external/tarFiles/MCGeneratorsTarFiles")
@@ -1698,7 +1698,7 @@ if(NOT APPLE)    #  (installation fails on MacOSX)
     --feynhiggs=${feynhiggs_home}
   BUILD_COMMAND ${MAKE} CPATH=${Boost_home_include}
   BUILD_IN_SOURCE 1
-  DEPENDS fastjet lhapdf-<powheg-box-v2_<NATIVE_VERSION>_lhapdf> chaplin
+  DEPENDS fastjet lhapdf-<powheg-box-v2_<NATIVE_VERSION>_lhapdf> chaplin feynhiggs
  )
 endif()
 
