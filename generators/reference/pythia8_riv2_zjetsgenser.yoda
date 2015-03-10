@@ -1,3 +1,6 @@
+# Reference_info : obtained 04.11.2014 with pythia8 186 on x86_64-slc6-gcc48-opt
+# Process qqbar2gmZg + qg2gmZq, Z->ll (e,mu,tau), pTHatMin = 20, 13TeV, 10000 events
+#
 # BEGIN YODA_HISTO1D /GENSER_MC_ZJETS/Z_pt
 Path=/GENSER_MC_ZJETS/Z_pt
 Title=
