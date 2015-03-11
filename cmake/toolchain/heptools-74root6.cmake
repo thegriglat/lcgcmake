@@ -163,6 +163,10 @@ LCG_external_package(lhapdf            6.1.5          ${MCGENPATH}/lhapdf       
 LCG_external_package(lhapdfsets        5.9.1          lhapdfsets   )
 
 LCG_external_package(powheg-box         r2092         ${MCGENPATH}/powheg-box       )
+LCG_external_package(powheg-box-v2	r3043.lhcb    ${MCGENPATH}/powheg-box-v2 author=r3043  )
+
+LCG_external_package(feynhiggs         2.10.2         ${MCGENPATH}/feynhiggs	   )
+LCG_external_package(chaplin           1.2            ${MCGENPATH}/chaplin         )
 
 LCG_external_package(pythia8           175            ${MCGENPATH}/pythia8 )
 LCG_external_package(pythia8           185            ${MCGENPATH}/pythia8 )
