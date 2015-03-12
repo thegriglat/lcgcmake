@@ -3,7 +3,8 @@
 set -x
 #------------------------------------------------------------------
 svnrep=http://svn.cern.ch/guest/lcgsoft
-
+svnrepcool=http://svn.cern.ch/guest/lcgcool/cool
+svnrepcoral=http://svn.cern.ch/guest/lcgcoral/coral/tags
 
 rm -rf workdir
 mkdir workdir
@@ -14,4 +15,19 @@ do
   tar --exclude=.svn -czf $tag.tar.gz $tag
   cp  $tag.tar.gz /afs/cern.ch/sw/lcg/external/tarFiles/.
 done
+
+for tag in COOL-preview COOL_3_0-preview
+do
+  svn co $svnrepcool/tags/$tag --quiet $tag
+  tar --exclude=.svn -czf $tag.tar.gz $tag
+  cp  $tag.tar.gz /afs/cern.ch/sw/lcg/external/tarFiles/.
+done
+
+for tag in CORAL-preview CORAL_3_0-preview
+do
+  svn co $svnrepcoral/tags/$tag --quiet $tag
+  tar --exclude=.svn -czf $tag.tar.gz $tag
+  cp  $tag.tar.gz /afs/cern.ch/sw/lcg/external/tarFiles/.
+done
+
 
