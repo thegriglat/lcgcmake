@@ -4,7 +4,7 @@ set -x
 #------------------------------------------------------------------
 svnrep=http://svn.cern.ch/guest/lcgsoft
 svnrepcool=http://svn.cern.ch/guest/lcgcool/cool
-svnrepcoral=http://svn.cern.ch/guest/lcgcoral/coral/tags
+svnrepcoral=http://svn.cern.ch/guest/lcgcoral/coral
 
 rm -rf workdir
 mkdir workdir
