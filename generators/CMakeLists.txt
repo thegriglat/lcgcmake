@@ -274,12 +274,21 @@ LCGPackage_Add(
 )
 
 foreach(v ${protos_native_version})
-  LCG_add_test(protos-${v}.native-Protos-tb
-    TEST_COMMAND ${CMAKE_COMMAND} -E chdir ${protos-${v}_home}/bin/Red/tb ./Protos-tb
-    ENVIRONMENT ${library_path}=${lhapdf-${protos_${v}_lhapdf}_home}/lib:$ENV{${library_path}} LHAPATH=${lhapdf-${protos_${v}_lhapdf}_home}/../share/lhapdf/PDFsets
+  LCG_add_test(protos-${v}.native-Protos-tW
+    TEST_COMMAND ${CMAKE_COMMAND} -E make_directory protos/${v}/Red/tW
+         COMMAND ${CMAKE_COMMAND} -E make_directory protos/${v}/events
+         COMMAND ${CMAKE_COMMAND} -E copy_directory ${protos-${v}_home}/bin/Red/tW/input protos/${v}/Red/tW/input
+         COMMAND ${CMAKE_COMMAND} -E make_directory protos/${v}/Red/tW/output
+         COMMAND ${CMAKE_COMMAND} -E make_directory protos/${v}/Red/tW/plots
+         COMMAND $ENV{SHELL} -c "sed -i -e 's/0 1 1                        ! IEVTOUT/1 1 1                        ! IEVTOUT/' protos/${v}/Red/tW/input/run.dat"
+         COMMAND ${CMAKE_COMMAND} -E chdir protos/${v}/Red/tW ${protos-${v}_home}/bin/Red/tW/Protos-tW
+         #to be unweighted by unw/Protos-unw, see https://twiki.cern.ch/twiki/bin/view/Sandbox/ProtosGenerator
+    ENVIRONMENT ${library_path}=${lhapdf-${protos_${v}_lhapdf}_home}/lib:$ENV{${library_path}} 
+                LHAPATH=${lhapdf-${protos_${v}_lhapdf}_home}/../share/lhapdf/PDFsets
     DEPENDS lhapdfsets
   )
 endforeach()
+
 
 #---pythia8------------------------------------------------------------------------------------------
 LCGPackage_Add(
