@@ -156,6 +156,7 @@ LCG_external_package(madgraph5amc       2.2.2          ${MCGENPATH}/madgraph5amc
 LCG_external_package(madgraph5amc       2.2.1          ${MCGENPATH}/madgraph5amc )
 LCG_external_package(madgraph5amc       2.1.2          ${MCGENPATH}/madgraph5amc )
 
+LCG_external_package(lhapdf            5.8.8          ${MCGENPATH}/lhapdf	)
 LCG_external_package(lhapdf            5.9.1          ${MCGENPATH}/lhapdf       )
 LCG_external_package(lhapdf            6.1.4          ${MCGENPATH}/lhapdf       )
 LCG_external_package(lhapdf            6.1.5          ${MCGENPATH}/lhapdf       )
@@ -184,6 +185,7 @@ LCG_external_package(tauola++          1.1.1a         ${MCGENPATH}/tauola++     
 LCG_external_package(tauola++          1.1.4          ${MCGENPATH}/tauola++     )
 LCG_external_package(tauola++          1.1.5          ${MCGENPATH}/tauola++     )
 
+LCG_external_package(pythia6           427.2          ${MCGENPATH}/pythia6    author=6.4.27 hepevt=10000  )
 LCG_external_package(pythia6           429.2          ${MCGENPATH}/pythia6    author=6.4.28 hepevt=10000  )
 LCG_external_package(pythia6           428.2          ${MCGENPATH}/pythia6    author=6.4.28 hepevt=10000  )
 
