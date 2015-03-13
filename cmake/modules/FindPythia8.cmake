@@ -1,4 +1,4 @@
-# - Locate pythia6 library
+# - Locate pythia8 libraries and includes
 # Defines:
 #
 #  PYTHIA8_FOUND
