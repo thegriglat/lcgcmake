@@ -161,6 +161,7 @@ LCG_external_package(lhapdf            5.9.1          ${MCGENPATH}/lhapdf       
 LCG_external_package(lhapdf            6.1.4          ${MCGENPATH}/lhapdf       )
 LCG_external_package(lhapdf            6.1.5          ${MCGENPATH}/lhapdf       )
 
+LCG_external_package(lhapdfsets        5.8.8          lhapdfsets   )
 LCG_external_package(lhapdfsets        5.9.1          lhapdfsets   )
 
 LCG_external_package(powheg-box         r2092         ${MCGENPATH}/powheg-box       )
