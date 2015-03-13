@@ -227,12 +227,8 @@ set(CMT_make_cmd
 #---CORAL----------------------------------------------------------------------------------------------
 LCGPackage_add(
   CORAL
-  if (heptools_version MATCHES experimental)
-     URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/CORAL${CORAL_native_version}.tar.gz
-  else()
-     SVN_REPOSITORY http://svn.cern.ch/guest/lcgcoral/coral/tags/${CORAL_native_version} --quiet
-  endif()   
-  #UPDATE_COMMAND sed -r "s/ LCGCMT_[^ ]+/ LCGCMT_${heptools_version}/" -i cmt/project.cmt
+  SVN_REPOSITORY http://svn.cern.ch/guest/lcgcoral/coral/tags/${CORAL_native_version} --quiet
+    #UPDATE_COMMAND sed -r "s/ LCGCMT_[^ ]+/ LCGCMT_${heptools_version}/" -i cmt/project.cmt
   UPDATE_COMMAND <VOID>
   CONFIGURE_COMMAND <VOID>
   BUILD_COMMAND     ${CMT_make_cmd}
@@ -258,11 +254,7 @@ endif()
 #---COOL-----------------------------------------------------------------------------------------------
 LCGPackage_add(
   COOL
-  if (heptools_version MATCHES experimental)
-     URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/COOL${COOL_native_version}.tar.gz
-  else()
-     SVN_REPOSITORY http://svn.cern.ch/guest/lcgcool/cool/tags/${COOL_native_version} --quiet
-  endif()
+  SVN_REPOSITORY http://svn.cern.ch/guest/lcgcool/cool/tags/${COOL_native_version} --quiet
   #UPDATE_COMMAND sed -r "s/ LCGCMT_[^ ]+/ LCGCMT_${heptools_version}/" -i cmt/project.cmt
   UPDATE_COMMAND <VOID>
   CONFIGURE_COMMAND <VOID>
