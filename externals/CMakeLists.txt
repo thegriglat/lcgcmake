@@ -251,6 +251,16 @@ LCGPackage_Add(
   INSTALL_COMMAND ${MAKE} install				       
 )
 
+#---Vc-------------------------------------------------------
+LCGPackage_Add(
+  Vc
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/Vc-<Vc_native_version>.tar.gz
+
+  CONFIGURE_COMMAND ${CMAKE_COMMAND} -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>  <SOURCE_DIR>
+  BUILD_COMMAND ${MAKE}
+  INSTALL_COMMAND ${MAKE} install
+)
+
 
 #---Davix--------------------------------------------------------------------------------------------
 LCGPackage_Add(
