@@ -88,6 +88,15 @@ def createInstallArea(basepath,platform,lcgversion,compilerdir):
 ##########################
 if __name__ == "__main__":
 
+  platform = os.environ['PLATFORM']
+
+  if ((platform.find("ubuntu") != -1) or (platform.find("mac") != -1)):
+      print "Avoiding copy to AFS in this platform", platform
+      sys.exit(0)
+  else:
+      cmd = "kinit sftnight@CERN.CH -5 -V -k -t /ec/conf/sftnight.keytab"
+      os.system(cmd)
+
   # extract command line parameters
   usage = "usage: %prog slotname workdir"
   parser = OptionParser(usage)
@@ -111,7 +120,7 @@ if __name__ == "__main__":
     workdir =  args[1]
 
   thisdir = os.path.dirname(os.path.abspath(__file__))
-  platform = os.environ['PLATFORM']
+#  platform = os.environ['PLATFORM']
   compiler = os.environ['CXX']
   compilerdir = compiler.split("bin")[0]
 
