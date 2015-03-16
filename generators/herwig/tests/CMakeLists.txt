@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8 FATAL_ERROR)
-project(herwig-tests CXX)
+project(herwig-tests CXX Fortran)
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH2})
 
