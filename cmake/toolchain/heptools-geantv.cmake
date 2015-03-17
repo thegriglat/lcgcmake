@@ -15,10 +15,10 @@ include(${CMAKE_CURRENT_LIST_DIR}/heptools-common.cmake)
 LCG_AA_project(COOL  COOL_3_0_2)
 LCG_AA_project(CORAL CORAL_3_0_2)
 LCG_AA_project(RELAX RELAX_1_4_2)
-LCG_AA_project(ROOT  6.02.05)
+LCG_AA_project(ROOT  6.03.02)
 LCG_AA_project(LCGCMT LCGCMT_${heptools_version})
 LCG_AA_project(HepMC 2.06.09)
-#LCG_external_package(Geant4 9.6.p03 CLHEP=2.1.4.1)
+LCG_external_package(Geant4 10.1 CLHEP=2.1.4.1)
 
 # Externals
 LCG_external_package(libiodbc          3.52.9                                   )
@@ -180,10 +180,6 @@ LCG_external_package(lhapdfsets        5.9.1          lhapdfsets   )
 
 LCG_external_package(powheg-box         r2092         ${MCGENPATH}/powheg-box       )
 
-LCG_external_package(pythia8           175            ${MCGENPATH}/pythia8 )
-LCG_external_package(pythia8           185            ${MCGENPATH}/pythia8 )
-LCG_external_package(pythia8           201            ${MCGENPATH}/pythia8 )
-LCG_external_package(pythia8           205            ${MCGENPATH}/pythia8 )
 LCG_external_package(pythia8           186            ${MCGENPATH}/pythia8 )
 
 LCG_external_package(sacrifice         0.9.9          ${MCGENPATH}/sacrifice pythia8=186)

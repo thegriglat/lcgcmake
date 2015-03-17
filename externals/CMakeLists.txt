@@ -312,6 +312,10 @@ else()
   set(hepmc3_source_command URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/MCGeneratorsTarFiles/hepmc3-${hepmc3_native_version}.tgz)
 endif()
 
+if(heptools_version MATCHES geantv)
+  set (hepmc3_options -DROOT_DIR=${ROOT_home}/cmake -DHEPMC_ENABLE_CPP11=ON)
+endif()
+
 #---Forward declarations----------------------------------------------------------------------------
 LCGPackage_set_home(pythia8)
 
@@ -323,6 +327,7 @@ LCGPackage_Add(
              -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
              -DHEPMC_BUILD_EXAMPLES=ON
              -DPYTHIA8_ROOT_DIR=${pythia8_home}
+	     ${hepmc3_options}
   BUILD_COMMAND ${MAKE}
   DEPENDS Boost pythia8
 )
