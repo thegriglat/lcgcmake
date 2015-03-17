@@ -10,10 +10,50 @@ This file describes how to install generators to MCGenerators trees:
 
 4. Commit changes into SVN;
 
-5. Go to https://ecsft.cern.ch/ and submit jobs for all requested releases;
-   Don't install more then one full release at once!
+5. FOR THE LCG TREES up to 67c:
 
-6. If the installation is successfull, mail to genser-announce@cern.ch like this:
+   Go to https://ecsft.cern.ch/ and submit jobs for all requested releases;
+   Don't install more then one full release at once!
+   
+   FOR THE LCG TREES 68 and higher: continue as below:
+
+6. Go to https://phsft-jenkins.cern.ch/job/lcg_release_generators/
+   or to the main Jenkins page https://phsft-jenkins.cern.ch/ and select lcg_release_generators
+   This requires permission (now it is done through the GENSER e-group)
+
+7. Login to Jenkins. This requires a Jenkins account, to be created once (ask Patricia).
+
+8. Select "Build with parameters" and build generator. After the successful build there will
+   be newly created RPMs in /afs/cern.ch/sw/lcg/tmp/incoming_rpms.
+
+   NOTE: as of 17.03.2015 there is no Jenkins procedure to substitute a generator version
+         already installed (to repair it for example). Such generator versions are now
+         ignored (rpms not copied or not created)
+
+9. Login as sftnight and copy rpms from /afs/cern.ch/sw/lcg/tmp/incoming_rpms
+   to /afs/cern.ch/sw/lcg/external/rpms/lcg/
+
+10. Update rpm database (use createrepo or createrepo_c) (takes about 10 mins)
+   createrepo_c --workers=20 /afs/cern.ch/sw/lcg/external/rpms/lcg/
+
+11. Install to AFS
+  a) Prepare environment
+     export MYSITEROOT=/afs/cern.ch/sw/lcg/releases/
+  b) Install
+     List rpms
+       /afs/cern.ch/sw/lcg/app/spi/tools/LCGRPM/install/lcg_install.sh list | grep LCG_generators_74root6
+     Install
+      /afs/cern.ch/sw/lcg/app/spi/tools/LCGRPM/install/lcg_install.sh --rpmupdate install LCG_generators_74root6_x86_64_slc6_gcc48_opt-1.0.0-75
+
+     NOTE: this installs the generator created in the last Jenkins job and its dependencies.
+           If there were earlier Jenkins jobs with independent generators, they are to be installed
+           one by one as below. Eventually this could be changed in future.
+
+     If uninstalled generators remain or if an error occurred try to install target package
+     (LCG_74_root6_lhapdf6_6.1.4_x86_64_slc6_gcc48_opt-1.0.0-11 for example)
+     instead of full generators set (LCG_generators_74_root6_x86_64_slc6_gcc48_opt-1.0.0-75)
+
+12. If the installation is successfull, mail to genser-announce@cern.ch like this:
     Dear colleagues,
     New Tauola++ version - Tauola++ 1.1.4 has been installed into MCGenerators lcgcmt trees:
 
@@ -24,66 +64,46 @@ This file describes how to install generators to MCGenerators trees:
            Best regards,
                        GENSER
 
-### 
-### Installation of LCG_68 and newer releases 
-###
+ Manual procedure, used previously instead of steps 6 - 8 (not validated now)
 
-1. Steps 1-4 from the instruction above.
+M1. Build generators in your AFS working directory location (for example, /afs/cern.ch/work/d/dkonst/GENSERTMP/)
+    If you add a generator version, build it against existing AFS installation, e.g. /afs/cern.ch/sw/lcg/releases/LCG_70
+    If you reinstall a generator or a version, use argument -DLCG_IGNORE='generatorname1;generatorname2'
+    cd to the temporary location above
 
-5. Build generators in your AFS working directory location (for example, /afs/cern.ch/work/d/dkonst/GENSERTMP/)
-   If you add a generator version, build it against existing AFS installation, e.g. /afs/cern.ch/sw/lcg/releases/LCG_70
-   If you reinstall a generator or a version, use argument -DLCG_IGNORE='generatorname1;generatorname2'
-   cd to the temporary location above
-
-6. Create the summary files for a release
-   .../lcgcmake/cdash/extract_LCG_summary.py . <platform> <release version> UPGRADE
-   (old location of this script: /afs/cern.ch/sw/lcg/app/spi/tools/LCGRPM/package/extract_LCG_summary.py)
-   (alternatives for the last argument: UPGRADE or RELEASE)
-   (example is below)
-    # .../lcgcmake/cdash/extract_LCG_summary.py . x86_64-slc6-gcc48-opt 69root6 UPGRADE
+M2. Create the summary files for a release
+    .../lcgcmake/cdash/extract_LCG_summary.py . <platform> <release version> UPGRADE
+    (old location of this script: /afs/cern.ch/sw/lcg/app/spi/tools/LCGRPM/package/extract_LCG_summary.py)
+    (alternatives for the last argument: UPGRADE or RELEASE)
+    (example is below)
+     # .../lcgcmake/cdash/extract_LCG_summary.py . x86_64-slc6-gcc48-opt 69root6 UPGRADE
 
   The files LCG_*.txt should be created. (contrib, generators, externals)
 
-7. Create RPM spec file
-  a) Determine the current release number
-     ls /afs/cern.ch/sw/lcg/external/rpms/lcg/ | grep LCG_generators | grep 69root6
-     Output is:
-       LCG_generators_69root6_x86_64_slc6_gcc48_opt-1.0.0-6.noarch.rpm
-       LCG_generators_69root6_x86_64_slc6_gcc48_opt-1.0.0-7.noarch.rpm
-       LCG_generators_69root6_x86_64_slc6_gcc48_opt-1.0.0-8.noarch.rpm
+M3. Create RPM spec file
+   a) Determine the current release number
+      ls /afs/cern.ch/sw/lcg/external/rpms/lcg/ | grep LCG_generators | grep 69root6
+      Output is:
+        LCG_generators_69root6_x86_64_slc6_gcc48_opt-1.0.0-6.noarch.rpm
+        LCG_generators_69root6_x86_64_slc6_gcc48_opt-1.0.0-7.noarch.rpm
+        LCG_generators_69root6_x86_64_slc6_gcc48_opt-1.0.0-8.noarch.rpm
                                                         -> <- is release number
-     Use next release number (9 in this case)
-  b) Prepare temporary build directory TMPRPM (for example TMPRPM=/tmp/sftnight)
-     rm -rf ${TMPRPM}/*
-  c) Produce .spec file
-     /afs/cern.ch/sw/lcg/app/spi/tools/LCGRPM/package/createLCGRPMSpec.py LCG_generators_x86_64-slc6-gcc48-opt.txt -b ${TMPRPM} -o generators.spec --release <release number>
+      Use next release number (9 in this case)
+   b) Prepare temporary build directory TMPRPM (for example TMPRPM=/tmp/sftnight)
+      rm -rf ${TMPRPM}/*
+   c) Produce .spec file
+      /afs/cern.ch/sw/lcg/app/spi/tools/LCGRPM/package/createLCGRPMSpec.py LCG_generators_x86_64-slc6-gcc48-opt.txt -b ${TMPRPM} -o generators.spec --release <release number>
 
-8. Make rpm
-   rpmbuild -bb generators.spec
+M4. Make rpm
+    rpmbuild -bb generators.spec
 
-   comment: if you substitute some generators version, at this point you will have an error because of duplicate generator.
-            You should remove the old one from the txt file obtained at step 6 and repeat step 7
+    comment: if you substitute some generators version, at this point you will have an error because of duplicate generator.
+             You should remove the old one from the txt file obtained at step 6 and repeat step 7
 
-9. Copy rpm (this step require permissions, to be done from sftnight)
-   There is a script .../lcgcmake/cdash/copyRPMS.py to copy only necessary or updated rpms (major update of the script made 29.01.2015)
-   export TMP_RPM_AREA=${TMPRPM}    (temporary build area from above)
-   .../lcgcmake/cdash/copyRPMS.py --do_generators $TMP_RPM_AREA /afs/cern.ch/sw/lcg/tmp/incoming_rpms
+M5. Copy rpm (this step require permissions, to be done from sftnight)
+    There is a script .../lcgcmake/cdash/copyRPMS.py to copy only necessary or updated rpms (major update of the script made 29.01.2015)
+    export TMP_RPM_AREA=${TMPRPM}    (temporary build area from above)
+    .../lcgcmake/cdash/copyRPMS.py --do_generators $TMP_RPM_AREA /afs/cern.ch/sw/lcg/tmp/incoming_rpms
 
-10. Update rpm database (use createrepo or createrepo_c) (takes about 10 mins)
-   createrepo_c --workers=20 /afs/cern.ch/sw/lcg/external/rpms/lcg/
-
-11. Install to AFS
-  a) Prepare environment
-     export MYSITEROOT=/afs/cern.ch/sw/lcg/releases/
-  b) Install 
-     List rpms
-       /afs/cern.ch/sw/lcg/app/spi/tools/LCGRPM/install/lcg_install.sh list | grep LCG_generators_69root6
-     Install
-      /afs/cern.ch/sw/lcg/app/spi/tools/LCGRPM/install/lcg_install.sh --rpmupdate install LCG_generators_69root6_x86_64_slc6_gcc48_opt-1.0.0-9
-  (please use with caution: If the error is occurred try to install target package (LCG_68_root6_lhapdf6_6.1.4_x86_64_slc6_gcc48_opt-1.0.0-11 for example) instead of full generators set (LCG_generators_68_root6_x86_64_slc6_gcc48_opt-1.0.0-11)
-
-12. Check that the new generators are installed on AFS
-
-13. If the installation is successfull, mail to genser-announce@cern.ch.
 
 In case of questions or problems mail to Benedikt.Hegner@cern.ch and genser-dev
