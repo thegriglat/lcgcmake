@@ -18,7 +18,7 @@ LCG_AA_project(RELAX RELAX_1_4_2)
 LCG_AA_project(ROOT  6.03.02)
 LCG_AA_project(LCGCMT LCGCMT_${heptools_version})
 LCG_AA_project(HepMC 2.06.09)
-LCG_external_package(Geant4 10.1 CLHEP=2.1.4.1)
+LCG_external_package(Geant4 10.1.01 CLHEP=2.1.4.1)
 
 # Externals
 LCG_external_package(libiodbc          3.52.9                                   )
