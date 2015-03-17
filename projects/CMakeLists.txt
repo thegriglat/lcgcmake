@@ -9,6 +9,14 @@ else()
     set(LIBSUFFIX "") 
 endif() 
 
+if(heptools_version MATCHES geantv)
+  set(geant4_options -DGEANT4_INSTALL_DATA=ON)
+else()
+  set(geant4_options -DGEANT4_INSTALL_DATA=OFF)
+endif()
+
+
+
 #---Forward declarations----------------------------------------------------------------------------
 LCGPackage_set_home(pythia8)
 
@@ -313,7 +321,8 @@ LCGPackage_add(
              -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
              -DGEANT4_ENABLE_TESTING=OFF
              -DGEANT4_BUILD_EXAMPLES=OFF
-             -DGEANT4_INSTALL_DATA=OFF
+#             -DGEANT4_INSTALL_DATA=OFF
+	     ${geant4_options} 
              -DGEANT4_USE_GDML=ON
              -DXERCESC_ROOT_DIR=${XercesC_home}
              -DGEANT4_USE_SYSTEM_CLHEP=ON
