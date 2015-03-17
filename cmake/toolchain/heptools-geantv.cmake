@@ -180,6 +180,7 @@ LCG_external_package(lhapdfsets        5.9.1          lhapdfsets   )
 
 LCG_external_package(powheg-box         r2092         ${MCGENPATH}/powheg-box       )
 
+LCG_external_package(pythia8           175            ${MCGENPATH}/pythia8 )
 LCG_external_package(pythia8           186            ${MCGENPATH}/pythia8 )
 
 LCG_external_package(sacrifice         0.9.9          ${MCGENPATH}/sacrifice pythia8=186)
