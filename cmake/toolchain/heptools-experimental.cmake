@@ -107,7 +107,7 @@ LCG_external_package(tornado           4.0.2                                    
 if(NOT ${LCG_OS}${LCG_OSVERS} STREQUAL slc6) # uuid is not distributed with SLC6
 LCG_external_package(uuid              1.42                                     )
 endif()
-if(NOT ${LCG_OS}${LCG_OSVERS} STREQUAL mac109 AND NOT LCG_TARGET MATCHES "icc" ) # valgrind does not work yet with mac110 and icc
+if(NOT ${LCG_OS}${LCG_OSVERS} STREQUAL mac1010 AND NOT LCG_TARGET MATCHES "icc" ) # valgrind does not work yet with mac1010 and icc
   LCG_external_package(valgrind          3.10.1                                    )
 endif()
 LCG_external_package(vectorclass       1.16                                     )
