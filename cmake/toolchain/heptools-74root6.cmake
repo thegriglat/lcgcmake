@@ -115,7 +115,8 @@ endif()
 LCG_external_package(mpich2            1.5                                      )
 
 #---EMI-2 grid externals and other binary packages---------------------
-if(NOT ${LCG_OS} STREQUAL mac)
+
+if(${LCG_OS} STREQUAL slc)
   LCG_external_package(libunwind       5c2cade                                  )
   LCG_external_package(igprof          5.9.11                                    )
   if (NOT ${LCG_HOST_ARCH} STREQUAL i686)
