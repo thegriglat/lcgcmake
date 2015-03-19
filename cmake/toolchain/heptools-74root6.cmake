@@ -96,7 +96,7 @@ LCG_external_package(storm             0.19                                     
 LCG_external_package(swig              2.0.11           author=2.0.11           )
 LCG_external_package(sympy             0.7.1                                    )
 LCG_external_package(tbb               42_20140122                              )
-LCG_external_package(tcmalloc          1.7p3                                    )
+LCG_external_package(tcmalloc          2.4                                      )
 if(NOT ${LCG_OS}${LCG_OSVERS} STREQUAL slc6) # uuid is not distributed with SLC6
 LCG_external_package(uuid              1.42                                     )
 endif()
