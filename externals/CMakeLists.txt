@@ -31,7 +31,7 @@ LCGPackage_Add(
   INSTALL_COMMAND make install
   BUILD_IN_SOURCE 1
 )
----gmp-----------------------------------------------------------------------------------------------
+#---gmp-----------------------------------------------------------------------------------------------
 LCGPackage_Add(
   gmp
   URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/gmp-${gmp_native_version}.tar.gz
