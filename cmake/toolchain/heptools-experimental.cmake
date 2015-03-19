@@ -46,6 +46,7 @@ LCG_external_package(fftw              3.1.2                     fftw3          
 LCG_external_package(Frontier_Client   2.8.10                     frontier_client)
 LCG_external_package(GCCXML            0.9.0_20131026            gccxml         )
 LCG_external_package(genshi            0.6                                      )
+LCG_external_package(gmp               6.0.0                                    )
 LCG_external_package(graphviz          2.28.0                                   )
 LCG_external_package(GSL               1.10                                     )
 LCG_external_package(HepPDT            2.06.01                                  )
