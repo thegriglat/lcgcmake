@@ -11,7 +11,7 @@ if((heptools_version MATCHES experimental) OR (heptools_version MATCHES dev4) OR
 endif()
 
 if(heptools_version MATCHES experimental)
-  set(pytools_extra_pkg pyzmq)    
+  set(pytools_extra_pkg pyzmq subprocess32)    
 endif()
 #=================================================================================================================
 #---pygraphics----------------------------------------------------------------------------------------------------
@@ -297,6 +297,22 @@ LCGPackage_Add(
 LCGPackage_Add(
   pyzmq
   URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/pyzmq-${pyzmq_native_version}.tar.gz
+  CONFIGURE_COMMAND <VOID>
+  BUILD_COMMAND ${Exec_cmd} PYTHONPATH=${pytools_home}/lib/python${Python_config_version_twodigit}/site-packages
+                ${Python_cmd} setup.py build
+  INSTALL_COMMAND ${Lock_cmd}
+          COMMAND ${Exec_cmd} PYTHONPATH=${pytools_home}/lib/python${Python_config_version_twodigit}/site-packages
+                  ${Python_cmd} setup.py install --prefix <INSTALL_DIR>
+          COMMAND ${Unlock_cmd}
+
+  BUILD_IN_SOURCE 1
+  DEST_NAME pytools
+  DEPENDS Python setuptools
+)
+#---subprocess32------------------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  subprocess32
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/subprocess32-${subprocess32_native_version}.tar.gz
   CONFIGURE_COMMAND <VOID>
   BUILD_COMMAND ${Exec_cmd} PYTHONPATH=${pytools_home}/lib/python${Python_config_version_twodigit}/site-packages
                 ${Python_cmd} setup.py build
