@@ -28,7 +28,7 @@ LCG_external_package(backports         3.4.0.2                                  
 LCG_external_package(blas              20110419                                 )
 LCG_external_package(Boost             1.55.0                                   )
 LCG_external_package(certifi           14.05.14                                 )
-LCG_external_package(CLHEP             2.2.0.4                   clhep          )
+LCG_external_package(CLHEP             2.2.0.5                   clhep          )
 LCG_external_package(cmaketools        1.1                                      )
 LCG_external_package(cmt               v1r20p20090520                           )
 LCG_external_package(coin3d            3.1.3p2                                  )
