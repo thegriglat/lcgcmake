@@ -32,7 +32,7 @@ done
 
 for tag in CORAL-preview CORAL_3_0-preview
 do
-  svn co $svnrepcool/tags/$tag --quiet $tag
+  svn co $svnrepcoral/tags/$tag --quiet $tag
   if [[ $tag == "CORAL_3_0-preview" ]]
   then
       tag_new="CORAL-3_0-preview"
