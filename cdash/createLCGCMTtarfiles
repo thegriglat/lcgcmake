@@ -17,6 +17,9 @@ do
 done
 
 for tag in COOL-preview COOL_3_0-preview
+if [ $tag == COOL_3_0-preview ]; then
+    tag = COOL-3_0-preview
+fi
 do
   svn co $svnrepcool/tags/$tag --quiet $tag
   tar --exclude=.svn -czf $tag.tar.gz $tag
@@ -24,6 +27,9 @@ do
 done
 
 for tag in CORAL-preview CORAL_3_0-preview
+if [ $tag == CORAL_3_0-preview ]; then
+    tag = CORAL-3_0-preview
+fi
 do
   svn co $svnrepcoral/tags/$tag --quiet $tag
   tar --exclude=.svn -czf $tag.tar.gz $tag
