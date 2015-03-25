@@ -171,8 +171,6 @@ LCG_external_package(heputils       1.0.0          ${MCGENPATH}/heputils )
 LCG_external_package(mcutils        1.1.0          ${MCGENPATH}/mcutils )
 
 LCG_external_package(madgraph5amc       2.2.2          ${MCGENPATH}/madgraph5amc )
-LCG_external_package(madgraph5amc       2.2.1          ${MCGENPATH}/madgraph5amc )
-LCG_external_package(madgraph5amc       2.1.2          ${MCGENPATH}/madgraph5amc )
 
 LCG_external_package(lhapdf            5.9.1          ${MCGENPATH}/lhapdf       )
 LCG_external_package(lhapdf           6.1.4          ${MCGENPATH}/lhapdf       )
@@ -221,6 +219,7 @@ LCG_external_package(evtgen            1.3.0          ${MCGENPATH}/evtgen       
 
 LCG_external_package(rivet             1.9.0          ${MCGENPATH}/rivet        yoda=1.1.0      )
 LCG_external_package(rivet             2.2.0          ${MCGENPATH}/rivet        yoda=1.3.0      )
+LCG_external_package(rivet             2.2.1          ${MCGENPATH}/rivet        yoda=1.3.1      )
 
 LCG_external_package(sherpa            2.1.1          ${MCGENPATH}/sherpa         author=2.1.1 hepevt=10000)
 
@@ -248,6 +247,7 @@ LCG_external_package(yamlcpp           0.3.0          ${MCGENPATH}/yamlcpp      
 
 LCG_external_package(yoda              1.1.0          ${MCGENPATH}/yoda         )
 LCG_external_package(yoda              1.3.0          ${MCGENPATH}/yoda         )
+LCG_external_package(yoda              1.3.1          ${MCGENPATH}/yoda         )
 
 LCG_external_package(hydjet            1.6            ${MCGENPATH}/hydjet author=1_6 )
 LCG_external_package(hydjet            1.8            ${MCGENPATH}/hydjet author=1_8 )
