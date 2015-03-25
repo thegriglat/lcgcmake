@@ -305,8 +305,11 @@ LCGPackage_Add(
   IF <pythia8_<NATIVE_VERSION>_author> MATCHES "HEAD81" OR <pythia8_<NATIVE_VERSION>_author> MATCHES "^1[0-9][0-9]" THEN
     CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --with-hepmc=${HepMC_home} --enable-shared --lcgplatform=${LCG_platform}
   ENDIF
-  IF <pythia8_<NATIVE_VERSION>_author> MATCHES "HEAD$" OR <pythia8_<NATIVE_VERSION>_author> MATCHES "^2[0-9][0-9]" THEN
+  IF <pythia8_<NATIVE_VERSION>_author> MATCHES "^2[0-9][0-9]" THEN
     CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --with-hepmc2=${HepMC_home} --with-<pythia8_<NATIVE_VERSION>_lhapdf_family>=<lhapdf-<pythia8_<NATIVE_VERSION>_lhapdf>_home> --with-boost=${Boost_home} --enable-shared
+  ENDIF
+  IF <pythia8_<NATIVE_VERSION>_author> MATCHES "HEAD$" THEN
+    CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --with-hepmc2=${HepMC_home} --with-<pythia8_<NATIVE_VERSION>_lhapdf_family>=<lhapdf-<pythia8_<NATIVE_VERSION>_lhapdf>_home> --enable-shared
   ENDIF
   BUILD_COMMAND ${MAKE}
   IF <pythia8_<NATIVE_VERSION>_author> MATCHES "HEAD81" OR <pythia8_<NATIVE_VERSION>_author> MATCHES "^1[0-9][0-9]" THEN
@@ -328,7 +331,7 @@ LCGPackage_Add(
   IF <pythia8_<NATIVE_VERSION>_author> MATCHES "HEAD$" OR <pythia8_<NATIVE_VERSION>_author> MATCHES "^2[0-9][0-9]" THEN
     DEPENDS HepMC lhapdf-<pythia8_<NATIVE_VERSION>_lhapdf>
   ENDIF
-  IF ( <pythia8_<NATIVE_VERSION>_author> MATCHES "HEAD$" OR <pythia8_<NATIVE_VERSION>_author> MATCHES "^2[0-9][0-9]" ) AND <pythia8_<NATIVE_VERSION>_lhapdf> VERSION_GREATER 5.9.9 THEN
+  IF <pythia8_<NATIVE_VERSION>_author> MATCHES "^2[0-9][0-9]" AND <pythia8_<NATIVE_VERSION>_lhapdf> VERSION_GREATER 5.9.9 THEN
     Boost
   ENDIF
 )
