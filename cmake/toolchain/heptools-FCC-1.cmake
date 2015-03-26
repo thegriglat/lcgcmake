@@ -185,7 +185,7 @@ LCG_external_package(powheg-box         r2092         ${MCGENPATH}/powheg-box   
     LCG_external_package(crmc              1.4            ${MCGENPATH}/crmc         )
     LCG_external_package(cython            0.19.1         ${MCGENPATH}/cython       )
     LCG_external_package(yamlcpp           0.3.0          ${MCGENPATH}/yamlcpp      )
-    LCG_external_package(yoda              1.1.0          ${MCGENPATH}/yoda         )
+    LCG_external_package(yoda              1.1.0          ${MCGENPATH}/yoda cython=0.19.1         )
 
     LCG_external_package(hydjet            1.8            ${MCGENPATH}/hydjet author=1_8 )
     LCG_external_package(tauola            28.121.2       ${MCGENPATH}/tauola       )

@@ -193,7 +193,7 @@ LCG_external_package(evtgen            1.1.0-176      ${MCGENPATH}/evtgen       
 LCG_external_package(evtgen            1.2.0-175      ${MCGENPATH}/evtgen         tag=R01-02-00 pythia8=175 tauola++=1.1.1)
 LCG_external_package(evtgen            1.2.0-176      ${MCGENPATH}/evtgen         tag=R01-02-00 pythia8=176 tauola++=1.1.1)
 
-LCG_external_package(yoda              1.0.5          ${MCGENPATH}/yoda       )
+LCG_external_package(yoda              1.0.5          ${MCGENPATH}/yoda cython=0.19.1       )
 
 LCG_external_package(rivet             1.9.0          ${MCGENPATH}/rivet        yoda=1.0.5       )
 LCG_external_package(rivet             1.8.3          ${MCGENPATH}/rivet        yoda=1.0.5       )
@@ -222,7 +222,7 @@ LCG_external_package(crmc              1.5.3          ${MCGENPATH}/crmc         
 
 LCG_external_package(cython            0.19           ${MCGENPATH}/cython       )
 LCG_external_package(yamlcpp           0.3.0          ${MCGENPATH}/yaml-cpp     )
-LCG_external_package(yoda              1.0.0          ${MCGENPATH}/yoda         )
+LCG_external_package(yoda              1.0.0          ${MCGENPATH}/yoda cython=0.19.1         )
 LCG_external_package(hydjet              1.8          ${MCGENPATH}/hydjet       author=1_8 )  
 LCG_external_package(tauola              28.121.2     ${MCGENPATH}/tauola         )
 LCG_external_package(jimmy              4.31.3        ${MCGENPATH}/jimmy         )

@@ -128,14 +128,13 @@ LCG_add_test(lhapdf6sets.download
 #---cython------------------------------------------------------------------------------------------
 LCGPackage_Add(
   cython
-  URL ${gen_url}/Cython-${cython_native_version}.tar.gz
+  URL ${gen_url}/Cython-<NATIVE_VERSION>.tar.gz
   CONFIGURE_COMMAND <VOID>
   BUILD_COMMAND ${Python_home}/bin/python setup.py build -e "${env_cmd} python"
   INSTALL_COMMAND ${Python_home}/bin/python setup.py install --prefix <INSTALL_DIR>
   BUILD_IN_SOURCE 1
   DEPENDS Python
 )
-set(cython_pythonpath ${cython_home}/lib/python${Python_config_version_twodigit}/site-packages)
 
 #---yaml-cpp----------------------------------------------------------------------------------------
 LCGPackage_Add(
@@ -163,6 +162,12 @@ LCG_add_test(yamlcpp-${v}.genser-produce-yaml
   DEPENDS yamlcpp-${v}.build)
 endforeach()
 #---Yoda-------------------------------------------------------------------------------------------
+
+set(cython_pythonpath ${cython_home}/lib/python${Python_config_version_twodigit}/site-packages)
+set(cython_v_pythonpath <cython-<yoda_<VERSION>_cython>_home>/lib/python${Python_config_version_twodigit}/site-packages)
+set(cython_v_home <cython-<yoda_<VERSION>_cython>_home>)
+
+
 LCGPackage_Add(
   yoda
   URL ${gen_url}/YODA-<NATIVE_VERSION>.tar.gz
@@ -173,11 +178,11 @@ LCGPackage_Add(
       ROOTCONFIG=${ROOT_home}/bin/root-config
   ENDIF
       PYTHON=${Python_home}/bin/python ${library_path}=${Python_home}/lib:$ENV{${library_path}}
-      PYTHONPATH=${cython_home}/lib/python${Python_config_version_twodigit}/site-packages:$ENV{PYTHONPATH}
-  BUILD_COMMAND ${MAKE} all ${library_path}=${Python_home}/lib:$ENV{${library_path}} PYTHONPATH=:${cython_pythonpath}:$ENV{PYTHONPATH} LIBRARY_PATH=${Python_home}/lib
-  INSTALL_COMMAND make install ${library_path}=${Python_home}/lib:$ENV{${library_path}} PYTHONPATH=:${cython_pythonpath}:$ENV{PYTHONPATH} LIBRARY_PATH=${Python_home}/lib
+      PYTHONPATH=${cython_v_home}/lib/python${Python_config_version_twodigit}/site-packages:$ENV{PYTHONPATH}
+  BUILD_COMMAND ${MAKE} all ${library_path}=${Python_home}/lib:$ENV{${library_path}} PYTHONPATH=:${cython_v_pythonpath}:$ENV{PYTHONPATH} LIBRARY_PATH=${Python_home}/lib
+  INSTALL_COMMAND make install ${library_path}=${Python_home}/lib:$ENV{${library_path}} PYTHONPATH=:${cython_v_pythonpath}:$ENV{PYTHONPATH} LIBRARY_PATH=${Python_home}/lib
   BUILD_IN_SOURCE 1
-  DEPENDS Python Boost cython
+  DEPENDS Python Boost cython-<yoda_<VERSION>_cython> 
 )
 
 #---heputils-------------------------------------------------------------------------------------------
