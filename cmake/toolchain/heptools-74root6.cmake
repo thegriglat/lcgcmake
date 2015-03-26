@@ -12,13 +12,9 @@ include(${CMAKE_CURRENT_LIST_DIR}/heptools-common.cmake)
 
 
 # Application Area Projects
-#LCG_AA_project(COOL  COOL_3_0_2)
-#LCG_AA_project(CORAL CORAL_3_0_2)
-LCG_AA_project(COOL  COOL_3_0-preview)
-LCG_AA_project(CORAL CORAL_3_0-preview)
-
+LCG_AA_project(COOL  COOL_3_0_2)
+LCG_AA_project(CORAL CORAL_3_0_2)
 LCG_AA_project(RELAX RELAX_1_4_2)
-
 LCG_AA_project(ROOT  6.02.05)
 LCG_AA_project(LCGCMT LCGCMT_${heptools_version})
 LCG_AA_project(HepMC 2.06.09)
@@ -100,7 +96,7 @@ LCG_external_package(storm             0.19                                     
 LCG_external_package(swig              2.0.11           author=2.0.11           )
 LCG_external_package(sympy             0.7.1                                    )
 LCG_external_package(tbb               42_20140122                              )
-LCG_external_package(tcmalloc          2.4                                      )
+LCG_external_package(tcmalloc          1.7p3                                    )
 if(NOT ${LCG_OS}${LCG_OSVERS} STREQUAL slc6) # uuid is not distributed with SLC6
 LCG_external_package(uuid              1.42                                     )
 endif()
