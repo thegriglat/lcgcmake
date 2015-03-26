@@ -178,7 +178,7 @@ LCGPackage_Add(
       ROOTCONFIG=${ROOT_home}/bin/root-config
   ENDIF
       PYTHON=${Python_home}/bin/python ${library_path}=${Python_home}/lib:$ENV{${library_path}}
-      PYTHONPATH=${cython_v_home}/lib/python${Python_config_version_twodigit}/site-packages:$ENV{PYTHONPATH}
+      PYTHONPATH=${cython_home}/lib/python${Python_config_version_twodigit}/site-packages:$ENV{PYTHONPATH}
   BUILD_COMMAND ${MAKE} all ${library_path}=${Python_home}/lib:$ENV{${library_path}} PYTHONPATH=:${cython_v_pythonpath}:$ENV{PYTHONPATH} LIBRARY_PATH=${Python_home}/lib
   INSTALL_COMMAND make install ${library_path}=${Python_home}/lib:$ENV{${library_path}} PYTHONPATH=:${cython_v_pythonpath}:$ENV{PYTHONPATH} LIBRARY_PATH=${Python_home}/lib
   BUILD_IN_SOURCE 1

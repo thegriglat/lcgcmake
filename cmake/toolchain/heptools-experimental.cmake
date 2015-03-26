@@ -243,6 +243,7 @@ LCG_external_package(crmc              1.4            ${MCGENPATH}/crmc         
 LCG_external_package(crmc              1.5.3          ${MCGENPATH}/crmc         )
 
 LCG_external_package(cython            0.19.1         ${MCGENPATH}/cython       )
+LCG_external_package(cython            0.22         ${MCGENPATH}/cython       )
 LCG_external_package(yamlcpp           0.3.0          ${MCGENPATH}/yamlcpp      )
 
 LCG_external_package(yoda              1.1.0          ${MCGENPATH}/yoda  cython=0.19.1   )
