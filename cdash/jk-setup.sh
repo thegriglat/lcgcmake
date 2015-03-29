@@ -48,10 +48,11 @@ if [ -z $TARGET ];      then export TARGET=all; fi
 if [ -z $TEST_LABELS ]; then export TEST_LABELS="Nightly|PhysicsCheck"; fi
 if [ -z $LCG_VERSION ]; then export LCG_VERSION=$SLOTNAME; fi
 
-# setup cmake for slc6 nodes ------------------------------------------------------
+# setup cmake and AFS token for slc6 nodes ----------------------------------------
 if [[ $PLATFORM == *slc6* || $PLATFORM == *cc7* ]]; then
   export PATH=/afs/cern.ch/sw/lcg/contrib/CMake/2.8.12.2/Linux-i386/bin:${PATH}
   LABEL=slc6
+  kinit sftnight@CERN.CH -5 -V -k -t /ec/conf/sftnight.keytab
 fi
 
 # setup compiler-------------------------------------------------------------------
