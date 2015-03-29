@@ -3,26 +3,49 @@
 import sys, shutil, os
 from os import path
 from datetime import datetime, timedelta
+from optparse import OptionParser
 
-two_days_ago = datetime.now() - timedelta(hours=2)
-work_directory = "/build/jenkins/workspace"
+mindate = 0
+controlfile = 'controlfile'
 
-for dirs in os.listdir(work_directory):
-    if os.path.isfile(dirs):
-        pass
-    else:
-        fullpath = work_directory+"/"+dirs
-        check_file = fullpath+"/controlfile"
+def ctime(filename):
+   return datetime.fromtimestamp(path.getctime(filename))
 
-        if os.path.exists(check_file):
-            filetime = datetime.fromtimestamp(path.getctime(check_file))
-            print "the controlfile exists at:  ", fullpath
-            if filetime < two_days_ago:
-                print "controlFile is more than two days old"
-                for root, dirs, files in os.walk(fullpath):
-                    for f in files:
-                        os.unlink(os.path.join(root, f))
-                    for d in dirs:
-                        shutil.rmtree(os.path.join(root, d))
-            else:
-                print "controlFile is less than two days old. Nothing to remove"  
+def find_dirs_to_clean(cdir, depth):
+   global mindate, controlfile
+   check_file = os.path.join(cdir,controlfile)
+   if os.path.exists(check_file):
+      if ctime(check_file) < mindate :
+         return [cdir]
+      else:
+         return []
+   elif depth <= 0:
+      return []
+   else:
+      result = []
+      for d in os.listdir(cdir):
+         fulldir = os.path.join(cdir,d)
+         if os.path.isdir(fulldir):
+            result += find_dirs_to_clean(fulldir, depth-1)
+      return result
+
+if __name__ == "__main__":
+   # extract command line parameters
+   usage = "usage: %prog rootdir"
+   parser = OptionParser(usage)
+   parser.add_option('-a', '--age', type='int',
+                     dest='min_age', help='minimal age in hours (default 48)',
+                     default=48)
+   parser.add_option('-d', '--depth', type='int',
+                     dest='max_depth', help='max depth in directory tree',
+                     default=10)
+
+   (options, args) = parser.parse_args()
+   if len(args) == 0: rootdir = os.getcwd()
+   else:              rootdir = args[0]
+
+   mindate = datetime.now() - timedelta(hours = options.min_age)
+   dirs_to_clean = find_dirs_to_clean(rootdir, options.max_depth)
+   for d in dirs_to_clean:
+      print 'Removing directory %s, built on %s' %(d,ctime(os.path.join(d,controlfile)))
+      shutil.rmtree(d)
