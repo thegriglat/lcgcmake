@@ -797,7 +797,7 @@ LCGPackage_Add(
   CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR> 
              -DUNWIND_INCLUDE_DIR:PATH=${libunwind_home}/include
              -DUNWIND_LIBRARY:FILEPATH=${libunwind_home}/lib/libunwind.so
-             -DCMAKE_CXX_FLAGS=-Wno-unused-variable
+             "-DCMAKE_CXX_FLAGS=-Wno-unused-variable -Wno-error=unused-result"
   DEPENDS libunwind
 )
 
