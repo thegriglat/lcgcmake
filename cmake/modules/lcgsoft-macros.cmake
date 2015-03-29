@@ -448,7 +448,7 @@ function(LCG_create_dependency_files)
   file(APPEND ${jsonfile} "'packages': {\n")
   foreach(name  ${LCG_externals} ${LCG_projects})
     if(NOT ${name}_exists)
-      MESSAGE("WARNING: ${name} has a version (${${name}_native_version}), but no target defined.")
+      message(STATUS "BEWARE: ${name} has a version (${${name}_native_version}), but no target defined.")
     else()
       # clean up things dot doesn't understand
       # eventually replace with REGEX REPLACE
@@ -488,7 +488,7 @@ function(LCG_create_dependency_files)
   endforeach()
   file(APPEND ${dotfile} "}\n")
   file(APPEND ${jsonfile} "} }\n")
-  message("Wrote package dependency information to ${dotfile}, ${jsonfile} and ${sumfile}.")
+  message(STATUS "Wrote package dependency information to ${dotfile}, ${jsonfile} and ${sumfile}.")
 endfunction()
 
 #----------------------------------------------------------------------------------------------------
