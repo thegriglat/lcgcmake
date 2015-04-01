@@ -1,0 +1,30 @@
+--- gg_H_2HDM/Makefile.old	2015-03-05 09:49:29.256775414 +0100
++++ gg_H_2HDM/Makefile	2015-03-05 09:36:21.518443333 +0100
+@@ -10,7 +10,7 @@
+ ANALYSIS = default
+ ## For static linking uncomment the following
+ #STATIC= -static
+-LIBS+= -lchaplin
++LIBS+= -L$(CHAPLIN)/lib -lchaplin
+ #
+ ifeq ("$(COMPILER)","gfortran")	
+ F77= gfortran -fno-automatic 	
+--- gg_H_MSSM/Makefile.old	2015-03-05 12:41:40.608521532 +0100
++++ gg_H_MSSM/Makefile	2015-03-05 12:45:15.902273820 +0100
+@@ -10,7 +10,7 @@
+ ANALYSIS = default
+ ## For static linking uncomment the following
+ #STATIC= -static
+-LIBS+= -lFH -lchaplin
++LIBS+= -L$(FEYNHIGGS)/lib64 -L$(CHAPLIN)/lib -lFH -lchaplin
+ #
+ ifeq ("$(COMPILER)","gfortran")	
+ F77= gfortran -fno-automatic
+@@ -69,7 +69,8 @@
+ INCLUDE1=$(PWD)/include
+ INCLUDE2=$(shell dirname $(PWD))/include
+ INCLUDE3 = /usr/local/include/
+-FF=$(F77) $(FFLAGS) $(FPE) $(OPT) $(DEBUG) -I$(INCLUDE0) -I$(INCLUDE0.1) -I$(INCLUDE1) -I$(INCLUDE2) -I$(INCLUDE3)
++INCLUDE4 = $(FEYNHIGGS)/include
++FF=$(F77) $(FFLAGS) $(FPE) $(OPT) $(DEBUG) -I$(INCLUDE0) -I$(INCLUDE0.1) -I$(INCLUDE1) -I$(INCLUDE2) -I$(INCLUDE3) -I$(INCLUDE4)
+
