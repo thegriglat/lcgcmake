@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import shutil
-from os import path, listdir, getcwd
+from os import path, listdir, getcwd, rmdir
 from datetime import datetime, timedelta
 from optparse import OptionParser
 
@@ -35,7 +35,7 @@ if __name__ == "__main__":
                      default=48)
    parser.add_option('-d', '--depth', type='int',
                      dest='max_depth', help='max depth in directory tree',
-                     default=10)
+                     default=12)
 
    (options, args) = parser.parse_args()
    if len(args) == 0: rootdir = getcwd()
@@ -46,3 +46,12 @@ if __name__ == "__main__":
    for d in dirs_to_clean:
       print 'Removing directory %s, built on %s' %(d,ctime(path.join(d,controlfile)))
       shutil.rmtree(d)
+      #prune empty directories
+      p = path.dirname(d)
+      while p != rootdir :
+         if not listdir(p):
+            print 'Removing empty directory %s' % (p)
+            rmdir(p)
+         p = path.dirname(p)
+
+
