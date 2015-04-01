@@ -1714,11 +1714,24 @@ if(NOT APPLE)    #  (installation fails on MacOSX)
     --lhapdf=<lhapdf-<powheg-box-v2_<NATIVE_VERSION>_lhapdf>_home>
     --chaplin=${chaplin_home}
     --feynhiggs=${feynhiggs_home}
-  BUILD_COMMAND ${MAKE} CPATH=${Boost_home_include}
+  BUILD_COMMAND ${MAKE}
   BUILD_IN_SOURCE 1
   DEPENDS fastjet lhapdf-<powheg-box-v2_<NATIVE_VERSION>_lhapdf> chaplin feynhiggs
  )
 endif()
+
+foreach(v ${powheg-box-v2_native_version})
+foreach(i WW Zj hvq)
+  LCG_add_test(powheg-box-${v}.native-${i}
+    TEST_COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/powheg-box/tests/runtest.sh ${powheg-box-v2-${v}_home}/bin ${powheg-box-v2-${v}_home}/../share/sources ${i}
+    ENVIRONMENT
+      ${library_path}=${lhapdf-${powheg-box-v2_${v}_lhapdf}_home}/lib:${fastjet_home}/lib:$ENV{${library_path}}
+      LHAPATH=${lhapdfsets_home}/../share/PDFsets
+      LHAPDF_DATA_PATH=${lhapdf-${powheg-box-v2_${v}_lhapdf}_home}/share/LHAPDF:${CMAKE_INSTALL_PREFIX}/lhapdf6sets/current/share/LHAPDF
+    DEPENDS lhapdf6sets.download
+  )
+endforeach()
+endforeach()
 
 #---powheg-box-------------------------------------------------------------------------------
 
