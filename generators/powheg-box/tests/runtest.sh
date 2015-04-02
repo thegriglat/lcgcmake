@@ -3,9 +3,11 @@
 bindir=$1
 srcdir=$2
 proc=$3
+generator=$4
+version=$5
 
-mkdir -p $proc
-cd $proc
+mkdir -p $generator/$version/$proc
+cd $generator/$version/$proc
 rm -rf *
 
 # lookup example steering files

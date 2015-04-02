@@ -1718,12 +1718,11 @@ if(NOT APPLE)    #  (installation fails on MacOSX)
   BUILD_IN_SOURCE 1
   DEPENDS fastjet lhapdf-<powheg-box-v2_<NATIVE_VERSION>_lhapdf> chaplin feynhiggs
  )
-endif()
 
 foreach(v ${powheg-box-v2_native_version})
 foreach(i WW Zj hvq)
-  LCG_add_test(powheg-box-${v}.native-${i}
-    TEST_COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/powheg-box/tests/runtest.sh ${powheg-box-v2-${v}_home}/bin ${powheg-box-v2-${v}_home}/../share/sources ${i}
+  LCG_add_test(powheg-box-v2-${v}.native-${i}
+    TEST_COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/powheg-box/tests/runtest.sh ${powheg-box-v2-${v}_home}/bin ${powheg-box-v2-${v}_home}/../share/sources ${i} powheg-box-v2 ${v}
     ENVIRONMENT
       ${library_path}=${lhapdf-${powheg-box-v2_${v}_lhapdf}_home}/lib:${fastjet_home}/lib:$ENV{${library_path}}
       LHAPATH=${lhapdfsets_home}/../share/PDFsets
@@ -1732,6 +1731,7 @@ foreach(i WW Zj hvq)
   )
 endforeach()
 endforeach()
+endif()
 
 #---powheg-box-------------------------------------------------------------------------------
 
@@ -1754,7 +1754,7 @@ foreach(v ${powheg-box_native_version})
 # WZ, Wp_Wp_J_J, VBF_Wp_Wp are skiped - example steering files do not work
 foreach(i WW HJ W_ew-BW Wbb Wj HJJ ZZ W_ew-BMNNP Dijet gg_H VBF_H Z W hvq Zj ST_sch ST_tch ST_tch_4f)
   LCG_add_test(powheg-box-${v}.native-${i}
-    TEST_COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/powheg-box/tests/runtest.sh ${powheg-box-${v}_home}/bin ${powheg-box-${v}_home}/../share/sources ${i}
+    TEST_COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/powheg-box/tests/runtest.sh ${powheg-box-${v}_home}/bin ${powheg-box-${v}_home}/../share/sources ${i} powheg-box ${v}
     ENVIRONMENT
       ${library_path}=${lhapdf-${powheg-box_${v}_lhapdf}_home}/lib:${fastjet_home}/lib:$ENV{${library_path}}
       LHAPATH=${lhapdfsets_home}/../share/PDFsets
