@@ -92,21 +92,19 @@ else()
     ELSE
       URL ftp://root.cern.ch/root/root_v${ROOT_author_version}.source.tar.gz
     ENDIF
+    CMAKE_CACHE_ARGS -DCMAKE_PREFIX_PATH:STRING=${Python_home} ${Davix_home} ${fftw_home} ${mysql_home} ${xrootd_home}
+                                         ${graphviz_home} ${GSL_home} ${Qt_home} ${oracle_home} ${CASTOR_home} ${dcap_home}
     CMAKE_ARGS -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
                -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
-               -Dpython=ON -DPYTHON_EXECUTABLE=${Python_home}/bin/python
-                           -DPYTHON_INCLUDE_DIR=${Python_home}/include/python${Python_config_version_twodigit}
-                           -DPYTHON_LIBRARY=${Python_home}/lib/libpython${Python_config_version_twodigit}${CMAKE_SHARED_LIBRARY_SUFFIX}
-#               -DGRAPHVIZ_DIR=${graphviz_home}
+               -Dpython=ON
                -Dbuiltin_pcre=ON
                -Dcintex=ON
                IF DEFINED Davix_native_version THEN
-                   -Ddavix=ON -DDAVIX_DIR=${Davix_home}
+                 -Ddavix=ON
                ENDIF
                -Dexceptions=ON
                -Dexplicitlink=ON
-               -Dfftw3=ON -DFFTW_LIBRARY=${fftw_home}/lib/libfftw3${CMAKE_SHARED_LIBRARY_SUFFIX}
-                          -DFFTW_INCLUDE_DIR=${fftw_home}/include
+               -Dfftw3=ON
                -Dgdml=ON
                -Dgsl_shared=ON
                -Dkrb5=ON
@@ -115,10 +113,10 @@ else()
                  -Dvc=ON
                ENDIF
                -Dldap=ON
-               -Dmathmore=ON -DGSL_DIR=${GSL_home}
+               -Dmathmore=ON
                -Dmemstat=ON
                -Dminuit2=ON
-               -Dmysql=ON -DMYSQL_CONFIG_EXECUTABLE=${mysql_home}/bin/mysql_config
+               -Dmysql=ON
                -Dodbc=ON
                -Dopengl=ON
                -Dpgsql=OFF
@@ -131,7 +129,7 @@ else()
                -Dunuran=ON
                -Dxft=ON
                -Dxml=ON
-               -Dxrootd=ON -DXROOTD_ROOT_DIR=${xrootd_home}
+               -Dxrootd=ON
                -DCINTMAXSTRUCT=36000
                -DCINTMAXTYPEDEF=36000
                -DCINTLONGLINE=4096
@@ -140,17 +138,17 @@ else()
                    -Dcxx11=ON
                ENDIF   
                IF LCG_TARGET MATCHES x86_64-slc THEN
-                   -Dcastor=ON -DCASTOR_DIR=${CASTOR_home}
-                   -Ddcache=ON -DDCAP_DIR=${dcap_home}
+                   -Dcastor=ON
+                   -Ddcache=ON
                    -Dgfal=ON -DGFAL_DIR=${gfal_home}
                              -DSRM_IFCE_DIR=${srm_ifce_home}
                ENDIF
                IF LCG_TARGET MATCHES slc THEN
-                   -Doracle=ON -DORACLE_HOME=${oracle_home}
-                   -Dqt=ON -DQT_QMAKE_EXECUTABLE=${Qt_home}/bin/qmake
+                   -Doracle=ON
+                   -Dqt=ON
                ENDIF
-               IF LCG_TARGET MATCHES "mac" AND NOT LCG_TARGET MATCHES "mac109" THEN
-                   -Dqt=ON -DQT_QMAKE_EXECUTABLE=${Qt_home}/bin/qmake
+               IF LCG_TARGET MATCHES "mac" AND NOT LCG_TARGET MATCHES "mac109|mac1010" THEN
+                   -Dqt=ON
                ENDIF
     DEPENDS Python fftw graphviz GSL mysql xrootd 
             IF DEFINED Davix_native_version THEN
@@ -162,7 +160,7 @@ else()
             IF LCG_TARGET MATCHES slc THEN
                 oracle Qt
             ENDIF
-            IF LCG_TARGET MATCHES "mac" AND NOT LCG_TARGET MATCHES "mac109" THEN
+            IF LCG_TARGET MATCHES "mac" AND NOT LCG_TARGET MATCHES "mac109|mac1010" THEN
                 Qt
             ENDIF
   )
