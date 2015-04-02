@@ -56,7 +56,7 @@ function(lcg_find_host_os)
       execute_process(COMMAND cat /etc/issue OUTPUT_VARIABLE issue OUTPUT_STRIP_TRAILING_WHITESPACE)
       if(issue MATCHES Ubuntu)
         set(os ubuntu)
-        string(REGEX REPLACE ".*Ubuntu ([0-9]+)[.]([0-9]+).*" "\\1.\\2" osvers "${issue}")
+        string(REGEX REPLACE ".*Ubuntu ([0-9]+).*" "\\1" osvers "${issue}")
       elseif(issue MATCHES "Scientific Linux|SLC|Fedora") # RedHat-like distributions
         string(TOLOWER "${CMAKE_MATCH_0}" os)
         if (${os} STREQUAL "scientific linux")
