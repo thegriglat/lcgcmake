@@ -12,23 +12,20 @@ THIS_DEPENDS="%dependencies%"
 
 # === Determine common parameters ...
 scriptdir=$(cd "$(dirname -- "${BASH_SOURCE:-$0}")" && pwd)
-echo $scriptdir | grep -q "MCGenerators" && LCGDIR="$(cd $scriptdir;pwd | awk -F'/MCGenerators' '{print $1}')" || LCGDIR=$(cd $scriptdir/../../../;pwd)
-MCGEN="$LCGDIR/$(cd $scriptdir;pwd | awk -F"$LCGDIR" '{print $2}' | awk -F'/' '{print $2}')"
 PLATFORM=$(basename $scriptdir)
+# set LCGDIR only if it is needed
+LCGDIR=$(echo $scriptdir | sed "s,$THIS_PACKAGE_INSTDIR/$THIS_VERSION/$PLATFORM,,g")
+# delete trailing /
+LCGDIR=$(echo $LCGDIR | sed 's,/\+$,,g')
 
 # === Detemine THIS_HOME
 unset THIS_HOME
 # name of <PACKAGE>_HOME variable, e.g. RIVET_HOME
 pkg_upper_home=$(echo $THIS_PACKAGE | tr '[:lower:]' '[:upper:]' | sed 's/+/P/g')_HOME
 # try to find home directory
-for p in $MCGEN/$THIS_PACKAGE_INSTDIR  \
-         $LCGDIR/$THIS_PACKAGE_INSTDIR \
-         $(dirname $LCGDIR)/$THIS_PACKAGE_INSTDIR 
-         do
-  if [ ! -d "$THIS_HOME" -a -d "$p/$THIS_VERSION/$PLATFORM" ] ;then
-    THIS_HOME="$p/$THIS_VERSION/$PLATFORM"
-  fi
-done
+if [ -d "$LCGDIR/$THIS_PACKAGE_INSTDIR/$THIS_VERSION/$PLATFORM" ] ;then
+    THIS_HOME="$LCGDIR/$THIS_PACKAGE_INSTDIR/$THIS_VERSION/$PLATFORM"
+fi
 
 [ ! -d "$THIS_HOME" ] && echo "Cannot find $THIS_HOME"
 # export <PACKAGE>_HOME
@@ -68,17 +65,18 @@ done
 sources=""
 for pkg in $(echo $THIS_DEPENDS | tr ' ' '\n');do
   unset pkg_name pkg_version pkg_home_top source_name
-  # get package name and version. Substitute _- in package name to . (any symbol) 
+  # get package name and version. Substitute [_-] in package name to . (any symbol) 
   pkg_name=$(echo $pkg | cut -d- -f 1 | sed -e "s@[_-]@.@g")
   pkg_version=$(echo $pkg | cut -d- -f 2-)
   # try to find home directory for package
-  for pkg_home_top in $(find $LCGDIR $(dirname $LCGDIR) -maxdepth 3 -type d | grep -i "$pkg_name" | sed -e "s@/$pkg_version@@g"); do
+  for pkg_home_top in $(find $LCGDIR -maxdepth 4 -type d | grep -i "$pkg_name"); do
     if [ -d "$pkg_home_top/$pkg_version/$PLATFORM" ]; then
-       pkg_home="$pkg_home_top/$pkg_version/$PLATFORM"
+      pkg_home="$pkg_home_top/$pkg_version/$PLATFORM"
+      break 
     fi
   done
   # set source file name
-  if $(echo "$pkg_home" | grep -q MCGenerators ); then
+  if echo "$pkg_home" | grep -q MCGenerators; then
     source_name=$(ls $pkg_home | grep "${pkg_name}env-genser.sh")
   else
     source_name=$(ls $pkg_home | grep "${pkg_name}-env.sh")
@@ -107,5 +105,4 @@ for i in $(echo $PYTHONPATH|tr ":" "\n"|sort|uniq);do PYTHONPATH_NEW="${PYTHONPA
 [ "Darwin" = $(uname -s) ] && export DYLD_LIBRARY_PATH=$LD_LIBRARY_PATH
 
 # === Clear environment
-unset PATH_NEW LD_LIBRARY_PATH_NEW PYTHONPATH_NEW THIS_HOME THIS_VERSION THIS_PACKAGE THIS_DEPENDS scriptdir MCGEN pkg_upper_home
-
+unset PATH_NEW LD_LIBRARY_PATH_NEW PYTHONPATH_NEW THIS_HOME THIS_VERSION THIS_PACKAGE THIS_DEPENDS scriptdir pkg_upper_home
