@@ -93,7 +93,7 @@ else()
       URL ftp://root.cern.ch/root/root_v${ROOT_author_version}.source.tar.gz
     ENDIF
     CMAKE_CACHE_ARGS -DCMAKE_PREFIX_PATH:STRING=${Python_home} ${Davix_home} ${fftw_home} ${mysql_home} ${xrootd_home}
-                                         ${graphviz_home} ${GSL_home} ${Qt_home} ${oracle_home} ${CASTOR_home} ${dcap_home}
+                                         ${graphviz_home} ${GSL_home} ${Qt_home} ${CASTOR_home} ${dcap_home}
     CMAKE_ARGS -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
                -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
                -Dpython=ON
@@ -144,7 +144,7 @@ else()
                              -DSRM_IFCE_DIR=${srm_ifce_home}
                ENDIF
                IF LCG_TARGET MATCHES slc THEN
-                   -Doracle=ON
+                   -Doracle=ON -DORACLE_HOME=${oracle_home}
                    -Dqt=ON
                ENDIF
                IF LCG_TARGET MATCHES "mac" AND NOT LCG_TARGET MATCHES "mac109|mac1010" THEN
