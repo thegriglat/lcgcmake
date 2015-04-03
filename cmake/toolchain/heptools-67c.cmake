@@ -180,6 +180,7 @@ LCG_external_package(madgraph5amc       2.2.1          ${MCGENPATH}/madgraph5amc
 
 LCG_external_package(powheg-box         r2092         ${MCGENPATH}/powheg-box   )
 LCG_external_package(powheg-box-v2      r3043.lhcb    ${MCGENPATH}/powheg-box-v2 author=r3043  )
+LCG_external_package(powheg-box-v2	r3043         ${MCGENPATH}/powheg-box-v2 )
  
 LCG_external_package(feynhiggs         2.10.2         ${MCGENPATH}/feynhiggs       )
 LCG_external_package(chaplin           1.2            ${MCGENPATH}/chaplin         )
