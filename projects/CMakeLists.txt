@@ -178,7 +178,7 @@ LCGPackage_Add(
 #---RELAX---------------------------------------------------------------------------------------------
 LCGPackage_Add(
   RELAX
-  IF <VERSION> VERSION_EQUAL RELAX-root6 THEN
+  IF <VERSION> VERSION_EQUAL "RELAX-root6" THEN
      URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/${RELAX_native_version}.tar.gz
   ELSE 
     SVN_REPOSITORY http://svn.cern.ch/guest/relax/tags/${RELAX_native_version}/relax --quiet
