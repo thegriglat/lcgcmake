@@ -254,6 +254,7 @@ ExternalProject_Get_Property(CORAL-${CORAL_native_version} SOURCE_DIR)
 LCG_add_test(coral-tests
   ENVIRONMENT             CMTSITE=CERN
                           CMTCONFIG=${LCG_system}
+			  CMTVERBOSE=4
                           CMTPATH=${SOURCE_DIR}:${LCGCMT_pos}
                           CMTROOT=${CMTROOT}
                           CMTBIN=${CMAKE_SYSTEM_NAME}-${CMAKE_SYSTEM_PROCESSOR}
