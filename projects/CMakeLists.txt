@@ -231,7 +231,7 @@ set(CMTROOT ${cmt_home}/CMT/${cmt_native_version})
 set(CMT_make_cmd
     ${env_cmd} CMTSITE=CERN CMTCONFIG=${LCG_system} CMTPATH=<SOURCE_DIR>:${LCGCMT_pos}
                CMTROOT=${CMTROOT} CMTBIN=${CMAKE_SYSTEM_NAME}-${CMAKE_SYSTEM_PROCESSOR}
-               ${MAKE} -f ${CMAKE_SOURCE_DIR}/cmake/utils/Makefile-cmt.mk
+               ${MAKE} -j1 -f ${CMAKE_SOURCE_DIR}/cmake/utils/Makefile-cmt.mk
                        -C <SOURCE_DIR>
                        CMT=${CMTROOT}/${CMAKE_SYSTEM_NAME}-${CMAKE_SYSTEM_PROCESSOR}/cmt)
 
