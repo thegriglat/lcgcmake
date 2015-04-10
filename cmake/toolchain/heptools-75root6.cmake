@@ -170,7 +170,6 @@ LCG_external_package(madgraph5amc       2.1.2          ${MCGENPATH}/madgraph5amc
 
 LCG_external_package(lhapdf            5.8.8          ${MCGENPATH}/lhapdf	)
 LCG_external_package(lhapdf            5.9.1          ${MCGENPATH}/lhapdf       )
-LCG_external_package(lhapdf            6.1.4          ${MCGENPATH}/lhapdf       )
 LCG_external_package(lhapdf            6.1.5          ${MCGENPATH}/lhapdf       )
 
 LCG_external_package(lhapdfsets        5.8.8          lhapdfsets   )
@@ -214,6 +213,7 @@ LCG_external_package(evtgen            1.3.0          ${MCGENPATH}/evtgen       
 
 
 LCG_external_package(rivet             1.9.0          ${MCGENPATH}/rivet        yoda=1.1.0      )
+LCG_external_package(rivet             2.2.1          ${MCGENPATH}/rivet        yoda=1.3.1      )
 LCG_external_package(rivet             2.2.0          ${MCGENPATH}/rivet        yoda=1.3.0      )
 
 LCG_external_package(sherpa            2.1.1          ${MCGENPATH}/sherpa         author=2.1.1 hepevt=10000)
@@ -236,10 +236,12 @@ LCG_external_package(herwig            6.521.2        ${MCGENPATH}/herwig       
 LCG_external_package(crmcold           v3400          ${MCGENPATH}/crmc         )
 LCG_external_package(crmc              1.4            ${MCGENPATH}/crmc         )
 LCG_external_package(crmc              1.5.3          ${MCGENPATH}/crmc         )
+LCG_external_package(cython            0.22           ${MCGENPATH}/cython       )
 LCG_external_package(cython            0.19.1         ${MCGENPATH}/cython       )
 LCG_external_package(yamlcpp           0.3.0          ${MCGENPATH}/yamlcpp      )
 
 LCG_external_package(yoda              1.1.0          ${MCGENPATH}/yoda cython=0.19.1         )
+LCG_external_package(yoda              1.3.1          ${MCGENPATH}/yoda cython=0.22     )
 LCG_external_package(yoda              1.3.0          ${MCGENPATH}/yoda cython=0.19.1         )
 
 LCG_external_package(hydjet            1.6            ${MCGENPATH}/hydjet author=1_6 )
@@ -250,7 +252,6 @@ LCG_external_package(hydjet++          2.1            ${MCGENPATH}/hydjet++ auth
 LCG_external_package(alpgen            2.1.4          ${MCGENPATH}/alpgen author=214 )
 LCG_external_package(pyquen            1.5.1          ${MCGENPATH}/pyquen author=1_5)
 LCG_external_package(baurmc            1.0            ${MCGENPATH}/baurmc       )
-LCG_external_package(professor         1.3.3          ${MCGENPATH}/professor       )
 LCG_external_package(professor         1.4.0          ${MCGENPATH}/professor       )
 
 LCG_external_package(jhu               3.1.8          ${MCGENPATH}/jhu       )
