@@ -1,0 +1,7 @@
+#!/bin/bash
+export VERBOSE=1
+export V=1
+export MAKEFLAGS=`echo ${MAKEFLAGS} | awk '{ sub("^s[ ]+", ""); print }'`
+export MYMAKE=$1
+shift
+${MYMAKE} "$@"
