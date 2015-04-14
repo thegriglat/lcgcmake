@@ -179,7 +179,9 @@ LCGPackage_Add(
   ENDIF
       PYTHON=${Python_home}/bin/python ${library_path}=${Python_home}/lib:$ENV{${library_path}}
       PYTHONPATH=${cython_v_home}/lib/python${Python_config_version_twodigit}/site-packages:$ENV{PYTHONPATH}
-  BUILD_COMMAND ${MAKE} all ${library_path}=${Python_home}/lib:$ENV{${library_path}} PYTHONPATH=:${cython_v_pythonpath}:$ENV{PYTHONPATH} PATH=${cython_v_home}/bin:$ENV{PATH}                           INSTALL_COMMAND make install ${library_path}=${Python_home}/lib:$ENV{${library_path}} PYTHONPATH=:${cython_v_pythonpath}:$ENV{PYTHONPATH} LIBRARY_PATH=${Python_home}/lib
+      PATH=${cython_v_home}/bin:${Python_home}/bin:$ENV{PATH}
+  BUILD_COMMAND ${MAKE} all ${library_path}=${Python_home}/lib:$ENV{${library_path}} PYTHONPATH=:${cython_v_pythonpath}:${Python_home}/lib/python${Python_config_version_twodigit}/site-packages:$ENV{PYTHONPATH} PATH=${cython_v_home}/bin:${Python_home}/bin:$ENV{PATH}
+  INSTALL_COMMAND make install ${library_path}=${Python_home}/lib:$ENV{${library_path}} PYTHONPATH=:${cython_v_pythonpath}:$ENV{PYTHONPATH} LIBRARY_PATH=${Python_home}/lib PATH=${cython_v_home}/bin:${Python_home}/bin:$ENV{PATH}
   BUILD_IN_SOURCE 1
   DEPENDS Python Boost cython-<yoda_<VERSION>_cython> 
 )
