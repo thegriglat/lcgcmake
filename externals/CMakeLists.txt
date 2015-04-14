@@ -529,6 +529,20 @@ LCGPackage_Add(
   BUILD_IN_SOURCE 1
 
 )
+#---gtest------------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  gtest
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/gtest-${gtest_native_version}.zip
+  CONFIGURE_COMMAND ${CMAKE_COMMAND} -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR> -Dgtest_build_samples=ON <SOURCE_DIR> 
+  BUILD_COMMAND make
+  INSTALL_COMMAND ${CMAKE_COMMAND} -E make_directory <INSTALL_DIR>/lib
+          COMMAND ${CMAKE_COMMAND} -E copy <SOURCE_DIR>/libgtest.a <INSTALL_DIR>/lib/.	
+	  COMMAND ${CMAKE_COMMAND} -E copy <SOURCE_DIR>/libgtest_main.a <INSTALL_DIR>/lib/.	 
+	  COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/include <INSTALL_DIR> 
+  BUILD_IN_SOURCE 1
+  DEPENDS Python 
+)
+
 
 #---lapack------------------------------------------------------------------------------------------------
 if (LCG_TARGET MATCHES "icc" AND LCG_TARGET MATCHES "slc6")
