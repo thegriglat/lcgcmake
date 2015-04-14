@@ -117,7 +117,7 @@ if(NOT ${LCG_OS}${LCG_OSVERS} STREQUAL mac1010 AND NOT LCG_TARGET MATCHES "icc" 
 endif()
 LCG_external_package(vectorclass       1.16                                     )
 LCG_external_package(vdt               0.3.6                                    )
-LCG_external_package(XercesC           3.1.1p1        author=3.1.1              )
+LCG_external_package(XercesC           3.1.2        author=3.1.2              )
 LCG_external_package(xqilla            2.2.4p1                                  )
 LCG_external_package(xrootd            3.3.6                                    )
 if(NOT ${LCG_OS} STREQUAL mac)
