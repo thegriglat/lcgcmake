@@ -416,11 +416,14 @@ LCGPackage_Add(
 if(LCG_TARGET MATCHES "i686")
   set (xerces_config_opts --disable-sse2)
 endif()
+if (LCG_TARGET MATCHES "slc6" OR LCG_TARGET MATCHES "cc7")
+   set(xerces_config_opts LIBS=-liconv)
+endif()
 
 LCGPackage_Add(
   XercesC
   URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/xerces-c-<XercesC_<NATIVE_VERSION>_author>.tar.gz
-  CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix=<INSTALL_DIR> ${xerces_config_opts}
+  CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix=<INSTALL_DIR> ${xerces_config_opts} 
 )
 
 #---tbb-----------------------------------------------------------------------------------------------
