@@ -416,9 +416,9 @@ LCGPackage_Add(
 if(LCG_TARGET MATCHES "i686")
   set (xerces_config_opts --disable-sse2)
 endif()
-if (LCG_TARGET MATCHES "slc6" OR LCG_TARGET MATCHES "cc7")
-   set(xerces_config_opts LIBS=-liconv)
-endif()
+#if (LCG_TARGET MATCHES "slc6" OR LCG_TARGET MATCHES "cc7")
+#   set(xerces_config_opts LIBS=-liconv)
+#endif()
 
 LCGPackage_Add(
   XercesC
