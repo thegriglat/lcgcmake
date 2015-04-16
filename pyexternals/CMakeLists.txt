@@ -355,23 +355,6 @@ LCGPackage_Add(
   DEST_NAME pytools
   DEPENDS Python setuptools
 )
-#---terminado------------------------------------------------------------------------------------------------------
-LCGPackage_Add(
-  terminado
-  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/terminado-${jsonschema_native_version}.tar.gz
-  CONFIGURE_COMMAND <VOID>
-  BUILD_COMMAND ${Exec_cmd} PYTHONPATH=${pytools_home}/lib/python${Python_config_version_twodigit}/site-packages
-                ${Python_cmd} setup.py build
-  INSTALL_COMMAND ${Lock_cmd}
-          COMMAND ${Exec_cmd} PYTHONPATH=${pytools_home}/lib/python${Python_config_version_twodigit}/site-packages
-                  ${Python_cmd} setup.py install --prefix <INSTALL_DIR>
-          COMMAND ${Unlock_cmd}
-
-  BUILD_IN_SOURCE 1
-  DEST_NAME pytools
-  DEPENDS Python setuptools
-)
-
 
 #---tornado------------------------------------------------------------------------------------------------------
 LCGPackage_Add(
@@ -380,6 +363,21 @@ LCGPackage_Add(
   CONFIGURE_COMMAND <VOID>
   BUILD_COMMAND ${Exec_cmd} PYTHONPATH=${pytools_home}/lib/python${Python_config_version_twodigit}/site-packages
                 ${Python_cmd} setup.py build
+  INSTALL_COMMAND ${Lock_cmd}
+          COMMAND ${Exec_cmd} PYTHONPATH=${pytools_home}/lib/python${Python_config_version_twodigit}/site-packages
+                  ${Python_cmd} setup.py install --prefix <INSTALL_DIR>
+          COMMAND ${Unlock_cmd}
+  BUILD_IN_SOURCE 1
+  DEST_NAME pytools
+  DEPENDS Python setuptools
+)
+#---terminado------------------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  terminado
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/terminado-${terminado_native_version}.tar.gz
+  CONFIGURE_COMMAND <VOID>
+  BUILD_COMMAND ${Exec_cmd} PYTHONPATH=${pytools_home}/lib/python${Python_config_version_twodigit}/site-packages
+  		${Python_cmd} setup.py build
   INSTALL_COMMAND ${Lock_cmd}
           COMMAND ${Exec_cmd} PYTHONPATH=${pytools_home}/lib/python${Python_config_version_twodigit}/site-packages
                   ${Python_cmd} setup.py install --prefix <INSTALL_DIR>
