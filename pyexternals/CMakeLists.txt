@@ -6,10 +6,10 @@ set (Lock_cmd ${CMAKE_SOURCE_DIR}/pyexternals/CreateLockFile)
 set (Unlock_cmd ${CMAKE_SOURCE_DIR}/pyexternals/DeleteLockFile)
 
 #---Addtional deopendencies to matplotlib-----------------
-#if((heptools_version MATCHES experimental) OR (heptools_version MATCHES dev4) OR (heptools_version MATCHES dev2) OR (heptools_version MATCHES dev3)) 
+if((heptools_version MATCHES experimental) OR (heptools_version MATCHES dev4) OR (heptools_version MATCHES dev2) OR (heptools_version MATCHES dev3)) 
 set(matplotlib_extra_deps python_dateutil six tornado backports certifi messaging)
 set(pytools_extra_pkg pyzmq subprocess32 Jinja2 jsonschema terminado ptyprocess)
-#endif()
+endif()
 
 #=================================================================================================================
 #---pygraphics----------------------------------------------------------------------------------------------------
