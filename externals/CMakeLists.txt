@@ -417,7 +417,7 @@ if(LCG_TARGET MATCHES "i686")
   set (xerces_config_opts --disable-sse2)
 endif()
 if(heptools_version MATCHES experimental)
-set(xerces_config_opts --enable-transcoder-iconv --disable-msgloader-iconv --enable-netaccessor-curl --enable-netaccessor-socket  --enable-transcoder-gnuiconv --enable-transcoder-icu --disable-msgloader-icu  -disable-static)
+set(xerces_config_opts --enable-transcoder-iconv --enable-msgloader-iconv --enable-netaccessor-curl --enable-netaccessor-socket  --enable-transcoder-gnuiconv --enable-transcoder-icu --disable-msgloader-icu  -disable-static)
 endif()
 
 
