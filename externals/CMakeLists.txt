@@ -417,14 +417,17 @@ if(LCG_TARGET MATCHES "i686")
   set (xerces_config_opts --disable-sse2)
 endif()
 if(heptools_version MATCHES experimental)
-set(xerces_config_opts --enable-transcoder-iconv --enable-msgloader-iconv)
+set(xerces_config_opts --enable-transcoder-iconv --enable-msgloader-iconv --disable-static)
 endif()
 
 
 LCGPackage_Add(
   XercesC
   URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/xerces-c-<XercesC_<NATIVE_VERSION>_author>.tar.gz
-  CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix=<INSTALL_DIR> ${xerces_config_opts} 
+  CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix=<INSTALL_DIR> ${xerces_config_opts}
+  BUILD_COMMAND <VOID>
+  INSTALL_COMMAND make install
+  BUILD_IN_SOURCE 1 
 )
 
 #---tbb-----------------------------------------------------------------------------------------------
