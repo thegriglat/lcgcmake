@@ -8,7 +8,7 @@ set (Unlock_cmd ${CMAKE_SOURCE_DIR}/pyexternals/DeleteLockFile)
 #---Addtional deopendencies to matplotlib-----------------
 #if((heptools_version MATCHES experimental) OR (heptools_version MATCHES dev4) OR (heptools_version MATCHES dev2) OR (heptools_version MATCHES dev3)) 
 set(matplotlib_extra_deps python_dateutil six tornado backports certifi messaging)
-set(pytools_extra_pkg pyzmq subprocess32 Jinja2 jsonschema terminado)
+set(pytools_extra_pkg pyzmq subprocess32 Jinja2 jsonschema terminado ptyprocess)
 #endif()
 
 #=================================================================================================================
@@ -386,7 +386,21 @@ LCGPackage_Add(
   DEST_NAME pytools
   DEPENDS Python setuptools
 )
-
+#---ptyprocess------------------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  ptyprocess
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/ptyprocess-${ptyprocess_native_version}.tar.gz
+  CONFIGURE_COMMAND <VOID>
+  BUILD_COMMAND ${Exec_cmd} PYTHONPATH=${pytools_home}/lib/python${Python_config_version_twodigit}/site-packages
+                ${Python_cmd} setup.py build
+  INSTALL_COMMAND ${Lock_cmd}
+          COMMAND ${Exec_cmd} PYTHONPATH=${pytools_home}/lib/python${Python_config_version_twodigit}/site-packages
+                  ${Python_cmd} setup.py install --prefix <INSTALL_DIR>
+          COMMAND ${Unlock_cmd}
+  BUILD_IN_SOURCE 1
+  DEST_NAME pytools
+  DEPENDS Python setuptools
+)
 #---messaging------------------------------------------------------------------------------------------------------
 LCGPackage_Add(
   messaging

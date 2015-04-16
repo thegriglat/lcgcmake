@@ -74,6 +74,7 @@ LCG_external_package(oracle            11.2.0.3.0                               
 LCG_external_package(pacparser         1.3.1                                    )
 LCG_external_package(pcre              8.34                                     )
 LCG_external_package(processing        0.52                                     )
+LCG_external_package(ptyprocess        0.4                                     )
 LCG_external_package(py                1.4.8                                    )
 LCG_external_package(py2neo            1.4.6                                    )
 LCG_external_package(pyanalysis        1.5                                      )
