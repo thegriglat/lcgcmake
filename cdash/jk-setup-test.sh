@@ -61,7 +61,7 @@ if [[ $COMPILER == *gcc* ]]; then
   gcc48version=4.8
   gcc49version=4.9
   COMPILERversion=${COMPILER}version
-  . /afs/cern.ch/sw/lcg/contrib/gcc/4.9.2/${ARCH}-cc7/setup.sh
+  . /afs/cern.ch/sw/lcg/contrib/gcc/4.9.2/${ARCH}-slc6/setup.sh
   export FC=gfortran
   export CXX=`which g++`
   export CC=`which gcc`
