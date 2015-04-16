@@ -425,8 +425,8 @@ LCGPackage_Add(
   XercesC
   URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/xerces-c-<XercesC_<NATIVE_VERSION>_author>.tar.gz
   CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix=<INSTALL_DIR> ${xerces_config_opts}
-#  BUILD_COMMAND make
-#  INSTALL_COMMAND make install
+  BUILD_COMMAND make
+  INSTALL_COMMAND make install
   BUILD_IN_SOURCE 1 
 )
 
