@@ -49,8 +49,17 @@ if [ -z $TEST_LABELS ]; then export TEST_LABELS="Nightly|PhysicsCheck"; fi
 if [ -z $LCG_VERSION ]; then export LCG_VERSION=$SLOTNAME; fi
 
 # setup cmake and AFS token for slc6 nodes ----------------------------------------
+
+if [[ $PLATFORM == *slc6* ]]; then
+LABEL_COMPILER=slc6
+fi
+if [[ $PLATFORM == *cc7* ]]; then
+LABEL_COMPILER=cc7
+fi
+
 if [[ $PLATFORM == *slc6* || $PLATFORM == *cc7* ]]; then
   export PATH=/afs/cern.ch/sw/lcg/contrib/CMake/2.8.12.2/Linux-i386/bin:${PATH}
+
 ####  LABEL=slc6
   kinit sftnight@CERN.CH -5 -V -k -t /ec/conf/sftnight.keytab
 fi
@@ -61,7 +70,7 @@ if [[ $COMPILER == *gcc* ]]; then
   gcc48version=4.8
   gcc49version=4.9
   COMPILERversion=${COMPILER}version
-  . /afs/cern.ch/sw/lcg/contrib/gcc/${!COMPILERversion}/${ARCH}-${LABEL}/setup.sh
+  . /afs/cern.ch/sw/lcg/contrib/gcc/${!COMPILERversion}/${ARCH}-${LABEL_COMPILER}/setup.sh
   export FC=gfortran
   export CXX=`which g++`
   export CC=`which gcc`
@@ -73,7 +82,7 @@ elif [[ $COMPILER == *clang* ]]; then
   clang34gcc=48
   clang35gcc=49
   GCCversion=${COMPILER}gcc
-  . /afs/cern.ch/sw/lcg/external/llvm/${!COMPILERversion}/${ARCH}-${LABEL}/setup.sh
+  . /afs/cern.ch/sw/lcg/external/llvm/${!COMPILERversion}/${ARCH}-${LABEL_COMPILER}/setup.sh
   export CC=`which clang`
   export CXX=`which clang++`
 elif [[ $COMPILER == *native* && $PLATFORM == *mac* ]]; then
