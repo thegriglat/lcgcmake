@@ -60,7 +60,7 @@ do
       tag_new="RELAX-1_4_2"
    else
       tag_new=$tag
-
+  fi
   echo $tag_new
   tar --exclude=.svn -czf $tag_new.tar.gz $tag
   cp  $tag_new.tar.gz /afs/cern.ch/sw/lcg/external/tarFiles/.
