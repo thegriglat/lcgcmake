@@ -416,9 +416,9 @@ LCGPackage_Add(
 if(LCG_TARGET MATCHES "i686")
   set (xerces_config_opts --disable-sse2)
 endif()
-#if(heptools_version MATCHES experimental)
-#set(xerces_config_opts LIBS=-lc)
-#endif()
+if((heptools_version MATCHES experimental) OR (heptools_version MATCHES dev2) OR (heptools_version MATCHES dev3) OR (heptools_version MATCHES dev4) )
+  set(xerces_config_opts LIBS=-lc)
+endif()
 
 
 LCGPackage_Add(
