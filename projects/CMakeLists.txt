@@ -179,7 +179,8 @@ LCGPackage_Add(
 LCGPackage_Add(
   RELAX
   IF ${heptools_version} MATCHES "root6|dev4|dev3|experimental" THEN
-    URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/${RELAX_native_version}.tar.gz
+#    URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/${RELAX_native_version}.tar.gz
+    URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/RELAX-${RELAX_native_version}.tar.gz
   ELSE 
     SVN_REPOSITORY http://svn.cern.ch/guest/relax/tags/${RELAX_native_version}/relax --quiet
   ENDIF  
