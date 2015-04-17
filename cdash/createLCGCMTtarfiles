@@ -5,6 +5,7 @@ set -x
 svnrep=http://svn.cern.ch/guest/lcgsoft
 svnrepcool=http://svn.cern.ch/guest/lcgcool/cool
 svnrepcoral=http://svn.cern.ch/guest/lcgcoral/coral
+svnreprelax=http://http://svn.cern.ch/guest/relax
 
 rm -rf workdir
 mkdir workdir
@@ -16,12 +17,15 @@ do
   cp  $tag.tar.gz /afs/cern.ch/sw/lcg/external/tarFiles/.
 done
 
-for tag in COOL-preview COOL_3_0-preview
+for tag in COOL-preview COOL_3_0-preview COOL_3_0_3
 do
   svn co $svnrepcool/tags/$tag --quiet $tag
   if [[ $tag == "COOL_3_0-preview" ]]
   then
       tag_new="COOL-3_0-preview"
+  elif [[ $tag == "COOL_3_0_3" ]]
+  then    
+      tag_new="COOL-3_0_3"
   else
       tag_new=$tag
   fi
@@ -30,13 +34,16 @@ do
   cp  $tag_new.tar.gz /afs/cern.ch/sw/lcg/external/tarFiles/.
 done
 
-for tag in CORAL-preview CORAL_3_0-preview
+for tag in CORAL-preview CORAL_3_0-preview CORAL_3_0_3
 do
   svn co $svnrepcoral/tags/$tag --quiet $tag
   if [[ $tag == "CORAL_3_0-preview" ]]
   then
       tag_new="CORAL-3_0-preview"
-  else
+  elif [[ $tag == "CORAL_3_0_3" ]]
+  then
+      tag_new="CORAL-3_0_3"
+   else
       tag_new=$tag
   fi
   echo $tag_new
@@ -45,3 +52,16 @@ do
 done
 
 
+for tag in RELAX_1_4_2
+do
+  svn co $svnreprelax/tags/$tag --quiet $tag
+  if [[ $tag == "RELAX_1_4_2" ]]
+  then
+      tag_new="RELAX-1_4_2"
+   else
+      tag_new=$tag
+
+  echo $tag_new
+  tar --exclude=.svn -czf $tag_new.tar.gz $tag
+  cp  $tag_new.tar.gz /afs/cern.ch/sw/lcg/external/tarFiles/.
+done
