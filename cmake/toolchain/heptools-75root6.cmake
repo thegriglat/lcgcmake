@@ -39,6 +39,7 @@ LCG_external_package(cx_oracle         5.1.1                                    
 if(NOT ${LCG_OS} STREQUAL mac)
   LCG_external_package(Davix             0.3.1                                  )
 endif()
+LCG_external_package(DD4hep            v00-09                                   )
 LCG_external_package(doxygen           1.8.9.1                                    ) 
 LCG_external_package(eigen             3.2.4                                    )
 LCG_external_package(expat             2.0.1                                    )
