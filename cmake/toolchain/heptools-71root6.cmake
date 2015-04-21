@@ -209,7 +209,7 @@ LCG_external_package(blackhat           0.9.9          ${MCGENPATH}/blackhat    
 LCG_external_package(sherpa-mpich2     2.1.1          ${MCGENPATH}/sherpa-mpich2  author=2.1.1 hepevt=10000)
 endif()
 
-LCG_external_package(hepmcanalysis     3.4.14         ${MCGENPATH}/hepmcanalysis  author=00-03-04-14        )
+LCG_external_package(hepmcanalysis     3.4.14         ${MCGENPATH}/hepmcanalysis  author=00-03-04-14  CLHEP=1.9.4.7      )
 LCG_external_package(mctester          1.25.0         ${MCGENPATH}/mctester     )
 LCG_external_package(hijing            1.383bs.2      ${MCGENPATH}/hijing       )
 LCG_external_package(starlight         r43            ${MCGENPATH}/starlight    )

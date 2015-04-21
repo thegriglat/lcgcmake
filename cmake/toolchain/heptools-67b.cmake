@@ -268,7 +268,7 @@ LCG_external_package(sherpa-openmpi    2.1.1.openmpi  ${MCGENPATH}/sherpa       
 LCG_external_package(sherpa-mpich2     2.1.1.mpich2   ${MCGENPATH}/sherpa         author=2.1.1 hepevt=10000)
 
 
-LCG_external_package(hepmcanalysis     3.4.14         ${MCGENPATH}/hepmcanalysis  author=00-03-04-14        )
+LCG_external_package(hepmcanalysis     3.4.14         ${MCGENPATH}/hepmcanalysis  author=00-03-04-14  CLHEP=1.9.4.7      )
 LCG_external_package(mctester          1.25.0         ${MCGENPATH}/mctester     )
 LCG_external_package(hijing            1.383bs.2      ${MCGENPATH}/hijing       )
 LCG_external_package(starlight         r43            ${MCGENPATH}/starlight    )

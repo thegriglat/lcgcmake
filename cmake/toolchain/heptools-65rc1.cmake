@@ -151,7 +151,7 @@ LCG_external_package(evtgen            1.1.0          MCGenerators/evtgen       
 LCG_external_package(rivet             1.8.2          MCGenerators/rivet        )
 LCG_external_package(sherpa            1.4.3          MCGenerators/sherpa         author=1.4.3 hepevt=4000  )
 LCG_external_package(sherpa            1.4.3.2        MCGenerators/sherpa         author=1.4.3 hepevt=10000 )
-LCG_external_package(hepmcanalysis     3.4.14         MCGenerators/hepmcanalysis  author=00-03-04-14        )
+LCG_external_package(hepmcanalysis     3.4.14         ${MCGENPATH}/hepmcanalysis  author=00-03-04-14  CLHEP=1.9.4.7      )
 LCG_external_package(mctester          1.25.0         MCGenerators/mctester     )
 LCG_external_package(hijing            1.383bs.2      MCGenerators/hijing       )
 LCG_external_package(starlight         r43            MCGenerators/starlight    )

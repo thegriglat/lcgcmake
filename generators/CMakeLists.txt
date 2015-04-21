@@ -1369,13 +1369,15 @@ LCG_add_test(sherpa-${v}.native-LHC_ZJets
 endforeach()
 
 #---HepMCAnalysis------------------------------------------------------------------------------------
+set(CLHEP_v_home <CLHEP-<hepmcanalysis_<NATIVE_VERSION>_CLHEP>_home>)
+
 LCGPackage_Add(
   hepmcanalysis
   URL ${gen_url}/HepMCAnalysis-<hepmcanalysis_<NATIVE_VERSION>_author>.tgz
   UPDATE_COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/hepmcanalysis/files <SOURCE_DIR>
   CONFIGURE_COMMAND <VOID>
-  BUILD_COMMAND ${MAKE} HepMCdir=${HepMC_home} FastJetdir=${fastjet_home} ROOTSYS=${ROOT_home} CLHEPdir=${CLHEP_home} 
-			${library_path}=${CLHEP_home}/lib:$ENV{${library_path}}
+  BUILD_COMMAND ${MAKE} HepMCdir=${HepMC_home} FastJetdir=${fastjet_home} ROOTSYS=${ROOT_home} CLHEPdir=${CLHEP_v_home} 
+			${library_path}=${CLHEP_v_home}/lib:$ENV{${library_path}}
             LIBRARY_PATH=${fastjet_home}/lib:$ENV{LIBRARY_PATH}
             IF LCG_CPP11 THEN
               "CXXFLAGS=-fPIC -std=c++11"
@@ -1383,7 +1385,7 @@ LCGPackage_Add(
   INSTALL_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/lib <INSTALL_DIR>/lib
           COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/include <INSTALL_DIR>/include
   BUILD_IN_SOURCE 1
-  DEPENDS HepMC fastjet CLHEP ROOT
+  DEPENDS HepMC fastjet ROOT CLHEP-<hepmcanalysis_<VERSION>_CLHEP>
 
 )
 
