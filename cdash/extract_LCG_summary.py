@@ -26,6 +26,7 @@ class PackageInfo(object):
 
 def create_package_from_file(directory, filename, packages):
    content = open(filename).read()
+   compiler_version = content.split(" COMPILER:")[1].split(",")[0].split()[1]
    name = content.split(" NAME:")[1].split(",")[0].lstrip()
    destination = content.split(" DESTINATION:")[1].split(",")[0].lstrip()
    hash = content.split(" HASH:")[1].split(",")[0].lstrip()
@@ -51,7 +52,7 @@ def create_package_from_file(directory, filename, packages):
        packages[name+hash] = PackageInfo(name,destination,hash,version,directory,dependencies)
      else:  
        packages[name] = PackageInfo(name,destination,hash,version,directory,dependencies)
-     
+   return compiler_version     
 
 #########################
 if __name__ == "__main__":
@@ -61,14 +62,17 @@ if __name__ == "__main__":
     print "Please provide DIR, PLATFORM, LCG_version and whether it is RELEASE or UPGRADE as command line parameters"
     sys.exit()  
   name, thedir, platform, version, mode = options
-
+  compiler = platform.split("-")[2][:-2]
+  compiler_version = ""
   packages = {}
   # collect all .buildinfo_<name>.txt files
   for root, dirs, files in os.walk(thedir,followlinks=True):
       for afile in files:
           if afile.endswith('.txt') and afile.startswith(".buildinfo") and platform in root:
               fullname = os.path.join(root, afile)
-              create_package_from_file(root,fullname,packages)
+              tmp_compiler_version = create_package_from_file(root,fullname,packages)
+              if tmp_compiler_version > compiler_version:
+                compiler_version = tmp_compiler_version
 
 #  print packages             
   # now compile entire dependency lists
@@ -99,7 +103,7 @@ if __name__ == "__main__":
   # write out the files to disk
   # first the externals
   thefile = open(thedir+"/LCG_externals_%s.txt" %platform, "w")
-  thefile.write( "PLATFORM: %s\nVERSION: %s\n" %(platform, version) ) 
+  thefile.write( "PLATFORM: %s\nVERSION: %s\nCOMPILER: %s,%s\n" %(platform, version, compiler, compiler_version) )
   for name,package in packages.iteritems():
       result = package.compile_summary()
       if result != "" and "MCGenerators" not in result: #TODO: HACK
@@ -107,7 +111,7 @@ if __name__ == "__main__":
   thefile.close()
   # then the generators
   thefile = open(thedir+"/LCG_generators_%s.txt" %platform, "w")
-  thefile.write( "PLATFORM: %s\nVERSION: %s\n" %(platform, version) )
+  thefile.write( "PLATFORM: %s\nVERSION: %s\nCOMPILER: %s,%s\n" %(platform, version, compiler, compiler_version) )
   for name,package in packages.iteritems():
      result = package.compile_summary()
      if result != "" and "MCGenerators" in result: #TODO: HACK
