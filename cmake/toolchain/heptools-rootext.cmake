@@ -97,7 +97,7 @@ LCG_external_package(Qt                4.8.4                     qt             
 LCG_external_package(qwt               6.0.1                                    )
 
 if(${LCG_OS}${LCG_OSVERS} STREQUAL slc6)
-    LCG_external_package(sas           0.1.2                                    )
+    LCG_external_package(sas           0.1.3                                    )
    endif()
 
 LCG_external_package(scipy             0.10.0                                   )
