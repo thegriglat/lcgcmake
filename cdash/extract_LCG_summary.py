@@ -103,7 +103,7 @@ if __name__ == "__main__":
   # write out the files to disk
   # first the externals
   thefile = open(thedir+"/LCG_externals_%s.txt" %platform, "w")
-  thefile.write( "PLATFORM: %s\nVERSION: %s\nCOMPILER: %s,%s\n" %(platform, version, compiler, compiler_version) )
+  thefile.write( "PLATFORM: %s\nVERSION: %s\nCOMPILER: %s;%s\n" %(platform, version, compiler, compiler_version) )
   for name,package in packages.iteritems():
       result = package.compile_summary()
       if result != "" and "MCGenerators" not in result: #TODO: HACK
@@ -111,7 +111,7 @@ if __name__ == "__main__":
   thefile.close()
   # then the generators
   thefile = open(thedir+"/LCG_generators_%s.txt" %platform, "w")
-  thefile.write( "PLATFORM: %s\nVERSION: %s\nCOMPILER: %s,%s\n" %(platform, version, compiler, compiler_version) )
+  thefile.write( "PLATFORM: %s\nVERSION: %s\nCOMPILER: %s;%s\n" %(platform, version, compiler, compiler_version) )
   for name,package in packages.iteritems():
      result = package.compile_summary()
      if result != "" and "MCGenerators" in result: #TODO: HACK
