@@ -22,7 +22,7 @@ LCG_AA_project(HepMC 2.06.09)
 
 # Externals
 LCG_external_package(libiodbc          3.52.9                                   )
-LCG_external_package(openldap          2.4.40                                   )
+LCG_external_package(openldap          2.4.39                                   )
 LCG_external_package(postgresql        9.4.1                                    )
 LCG_external_package(cfitsio           3370                                     )
 LCG_external_package(globus            6.0                                      )
