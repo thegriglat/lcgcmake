@@ -42,10 +42,8 @@ def create_package_from_file(directory, filename, packages):
      dependencies = set()
    if name == "ROOT":
      dependencies.discard("pythia8")
-   #ignore CLHEP 2.X
-   if name == "CLHEP" and version.lstrip().startswith("2"):
-      pass
-   elif name == "hepmc3":
+   #ignore hepmc3
+   if name == "hepmc3":
       pass
    else:
      if "MCGenerators" in directory:
