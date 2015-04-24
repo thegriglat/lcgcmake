@@ -22,7 +22,7 @@ LCG_AA_project(HepMC 2.06.09)
 
 # Externals
 LCG_external_package(libiodbc          3.52.9                                   )
-LCG_external_package(openldap          2.4.39                                   )
+LCG_external_package(openldap          2.4.40                                   )
 LCG_external_package(postgresql        9.4.1                                    )
 LCG_external_package(cfitsio           3370                                     )
 LCG_external_package(globus            6.0                                      )
@@ -226,6 +226,8 @@ LCG_external_package(crmcold           v3400          ${MCGENPATH}/crmc         
 LCG_external_package(crmc              1.4            ${MCGENPATH}/crmc         )
 LCG_external_package(crmc              1.5.3          ${MCGENPATH}/crmc         )
 LCG_external_package(cython            0.22         ${MCGENPATH}/cython       )
+LCG_external_package(cython            0.19.1         ${MCGENPATH}/cython       )
+
 LCG_external_package(yamlcpp           0.3.0          ${MCGENPATH}/yamlcpp      )
 
 LCG_external_package(yoda              1.1.0          ${MCGENPATH}/yoda cython=0.19.1         )
