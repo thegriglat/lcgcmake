@@ -308,14 +308,15 @@ macro(LCGPackage_Add name)
 
       #---Adding extra step to build the binary tarball-----------------------------------------------
       if (LCG_TARBALL_INSTALL)	
-        if(NOT ARG_DEST_NAME)  # Only if is not installed grouped with other packages
-       	 get_filename_component(n_name ${${name}_directory_name} NAME)
-       	 ExternalProject_Add_Step(${targetname} package COMMENT "Creating binary tarball for '${targetname}'"
-                  COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_INSTALL_PREFIX}/${${name}_directory_name}/../distribution/${name}
-                  COMMAND ${CMAKE_COMMAND} -E chdir ${${dest_name}_home}/../../..
-                  ${CMAKE_TAR} -czf ${CMAKE_INSTALL_PREFIX}/${${name}_directory_name}/../distribution/${name}/${name}-${version}-${LCG_system}.tgz ${n_name}/${version}/${LCG_system}
-          DEPENDEES strip_rpath install_logs)
-      	endif()
+        # disable binary tarball creation: they are not used and teir creation has problem JIRA GENSER-395
+        #if(NOT ARG_DEST_NAME)  # Only if is not installed grouped with other packages
+       	# get_filename_component(n_name ${${name}_directory_name} NAME)
+       	# ExternalProject_Add_Step(${targetname} package COMMENT "Creating binary tarball for '${targetname}'"
+        #          COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_INSTALL_PREFIX}/${${name}_directory_name}/../distribution/${name}
+        #          COMMAND ${CMAKE_COMMAND} -E chdir ${${dest_name}_home}/../../..
+        #          ${CMAKE_TAR} -czf ${CMAKE_INSTALL_PREFIX}/${${name}_directory_name}/../distribution/${name}/${name}-${version}-${LCG_system}.tgz ${n_name}/${version}/${LCG_system}
+        #  DEPENDEES strip_rpath install_logs)
+      	#endif()
       endif()	
   
       #---Process and copy environment scripts --------------------------------------------------------
