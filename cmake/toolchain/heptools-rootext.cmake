@@ -171,8 +171,6 @@ LCG_external_package(madgraph5amc       2.2.2          ${MCGENPATH}/madgraph5amc
 LCG_external_package(madgraph5amc       2.2.1          ${MCGENPATH}/madgraph5amc )
 LCG_external_package(madgraph5amc       2.1.2          ${MCGENPATH}/madgraph5amc )
 
-LCG_external_package(lhapdf            5.9.1          ${MCGENPATH}/lhapdf       )
-LCG_external_package(lhapdf            6.1.4          ${MCGENPATH}/lhapdf       )
 LCG_external_package(lhapdf            6.1.5          ${MCGENPATH}/lhapdf       )
 
 LCG_external_package(lhapdfsets        5.9.1          lhapdfsets   )
@@ -192,7 +190,6 @@ LCG_external_package(tauola++          1.1.4          ${MCGENPATH}/tauola++     
 LCG_external_package(tauola++          1.1.5          ${MCGENPATH}/tauola++     )
 
 LCG_external_package(pythia6           429.2          ${MCGENPATH}/pythia6    author=6.4.28 hepevt=10000  )
-LCG_external_package(pythia6           428.2          ${MCGENPATH}/pythia6    author=6.4.28 hepevt=10000  )
 
 LCG_external_package(agile             1.4.1          ${MCGENPATH}/agile        )
 
@@ -228,7 +225,7 @@ LCG_external_package(herwig            6.521.2        ${MCGENPATH}/herwig       
 LCG_external_package(crmcold           v3400          ${MCGENPATH}/crmc         )
 LCG_external_package(crmc              1.4            ${MCGENPATH}/crmc         )
 LCG_external_package(crmc              1.5.3          ${MCGENPATH}/crmc         )
-LCG_external_package(cython            0.19.1         ${MCGENPATH}/cython       )
+LCG_external_package(cython            0.22         ${MCGENPATH}/cython       )
 LCG_external_package(yamlcpp           0.3.0          ${MCGENPATH}/yamlcpp      )
 
 LCG_external_package(yoda              1.1.0          ${MCGENPATH}/yoda cython=0.19.1         )
