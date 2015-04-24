@@ -6,7 +6,7 @@ export PATH=/afs/cern.ch/sw/lcg/contrib/CMake/2.8.12.2/Linux-i386/bin:${PATH}
 WORKDIR=/tmp/${USER}/testlcg
 
 mkdir -p ${WORKDIR}
-cd  -p ${WORKDIR}
+cd ${WORKDIR}
 rm -rf *
 
 svn co svn+ssh://svn.cern.ch/reps/lcgsoft/trunk/lcgcmake
