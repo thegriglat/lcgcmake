@@ -7,7 +7,7 @@ WORKDIR=/tmp/${USER}/testlcg
 
 mkdir -p ${WORKDIR}
 cd ${WORKDIR}
-rm -rf *
+rm -rf lcgcmake build_* out_lcgconfigure*
 
 svn co svn+ssh://svn.cern.ch/reps/lcgsoft/trunk/lcgcmake
 
@@ -19,7 +19,7 @@ do
 cmake -DLCG_VERSION=${TOOLCHAIN} -DCMAKE_INSTALL_PREFIX=../install -DPDFsets=minimal -DLCG_SAFE_INSTALL=ON -DLCG_TARBALL_INSTALL=false -DCMAKE_BUILD_TYPE:STRING=Release ../lcgcmake >& ../out_lcgconfigure_${TOOLCHAIN}
     status=$?
     if [ $status -ne 0 ]; then
-        echo "error"
+        echo "error, output can be found here: ${WORKDIR}/out_lcgconfigure_${TOOLCHAIN}"
     else
         echo "OK!"	
     fi
