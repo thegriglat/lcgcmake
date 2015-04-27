@@ -151,6 +151,9 @@ endif()
 
 set(MCGENPATH  MCGenerators)
 
+LCG_external_package(heputils       1.0.6          ${MCGENPATH}/heputils )
+LCG_external_package(mcutils        1.1.1          ${MCGENPATH}/mcutils )
+
 LCG_external_package(heputils       1.0.0          ${MCGENPATH}/heputils )
 LCG_external_package(mcutils        1.1.0          ${MCGENPATH}/mcutils )
 
@@ -216,7 +219,7 @@ LCG_external_package(blackhat           0.9.9          ${MCGENPATH}/blackhat    
 LCG_external_package(sherpa-mpich2     2.1.1          ${MCGENPATH}/sherpa-mpich2  author=2.1.1 hepevt=10000)
 endif()
 
-LCG_external_package(hepmcanalysis     3.4.14.clhep2         ${MCGENPATH}/hepmcanalysis  author=00-03-04-14  CLHEP=2.1.4.1      )
+#LCG_external_package(hepmcanalysis     3.4.14.clhep2         ${MCGENPATH}/hepmcanalysis  author=00-03-04-14  CLHEP=2.1.4.1      )
 LCG_external_package(hepmcanalysis     3.4.14         ${MCGENPATH}/hepmcanalysis  author=00-03-04-14  CLHEP=1.9.4.7      )
 
 LCG_external_package(mctester          1.25.0         ${MCGENPATH}/mctester     )
