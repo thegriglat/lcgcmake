@@ -7,7 +7,7 @@ export CXX=g++
 export FC=gfortran
 
 if [ -z "$1" ]; then
-  LIST="$(ls lcgcmake/cmake/toolchain/*.cmake | cut -d- -f2 | cut -d. -f 1 | grep -v common | sort)"
+  LIST="$(ls lcgcmake/cmake/toolchain/*.cmake | cut -d- -f2- | cut -d. -f 1 | grep -v common | sort)"
 else
   LIST="$1"
 fi
