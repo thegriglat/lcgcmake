@@ -69,6 +69,7 @@ if [[ $COMPILER == *gcc* ]]; then
   gcc47version=4.7
   gcc48version=4.8
   gcc49version=4.9
+  gcc51version=5.1
   COMPILERversion=${COMPILER}version
   . /afs/cern.ch/sw/lcg/contrib/gcc/${!COMPILERversion}/${ARCH}-${LABEL_COMPILER}/setup.sh
   export FC=gfortran
