@@ -216,6 +216,7 @@ LCG_external_package(agile             1.4.1          ${MCGENPATH}/agile        
 
 LCG_external_package(photos++          3.52           ${MCGENPATH}/photos++     )
 LCG_external_package(photos++          3.56           ${MCGENPATH}/photos++     )
+LCG_external_package(photos++          3.60           ${MCGENPATH}/photos++     )
 
 LCG_external_package(photos            215.4          ${MCGENPATH}/photos       ) 
 
@@ -272,6 +273,8 @@ LCG_external_package(jhu               3.1.8          ${MCGENPATH}/jhu       )
 
 #LCG_external_package(vincia            HEAD          ${MCGENPATH}/vincia       )
 LCG_external_package(vincia            1.1.03          ${MCGENPATH}/vincia pythia8=185)
+LCG_external_package(vincia            1.2.00          ${MCGENPATH}/vincia pythia8=205)
+LCG_external_package(vincia            1.2.01          ${MCGENPATH}/vincia pythia8=205)
 
 LCG_external_package(fastnlo_toolkit   2.3.1pre-1871  ${MCGENPATH}/fastnlo_toolkit )
 
