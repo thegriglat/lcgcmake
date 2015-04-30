@@ -579,7 +579,7 @@ LCGPackage_Add(
   CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --with-pythia8=${pythia8_v_home}
   ENDIF
   BUILD_IN_SOURCE 1
-  DEPENDS pythia8-<vincia_<VERSION>_pythia8
+  DEPENDS pythia8-<vincia_<VERSION>_pythia8>
 )
 
 #---ThePEG------------------------------------------------------------------------------------------
