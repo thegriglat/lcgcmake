@@ -243,7 +243,8 @@ LCGPackage_add(
   BUILD_COMMAND     ${CMT_make_cmd}
   INSTALL_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/../${LCG_system} <INSTALL_DIR>
           COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/../include <INSTALL_DIR>/../include
-  DEPENDS cmt LCGCMT Boost CppUnit sqlite XercesC oracle mysql QMtest tcmalloc Frontier_Client Python
+  DEPENDS cmt LCGCMT Boost CppUnit sqlite XercesC oracle mysql QMtest Frontier_Client Python
+          IF NOT APPLE THEN tcmalloc ENDIF
 )
 
 if (NOT CORAL_lcg_exists)

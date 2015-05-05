@@ -394,7 +394,12 @@ macro(LCGPackage_Add name)
     set(${targetname}_hash ${${targetname}_hash} PARENT_SCOPE)    
 
   endforeach()
-  
+
+  #---Add target to build the dependent packages of a package
+  if(${targetname}_dependencies)
+    add_custom_target(${name}-dependencies DEPENDS ${${targetname}_dependencies})
+  endif()
+
   #---Prepare 'group' targets------------------------------------------------------------------------
   get_filename_component(group ${CMAKE_CURRENT_SOURCE_DIR} NAME)
   if(NOT TARGET ${group})
