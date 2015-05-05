@@ -187,7 +187,7 @@ LCGPackage_Add(
              -DGCCXML=${GCCXML_home}/bin/gccxml
              -DCLHEP_ROOT_DIR=${CLHEP_home}
              -DHEPMC_ROOT_DIR=${HepMC_home}
-	     -DGSL_ROOT_DIR=${GSL_home}
+             -DGSL_ROOT_DIR=${GSL_home}
              -DHEPPDT_ROOT_DIR=${HepPDT_home}
   BUILD_COMMAND ${MAKE} ROOTSYS=${ROOT_home}
   DEPENDS cmaketools ROOT GCCXML CLHEP HepMC HepPDT GSL
