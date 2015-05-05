@@ -45,7 +45,7 @@ ctest_configure(BUILD   ${CTEST_BINARY_DIRECTORY}
                 SOURCE  ${CTEST_SOURCE_DIRECTORY}
                 OPTIONS "${options}")
 ctest_build(BUILD ${CTEST_BINARY_DIRECTORY})
-if(NOT $ENV{MODE} STREQUAL "Install")
+if(NOT $ENV{MODE} STREQUAL "Release")
   ctest_test(PARALLEL_LEVEL ${ncpu} INCLUDE_LABEL "${CTEST_LABELS}")
 endif()
 file(STRINGS ${CTEST_BINARY_DIRECTORY}/fail-logs.txt logs)
