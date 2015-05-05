@@ -1,0 +1,33 @@
+--- src/PhotosHandler_enabled.cxx	2015-05-04 17:27:23.000000000 +0200
++++ src/PhotosHandler_enabled.cxx	2015-05-04 17:27:34.000000000 +0200
+@@ -60,7 +60,7 @@
+       Photos::setInfraredCutOff(0.01);
+       Photos::setDoubleBrem(true);
+       Photos::setQuatroBrem(false);
+-      phokey_.iexp = 0;
++      phokey.iexp = 0;
+     }
+     
+     if(m_irCutArg.getValue() > 0.){
+--- m4/photos.m4	2014-02-14 16:35:19.000000000 +0100
++++ m4/photos.m4	2015-05-04 18:08:09.000000000 +0200
+@@ -49,8 +49,8 @@
+ 
+ # final check that the headers and libraries are actually there
+ if test x$found_photos = xyes ; then
+-  if test -f $photos_include/Photos/Photos.h && test -f $photos_lib/libPhotosCxxInterface.$LIB_SUFFIX && test -f $photos_lib/libPhotosFortran.$LIB_SUFFIX; then
+-    PHOTOS_LDFLAGS="-L$photos_lib -lPhotosCxxInterface -lPhotosFortran"
++  if test -f $photos_include/Photos/Photos.h && test -f $photos_lib/libPhotospp.$LIB_SUFFIX ; then
++    PHOTOS_LDFLAGS="-L$photos_lib -lPhotospp -lPhotosppHepMC"
+     PHOTOS_CPPFLAGS="-I$photos_include"
+     PHOTOS_LIBDIR="$photos_lib"
+         
+@@ -61,7 +61,7 @@
+     fi
+     
+   else
+-    AC_MSG_NOTICE([Tried $photos_include/Photos/Photos.h , $photos_lib/libPhotosCxxInterface.$LIB_SUFFIX and $photos_lib/libPhotosFortran.$LIB_SUFFIX])
++    AC_MSG_NOTICE([Tried $photos_include/Photos/Photos.h , $photos_lib/libPhotospp.$LIB_SUFFIX])
+     found_photos=no
+   fi
+ fi

@@ -18,6 +18,7 @@ endif()
 #---General parameters------------------------------------------------------------------------------
 set (gen_url "http://service-spi.web.cern.ch/service-spi/external/tarFiles/MCGeneratorsTarFiles")
 
+list(GET photos++_native_version -1 photos++_version_last)
 set(Python_cmd ${Python_home}/bin/python)
 set(Exec_cmd ${env_cmd})
 
@@ -1031,6 +1032,7 @@ LCGPackage_Add(
                                 --photosdir=${photos++_home} 
                                 --tauoladir=<tauola++-<evtgen_<VERSION>_tauola++>_home>
   BUILD_COMMAND ${MAKE} -j1 FLIBS=-lgfortran
+  IF NOT ${photos++_version_last} VERSION_LESS 3.60 THEN PHOTOSLIBLIST=-lPhotospp ENDIF
   INSTALL_COMMAND make install
           COMMAND ${CMAKE_COMMAND} -E chdir <INSTALL_DIR>/../share ${CMAKE_COMMAND} -E create_symlink  sources/evt.pdl evt.pdl
           COMMAND ${CMAKE_COMMAND} -E chdir <INSTALL_DIR>/../share ${CMAKE_COMMAND} -E create_symlink  sources/DECAY_2010.DEC DECAY.DEC
@@ -1778,10 +1780,18 @@ endif()
 #---sacrifice------------------------------------------------------------------------------------------
 
 set(pythia8_sacrifice_home <pythia8-<sacrifice_<NATIVE_VERSION>_pythia8>_home>)
-
 LCGPackage_Add(
   sacrifice
   URL ${gen_url}/Sacrifice-${sacrifice_native_version}.tar.gz
+  IF NOT ${photos++_version_last} VERSION_LESS 3.60 THEN
+    PATCH_COMMAND echo "==========================================================================="
+          COMMAND echo "INFO:  Photos++ 3.60 (and above?) has different names of libraries."
+          COMMAND echo "INFO:  SACRIFICE WILL BE LINKED WITH -lPhotospp -lPhotosppHepMC OPTIONS !!!" 
+          COMMAND echo "==========================================================================="
+          COMMAND patch -p0 < ${CMAKE_CURRENT_SOURCE_DIR}/patches/sacrifice-photos++-3.60.patch
+#          COMMAND $ENV{SHELL} -c "sed -i.orig -e 's/PHOTOS_LDFLAGS=.*/PHOTOS_LDFLAGS=\"-L$photos_lib -lPhotospp -lPhotosppHepMC\"/g' -e 's/PhotosCxxInterface/Photospp/g' -e 's/PhotosFortran/Photospp/g' m4/photos.m4"
+          COMMAND $ENV{SHELL} -c "rm -fv ./configure && autoreconf -vif"
+  ENDIF
   CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR>
 		--with-HepMC=${HepMC_home} --with-pythia=${pythia8_sacrifice_home}
                 --with-LHAPDF=<lhapdf-<sacrifice_<NATIVE_VERSION>_lhapdf>_home> --with-photos=${photos++_home}
