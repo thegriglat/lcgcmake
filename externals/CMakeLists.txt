@@ -76,8 +76,8 @@ LCGPackage_Add(
   postgresql
   URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/postgresql-${postgresql_native_version}.tar.gz
   CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR>
-  BUILD_COMMAND  make -i 
-  INSTALL_COMMAND make -i install
+  #BUILD_COMMAND  make -i
+  #INSTALL_COMMAND make -i install
   BUILD_IN_SOURCE 1
 )
 #---cfitsio-----------------------------------------------------------------------------------------------
