@@ -4,6 +4,7 @@
 # They will be replaced during installation process
 THIS_PACKAGE=%this_package%
 THIS_PACKAGE_INSTDIR=%this_package_instdir%
+THIS_PACKAGE_INSTDIRP="$(echo $THIS_PACKAGE_INSTDIR | tr '+' 'p')"
 THIS_VERSION=%this_version%
 THIS_DEPENDS="%dependencies%"
 
@@ -14,6 +15,7 @@ THIS_DEPENDS="%dependencies%"
 scriptdir=$(cd "$(dirname -- "${BASH_SOURCE:-$0}")" && pwd)
 PLATFORM=$(basename $scriptdir)
 # set LCGDIR only if it is needed
+echo $scriptdir | grep -q $THIS_PACKAGE_INSTDIRP && THIS_PACKAGE_INSTDIR=$THIS_PACKAGE_INSTDIRP
 LCGDIR=$(echo $scriptdir | sed "s,$THIS_PACKAGE_INSTDIR/$THIS_VERSION/$PLATFORM,,g")
 # delete trailing /
 LCGDIR=$(echo $LCGDIR | sed 's,/\+$,,g')
