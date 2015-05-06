@@ -636,7 +636,7 @@ LCGPackage_Add(
 #---libiconv----------------------------------------------------------------------------------------------
 LCGPackage_Add(
   libiconv
-  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/libiconv-${doxygen_native_version}.tar.gz
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/libiconv-${libiconv_native_version}.tar.gz
   CONFIGURE_COMMAND ./configure --prefix <INSTALL_DIR>
   BUILD_IN_SOURCE 1
 )
