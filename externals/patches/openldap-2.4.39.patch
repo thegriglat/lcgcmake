@@ -1,0 +1,21 @@
+diff -r -u openldap-2.4.39/configure openldap/2.4.39/configure
+--- configure.orig	2014-01-25 14:36:15.000000000 +0100
++++ configure	2015-05-06 09:46:50.000000000 +0200
+@@ -20307,7 +20307,7 @@
+ __db_version DB_VERSION_MAJOR
+ 
+ _ACEOF
+-	set X `eval "$ac_cpp conftest.$ac_ext" | $EGREP __db_version` none none
++	set X `eval "$ac_cpp -P conftest.$ac_ext" | $EGREP __db_version` none none
+ 	ol_cv_bdb_major=${3}
+ 
+ fi
+@@ -20333,7 +20333,7 @@
+ __db_version DB_VERSION_MINOR
+ 
+ _ACEOF
+-	set X `eval "$ac_cpp conftest.$ac_ext" | $EGREP __db_version` none none
++	set X `eval "$ac_cpp -P conftest.$ac_ext" | $EGREP __db_version` none none
+ 	ol_cv_bdb_minor=${3}
+ 
+ fi
