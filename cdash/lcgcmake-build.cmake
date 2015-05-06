@@ -10,6 +10,8 @@ endif()
 set(CTEST_CMAKE_GENERATOR "Unix Makefiles")
 set(CTEST_BUILD_COMMAND "make -k -j${ncpu} $ENV{TARGET}")
 
+set(CTEST_BUILD_NAME $ENV{LCG_VERSION}-${CTEST_BUILD_NAME})
+
 #---Notes to be attached to the build---------------------------------------
 set(CTEST_NOTES_FILES ${CTEST_NOTES_FILES} ${CTEST_SOURCE_DIRECTORY}/cmake/toolchain/heptools-$ENV{LCG_VERSION}.cmake)
 set(CTEST_NOTES_FILES ${CTEST_NOTES_FILES} ${CTEST_BINARY_DIRECTORY}/dependencies.json)
