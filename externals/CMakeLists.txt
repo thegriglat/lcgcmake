@@ -633,6 +633,13 @@ LCGPackage_Add(
   BUILD_COMMAND  make
   BUILD_IN_SOURCE 1
 )
+#---libiconv----------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  libiconv
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/libiconv-${doxygen_native_version}.tar.gz
+  CONFIGURE_COMMAND ./configure --prefix <INSTALL_DIR>
+  BUILD_IN_SOURCE 1
+)
 
 #---doxygen----------------------------------------------------------------------------------------------
 LCGPackage_Add(
@@ -640,7 +647,7 @@ LCGPackage_Add(
   URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/doxygen-${doxygen_native_version}.src.tar.gz
   CONFIGURE_COMMAND ./configure --dot ${graphviz_home}/bin/dot --prefix <INSTALL_DIR>
   BUILD_IN_SOURCE 1
-  DEPENDS graphviz
+  DEPENDS graphviz libiconv
 )
 
 #---expat------------------------------------------------------------------------------------------------
