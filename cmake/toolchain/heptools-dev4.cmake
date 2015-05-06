@@ -58,6 +58,7 @@ LCG_external_package(json              2.5.2                                    
 LCG_external_package(jsonschema        2.4.0                                    )
 LCG_external_package(lapack            3.5.0                                    )
 LCG_external_package(lcov              1.9                                      )
+LCG_external_package(libiconv          1.4                                      )
 LCG_external_package(libsvm            2.86                                     )
 LCG_external_package(libtool           1.5.26                                   )
 LCG_external_package(lxml              2.3                                      )
