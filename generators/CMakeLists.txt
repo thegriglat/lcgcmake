@@ -2262,9 +2262,9 @@ LCG_add_test(rivet-tests.genser-prepare_references
        COMMAND ${CMAKE_COMMAND} -DAIDA2ROOT=${AIDA2ROOT} -DPython_cmd=${Python_cmd} -Dyoda_home=${yoda_home} -DINPUT=${CMAKE_BINARY_DIR}/generators/pythia6.genser-ttbar-rivet.yoda -P ${CMAKE_SOURCE_DIR}/cmake/scripts/yoda2root.cmake
        COMMAND ${CMAKE_COMMAND} -DAIDA2ROOT=${AIDA2ROOT} -DPython_cmd=${Python_cmd} -Dyoda_home=${yoda_home} -DINPUT=${CMAKE_BINARY_DIR}/generators/pythia8.genser-zjetsgenser-rivet.yoda -P ${CMAKE_SOURCE_DIR}/cmake/scripts/yoda2root.cmake
   POST_COMMAND $ENV{SHELL} -c "test -s ${CMAKE_BINARY_DIR}/generators/pythia8.genser-zjetsgenser-rivet.root"
-  ENVIRONMENT PATH=${Python_home}/bin:$ENV{PATH}
+  ENVIRONMENT PATH=${Python_home}/bin:${ROOT_home}/bin:$ENV{PATH}
               ${library_path}=${Python_home}/lib:${rivet2_home}/lib:${yoda_home}/lib:${ROOT_home}/lib:$ENV{${library_path}}
-              PYTHONPATH=${Python_home}/bin:${rivet2_home}/lib/python${Python_config_version_twodigit}/site-packages/:${yoda_home}/lib/python${Python_config_version_twodigit}/site-packages/:${ROOT_home}/lib:$ENV{PYTHONPATH}
+              PYTHONPATH=${pyanalysis_home}/lib/python${Python_config_version_twodigit}/site-packages:${rivet2_home}/lib/python${Python_config_version_twodigit}/site-packages/:${yoda_home}/lib/python${Python_config_version_twodigit}/site-packages/:${ROOT_home}/lib:$ENV{PYTHONPATH}
 )
 
 LCG_add_test(debug-symbols-test 
