@@ -185,6 +185,9 @@ LCGPackage_Add(
   INSTALL_COMMAND make install ${library_path}=${Python_home}/lib:$ENV{${library_path}} PYTHONPATH=:${cython_v_pythonpath}:$ENV{PYTHONPATH} LIBRARY_PATH=${Python_home}/lib PATH=${cython_v_home}/bin:${Python_home}/bin:$ENV{PATH}
   BUILD_IN_SOURCE 1
   DEPENDS Python Boost cython-<yoda_<VERSION>_cython> 
+  IF NOT <VERSION> VERSION_LESS 1.3.1 THEN
+    numpy
+  ENDIF
 )
 
 #---heputils-------------------------------------------------------------------------------------------
