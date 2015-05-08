@@ -2067,7 +2067,7 @@ foreach(v ${pythia8_native_version})
        COMMAND ${rivet2_home}/bin/rivet -a MC_XS -a GENSER_MC_ZJETS -a MC_GENERIC -a MC_IDENTIFIED --histo-file=pythia8-${v}.genser-zjetsgenser-rivet.yoda pythia8-${v}.genser-zjetsgenser.hempc.dat
   ENVIRONMENT PATH=${Python_home}/bin:$ENV{PATH}
               ${library_path}=${Python_home}/lib:${GSL_home}/lib:${rivet2_home}/lib:${yoda_home}/lib:${HepMC_home}/lib:${fastjet_home}/lib:${yamlcpp_home}/lib:${ROOT_home}/lib:${pythia8-${v}_home}/lib:$ENV{${library_path}}
-              PYTHONPATH=${Python_home}/bin:${rivet2_home}/lib/python${Python_config_version_twodigit}/site-packages/:${yoda_home}/lib/python${Python_config_version_twodigit}/site-packages/:${ROOT_home}/lib:$ENV{PYTHONPATH}
+              PYTHONPATH=${Python_home}/bin:${rivet2_home}/lib/python${Python_config_version_twodigit}/site-packages/:${yoda_home}/lib/python${Python_config_version_twodigit}/site-packages/:${ROOT_home}/lib:${pyanalysis_home}/lib/python${Python_config_version_twodigit}/site-packages:$ENV{PYTHONPATH}
               IF v MATCHES "HEAD81" OR v MATCHES "^1[0-9][0-9]" THEN
                 PYTHIA8DATA=${pythia8-${v}_home}/xmldoc
               ELSE
@@ -2093,7 +2093,7 @@ foreach (v ${pythia6_native_version})
        COMMAND ${rivet2_home}/bin/rivet -a MC_GENERIC -a MC_IDENTIFIED -a MC_XS -a MC_TTBAR --histo-file=pythia6-${v}.genser-ttbar-rivet.yoda pythia6-${v}.genser-ttbar.hepmc.dat
   ENVIRONMENT PATH=${agile_home}/bin:${Python_home}/bin:$ENV{PATH}
               ${library_path}=${Python_home}/lib:${GSL_home}/lib:${rivet2_home}/lib:${yoda_home}/lib:${HepMC_home}/lib:${fastjet_home}/lib:${yamlcpp_home}/lib:${agile_home}/lib:${HepMC_home}/lib:${ROOT_home}/lib:$ENV{${library_path}}
-              PYTHONPATH=${Python_home}/bin:${agile_home}/lib/python${Python_config_version_twodigit}/site-packages:${yoda_home}/lib/python${Python_config_version_twodigit}/site-packages/:${rivet2_home}/lib/python${Python_config_version_twodigit}/site-packages:${ROOT_home}/lib:$ENV{PYTHONPATH}
+              PYTHONPATH=${Python_home}/bin:${agile_home}/lib/python${Python_config_version_twodigit}/site-packages:${yoda_home}/lib/python${Python_config_version_twodigit}/site-packages/:${rivet2_home}/lib/python${Python_config_version_twodigit}/site-packages:${ROOT_home}/lib:${pyanalysis_home}/lib/python${Python_config_version_twodigit}/site-packages:$ENV{PYTHONPATH}
               AGILE_GEN_PATH=${agile_home}/../../..
   POST_COMMAND ${CMAKE_COMMAND} -DAIDA2ROOT=${AIDA2ROOT} -DPython_cmd=${Python_cmd} -Dyoda_home=${yoda_home} -DINPUT=${CMAKE_BINARY_DIR}/generators/pythia6-${v}.genser-ttbar-rivet.yoda -P ${CMAKE_SOURCE_DIR}/cmake/scripts/yoda2root.cmake
        COMMAND ${Python_cmd} ${CMAKE_SOURCE_DIR}/generators/reference/reference.py ${CMAKE_BINARY_DIR}/generators/pythia6.genser-ttbar-rivet.root ${CMAKE_BINARY_DIR}/generators/pythia6-${v}.genser-ttbar-rivet.root "Path=XS,jet_HT,jet_mult" "limit=0.05,0.10,0.10"
@@ -2109,7 +2109,7 @@ foreach (v ${pythia6_native_version})
        COMMAND ${rivet2_home}/bin/rivet -a MC_XS -a GENSER_MC_ZJETS -a MC_GENERIC -a MC_IDENTIFIED --histo-file=pythia6-${v}.genser-zjetsgenser-rivet.yoda pythia6-${v}.genser-zjets.hepmc.dat
   ENVIRONMENT PATH=${Python_home}/bin:$ENV{PATH}
               ${library_path}=${Python_home}/lib:${GSL_home}/lib:${rivet2_home}/lib:${yoda_home}/lib:${HepMC_home}/lib:${fastjet_home}/lib:${yamlcpp_home}/lib:${pythia6-${v}_home}/lib:${HepMC_home}/lib:${ROOT_home}/lib:$ENV{${library_path}}
-              PYTHONPATH=${Python_home}/bin:${agile_home}/lib/python${Python_config_version_twodigit}/site-packages:${rivet2_home}/lib/python${Python_config_version_twodigit}/site-packages:${yoda_home}/lib/python${Python_config_version_twodigit}/site-packages/:${ROOT_home}/lib:$ENV{PYTHONPATH}
+              PYTHONPATH=${Python_home}/bin:${agile_home}/lib/python${Python_config_version_twodigit}/site-packages:${rivet2_home}/lib/python${Python_config_version_twodigit}/site-packages:${yoda_home}/lib/python${Python_config_version_twodigit}/site-packages/:${ROOT_home}/lib:${pyanalysis_home}/lib/python${Python_config_version_twodigit}/site-packages:$ENV{PYTHONPATH}
               RIVET_ANALYSIS_PATH=${CMAKE_BINARY_DIR}/generators
   POST_COMMAND ${CMAKE_COMMAND} -DAIDA2ROOT=${AIDA2ROOT} -DPython_cmd=${Python_cmd} -Dyoda_home=${yoda_home} -DINPUT=${CMAKE_BINARY_DIR}/generators/pythia6-${v}.genser-zjetsgenser-rivet.yoda -P ${CMAKE_SOURCE_DIR}/cmake/scripts/yoda2root.cmake
        COMMAND ${CMAKE_SOURCE_DIR}/generators/reference/riv2html.sh ${rivet2_home} pythia6 ${v} zjetsgenser ${LCG_VERSION} ${LCG_platform}
@@ -2130,7 +2130,7 @@ foreach(v ${herwig++_native_version})
         BINARY_DIR herwig++/tests
         SOURCE_DIR herwig++/tests
    ENVIRONMENT ${library_path}=${Python_home}/lib:${herwig++-${v}_home}/lib/Herwig++:${thepeg-${herwig++_${v}_thepeg}_home}/lib/ThePEG:${HepMC_home}/lib:${lhapdf-${thepeg_${herwig++_${v}_thepeg}_lhapdf}_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:${rivet2_home}/lib:${yoda_home}/lib:${yamlcpp_home}/lib:${ROOT_home}/lib:$ENV{${library_path}}
-              PYTHONPATH=${Python_home}/bin:${agile_home}/lib/python${Python_config_version_twodigit}/site-packages:${yoda_home}/lib/python${Python_config_version_twodigit}/site-packages/:${ROOT_home}/lib:$ENV{PYTHONPATH}
+              PYTHONPATH=${Python_home}/bin:${agile_home}/lib/python${Python_config_version_twodigit}/site-packages:${yoda_home}/lib/python${Python_config_version_twodigit}/site-packages/:${ROOT_home}/lib:${pyanalysis_home}/lib/python${Python_config_version_twodigit}/site-packages:$ENV{PYTHONPATH}
               PATH=${agile_home}/bin:${Python_home}/bin:$ENV{PATH}
    POST_COMMAND ${CMAKE_COMMAND} -DAIDA2ROOT=${AIDA2ROOT} -DPython_cmd=${Python_cmd} -Dyoda_home=${yoda_home} -DINPUT=${CMAKE_BINARY_DIR}/generators/herwigpp-${v}.genser-ttbar-rivet.yoda -P ${CMAKE_SOURCE_DIR}/cmake/scripts/yoda2root.cmake
         COMMAND ${Python_cmd} ${CMAKE_SOURCE_DIR}/generators/reference/reference.py ${CMAKE_BINARY_DIR}/generators/herwigpp.genser-ttbar-rivet.root ${CMAKE_BINARY_DIR}/generators/herwigpp-${v}.genser-ttbar-rivet.root "Path=XS,jet_HT,jet_mult" "limit=0.05,0.10,0.10"
@@ -2149,7 +2149,7 @@ foreach(v ${herwig++_native_version})
         BINARY_DIR herwig++/tests
         SOURCE_DIR herwig++/tests
    ENVIRONMENT ${library_path}=${Python_home}/lib:${herwig++-${v}_home}/lib/Herwig++:${thepeg-${herwig++_${v}_thepeg}_home}/lib/ThePEG:${HepMC_home}/lib:${lhapdf-${thepeg_${herwig++_${v}_thepeg}_lhapdf}_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:${rivet2_home}/lib:${yoda_home}/lib:${yamlcpp_home}/lib:${ROOT_home}/lib:$ENV{${library_path}}
-               PYTHONPATH=${Python_home}/bin:${yoda_home}/lib/python${Python_config_version_twodigit}/site-packages/:${ROOT_home}/lib:$ENV{PYTHONPATH}
+               PYTHONPATH=${Python_home}/bin:${yoda_home}/lib/python${Python_config_version_twodigit}/site-packages/:${ROOT_home}/lib:${pyanalysis_home}/lib/python${Python_config_version_twodigit}/site-packages:$ENV{PYTHONPATH}
                PATH=${Python_home}/bin:$ENV{PATH}
                LHAPATH=${lhapdfsets_home}/../share/lhapdf/PDFsets
                LHAPDF_DATA_PATH=${lhapdf-${herwig++_${v}_lhapdf}_home}/share/LHAPDF:${CMAKE_INSTALL_PREFIX}/lhapdf6sets/current/share/LHAPDF
@@ -2170,7 +2170,7 @@ foreach(v ${sherpa_native_version})
         COMMAND ${rivet2_home}/bin/rivet -a MC_XS -a GENSER_MC_ZJETS -a MC_GENERIC -a MC_IDENTIFIED --histo-file=sherpa-${v}.genser-zjetsgenser-rivet.yoda sherpa/zjets/${v}/sherpa-${v}_zjets.hepmc2g
    ENVIRONMENT PATH=${Python_home}/bin:${rivet2_home}/bin:{yoda_home}/bin:$ENV{PATH}
                ${library_path}=${sherpa-${v}_home}/lib/SHERPA-MC:${HepMC_home}/lib:${lhapdf-${sherpa_${v}_lhapdf}_home}/lib:${fastjet_home}/lib:${GSL_home}/lib:${Python_home}/lib:${rivet2_home}/lib:${yoda_home}/lib:${yamlcpp_home}/lib:${ROOT_home}/lib:$ENV{${library_path}}
-               PYTHONPATH=${Python_home}/bin:${yoda_home}/lib/python${Python_config_version_twodigit}/site-packages/:${ROOT_home}/lib:${rivet2_home}/lib/python${Python_config_version_twodigit}/site-packages/:$ENV{PYTHONPATH}
+               PYTHONPATH=${Python_home}/bin:${yoda_home}/lib/python${Python_config_version_twodigit}/site-packages/:${ROOT_home}/lib:${rivet2_home}/lib/python${Python_config_version_twodigit}/site-packages/:${pyanalysis_home}/lib/python${Python_config_version_twodigit}/site-packages:$ENV{PYTHONPATH}
                RIVET_ANALYSIS_PATH=${CMAKE_BINARY_DIR}/generators
                PWD=.
    POST_COMMAND ${CMAKE_COMMAND} -DAIDA2ROOT=${AIDA2ROOT} -DPython_cmd=${Python_cmd} -Dyoda_home=${yoda_home} -DINPUT=${CMAKE_BINARY_DIR}/generators/sherpa-${v}.genser-zjetsgenser-rivet.yoda -P ${CMAKE_SOURCE_DIR}/cmake/scripts/yoda2root.cmake
@@ -2197,7 +2197,7 @@ foreach(v ${herwig_native_version})
         COMMAND ${rivet2_home}/bin/rivet -a MC_GENERIC -a MC_IDENTIFIED -a MC_XS -a MC_ZJETS -H herwig-${v}.genser-zjets-rivet.yoda hepmcfile_herwig-${v}_zjetsagile.dat
    ENVIRONMENT PATH=${agile_home}/bin:${Python_home}/bin:$ENV{PATH}
                ${library_path}=${Python_home}/lib:${GSL_home}/lib:${rivet2_home}/lib:${yoda_home}/lib:${HepMC_home}/lib:${fastjet_home}/lib:${yamlcpp_home}/lib:${agile_home}/lib:${HepMC_home}/lib:${ROOT_home}/lib:$ENV{${library_path}}
-               PYTHONPATH=${Python_home}/bin:${agile_home}/lib/python${Python_config_version_twodigit}/site-packages:${yoda_home}/lib/python${Python_config_version_twodigit}/site-packages/:${ROOT_home}/lib:${rivet2_home}/lib/python${Python_config_version_twodigit}/site-packages:$ENV{PYTHONPATH}
+               PYTHONPATH=${Python_home}/bin:${agile_home}/lib/python${Python_config_version_twodigit}/site-packages:${yoda_home}/lib/python${Python_config_version_twodigit}/site-packages/:${ROOT_home}/lib:${rivet2_home}/lib/python${Python_config_version_twodigit}/site-packages:${pyanalysis_home}/lib/python${Python_config_version_twodigit}/site-packages:$ENV{PYTHONPATH}
                AGILE_GEN_PATH=${agile_home}/../../..
    POST_COMMAND ${CMAKE_COMMAND} -DAIDA2ROOT=${AIDA2ROOT} -DPython_cmd=${Python_cmd} -Dyoda_home=${yoda_home} -DINPUT=${CMAKE_BINARY_DIR}/generators/herwig-${v}.genser-zjets-rivet.yoda -P ${CMAKE_SOURCE_DIR}/cmake/scripts/yoda2root.cmake
         COMMAND ${Python_cmd} ${CMAKE_SOURCE_DIR}/generators/reference/reference.py ${CMAKE_BINARY_DIR}/generators/herwig.genser-zjets-rivet.root ${CMAKE_BINARY_DIR}/generators/herwig-${v}.genser-zjets-rivet.root "Path=XS,jet_HT" "limit=0.05,0.10"
@@ -2213,7 +2213,7 @@ foreach(v ${herwig_native_version})
         COMMAND ${rivet2_home}/bin/rivet -a MC_XS -a GENSER_MC_ZJETS -a MC_GENERIC -a MC_IDENTIFIED --histo-file=herwig-${v}.genser-zjetsgenser-rivet.yoda herwig-${v}.genser-zjets.hepmc.dat
    ENVIRONMENT PATH=${Python_home}/bin:$ENV{PATH}
                ${library_path}=${Python_home}/lib:${GSL_home}/lib:${rivet2_home}/lib:${yoda_home}/lib:${HepMC_home}/lib:${fastjet_home}/lib:${herwig-${v}_home}/lib:${yamlcpp_home}/lib:${HepMC_home}/lib:${ROOT_home}/lib:$ENV{${library_path}}
-               PYTHONPATH=${Python_home}/bin:${rivet2_home}/lib/python${Python_config_version_twodigit}/site-packages:${yoda_home}/lib/python${Python_config_version_twodigit}/site-packages/:${ROOT_home}/lib:$ENV{PYTHONPATH}
+               PYTHONPATH=${Python_home}/bin:${rivet2_home}/lib/python${Python_config_version_twodigit}/site-packages:${yoda_home}/lib/python${Python_config_version_twodigit}/site-packages/:${ROOT_home}/lib:${pyanalysis_home}/lib/python${Python_config_version_twodigit}/site-packages:$ENV{PYTHONPATH}
                RIVET_ANALYSIS_PATH=${CMAKE_BINARY_DIR}/generators
    POST_COMMAND ${CMAKE_COMMAND} -DAIDA2ROOT=${AIDA2ROOT} -DPython_cmd=${Python_cmd} -Dyoda_home=${yoda_home} -DINPUT=${CMAKE_BINARY_DIR}/generators/herwig-${v}.genser-zjetsgenser-rivet.yoda -P ${CMAKE_SOURCE_DIR}/cmake/scripts/yoda2root.cmake
         COMMAND ${CMAKE_SOURCE_DIR}/generators/reference/riv2html.sh ${rivet2_home} herwig ${v} zjetsgenser ${LCG_VERSION} ${LCG_platform}
@@ -2234,7 +2234,7 @@ foreach(v ${alpgen_native_version})
         COMMAND ${rivet2_home}/bin/rivet -a MC_XS -a GENSER_MC_ZJETS -a MC_GENERIC -a MC_IDENTIFIED -H alpgen-${v}.genser-zjetsgenser-rivet.yoda tmpalpgen/examples-${v}/hepmcfile_alpgen_zjets.dat
    ENVIRONMENT PATH=${agile_home}/bin:${Python_home}/bin:$ENV{PATH}
                ${library_path}=${Python_home}/lib:${GSL_home}/lib:${rivet2_home}/lib:${yoda_home}/lib:${HepMC_home}/lib:${fastjet_home}/lib:${yamlcpp_home}/lib:${agile_home}/lib:${HepMC_home}/lib:${ROOT_home}/lib:$ENV{${library_path}}
-               PYTHONPATH=${Python_home}/bin:${agile_home}/lib/python${Python_config_version_twodigit}/site-packages:${yoda_home}/lib/python${Python_config_version_twodigit}/site-packages/:${ROOT_home}/lib:$ENV{PYTHONPATH}
+               PYTHONPATH=${Python_home}/bin:${agile_home}/lib/python${Python_config_version_twodigit}/site-packages:${yoda_home}/lib/python${Python_config_version_twodigit}/site-packages/:${ROOT_home}/lib:${pyanalysis_home}/lib/python${Python_config_version_twodigit}/site-packages:$ENV{PYTHONPATH}
                AGILE_GEN_PATH=${agile_home}/../../..
                RIVET_ANALYSIS_PATH=${CMAKE_BINARY_DIR}/generators
    POST_COMMAND ${CMAKE_COMMAND} -DAIDA2ROOT=${AIDA2ROOT} -DPython_cmd=${Python_cmd} -Dyoda_home=${yoda_home} -DINPUT=${CMAKE_BINARY_DIR}/generators/alpgen-${v}.genser-zjetsgenser-rivet.yoda -P ${CMAKE_SOURCE_DIR}/cmake/scripts/yoda2root.cmake
