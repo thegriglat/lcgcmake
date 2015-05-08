@@ -32,6 +32,14 @@ def create_package_from_file(directory, filename, packages):
    hash = content.split(" HASH:")[1].split(",")[0].lstrip()
    version = content.split(" VERSION:")[1].split(",")[0]
    directory = directory
+   # handle duplicate entries (like herwig++/herwigpp)
+   # only take the "++" case                                                                                                                          
+   if packages.has_key(name+hash):
+     old_package = packages[name+hash]
+     if old_package.version == version:
+       if old_package.directory < directory:
+         return
+
    # now handle the dependencies properly
    dependency_list = content.rstrip(',\n').split(" VERSION:")[1].split(",")[1:]
    dependencies = set()
@@ -113,6 +121,7 @@ if __name__ == "__main__":
   for name,package in packages.iteritems():
      result = package.compile_summary()
      if result != "" and "MCGenerators" in result: #TODO: HACK
+       print result 
        thefile.write(result+"\n")
   thefile.close()
 
