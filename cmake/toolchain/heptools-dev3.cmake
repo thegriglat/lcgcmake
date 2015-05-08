@@ -187,8 +187,7 @@ LCG_external_package(sacrifice         0.9.9          ${MCGENPATH}/sacrifice pyt
 
 LCG_external_package(thepeg            1.9.2p1          ${MCGENPATH}/thepeg author=1.9.2 )
 
-#LCG_external_package(herwig++          2.7.1           ${MCGENPATH}/herwig++  thepeg=1.9.2p1 )
-LCG_external_package(herwig++          2.7.1           ${MCGENPATH}/herwigpp  thepeg=1.9.2p1 )
+LCG_external_package(herwig++          2.7.1           ${MCGENPATH}/herwig++  thepeg=1.9.2p1 )
 
 
 LCG_external_package(tauola++          1.1.1a         ${MCGENPATH}/tauola++     )
