@@ -41,6 +41,7 @@ if __name__ == "__main__":
    if len(args) == 0: rootdir = getcwd()
    else:              rootdir = args[0]
 
+   print rootdir
    mindate = datetime.now() - timedelta(hours = options.min_age)
    dirs_to_clean = find_dirs_to_clean(rootdir, options.max_depth)
    for d in dirs_to_clean:
