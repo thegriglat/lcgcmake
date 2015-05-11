@@ -1798,7 +1798,7 @@ LCGPackage_Add(
   CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR>
 		--with-HepMC=${HepMC_home} --with-pythia=${pythia8_sacrifice_home}
                 --with-LHAPDF=<lhapdf-<sacrifice_<NATIVE_VERSION>_lhapdf>_home> --with-photos=${photos++_home}
-                --with-boost=${Boost_home} --with-MCUtils
+                --with-boost=${Boost_home} --with-MCUtils "CFLAGS=${C_FLAGS}" "CXXFLAGS=${CXX_FLAGS}"
   BUILD_COMMAND ${MAKE}
   INSTALL_COMMAND ${MAKE} install 
   BUILD_IN_SOURCE 1
@@ -1979,6 +1979,9 @@ LCGPackage_Add(
   INSTALL_COMMAND ${CMAKE_COMMAND} -E make_directory <INSTALL_DIR>/bin
           COMMAND ${CMAKE_COMMAND} -E copy gg2VV/gg2VV <INSTALL_DIR>/bin
           COMMAND $ENV{SHELL} -c "chmod 755 <INSTALL_DIR>/bin/gg2VV"
+  IF NOT CMAKE_BUILD_TYPE MATCHES Deb THEN
+          COMMAND $ENV{SHELL} -c "find <INSTALL_DIR>/bin -type f -print0 | xargs -0 -n 1 strip -S"
+  ENDIF
   BUILD_IN_SOURCE 1
   DEPENDS ftjam looptools omniorb lhapdf-${lhapdf6_latest_version}
 )
@@ -2005,6 +2008,7 @@ LCGPackage_Add(
       --with-lhapdf=<lhapdf-<fastnlo_toolkit_<NATIVE_VERSION>_lhapdf>_home>
       --with-fastjet=${fastjet_home}
       --with-yoda=${yoda_home}
+      "CFLAGS=-g0 ${C_FLAGS}" "CXXFLAGS=-g0 ${CXX_FLAGS}" "FCFLAGS=-g0 ${Fortran_FLAGS}"
   #    --enable-pyext   # need to specify swig package if this option is switched on!
   BUILD_COMMAND ${MAKE} CPATH=${Boost_home_include} 
   INSTALL_COMMAND ${MAKE} install
