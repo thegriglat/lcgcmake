@@ -1506,7 +1506,9 @@ endforeach()
 endif()
 
 #---Starlight---------------------------------------------------------------------------------------
+if (starlight_native_version)
 string(SUBSTRING ${starlight_native_version} 1 -1 STARLIGHT_REV)
+endif()
 LCGPackage_Add(
   starlight
   URL ${gen_url}/starlight-r${STARLIGHT_REV}.tgz
