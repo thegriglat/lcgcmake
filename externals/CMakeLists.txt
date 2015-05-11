@@ -894,3 +894,12 @@ LCGPackage_Add(
   DEPENDS Python
 )
 
+#---R-----------------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  R
+  URL http://stat.ethz.ch/CRAN/src/base/R-3/R-${R_native_version}.tar.gz
+CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR>
+                              CXX=${CMAKE_CXX_COMPILER} CC=${CMAKE_C_COMPILER}
+  BUILD_IN_SOURCE 1
+)
+
