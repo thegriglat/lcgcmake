@@ -183,6 +183,12 @@ LCG_external_package(pythia8           201            ${MCGENPATH}/pythia8 )
 LCG_external_package(pythia8           205            ${MCGENPATH}/pythia8 )
 LCG_external_package(pythia8           186            ${MCGENPATH}/pythia8 )
 
+LCG_external_package(vincia            HEAD           ${MCGENPATH}/vincia pythia8=205)
+LCG_external_package(vincia            1.1.03         ${MCGENPATH}/vincia pythia8=185)
+LCG_external_package(vincia            1.2.00         ${MCGENPATH}/vincia pythia8=205)
+LCG_external_package(vincia            1.2.01         ${MCGENPATH}/vincia pythia8=205)
+
+
 LCG_external_package(cython            0.19.1         ${MCGENPATH}/cython       )
 LCG_external_package(cython            0.22         ${MCGENPATH}/cython       )
 
