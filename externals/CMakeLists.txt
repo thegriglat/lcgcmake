@@ -322,7 +322,13 @@ else()
 endif()
 
 if(heptools_version MATCHES geantv)
-  set (hepmc3_options -DROOT_DIR=${ROOT_home}/cmake -DHEPMC_ENABLE_CPP11=ON PATH=${ROOT_home}/bin:$ENV{PATH})
+  set(hepmc3_options -DROOT_DIR=${ROOT_home}/cmake -DHEPMC_ENABLE_CPP11=ON)
+  set(ENV{PATH} "${ROOT_HOME}/bin:$ENV{PATH}") 
+endif()
+if(heptools_version MATCHES geantv)
+  set(hepmc3_dependencies Boost pythia8 ROOT)
+else()
+  et(hepmc3_dependencies Boost pythia8)
 endif()
 
 #---Forward declarations----------------------------------------------------------------------------
@@ -338,7 +344,8 @@ LCGPackage_Add(
              -DPYTHIA8_ROOT_DIR=${pythia8_home}
 	     ${hepmc3_options}
   BUILD_COMMAND ${MAKE}
-  DEPENDS Boost pythia8
+#  DEPENDS Boost pythia8
+  DEPENDS ${hepmc3_dependencies}
 )
 
 LCGPackage_Add(
