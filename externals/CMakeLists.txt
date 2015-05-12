@@ -323,7 +323,7 @@ endif()
 
 if(heptools_version MATCHES geantv)
   set(hepmc3_options -DROOT_DIR=${ROOT_home}/cmake -DHEPMC_ENABLE_CPP11=ON)
-  set(ENV{PATH} "${ROOT_HOME}/bin:$ENV{PATH}") 
+  set(ENV{PATH} "${ROOT_home}/bin:$ENV{PATH}") 
 endif()
 if(heptools_version MATCHES geantv)
   set(hepmc3_dependencies Boost pythia8 ROOT)
@@ -336,6 +336,7 @@ LCGPackage_set_home(pythia8)
 
 LCGPackage_Add(
   hepmc3
+  message("This is the PATH used for hepmc3             : $ENV{PATH}")
   ${hepmc3_source_command}
   CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
              -DBOOST_ROOT=${Boost_home}
@@ -343,7 +344,6 @@ LCGPackage_Add(
              -DHEPMC_BUILD_EXAMPLES=ON
              -DPYTHIA8_ROOT_DIR=${pythia8_home}
 	     ${hepmc3_options}
-  message(STATUS "This is the PATH used for hepmc3             : $ENV{PATH}")	     
   BUILD_COMMAND ${MAKE}
 #  DEPENDS Boost pythia8
   DEPENDS ${hepmc3_dependencies}
