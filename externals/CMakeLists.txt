@@ -322,7 +322,7 @@ else()
 endif()
 
 if(heptools_version MATCHES geantv)
-  set (hepmc3_options -DROOT_DIR=${ROOT_home}/cmake -DHEPMC_ENABLE_CPP11=ON)
+  set (hepmc3_options -DROOT_DIR=${ROOT_home}/cmake -DHEPMC_ENABLE_CPP11=ON PATH=${ROOT_home}/bin:$ENV{PATH})
 endif()
 
 #---Forward declarations----------------------------------------------------------------------------
