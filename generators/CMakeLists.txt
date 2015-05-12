@@ -314,6 +314,10 @@ LCGPackage_Add(
   ENDIF
   IF <pythia8_<NATIVE_VERSION>_author> MATCHES "HEAD81" OR <pythia8_<NATIVE_VERSION>_author> MATCHES "^1[0-9][0-9]" THEN
     CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --with-hepmc=${HepMC_home} --enable-shared --lcgplatform=${LCG_platform}
+    IF LCG_HOST_COMP MATCHES gcc THEN
+              COMMAND $ENV{SHELL} -c "echo 'FLIBS = -lgfortran -lgfortranbegin' >> config.mk"
+              COMMAND $ENV{SHELL} -c "echo 'FC = gfortran' >> config.mk"
+    ENDIF
   ENDIF
   IF <pythia8_<NATIVE_VERSION>_author> MATCHES "^2[0-9][0-9]" THEN
     CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --with-hepmc2=${HepMC_home} --with-<pythia8_<NATIVE_VERSION>_lhapdf_family>=<lhapdf-<pythia8_<NATIVE_VERSION>_lhapdf>_home> --with-boost=${Boost_home} --enable-shared
