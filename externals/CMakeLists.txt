@@ -157,10 +157,10 @@ else()
   set(Python_config_options --enable-shared)
 endif()
 if(LCG_TARGET MATCHES "slc6")
-  set(Python_config_options --disable-ipv6 ${Python_config_options})
+  set(Python_config_options --enable-ipv6 ${Python_config_options})
 endif()
 if(LCG_TARGET MATCHES "icc" AND LCG_TARGET MATCHES "slc6")
-  set(Python_config_options --disable-ipv6 --without-gcc --with-cxx-main=${CMAKE_CXX_COMPILER}  ${Python_config_options})
+  set(Python_config_options --enable-ipv6 --without-gcc --with-cxx-main=${CMAKE_CXX_COMPILER}  ${Python_config_options})
 endif()
 
 LCGPackage_Add(
