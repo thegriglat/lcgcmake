@@ -1,0 +1,12 @@
+--- src/include/Rinterface.h.orig	2015-05-12 21:42:50.879421353 +0200
++++ src/include/Rinterface.h	2015-05-12 21:44:19.564239915 +0200
+@@ -90,7 +90,7 @@
+ void fpu_setup(Rboolean);
+ 
+ /* in unix/system.c */
+-int R_running_as_main_program; 
++extern int R_running_as_main_program; 
+ 
+ #ifdef CSTACK_DEFNS
+ /* duplicating Defn.h */
+
