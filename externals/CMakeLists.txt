@@ -904,7 +904,7 @@ LCGPackage_Add(
   URL http://stat.ethz.ch/CRAN/src/base/R-3/R-${R_native_version}.tar.gz
   CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> CXX=${CMAKE_CXX_COMPILER} CC=${CMAKE_C_COMPILER}
   INSTALL_COMMAND make install
-          COMMAND <INSTALL_DIR>/bin/Rscript ${CMAKE_CURRENT_BINARY_DIR}/install-packages.R   
+          COMMAND ${EXEC} --unset=MAKEFLAGS <INSTALL_DIR>/bin/Rscript --vanilla --verbose ${CMAKE_CURRENT_BINARY_DIR}/install-packages.R   
   BUILD_IN_SOURCE 1
 )
 
