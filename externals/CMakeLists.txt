@@ -328,7 +328,7 @@ endif()
 if(heptools_version MATCHES geantv)
   set(hepmc3_dependencies Boost pythia8 ROOT)
 else()
-  et(hepmc3_dependencies Boost pythia8)
+  set(hepmc3_dependencies Boost pythia8)
 endif()
 
 #---Forward declarations----------------------------------------------------------------------------
