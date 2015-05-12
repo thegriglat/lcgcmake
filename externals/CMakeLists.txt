@@ -156,10 +156,10 @@ elseif(LCG_TARGET MATCHES "mac")
 else()
   set(Python_config_options --enable-shared)
 endif()
-if(LCG_TARGET MATCHES "slc6")
+if(LCG_TARGET MATCHES "slc6" OR LCG_TARGET MATCHES "cc7")
   set(Python_config_options --enable-ipv6 ${Python_config_options})
 endif()
-if(LCG_TARGET MATCHES "icc" AND LCG_TARGET MATCHES "slc6")
+if(LCG_TARGET MATCHES "icc" AND (LCG_TARGET MATCHES "slc6" OR LCG_TARGET MATCHES "cc7"))
   set(Python_config_options --enable-ipv6 --without-gcc --with-cxx-main=${CMAKE_CXX_COMPILER}  ${Python_config_options})
 endif()
 
@@ -344,7 +344,6 @@ LCGPackage_Add(
              -DPYTHIA8_ROOT_DIR=${pythia8_home}
 	     ${hepmc3_options}
   BUILD_COMMAND ${MAKE}
-  MESSAGE("This is the PATH used for hepmc3             : $ENV{PATH}")
 #  DEPENDS Boost pythia8
   DEPENDS ${hepmc3_dependencies}
 )
