@@ -1732,6 +1732,10 @@ if(NOT APPLE)    #  (installation fails on MacOSX)
     --chaplin=${chaplin_home}
     --feynhiggs=${feynhiggs_home}
   BUILD_COMMAND ${MAKE}
+  INSTALL_COMMAND ${MAKE} install
+  IF NOT CMAKE_BUILD_TYPE MATCHES Deb THEN
+          COMMAND $ENV{SHELL} -c "find <INSTALL_DIR>/bin -type f | grep -v setup | xargs -n 1 strip -S"
+  ENDIF
   BUILD_IN_SOURCE 1
   DEPENDS fastjet lhapdf-<powheg-box-v2_<NATIVE_VERSION>_lhapdf> chaplin feynhiggs
  )
