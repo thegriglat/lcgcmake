@@ -336,7 +336,6 @@ LCGPackage_set_home(pythia8)
 
 LCGPackage_Add(
   hepmc3
-  message("This is the PATH used for hepmc3             : $ENV{PATH}")
   ${hepmc3_source_command}
   CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
              -DBOOST_ROOT=${Boost_home}
@@ -345,6 +344,7 @@ LCGPackage_Add(
              -DPYTHIA8_ROOT_DIR=${pythia8_home}
 	     ${hepmc3_options}
   BUILD_COMMAND ${MAKE}
+  MESSAGE("This is the PATH used for hepmc3             : $ENV{PATH}")
 #  DEPENDS Boost pythia8
   DEPENDS ${hepmc3_dependencies}
 )
