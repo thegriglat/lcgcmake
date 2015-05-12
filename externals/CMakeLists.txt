@@ -343,6 +343,7 @@ LCGPackage_Add(
              -DHEPMC_BUILD_EXAMPLES=ON
              -DPYTHIA8_ROOT_DIR=${pythia8_home}
 	     ${hepmc3_options}
+  message(STATUS "This is the PATH used for hepmc3             : $ENV{PATH}")	     
   BUILD_COMMAND ${MAKE}
 #  DEPENDS Boost pythia8
   DEPENDS ${hepmc3_dependencies}
