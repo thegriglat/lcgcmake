@@ -909,7 +909,7 @@ install.packages(\"RInside\",repos=\"http://stat.ethz.ch/CRAN/\")
 LCGPackage_Add(
   R
   URL http://stat.ethz.ch/CRAN/src/base/R-3/R-${R_native_version}.tar.gz
-  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> CXX=${CMAKE_CXX_COMPILER} CC=${CMAKE_C_COMPILER}
+  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --enable-R-shlib CXX=${CMAKE_CXX_COMPILER} CC=${CMAKE_C_COMPILER}
   INSTALL_COMMAND make install
           COMMAND ${EXEC} --unset=MAKEFLAGS <INSTALL_DIR>/bin/Rscript --vanilla --verbose ${CMAKE_CURRENT_BINARY_DIR}/install-packages.R   
   BUILD_IN_SOURCE 1
