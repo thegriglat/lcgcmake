@@ -912,6 +912,8 @@ LCGPackage_Add(
   CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --enable-R-shlib CXX=${CMAKE_CXX_COMPILER} CC=${CMAKE_C_COMPILER}
   INSTALL_COMMAND make install
           COMMAND ${EXEC} --unset=MAKEFLAGS <INSTALL_DIR>/bin/Rscript --vanilla --verbose ${CMAKE_CURRENT_BINARY_DIR}/install-packages.R   
+          COMMAND ${CMAKE_COMMAND} -E chdir <INSTALL_DIR>/lib64 find R/lib -type f -exec ln -s {} \\\\SEMICOLON
+  LIST_SEPARATOR SEMICOLON
   BUILD_IN_SOURCE 1
 )
 
