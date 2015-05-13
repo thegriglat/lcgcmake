@@ -88,7 +88,7 @@ LCG_external_package(pyparsing         1.5.6                                    
 LCG_external_package(pyqt              4.9.5                                    )
 LCG_external_package(pytest            2.2.4                                    )
 LCG_external_package(pytz              2014.7                                   )
-LCG_external_package(Python            2.7.9                                    )
+LCG_external_package(Python            2.7.9.p1                                    )
 LCG_external_package(PythonFWK         2.7.9                  Python            )
 LCG_external_package(python_dateutil   2.4.0                                    )
 LCG_external_package(pytools           1.9                                      )
