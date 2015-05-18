@@ -261,6 +261,18 @@ function(lcg_get_target_platform)
     set(LCG_CPP11 TRUE PARENT_SCOPE)
   endif()
 
+  #handling of C++14
+  # enable it only for gcc 4.9 and greater
+  set(LCG_CPP14 FALSE PARENT_SCOPE)
+  if (LCG_COMP STREQUAL "gcc")
+    if(LCG_COMPVERS STRGREATER "49")
+      set(LCG_CPP14 TRUE PARENT_SCOPE)
+    endif()
+  elseif(LCG_COMP STREQUAL "clang")
+    set(LCG_CPP14 TRUE PARENT_SCOPE)
+  endif()
+
+
   # Convert LCG_BUILD_TYPE to CMAKE_BUILD_TYPE
   if(LCG_BUILD_TYPE STREQUAL "opt")
     set(type Release)
