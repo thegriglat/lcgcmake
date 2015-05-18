@@ -2299,6 +2299,11 @@ LCG_add_test(report.build_time
   LABELS Nightly Release
 )
 
+LCG_add_test(env-scripts-test
+  TEST_COMMAND ${CMAKE_SOURCE_DIR}/cmake/scripts/check_env_scripts.sh ${CMAKE_INSTALL_PREFIX}
+  LABELS Nightly Release
+)
+
 #---test of the test infrasgtructure---------------------------------------------------------------
 LCG_add_test(test-test PRE_COMMAND /bin/echo pre-comand 1
                            COMMAND /bin/echo pre-comand 2
