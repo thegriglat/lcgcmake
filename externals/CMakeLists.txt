@@ -237,7 +237,7 @@ LCGPackage_Add(
   BUILD_IN_SOURCE 1 )
 
 #---CLHEP--------------------------------------------------------------------------------------------
-if(LCG_TARGET MATCHES "slc")
+if(LCG_TARGET MATCHES "slc" OR LCG_TARGET MATCHES "cc")
   set(CLHEP_config_options  LDFLAGS=-Wl,--hash-style=sysv)
 endif()
 LCGPackage_Add(
