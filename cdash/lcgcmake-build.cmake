@@ -37,6 +37,7 @@ set(options -DLCG_VERSION=$ENV{LCG_VERSION}
             -DLCG_INSTALL_PREFIX=$ENV{LCG_INSTALL_PREFIX}
             -DLCG_SAFE_INSTALL=ON
             -DLCG_IGNORE=${ignore}
+            -DCMAKE_VERBOSE_MAKEFILE=ON
             -DLCG_TARBALL_INSTALL=$ENV{LCG_TARBALL_INSTALL} )
 
 set(lcg_ignore ${})
