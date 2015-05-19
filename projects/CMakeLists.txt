@@ -228,6 +228,7 @@ set(CMTROOT ${cmt_home}/CMT/${cmt_native_version})
 set(CMT_make_cmd
     ${env_cmd} CMTSITE=CERN CMTCONFIG=${LCG_system} CMTPATH=<SOURCE_DIR>:${LCGCMT_pos}
                CMTROOT=${CMTROOT} CMTBIN=${CMAKE_SYSTEM_NAME}-${CMAKE_SYSTEM_PROCESSOR}
+	       IF LCG_CPP11 THEN -DCMAKE_CXX_FLAGS=-std=c++11 ENDIF
                ${MAKE} -j1 -f ${CMAKE_SOURCE_DIR}/cmake/utils/Makefile-cmt.mk
                        -C <SOURCE_DIR>
                        CMT=${CMTROOT}/${CMAKE_SYSTEM_NAME}-${CMAKE_SYSTEM_PROCESSOR}/cmt)
@@ -240,7 +241,7 @@ LCGPackage_add(
     #UPDATE_COMMAND sed -r "s/ LCGCMT_[^ ]+/ LCGCMT_${heptools_version}/" -i cmt/project.cmt
   UPDATE_COMMAND <VOID>
   CONFIGURE_COMMAND <VOID>
-  BUILD_COMMAND     ${CMT_make_cmd} -std=c++11 
+  BUILD_COMMAND     ${CMT_make_cmd}  
   INSTALL_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/../${LCG_system} <INSTALL_DIR>
           COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/../include <INSTALL_DIR>/../include
   DEPENDS cmt LCGCMT Boost CppUnit sqlite XercesC oracle mysql QMtest Frontier_Client Python
