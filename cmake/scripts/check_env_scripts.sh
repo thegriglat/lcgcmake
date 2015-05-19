@@ -11,7 +11,7 @@ find "$1" -type f -name '*-env.sh' -o -name '*env-genser.sh' | while read i; do
   else
     echo "OK"
   fi
-done |& tee $tmp
+done | tee $tmp
 if grep -q FAILED $tmp ;then
   rm -f $tmp
   exit 1
