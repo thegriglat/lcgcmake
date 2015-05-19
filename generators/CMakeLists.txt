@@ -1231,11 +1231,11 @@ LCGPackage_Add(
 LCGPackage_Add(
   blackhat
   URL ${gen_url}/blackhat-${blackhat_native_version}.tar.gz
-  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --with-QDpath=${qd_home} "CFLAGS=-O2 -g0" "CXXFLAGS=-O2 -g0" "FFLAGS=-O2 -g0"  
+  CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> --with-QDpath=${qd_home} "CFLAGS=-O2 -g0 -fpermissive" "CXXFLAGS=-O2 -g0 -fpermissive" "FFLAGS=-O2 -g0 -fpermissive"  
   PYTHON=${Python_home}/bin/python
   ${library_path}=${Python_home}/lib:$ENV{${library_path}}
   PYTHONPATH=${Python_home}/lib/python${Python_config_version_twodigit}/site-packages:$ENV{PYTHONPATH}
-  INSTALL_COMMAND make install "CFLAGS=-O2 -g0" "CXXFLAGS=-O2 -g0" "FFLAGS=-O2 -g0"
+  INSTALL_COMMAND make install "CFLAGS=-O2 -g0 -fpermissive" "CXXFLAGS=-O2 -g0 -fpermissive" "FFLAGS=-O2 -g0 -fpermissive"
   
   BUILD_IN_SOURCE 1
   DEPENDS qd
