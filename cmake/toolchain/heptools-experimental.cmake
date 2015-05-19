@@ -46,7 +46,7 @@ LCG_external_package(eigen             3.2.4                                    
 LCG_external_package(fastjet           3.1.1                                    )
 LCG_external_package(fftw              3.1.2                     fftw3          )
 LCG_external_package(Frontier_Client   2.8.10                     frontier_client)
-LCG_external_package(GCCXML            0.9.0_20131026            gccxml         )
+#LCG_external_package(GCCXML            0.9.0_20131026            gccxml         )
 LCG_external_package(genshi            0.6                                      )
 LCG_external_package(gmp               6.0.0                                    )
 LCG_external_package(gtest             1.7.0                                    )
