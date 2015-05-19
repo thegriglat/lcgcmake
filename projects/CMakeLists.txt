@@ -240,7 +240,7 @@ LCGPackage_add(
     #UPDATE_COMMAND sed -r "s/ LCGCMT_[^ ]+/ LCGCMT_${heptools_version}/" -i cmt/project.cmt
   UPDATE_COMMAND <VOID>
   CONFIGURE_COMMAND <VOID>
-  BUILD_COMMAND     ${CMT_make_cmd}
+  BUILD_COMMAND     ${CMT_make_cmd} -std=c++11 
   INSTALL_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/../${LCG_system} <INSTALL_DIR>
           COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/../include <INSTALL_DIR>/../include
   DEPENDS cmt LCGCMT Boost CppUnit sqlite XercesC oracle mysql QMtest Frontier_Client Python
