@@ -2,17 +2,23 @@
 
 tmp="mktemp"
 
-find "$1" -type f -name '*-env.sh' -o -name '*env-genser.sh' | while read i; do
-  echo -n "Checking $i ... "
+echo "Only errors will be reported. "
+idx=0
+find "$1" -maxdepth 5 -type f -name '*-env.sh' -o -name '*env-genser.sh' | while read i; do
   if source $i | grep -qi cannot ;then
-    echo "FAILED. Cannot properly source $i:"
+    echo "================================="
+    echo "ERROR. Cannot properly source $i:"
+    echo "================================="
     bash -c "source $i"
-    
-  else
-    echo "OK"
   fi
+  let "idx = $idx + 1"
 done | tee $tmp
-if grep -q FAILED $tmp ;then
+
+echo
+echo "$idx files checked."
+echo
+
+if grep -q ERROR $tmp ;then
   rm -f $tmp
   exit 1
 else
