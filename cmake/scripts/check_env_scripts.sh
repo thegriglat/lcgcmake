@@ -1,9 +1,9 @@
 #!/bin/sh
 
-tmp="mktemp"
+tmp="$(mktemp)"
+tmp1="$(mktemp)"
 
 echo "Only errors will be reported. "
-idx=0
 find "$1" -maxdepth 5 -type f -name '*-env.sh' -o -name '*env-genser.sh' | while read i; do
   if source $i | grep -qi cannot ;then
     echo "================================="
@@ -11,12 +11,14 @@ find "$1" -maxdepth 5 -type f -name '*-env.sh' -o -name '*env-genser.sh' | while
     echo "================================="
     bash -c "source $i"
   fi
-  let "idx = $idx + 1"
+  echo >> $tmp1
 done | tee $tmp
 
 echo
-echo "$idx files checked."
+echo "$(cat $tmp1 | wc -l) files checked."
 echo
+
+rm -f $tmp1
 
 if grep -q ERROR $tmp ;then
   rm -f $tmp
