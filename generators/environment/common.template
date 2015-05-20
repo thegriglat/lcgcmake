@@ -71,7 +71,7 @@ for pkg in $(echo $THIS_DEPENDS | tr ' ' '\n');do
   pkg_name=$(echo $pkg | cut -d- -f 1 | sed -e "s@[_-]@.@g")
   pkg_version=$(echo $pkg | cut -d- -f 2-)
   # try to find home directory for package
-  for pkg_home_top in $(find $LCGDIR -maxdepth 4 -type d | grep -i "$pkg_name"); do
+  for pkg_home_top in $(find $LCGDIR -maxdepth 4 -type d | grep -iw "$pkg_name"); do
     if [ -d "$pkg_home_top/$pkg_version/$PLATFORM" ]; then
       pkg_home="$pkg_home_top/$pkg_version/$PLATFORM"
       break 
