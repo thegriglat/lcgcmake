@@ -322,16 +322,10 @@ else()
 endif()
 
 if(heptools_version MATCHES geantv)
-  set(hepmc3_options -DROOT_DIR=${ROOT_home}/cmake -DHEPMC_ENABLE_CPP11=ON)
-  set(ENV{PATH} "${ROOT_home}/bin:$ENV{PATH}")
-  message("This is the environment" $ENV{PATH})
-endif()
-if(heptools_version MATCHES geantv)
   set(hepmc3_dependencies Boost pythia8 ROOT)
-  message("These are the dependencies" ${hepmc3_dependencies})
+  set(hepmc3_options -DROOT_DIR=${ROOT_home} -DHEPMC_ENABLE_CPP11=ON)
 else()
   set(hepmc3_dependencies Boost pythia8)
-  message("should not be here" ${heptools_version})
 endif()
 
 #---Forward declarations----------------------------------------------------------------------------
