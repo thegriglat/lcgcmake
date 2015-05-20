@@ -22,16 +22,12 @@ LCGDIR=$(echo $LCGDIR | sed 's,/\+$,,g')
 
 # === Detemine THIS_HOME
 unset THIS_HOME
-# name of <PACKAGE>_HOME variable, e.g. RIVET_HOME
-pkg_upper_home=$(echo $THIS_PACKAGE | tr '[:lower:]' '[:upper:]' | sed 's/+/P/g')_HOME
 # try to find home directory
 if [ -d "$LCGDIR/$THIS_PACKAGE_INSTDIR/$THIS_VERSION/$PLATFORM" ] ;then
     THIS_HOME="$LCGDIR/$THIS_PACKAGE_INSTDIR/$THIS_VERSION/$PLATFORM"
 fi
 
 [ ! -d "$THIS_HOME" ] && echo "Cannot find $THIS_HOME"
-# export <PACKAGE>_HOME
-eval export $pkg_upper_home="$THIS_HOME"
 
 echo "== $THIS_PACKAGE-$THIS_VERSION =="
 echo "  home: $THIS_HOME"
@@ -71,7 +67,7 @@ for pkg in $(echo $THIS_DEPENDS | tr ' ' '\n');do
   pkg_name=$(echo $pkg | cut -d- -f 1 | sed -e "s@[_-]@.@g")
   pkg_version=$(echo $pkg | cut -d- -f 2-)
   # try to find home directory for package
-  for pkg_home_top in $(find $LCGDIR -maxdepth 4 -type d | grep -i "$pkg_name"); do
+  for pkg_home_top in $(find $LCGDIR -maxdepth 4 -type d | grep -iw "$pkg_name"); do
     if [ -d "$pkg_home_top/$pkg_version/$PLATFORM" ]; then
       pkg_home="$pkg_home_top/$pkg_version/$PLATFORM"
       break 
@@ -107,4 +103,4 @@ for i in $(echo $PYTHONPATH|tr ":" "\n"|sort|uniq);do PYTHONPATH_NEW="${PYTHONPA
 [ "Darwin" = $(uname -s) ] && export DYLD_LIBRARY_PATH=$LD_LIBRARY_PATH
 
 # === Clear environment
-unset PATH_NEW LD_LIBRARY_PATH_NEW PYTHONPATH_NEW THIS_HOME THIS_VERSION THIS_PACKAGE THIS_DEPENDS scriptdir pkg_upper_home
+unset PATH_NEW LD_LIBRARY_PATH_NEW PYTHONPATH_NEW THIS_HOME THIS_VERSION THIS_PACKAGE THIS_DEPENDS scriptdir
