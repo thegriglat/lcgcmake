@@ -340,7 +340,7 @@ LCGPackage_Add(
              -DHEPMC_BUILD_EXAMPLES=ON
              -DPYTHIA8_ROOT_DIR=${pythia8_home}
 	     ${hepmc3_options}
-  BUILD_COMMAND ${MAKE}
+  BUILD_COMMAND ${MAKE} -j1
 #  DEPENDS Boost pythia8
   DEPENDS ${hepmc3_dependencies}
 )
@@ -353,7 +353,7 @@ LCGPackage_Add(
              -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
              -DHEPMC_BUILD_EXAMPLES=ON
              -DPYTHIA8_ROOT_DIR=${pythia8_home}
-  BUILD_COMMAND ${MAKE}
+  BUILD_COMMAND ${MAKE} -j1
   DEPENDS pythia8
 )
 
