@@ -75,12 +75,12 @@ if [[ $COMPILER == *gcc* ]]; then
   export FC=gfortran
   export CXX=`which g++`
   export CC=`which gcc`
-  if   [[ $LCG_VERSION == geantv* ]]; then
-  export PATH=/afs/cern.ch/sw/lcg/app/releases/GEANTV-externals/externals-march2015/ROOT/6.03.02/${ARCH}-${LABEL_COMPILER}:${PATH}
-  echo "8888888888888888888888888888888888888888888888888888888"
-  echo ${PATH}
-  echo "8888888888888888888888888888888888888888888888888888888"
-  fi
+#  if   [[ $LCG_VERSION == geantv* ]]; then
+#  export PATH=/afs/cern.ch/sw/lcg/app/releases/GEANTV-externals/externals-march2015/ROOT/6.03.02/${ARCH}-${LABEL_COMPILER}:${PATH}
+#  echo "8888888888888888888888888888888888888888888888888888888"
+#  echo ${PATH}
+#  echo "8888888888888888888888888888888888888888888888888888888"
+#  fi
 elif [[ $COMPILER == *clang* ]]; then
   clang34version=3.4
   clang35version=3.5
