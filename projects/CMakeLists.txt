@@ -15,8 +15,6 @@ else()
   set(geant4_options -DGEANT4_INSTALL_DATA=OFF)
 endif()
 
-
-
 #---Forward declarations----------------------------------------------------------------------------
 LCGPackage_set_home(pythia8)
 
@@ -64,7 +62,10 @@ if(LCG_TARGET MATCHES "mac.*-gcc(47|48)")
                                   --with-dcap-incdir=${dcache_client_home}/include
                                   --with-fftw3-incdir=${fftw_home}/include
                                   --with-fftw3-libdir=${fftw_home}/lib
-                                  --with-gccxml=${GCCXML_home}
+#                                  --with-gccxml=${GCCXML_home}
+                                  IF DEFINED GCCXML_native_version THEN
+                                    --with-gccxml=${GCCXML_home}
+                                  ENDIF 
                                   --with-gfal-libdir=${gfal_home}/lib
                                   --with-gfal-incdir=${gfal_home}/include
                                   --with-gsl-incdir=${GSL_home}/include
@@ -184,13 +185,21 @@ LCGPackage_Add(
   CMAKE_ARGS -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
              -DCMAKE_MODULE_PATH=${cmaketools_home}/modules
              -DROOTSYS=${ROOT_home}
-             -DGCCXML=${GCCXML_home}/bin/gccxml
+#             -DGCCXML=${GCCXML_home}/bin/gccxml
+             IF DEFINED GCCXML_native_version THEN 
+               -DGCCXML=${GCCXML_home}/bin/gccxml
+             ENDIF
              -DCLHEP_ROOT_DIR=${CLHEP_home}
              -DHEPMC_ROOT_DIR=${HepMC_home}
              -DGSL_ROOT_DIR=${GSL_home}
              -DHEPPDT_ROOT_DIR=${HepPDT_home}
   BUILD_COMMAND ${MAKE} ROOTSYS=${ROOT_home}
-  DEPENDS cmaketools ROOT GCCXML CLHEP HepMC HepPDT GSL
+#  DEPENDS cmaketools ROOT GCCXML CLHEP HepMC HepPDT GSL
+  DEPENDS cmaketools ROOT
+          IF DEFINED GCCXML_native_version THEN
+            GCCXML
+          ENDIF
+          CLHEP HepMC HepPDT GSL
 )
 
 #---CMT-----------------------------------------------------------------------------------------------
@@ -273,7 +282,11 @@ LCGPackage_add(
   BUILD_COMMAND     ${CMT_make_cmd}
   INSTALL_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/../${LCG_system} <INSTALL_DIR>
           COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/../include <INSTALL_DIR>/../include
-  DEPENDS LCGCMT CORAL ROOT GCCXML
+#  DEPENDS LCGCMT CORAL ROOT GCCXML
+  DEPENDS LCGCMT CORAL ROOT
+          IF DEFINED GCCXML_native_version THEN
+            GCCXML
+          ENDIF
 )
 
 if (NOT COOL_lcg_exists)
@@ -291,8 +304,18 @@ LCG_add_test(cool-tests
 unset(SOURCE_DIR)
 endif()
 #---GaudiDeps------------------------------------------------------------------------------------------
-set(GAUDI-dependencies AIDA Boost Python GSL ROOT QMtest CLHEP HepMC HepPDT RELAX
-                       GCCXML tbb XercesC uuid LCGCMT CppUnit tcmalloc)
+#set(GAUDI-dependencies AIDA Boost Python GSL ROOT QMtest CLHEP HepMC HepPDT RELAX
+#                       GCCXML tbb XercesC uuid LCGCMT CppUnit tcmalloc)
+set(GAUDI-alldeps  AIDA Boost Python GSL ROOT COOL CORAL QMtest CLHEP HepMC HepPDT RELAX
+                   uuid tbb XercesC LCGCMT CppUnit tcmalloc GCCXML pytools pygraphics)
+
+set(GAUDI-dependencies)
+foreach(dep ${GAUDI-alldeps})
+  if(DEFINED ${dep}_native_version)
+    set(GAUDI-dependencies ${GAUDI-dependencies} ${dep})
+  endif()
+endforeach()
+
 foreach(dep ${GAUDI-dependencies})
   if(TARGET install-${dep})
     list(APPEND GAUDI-installs install-${dep})
