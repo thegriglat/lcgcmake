@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 tmp="$(mktemp)"
 tmp1="$(mktemp)"
