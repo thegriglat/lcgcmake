@@ -901,7 +901,7 @@ LCGPackage_Add(
 
 #---R-----------------------------------------------------------------------------------------------------
 file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/install-packages.R "
-install.packages('Rcpp',repos=\"http://stat.ethz.ch/CRAN/')
+install.packages('Rcpp',repos='http://stat.ethz.ch/CRAN/')
 install.packages('RInside',repos='http://stat.ethz.ch/CRAN/')
 install.packages('DEoptim',repos='http://stat.ethz.ch/CRAN/')
 ")
