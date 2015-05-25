@@ -1180,9 +1180,6 @@ LCG_add_test(rivet-${v}.native-MC_DIJET
 endif()
 
 if (NOT shell_ext MATCHES "csh")
-LCG_add_test(rivet-${v}.genser-scripts-source
-  TEST_COMMAND $ENV{SHELL} -c "source ${rivet-${v}_home}/rivetenv-genser.sh"
-)
 LCG_add_test(rivet-${v}.genser-scripts-mkanalysis
   TEST_COMMAND $ENV{SHELL} -c "source ${rivet-${v}_home}/rivetenv-genser.sh
       rivet-mkanalysis ATLAS_2010_S8591806"
