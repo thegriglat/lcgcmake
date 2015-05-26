@@ -146,6 +146,7 @@ LCG_external_package(powheg-box         r2092         ${MCGENPATH}/powheg-box   
 
 LCG_external_package(pythia8           175            ${MCGENPATH}/pythia8      )
 LCG_external_package(pythia8           205            ${MCGENPATH}/pythia8      )
+LCG_external_package(pythia8           209            ${MCGENPATH}/pythia8      )
 LCG_external_package(pythia8           176            ${MCGENPATH}/pythia8      )
 
 LCG_external_package(thepeg            1.8.2          ${MCGENPATH}/thepeg       )
