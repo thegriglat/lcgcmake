@@ -14,9 +14,7 @@ list (APPEND t "Fortran CxxInterface")
 list(APPEND t "pp ppHepMC ppHEPEVT")
 foreach (PHOTOSPP_FIND_COMPONENTS ${t})
   STRING(REPLACE " " ";" PHOTOSPP_FIND_COMPONENTS "${PHOTOSPP_FIND_COMPONENTS}")
-  message ("a = ${PHOTOSPP_FIND_COMPONENTS}")
 foreach(component ${PHOTOSPP_FIND_COMPONENTS})
-  message ("comp = ${component}")
   find_library(PHOTOSPP_${component}_LIBRARY NAMES Photos${component}
                HINTS ${PHOTOSPP_ROOT_DIR}/lib
                      $ENV{PHOTOSPP_ROOT_DIR}/lib
