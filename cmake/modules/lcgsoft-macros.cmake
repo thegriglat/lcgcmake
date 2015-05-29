@@ -348,6 +348,7 @@ macro(LCGPackage_Add name)
       )
 
       # Process .post-install.sh scripts
+      if (POST_INSTALL)
       set (post-install_name "${CMAKE_SOURCE_DIR}/cmake/scripts/post-install.sh")
       set (path_map)
       foreach (dep ${${targetname}-dependencies};${targetname})
@@ -367,6 +368,7 @@ macro(LCGPackage_Add name)
           COMMAND ${CMAKE_COMMAND} -E touch ${CMAKE_BINARY_DIR}/timestamps/${targetname}-stop.timestamp
           DEPENDEES setup_environment
       )
+      ENDIF()
 
       #---Adding clean targets--------------------------------------------------------------------------
       if(LCG_SAFE_INSTALL)

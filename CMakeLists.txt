@@ -17,6 +17,7 @@ endif()
 set(LCG_INSTALL_PREFIX ""       CACHE PATH "Existing LCG installation path prefix.")
 set(LCG_TARBALL_INSTALL   OFF   CACHE BOOL "Turn ON/OFF creation/installation of tarballs")
 set(VALIDATION         OFF      CACHE BOOL "Enable validation settings.")
+set(POST_INSTALL         ON      CACHE BOOL "Enable validation settings.")
 string(REPLACE " " ";" LCG_IGNORE "${LCG_IGNORE}")
 
 #---Report the values of the options-----------------------------------------------------------------------------------
@@ -25,6 +26,7 @@ message(STATUS "Existing LCG installations             : ${LCG_INSTALL_PREFIX}")
 message(STATUS "Safe installation                      : ${LCG_SAFE_INSTALL}")
 message(STATUS "Source and binary tarball installation : ${LCG_TARBALL_INSTALL}")
 message(STATUS "Validation mode                        : ${VALIDATION}")
+message(STATUS "Preparing .post-install.sh scripts     : ${POST_INSTALL}")
 message(STATUS "Ignored packages from LCG installation : ${LCG_IGNORE}")
 
 include(${CMAKE_SOURCE_DIR}/toolchain.cmake)
