@@ -325,7 +325,7 @@ endif()
 LCGPackage_set_home(pythia8)
 LCGPackage_set_home(ROOT)
 
-if(heptools_version MATCHES geantv)
+if(heptools_version MATCHES geantv OR heptools_version MATCHES experimental)
   set(hepmc3_dependencies Boost pythia8 ROOT)
   set(hepmc3_options -DROOT_DIR=${ROOT_home} -DHEPMC_ENABLE_CPP11=ON)
 else()
