@@ -6,9 +6,9 @@ set (Lock_cmd ${CMAKE_SOURCE_DIR}/pyexternals/CreateLockFile)
 set (Unlock_cmd ${CMAKE_SOURCE_DIR}/pyexternals/DeleteLockFile)
 
 #---Addtional deopendencies to matplotlib-----------------
-if((heptools_version MATCHES experimental) OR (heptools_version MATCHES dev4) OR (heptools_version MATCHES dev2) OR (heptools_version MATCHES dev3) OR (heptools_version MATCHES 75root6)) 
+if((heptools_version MATCHES experimental) OR (heptools_version MATCHES dev4) OR (heptools_version MATCHES dev2) OR (heptools_version MATCHES dev3) OR (heptools_version MATCHES 75root6) OR (heptools_version MATCHES 76root6)) 
 set(matplotlib_extra_deps python_dateutil six tornado backports certifi messaging)
-set(pytools_extra_pkg pyzmq subprocess32 Jinja2 jsonschema terminado ptyprocess)
+set(pytools_extra_pkg pyzmq subprocess32 Jinja2 jsonschema terminado ptyprocess pandas numexpr pygments mistune prettytable scikitlearn)
 endif()
 
 #=================================================================================================================
@@ -307,6 +307,103 @@ LCGPackage_Add(
   DEST_NAME pytools
   DEPENDS Python setuptools
 )
+#---pandas------------------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  pandas
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/pandas-${pandas_native_version}.tar.gz
+  CONFIGURE_COMMAND <VOID>
+  BUILD_COMMAND ${Exec_cmd} PYTHONPATH=${pytools_home}/lib/python${Python_config_version_twodigit}/site-packages
+                ${Python_cmd} setup.py build
+  INSTALL_COMMAND ${Lock_cmd}
+          COMMAND ${Exec_cmd} PYTHONPATH=${pytools_home}/lib/python${Python_config_version_twodigit}/site-packages
+                  ${Python_cmd} setup.py install --prefix <INSTALL_DIR>
+          COMMAND ${Unlock_cmd}
+
+  BUILD_IN_SOURCE 1
+  DEST_NAME pytools
+  DEPENDS Python setuptools
+)
+#---numexpr------------------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  numexpr
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/numexpr-${numexpr_native_version}.tar.gz
+  CONFIGURE_COMMAND <VOID>
+  BUILD_COMMAND ${Exec_cmd} PYTHONPATH=${pytools_home}/lib/python${Python_config_version_twodigit}/site-packages
+                ${Python_cmd} setup.py build
+  INSTALL_COMMAND ${Lock_cmd}
+          COMMAND ${Exec_cmd} PYTHONPATH=${pytools_home}/lib/python${Python_config_version_twodigit}/site-packages
+                  ${Python_cmd} setup.py install --prefix <INSTALL_DIR>
+          COMMAND ${Unlock_cmd}
+
+  BUILD_IN_SOURCE 1
+  DEST_NAME pytools
+  DEPENDS Python setuptools
+)
+#---pigments------------------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  pigments
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/Pigments-${pigments_native_version}.tar.gz
+  CONFIGURE_COMMAND <VOID>
+  BUILD_COMMAND ${Exec_cmd} PYTHONPATH=${pytools_home}/lib/python${Python_config_version_twodigit}/site-packages
+                ${Python_cmd} setup.py build
+  INSTALL_COMMAND ${Lock_cmd}
+          COMMAND ${Exec_cmd} PYTHONPATH=${pytools_home}/lib/python${Python_config_version_twodigit}/site-packages
+                  ${Python_cmd} setup.py install --prefix <INSTALL_DIR>
+          COMMAND ${Unlock_cmd}
+
+  BUILD_IN_SOURCE 1
+  DEST_NAME pytools
+  DEPENDS Python setuptools
+)
+#---mistune------------------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  mistune
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/mistune-${mistune_native_version}.tar.gz
+  CONFIGURE_COMMAND <VOID>
+  BUILD_COMMAND ${Exec_cmd} PYTHONPATH=${pytools_home}/lib/python${Python_config_version_twodigit}/site-packages
+                ${Python_cmd} setup.py build
+  INSTALL_COMMAND ${Lock_cmd}
+          COMMAND ${Exec_cmd} PYTHONPATH=${pytools_home}/lib/python${Python_config_version_twodigit}/site-packages
+                  ${Python_cmd} setup.py install --prefix <INSTALL_DIR>
+          COMMAND ${Unlock_cmd}
+
+  BUILD_IN_SOURCE 1
+  DEST_NAME pytools
+  DEPENDS Python setuptools
+)
+#---prettytable------------------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  prettytable
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/prettytable-${prettytable_native_version}.tar.gz
+  CONFIGURE_COMMAND <VOID>
+  BUILD_COMMAND ${Exec_cmd} PYTHONPATH=${pytools_home}/lib/python${Python_config_version_twodigit}/site-packages
+                ${Python_cmd} setup.py build
+  INSTALL_COMMAND ${Lock_cmd}
+          COMMAND ${Exec_cmd} PYTHONPATH=${pytools_home}/lib/python${Python_config_version_twodigit}/site-packages
+                  ${Python_cmd} setup.py install --prefix <INSTALL_DIR>
+          COMMAND ${Unlock_cmd}
+
+  BUILD_IN_SOURCE 1
+  DEST_NAME pytools
+  DEPENDS Python setuptools
+)
+#---scikitlearn------------------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  scikitlearn
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/scikit-learn-${scikitlearn_native_version}.tar.gz
+  CONFIGURE_COMMAND <VOID>
+  BUILD_COMMAND ${Exec_cmd} PYTHONPATH=${pytools_home}/lib/python${Python_config_version_twodigit}/site-packages
+                ${Python_cmd} setup.py build
+  INSTALL_COMMAND ${Lock_cmd}
+          COMMAND ${Exec_cmd} PYTHONPATH=${pytools_home}/lib/python${Python_config_version_twodigit}/site-packages
+                  ${Python_cmd} setup.py install --prefix <INSTALL_DIR>
+          COMMAND ${Unlock_cmd}
+
+  BUILD_IN_SOURCE 1
+  DEST_NAME pytools
+  DEPENDS Python setuptools
+)
+
 #---subprocess32------------------------------------------------------------------------------------------------------
 LCGPackage_Add(
   subprocess32
