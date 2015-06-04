@@ -45,7 +45,7 @@ LCG_external_package(coverage          3.5.2                                    
 LCG_external_package(CppUnit           1.12.1_p1                 author=1.12.1  )
 LCG_external_package(cx_oracle         5.1.1                                    )
 if(NOT ${LCG_OS} STREQUAL mac)
-  LCG_external_package(Davix             0.3.1                                  )
+  LCG_external_package(Davix             0.4.0                                  )
 endif()
 LCG_external_package(doxygen           1.8.2                                    ) 
 LCG_external_package(eigen             3.2.4                                    )
