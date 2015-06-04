@@ -198,21 +198,22 @@ LCG_external_package(xrootd            3.2.4                                    
 LCG_external_package(dcap              2.47.6                                   ) # from 64b
 LCG_external_package(cmaketools        1.1                                      )
 LCG_external_package(swig              1.3.40          author=1.3.40            )
+LCG_external_package(pytz              2014.7                                   )
 
 
 set(MCGENPATH  MCGenerators_lcgcmt${heptools_version})
 
 #---Additional External packages------(Generators)-----------------
 
+LCG_external_package(lhapdf            5.8.9          ${MCGENPATH}/lhapdf       )
+LCG_external_package(lhapdf            5.8.8          ${MCGENPATH}/lhapdf       )
+#LCG_external_package(lhapdf            5.8.9          ${MCGENPATH}/lhapdf       )
 
 LCG_external_package(thepeg            1.9.0a          ${MCGENPATH}/thepeg       )
 LCG_external_package(thepeg            1.9.2           ${MCGENPATH}/thepeg       )
 LCG_external_package(herwig++          2.7.0a          ${MCGENPATH}/herwig++     thepeg=1.9.0a)
 LCG_external_package(herwig++          2.7.1           ${MCGENPATH}/herwig++     thepeg=1.9.2)
 
-LCG_external_package(lhapdf            5.8.9          ${MCGENPATH}/lhapdf       )
-LCG_external_package(lhapdf            5.8.8          ${MCGENPATH}/lhapdf       )
-#LCG_external_package(lhapdf            5.8.9          ${MCGENPATH}/lhapdf       )
 
 
 LCG_external_package(lhapdfsets        5.8.8          lhapdfsets   )
