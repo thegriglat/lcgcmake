@@ -7,7 +7,7 @@ export CXX=g++
 export FC=gfortran
 
 if [ -z "$1" ]; then
-  LIST="dev2 dev3 dev4 experimental 67b 67c 61f 64d 71 71root6 73root6 74root6 75root6 geantv rootext"
+  LIST="dev2 dev3 dev4 experimental 67b 67c 61f 64d 71 72a 71root6 73root6 74root6 75root6 76root6 geantv rootext"
 else
   LIST="$1"
 fi
