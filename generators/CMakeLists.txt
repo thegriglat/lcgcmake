@@ -546,21 +546,18 @@ endforeach()
 foreach(hmc3variant hepmc3 hepmc3-cxx11)
 foreach(v ${${hmc3variant}_native_version})
   LCG_add_test(${hmc3variant}-${v}.native-basic_tree
-    TEST_COMMAND ${${hmc3variant}_home}/bin/basic_tree.exe
-    ENVIRONMENT
-      ${library_path}=${${hmc3variant}_home}/lib:$ENV{${library_path}}
+    TEST_COMMAND $ENV{SHELL} -c "source ${${hmc3variant}_home}/hepmc3-env.sh; ${${hmc3variant}_home}/bin/basic_tree.exe"
   )
 
   LCG_add_test(${hmc3variant}-${v}.native-hepevt_wrapper_example
-    TEST_COMMAND ${${hmc3variant}_home}/bin/hepevt_wrapper_example.exe
+    TEST_COMMAND $ENV{SHELL} -c "source ${${hmc3variant}_home}/hepmc3-env.sh; ${${hmc3variant}_home}/bin/hepevt_wrapper_example.exe"
   )
 
  LCG_add_test(${hmc3variant}-${v}.native-pythia8_example
   PRE_COMMAND  ${CMAKE_COMMAND} -E copy ${${hmc3variant}_home}/bin/pythia8_ee_to_Z_to_tautau.conf .
-  TEST_COMMAND ${${hmc3variant}_home}/bin/pythia8_example.exe pythia8_ee_to_Z_to_tautau.conf hepmc3-output.${v}.output
+  TEST_COMMAND $ENV{SHELL} -c "source ${${hmc3variant}_home}/hepmc3-env.sh; ${${hmc3variant}_home}/bin/pythia8_example.exe pythia8_ee_to_Z_to_tautau.conf hepmc3-output.${v}.output"
   ENVIRONMENT
     PYTHIA8DATA=${pythia8_home}/xmldoc
-    ${library_path}=${${hmc3variant}_home}/lib:${pythia8_home}/lib:$ENV{${library_path}}
  )
 
 endforeach()
