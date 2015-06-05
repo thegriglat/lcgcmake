@@ -20,7 +20,6 @@ set (gen_url "http://service-spi.web.cern.ch/service-spi/external/tarFiles/MCGen
 
 list(GET photos++_native_version -1 photos++_version_last)
 set(Python_cmd ${Python_home}/bin/python)
-set(Exec_cmd ${env_cmd})
 
 set (AIDA2ROOT "${CMAKE_SOURCE_DIR}/generators/reference/aida2root.py")
 string(REPLACE "." "_" Boost_underscore_twodigit ${Boost_config_version_twodigit})
@@ -873,12 +872,12 @@ LCGPackage_Add(
   professor
   URL ${gen_url}/professor-<NATIVE_VERSION>.tar.bz2
   CONFIGURE_COMMAND <VOID>
-  BUILD_COMMAND ${Exec_cmd} PYTHONPATH=${pyanalysis_home}/lib/python${Python_config_version_twodigit}/site-packages 
-		${Exec_cmd} ${library_path}=${ROOT_home}/lib:$ENV{${library_path}}
+  BUILD_COMMAND ${EXEC} PYTHONPATH=${pyanalysis_home}/lib/python${Python_config_version_twodigit}/site-packages 
+		${EXEC} ${library_path}=${ROOT_home}/lib:$ENV{${library_path}}
 		${Python_cmd} setup.py build  -e "${env_cmd} python"
 
-  INSTALL_COMMAND ${Exec_cmd} PYTHONPATH=${pyanalysis_home}/lib/python${Python_config_version_twodigit}/site-packages 
-		${Exec_cmd} ${library_path}=${ROOT_home}/lib:$ENV{${library_path}}
+  INSTALL_COMMAND ${EXEC} PYTHONPATH=${pyanalysis_home}/lib/python${Python_config_version_twodigit}/site-packages 
+		${EXEC} ${library_path}=${ROOT_home}/lib:$ENV{${library_path}}
                 ${Python_cmd} setup.py install --prefix <INSTALL_DIR> 
 
   BUILD_IN_SOURCE 1
