@@ -1934,11 +1934,20 @@ LCGPackage_Add(
   URL ${gen_url}/JHUGenerator.v<NATIVE_VERSION>.tar.gz
   CONFIGURE_COMMAND <VOID>
   BUILD_COMMAND ${MAKE} -j1 -C JHUGenerator Comp=gfortran
-        COMMAND ${MAKE} -C JHUGenME Comp=gfortran
+  IF <NATIVE_VERSION> VERSION_GREATER 4.8 THEN
+          COMMAND ${MAKE} -C JHUGenMELA Comp=gfortran
+  ELSE
+          COMMAND ${MAKE} -C JHUGenME Comp=gfortran
+  ENDIF
   INSTALL_COMMAND ${CMAKE_COMMAND} -E make_directory <INSTALL_DIR>/bin
           COMMAND ${CMAKE_COMMAND} -E copy JHUGenerator/JHUGen <INSTALL_DIR>/bin/
-          COMMAND ${CMAKE_COMMAND} -E copy JHUGenME/testC <INSTALL_DIR>/bin/
-          COMMAND ${CMAKE_COMMAND} -E copy JHUGenME/testF <INSTALL_DIR>/bin/
+          IF <NATIVE_VERSION> VERSION_GREATER 4.8 THEN
+            COMMAND ${CMAKE_COMMAND} -E copy JHUGenMELA/testC <INSTALL_DIR>/bin/
+            COMMAND ${CMAKE_COMMAND} -E copy JHUGenMELA/testF <INSTALL_DIR>/bin/
+          ELSE
+            COMMAND ${CMAKE_COMMAND} -E copy JHUGenME/testC <INSTALL_DIR>/bin/
+            COMMAND ${CMAKE_COMMAND} -E copy JHUGenME/testF <INSTALL_DIR>/bin/
+          ENDIF
           COMMAND ${CMAKE_COMMAND} -E copy_directory JHUGenerator/pdfs <INSTALL_DIR>/pdfs
           COMMAND ${CMAKE_COMMAND} -E remove -f <INSTALL_DIR>/pdfs/Cteq61Pdf.f <INSTALL_DIR>/pdfs/Cteq61Pdf.o <INSTALL_DIR>/pdfs/mstwpdf.f <INSTALL_DIR>/pdfs/mstwpdf.o
   BUILD_IN_SOURCE 1
