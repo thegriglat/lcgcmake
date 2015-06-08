@@ -24,7 +24,7 @@ with the corresponding http access:
 
 2) untar source files and apply patches if needed:
  
-The patches applied can be found in: 
+The patches applied can be found in:
 
   https://svnweb.cern.ch/trac/lcgsoft/browser/trunk/lcgcmake/[package-type]/patches
 
