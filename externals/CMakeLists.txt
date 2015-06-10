@@ -330,6 +330,7 @@ if(heptools_version MATCHES geantv OR heptools_version MATCHES experimental)
   set(hepmc3_options -DROOT_DIR=${ROOT_home} -DHEPMC_ENABLE_CPP11=ON)
 else()
   set(hepmc3_dependencies Boost pythia8)
+  set(hepmc3_options -DHEPMC_ENABLE_ROOTIO=OFF)
 endif()
 
 LCGPackage_Add(
