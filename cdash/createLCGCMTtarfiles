@@ -17,7 +17,7 @@ do
   cp  $tag.tar.gz /afs/cern.ch/sw/lcg/external/tarFiles/.
 done
 
-for tag in COOL-preview COOL_3_0-preview COOL_3_0_3
+for tag in COOL-preview COOL_3_0-preview COOL_3_0_3 COOL_3_0_4
 do
   svn co $svnrepcool/tags/$tag --quiet $tag
   if [[ $tag == "COOL_3_0-preview" ]]
@@ -34,7 +34,7 @@ do
   cp  $tag_new.tar.gz /afs/cern.ch/sw/lcg/external/tarFiles/.
 done
 
-for tag in CORAL-preview CORAL_3_0-preview CORAL_3_0_3
+for tag in CORAL-preview CORAL_3_0-preview CORAL_3_0_3 CORAL_3_0_4
 do
   svn co $svnrepcoral/tags/$tag --quiet $tag
   if [[ $tag == "CORAL_3_0-preview" ]]
