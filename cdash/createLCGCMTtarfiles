@@ -26,6 +26,9 @@ do
   elif [[ $tag == "COOL_3_0_3" ]]
   then    
       tag_new="COOL-3_0_3"
+  elif [[ $tag == "COOL_3_0_4" ]]
+  then
+      tag_new="COOL-3_0_4"
   else
       tag_new=$tag
   fi
@@ -43,7 +46,10 @@ do
   elif [[ $tag == "CORAL_3_0_3" ]]
   then
       tag_new="CORAL-3_0_3"
-   else
+  elif [[ $tag == "CORAL_3_0_4" ]]
+  then
+      tag_new="CORAL-3_0_4"    
+  else
       tag_new=$tag
   fi
   echo $tag_new
