@@ -1953,6 +1953,17 @@ LCGPackage_Add(
   BUILD_IN_SOURCE 1
 )
 
+set(sorted_jhu_versions ${jhu_native_version})
+list(SORT sorted_jhu_versions)
+list(GET sorted_jhu_versions -1 last_jhu_version)
+LCG_add_test(jhu.prepare-pdfs
+  TEST_COMMAND ${CMAKE_COMMAND} -E remove -f pdfs
+       COMMAND ${CMAKE_COMMAND} -E create_symlink ${jhu-${last_jhu_version}_home}/pdfs pdfs
+       COMMAND echo ln -s ${jhu-${last_jhu_version}_home}/pdfs pdfs
+       COMMAND ls pdfs
+       COMMAND $ENV{SHELL} -c "cd pdfs && test -s downloadNNPDF.sh && bash ./downloadNNPDF.sh"
+)
+
 foreach(v ${jhu_native_version})
 if (NOT shell_ext MATCHES "csh")
 LCG_add_test(jhu-${v}.genser-scripts
@@ -1961,16 +1972,17 @@ LCG_add_test(jhu-${v}.genser-scripts
     JHUGen VegasNc0=100000 VegasNc1=500000 VegasNc2=100"
 )
 endif()
+
 LCG_add_test(jhu-${v}.native-JHUGen
-  PRE_COMMAND ${CMAKE_COMMAND} -E remove -f pdfs
-      COMMAND ${CMAKE_COMMAND} -E create_symlink ${jhu-${v}_home}/pdfs pdfs
   TEST_COMMAND ${jhu-${v}_home}/bin/JHUGen VegasNc0=100000 VegasNc1=500000 VegasNc2=100)
 
 LCG_add_test(jhu-${v}.native-testF
-  TEST_COMMAND ${jhu-${v}_home}/bin/testF)
+  TEST_COMMAND ${jhu-${v}_home}/bin/testF
+  DEPENDS jhu.prepare-pdfs)
 
 LCG_add_test(jhu-${v}.native-testC
-  TEST_COMMAND ${jhu-${v}_home}/bin/testC)
+  TEST_COMMAND ${jhu-${v}_home}/bin/testC
+  DEPENDS jhu.prepare-pdfs)
 endforeach()
 
 

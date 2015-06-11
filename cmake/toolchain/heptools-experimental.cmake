@@ -280,6 +280,7 @@ LCG_external_package(professor         1.4.0          ${MCGENPATH}/professor    
 
 
 
+LCG_external_package(jhu               5.2.5          ${MCGENPATH}/jhu       )
 LCG_external_package(jhu               4.8.1          ${MCGENPATH}/jhu       )
 LCG_external_package(jhu               3.1.8          ${MCGENPATH}/jhu       )
 
