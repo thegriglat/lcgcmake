@@ -306,19 +306,7 @@ macro(LCGPackage_Add name)
                                  -P ${CMAKE_SOURCE_DIR}/cmake/scripts/RemoveRPath.cmake
         DEPENDEES ${current_dependee})
 
-      #---Adding extra step to build the binary tarball-----------------------------------------------
-      if (LCG_TARBALL_INSTALL)	
-        # disable binary tarball creation: they are not used and teir creation has problem JIRA GENSER-395
-        #if(NOT ARG_DEST_NAME)  # Only if is not installed grouped with other packages
-       	# get_filename_component(n_name ${${name}_directory_name} NAME)
-       	# ExternalProject_Add_Step(${targetname} package COMMENT "Creating binary tarball for '${targetname}'"
-        #          COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_INSTALL_PREFIX}/${${name}_directory_name}/../distribution/${name}
-        #          COMMAND ${CMAKE_COMMAND} -E chdir ${${dest_name}_home}/../../..
-        #          ${CMAKE_TAR} -czf ${CMAKE_INSTALL_PREFIX}/${${name}_directory_name}/../distribution/${name}/${name}-${version}-${LCG_system}.tgz ${n_name}/${version}/${LCG_system}
-        #  DEPENDEES strip_rpath install_logs)
-      	#endif()
-      endif()	
-  
+ 
       #---Process and copy environment scripts --------------------------------------------------------
       # Available variables in template:
       # - <package>_version = version of installed package and its dependencies
@@ -346,6 +334,7 @@ macro(LCGPackage_Add name)
           COMMAND ${CMAKE_COMMAND} ${_args} -P ${CMAKE_SOURCE_DIR}/cmake/scripts/provide-environment.cmake
           DEPENDEES install_logs
       )
+      set (current_dependee setup_environment)
 
       # Process .post-install.sh scripts
       if (POST_INSTALL)
@@ -368,8 +357,21 @@ macro(LCGPackage_Add name)
           COMMAND ${CMAKE_COMMAND} -E touch ${CMAKE_BINARY_DIR}/timestamps/${targetname}-stop.timestamp
           DEPENDEES setup_environment
       )
+      set (current_dependee copy_post-install)
       ENDIF()
 
+      #---Adding extra step to build the binary tarball-----------------------------------------------
+      if (LCG_TARBALL_INSTALL)	
+        if(NOT ARG_DEST_NAME)  # Only if is not installed grouped with other packages
+       	 get_filename_component(n_name ${${name}_directory_name} NAME)
+       	 ExternalProject_Add_Step(${targetname} package COMMENT "Creating binary tarball for '${targetname}'"
+                  COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_INSTALL_PREFIX}/${${name}_directory_name}/../distribution/${name}
+                  COMMAND ${CMAKE_COMMAND} -E chdir ${${dest_name}_home}/../../..
+                  ${CMAKE_TAR} -czf ${CMAKE_INSTALL_PREFIX}/${${name}_directory_name}/../distribution/${name}/${name}-${version}-${LCG_system}.tgz ${n_name}/${version}/${LCG_system}
+          DEPENDEES ${current_dependee})
+      	endif()
+      endif()	
+ 
       #---Adding clean targets--------------------------------------------------------------------------
       if(LCG_SAFE_INSTALL)
         add_custom_target(clean-${targetname} COMMAND ${CMAKE_COMMAND} -E remove_directory ${CMAKE_CURRENT_BINARY_DIR}/${targetname}
