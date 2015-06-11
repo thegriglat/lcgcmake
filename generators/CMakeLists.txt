@@ -1953,6 +1953,7 @@ LCGPackage_Add(
   BUILD_IN_SOURCE 1
 )
 
+if (jhu_native_version)
 set(sorted_jhu_versions ${jhu_native_version})
 list(SORT sorted_jhu_versions)
 list(GET sorted_jhu_versions -1 last_jhu_version)
@@ -1963,7 +1964,7 @@ LCG_add_test(jhu.prepare-pdfs
        COMMAND ls pdfs
        COMMAND $ENV{SHELL} -c "cd pdfs && test -s downloadNNPDF.sh && bash ./downloadNNPDF.sh"
 )
-
+endif()
 foreach(v ${jhu_native_version})
 if (NOT shell_ext MATCHES "csh")
 LCG_add_test(jhu-${v}.genser-scripts
