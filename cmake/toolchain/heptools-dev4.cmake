@@ -139,7 +139,7 @@ if(NOT ${LCG_OS} MATCHES "mac")
   LCG_external_package(libunwind       5c2cade                                  )
   LCG_external_package(igprof          5.9.11                                    )
 endif()
-
+if(${LCG_OS} STREQUAL slc)
   if (NOT ${LCG_HOST_ARCH} STREQUAL i686)
    LCG_external_package(CASTOR          2.1.13-6               castor            )
    LCG_external_package(cream           1.14.0-4               Grid/cream        )
