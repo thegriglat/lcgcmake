@@ -1,0 +1,20 @@
+--- configure	2015-06-12 10:59:30.000000000 +0200
++++ configure	2015-06-12 11:01:14.000000000 +0200
+@@ -207,7 +207,7 @@
+ fi
+ 
+ # Linux platform with gcc4: new Fortran90 compiler.
+-if [ $ARCH = Linux-gcc4 ]; then
++if [ $ARCH = Linux* ]; then
+   FFLAGS="${FFLAGS_OPT}"
+   CFLAGS="${CFLAGS_OPT}"
+   CXXFLAGS="${CXXFLAGS_OPT}"
+@@ -225,7 +225,7 @@
+ fi
+ 
+ # Mac OS platform with gcc4
+-if [ $ARCH = Darwin-gcc4 ]; then
++if [ $ARCH = Darwin* ]; then
+   FLIBS="-lgfortran"
+   SOFLAGS="-install_name"
+ fi
