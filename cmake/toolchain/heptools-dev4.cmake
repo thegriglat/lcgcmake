@@ -217,6 +217,7 @@ LCG_external_package(photos++          3.56           ${MCGENPATH}/photos++     
 LCG_external_package(photos            215.4          ${MCGENPATH}/photos       ) 
 
 LCG_external_package(evtgen            1.2.0          ${MCGENPATH}/evtgen         tag=R01-02-00 pythia8=175 tauola++=1.1.1a)
+LCG_external_package(evtgen            1.4.0          ${MCGENPATH}/evtgen         tag=R01-03-00 pythia8=186 tauola++=1.1.4)
 LCG_external_package(evtgen            1.3.0          ${MCGENPATH}/evtgen         tag=R01-03-00 pythia8=186 tauola++=1.1.4)
 
 
