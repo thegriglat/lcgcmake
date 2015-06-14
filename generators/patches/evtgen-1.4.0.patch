@@ -9,12 +9,3 @@
    FFLAGS="${FFLAGS_OPT}"
    CFLAGS="${CFLAGS_OPT}"
    CXXFLAGS="${CXXFLAGS_OPT}"
-@@ -225,7 +225,7 @@
- fi
- 
- # Mac OS platform with gcc4
--if [ $ARCH = Darwin-gcc4 ]; then
-+if [ $ARCH = Darwin* ]; then
-   FLIBS="-lgfortran"
-   SOFLAGS="-install_name"
- fi
