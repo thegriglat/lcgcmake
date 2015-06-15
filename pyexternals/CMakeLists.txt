@@ -12,7 +12,7 @@ set(pytools_extra_pkg pyzmq subprocess32 Jinja2 jsonschema terminado ptyprocess 
 endif()
 
 if(heptools_version MATCHES experimental)
-set(pyanalysis_extra_pkg numexpr)
+set(pyanalysis_extra_pkg numexpr scikitlearn)
 endif()
 #=================================================================================================================
 #---pygraphics----------------------------------------------------------------------------------------------------
@@ -732,6 +732,22 @@ LCGPackage_Add(
 LCGPackage_Add(
   numexpr
   URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/numexpr-${numexpr_native_version}.tar.gz
+  CONFIGURE_COMMAND <VOID>
+  BUILD_COMMAND ${Exec_cmd} PYTHONPATH=${pyanalysis_home}/lib/python${Python_config_version_twodigit}/site-packages
+                ${Python_cmd} setup.py build
+  INSTALL_COMMAND ${Lock_cmd}
+          COMMAND ${Exec_cmd} PYTHONPATH=${pyanalysis_home}/lib/python${Python_config_version_twodigit}/site-packages
+                  ${Python_cmd} setup.py install --prefix <INSTALL_DIR>
+          COMMAND ${Unlock_cmd}
+  BUILD_IN_SOURCE 1
+  DEST_NAME pyanalysis
+  DEPENDS Python numpy
+)
+
+#---scikitlearn------------------------------------------------------------------------------------------------------
+LCGPackage_Add(
+  scikitlearn
+  URL http://service-spi.web.cern.ch/service-spi/external/tarFiles/scikit-learn-${scikitlearn_native_version}.tar.gz
   CONFIGURE_COMMAND <VOID>
   BUILD_COMMAND ${Exec_cmd} PYTHONPATH=${pyanalysis_home}/lib/python${Python_config_version_twodigit}/site-packages
                 ${Python_cmd} setup.py build

@@ -106,7 +106,7 @@ LCG_external_package(QMtest            2.4.1                                    
 LCG_external_package(Qt                4.8.6                     qt             )
 LCG_external_package(Qt5               5.4.1                    qt5             )
 LCG_external_package(qwt               6.0.1                                    )
-#LCG_external_package(scikitlearn       0.16.1                                    )
+LCG_external_package(scikitlearn       0.16.1                                    )
 LCG_external_package(scipy             0.15.1                                   )
 LCG_external_package(setuptools        0.6c11                                   )
 LCG_external_package(sip               4.14                                     )
