@@ -470,7 +470,7 @@ LCGPackage_Add(
           COMMAND ${Unlock_cmd}
   BUILD_IN_SOURCE 1
   DEST_NAME pytools
-  DEPENDS Python setuptools
+  DEPENDS Python setuptools numpy
 )
 #---terminado------------------------------------------------------------------------------------------------------
 LCGPackage_Add(
