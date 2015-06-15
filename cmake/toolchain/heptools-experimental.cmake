@@ -74,7 +74,7 @@ LCG_external_package(multiprocessing   2.6.2.1                                  
 LCG_external_package(mysql             5.5.27                                   )
 LCG_external_package(mysql_python      1.2.3                                    )
 LCG_external_package(nose              1.1.2                                    )
-#LCG_external_package(numexpr           2.4.3                                    )
+LCG_external_package(numexpr           2.4.3                                    )
 LCG_external_package(numpy             1.9.2                                    )
 LCG_external_package(oracle            11.2.0.3.0                               )
 LCG_external_package(pacparser         1.3.1                                    )
