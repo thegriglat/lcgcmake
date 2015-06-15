@@ -740,8 +740,8 @@ LCGPackage_Add(
                   ${Python_cmd} setup.py install --prefix <INSTALL_DIR>
           COMMAND ${Unlock_cmd}
   BUILD_IN_SOURCE 1
-  DEST_NAME pyanalysys
-  DEPENDS Python setuptools numpy
+  DEST_NAME pyanalysis
+  DEPENDS Python numpy
 )
 
 #---scipy---------------------------------------------------------------------------------------------------------
