@@ -58,6 +58,7 @@ LCG_external_package(HepMC             2.06.09                                  
 #LCG_external_package(hepmc3-cxx11      githead.cxx11             hepmc3         )
 LCG_external_package(HepPDT            2.06.01                                  )
 LCG_external_package(ipython           3.1.0                                   )
+LCG_external_package(jemalloc          3.6.0                                    )
 LCG_external_package(Jinja2            2.7.3                                    )
 LCG_external_package(json              2.5.2                                    )
 LCG_external_package(jsonschema        2.4.0                                    )
