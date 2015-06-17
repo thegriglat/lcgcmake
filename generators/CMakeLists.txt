@@ -1058,6 +1058,9 @@ foreach(v ${evtgen_native_version})
                   -DEVTGEN_ROOT_DIR=${evtgen-${v}_home} -DPYTHIA8_ROOT_DIR=${pythia8-${evtgen_${v}_pythia8}_home}
                   -DPHOTOSPP_ROOT_DIR=${photos++_home} -DTAUOLAPP_ROOT_DIR=${tauola++-${evtgen_${v}_tauola++}_home}
                   -DHEPMC_ROOT_DIR=${HepMC_home}
+                  IF ${v} VERSION_GREATER 1.3.5 THEN
+                  -DUPDATEDHEADER=ON
+                  ENDIF
                   IF LCG_CPP11 THEN -DCMAKE_CXX_FLAGS=-std=c++11 ENDIF
     ENVIRONMENT ${library_path}=${evtgen-${v}_home}/lib:${photos++_home}/lib:${pythia8-${evtgen_${v}_pythia8}_home}/lib:${HepMC_home}/lib:${ROOT_home}/lib:$ENV{${library_path}} 
                 PYTHIA8DATA=${pythia8-${evtgen_${v}_pythia8}_home}/xmldoc
