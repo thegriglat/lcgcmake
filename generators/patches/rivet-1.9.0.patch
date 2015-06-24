@@ -17,8 +17,8 @@
  test -n "$lrivet" && myldflags="$myldflags -L${lrivet}"
  lhepmc="@HEPMCLIBPATH@"
  test -n "$lhepmc" && myldflags="$myldflags -L${lhepmc}"
---- rivet-findid	2015-06-23 09:15:28.000000001 +0200
-+++ rivet-findid	2015-06-23 09:15:38.000000001 +0200
+--- bin/rivet-findid	2015-06-23 09:15:28.000000001 +0200
++++ bin/rivet-findid	2015-06-23 09:15:38.000000001 +0200
 @@ -170,7 +170,7 @@
                      if k=='code':
                          entries[v] = c.text
