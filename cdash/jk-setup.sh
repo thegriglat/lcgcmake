@@ -97,10 +97,11 @@ elif [[ $PLATFORM == *native* ]]; then
   export CXX=`which g++`
   export FC=`which gfortran`
 elif [[ $COMPILER == *icc* ]]; then
-  . /afs/cern.ch/sw/IntelSoftware/linux/setup.sh
-  . /afs/cern.ch/sw/IntelSoftware/linux/x86_64/xe2013/bin/ifortvars.sh intel64
-  . /afs/cern.ch/sw/IntelSoftware/linux/x86_64/xe2013/bin/iccvars.sh intel64
-  export CC=`icc`
-  export CXX=`icc`
-  export FC=`ifort`
+  echo "THE COMPILER IS ICC" 
+  source /afs/cern.ch/sw/IntelSoftware/linux/setup.sh
+  source /afs/cern.ch/sw/IntelSoftware/linux/x86_64/xe2013/bin/ifortvars.sh intel64
+  source /afs/cern.ch/sw/IntelSoftware/linux/x86_64/xe2013/bin/iccvars.sh intel64
+  export CC=icc
+  export CXX=icc
+  export FC=ifort
 fi
